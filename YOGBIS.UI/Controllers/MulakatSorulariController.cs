@@ -1,0 +1,104 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using YOGBIS.BusinessEngine.Contracts;
+using YOGBIS.Common.VModels;
+
+namespace YOGBIS.UI.Controllers
+{
+    public class MulakatSorulariController : Controller
+    {
+        private readonly IMulakatSorulariBE _mulakatSorulariBE;
+        public MulakatSorulariController(IMulakatSorulariBE mulakatSorulariBE)
+        {
+            _mulakatSorulariBE = mulakatSorulariBE;
+        }
+        public IActionResult Index()
+        {
+            var data = _mulakatSorulariBE.GetAllMulakatSorulari();
+            if (data.IsSuccess)
+            {
+                var result = data.Data;
+                return View(result);
+            }
+            return View();
+        }
+
+        public IActionResult MulakatSoruEkle()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult MulakatSoruEkle(MulakatSorulariVM model)
+        {
+            #region Ekleme ve Güncelleme Örneği
+            //if (model.MulakatSorulariId>0)
+            //{
+            //    var data = _mulakatSorulariBE.MulakatSorusuGuncelle(model);
+            //}
+            //else
+            //{
+            //    if (ModelState.IsValid)
+            //    {
+            //        var data = _mulakatSorulariBE.MulakatSorusuEkle(model);
+            //        if (data.IsSuccess)
+            //        {
+            //            return RedirectToAction("Index");
+            //        }
+            //        return View(model);
+            //    }
+            //    else
+            //    {
+            //        return View(model);
+            //    }
+            //} 
+            #endregion
+
+            if (ModelState.IsValid)
+            {
+                var data = _mulakatSorulariBE.MulakatSorusuEkle(model);
+                if (data.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+                return View(model);
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult MulakatSoruGuncelle(int id)
+        {
+            if (id < 0)
+                return View();
+            var data = _mulakatSorulariBE.GetAllMulakatSorulari(id);
+            if (data.IsSuccess)
+                return View(data.Data);
+            return View();
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult MulakatSoruGuncelle(MulakatSorulariVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var data = _mulakatSorulariBE.MulakatSorusuGuncelle(model);
+                if (data.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+                return View(model);
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+    }
+}

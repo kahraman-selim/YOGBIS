@@ -1,0 +1,56 @@
+﻿@model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>
+@{
+    ViewData["Title"] = "Mülakat Soruları";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1 class="mt-4">Mülakat Soruları Test Sayfası</h1>
+<ol class="breadcrumb mb-4">
+    <li>
+        <a asp-controller="MulakatSorulari" asp-action="MulakatSoruEkle" class="btn btn-success btn-circle btn-sm" title="Yeni Kayıt">
+            Yeni Kayıt <i class="fas fa-plus-circle"></i>
+        </a>
+    </li>
+</ol>
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        Mülakat Soruları
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="myTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sıra No</th>
+                        <th>Soru No</th>
+                        <th>Soru</th>
+                        <th>Cevap</th>
+                        <th>Düzenle</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.SoruSiraNo</td>
+                            <td>@item.SoruNo</td>
+                            <td>@item.Soru</td>
+                            <td>@item.Cevap</td>
+                            <td>
+                                <a class="btn btn-sm btn-info" asp-controller="MulakatSorulari" asp-action="MulakatSoruGuncelle" asp-route-id="@item.MulakatSorulariId">
+                                    Düzenle <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-danger" asp-controller="MulakatSorulari" asp-action="MulakatSoruSil">
+                                    Sil <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
