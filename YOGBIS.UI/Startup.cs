@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,9 +12,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.BusinessEngine.Implementaion;
+using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.Mappings;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DataContext;
+using YOGBIS.Data.DbModels;
 using YOGBIS.Data.Implementaion;
 
 namespace YOGBIS.UI
@@ -50,13 +53,20 @@ namespace YOGBIS.UI
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IMulakatSorulariBE, MulakatSorulariBE>();
 
+            //------------------------------Identity Entegre-----------------------------
+            //services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<YOGBISContext>();
+            //services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<YOGBISContext>();
 
-
+            services.AddIdentity<Kullanici, IdentityRole>()
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<YOGBISContext>();
+            services.AddMvc();
+            services.AddSession();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -71,10 +81,11 @@ namespace YOGBIS.UI
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            SeedData.Seed(userManager, roleManager);
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

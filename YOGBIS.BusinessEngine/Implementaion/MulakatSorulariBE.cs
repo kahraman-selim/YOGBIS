@@ -115,5 +115,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<MulakatSorulariVM>(false, "Boş veri olamaz");
             }
         }
+
+        //public Result<MulakatSorulariVM> MulakatSorusuSil(int id)
+        //{
+        //    var data = _unitOfWork.mulakatSorulariRepository.Get(id);
+
+        //    if (data != null)
+        //    {
+        //        _unitOfWork.mulakatSorulariRepository.Remove(data);
+        //    }
+        //}
     }
 }

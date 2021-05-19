@@ -16,7 +16,8 @@ namespace YOGBIS.Data.Contracts
          ISoruKategoriRepository soruKategoriRepository { get;  }
          IKategorilerRepository kategorilerRepository { get;  }
          IMulakatlarRepository mulakatlarRepository { get;  }
-         IMulakatSorulariRepository mulakatSorulariRepository { get; }
+         IMulakatSorulariRepository mulakatSorulariRepository { get; }  
+         IKullaniciRepository kullaniciRepository { get; }
 
         void Save();
     }

@@ -10,7 +10,9 @@ namespace YOGBIS.Common.VModels
     {
         [Key]
         public int MulakatSorulariId { get; set; }
+        [Required(ErrorMessage = "Soru Sıra Numarası Zorunlu Alandır...")]
         public int SoruSiraNo { get; set; }
+        [Required(ErrorMessage = "Soru Numarası Zorunlu Alandır...")]
         public int SoruNo { get; set; }
         public int KategoriId { get; set; }
         public string Derecesi { get; set; }

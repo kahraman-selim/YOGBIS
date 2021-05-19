@@ -3,7 +3,7 @@
     ViewData["Title"] = "Mülakat Soruları";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1 class="mt-4">Mülakat Soruları Test Sayfası</h1>
+<h1 class="mt-4">Test Sayfası</h1>
 <ol class="breadcrumb mb-4">
     <li>
         <a asp-controller="MulakatSorulari" asp-action="MulakatSoruEkle" class="btn btn-success btn-circle btn-sm" title="Yeni Kayıt">
@@ -38,13 +38,13 @@
                             <td>@item.Soru</td>
                             <td>@item.Cevap</td>
                             <td>
-                                <a class="btn btn-sm btn-info" asp-controller="MulakatSorulari" asp-action="MulakatSoruGuncelle" asp-route-id="@item.MulakatSorulariId">
-                                    Düzenle <i class="fas fa-edit"></i>
+                                <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="MulakatSorulari" asp-action="MulakatSoruGuncelle" asp-route-id="@item.MulakatSorulariId">
+                                    <i class="fas fa-edit"></i>
                                 </a>
                             </td>
                             <td>
-                                <a class="btn btn-sm btn-danger" asp-controller="MulakatSorulari" asp-action="MulakatSoruSil">
-                                    Sil <i class="fas fa-trash"></i>
+                                <a class="btn btn-sm btn-danger" title="Sil" data-toggle="modal" data-target="#logoutModal" id="btnSil" data-id="@item.MulakatSorulariId">
+                                    <i class="fas fa-trash"></i>
                                 </a>
                             </td>
                         </tr>
@@ -54,3 +54,30 @@
         </div>
     </div>
 </div>
+<!-- Delete Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Silmek istediğinize emin misiniz?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">İşlemi onaylarsanız ilgili kayıt tamamen silinecek !</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Vazgeç</button>
+                <a class="btn btn-primary" href="login.html">Onayla</a>
+            </div>
+        </div>
+    </div>
+</div>
+@*@section Script{
+<script type="text/javascript">
+const { Modal } = require("bootstrap");
+
+    $(document).ready(function () {
+        var id = parseint((this).attr("data-id"));
+        
+</script>
+ }*@

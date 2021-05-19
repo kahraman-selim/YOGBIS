@@ -23,6 +23,7 @@ namespace YOGBIS.Data.Implementaion
             soruBankasiLogRepository = new SoruBankasiLogRepository(_ctx);
             soruBankasiRepository = new SoruBankasiRepository(_ctx);
             soruKategoriRepository = new SoruKategoriRepository(_ctx);
+            kullaniciRepository = new KullaniciRepository(_ctx);
         }
 
         public IUlkeGruplariRepository ulkeGruplariRepository { get; private set; }
@@ -36,6 +37,7 @@ namespace YOGBIS.Data.Implementaion
         public IKategorilerRepository kategorilerRepository { get; private set; }
         public IMulakatlarRepository mulakatlarRepository { get; private set; }
         public IMulakatSorulariRepository mulakatSorulariRepository { get; private set; }
+        public  IKullaniciRepository kullaniciRepository { get; private set; }
         public void Dispose()
         {
             _ctx.Dispose();

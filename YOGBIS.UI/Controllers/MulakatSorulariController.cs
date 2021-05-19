@@ -1,15 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
+using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
+    [Authorize(Roles =ResultConstant.Admin_Role)]
     public class MulakatSorulariController : Controller
     {
+       
         private readonly IMulakatSorulariBE _mulakatSorulariBE;
         public MulakatSorulariController(IMulakatSorulariBE mulakatSorulariBE)
         {
@@ -25,7 +29,6 @@ namespace YOGBIS.UI.Controllers
             }
             return View();
         }
-
         public IActionResult MulakatSoruEkle()
         {
             return View();
@@ -70,7 +73,6 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
-
         [HttpGet]
         public ActionResult MulakatSoruGuncelle(int id)
         {
@@ -81,7 +83,6 @@ namespace YOGBIS.UI.Controllers
                 return View(data.Data);
             return View();
         }
-
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult MulakatSoruGuncelle(MulakatSorulariVM model)
@@ -100,5 +101,24 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
+        //[HttpDelete]
+        //public IActionResult MulakatSoruSil(int id)
+        //{
+        //    if (id <= 0)
+        //    {
+        //        return Json(new { success = false, mesaj = "Silmek için kayıt seçiniz !" });
+        //    }
+
+        //    var data = _mulakatSorulariBE.MulakatSorusuSil();
+
+        //    if (data.IsSuccess)
+        //    {
+        //        return Json(new { success = data.IsSuccess, mesaj = data.mesaj });
+        //    }
+        //    else
+        //    {
+        //        return Json(new { success = data.IsSuccess, mesaj = data.mesaj });
+        //    }
+        //}
     }
 }
