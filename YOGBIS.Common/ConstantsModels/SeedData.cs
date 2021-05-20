@@ -21,7 +21,8 @@ namespace YOGBIS.Common.ConstantsModels
                 var user = new Kullanici
                 {
                     UserName = ResultConstant.Admin_Email,
-                    Email = ResultConstant.Admin_Email
+                    Email = ResultConstant.Admin_Email,
+                    Aktif=true
                 };
                 var result = userManager.CreateAsync(user, ResultConstant.Admin_Password).Result;
                 if (result.Succeeded)
