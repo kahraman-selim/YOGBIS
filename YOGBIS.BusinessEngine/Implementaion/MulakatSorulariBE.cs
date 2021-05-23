@@ -116,14 +116,27 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
 
-        //public Result<MulakatSorulariVM> MulakatSorusuSil(int id)
-        //{
-        //    var data = _unitOfWork.mulakatSorulariRepository.Get(id);
+        public Result<MulakatSorulariVM> MulakatSorusuSil(MulakatSorulariVM model)
+        {
+            if (model != null)
+            {
+                try
+                {
+                    var mulakatSoru = _mapper.Map<MulakatSorulariVM, MulakatSorulari>(model);
+                    _unitOfWork.mulakatSorulariRepository.Remove(mulakatSoru);
+                    _unitOfWork.Save();
+                    return new Result<MulakatSorulariVM>(true, "Kayıt silindi !");
+                }
+                catch (Exception ex)
+                {
 
-        //    if (data != null)
-        //    {
-        //        _unitOfWork.mulakatSorulariRepository.Remove(data);
-        //    }
-        //}
+                    return new Result<MulakatSorulariVM>(false, "İşlem esnasında bir hata oluştu : " + " " + ex.Message.ToString());
+                }
+            }
+            else
+            {
+                return new Result<MulakatSorulariVM>(false, "Boş veri olamaz");
+            }
+        }
     }
 }

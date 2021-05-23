@@ -96,11 +96,11 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                     if (user!=null)
                     {
                         var sessionContext = new SessionContext();
-                        sessionContext.EPosta = user.Result.Email;
-                        sessionContext.Adi = user.Result.NormalizedUserName;
+                        sessionContext.Email = user.Result.Email;
+                        sessionContext.FirstName = user.Result.NormalizedUserName;
                         //sessionContext.Adi = kullanici.Ad;
                         //sessionContext.Soyadi = kullanici.Soyad;
-                        sessionContext.GirisId = user.Result.Id;
+                        sessionContext.LoginId = user.Result.Id;
                         HttpContext.Session.SetString("AppUserInfoSession", JsonConvert.SerializeObject(sessionContext));
                     }
                     return LocalRedirect(returnUrl);
@@ -116,7 +116,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Geçersiz giriş denemesi.");
                     return Page();
                 }
             }

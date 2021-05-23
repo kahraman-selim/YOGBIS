@@ -38,14 +38,15 @@ namespace YOGBIS.Data.Implementaion
         public IMulakatlarRepository mulakatlarRepository { get; private set; }
         public IMulakatSorulariRepository mulakatSorulariRepository { get; private set; }
         public  IKullaniciRepository kullaniciRepository { get; private set; }
-        public void Dispose()
-        {
-            _ctx.Dispose();
-        }
 
         public void Save()
         {
             _ctx.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            _ctx.Dispose();
         }
     }
 }

@@ -25,8 +25,8 @@
                         <th>Soru No</th>
                         <th>Soru</th>
                         <th>Cevap</th>
-                        <th>Düzenle</th>
-                        <th>Sil</th>
+                        <th class="text-center">Düzenle</th>
+                        <th class="text-center">Sil</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,14 +37,14 @@
                             <td>@item.SoruNo</td>
                             <td>@item.Soru</td>
                             <td>@item.Cevap</td>
-                            <td>
+                            <td class="text-center">
                                 <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="MulakatSorulari" asp-action="MulakatSoruGuncelle" asp-route-id="@item.MulakatSorulariId">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             </td>
-                            <td>
-                                <a class="btn btn-sm btn-danger" title="Sil" data-toggle="modal" data-target="#logoutModal" id="btnSil" data-id="@item.MulakatSorulariId">
-                                    <i class="fas fa-trash"></i>
+                            <td class="text-center">
+                                <a class="btn btn-sm btn-danger" title="Sil" data-toggle="modal" data-target="#logoutModal" id="btnSil">
+                                    <i class="fas fa-trash text-white"></i>
                                 </a>
                             </td>
                         </tr>
@@ -67,17 +67,20 @@
             <div class="modal-body">İşlemi onaylarsanız ilgili kayıt tamamen silinecek !</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Vazgeç</button>
-                <a class="btn btn-primary" href="login.html">Onayla</a>
+                <button class="btn btn-primary" type="submit" data-dismiss="modal">Onayla</button>
+                @*<a class="btn btn-primary">Onayla</a>*@
             </div>
         </div>
     </div>
 </div>
-@*@section Script{
+@section Scripts{
 <script type="text/javascript">
-const { Modal } = require("bootstrap");
-
-    $(document).ready(function () {
-        var id = parseint((this).attr("data-id"));
-        
+    $("btnSil").click(function () {
+        $.ajax({
+            type: "DELETE",
+            url: "MulakatSoruSil/" + $(this).data("id"),
+            success: onDeleteSuccess
+        });
+    });
 </script>
- }*@
+ }

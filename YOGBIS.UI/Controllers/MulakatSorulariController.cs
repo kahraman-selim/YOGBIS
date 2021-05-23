@@ -10,7 +10,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles =ResultConstant.Admin_Role)]
+    //[Authorize(Roles =ResultConstant.Admin_Role)]
     public class MulakatSorulariController : Controller
     {
        
@@ -33,6 +33,7 @@ namespace YOGBIS.UI.Controllers
         {
             return View();
         }
+        
         [HttpPost]
         public ActionResult MulakatSoruEkle(MulakatSorulariVM model)
         {
@@ -73,6 +74,7 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
+        
         [HttpGet]
         public ActionResult MulakatSoruGuncelle(int id)
         {
@@ -83,6 +85,7 @@ namespace YOGBIS.UI.Controllers
                 return View(data.Data);
             return View();
         }
+        
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult MulakatSoruGuncelle(MulakatSorulariVM model)
@@ -101,24 +104,23 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
-        //[HttpDelete]
-        //public IActionResult MulakatSoruSil(int id)
-        //{
-        //    if (id <= 0)
-        //    {
-        //        return Json(new { success = false, mesaj = "Silmek için kayıt seçiniz !" });
-        //    }
-
-        //    var data = _mulakatSorulariBE.MulakatSorusuSil();
-
-        //    if (data.IsSuccess)
-        //    {
-        //        return Json(new { success = data.IsSuccess, mesaj = data.mesaj });
-        //    }
-        //    else
-        //    {
-        //        return Json(new { success = data.IsSuccess, mesaj = data.mesaj });
-        //    }
-        //}
+        
+        [HttpDelete]
+        public IActionResult MulakatSoruSil(MulakatSorulariVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var data = _mulakatSorulariBE.MulakatSorusuSil(model);
+                if (data.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+                return View(model);
+            }
+            else
+            {
+                return View(model);
+            }
+        }
     }
 }

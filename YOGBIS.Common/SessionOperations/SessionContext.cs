@@ -6,10 +6,10 @@ namespace YOGBIS.Common.SessionOperations
 {
     public class SessionContext
     {
-        public string GirisId { get; set; }
-        public string Adi { get; set; }
-        public string Soyadi { get; set; }
-        public string EPosta { get; set; }
-        public bool? AdminMi { get; set; }
+        public string LoginId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public bool? IsAdmin { get; set; }
     }
 }

@@ -24,6 +24,6 @@ namespace YOGBIS.BusinessEngine.Contracts
 
         Result<MulakatSorulariVM> MulakatSorusuGuncelle(MulakatSorulariVM model);
 
-        //Result<MulakatSorulariVM> MulakatSorusuSil(int id);
+        Result<MulakatSorulariVM> MulakatSorusuSil(MulakatSorulariVM model);
     }
 }
