@@ -22,18 +22,18 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<Kullanici> _userManager;
         private readonly SignInManager<Kullanici> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-        private readonly IUnitOfWork _uow;
         public LoginModel(SignInManager<Kullanici> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<Kullanici> userManager, IUnitOfWork uow)
+            UserManager<Kullanici> userManager, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _uow = uow;
+            _unitOfWork = unitOfWork;
         }
 
         [BindProperty]
@@ -48,12 +48,12 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "E-Posta alanı boş geçilemez !")]
             [Display(Name = "E-Posta")]
             [EmailAddress]            
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Şifrenizi yazmalısınız !")]
             [DataType(DataType.Password)]
             [Display(Name = "Şifre")]
             public string Password { get; set; }
@@ -91,18 +91,19 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    var user = _userManager.FindByEmailAsync(Input.Email);
+                    var user = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower());
+                    //var user = _userManager.FindByEmailAsync(Input.Email);
 
-                    if (user!=null)
-                    {
-                        var sessionContext = new SessionContext();
-                        sessionContext.Email = user.Result.Email;
-                        sessionContext.FirstName = user.Result.NormalizedUserName;
-                        //sessionContext.Adi = kullanici.Ad;
-                        //sessionContext.Soyadi = kullanici.Soyad;
-                        sessionContext.LoginId = user.Result.Id;
-                        HttpContext.Session.SetString("AppUserInfoSession", JsonConvert.SerializeObject(sessionContext));
-                    }
+                    //if (user!=null)
+                    //{
+                    //    var sessionContext = new SessionContext();
+                    //    sessionContext.Email = user.Result.Email;
+                    //    sessionContext.FirstName = user.Result.NormalizedUserName;
+                    //    //sessionContext.Adi = kullanici.Ad;
+                    //    //sessionContext.Soyadi = kullanici.Soyad;
+                    //    sessionContext.LoginId = user.Result.Id;
+                    //    HttpContext.Session.SetString("AppUserInfoSession", JsonConvert.SerializeObject(sessionContext));
+                    //}
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -116,7 +117,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Geçersiz giriş denemesi.");
+                    ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
                     return Page();
                 }
             }

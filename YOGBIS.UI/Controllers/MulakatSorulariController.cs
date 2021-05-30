@@ -10,7 +10,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    //[Authorize(Roles =ResultConstant.Admin_Role)]
+    [Authorize(Roles = ResultConstant.Admin_Role)]
     public class MulakatSorulariController : Controller
     {
        
@@ -18,7 +18,8 @@ namespace YOGBIS.UI.Controllers
         public MulakatSorulariController(IMulakatSorulariBE mulakatSorulariBE)
         {
             _mulakatSorulariBE = mulakatSorulariBE;
-        }
+        }        
+        
         public IActionResult Index()
         {
             var data = _mulakatSorulariBE.GetAllMulakatSorulari();

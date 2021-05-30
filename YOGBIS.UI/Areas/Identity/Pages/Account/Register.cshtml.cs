@@ -76,7 +76,12 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new Kullanici { UserName = Input.Email, Email = Input.Email , Aktif=true};
+                var user = new Kullanici 
+                { 
+                    UserName = Input.Email, 
+                    Email = Input.Email , 
+                    Aktif=true
+                };
                 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 

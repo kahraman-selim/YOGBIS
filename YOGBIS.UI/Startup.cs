@@ -23,50 +23,36 @@ namespace YOGBIS.UI
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
+            
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+       public void ConfigureServices(IServiceCollection services)
+       {
+            services.AddDbContext<YOGBISContext>(options => options.UseMySQL(Configuration.GetConnectionString("YOGBISConnection")));
+
+            services.AddScoped<IMulakatSorulariBE, MulakatSorulariBE>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddAutoMapper(typeof(Maps));
+
+            services.AddIdentity<Kullanici,IdentityRole>()
+            .AddDefaultTokenProviders()
+            .AddEntityFrameworkStores<YOGBISContext>();
+
             services.AddRazorPages();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddDbContext<YOGBISContext>(options => options.UseMySQL(Configuration.GetConnectionString("YOGBISConnection")));
-            services.AddAutoMapper(typeof(Maps));
-            //services.AddScoped<IUlkeGruplariRepository, UlkeGruplariRepository>();
-            //services.AddScoped<IKitalarRepository, KitalarRepository>();
-            //services.AddScoped<IUlkelerRepository, UlkelerRepository>();
-            //services.AddScoped<IEyaletlerRepository, EyaletlerRepository>();
-            //services.AddScoped<ISehirlerRepository, SehirlerRepository>();
-            //services.AddScoped<IKategorilerRepository, KategorilerRepository>();
-            //services.AddScoped<IMulakatlarRepository, MulakatlarRepository>();
-            //services.AddScoped<IMulakatSorulariRepository, MulakatSorulariRepository>();
-            //services.AddScoped<ISoruBankasiRepository, SoruBankasiRepository>();
-            //services.AddScoped<ISoruBankasiLogRepository, SoruBankasiLogRepository>();
-            //services.AddScoped<ISoruKategoriRepository, SoruKategoriRepository>();
-
-            //------------------
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IMulakatSorulariBE, MulakatSorulariBE>();
-
-            //------------------------------Identity Entegre-----------------------------
-            //services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<YOGBISContext>();
-            //services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<YOGBISContext>();
-
-            services.AddIdentity<Kullanici, IdentityRole>()
-                .AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<YOGBISContext>();
             services.AddMvc();
             services.AddSession();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
+       public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
+           UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
