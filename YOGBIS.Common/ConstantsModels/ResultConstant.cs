@@ -16,5 +16,7 @@ namespace YOGBIS.Common.ConstantsModels
         
         public const string Admin_Email = "selim.kahraman@meb.gov.tr";
         public const string Admin_Password = "Selim81.";
+
+        public const string LoginUserInfo = "Giriş Yapan Kullanıcı Bilgisi";
     }
 }

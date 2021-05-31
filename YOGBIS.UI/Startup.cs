@@ -43,10 +43,13 @@ namespace YOGBIS.UI
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<YOGBISContext>();
 
-            services.AddRazorPages();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddRazorPages();
             services.AddMvc();
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(60);
+            });
 
         }
 
@@ -69,7 +72,7 @@ namespace YOGBIS.UI
             app.UseStaticFiles();
             SeedData.Seed(userManager, roleManager);
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
 

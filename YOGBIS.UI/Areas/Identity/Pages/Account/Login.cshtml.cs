@@ -16,6 +16,7 @@ using YOGBIS.Common.SessionOperations;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using YOGBIS.Data.DbModels;
+using YOGBIS.Common.ConstantsModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account
 {
@@ -90,20 +91,22 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
                     var user = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower());
-                    //var user = _userManager.FindByEmailAsync(Input.Email);
 
-                    //if (user!=null)
-                    //{
-                    //    var sessionContext = new SessionContext();
-                    //    sessionContext.Email = user.Result.Email;
-                    //    sessionContext.FirstName = user.Result.NormalizedUserName;
-                    //    //sessionContext.Adi = kullanici.Ad;
-                    //    //sessionContext.Soyadi = kullanici.Soyad;
-                    //    sessionContext.LoginId = user.Result.Id;
-                    //    HttpContext.Session.SetString("AppUserInfoSession", JsonConvert.SerializeObject(sessionContext));
-                    //}
+                    var userInfo = new SessionContext()
+                    {
+                        Email = user.Email,
+                        FirstName = user.Ad,
+                        //TODO:Admın Bilgisini dinamic olarak getir
+                        IsAdmin = false,
+                        LastName = user.Soyad,
+                        LoginId = user.Id
+                    };
+
+                    //Set To User ınfo Session
+                    HttpContext.Session.SetString(ResultConstant.LoginUserInfo, JsonConvert.SerializeObject(userInfo));
+
+                    _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
