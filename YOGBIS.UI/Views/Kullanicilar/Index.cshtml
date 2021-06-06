@@ -1,0 +1,71 @@
+﻿@model IEnumerable<YOGBIS.Common.VModels.KullaniciVM>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        Kullanıcılar
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="myTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sıra No</th>
+                        <th>Kullanıcı Adı</th>
+                        <th>Ad</th>
+                        <th>Soyad</th>
+                        <th>Aktif</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var sirano = Convert.ToInt32(item.Aktif);
+                        //sirano++;
+                    <tr>
+                        
+                        <td>@sirano</td>
+                        <td>@item.UserName</td>
+                        <td>@item.Ad</td>
+                        <td>@item.Soyad</td>
+                        <td>
+                            @if (@item.Aktif == true)
+                            {
+
+                                <input class="form-check-input" type="checkbox" value="" id="aktifkullanici" onchange="removeItem(@item.Id)" checked />
+
+                            }
+                            else
+                            {
+
+                                <input class="form-check-input" type="checkbox" value="" id="pasifkullanici" />
+
+                            }
+                        </td>
+                    </tr>
+                        
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $("#aktifkullanici").change(function removeItem(rovId) {
+            //$.ajax({
+            //    type: "DELETE",
+            //    url: "MulakatSoruSil/" + $(this).data("id"),
+            //    success: onDeleteSuccess
+            //});
+            window.alert($("#aktifkullanici").data("id"));
+            //location.reload();
+        });
+    </script>
+}
+
+

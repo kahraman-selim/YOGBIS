@@ -5,7 +5,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Data.Contracts
 {
-    public interface IKategorilerRepository : IRepositoryBase<Kategoriler>
+    public interface ISoruKategorilerRepository : IRepositoryBase<SoruKategoriler>
     {
     }
 }

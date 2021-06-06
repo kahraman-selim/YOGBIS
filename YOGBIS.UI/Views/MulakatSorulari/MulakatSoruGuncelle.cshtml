@@ -14,39 +14,60 @@
 
             @Html.HiddenFor(x => Model.MulakatSorulariId)
             <input type="hidden" asp-for="MulakatSorulariId" />
-
             <div class="text-danger" asp-validation-summary="ModelOnly"></div>
             <div class="form-group">
-                <label asp-for="SoruSiraNo" class="col-sm-3 h6">Soru Sıra Numarası</label>
-                <div class="col-sm-5">
-                    <input asp-for="SoruSiraNo" type="text" class="col-sm-6" id="CreateTypeInput" placeholder="Soru Sıra No Giriniz">
+                <label asp-for="SoruSiraNo" class="col-lg-5 h6">Soru Sıra Numarası</label>
+                <div class="col-lg-5">
+                    <input asp-for="SoruSiraNo" type="text" class="form-control col-lg-5" id="CreateTypeInput" placeholder="Soru Sıra No Giriniz">
                 </div>
                 <span class="text-danger col-sm-12" asp-validation-for="SoruSiraNo"></span>
-            </div>
+            </div>@*<--!SoruSiraNo-->*@
             <div class="form-group">
-                <label asp-for="SoruNo" class="col-sm-3 h6">Soru Numarası</label>
-                <div class="col-sm-5">
-                    <input asp-for="SoruNo" type="text" class="col-sm-6" id="CreateTypeInput" placeholder="Soru No Giriniz">
+                <label asp-for="SoruNo" class="col-lg-5 h6">Soru Numarası</label>
+                <div class="col-lg-5">
+                    <input asp-for="SoruNo" type="text" class="form-control col-lg-5" id="CreateTypeInput" placeholder="Soru No Giriniz">
                 </div>
                 <span class="text-danger col-sm-12" asp-validation-for="SoruNo"></span>
-            </div>
+            </div>@*<--!SoruNo-->*@
             <div class="form-group">
-                <label asp-for="Soru" class="col-sm-3 h6">Soru</label>
-                <div class="col-sm-9">
-                    @*<input asp-for="Soru" type="text" class="col-sm-12" id="CreateTypeInput" placeholder="Soruyu Giriniz">*@
+                <label asp-for="Derecesi" class="col-lg-5 h6">Derece</label>
+                <div class="col-lg-5">
+                    <select asp-for="Derecesi" class="form-control-range form-control font-weight-bold" aria-label="Default select example">
+                        <option selected class="font-weight-bold text-center">Derecesini seçiniz</option>
+                        <option value="Öğretmen">Öğretmen</option>
+                        <option value="Okutman">Okutman</option>
+                    </select>
+                </div>
+                <span class="text-danger col-sm-12" asp-validation-for="Derecesi"></span>
+            </div>@*<--!Derecesi-->*@
+            <div class="form-group">
+                <label asp-for="SoruKategoriId" class="col-lg-5 h6">Kategori No</label>
+                <div class="col-lg-5">
+                    <input asp-for="SoruKategoriId" type="text" class="form-control col-lg-5" id="CreateTypeInput" placeholder="Kategori Numarasını Giriniz">
+                </div>
+                <span class="text-danger col-sm-12" asp-validation-for="SoruKategoriId"></span>
+            </div>@*<--!KategoriId-->*@
+            <div class="form-group">
+                <label asp-for="SoruKategoriAdi" class="col-lg-5 h6">Kategori</label>
+                <div class="col-lg-5">
+                    <textarea asp-for="SoruKategoriAdi" placeholder="Kategoriyi buraya yazınız..." class="form-control col-sm-12" id="KategoriTextArea" rows="3"></textarea>
+                </div>
+                <span class="text-danger col-sm-12" asp-validation-for="SoruKategoriAdi"></span>
+            </div>@*<--!KategoriAdi-->*@
+            <div class="form-group">
+                <label asp-for="Soru" class="col-lg-5 h6">Soru</label>
+                <div class="col-lg-5">
                     <textarea asp-for="Soru" placeholder="Soruyu buraya yazınız..." class="form-control col-sm-12" id="SoruTextArea" rows="3"></textarea>
                 </div>
                 <span class="text-danger col-sm-12" asp-validation-for="Soru"></span>
-            </div>
+            </div>@*<--!Soru-->*@
             <div class="form-group">
-                <label asp-for="Cevap" class="col-sm-3 h6">Cevap</label>
-                <div class="col-sm-9">
-                    @*<input asp-for="Cevap" type="text" class="col-sm-12" id="CreateTypeInput" placeholder="Cevabı Giriniz">*@
+                <label asp-for="Cevap" class="col-lg-5 h6">Cevap</label>
+                <div class="col-lg-5">
                     <textarea asp-for="Cevap" placeholder="Cevabı buraya yazınız..." class="form-control col-sm-12" id="CevapTextArea" rows="3"></textarea>
                 </div>
                 <span class="text-danger col-sm-12" asp-validation-for="Cevap"></span>
-            </div>
-
+            </div>@*<--!Cevap-->*@
             <div class="col-sm-9">
                 <input type="submit" value="Kaydet" class="btn btn-success" />
                 <a asp-controller="MulakatSorulari" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger">Vazgeç</a>

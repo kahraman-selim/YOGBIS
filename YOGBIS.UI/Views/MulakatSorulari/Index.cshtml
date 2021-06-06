@@ -23,6 +23,9 @@
                     <tr>
                         <th>Sıra No</th>
                         <th>Soru No</th>
+                        <th>Derecesi</th>
+                        <th>Kategori No</th>
+                        <th>Kategori</th>
                         <th>Soru</th>
                         <th>Cevap</th>
                         <th class="text-center">Düzenle</th>
@@ -35,6 +38,9 @@
                         <tr>
                             <td>@item.SoruSiraNo</td>
                             <td>@item.SoruNo</td>
+                            <td>@item.Derecesi</td>
+                            <td>@item.SoruKategoriId</td>
+                            <td>@item.SoruKategoriAdi</td>
                             <td>@item.Soru</td>
                             <td>@item.Cevap</td>
                             <td class="text-center">
@@ -43,7 +49,7 @@
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a class="btn btn-sm btn-danger" title="Sil" data-toggle="modal" data-target="#logoutModal" id="btnSil">
+                                <a class="btn btn-sm btn-danger" title="Sil" data-toggle="modal" data-target="#logoutModal" id="silinecekkayit" onclick="removeItem(@item.MulakatSorulariId)"  data-id="@item.MulakatSorulariId">
                                     <i class="fas fa-trash text-white"></i>
                                 </a>
                             </td>
@@ -67,20 +73,21 @@
             <div class="modal-body">İşlemi onaylarsanız ilgili kayıt tamamen silinecek !</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Vazgeç</button>
-                <button class="btn btn-primary" type="submit" data-dismiss="modal">Onayla</button>
-                @*<a class="btn btn-primary">Onayla</a>*@
+                <button class="btn btn-primary" type="submit" data-dismiss="modal" id="btnSil">Onayla</button>
             </div>
         </div>
     </div>
 </div>
 @section Scripts{
-<script type="text/javascript">
-    $("btnSil").click(function () {
-        $.ajax({
-            type: "DELETE",
-            url: "MulakatSoruSil/" + $(this).data("id"),
-            success: onDeleteSuccess
+    <script type="text/javascript">
+        $("#btnSil").click(function removeItem(rovId) {
+            //$.ajax({
+            //    type: "DELETE",
+            //    url: "MulakatSoruSil/" + $(this).data("id"),
+            //    success: onDeleteSuccess
+            //});
+            window.alert($("#silinecekkayit").data("id"));
+            location.reload();
         });
-    });
-</script>
- }
+    </script>
+}

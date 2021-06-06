@@ -12,7 +12,8 @@ namespace YOGBIS.Data.DbModels
         public int MulakatSorulariId { get; set; }
         public int SoruSiraNo{ get; set; }
         public int SoruNo { get; set; }
-        public int KategoriId { get; set; }
+        public int SoruKategoriId { get; set; }
+        public string SoruKategoriAdi { get; set; }
         public string Derecesi { get; set; }
         public string Soru { get; set; }
         public string Cevap { get; set; }

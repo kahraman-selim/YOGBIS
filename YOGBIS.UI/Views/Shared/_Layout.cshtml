@@ -10,6 +10,7 @@
     <link href="~/css/datatables.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
+    @*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">*@
 </head>
 <body>
     @if (SignInManager.IsSignedIn(User))
@@ -33,32 +34,61 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="MulakatSorulari" asp-action="Index">Test Sayfası</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Kullanicilar" asp-action="Index">Kullanıcılar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Mulakat" asp-action="Index">Mülakat</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </nav>
             </header>
         }
+        if (User.IsInRole(ResultConstant.Kullanici_Role))
+        {
+            <header>
+                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
+                    <div class="container">
+                        <a class="navbar-brand" asp-controller="Home" asp-action="Index">YOGBIS</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                            <partial name="_LoginPartial" />
+                        </div>
+                    </div>
+                </nav>
+            </header>
+        }
     }
-        <div class="container">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-        </div>
-
-        <footer class="border-top footer text-muted">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <p>&copy; @DateTime.Now.Year - YOGBIS - <a href="#">YYEGM-Yurt Dışı Eğitim ve Öğretim Daire Başkanlığı</a></p>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    @*<footer class="border-top footer text-muted text-center py-4 bg-light mt-auto">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">M.E.B &copy; - <a href="http://yyegm.meb.gov.tr/" target="blank">YYEGM-Yurt Dışı Eğitim ve Öğretim Daire Başkanlığı</a> - Tüm Hakları Saklıdır. Gizlilik, Kullanım ve Telif Hakları bildiriminde belirtilen kurallar çerçevesinde hizmet sunulmaktadır.</div>
+                    <div>
+                            <a href="http://bidb.meb.gov.tr/www/bilgi-guvenligi/dosya/8" target="blank">Bilgi Güvenliği</a>
+                        </div>
                 </div>
             </div>
-        </footer>
+        </footer>*@
+    <footer class="border-top footer text-muted text-center">
+        &copy; @DateTime.Now.Year - YOGBIS - <a href="http://yyegm.meb.gov.tr/" target="blank">YYEGM-Yurt Dışı Eğitim ve Öğretim Daire Başkanlığı</a>
+    </footer>
 
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/js/datatables.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/datatables.min.js"></script>
 
-        @RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

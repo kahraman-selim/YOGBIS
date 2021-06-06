@@ -14,7 +14,7 @@ namespace YOGBIS.Data.Contracts
          ISoruBankasiLogRepository soruBankasiLogRepository { get;  }
          ISoruBankasiRepository soruBankasiRepository { get;  }
          ISoruKategoriRepository soruKategoriRepository { get;  }
-         IKategorilerRepository kategorilerRepository { get;  }
+         ISoruKategorilerRepository kategorilerRepository { get;  }
          IMulakatlarRepository mulakatlarRepository { get;  }
          IMulakatSorulariRepository mulakatSorulariRepository { get; }  
          IKullaniciRepository kullaniciRepository { get; }

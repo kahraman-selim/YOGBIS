@@ -16,12 +16,13 @@ namespace YOGBIS.Common.Mappings
             CreateMap<Ulkeler, UlkelerVM>().ReverseMap();
             CreateMap<Eyaletler, EyaletlerVM>().ReverseMap();
             CreateMap<Sehirler, SehirlerVM>().ReverseMap();
-            CreateMap<Kategoriler, KategorilerVM>().ReverseMap();
+            CreateMap<SoruKategoriler, SoruKategorilerVM>().ReverseMap();
             CreateMap<Mulakatlar, MulakatlarVM>().ReverseMap();
             CreateMap<MulakatSorulari, MulakatSorulariVM>().ReverseMap();
             CreateMap<SoruBankasi, SoruBankasiVM>().ReverseMap();
             CreateMap<SoruBankasiLog, SoruBankasiLogVM>().ReverseMap();
             CreateMap<SoruKategori, SoruKategoriVM>().ReverseMap();
+            CreateMap<Kullanici, KullaniciVM>().ReverseMap();
         }
     }
 }

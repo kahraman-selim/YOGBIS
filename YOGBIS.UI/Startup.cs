@@ -36,6 +36,8 @@ namespace YOGBIS.UI
             services.AddDbContext<YOGBISContext>(options => options.UseMySQL(Configuration.GetConnectionString("YOGBISConnection")));
 
             services.AddScoped<IMulakatSorulariBE, MulakatSorulariBE>();
+            services.AddScoped<IMulakatBE, MulakatBE>();
+            services.AddScoped<IKullaniciBE, KullaniciBE>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(Maps));
 

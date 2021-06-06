@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using YOGBIS.BusinessEngine.Contracts;
+using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
@@ -14,7 +16,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<Kullanici> _userManager;
         private readonly SignInManager<Kullanici> _signInManager;
-
+        
         public IndexModel(
             UserManager<Kullanici> userManager,
             SignInManager<Kullanici> signInManager)
@@ -23,6 +25,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
+        [Display(Name = "Kullanıcı")]
         public string Username { get; set; }
 
         [TempData]
@@ -34,20 +37,26 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Telefon Numarası")]
             public string PhoneNumber { get; set; }
+            public string Ad { get; set; }
+            public string Soyad { get; set; }
+            public bool? Aktif { get; set; }
         }
 
         private async Task LoadAsync(Kullanici user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
+            
             Username = userName;
-
+            
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Ad=user.Ad,
+                Soyad=user.Soyad,
+                Aktif=user.Aktif
             };
         }
 
@@ -87,9 +96,20 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-
+            if (Input.Ad != user.Ad)
+            {
+                user.Ad = Input.Ad;
+            }
+            if (Input.Soyad != user.Soyad)
+            {
+                user.Soyad = Input.Soyad;
+            }
+            if (Input.Aktif != user.Aktif)
+            {
+                user.Aktif = Input.Aktif;
+            }
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Kullanıcı bilgileriniz güncellendi !";
             return RedirectToPage();
         }
     }

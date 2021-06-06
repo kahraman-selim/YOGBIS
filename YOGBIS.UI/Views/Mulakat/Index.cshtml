@@ -1,0 +1,161 @@
+﻿@model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-lg-2">
+        <div class="card shadow-lg mb-1" style="height:100px">
+            <h4 class="card-header text-center text-danger small">GEÇEN SÜRE</h4>
+            <div class="card-body">
+                <p class="card-text text-center text-danger font-weight-bold">
+                    <span id="dakika">00</span>
+                    <span id="sayac" style="color:red">:</span>
+                    <span id="saniye">00</span>
+                </p>
+            </div>
+        </div>
+        <div role="alert" aria-live="assertive" aria-atomic="true" class="toast text-center" data-autohide="false" data-delay="10000">
+            <div class="toast-header text-center text-danger">
+                <strong class="mr-auto">UYARI</strong>
+            </div>
+            <div class="toast-body text-danger">
+                Mülakat için ayrılan süreyi geçtiniz !
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-10">
+        @*<form class="form-group asp-action="Index"">*@
+        <div class="row col-lg-12 mb-2">
+            <select class="form-control-range form-control font-weight-bold" aria-label="Default select example">
+                <option selected class="font-weight-bold text-center" id="derece">Seçim yapınız</option>
+                <option value="1">Öğretmen</option>
+                <option value="2">Okutman</option>
+            </select>
+        </div>
+        <div class="row input-group mb-2 col-lg-12">
+            <input type="text" class="form-control font-weight-bold text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" 
+                   placeholder="Soru Numarasını Giriniz" id="soruno">
+        </div>
+        <div class="row col-lg-12 mb-2">
+            <input type="submit" value="Mülakatı Başlat" class="btn btn-primary col-lg-12" onclick="baslat()" />
+        </div>
+        <div class="row col-lg-12 mb-2">
+            @*@for (int i = 0; i < 3; i++)
+            {*@
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-4">
+                        <div class="card shadow-lg mb-1" style="height:160px">
+                            <h4 class="card-header text-center text-info">Kategori</h4>
+                            <div class="card-body">
+                                <p class="card-text">@item.SoruKategoriAdi</p>
+                            </div>
+                        </div>
+                        <div class="card shadow-lg mb-1" style="height:300px">
+                            <h4 class="card-header text-center text-danger">Soru</h4>
+                            <div class="card-body">
+                                <p class="card-text">@item.Soru</p>
+                            </div>
+                        </div>
+                        <div class="card shadow-lg mb-1" style="height:300px">
+                            <h4 class="card-header text-center text-primary">Cevap</h4>
+                            <div class="card-body">
+                                <p class="card-text">@item.Cevap</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            @*}*@
+        </div>
+        @*</form>*@
+    </div>
+</div>
+<!-- Derece uyarı Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">UYARI</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close" onclick="kapat()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Derece seçmelisiniz !</div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit" data-dismiss="modal" id="btnOk" onclick="kapat()">Tamam</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+
+        function baslat() {
+
+            if (document.getElementById("derece").innerHTML = "Seçim yapınız") {
+                $('#logoutModal').modal('show');
+                /*location.reload();*/
+            }
+            else {
+
+                if (document.getElementById("soruno").innerHTML = "Soru Numarasını Giriniz") {
+                    window.alert("Soru numarasını girmelisiniz !");
+                    location.reload();
+                }
+                else {
+
+                    if (sayac > 0) {
+                        clearInterval(interval);
+                        location.reload();
+                        saniye = 0;
+                        dakika = 0;
+                        sayac = 0;
+                        document.getElementById("saniye").innerHTML = "00";
+                        document.getElementById("dakika").innerHTML = "00";
+                    }
+                    $('.toast').toast('hide')
+                    var saniye = 0, dakika = 0, sayac = 0;
+                    const interval = setInterval(() => {
+
+                        saniye = saniye + 1;
+                        sayac = sayac + 1;
+                        if (saniye < 10) {
+                            document.getElementById("saniye").innerHTML = "0" + saniye;
+                            document.getElementById("dakika").innerHTML = "00";
+                        }
+                        else {
+                            document.getElementById("saniye").innerHTML = saniye;
+                        }
+                        if (saniye > 59) {
+                            dakika = dakika + 1;
+                            document.getElementById("dakika").innerHTML = "0" + dakika;
+                            saniye = 0;
+                            document.getElementById("saniye").innerHTML = "00";
+                        }
+                        if (dakika > 0) {
+                            document.getElementById("dakika").innerHTML = "0" + dakika;
+                        }
+                        if (saniye > 5) {
+                            $('.toast').toast('show')
+                        }
+
+                        //if (document.getElementById("sayac").style.color = "red") {
+                        //    document.getElementById("sayac").style.color = "white";
+                        //}
+                        //else {
+                        //    document.getElementById("sayac").style.color = "red";
+                        //}
+
+                    }, 1000);
+                }
+            }
+
+        };
+        function kapat() {
+            $('#logoutModal').modal('hide');
+        };
+    </script>
+}

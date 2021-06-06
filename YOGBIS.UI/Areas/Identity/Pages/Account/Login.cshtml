@@ -5,48 +5,6 @@
     ViewData["Title"] = "Giriş";
 }
 
-@*<h1>@ViewData["Title"]</h1>
-    <div class="row">
-        <div class="col-md-4">
-            <section>
-                <form id="account" method="post">
-                    <h4>Giriş yapmak için kayıtlı e-posta adresinizi kullanın.</h4>
-                    <hr />
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="Input.Email"></label>
-                        <input asp-for="Input.Email" class="form-control" />
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Input.Password"></label>
-                        <input asp-for="Input.Password" class="form-control" />
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label asp-for="Input.RememberMe">
-                                <input asp-for="Input.RememberMe" />
-                                @Html.DisplayNameFor(m => m.Input.RememberMe)
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Oturum Aç</button>
-                    </div>
-                    <div class="form-group">
-                        <p>
-                            <a id="forgot-password" asp-page="./ForgotPassword">Şifremi Unuttum?</a>
-                        </p>
-                        <p>
-                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Yeni bir kullanıcı hesabı alın</a>
-                        </p>
-                    </div>
-                </form>
-            </section>
-        </div>
-    </div>*@
-
 <div class="row justify-content-center">
     <div class="col-lg-5">
         <div class="card shadow-lg border-0 rounded-lg mt-5">
@@ -64,10 +22,6 @@
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        @*<div class="custom-control custom-checkbox">
-                            <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
-                            <label class="custom-control-label" for="rememberPasswordCheck">Remember password</label>
-                        </div>*@
                         <div class="custom-control custom-checkbox">
                             <label asp-for="Input.RememberMe">
                                 <input asp-for="Input.RememberMe" />
@@ -75,16 +29,17 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                        @*<a class="small" href="password.html">Forgot Password?</a>*@
-                        <a id="forgot-password" asp-page="./ForgotPassword">Şifremi Unuttum?</a>
-                        @*<a class="btn btn-primary" href="index.html">Login</a>*@
+                    <div class="form-group align-items-center mt-4 mb-0 text-center">
+                        @*<a id="forgot-password" asp-page="./ForgotPassword">Şifremi Unuttum?</a>*@
                         <button type="submit" class="btn btn-primary">Oturum Aç</button>
                     </div>
+                    <!--<div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0 text-center">-->
+                        @*<a id="forgot-password" asp-page="./ForgotPassword">Şifremi Unuttum?</a>*@
+                        <!--<button type="submit" class="btn btn-primary">Oturum Aç</button>
+                    </div>-->
                 </form>
             </div>
             <div class="card-footer text-center">
-                @*<div class="small"><a href="register.html">Need an account? Sign up!</a></div>*@
                 <div class="small"><a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Yeni bir kullanıcı hesabı alın</a></div>
                 <div asp-validation-summary="All" class="text-danger"></div>
             </div>

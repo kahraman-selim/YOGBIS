@@ -14,7 +14,8 @@ namespace YOGBIS.Common.VModels
         public int SoruSiraNo { get; set; }
         [Required(ErrorMessage = "Soru Numarası Zorunlu Alandır...")]
         public int SoruNo { get; set; }
-        public int KategoriId { get; set; }
+        public int SoruKategoriId { get; set; }
+        public string SoruKategoriAdi { get; set; }
         public string Derecesi { get; set; }
         public string Soru { get; set; }
         public string Cevap { get; set; }

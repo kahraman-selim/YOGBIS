@@ -7,11 +7,11 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Data.Implementaion
 {
-    public class KategorilerRepository : Repository<Kategoriler>, IKategorilerRepository
+    public class SoruKategorilerRepository : Repository<SoruKategoriler>, ISoruKategorilerRepository
     {
         private readonly YOGBISContext _ctx;
 
-        public KategorilerRepository(YOGBISContext ctx) : base(ctx)
+        public SoruKategorilerRepository(YOGBISContext ctx) : base(ctx)
         {
             _ctx = ctx;
         }
