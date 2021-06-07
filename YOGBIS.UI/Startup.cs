@@ -30,17 +30,12 @@ namespace YOGBIS.UI
         {
             Configuration = configuration;
         }
-            
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
        public void ConfigureServices(IServiceCollection services)
-       {
+        {
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.LoginPath = "/Identity/Account/Login";
-            });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -53,7 +48,7 @@ namespace YOGBIS.UI
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(Maps));
 
-            services.AddIdentity<Kullanici,IdentityRole>()
+            services.AddIdentity<Kullanici, IdentityRole>()
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<YOGBISContext>();
 
@@ -63,17 +58,26 @@ namespace YOGBIS.UI
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(60);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
             });
 
-
-
-
-
-
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                //options.Cookie.Name = "YourAppCookieName";
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.LoginPath = "/Identity/Account/Login";
+                // ReturnUrlParameter requires 
+                //using Microsoft.AspNetCore.Authentication.Cookies;
+                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+                options.SlidingExpiration = true;
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-       public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
+            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
            UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())

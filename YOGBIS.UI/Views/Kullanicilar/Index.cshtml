@@ -32,7 +32,7 @@
                         <td>@item.UserName</td>
                         <td>@item.Ad</td>
                         <td>@item.Soyad</td>
-                        <td>
+                        <td class="text-center">
                             @if (@item.Aktif == true)
                             {
 
@@ -41,8 +41,7 @@
                             }
                             else
                             {
-
-                                <input class="form-check-input" type="checkbox" value="" id="pasifkullanici" />
+                                <input class="form-check-input" type="checkbox" value="" id="pasifkullanici" onchange="removeItem(@item.Id)"/>
 
                             }
                         </td>
@@ -55,13 +54,13 @@
 </div>
 @section Scripts{
     <script type="text/javascript">
-        $("#aktifkullanici").change(function removeItem(rovId) {
+        $(".form-check-input").change(function removeItem(rovId) {
             //$.ajax({
             //    type: "DELETE",
             //    url: "MulakatSoruSil/" + $(this).data("id"),
             //    success: onDeleteSuccess
             //});
-            window.alert($("#aktifkullanici").data("id"));
+            window.alert($(this).data("id"));
             //location.reload();
         });
     </script>

@@ -91,7 +91,13 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    var user = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower() && u.Aktif==true);
+                    var user = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower());
+
+                    if (user.Aktif == false)
+                    {
+                        ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
+                        return Page();
+                    }
 
                     var userInfo = new SessionContext()
                     {

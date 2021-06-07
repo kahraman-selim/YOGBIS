@@ -10,7 +10,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = ResultConstant.Admin_Role)]
+    [Authorize] //(Roles = ResultConstant.Admin_Role)]
     public class MulakatController : Controller
     {
 
