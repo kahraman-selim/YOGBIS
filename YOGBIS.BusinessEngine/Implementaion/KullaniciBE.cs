@@ -43,6 +43,20 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
 
+        public Result<KullaniciVM> GetAllKullanici(string id)
+        {
+            var data = _unitOfWork.kullaniciRepository.Get(id);
+            if (data != null)
+            {
+                var kullanici = _mapper.Map<Kullanici, KullaniciVM>(data);
+                return new Result<KullaniciVM>(true, ResultConstant.RecordFound, kullanici);
+            }
+            else
+            {
+                return new Result<KullaniciVM>(false, ResultConstant.RecordNotFound);
+            }
+        }
+
         public Result<KullaniciVM> KullaniciGuncelle(KullaniciVM model)
         {
             if (model != null)

@@ -40,6 +40,31 @@ namespace YOGBIS.UI.Controllers
             //return View();
         }
 
+        public IActionResult Durum(string id)
+        {
+
+            var data = _kullaniciBE.GetAllKullanici(id);
+
+            if (data.Data.Aktif == true)
+                data.Data.Aktif = false;
+            else
+                data.Data.Aktif = true;
+
+
+            _kullaniciBE.KullaniciGuncelle(data.Data);
+            if (data.IsSuccess)
+            {
+                return Content("ok");
+                //return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return Content("false");
+            }
+
+            //return View(data.Data);
+        }
+
         [HttpGet]
         public ActionResult KullaniciGuncelle(int id)
         {

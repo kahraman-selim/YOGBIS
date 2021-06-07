@@ -11,6 +11,7 @@ namespace YOGBIS.Data.Contracts
         IQueryable<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderby = null, string includeProperties = null);
 
         T Get(int id);
+        T Get(string id);
         T GetFirstOrDefault(Expression<Func<T, bool>> filter = null, string includeProperties = null);
         void Add(T entity);
         void Remove(T entity);

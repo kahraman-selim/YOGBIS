@@ -14,6 +14,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         /// <param name="id"></param>
         /// <returns></returns>
         Result<KullaniciVM> GetAllKullanici(int id);
+        Result<KullaniciVM> GetAllKullanici(string id);
         Result<KullaniciVM> KullaniciGuncelle(KullaniciVM model);
 
     }
