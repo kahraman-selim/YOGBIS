@@ -91,7 +91,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    var user = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower());
+                    var user = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower() && u.Aktif==true);
 
                     var userInfo = new SessionContext()
                     {
@@ -100,7 +100,8 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                         //TODO:Admın Bilgisini dinamic olarak getir
                         IsAdmin = false,
                         LastName = user.Soyad,
-                        LoginId = user.Id
+                        LoginId = user.Id,
+                        Aktif=user.Aktif
                     };
 
                     //Set To User ınfo Session
