@@ -5,43 +5,45 @@
     ViewData["Title"] = "Giriş";
 }
 
-<div class="row justify-content-center">
-    <div class="col-lg-5">
-        <div class="card shadow-lg border-0 rounded-lg mt-5">
-            <div class="card-header"><h3 class="text-center font-weight-light my-4">Giriş</h3></div>
-            <div class="card-body">
-                <form id="account" method="post">
-                    <div class="form-group">
-                        <label class="small mb-1" asp-for="Input.Email"></label>
-                        <input class="form-control py-4" asp-for="Input.Email" type="email" placeholder="E-Posta adresinizi yazınız" />
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label class="small mb-1" asp-for="Input.Password"></label>
-                        <input class="form-control py-4" asp-for="Input.Password" type="password" placeholder="Şifrenizi giriniz" />
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <label asp-for="Input.RememberMe">
-                                <input asp-for="Input.RememberMe" />
-                                @Html.DisplayNameFor(m => m.Input.RememberMe)
-                            </label>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">Giriş</h3></div>
+                <div class="card-body">
+                    <form id="account" method="post">
+                        <div class="form-group">
+                            <label class="small mb-1" asp-for="Input.Email"></label>
+                            <input class="form-control py-4" asp-for="Input.Email" type="email" placeholder="E-Posta adresinizi yazınız" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
                         </div>
-                    </div>
-                    <div class="form-group align-items-center mt-4 mb-0 text-center">
-                        @*<a id="forgot-password" asp-page="./ForgotPassword">Şifremi Unuttum?</a>*@
-                        <button type="submit" class="btn btn-primary">Oturum Aç</button>
-                    </div>
-                    <!--<div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0 text-center">-->
+                        <div class="form-group">
+                            <label class="small mb-1" asp-for="Input.Password"></label>
+                            <input class="form-control py-4" asp-for="Input.Password" type="password" placeholder="Şifrenizi giriniz" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <label asp-for="Input.RememberMe">
+                                    <input asp-for="Input.RememberMe" />
+                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group align-items-center mt-4 mb-0 text-center">
+                            @*<a id="forgot-password" asp-page="./ForgotPassword">Şifremi Unuttum?</a>*@
+                            <button type="submit" class="btn btn-primary">Oturum Aç</button>
+                        </div>
+                        <!--<div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0 text-center">-->
                         @*<a id="forgot-password" asp-page="./ForgotPassword">Şifremi Unuttum?</a>*@
                         <!--<button type="submit" class="btn btn-primary">Oturum Aç</button>
-                    </div>-->
-                </form>
-            </div>
-            <div class="card-footer text-center">
-                <div class="small"><a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Yeni bir kullanıcı hesabı alın</a></div>
-                <div asp-validation-summary="All" class="text-danger"></div>
+                        </div>-->
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <div class="small"><a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Yeni bir kullanıcı hesabı alın</a></div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </div>
             </div>
         </div>
     </div>
