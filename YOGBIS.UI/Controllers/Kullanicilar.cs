@@ -52,16 +52,16 @@ namespace YOGBIS.UI.Controllers
 
 
             _kullaniciBE.KullaniciGuncelle(data.Data);
-            if (data.IsSuccess)
-            {
-                return Content("ok");
-                //return RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                return Content("false");
-            }
-
+            //if (data.IsSuccess)
+            //{
+            //    return Content("ok");
+            //    //return RedirectToAction(nameof(Index));
+            //}
+            //else
+            //{
+            //    return Content("false");
+            //}
+            return RedirectToAction(nameof(Index));
             //return View(data.Data);
         }
 
