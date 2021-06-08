@@ -98,23 +98,26 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                         ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
                         return Page();
                     }
-
-                    var userInfo = new SessionContext()
+                    else
                     {
-                        Email = user.Email,
-                        FirstName = user.Ad,
-                        //TODO:Admın Bilgisini dinamic olarak getir
-                        IsAdmin = false,
-                        LastName = user.Soyad,
-                        LoginId = user.Id,
-                        Aktif=user.Aktif
-                    };
+                        var userInfo = new SessionContext()
+                        {
+                            Email = user.Email,
+                            FirstName = user.Ad,
+                            //TODO:Admın Bilgisini dinamic olarak getir
+                            IsAdmin = false,
+                            LastName = user.Soyad,
+                            LoginId = user.Id,
+                            Aktif = user.Aktif
+                        };
 
-                    //Set To User ınfo Session
-                    HttpContext.Session.SetString(ResultConstant.LoginUserInfo, JsonConvert.SerializeObject(userInfo));
+                        //Set To User ınfo Session
+                        HttpContext.Session.SetString(ResultConstant.LoginUserInfo, JsonConvert.SerializeObject(userInfo));
 
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                        _logger.LogInformation("User logged in.");
+                        return LocalRedirect(returnUrl);
+                    }
+
                 }
                 if (result.RequiresTwoFactor)
                 {

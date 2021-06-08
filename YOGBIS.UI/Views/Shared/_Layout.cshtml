@@ -25,12 +25,8 @@
                                 aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                            <partial name="_LoginPartial" />
+                        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">                            
                             <ul class="navbar-nav flex-grow-1">
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Anasayfa</a>
-                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="MulakatSorulari" asp-action="Index">Test Sayfası</a>
                                 </li>
@@ -38,8 +34,12 @@
                                     <a class="nav-link text-dark" asp-controller="Kullanicilar" asp-action="Index">Kullanıcılar</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Yeni Kullanıcı</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Mulakat" asp-action="Index">Mülakat</a>
                                 </li>
+                                <partial name="_LoginPartial" />
                             </ul>
                         </div>
                     </div>
@@ -56,12 +56,12 @@
                                 aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                            <partial name="_LoginPartial" />
+                        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">                            
                             <ul class="navbar-nav flex-grow-1">
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Mulakat" asp-action="Index">Mülakat</a>
                                 </li>
+                                <partial name="_LoginPartial" />
                             </ul>
                         </div>
                     </div>
@@ -74,16 +74,6 @@
             @RenderBody()
         </main>
     </div>
-    @*<footer class="border-top footer text-muted text-center py-4 bg-light mt-auto">
-            <div class="container-fluid">
-                <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">M.E.B &copy; - <a href="http://yyegm.meb.gov.tr/" target="blank">YYEGM-Yurt Dışı Eğitim ve Öğretim Daire Başkanlığı</a> - Tüm Hakları Saklıdır. Gizlilik, Kullanım ve Telif Hakları bildiriminde belirtilen kurallar çerçevesinde hizmet sunulmaktadır.</div>
-                    <div>
-                            <a href="http://bidb.meb.gov.tr/www/bilgi-guvenligi/dosya/8" target="blank">Bilgi Güvenliği</a>
-                        </div>
-                </div>
-            </div>
-        </footer>*@
     <footer class="border-top footer text-muted text-center">
         &copy; @DateTime.Now.Year - YOGBIS - <a href="http://yyegm.meb.gov.tr/" target="blank">YYEGM-Yurt Dışı Eğitim ve Öğretim Daire Başkanlığı</a>
     </footer>

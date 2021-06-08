@@ -19,15 +19,15 @@ namespace YOGBIS.UI.Controllers
        public IActionResult Index()
         {
 
-           if(User.IsInRole(ResultConstant.Admin_Role))
+            if (User.IsInRole(ResultConstant.Admin_Role))
             {
                 return View();
             }
             else
             {
-                return RedirectToAction("Index","Mulakat");
+                return RedirectToAction("Index", "Mulakat");
             }
-            
+
         }
     }
 }
