@@ -22,31 +22,55 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @*@foreach (var item in Model)
+        {
+            var sirano = Convert.ToInt32(item.Aktif);
+            //sirano++;
+        <tr>
+
+            <td>@sirano</td>
+            <td>@item.UserName</td>
+            <td>@item.Ad</td>
+            <td>@item.Soyad</td>
+            <td class="text-center">
+                @if (@item.Aktif == true)
+                {
+
+                    <input class="form-check-input" type="checkbox" value="" id="aktifkullanici" onchange="removeItem(@item.Id)" checked />
+
+                }
+                else
+                {
+                    <input class="form-check-input" type="checkbox" value="" id="pasifkullanici" onchange="removeItem(@item.Id)"/>
+
+                }
+            </td>
+        </tr>
+        }*@
                     @foreach (var item in Model)
                     {
                         var sirano = Convert.ToInt32(item.Aktif);
                         //sirano++;
-                    <tr>
+                        <tr>
 
-                        <td>@sirano</td>
-                        <td>@item.UserName</td>
-                        <td>@item.Ad</td>
-                        <td>@item.Soyad</td>
-                        <td class="text-center">
-                            @if (@item.Aktif == true)
-                            {
+                            <td>@sirano</td>
+                            <td>@item.UserName</td>
+                            <td>@item.Ad</td>
+                            <td>@item.Soyad</td>
+                            <td>
+                                <a asp-action="Durum" asp-route-id="@item.Id">
+                                    @if (@item.Aktif == true)
+                                    {
+                                        <b>Pasif Yap</b> }
+                                    else
+                                    {
+                                        <b>Aktif Yap</b>}
+                                </a>
+                            </td>
+                        </tr>
 
-                                <input class="form-check-input" type="checkbox" value="" id="aktifkullanici" onchange="removeItem(@item.Id)" checked />
-
-                            }
-                            else
-                            {
-                                <input class="form-check-input" type="checkbox" value="" id="pasifkullanici" onchange="removeItem(@item.Id)"/>
-
-                            }
-                        </td>
-                    </tr>                        
                     }
+
                 </tbody>
             </table>
         </div>
