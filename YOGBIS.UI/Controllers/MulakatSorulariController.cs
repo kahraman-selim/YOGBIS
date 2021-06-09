@@ -33,10 +33,9 @@ namespace YOGBIS.UI.Controllers
         public IActionResult MulakatSoruEkle()
         {
             return View();
-        }
-        
+        }        
         [HttpPost]
-        public ActionResult MulakatSoruEkle(MulakatSorulariVM model)
+        public IActionResult MulakatSoruEkle(MulakatSorulariVM model)
         {
             #region Ekleme ve Güncelleme Örneği
             //if (model.MulakatSorulariId>0)
@@ -77,7 +76,7 @@ namespace YOGBIS.UI.Controllers
         }
         
         [HttpGet]
-        public ActionResult MulakatSoruGuncelle(int id)
+        public IActionResult MulakatSoruGuncelle(int id)
         {
             if (id < 0)
                 return View();
@@ -89,7 +88,7 @@ namespace YOGBIS.UI.Controllers
         
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult MulakatSoruGuncelle(MulakatSorulariVM model)
+        public IActionResult MulakatSoruGuncelle(MulakatSorulariVM model)
         {
             if (ModelState.IsValid)
             {
@@ -105,23 +104,50 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
+
         
         [HttpDelete]
-        public IActionResult MulakatSoruSil(MulakatSorulariVM model)
+        public IActionResult MulakatSoruSil(int id, MulakatSorulariVM model)
         {
-            if (ModelState.IsValid)
+            if (id < 0)
+                return RedirectToAction("Index", "MulakatSorulari");
+            var data = _mulakatSorulariBE.GetAllMulakatSorulari(id);
+            if (data.IsSuccess)
             {
-                var data = _mulakatSorulariBE.MulakatSorusuSil(model);
-                if (data.IsSuccess)
+                if (ModelState.IsValid)
                 {
-                    return RedirectToAction("Index");
+                    var datasil = _mulakatSorulariBE.MulakatSorusuSil(model);
+                    if (datasil.IsSuccess)
+                    {
+                        return RedirectToAction("Index","MulakatSorulari");
+                    }
+                    return View(model);
                 }
-                return View(model);
+                else
+                {
+                    return View(model);
+                }
             }
-            else
-            {
-                return View(model); 
-            }
+
+            return RedirectToAction("Index", "MulakatSorulari");
         }
+
+        //[HttpDelete]
+        //public IActionResult MulakatSoruSil(MulakatSorulariVM model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var data = _mulakatSorulariBE.MulakatSorusuSil(model);
+        //        if (data.IsSuccess)
+        //        {
+        //            return RedirectToAction("Index");
+        //        }
+        //        return View(model);
+        //    }
+        //    else
+        //    {
+        //        return View(model); 
+        //    }
+        //}
     }
 }

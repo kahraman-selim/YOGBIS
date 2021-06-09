@@ -49,9 +49,16 @@
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a class="btn btn-sm btn-danger" title="Sil" data-toggle="modal" data-target="#logoutModal" id="silinecekkayit" onclick="removeItem(@item.MulakatSorulariId)"  data-id="@item.MulakatSorulariId">
-                                    <i class="fas fa-trash text-white"></i>
-                                </a>
+                                @*<a class="btn btn-sm btn-danger" title="Sil" data-toggle="modal" data-target="#logoutModal" id="silinecekkayit" onclick="removeItem(@item.MulakatSorulariId)" data-id="@item.MulakatSorulariId">
+            <i class="fas fa-trash text-white"></i>
+        </a>*@
+                                @*<a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="silinecekkayit" data-id="@item.MulakatSorulariId">
+            <i class="fas fa-trash text-white"></i>
+        </a>*@
+                                <a class="btn btn-sm btn-danger" title="Sil" asp-action="MulakatSoruSil" asp-route-id="@item.MulakatSorulariId">
+            <i class="fas fa-trash text-white"></i>
+        </a>
+                                
                             </td>
                         </tr>
                     }
@@ -61,7 +68,8 @@
     </div>
 </div>
 <!-- Delete Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- #region name -->
+@*<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -77,17 +85,28 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
+<!-- #endregion -->
 @section Scripts{
     <script type="text/javascript">
-        $("#btnSil").click(function removeItem(rovId) {
-            //$.ajax({
-            //    type: "DELETE",
-            //    url: "MulakatSoruSil/" + $(this).data("id"),
-            //    success: onDeleteSuccess
-            //});
-            window.alert($("#silinecekkayit").data("id"));
-            location.reload();
+        $(function () {
+            $("#myTable").on("click", ".btnSoruSil", function () {
+                var btn = $(this);
+                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                    if (result) {
+
+                        var id = btn.data("id");
+                        
+                        $.ajax({
+                            type: "DELETE",
+                            url: "MulakatSorulari/MulakatSoruSil/" + id,
+                            success: function () {
+                                btn.parent().parent().remove();
+                            }
+                        });
+                    }
+                })
+            });
         });
     </script>
 }
