@@ -4,20 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize(Roles = ResultConstant.Admin_Role)]
     public class DownloadPersonalDataModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<Kullanici> _userManager;
         private readonly ILogger<DownloadPersonalDataModel> _logger;
 
         public DownloadPersonalDataModel(
-            UserManager<IdentityUser> userManager,
+            UserManager<Kullanici> userManager,
             ILogger<DownloadPersonalDataModel> logger)
         {
             _userManager = userManager;

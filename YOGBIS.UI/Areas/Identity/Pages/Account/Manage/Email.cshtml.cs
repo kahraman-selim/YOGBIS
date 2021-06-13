@@ -11,9 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using YOGBIS.Data.DbModels;
+using Microsoft.AspNetCore.Authorization;
+using YOGBIS.Common.ConstantsModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize(Roles = ResultConstant.Admin_Role)]
     public partial class EmailModel : PageModel
     {
         private readonly UserManager<Kullanici> _userManager;

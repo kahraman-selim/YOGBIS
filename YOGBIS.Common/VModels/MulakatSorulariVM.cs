@@ -10,14 +10,26 @@ namespace YOGBIS.Common.VModels
     {
         [Key]
         public int MulakatSorulariId { get; set; }
-        [Required(ErrorMessage = "Soru Sıra Numarası Zorunlu Alandır...")]
+
+        [Range(0, int.MaxValue, ErrorMessage = "Girilen değer bir sayı değil !")]
+        [Required(ErrorMessage = "Soru Sıra Numarası yazınız...")]
         public int SoruSiraNo { get; set; }
-        [Required(ErrorMessage = "Soru Numarası Zorunlu Alandır...")]
+
+        [Range(0, int.MaxValue, ErrorMessage = "Girilen değer bir sayı değil !")]
+        [Required(ErrorMessage = "Soru Numarası yazınız...")]
         public int SoruNo { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "Girilen değer bir sayı değil !")]
+        [Required(ErrorMessage = "Kategori Numarasını yazınız...")]
         public int SoruKategoriId { get; set; }
+
+        [Required(ErrorMessage = "Kategori Adını yazınız...")]
         public string SoruKategoriAdi { get; set; }
+        [Required(ErrorMessage = "Soru Derecesini seçiniz...")]
         public string Derecesi { get; set; }
+        [Required(ErrorMessage = "Soruyu yazınız...")]
         public string Soru { get; set; }
+        [Required(ErrorMessage = "Cevabı yazınız...")]
         public string Cevap { get; set; }
         public int MulakatId { get; set; }
         public Mulakatlar Mulakatlar { get; set; }

@@ -1,22 +1,26 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize(Roles = ResultConstant.Admin_Role)]
     public class DeletePersonalDataModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<Kullanici> _userManager;
+        private readonly SignInManager<Kullanici> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
         public DeletePersonalDataModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<Kullanici> userManager,
+            SignInManager<Kullanici> signInManager,
             ILogger<DeletePersonalDataModel> logger)
         {
             _userManager = userManager;

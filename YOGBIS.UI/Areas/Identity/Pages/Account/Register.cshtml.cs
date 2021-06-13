@@ -18,7 +18,8 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    //[AllowAnonymous]
+    [Authorize (Roles = ResultConstant.Admin_Role)]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<Kullanici> _signInManager;
@@ -46,13 +47,20 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+
+            [Required(ErrorMessage ="Kullanıcı Adı zorunlu bir alandır...")]
+            public string Ad { get; set; }
+
+            [Required(ErrorMessage = "Kullanıcı Soyadı zorunlu bir alandır...")]
+            public string Soyad { get; set; }
+
+            [Required(ErrorMessage = "E-Posta adresi zorunlu bir alandır...")]
+            [EmailAddress(ErrorMessage = "Girilen adres bir E-Posta adresi değil...")]
             [Display(Name = "E-Posta")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Şifrenizi yazmalısınız...")]
+            [StringLength(100, ErrorMessage = " Şifreniz en az {2}, en fazla {1} karakter uzunluğunda olmalıdır.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Şifre")]
             public string Password { get; set; }
@@ -77,8 +85,10 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
             {
                 var user = new Kullanici 
                 { 
+                    Ad=Input.Ad,
+                    Soyad=Input.Soyad.ToUpper(),
                     UserName = Input.Email, 
-                    Email = Input.Email , 
+                    Email = Input.Email, 
                     Aktif=true
                 };
                 

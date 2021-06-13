@@ -4,10 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="card mb-4">
+<div class="card mb-4 mt-2">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
-        Mülakat Sorusu Ekleme
+        <b>Mülakat Sorusu Ekleme</b>
     </div>
     <div class="card-body">
         <form class="form-group m-0" asp-action="MulakatSoruEkle">
@@ -30,9 +30,9 @@
             <label asp-for="Derecesi" class="col-lg-5 h6">Derece</label>
             <div class="col-lg-5">
                 <select asp-for="Derecesi" class="form-control-range form-control font-weight-bold" aria-label="Default select example">
-                    <option selected class="font-weight-bold text-center">Derecesini seçiniz</option>
-                    <option value="Öğretmen">Öğretmen</option>
-                    <option value="Okutman">Okutman</option>
+                    <option asp-for="Derecesi" selected class="font-weight-bold text-center"></option>
+                    <option asp-for="Derecesi" value="Öğretmen">Öğretmen</option>
+                    <option asp-for="Derecesi" value="Okutman">Okutman</option>
                 </select>
             </div>
             <span class="text-danger col-sm-12" asp-validation-for="Derecesi"></span>

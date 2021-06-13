@@ -3,10 +3,9 @@
     ViewData["Title"] = "Mülakat Soruları";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1 class="mt-4">Test Sayfası</h1>
-<ol class="breadcrumb mb-4">
+<ol class="breadcrumb mb-4 mt-2">
     <li>
-        <a asp-controller="MulakatSorulari" asp-action="MulakatSoruEkle" class="btn btn-success btn-circle btn-sm" title="Yeni Kayıt">
+        <a asp-controller="MulakatSorulari" asp-action="MulakatSoruEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
             Yeni Kayıt <i class="fas fa-plus-circle"></i>
         </a>
     </li>
@@ -14,7 +13,7 @@
 <div class="card mb-4">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
-        Mülakat Soruları
+        <b>Mülakat Soruları</b>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -33,33 +32,35 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.SoruSiraNo</td>
+                                <td>@item.SoruNo</td>
+                                <td>@item.Derecesi</td>
+                                <td>@item.SoruKategoriId</td>
+                                <td>@item.SoruKategoriAdi</td>
+                                <td>@item.Soru</td>
+                                <td>@item.Cevap</td>
+                                <td class="text-center">
+                                    <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="MulakatSorulari" asp-action="MulakatSoruGuncelle" asp-route-id="@item.MulakatSorulariId">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="btnSoruSil" data-id="@item.MulakatSorulariId">
+                                            <i class="fas fa-trash text-white"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <td>@item.SoruSiraNo</td>
-                            <td>@item.SoruNo</td>
-                            <td>@item.Derecesi</td>
-                            <td>@item.SoruKategoriId</td>
-                            <td>@item.SoruKategoriAdi</td>
-                            <td>@item.Soru</td>
-                            <td>@item.Cevap</td>
-                            <td class="text-center">
-                                <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="MulakatSorulari" asp-action="MulakatSoruGuncelle" asp-route-id="@item.MulakatSorulariId">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            </td>
-                            <td class="text-center">
-                                @*<a class="btn btn-sm btn-danger" title="Sil" data-toggle="modal" data-target="#logoutModal" id="silinecekkayit" onclick="removeItem(@item.MulakatSorulariId)" data-id="@item.MulakatSorulariId">
-            <i class="fas fa-trash text-white"></i>
-        </a>*@
-                                @*<a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="silinecekkayit" data-id="@item.MulakatSorulariId">
-            <i class="fas fa-trash text-white"></i>
-        </a>*@
-                                <a class="btn btn-sm btn-danger" title="Sil" asp-action="MulakatSoruSil" asp-route-id="@item.MulakatSorulariId">
-            <i class="fas fa-trash text-white"></i>
-        </a>
-                                
-                            </td>
+                            <td>Data Bulunamadı!</td>
                         </tr>
                     }
                 </tbody>
@@ -67,46 +68,30 @@
         </div>
     </div>
 </div>
-<!-- Delete Modal-->
-<!-- #region name -->
-@*<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Silmek istediğinize emin misiniz?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">İşlemi onaylarsanız ilgili kayıt tamamen silinecek !</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Vazgeç</button>
-                <button class="btn btn-primary" type="submit" data-dismiss="modal" id="btnSil">Onayla</button>
-            </div>
-        </div>
-    </div>
-</div>*@
-<!-- #endregion -->
-@section Scripts{
-    <script type="text/javascript">
-        $(function () {
-            $("#myTable").on("click", ".btnSoruSil", function () {
-                var btn = $(this);
-                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
-                    if (result) {
 
-                        var id = btn.data("id");
-                        
-                        $.ajax({
-                            type: "DELETE",
-                            url: "MulakatSorulari/MulakatSoruSil/" + id,
-                            success: function () {
-                                btn.parent().parent().remove();
-                            }
-                        });
-                    }
-                })
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    
+<script type="text/javascript">
+
+    $(function () {
+        $("#myTable").on("click", ".btnSoruSil", function () {
+            var btn = $(this);
+            bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                if (result) {
+                    var id = btn.data("id");                    
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/MulakatSorulari/MulakatSoruSil/" + id,
+                        success: function () {
+                            btn.parent().parent().remove();
+                            location.reload();
+                        }
+                    });
+                }
             });
         });
-    </script>
+    });
+</script>
 }

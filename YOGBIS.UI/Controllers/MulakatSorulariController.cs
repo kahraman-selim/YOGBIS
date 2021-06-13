@@ -107,47 +107,18 @@ namespace YOGBIS.UI.Controllers
 
         
         [HttpDelete]
-        public IActionResult MulakatSoruSil(int id, MulakatSorulariVM model)
+        public IActionResult MulakatSoruSil(int id)
         {
             if (id < 0)
-                return RedirectToAction("Index", "MulakatSorulari");
-            var data = _mulakatSorulariBE.GetAllMulakatSorulari(id);
+                return Json(new {success = false, message = "Silmek için Kayıt Seçiniz" });
+
+            var data = _mulakatSorulariBE.MulakatSorusuSil(id);
             if (data.IsSuccess)
-            {
-                if (ModelState.IsValid)
-                {
-                    var datasil = _mulakatSorulariBE.MulakatSorusuSil(model);
-                    if (datasil.IsSuccess)
-                    {
-                        return RedirectToAction("Index","MulakatSorulari");
-                    }
-                    return View(model);
-                }
-                else
-                {
-                    return View(model);
-                }
-            }
+                return Json(new { success = data.IsSuccess, message = data.Message });
+            else
+                return Json(new { success = data.IsSuccess, message = data.Message });
 
-            return RedirectToAction("Index", "MulakatSorulari");
         }
-
-        //[HttpDelete]
-        //public IActionResult MulakatSoruSil(MulakatSorulariVM model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var data = _mulakatSorulariBE.MulakatSorusuSil(model);
-        //        if (data.IsSuccess)
-        //        {
-        //            return RedirectToAction("Index");
-        //        }
-        //        return View(model);
-        //    }
-        //    else
-        //    {
-        //        return View(model); 
-        //    }
-        //}
+  
     }
 }

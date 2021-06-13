@@ -10,6 +10,8 @@ namespace YOGBIS.Common.ConstantsModels
         public const string RecordNotFound = "Kayıt bulunamadı !";
         public const string RecordCreateSuccess = "Kayıt işlemi başaralı";
         public const string RecordCreateNotSuccess = "Kayıt işlemi yapılamadı !";
+        public const string RecordRemoveNotSuccessfully = "Silme Gerçekleştirirken Hata Oluştu";
+        public const string RecordRemoveSuccessfully = "Silme Gerçekleştirildi";
 
         public const string Admin_Role = "Administrator";
         public const string Kullanici_Role = "Kullanici";

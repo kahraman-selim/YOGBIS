@@ -116,27 +116,21 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
 
-        public Result<MulakatSorulariVM> MulakatSorusuSil(MulakatSorulariVM model)
+        #region MulakatSoruSil
+        public Result<bool> MulakatSorusuSil(int id)
         {
-            if (model != null)
+            var data = _unitOfWork.mulakatSorulariRepository.Get(id);
+            if (data!=null)
             {
-                try
-                {
-                    var mulakatSoru = _mapper.Map<MulakatSorulariVM, MulakatSorulari>(model);
-                    _unitOfWork.mulakatSorulariRepository.Remove(mulakatSoru);
-                    _unitOfWork.Save();
-                    return new Result<MulakatSorulariVM>(true, "Kayıt silindi !");
-                }
-                catch (Exception ex)
-                {
-
-                    return new Result<MulakatSorulariVM>(false, "İşlem esnasında bir hata oluştu : " + " " + ex.Message.ToString());
-                }
+                _unitOfWork.mulakatSorulariRepository.Remove(data);
+                _unitOfWork.Save();
+                return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
             }
             else
             {
-                return new Result<MulakatSorulariVM>(false, "Boş veri olamaz");
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
-        }
+        } 
+        #endregion
     }
 }

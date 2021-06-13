@@ -11,10 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using YOGBIS.Data.DbModels;
+using YOGBIS.Common.ConstantsModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    //[AllowAnonymous]
+    [Authorize(Roles = ResultConstant.Admin_Role)]
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<Kullanici> _userManager;

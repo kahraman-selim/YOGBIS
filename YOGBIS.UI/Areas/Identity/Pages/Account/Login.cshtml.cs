@@ -51,7 +51,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
         {
             [Required(ErrorMessage = "E-Posta alanı boş geçilemez !")]
             [Display(Name = "E-Posta")]
-            [EmailAddress]            
+            [EmailAddress(ErrorMessage="Geçersiz E-posta adresi !")]            
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Şifrenizi yazmalısınız !")]
@@ -86,19 +86,17 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    var user = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower());
 
-                    if (user.Aktif == false)
-                    {
-                        ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
-                        return Page();
-                    }
-                    else
+                var user = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower() && u.Aktif == true);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
+                    return Page();
+                }
+                else
+                {
+                    var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                    if (result.Succeeded)
                     {
                         var userInfo = new SessionContext()
                         {
@@ -116,23 +114,28 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
 
                         _logger.LogInformation("User logged in.");
                         return LocalRedirect(returnUrl);
+
+                    }
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+
+                    if (result.RequiresTwoFactor)
+                    {
+                        return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    }
+                    if (result.IsLockedOut)
+                    {
+                        _logger.LogWarning("User account locked out.");
+                        return RedirectToPage("./Lockout");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
+                        return Page();
                     }
 
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
-                    return Page();
-                }
+
             }
 
             // If we got this far, something failed, redisplay form

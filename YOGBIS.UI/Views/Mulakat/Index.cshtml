@@ -5,7 +5,7 @@
 }
 
 
-<div class="row">
+<div class="row mt-4">
     <div class="col-lg-2">
         <div class="card shadow-lg mb-1" style="height:100px">
             <h4 class="card-header text-center text-danger small">GEÇEN SÜRE</h4>
@@ -30,9 +30,9 @@
         @*<form class="form-group asp-action="Index"">*@
         <div class="row col-lg-12 mb-2">
             <select class="form-control-range form-control font-weight-bold" aria-label="Default select example">
-                <option selected class="font-weight-bold text-center" id="derece">Seçim yapınız</option>
-                <option value="1">Öğretmen</option>
-                <option value="2">Okutman</option>
+                <option selected class="font-weight-bold text-center" id="derece" title="Seçim yapınız">Seçim yapınız</option>
+                <option value="1" id="derece" title="Öğretmen">Öğretmen</option>
+                <option value="2" id="derece" title="Okutman">Okutman</option>
             </select>
         </div>
         <div class="row input-group mb-2 col-lg-12">
@@ -95,7 +95,7 @@
 
         function baslat() {
 
-            if (document.getElementById("derece").innerHTML = "Seçim yapınız") {
+            if (document.getElementById("derece").title = "Seçim yapınız") {
                 $('#logoutModal').modal('show');
                 /*location.reload();*/
             }

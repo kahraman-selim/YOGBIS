@@ -4,10 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="card mb-4">
+<div class="card mt-2 mb-4">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
-        Kullanıcılar
+        <b>Kullanıcılar</b>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -24,25 +24,30 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        var sirano = Convert.ToInt32(item.Aktif);
-                        //sirano++;
-                        <tr>
+                        int sirano = 0;
+                        sirano++;
+                        if (item.UserName!="selim.kahraman@meb.gov.tr")
+                        {
+                            <tr>
 
-                            <td>@sirano</td>
-                            <td>@item.UserName</td>
-                            <td>@item.Ad</td>
-                            <td>@item.Soyad</td>
-                            <td>
-                                <a asp-action="Durum" asp-route-id="@item.Id">
-                                    @if (@item.Aktif == true)
-                                    {
-                                        <b>Pasif Yap</b> }
-                                    else
-                                    {
-                                        <b>Aktif Yap</b>}
-                                </a>
-                            </td>
-                        </tr>
+                                <td>@sirano</td>
+                                <td>@item.UserName</td>
+                                <td>@item.Ad</td>
+                                <td>@item.Soyad</td>
+                                <td>
+                                    <a asp-action="Durum" asp-route-id="@item.Id">
+                                        @if (@item.Aktif == true)
+                                        {
+                                            <b>Aktif</b>
+                                        }
+                                        else
+                                        {
+                                            <b class="text-danger">Pasif</b>
+                                        }
+                                    </a>
+                                </td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>
