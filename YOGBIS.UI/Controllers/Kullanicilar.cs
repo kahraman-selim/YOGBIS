@@ -36,14 +36,6 @@ namespace YOGBIS.UI.Controllers
                 return View(result);
             }
             return View();
-            //if (id < 0)
-            //    return View();
-            //var data = _mulakatBE.GetAllMulakatSorulari(id);
-            //if (data.IsSuccess)
-            //    return View(data.Data);
-            //return View();
-
-            //return View();
         }
 
         [HttpGet]

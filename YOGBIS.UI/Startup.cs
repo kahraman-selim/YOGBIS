@@ -61,7 +61,14 @@ namespace YOGBIS.UI
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
-
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+                opt=> {
+                    opt.Cookie.HttpOnly = true;
+                    opt.Cookie.Name = "YOGBISCookies";
+                    opt.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
+                    opt.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
+                    opt.ExpireTimeSpan = TimeSpan.FromDays(5);
+                });
             services.ConfigureApplicationCookie(options =>
             {
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";

@@ -29,17 +29,31 @@ namespace YOGBIS.BusinessEngine.Implementaion
             return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, mulakatSorulari);
         }
 
-        public Result<MulakatSorulariVM> GetAllMulakatSorulari(int id)
+        public Result<List<MulakatSorulariVM>> GetAllMulakatSorulariById(int id, string derece)
         {
-            var data = _unitOfWork.mulakatSorulariRepository.Get(id);
+            var data = _unitOfWork.mulakatSorulariRepository.GetAll(k => k.SoruSiraNo == id && k.Derecesi == derece).ToList();
             if (data != null)
             {
-                var mulakatSoru = _mapper.Map<MulakatSorulari, MulakatSorulariVM>(data);
-                return new Result<MulakatSorulariVM>(true, ResultConstant.RecordFound, mulakatSoru);
+                List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
+                foreach (var item in data)
+                {
+                    returnData.Add(new MulakatSorulariVM()
+                    {
+                        MulakatSorulariId=item.MulakatSorulariId,
+                        SoruSiraNo=item.SoruSiraNo,
+                        SoruNo=item.SoruNo,
+                        SoruKategoriId=item.SoruKategoriId,
+                        SoruKategoriAdi=item.SoruKategoriAdi,
+                        Derecesi=item.Derecesi,
+                        Soru=item.Soru,
+                        Cevap=item.Cevap
+                    });
+                }
+                return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
             }
             else
             {
-                return new Result<MulakatSorulariVM>(false, ResultConstant.RecordNotFound);
+                return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
             }
         }
 

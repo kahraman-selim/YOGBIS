@@ -13,7 +13,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Result<MulakatSorulariVM> GetAllMulakatSorulari(int id);
+        Result<List<MulakatSorulariVM>> GetAllMulakatSorulariById(int id,string derece);
 
     }
 }

@@ -18,7 +18,7 @@
                         <th>Kullanıcı Adı</th>
                         <th>Ad</th>
                         <th>Soyad</th>
-                        <th>Aktif</th>
+                        <th>Durum</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,18 +54,8 @@
         </div>
     </div>
 </div>
-@section Scripts{
-    <script type="text/javascript">
-        $(".form-check-input").change(function removeItem(rovId) {
-            //$.ajax({
-            //    type: "DELETE",
-            //    url: "MulakatSoruSil/" + $(this).data("id"),
-            //    success: onDeleteSuccess
-            //});
-            window.alert($(this).data("id"));
-            //location.reload();
-        });
-    </script>
+@section Scripts{    
+    <partial name="_ValidationScriptsPartial" />
 }
 
 

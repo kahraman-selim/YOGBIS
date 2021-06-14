@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
@@ -23,21 +26,20 @@ namespace YOGBIS.UI.Controllers
 
         public IActionResult Index()
         {
-            var data = _mulakatBE.GetAllMulakatSorulari();
-            if (data.IsSuccess)
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Index(int id, string derece)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            var sorugetirmodel = _mulakatBE.GetAllMulakatSorulariById(id, derece);
+            if (sorugetirmodel.IsSuccess)
             {
-                var result = data.Data;
-                return View(result);
+                return View(sorugetirmodel);
             }
             return View();
-            //if (id < 0)
-            //    return View();
-            //var data = _mulakatBE.GetAllMulakatSorulari(id);
-            //if (data.IsSuccess)
-            //    return View(data.Data);
-            //return View();
-
-            //return View();
         }
+
     }
 }

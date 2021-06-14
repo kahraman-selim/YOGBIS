@@ -1,6 +1,6 @@
-﻿@*@model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>*@
+﻿@model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "MulakatSorulari";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -19,7 +19,7 @@
         </div>
         <div role="alert" aria-live="assertive" aria-atomic="true" class="toast text-center" data-autohide="false" data-delay="10000">
             <div class="toast-header bg-white text-center text-danger">
-                <strong class="mr-auto text-center">UYARI</strong>
+                <strong class="mr-auto">UYARI</strong>
             </div>
             <div class="toast-body bg-white text-danger">
                 Mülakat için ayrılan süreyi geçtiniz !
@@ -28,45 +28,54 @@
     </div>
     <div class="col-lg-10">
         @*<form class="form-group" asp-action="Index">*@
-        <div class="row col-lg-12 mb-2">
-            <select class="form-control-range form-control font-weight-bold" id="derece" aria-label="Default select example">
-                <option value="0" selected class="font-weight-bold text-center" id="secim" title="Seçim yapınız">Seçim yapınız</option>
-                <option value="1" id="ogretmen" title="Öğretmen">Öğretmen</option>
-                <option value="2" id="okutman" title="Okutman">Okutman</option>
-            </select>
-        </div>
-        <div class="row input-group mb-2 col-lg-12">
-            <input type="number" class="form-control font-weight-bold text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
-                   placeholder="Soru Numarasını Giriniz" id="soruno">
-        </div>
-        <div class="row col-lg-12 mb-2">
-            <input type="submit" value="Mülakatı Başlat" class="btn btn-primary col-lg-12" id="baslat" />
-        </div>
-        <div class="row col-lg-12 mb-2">
-            @*@foreach (var item in Model)
+            <div class="row col-lg-12 mb-2">
+                <select class="form-control-range form-control font-weight-bold" id="derece" aria-label="Default select example">
+                    <option value="0" selected class="font-weight-bold text-center" id="secim" title="Seçim yapınız">Seçim yapınız</option>
+                    <option value="1" id="ogretmen" title="Öğretmen">Öğretmen</option>
+                    <option value="2" id="okutman" title="Okutman">Okutman</option>
+                </select>
+            </div>
+            <div class="row input-group mb-2 col-lg-12">
+                <input type="number" class="form-control font-weight-bold text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                       placeholder="Soru Numarasını Giriniz" id="soruno">
+            </div>
+            <div class="row col-lg-12 mb-2">
+                <input type="submit" value="Mülakatı Başlat" class="btn btn-primary col-lg-12" id="baslat" />
+            </div>
+            <div class="row col-lg-12 mb-2">
+                @if (Model != null)
                 {
-                    <div class="col-lg-4">
-                        <div class="card shadow-lg mb-1" style="height:160px">
-                            <h4 class="card-header text-center text-info">Kategori</h4>
-                            <div class="card-body">
-                                <p class="card-text">@item.SoruKategoriAdi</p>
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-lg-4">
+                            <div class="card shadow-lg mb-1" style="height:160px">
+                                <h4 class="card-header text-center text-info">Kategori</h4>
+                                <div class="card-body">
+                                    <p class="card-text">@item.SoruKategoriAdi</p>
+                                </div>
+                            </div>
+                            <div class="card shadow-lg mb-1" style="height:300px">
+                                <h4 class="card-header text-center text-danger">Soru</h4>
+                                <div class="card-body">
+                                    <p class="card-text">@item.Soru</p>
+                                </div>
+                            </div>
+                            <div class="card shadow-lg mb-1" style="height:300px">
+                                <h4 class="card-header text-center text-primary">Cevap</h4>
+                                <div class="card-body">
+                                    <p class="card-text">@item.Cevap</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="card shadow-lg mb-1" style="height:300px">
-                            <h4 class="card-header text-center text-danger">Soru</h4>
-                            <div class="card-body">
-                                <p class="card-text">@item.Soru</p>
-                            </div>
-                        </div>
-                        <div class="card shadow-lg mb-1" style="height:300px">
-                            <h4 class="card-header text-center text-primary">Cevap</h4>
-                            <div class="card-body">
-                                <p class="card-text">@item.Cevap</p>
-                            </div>
-                        </div>
+                    }
+                }
+                else
+                {
+                    <div>
+                        <div>Kayıt bulunamadı!</div>
                     </div>
-                }*@
-        </div>
+                }
+            </div>
         @*</form>*@
     </div>
 </div>
@@ -95,20 +104,18 @@
 
     <script type="text/javascript">
 
-        //$("#derece").change(function () {
+        $("#derece").change(function () {
 
+            document.getElementById("soruno").focus();
+            var soru = $("#soruno").val();
+            if (parseInt(soru) > 0) {
 
-        //        document.getElementById("soruno").focus();
-        //        var soru = $("#soruno").val();
-        //        if (parseInt(soru) > 0) {
+                document.getElementById("soruno").innerHTML = "0"
+            }
+            else {
 
-        //            document.getElementById("soruno").text = ""
-        //        }
-        //        else {
-
-        //        }           
-
-        //});
+            }
+        });
 
         $("#baslat").click(function () {
 
@@ -130,31 +137,29 @@
                 }
                 else {
 
-                    //$.ajax({
-                    //    type: "GET",
-                    //    url: "/Mulakat/MulakatSoruGetir/" + soruno & selectedText,
-                    //});
+                    $.ajax({
+                        type: "GET",
+                        url: "/Mulakat/MulakatSoruGetir/" + soruno,
+                    });
 
-                    //////////////////////sayaç için başlangıç//////////////
-
-                    var myVar = setInterval(myTimer, 1000);
+                    var saniye = 0;
+                    var dakika = 0;
+                    var sayac = 0;
                     document.getElementById("saniye").innerHTML = "00";
                     document.getElementById("dakika").innerHTML = "00";
 
-                    $('.toast').toast('hide')
+                    if (sayac = 0) {
 
-                    //if (sayac > 0) {
+                        location.reload();
+                        clearInterval(interval);
+                        /*alert(sayac);*/
+                    }
+                    else {
 
-                    function myTimer() {
+                        $('.toast').toast('hide')
 
-                           // clearInterval(myVar);
-                            var saniye = 0;
-                            var dakika = 0;
-                            var sayac = 0;
-                        }
-                    //}
-                   // else {
-                        function myTimer() {
+
+                        const interval = setInterval(() => {
 
                             saniye = saniye + 1;
                             sayac = sayac + 1;
@@ -185,25 +190,29 @@
                             //}
                             //else {
                             //    document.getElementById("sayac").hidden = false;
-                            //}                       
+                            //}
 
-                        }
-                   // }
+                        }, 1000);
+                    }
+
                 }
             }
+
         });
+
+
 
         function kapat() {
             $('#ModalUyari').modal('hide');
 
-            var deger = $("#modaltext").find("option:selected").text();
-            if (deger = "Derece seçiniz !") {
+            if (document.getElementById("modaltext").innerHTML = "Derece seçiniz !") {
                 document.getElementById("derece").focus();
             }
-            //var deger1 = $("#modaltext").find("option:selected").text();
-            //if (deger1 = "Soru numarası yazınız !") {
-            //    document.getElementById("soruno").focus();
-            //}
+            if (document.getElementById("modaltext").innerHTML = "Soru numarası yazınız !") {
+                document.getElementById("soruno").focus();
+            }
         };
     </script>
 }
+
+
