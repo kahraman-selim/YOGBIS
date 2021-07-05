@@ -25,5 +25,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<MulakatSorulariVM> MulakatSorusuGuncelle(MulakatSorulariVM model);
         
         Result<bool> MulakatSorusuSil(int id);
+
+        Result<List<MulakatSorulariVM>> GetAllMulakatSorulariById(int id, string derece);
     }
 }

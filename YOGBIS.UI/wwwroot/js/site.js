@@ -20,6 +20,7 @@ function myFunction() {
 
 $(document).ready(function () {
     $('#myTable').DataTable({
+         fixedHeader: true,
         "responsive": true,
         "dom": '<"html5buttons"B>lTfgitp',
         "language": {

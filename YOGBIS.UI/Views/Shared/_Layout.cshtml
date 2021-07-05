@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>@ViewData["Title"] - YOGBIS</title>
+    <title>Yükseköğretim ve Yurt Dışı Eğitim Genel Müdürlüğü - @ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/sb-admin-2.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/styles.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />    
@@ -21,13 +21,13 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index"><h4>YOGBIS</h4></a>
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index"><h5>YOGBIS</h5></a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <!-- Navbar-->
             <ul class="navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw" style="color:white"></i></a>
+                    <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw" style="color:white"></i></a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout">
                             <button id="logout" type="submit" class="btn dropdown-item">Güvenli Çıkış</button>                                                     
@@ -56,7 +56,7 @@
                             @if (User.IsInRole(ResultConstant.Admin_Role))
                             {
                                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseYonetim" aria-expanded="false" aria-controls="collapseYonetim">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                    <div class="sb-nav-link-icon"><i class="fas fa-user-cog"></i></div>
                                     Yönetim Modülü
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
@@ -77,15 +77,15 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     @if (User.IsInRole(ResultConstant.Admin_Role))
                                     {
-                                        @*<a class="nav-link" href="#">Kategoriler</a>
-            <a class="nav-link" href="#">Soru Bankası</a>*@
+                                        <a class="nav-link" href="#">Kategoriler</a>
+                                        <a class="nav-link" href="#">Soru Bankası</a>
                                         <a class="nav-link" asp-controller="MulakatSorulari" asp-action="Index">Mülakat Soruları</a>
-                                        @*<a class="nav-link" asp-controller="Mulakat" asp-action="Index">Mülakatı Başlat</a>*@
+                                        <a class="nav-link" asp-controller="Mulakat" asp-action="Index">Mülakatı Başlat</a>
                                     }
                                     else
                                     {
-                                        @*<a class="nav-link" asp-controller="Mulakat" asp-action="Index">Mülakatı Başlat</a>*@
-                                        <a class="nav-link" asp-controller="MulakatSorulari" asp-action="Index">Mülakat Soruları</a>
+                                        <a class="nav-link" asp-controller="Mulakat" asp-action="Index">Mülakatı Başlat</a>
+                                        @*<a class="nav-link" asp-controller="MulakatSorulari" asp-action="Index">Mülakat Soruları</a>*@
                                     }
 
                                 </nav>

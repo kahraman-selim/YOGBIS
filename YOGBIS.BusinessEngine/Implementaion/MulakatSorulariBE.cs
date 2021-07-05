@@ -24,8 +24,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
         public Result<List<MulakatSorulariVM>> GetAllMulakatSorulari()
         {
-            var data = _unitOfWork.mulakatSorulariRepository.GetAll().ToList();
             //1. Yöntem
+            var data = _unitOfWork.mulakatSorulariRepository.GetAll().ToList();            
+            var mulakatSorulari = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
+            return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, mulakatSorulari);
+
+            #region 2.Yöntem
+            //2. Yöntem
             //if (data != null)
             //{
             //    List<MulakatSorulari> returnData = new List<MulakatSorulari>();
@@ -49,11 +54,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
             //else
             //{
             //    return new Result<List<MulakatSorulari>>(false, ResultConstant.RecordNotFound);
-            //}
-
-            //2. Yöntem
-            var mulakatSorulari = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
-            return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, mulakatSorulari);
+            //} 
+            #endregion
         }
 
         public Result<MulakatSorulariVM> GetAllMulakatSorulari(int id)
@@ -130,7 +132,35 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
-        } 
+        }
         #endregion
+
+        public Result<List<MulakatSorulariVM>> GetAllMulakatSorulariById(int id, string derece)
+        {
+            var data = _unitOfWork.mulakatSorulariRepository.GetAll(k => k.SoruSiraNo == id && k.Derecesi == derece).ToList();
+            if (data != null)
+            {
+                List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
+                foreach (var item in data)
+                {
+                    returnData.Add(new MulakatSorulariVM()
+                    {
+                        MulakatSorulariId = item.MulakatSorulariId,
+                        SoruSiraNo = item.SoruSiraNo,
+                        SoruNo = item.SoruNo,
+                        SoruKategoriId = item.SoruKategoriId,
+                        SoruKategoriAdi = item.SoruKategoriAdi,
+                        Derecesi = item.Derecesi,
+                        Soru = item.Soru,
+                        Cevap = item.Cevap
+                    });
+                }
+                return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
     }
 }

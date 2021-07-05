@@ -17,29 +17,43 @@ namespace YOGBIS.UI.Controllers
     public class MulakatController : Controller
     {
 
-        private readonly IMulakatBE _mulakatBE;
-        public MulakatController(IMulakatBE mulakatBE)
+        private readonly IMulakatSorulariBE _mulakatSorulariBE;
+        public MulakatController(IMulakatSorulariBE mulakatSorulariBE)
         {
-            _mulakatBE = mulakatBE;
+            _mulakatSorulariBE = mulakatSorulariBE;
         }
-
 
         public IActionResult Index()
         {
             return View();
         }
 
-        [HttpGet]
-        public IActionResult Index(int id, string derece)
-        {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            var sorugetirmodel = _mulakatBE.GetAllMulakatSorulariById(id, derece);
-            if (sorugetirmodel.IsSuccess)
-            {
-                return View(sorugetirmodel);
-            }
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult Index(int id, string derece)
+        //{
+        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+        //    var sorugetirmodel = _mulakatBE.GetAllMulakatSorulariById(id, derece);
+        //    if (sorugetirmodel.IsSuccess)
+        //    {
+        //        return View(sorugetirmodel);
+        //    }
+        //    return View();
+        //}
+
+        //[HttpGet]
+        //public IActionResult MulakatSoruGetir(int id,string derece)
+        //{
+        //    #region MyRegion
+        //    var sorugetirmodel = _mulakatSorulariBE.GetAllMulakatSorulariById(id, derece);
+        //    if (sorugetirmodel.IsSuccess)
+        //    {
+        //        return View(sorugetirmodel);
+        //    }
+        //    return View();
+
+        //    #endregion
+
+        //}
 
     }
 }

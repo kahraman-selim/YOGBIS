@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="col-lg-10">
-        @*<form class="form-group" asp-action="Index">*@
+        @*<form class="form-group" asp-action="MulakatSoruGetir">*@
         <div class="row col-lg-12 mb-2">
             <select class="form-control-range form-control font-weight-bold" id="derece" aria-label="Default select example">
                 <option value="0" selected class="font-weight-bold text-center" id="secim" title="Seçim yapınız">Seçim yapınız</option>
@@ -40,32 +40,32 @@
                    placeholder="Soru Numarasını Giriniz" id="soruno">
         </div>
         <div class="row col-lg-12 mb-2">
-            <input type="submit" value="Mülakatı Başlat" class="btn btn-primary col-lg-12" id="baslat" />
+            <input type="submit" value="Mülakatı Başlat" class="btn btn-primary col-lg-12" id="baslat"/>
         </div>
         <div class="row col-lg-12 mb-2">
             @*@foreach (var item in Model)
-                {
-                    <div class="col-lg-4">
-                        <div class="card shadow-lg mb-1" style="height:160px">
-                            <h4 class="card-header text-center text-info">Kategori</h4>
-                            <div class="card-body">
-                                <p class="card-text">@item.SoruKategoriAdi</p>
-                            </div>
-                        </div>
-                        <div class="card shadow-lg mb-1" style="height:300px">
-                            <h4 class="card-header text-center text-danger">Soru</h4>
-                            <div class="card-body">
-                                <p class="card-text">@item.Soru</p>
-                            </div>
-                        </div>
-                        <div class="card shadow-lg mb-1" style="height:300px">
-                            <h4 class="card-header text-center text-primary">Cevap</h4>
-                            <div class="card-body">
-                                <p class="card-text">@item.Cevap</p>
-                            </div>
+            {
+                <div class="col-lg-4">
+                    <div class="card shadow-lg mb-1" style="height:160px">
+                        <h4 class="card-header text-center text-info">Kategori</h4>
+                        <div class="card-body">
+                            <p class="card-text">@item.SoruKategoriAdi</p>
                         </div>
                     </div>
-                }*@
+                    <div class="card shadow-lg mb-1" style="height:300px">
+                        <h4 class="card-header text-center text-danger">Soru</h4>
+                        <div class="card-body">
+                            <p class="card-text">@item.Soru</p>
+                        </div>
+                    </div>
+                    <div class="card shadow-lg mb-1" style="height:300px">
+                        <h4 class="card-header text-center text-primary">Cevap</h4>
+                        <div class="card-body">
+                            <p class="card-text">@item.Cevap</p>
+                        </div>
+                    </div>
+                </div>
+            }*@
         </div>
         @*</form>*@
     </div>
@@ -95,115 +95,128 @@
 
     <script type="text/javascript">
 
-        //$("#derece").change(function () {
+        ////$("#derece").change(function () {
 
 
-        //        document.getElementById("soruno").focus();
-        //        var soru = $("#soruno").val();
-        //        if (parseInt(soru) > 0) {
+        ////        document.getElementById("soruno").focus();
+        ////        var soru = $("#soruno").val();
+        ////        if (parseInt(soru) > 0) {
 
-        //            document.getElementById("soruno").text = ""
+        ////            document.getElementById("soruno").text = ""
+        ////        }
+        ////        else {
+
+        ////        }           
+
+        ////});
+
+        //$("#baslat").click(function () {
+
+        /*var selectedText = $("#derece").find("option:selected").text();*/
+        
+
+        //    if (selectedText.toString() == "Seçim yapınız") {
+
+        //        $('#ModalUyari').modal('show');
+        //        document.getElementById("modaltext").innerHTML = "Derece seçiniz !"
+        //    }
+        //    else {
+
+                        /*var soruno = $("#soruno").val();*/
+        var obj = { selectedText: "Öğretmen", soruno = "5"};
+
+
+        //        if (soruno.toString() == "") {
+
+        //            $('#ModalUyari').modal('show');
+        //            document.getElementById("modaltext").innerHTML = "Soru numarası yazınız !"
         //        }
         //        else {
+        //$("#baslat").click(function () {
+        //    $.ajax({
+        //        type: "GET",
+        //        url: "/Mulakat/MulakatSoruGetir/" + soruno & selectedText,
+        //    });
+        //};
+        var derece = "Öğretmen";
+        var soruno = 5;
+        $('#baslat').click(function () {
 
-        //        }           
+            $.ajax({
+                url: "/Mulakat/MulakatSoruGetir/"+soruno,
+                type: 'GET'                
+            });
+        });
+       
+        //            //////////////////////sayaç için başlangıç//////////////
 
+        //            var myVar = setInterval(myTimer, 1000);
+        //            document.getElementById("saniye").innerHTML = "00";
+        //            document.getElementById("dakika").innerHTML = "00";
+
+        //            $('.toast').toast('hide')
+
+        //            //if (sayac > 0) {
+
+        //            function myTimer() {
+
+        //                   // clearInterval(myVar);
+        //                    var saniye = 0;
+        //                    var dakika = 0;
+        //                    var sayac = 0;
+        //                }
+        //            //}
+        //           // else {
+        //                function myTimer() {
+
+        //                    saniye = saniye + 1;
+        //                    sayac = sayac + 1;
+
+
+        //                    if (saniye < 10) {
+        //                        document.getElementById("saniye").innerHTML = "0" + saniye;
+        //                        document.getElementById("dakika").innerHTML = "00";
+        //                    }
+        //                    else {
+        //                        document.getElementById("saniye").innerHTML = saniye;
+        //                    }
+        //                    if (saniye > 59) {
+        //                        dakika = dakika + 1;
+        //                        document.getElementById("dakika").innerHTML = "0" + dakika;
+        //                        saniye = 0;
+        //                        document.getElementById("saniye").innerHTML = "00";
+        //                    }
+        //                    if (dakika > 0) {
+        //                        document.getElementById("dakika").innerHTML = "0" + dakika;
+        //                    }
+        //                    if (saniye > 5) {
+        //                        $('.toast').toast('show')
+        //                    }
+
+        //                    //if (document.getElementById("sayac").hidden = false) {
+        //                    //    document.getElementById("sayac").hidden = true;
+        //                    //}
+        //                    //else {
+        //                    //    document.getElementById("sayac").hidden = false;
+        //                    //}                       
+
+        //                }
+        //           // }
+        //        }
+        //    }
         //});
 
-        $("#baslat").click(function () {
+        //function kapat() {
+        //    $('#ModalUyari').modal('hide');
 
-            var selectedText = $("#derece").find("option:selected").text();
-
-            if (selectedText.toString() == "Seçim yapınız") {
-
-                $('#ModalUyari').modal('show');
-                document.getElementById("modaltext").innerHTML = "Derece seçiniz !"
-            }
-            else {
-
-                var soruno = $("#soruno").val();
-
-                if (soruno.toString() == "") {
-
-                    $('#ModalUyari').modal('show');
-                    document.getElementById("modaltext").innerHTML = "Soru numarası yazınız !"
-                }
-                else {
-
-                    //$.ajax({
-                    //    type: "GET",
-                    //    url: "/Mulakat/MulakatSoruGetir/" + soruno & selectedText,
-                    //});
-
-                    //////////////////////sayaç için başlangıç//////////////
-
-                    var myVar = setInterval(myTimer, 1000);
-                    document.getElementById("saniye").innerHTML = "00";
-                    document.getElementById("dakika").innerHTML = "00";
-
-                    $('.toast').toast('hide')
-
-                    //if (sayac > 0) {
-
-                    function myTimer() {
-
-                           // clearInterval(myVar);
-                            var saniye = 0;
-                            var dakika = 0;
-                            var sayac = 0;
-                        }
-                    //}
-                   // else {
-                        function myTimer() {
-
-                            saniye = saniye + 1;
-                            sayac = sayac + 1;
-
-
-                            if (saniye < 10) {
-                                document.getElementById("saniye").innerHTML = "0" + saniye;
-                                document.getElementById("dakika").innerHTML = "00";
-                            }
-                            else {
-                                document.getElementById("saniye").innerHTML = saniye;
-                            }
-                            if (saniye > 59) {
-                                dakika = dakika + 1;
-                                document.getElementById("dakika").innerHTML = "0" + dakika;
-                                saniye = 0;
-                                document.getElementById("saniye").innerHTML = "00";
-                            }
-                            if (dakika > 0) {
-                                document.getElementById("dakika").innerHTML = "0" + dakika;
-                            }
-                            if (saniye > 5) {
-                                $('.toast').toast('show')
-                            }
-
-                            //if (document.getElementById("sayac").hidden = false) {
-                            //    document.getElementById("sayac").hidden = true;
-                            //}
-                            //else {
-                            //    document.getElementById("sayac").hidden = false;
-                            //}                       
-
-                        }
-                   // }
-                }
-            }
-        });
-
-        function kapat() {
-            $('#ModalUyari').modal('hide');
-
-            var deger = $("#modaltext").find("option:selected").text();
-            if (deger = "Derece seçiniz !") {
-                document.getElementById("derece").focus();
-            }
-            //var deger1 = $("#modaltext").find("option:selected").text();
-            //if (deger1 = "Soru numarası yazınız !") {
-            //    document.getElementById("soruno").focus();
-            //}
-        };
+        //    var deger = $("#modaltext").find("option:selected").text();
+        //    if (deger = "Derece seçiniz !") {
+        //        document.getElementById("derece").focus();
+        //    }
+        //    //var deger1 = $("#modaltext").find("option:selected").text();
+        //    //if (deger1 = "Soru numarası yazınız !") {
+        //    //    document.getElementById("soruno").focus();
+        //    //}
+        //};
     </script>
 }

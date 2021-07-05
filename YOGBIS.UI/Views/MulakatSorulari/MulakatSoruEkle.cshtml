@@ -1,77 +1,95 @@
 ﻿@model YOGBIS.Common.VModels.MulakatSorulariVM 
 @{
-    ViewData["Title"] = "Mülakat Soru Ekleme";
+    ViewData["Title"] = "Mülakat Sorusu Ekleme";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="card mb-4 mt-2">
-    <div class="card-header">
-        <i class="fas fa-table mr-1"></i>
-        <b>Mülakat Sorusu Ekleme</b>
-    </div>
-    <div class="card-body">
-        <form class="form-group m-0" asp-action="MulakatSoruEkle">
-            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-            <div class="form-group">
-                <label asp-for="SoruSiraNo" class="col-lg-5 h6">Soru Sıra Numarası</label>
-                <div class="col-lg-5">
-                    <input asp-for="SoruSiraNo" type="text" class="form-control col-lg-5" id="CreateTypeInput" placeholder="Soru Sıra No Giriniz">
+<div class="card shadow-lg rounded-lg mt-2">
+                <div class="card-header">
+                    <i class="fas fa-table mr-1"></i>
+                    <b>Mülakat Sorusu Ekleme</b>
                 </div>
-                <span class="text-danger col-sm-12" asp-validation-for="SoruSiraNo"></span>
-            </div>@*<--!SoruSiraNo-->*@
-            <div class="form-group">
-                <label asp-for="SoruNo" class="col-lg-5 h6">Soru Numarası</label>
-                <div class="col-lg-5">
-                    <input asp-for="SoruNo" type="text" class="form-control col-lg-5" id="CreateTypeInput" placeholder="Soru No Giriniz">
+                <div class="card-body">
+                    <form class="form-group m-0" asp-action="MulakatSoruEkle">
+                        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                        <div class="form-row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="SoruSiraNo" class="small mb-1 font-weight-bold">Soru Sıra Numarası</label>
+                                    <input asp-for="SoruSiraNo" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Soru Sıra No Giriniz">
+                                    <span class="text-danger" asp-validation-for="SoruSiraNo"></span>
+                                </div>@*<--!SoruSiraNo-->*@
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="SoruNo" class="small mb-1 font-weight-bold">Soru Numarası</label>
+                                    <input asp-for="SoruNo" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Soru No Giriniz">
+                                    <span class="text-danger" asp-validation-for="SoruNo"></span>
+                                </div>@*<--!SoruNo-->*@
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="Derecesi" class="small mb-1 font-weight-bold">Derece</label>
+                                    <select asp-for="Derecesi" class="form-control-range form-control py-2" aria-label="Default select example">
+                                        <option asp-for="Derecesi" selected class="text-center"></option>
+                                        <option asp-for="Derecesi" value="Öğretmen">Öğretmen</option>
+                                        <option asp-for="Derecesi" value="Okutman">Okutman</option>
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="Derecesi"></span>
+                                </div>@*<--!Derecesi-->*@
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label asp-for="SoruKategoriId" class="small mb-1 font-weight-bold">Kategori No</label>
+                                    <input asp-for="SoruKategoriId" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Kategori Numarasını Giriniz">
+                                    <span class="text-danger" asp-validation-for="SoruKategoriId"></span>
+                                </div>@*<--!KategoriId-->*@
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="SoruKategoriAdi" class="small mb-1 font-weight-bold">Kategori</label>
+                                    <select asp-for="SoruKategoriAdi" class="form-control-range form-control py-2" aria-label="Default select example">
+                                        <option asp-for="SoruKategoriAdi" selected class="text-center"></option>
+                                        <option asp-for="SoruKategoriAdi" value="Türkçe">Türkçe</option>
+                                        <option asp-for="SoruKategoriAdi" value="Tarih">Tarih</option>
+                                        <option asp-for="SoruKategoriAdi" value="Genel">Genel Kültür</option>
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="SoruKategoriAdi"></span>
+                                </div>@*<--!KategoriAdi-->*@
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Soru" class="small mb-1 font-weight-bold">Soru</label>
+                                    <textarea asp-for="Soru" placeholder="Soruyu buraya yazınız..." class="form-control" id="SoruTextArea" rows="5"></textarea>
+                                    <span class="text-danger" asp-validation-for="Soru"></span>
+                                </div>@*<--!Soru-->*@
+                            </div>
+                        @*</div>
+                        <div class="form-row">*@
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Cevap" class="small mb-1 font-weight-bold">Cevap</label>
+                                    <textarea asp-for="Cevap" placeholder="Cevabı buraya yazınız..." class="form-control" id="CevapTextArea" rows="5"></textarea>
+                                    <span class="text-danger" asp-validation-for="Cevap"></span>
+                                </div>@*<--!Cevap-->*@
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <input type="submit" value="Kaydet" class="btn btn-success" />
+                                <a asp-controller="MulakatSorulari" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger">Vazgeç</a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <span class="text-danger col-sm-12" asp-validation-for="SoruNo"></span>
-            </div>@*<--!SoruNo-->*@
-            <div class="form-group">
-            <label asp-for="Derecesi" class="col-lg-5 h6">Derece</label>
-            <div class="col-lg-5">
-                <select asp-for="Derecesi" class="form-control-range form-control font-weight-bold" aria-label="Default select example">
-                    <option asp-for="Derecesi" selected class="font-weight-bold text-center"></option>
-                    <option asp-for="Derecesi" value="Öğretmen">Öğretmen</option>
-                    <option asp-for="Derecesi" value="Okutman">Okutman</option>
-                </select>
             </div>
-            <span class="text-danger col-sm-12" asp-validation-for="Derecesi"></span>
-            </div>@*<--!Derecesi-->*@
-            <div class="form-group">
-                <label asp-for="SoruKategoriId" class="col-lg-5 h6">Kategori No</label>
-                <div class="col-lg-5">
-                    <input asp-for="SoruKategoriId" type="text" class="form-control col-lg-5" id="CreateTypeInput" placeholder="Kategori Numarasını Giriniz">                    
-                </div>
-                <span class="text-danger col-sm-12" asp-validation-for="SoruKategoriId"></span>
-            </div>@*<--!KategoriId-->*@
-            <div class="form-group">
-                <label asp-for="SoruKategoriAdi" class="col-lg-5 h6">Kategori</label>
-                <div class="col-lg-5">                   
-                    <textarea asp-for="SoruKategoriAdi" placeholder="Kategoriyi buraya yazınız..." class="form-control col-sm-12" id="KategoriTextArea" rows="3"></textarea>
-                </div>
-                <span class="text-danger col-sm-12" asp-validation-for="SoruKategoriAdi"></span>
-            </div>@*<--!KategoriAdi-->*@            
-            <div class="form-group">
-                <label asp-for="Soru" class="col-lg-5 h6">Soru</label>
-                <div class="col-lg-5">                   
-                    <textarea asp-for="Soru" placeholder="Soruyu buraya yazınız..." class="form-control col-sm-12" id="SoruTextArea" rows="3"></textarea>
-                </div>
-                <span class="text-danger col-sm-12" asp-validation-for="Soru"></span>
-            </div>@*<--!Soru-->*@
-            <div class="form-group">
-                <label asp-for="Cevap" class="col-lg-5 h6">Cevap</label>
-                <div class="col-lg-5">                    
-                    <textarea asp-for="Cevap" placeholder="Cevabı buraya yazınız..." class="form-control col-sm-12" id="CevapTextArea" rows="3"></textarea>
-                </div>
-                <span class="text-danger col-sm-12" asp-validation-for="Cevap"></span>
-            </div>@*<--!Cevap-->*@
-            <div class="col-lg-5">
-                <input type="submit" value="Kaydet" class="btn btn-success" />
-                <a asp-controller="MulakatSorulari" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger">Vazgeç</a>
-            </div>
-        </form>
-    </div>
-</div>
+
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
