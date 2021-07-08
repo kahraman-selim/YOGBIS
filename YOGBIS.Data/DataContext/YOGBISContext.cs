@@ -19,6 +19,8 @@ namespace YOGBIS.Data.DataContext
         {
             base.OnModelCreating(builder);
 
+            base.OnModelCreating(builder.EnableAutoHistory(null));
+
             builder.Entity<IdentityRole>(entity => entity.Property(m => m.Id).HasMaxLength(127));
             builder.Entity<IdentityRole>(entity => entity.Property(m => m.ConcurrencyStamp).HasColumnType("varchar(256)"));
 
@@ -42,6 +44,7 @@ namespace YOGBIS.Data.DataContext
             });
         }
 
+        #region DbSet
         public DbSet<Kullanici> Kullanicis { get; set; }
         public DbSet<Eyaletler> Eyaletlers { get; set; }
         public DbSet<Kitalar> Kitalars { get; set; }
@@ -52,6 +55,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<MulakatSorulari> MulakatSorularis { get; set; }
         public DbSet<SoruBankasi> SoruBankasis { get; set; }
         public DbSet<SoruBankasiLog> SoruBankasiLogs { get; set; }
-        public DbSet<SoruKategori> SoruKategoris { get; set; }
+        public DbSet<SoruKategori> SoruKategoris { get; set; } 
+        #endregion
     }
 }

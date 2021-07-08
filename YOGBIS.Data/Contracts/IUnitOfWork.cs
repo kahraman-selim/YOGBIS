@@ -18,6 +18,7 @@ namespace YOGBIS.Data.Contracts
          IMulakatlarRepository mulakatlarRepository { get;  }
          IMulakatSorulariRepository mulakatSorulariRepository { get; }  
          IKullaniciRepository kullaniciRepository { get; }
+         IAutoHistoryRepository autoHistoryRepository { get; }
 
         void Save();
     }

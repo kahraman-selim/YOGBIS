@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using YOGBIS.Data.Contracts;
@@ -24,6 +25,7 @@ namespace YOGBIS.Data.Implementaion
             soruBankasiRepository = new SoruBankasiRepository(_ctx);
             soruKategoriRepository = new SoruKategoriRepository(_ctx);
             kullaniciRepository = new KullaniciRepository(_ctx);
+            autoHistoryRepository = new AutoHistoryRepository(_ctx);
         }
 
         public IUlkeGruplariRepository ulkeGruplariRepository { get; private set; }
@@ -38,9 +40,11 @@ namespace YOGBIS.Data.Implementaion
         public IMulakatlarRepository mulakatlarRepository { get; private set; }
         public IMulakatSorulariRepository mulakatSorulariRepository { get; private set; }
         public  IKullaniciRepository kullaniciRepository { get; private set; }
+        public IAutoHistoryRepository autoHistoryRepository { get; private set; }
 
         public void Save()
         {
+            _ctx.EnsureAutoHistory();
             _ctx.SaveChanges();
         }
 
