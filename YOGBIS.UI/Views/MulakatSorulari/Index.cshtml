@@ -3,14 +3,31 @@
     ViewData["Title"] = "Mülakat Soruları";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<ol class="breadcrumb mb-4 mt-2">
+<style>
+    .block {
+        position: fixed;
+        z-index: 2;
+        right: 15px;
+        top: 95px;
+    }
+</style>
+<div class="block">
+    <ol class="breadcrumb mb-4 mt-2 sb-nav-fixed">
+        <li>
+            <a asp-controller="MulakatSorulari" asp-action="MulakatSoruEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
+                Yeni Kayıt <i class="fas fa-plus-circle"></i>
+            </a>
+        </li>
+    </ol>
+</div>
+<ol class="breadcrumb mb-4 mt-2 sb-nav-fixed">
     <li>
         <a asp-controller="MulakatSorulari" asp-action="MulakatSoruEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
             Yeni Kayıt <i class="fas fa-plus-circle"></i>
         </a>
     </li>
 </ol>
-<div class="card mb-4">
+<div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
         <b>Mülakat Soruları</b>
@@ -51,7 +68,7 @@
                                 </td>
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="btnSoruSil" data-id="@item.MulakatSorulariId">
-                                            <i class="fas fa-trash text-white"></i>
+                                        <i class="fas fa-trash text-white"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -72,26 +89,26 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
-    
-<script type="text/javascript">
 
-    $(function () {
-        $("#myTable").on("click", ".btnSoruSil", function () {
-            var btn = $(this);
-            bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
-                if (result) {
-                    var id = btn.data("id");                    
-                    $.ajax({
-                        type: "DELETE",
-                        url: "/MulakatSorulari/MulakatSoruSil/" + id,
-                        success: function () {
-                            btn.parent().parent().remove();
-                            location.reload();
-                        }
-                    });
-                }
+    <script type="text/javascript">
+
+        $(function () {
+            $("#myTable").on("click", ".btnSoruSil", function () {
+                var btn = $(this);
+                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                    if (result) {
+                        var id = btn.data("id");
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/MulakatSorulari/MulakatSoruSil/" + id,
+                            success: function () {
+                                btn.parent().parent().remove();
+                                location.reload();
+                            }
+                        });
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 }

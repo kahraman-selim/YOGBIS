@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\img\Logo - Kopya.png" />
-    <Content Remove="wwwroot\img\Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
