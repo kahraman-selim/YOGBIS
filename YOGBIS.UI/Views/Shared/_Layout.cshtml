@@ -248,10 +248,35 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     @if (User.IsInRole(ResultConstant.Admin_Role))
                                     {
+                                        <a class="nav-link" href="#">Mülakat Oluştur</a>
                                         <a class="nav-link" href="#">Kategoriler</a>
                                         <a class="nav-link" href="#">Soru Bankası</a>
                                         <a class="nav-link" asp-controller="MulakatSorulari" asp-action="Index">Mülakat Soruları</a>
                                         <a class="nav-link" asp-controller="Mulakat" asp-action="Index">Mülakatı Başlat</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="nav-link" asp-controller="Mulakat" asp-action="Index">Mülakatı Başlat</a>
+                                        @*<a class="nav-link" asp-controller="MulakatSorulari" asp-action="Index">Mülakat Soruları</a>*@
+                                    }
+
+                                </nav>
+                            </div>
+                            <!--Takip Modülü-->
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTakip" aria-expanded="false" aria-controls="collapseTakip">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                                Takip Modülü
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseTakip" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    @if (User.IsInRole(ResultConstant.Admin_Role))
+                                    {
+                                        <a class="nav-link" href="#">Temsilcilikler</a>
+                                        <a class="nav-link" href="#">Ülkeler</a>
+                                        <a class="nav-link" href="#">Okullar</a>
+                                        <a class="nav-link" href="#">Öğretmenler</a>
+                                        <a class="nav-link" href="#">Okutmanlar</a>
                                     }
                                     else
                                     {
