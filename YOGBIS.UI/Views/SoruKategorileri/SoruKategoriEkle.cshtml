@@ -1,0 +1,96 @@
+﻿@model YOGBIS.Common.VModels.SoruKategorilerVM
+@{
+    ViewData["Title"] = "Soru Kategorisi Ekleme";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow-lg rounded-lg mt-2">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        <b>Soru Kategorisi Ekleme</b>
+    </div>
+    <div class="card-body">
+        <form class="form-group m-0" asp-action="SoruKategoriEkle">
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+            <div class="form-row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="SoruKategoriId" class="small mb-1 font-weight-bold">Kategori Numarası</label>
+                        <input asp-for="SoruKategoriId" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Kategori No Giriniz">
+                        <span class="text-danger" asp-validation-for="SoruKategoriId"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="SoruKategoriAdi" class="small mb-1 font-weight-bold">Kategori Adı</label>
+                        <input asp-for="SoruKategoriAdi" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Kategori Adını Giriniz">
+                        <span class="text-danger" asp-validation-for="SoruKategoriAdi"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="SoruKategoriDerece" class="small mb-1 font-weight-bold">Derece</label>
+                        <select asp-for="SoruKategoriDerece" class="form-control-range form-control py-2" aria-label="Default select example">
+                            <option asp-for="Derecesi" selected class="text-center"></option>
+                            <option asp-for="Derecesi" value="Öğretmen">Öğretmen</option>
+                            <option asp-for="Derecesi" value="Okutman">Okutman</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="SoruKategoriDerece"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label asp-for="SoruKategoriId" class="small mb-1 font-weight-bold">Kategori No</label>
+                        <input asp-for="SoruKategoriId" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Kategori Numarasını Giriniz">
+                        <span class="text-danger" asp-validation-for="SoruKategoriId"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="SoruKategoriAdi" class="small mb-1 font-weight-bold">Kategori</label>
+                        <select asp-for="SoruKategoriAdi" class="form-control-range form-control py-2" aria-label="Default select example">
+                            <option asp-for="SoruKategoriAdi" selected class="text-center"></option>
+                            <option asp-for="SoruKategoriAdi" value="Türkçe">Türkçe</option>
+                            <option asp-for="SoruKategoriAdi" value="Tarih">Tarih</option>
+                            <option asp-for="SoruKategoriAdi" value="Genel">Genel Kültür</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="SoruKategoriAdi"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="SoruKategoriKullanimi" class="small mb-1 font-weight-bold">Soru</label>
+                        <textarea asp-for="SoruKategoriKullanimi" placeholder="Kategori kullanımını yazınız..." class="form-control" id="SoruTextArea" rows="5"></textarea>
+                        <span class="text-danger" asp-validation-for="SoruKategoriKullanimi"></span>
+                    </div>
+                </div>
+                @*</div>
+                    <div class="form-row">*@
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="SoruKategoriPuan" class="small mb-1 font-weight-bold">Kategori Puanı</label>
+                        <textarea asp-for="SoruKategoriPuan" placeholder="Puanı yazınız..." class="form-control" id="CevapTextArea" rows="5"></textarea>
+                        <span class="text-danger" asp-validation-for="SoruKategoriPuan"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <input type="submit" value="Kaydet" class="btn btn-success" />
+                    <a asp-controller="SoruKategorileri" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger">Vazgeç</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

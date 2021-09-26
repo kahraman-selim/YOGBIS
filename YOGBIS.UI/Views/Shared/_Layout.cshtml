@@ -1,15 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
+@using YOGBIS.Common.SessionOperations
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Yükseköğretim ve Yurt Dışı Eğitim Genel Müdürlüğü - @ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/sb-admin-2.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/styles.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />    
     <link rel="stylesheet" href="~/css/all.min.css" />
     <link rel="stylesheet" href="~/css/datatables.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
@@ -20,209 +21,208 @@
 <body id="page-top" class="sb-nav-fixed">
     @if (SignInManager.IsSignedIn(User))
     {
-    <nav class="sb-topnav navbar navbar-expand navbar-light bg-white topbar mb-4 shadow sb-nav-fixed h-auto">
-
-        <!-- Navbar Search-->
-        <div class="sidebar-brand-icon">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Home" asp-action="Index">
-                <img class="icon-circle rounded-circle img-fluid" src="~/img/Logo.png" alt="Logo">                
-            </a>
-        </div>
-        <div class="sidebar-brand-icon">
-            <a class="navbar-brand text-left" asp-controller="Home" asp-action="Index"><h5>YOGBIS</h5></a>
-        </div>
-
-        <!-- Sidebar - Brand -->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 text-left" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
-
-        <!-- Navbar Search-->
-        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
-                <input type="text" class="form-control bg-light border-0 small" placeholder="Aranacak kelime ..." aria-label="Search" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search fa-sm"></i>
-                    </button>
-                </div>
+        <!-- Navbar-->
+        <nav class="sb-topnav navbar navbar-expand navbar-light bg-white topbar mb-4 shadow sb-nav-fixed h-auto">
+            <!-- Navbar Logo-->
+            <div class="sidebar-brand-icon">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Home" asp-action="Index">
+                    <img class="icon-circle rounded-circle img-fluid" src="~/img/Logo.png" alt="Logo">
+                </a>
             </div>
-        </form>
-
-        <!-- Topbar Navbar -->
-        <ul class="navbar-nav ml-auto">
-            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-            <li class="nav-item dropdown no-arrow d-sm-none">
-                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-search fa-fw"></i>
-                </a>
-                <!-- Dropdown - Messages -->
-                <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                    <form class="form-inline mr-auto navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0" placeholder="Aranacak kelime..." aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </li>
-
-            <!-- Nav Item - Alerts -->
-            <li class="nav-item dropdown no-arrow mx-1">
-                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-bell fa-fw"></i>&nbsp;&nbsp;
-                    <!-- Counter - Alerts -->
-                    <span class="badge badge-danger badge-counter">3+</span>
-                </a>
-                <!-- Dropdown - Alerts -->
-                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in mt-3" aria-labelledby="alertsDropdown">
-                    <h6 class="dropdown-header">
-                        Bildirim Merkezi
-                    </h6>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-primary">
-                                <i class="fas fa-file-alt text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">Aralık 12, 2019</div>
-                            <span class="font-weight-bold">Aralık Ayı Öğrenci Raporu!</span>
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-success">
-                                <i class="fas fa-donate text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">Aralık 7, 2019</div>
-                            Okul belgeleri gönderildi
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-warning">
-                                <i class="fas fa-exclamation-triangle text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-gray-500">Aralık 2, 2019</div>
-                            Okul Aile Birliği Toplantısı Hazırlıkları ...
-                        </div>
-                    </a>
-                    <a class="dropdown-item text-center small text-gray-500" href="#">Bütün Bildirimleri Göster</a>
-                </div>
-            </li>
-
-            <!-- Nav Item - Messages -->
-            <li class="nav-item dropdown no-arrow mx-1">
-                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-envelope fa-fw"></i>&nbsp;
-                    <!-- Counter - Messages -->
-                    <span class="badge badge-danger badge-counter">7</span>
-                </a>
-                <!-- Dropdown - Messages -->
-                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in mt-3" aria-labelledby="messagesDropdown">
-                    <h6 class="dropdown-header">
-                        MESAJ MERKEZİ
-                    </h6>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="dropdown-list-image mr-3">
-                            <img class="icon-circle rounded-circle" src="~/img/user.png" alt="">
-                            <div class="status-indicator bg-success"></div>
-                        </div>
-                        <div class="font-weight-bold">
-                            <div class="text-truncate">Merhaba! Yaşadığım bir sorunla ilgili bana yardım edip edemeyeceğinizi merak ediyorum.</div>
-                            <div class="small text-gray-500">Mehtap KAYA · 58m</div>
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="dropdown-list-image mr-3">
-                            <img class="icon-circle rounded-circle" src="~/img/profile.png" alt="">
-                            <div class="status-indicator"></div>
-                        </div>
-                        <div>
-                            <div class="text-truncate">Geçen ay sipariş ettiğiniz fotoğraflar elimde, size nasıl gönderilmesini istersiniz?</div>
-                            <div class="small text-gray-500">Mustafa KOYUNCU · 1d</div>
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="dropdown-list-image mr-3">
-                            <img class="icon-circle rounded-circle" src="~/img/user.png" alt="">
-                            <div class="status-indicator bg-warning"></div>
-                        </div>
-                        <div>
-                            <div class="text-truncate">Geçen ayın raporu harika görünüyor, şimdiye kadarki ilerlemeden çok memnunum, iyi çalışmaya devam edin!</div>
-                            <div class="small text-gray-500">Semra BAYAZİT · 2d</div>
-                        </div>
-                    </a>
-                    <a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="dropdown-list-image mr-3">
-                            <img class="icon-circle rounded-circle" src="~/img/user.png" alt="">
-                            <div class="status-indicator bg-success"></div>
-                        </div>
-                        <div>
-                            <div class="text-truncate">Öğretmenlerimize seminer bilgileri gönderildi.</div>
-                            <div class="small text-gray-500">Gökçe ARSLAN · 2w</div>
-                        </div>
-                    </a>
-                    <a class="dropdown-item text-center small text-gray-500" href="#">Tüm mesajlara gözat</a>
-                </div>
-            </li>
-
-            <div class="topbar-divider d-none d-sm-block"></div>
-
-            <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Selim KAHRAMAN</span>
-                    <img class="img-profile icon-circle rounded-circle" src="~/img/profile.png">
-                </a>
-                <!-- Dropdown - User Information -->
-                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in mt-3" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="#">
-                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Bilgilerim
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Notlarım
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Giriş Kayıtları
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <form id="logoutForm" class="form-inline mb-0" asp-area="Identity" asp-page="/Account/Logout">
-                        <button id="logout" type="submit" class="dropdown-item">
-                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Güvenli Çıkış
+            <div class="sidebar-brand-icon">
+                <a class="navbar-brand text-left" asp-controller="Home" asp-action="Index"><h5>YOGBIS</h5></a>
+            </div>
+            <!-- Sidebar - Brand -->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 text-left" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Aranacak kelime ..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search fa-sm"></i>
                         </button>
-                    </form>
+                    </div>
                 </div>
-            </li>
-        </ul>
-    </nav>
+            </form>
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                <li class="nav-item dropdown no-arrow d-sm-none">
+                    <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-search fa-fw"></i>
+                    </a>
+                    <!-- Dropdown - Messages -->
+                    <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                        <form class="form-inline mr-auto navbar-search">
+                            <div class="input-group">
+                                <input type="text" class="form-control bg-light border-0" placeholder="Aranacak kelime..." aria-label="Search" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+                <!-- Nav Item - Alerts -->
+                <li class="nav-item dropdown no-arrow mx-1">
+                    <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-bell fa-fw"></i>&nbsp;&nbsp;
+                        <!-- Counter - Alerts -->
+                        <span class="badge badge-danger badge-counter">3+</span>
+                    </a>
+                    <!-- Dropdown - Alerts -->
+                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in mt-3" aria-labelledby="alertsDropdown">
+                        <h6 class="dropdown-header">
+                            Bildirim Merkezi
+                        </h6>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <div class="mr-3">
+                                <div class="icon-circle bg-primary">
+                                    <i class="fas fa-file-alt text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="small text-gray-500">Aralık 12, 2019</div>
+                                <span class="font-weight-bold">Aralık Ayı Öğrenci Raporu!</span>
+                            </div>
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <div class="mr-3">
+                                <div class="icon-circle bg-success">
+                                    <i class="fas fa-donate text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="small text-gray-500">Aralık 7, 2019</div>
+                                Okul belgeleri gönderildi
+                            </div>
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <div class="mr-3">
+                                <div class="icon-circle bg-warning">
+                                    <i class="fas fa-exclamation-triangle text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="small text-gray-500">Aralık 2, 2019</div>
+                                Okul Aile Birliği Toplantısı Hazırlıkları ...
+                            </div>
+                        </a>
+                        <a class="dropdown-item text-center small text-gray-500" href="#">Bütün Bildirimleri Göster</a>
+                    </div>
+                </li>
+                <!-- Nav Item - Messages -->
+                <li class="nav-item dropdown no-arrow mx-1">
+                    <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-envelope fa-fw"></i>&nbsp;
+                        <!-- Counter - Messages -->
+                        <span class="badge badge-danger badge-counter">7</span>
+                    </a>
+                    <!-- Dropdown - Messages -->
+                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in mt-3" aria-labelledby="messagesDropdown">
+                        <h6 class="dropdown-header">
+                            MESAJ MERKEZİ
+                        </h6>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <div class="dropdown-list-image mr-3">
+                                <img class="icon-circle rounded-circle" src="~/img/user.png" alt="">
+                                <div class="status-indicator bg-success"></div>
+                            </div>
+                            <div class="font-weight-bold">
+                                <div class="text-truncate">Merhaba! Yaşadığım bir sorunla ilgili bana yardım edip edemeyeceğinizi merak ediyorum.</div>
+                                <div class="small text-gray-500">Mehtap KAYA · 58m</div>
+                            </div>
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <div class="dropdown-list-image mr-3">
+                                <img class="icon-circle rounded-circle" src="~/img/profile.png" alt="">
+                                <div class="status-indicator"></div>
+                            </div>
+                            <div>
+                                <div class="text-truncate">Geçen ay sipariş ettiğiniz fotoğraflar elimde, size nasıl gönderilmesini istersiniz?</div>
+                                <div class="small text-gray-500">Mustafa KOYUNCU · 1d</div>
+                            </div>
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <div class="dropdown-list-image mr-3">
+                                <img class="icon-circle rounded-circle" src="~/img/user.png" alt="">
+                                <div class="status-indicator bg-warning"></div>
+                            </div>
+                            <div>
+                                <div class="text-truncate">Geçen ayın raporu harika görünüyor, şimdiye kadarki ilerlemeden çok memnunum, iyi çalışmaya devam edin!</div>
+                                <div class="small text-gray-500">Semra BAYAZİT · 2d</div>
+                            </div>
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <div class="dropdown-list-image mr-3">
+                                <img class="icon-circle rounded-circle" src="~/img/user.png" alt="">
+                                <div class="status-indicator bg-success"></div>
+                            </div>
+                            <div>
+                                <div class="text-truncate">Öğretmenlerimize seminer bilgileri gönderildi.</div>
+                                <div class="small text-gray-500">Gökçe ARSLAN · 2w</div>
+                            </div>
+                        </a>
+                        <a class="dropdown-item text-center small text-gray-500" href="#">Tüm mesajlara gözat</a>
+                    </div>
+                </li>
+                <!-- Nav Item - Divider -->
+                <div class="topbar-divider d-none d-sm-block"></div>
+                <!-- Nav Item - User Information -->
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Selim KAHRAMAN</span>
+                        <img class="img-profile icon-circle rounded-circle" src="~/img/profile.png">
+                    </a>
+                    <!-- Dropdown - User Information -->
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in mt-3" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Bilgilerim
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Notlarım
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Giriş Kayıtları
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <form id="logoutForm" class="form-inline mb-0" asp-area="Identity" asp-page="/Account/Logout">
+                            <button id="logout" type="submit" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Güvenli Çıkış
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <!-- LayoutSidenav-->
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark bg-gray-800" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="sb-sidenav-menu-heading text-white"><a class="nav-link" asp-controller="Home" asp-action="Index">Anasayfa</a></div>
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            <div class="sb-sidenav-menu-heading">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Anasayfa</a>
+                            </div>
+                            <a class="nav-link" asp-controller="Duyurular" asp-action="Index">
                                 <div class="sb-nav-link-icon"><i class="fas fa-bullhorn"></i></div>
                                 Duyurular
                             </a>
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            <a class="nav-link" asp-controller="SSS" asp-action="Index">
                                 <div class="sb-nav-link-icon"><i class="fas fa-question-circle"></i></div>
                                 SSS
                             </a>
                             <!--Modüller-->
-                            <div class="sb-sidenav-menu-heading h5 text-white">Modüller</div>
+                            <div class="sb-sidenav-menu-heading">
+                                <a class="nav-link text-white">Modüller</a>
+                            </div>
                             <!--Yönetim Modülü-->
                             @if (User.IsInRole(ResultConstant.Admin_Role))
                             {
@@ -248,9 +248,9 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     @if (User.IsInRole(ResultConstant.Admin_Role))
                                     {
+                                        <a class="nav-link" asp-controller="SoruKategorileri" asp-action="Index">Kategoriler</a>
+                                        <a class="nav-link" href="#">Soru Bankası</a>    
                                         <a class="nav-link" href="#">Mülakat Oluştur</a>
-                                        <a class="nav-link" href="#">Kategoriler</a>
-                                        <a class="nav-link" href="#">Soru Bankası</a>
                                         <a class="nav-link" asp-controller="MulakatSorulari" asp-action="Index">Mülakat Soruları</a>
                                         <a class="nav-link" asp-controller="Mulakat" asp-action="Index">Mülakatı Başlat</a>
                                     }
@@ -263,30 +263,24 @@
                                 </nav>
                             </div>
                             <!--Takip Modülü-->
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTakip" aria-expanded="false" aria-controls="collapseTakip">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                                Takip Modülü
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseTakip" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    @if (User.IsInRole(ResultConstant.Admin_Role))
-                                    {
-                                        <a class="nav-link" href="#">Temsilcilikler</a>
+                            @if (User.IsInRole(ResultConstant.Admin_Role))
+                            {
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTakip" aria-expanded="false" aria-controls="collapseTakip">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                                    Takip Modülü
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseTakip" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="#">Ülkeler</a>
+                                        <a class="nav-link" href="#">Temsilcilikler</a>
                                         <a class="nav-link" href="#">Okullar</a>
                                         <a class="nav-link" href="#">Öğretmenler</a>
-                                        <a class="nav-link" href="#">Okutmanlar</a>
-                                    }
-                                    else
-                                    {
-                                        <a class="nav-link" asp-controller="Mulakat" asp-action="Index">Mülakatı Başlat</a>
-                                        @*<a class="nav-link" asp-controller="MulakatSorulari" asp-action="Index">Mülakat Soruları</a>*@
-                                    }
-
-                                </nav>
+                                        <a class="nav-link" href="#">Okutmanlar</a>                                       
+                                    </nav>
+                                </div>
+                            }
                             </div>
-                        </div>
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Kullanıcı:</div>
@@ -334,12 +328,12 @@
         </div>
     }
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/sb-admin-2.min.js"></script>
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>*@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="~/js/scripts.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/jquery.easing.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/sb-admin-2.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/datatables.min.js"></script>
     <script src="~/js/bootbox.min.js"></script>
