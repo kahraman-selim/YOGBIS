@@ -11,7 +11,7 @@
         top: 95px;
     }
 </style>
-<div class="block">
+@*<div class="block">
     <ol class="breadcrumb mb-4 mt-2 sb-nav-fixed">
         <li>
             <a asp-controller="SoruKategorileri" asp-action="SoruKategoriEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
@@ -19,8 +19,14 @@
             </a>
         </li>
     </ol>
-</div>
-
+</div>*@
+<ol class="breadcrumb mb-4 mt-2">
+    <li>
+        <a asp-controller="SoruKategorileri" asp-action="SoruKategoriEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
+            Yeni Kayıt <i class="fas fa-plus-circle"></i>
+        </a>
+    </li>
+</ol>
 <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
@@ -34,9 +40,9 @@
                         <th>Sıra No</th>
                         <th>Kategori No</th>
                         <th>Kategori Adı</th>
+                        <th>Derece</th>
                         <th>Kategori Kullanımı</th>
                         <th>Puan</th>
-                        <th>Derece</th>
                         <th class="text-center">Düzenle</th>
                         <th class="text-center">Sil</th>
                     </tr>
@@ -48,24 +54,24 @@
                         @foreach (var item in Model)
                         {
                             sirano++;
-                            <tr>
-                                <td>@sirano</td>
-                                <td>@item.SoruKategoriId</td>
-                                <td>@item.SoruKategoriAdi</td>
-                                <td>@item.SoruKategoriKullanimi</td>
-                                <td>@item.SoruKategoriPuan</td>
-                                <td>@item.SoruKategoriDerece</td>
-                                <td class="text-center">
-                                    <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="SoruKategorileri" asp-action="SoruKategoriGuncelle" asp-route-id="@item.SoruKategoriId">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </td>
-                                <td class="text-center">
-                                    <a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="btnSoruSil" data-id="@item.SoruKategoriId">
-                                        <i class="fas fa-trash text-white"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                    <tr>
+                        <td>@sirano</td>
+                        <td>@item.SoruKategoriId</td>
+                        <td>@item.SoruKategoriAdi</td>
+                        <td>@item.SoruKategoriDerece</td>
+                        <td>@item.SoruKategoriKullanimi</td>
+                        <td>@item.SoruKategoriPuan</td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="SoruKategorileri" asp-action="SoruKategoriGuncelle" asp-route-id="@item.SoruKategoriId">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="btnSoruSil" data-id="@item.SoruKategoriId">
+                                <i class="fas fa-trash text-white"></i>
+                            </a>
+                        </td>
+                    </tr>
                         }
                     }
                     else

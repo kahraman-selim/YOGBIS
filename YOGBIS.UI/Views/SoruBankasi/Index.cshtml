@@ -1,28 +1,11 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>
+﻿@model List<YOGBIS.Common.VModels.SoruBankasiVM>
 @{
-    ViewData["Title"] = "Mülakat Soruları";
+    ViewData["Title"] = "Soru Bankası";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
-    .block {
-        position: fixed;
-        z-index: 2;
-        right: 15px;
-        top: 95px;
-    }
-</style>
-@*<div class="block sb-nav-fixed">*@
-    <!--<ol class="breadcrumb mb-4 mt-0 block">
-        <li>
-            <a asp-controller="MulakatSorulari" asp-action="MulakatSoruEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
-                Yeni Kayıt <i class="fas fa-plus-circle"></i>
-            </a>
-        </li>
-    </ol>-->
-@*</div>*@
 <ol class="breadcrumb mb-4 mt-2">
     <li>
-        <a asp-controller="MulakatSorulari" asp-action="MulakatSoruEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
+        <a asp-controller="SoruBankasi" asp-action="SoruEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
             Yeni Kayıt <i class="fas fa-plus-circle"></i>
         </a>
     </li>
@@ -30,7 +13,7 @@
 <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
-        <b>Mülakat Soruları</b>
+        <b>Soru Bankası</b>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -38,11 +21,8 @@
                 <thead>
                     <tr>
                         <th>Sıra No</th>
-                        <th>Soru Sıra No</th>
                         <th>Soru No</th>
-                        <th>Derecesi</th>
-                        <th>Kategori No</th>
-                        <th>Kategori</th>
+                        <th>Kategori Adı</th>
                         <th>Soru</th>
                         <th>Cevap</th>
                         <th class="text-center">Düzenle</th>
@@ -58,20 +38,17 @@
                             sirano++;
                             <tr>
                                 <td>@sirano</td>
-                                <td>@item.SoruSiraNo</td>
-                                <td>@item.SoruNo</td>
-                                <td>@item.Derecesi</td>
+                                <td>@item.SoruBankasiId</td>
                                 <td>@item.SoruKategoriId</td>
-                                <td>@item.SoruKategoriAdi</td>
                                 <td>@item.Soru</td>
                                 <td>@item.Cevap</td>
                                 <td class="text-center">
-                                    <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="MulakatSorulari" asp-action="MulakatSoruGuncelle" asp-route-id="@item.MulakatSorulariId">
+                                    <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="SoruBankasi" asp-action="SoruGuncelle" asp-route-id="@item.SoruBankasiId">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 </td>
                                 <td class="text-center">
-                                    <a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="btnSoruSil" data-id="@item.MulakatSorulariId">
+                                    <a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="btnSoruSil" data-id="@item.SoruBankasiId">
                                         <i class="fas fa-trash text-white"></i>
                                     </a>
                                 </td>
@@ -91,6 +68,7 @@
 </div>
 
 
+
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
 
@@ -104,7 +82,7 @@
                         var id = btn.data("id");
                         $.ajax({
                             type: "DELETE",
-                            url: "/MulakatSorulari/MulakatSoruSil/" + id,
+                            url: "/SoruBankasi/SoruSil/" + id,
                             success: function () {
                                 btn.parent().parent().remove();
                                 location.reload();
@@ -116,3 +94,5 @@
         });
     </script>
 }
+
+

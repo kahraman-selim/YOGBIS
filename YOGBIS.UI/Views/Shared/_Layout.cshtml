@@ -249,7 +249,7 @@
                                     @if (User.IsInRole(ResultConstant.Admin_Role))
                                     {
                                         <a class="nav-link" asp-controller="SoruKategorileri" asp-action="Index">Kategoriler</a>
-                                        <a class="nav-link" href="#">Soru Bankası</a>    
+                                        <a class="nav-link" asp-controller="SoruBankasi" asp-action="Index">Soru Bankası</a>    
                                         <a class="nav-link" href="#">Mülakat Oluştur</a>
                                         <a class="nav-link" asp-controller="MulakatSorulari" asp-action="Index">Mülakat Soruları</a>
                                         <a class="nav-link" asp-controller="Mulakat" asp-action="Index">Mülakatı Başlat</a>

@@ -13,8 +13,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        Result<MulakatSorulariVM> MulakatSorusuEkle(MulakatSorulariVM model);
-        
+        Result<MulakatSorulariVM> MulakatSorusuEkle(MulakatSorulariVM model);        
         /// <summary>
         /// Seçilen Mülakat Sorusu bilgilerini getiren method
         /// </summary>
