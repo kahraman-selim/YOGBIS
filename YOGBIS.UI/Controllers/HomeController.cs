@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +21,11 @@ namespace YOGBIS.UI.Controllers
        public IActionResult Index()
         {
 
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
             if (User.IsInRole(ResultConstant.Admin_Role))
             {
-                return View();
+                return View(user);
             }
             else
             {
