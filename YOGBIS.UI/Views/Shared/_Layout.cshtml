@@ -174,7 +174,7 @@
                 <!-- Nav Item - User Information -->
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Selim KAHRAMAN</span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.Name</span>
                         <img class="img-profile icon-circle rounded-circle" src="~/img/profile.png">
                     </a>
                     <!-- Dropdown - User Information -->
@@ -233,7 +233,7 @@
                                 </a>
                                 <div class="collapse" id="collapseYonetim" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Kullanıcı Ekle</a>
+                                        @*<a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Kullanıcı Ekle</a>*@
                                         <a class="nav-link" asp-controller="Kullanicilar" asp-action="Index">Kullanıcılar</a>
                                     </nav>
                                 </div>

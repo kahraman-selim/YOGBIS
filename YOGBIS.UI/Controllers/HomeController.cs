@@ -25,7 +25,7 @@ namespace YOGBIS.UI.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Mulakat");
+                return RedirectToAction("Index", "Home");
             }            
         }
     }
