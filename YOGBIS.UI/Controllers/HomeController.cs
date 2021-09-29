@@ -26,6 +26,7 @@ namespace YOGBIS.UI.Controllers
             if (User.IsInRole(ResultConstant.Admin_Role))
             {
                 return View(user);
+                //return View();
             }
             else
             {

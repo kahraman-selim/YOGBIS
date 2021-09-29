@@ -7,11 +7,11 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Data.Implementaion
 {
-    public class KitalarRepository : Repository<Kitalar>, IKitalarRepository
+    public class AutoHistoryRepository : Repository<AutoHistory>, IAutoHistoryRepository
     {
         private readonly YOGBISContext _ctx;
 
-        public KitalarRepository(YOGBISContext ctx) : base(ctx)
+        public AutoHistoryRepository(YOGBISContext ctx) : base(ctx)
         {
             _ctx = ctx;
         }

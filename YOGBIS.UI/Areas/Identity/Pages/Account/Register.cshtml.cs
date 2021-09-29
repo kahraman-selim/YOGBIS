@@ -60,7 +60,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Şifrenizi yazmalısınız...")]
-            [StringLength(100, ErrorMessage = " Şifreniz en az {2}, en fazla {1} karakter uzunluğunda olmalıdır.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = " Şifreniz en az {2}, en fazla {1} karakter uzunluğunda olmalıdır. En az bir küçük harf, büyük harf ve alfanümerik karakter içermelidir.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Şifre")]
             public string Password { get; set; }
