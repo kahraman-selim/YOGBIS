@@ -6,7 +6,7 @@ using System.Text;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class Eyaletler
+    public class Eyaletler:Base
     {
         [Key]
         public int EyaletId { get; set; }
@@ -15,5 +15,8 @@ namespace YOGBIS.Data.DbModels
         [ForeignKey("UlkeId")]
         public int UlkeId { get; set; }
         public Ulkeler Ulkeler { get; set; }
+        public string KullaniciId { get; set; }
+        [ForeignKey("KullaniciId")]
+        public Kullanici Kullanici { get; set; }
     }
 }

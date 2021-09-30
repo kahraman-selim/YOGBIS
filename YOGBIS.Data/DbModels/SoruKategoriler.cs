@@ -6,14 +6,17 @@ using System.Text;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class SoruKategoriler
+    public class SoruKategoriler:Base
     {
         [Key]
-        public int SoruKategoriId { get; set; }
-        public string SoruKategoriAdi { get; set; }
-        public string SoruKategoriKullanimi { get; set; }
-        public int SoruKategoriPuan { get; set; }
-        public string SoruKategoriDerece { get; set; }
+        public int SoruKategorilerId { get; set; }
+        public string SoruKategorilerAdi { get; set; }
+        public string SoruKategorilerKullanimi { get; set; }
+        public int SoruKategorilerPuan { get; set; }
+        public string SoruKategorilerDerece { get; set; }
+        public string KullaniciId { get; set; }
+        [ForeignKey("KullaniciId")]
+        public Kullanici Kullanici { get; set; }
         public List<SoruKategori> SoruKategoris { get; set; }
     }
 }

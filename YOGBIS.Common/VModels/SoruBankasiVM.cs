@@ -6,7 +6,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
 {
-    public class SoruBankasiVM
+    public class SoruBankasiVM:BaseVM
     {
         [Key]
         [Range(0, int.MaxValue, ErrorMessage = "Girilen sayı uygun değil !")]
@@ -15,6 +15,8 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Kategoriyi seçiniz...")]
         public int SoruKategoriId { get; set; }
+        public string SoruKategorilerAdi { get; set; }
+        public SoruKategorilerVM SoruKategorilerVm { get; set; }
 
         [Required(ErrorMessage = "Soruyu yazınız...")]
         public string Soru { get; set; }
@@ -27,7 +29,15 @@ namespace YOGBIS.Common.VModels
         public int SorulmaSayisi { get; set; }
 
         [Required(ErrorMessage = "Soru durumunu seçiniz...")]
-        public string SoruDurumu { get; set; }
+        public bool? SoruDurumu { get; set; }
+        public string KaydedenId { get; set; }
+
+        public KullaniciVM Kaydeden { get; set; }
+        public string OnaylayanId { get; set; }
+  
+        public KullaniciVM Onaylayan { get; set; }
+        public bool? OnayDurumu { get; set; }
+        public string OnayAciklama { get; set; }
         public List<SoruKategori> SoruKategoris { get; set; }
     }
 }

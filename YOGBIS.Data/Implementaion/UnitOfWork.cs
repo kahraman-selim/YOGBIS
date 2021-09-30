@@ -18,10 +18,9 @@ namespace YOGBIS.Data.Implementaion
             ulkelerRepository = new UlkelerRepository(_ctx);
             eyaletlerRepository = new EyaletlerRepository(_ctx);
             sehirlerRepository = new SehirlerRepository(_ctx);
-            kategorilerRepository = new SoruKategorilerRepository(_ctx);
+            sorukategorilerRepository = new SoruKategorilerRepository(_ctx);
             mulakatlarRepository = new MulakatlarRepository(_ctx);
-            mulakatSorulariRepository = new MulakatSorulariRepository(_ctx);
-            soruBankasiLogRepository = new SoruBankasiLogRepository(_ctx);
+            mulakatSorulariRepository = new MulakatSorulariRepository(_ctx);            
             soruBankasiRepository = new SoruBankasiRepository(_ctx);
             soruKategoriRepository = new SoruKategoriRepository(_ctx);
             kullaniciRepository = new KullaniciRepository(_ctx);
@@ -32,11 +31,10 @@ namespace YOGBIS.Data.Implementaion
         public IKitalarRepository kitalarRepository { get; private set; }
         public IUlkelerRepository ulkelerRepository { get; private set; }
         public IEyaletlerRepository eyaletlerRepository { get; private set; }
-        public ISehirlerRepository sehirlerRepository { get; private set; }
-        public ISoruBankasiLogRepository soruBankasiLogRepository { get; private set; }
+        public ISehirlerRepository sehirlerRepository { get; private set; }        
         public ISoruBankasiRepository soruBankasiRepository { get; private set; }
         public ISoruKategoriRepository  soruKategoriRepository { get; private set; }
-        public ISoruKategorilerRepository kategorilerRepository { get; private set; }
+        public ISoruKategorilerRepository sorukategorilerRepository { get; private set; }
         public IMulakatlarRepository mulakatlarRepository { get; private set; }
         public IMulakatSorulariRepository mulakatSorulariRepository { get; private set; }
         public  IKullaniciRepository kullaniciRepository { get; private set; }

@@ -265,6 +265,12 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("EyaletAdi")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("KayitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("KullaniciId")
+                        .HasColumnType("varchar(767)");
+
                     b.Property<int>("UlkeId")
                         .HasColumnType("int");
 
@@ -272,6 +278,8 @@ namespace YOGBIS.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("EyaletId");
+
+                    b.HasIndex("KullaniciId");
 
                     b.HasIndex("UlkelerUlkeId");
 
@@ -315,6 +323,12 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("Derecesi")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("KayitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("KullaniciId")
+                        .HasColumnType("varchar(767)");
+
                     b.Property<int>("MulakatId")
                         .HasColumnType("int");
 
@@ -324,13 +338,13 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("Soru")
                         .HasColumnType("text");
 
+                    b.Property<int>("SoruId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SoruKategoriAdi")
                         .HasColumnType("text");
 
                     b.Property<int>("SoruKategoriId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SoruNo")
                         .HasColumnType("int");
 
                     b.Property<int>("SoruSiraNo")
@@ -338,7 +352,13 @@ namespace YOGBIS.Data.Migrations
 
                     b.HasKey("MulakatSorulariId");
 
+                    b.HasIndex("KullaniciId");
+
                     b.HasIndex("MulakatlarMulakatId");
+
+                    b.HasIndex("SoruId");
+
+                    b.HasIndex("SoruKategoriId");
 
                     b.ToTable("MulakatSorularis");
                 });
@@ -361,8 +381,14 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("Derecesi")
                         .HasColumnType("text");
 
-                    b.Property<string>("Durumu")
-                        .HasColumnType("text");
+                    b.Property<bool?>("Durumu")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("KayitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("KullaniciId")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<string>("MulakatAciklama")
                         .HasColumnType("text");
@@ -377,6 +403,8 @@ namespace YOGBIS.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("MulakatId");
+
+                    b.HasIndex("KullaniciId");
 
                     b.ToTable("Mulakatlars");
                 });
@@ -396,6 +424,12 @@ namespace YOGBIS.Data.Migrations
                     b.Property<int?>("EyaletlerEyaletId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("KayitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("KullaniciId")
+                        .HasColumnType("varchar(767)");
+
                     b.Property<string>("SehirAciklama")
                         .HasColumnType("text");
 
@@ -405,6 +439,8 @@ namespace YOGBIS.Data.Migrations
                     b.HasKey("SehirId");
 
                     b.HasIndex("EyaletlerEyaletId");
+
+                    b.HasIndex("KullaniciId");
 
                     b.ToTable("Sehirlers");
                 });
@@ -421,11 +457,26 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("Derecesi")
                         .HasColumnType("text");
 
+                    b.Property<string>("KaydedenId")
+                        .HasColumnType("varchar(767)");
+
+                    b.Property<DateTime>("KayitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("OnayAciklama")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("OnayDurumu")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OnaylayanId")
+                        .HasColumnType("varchar(767)");
+
                     b.Property<string>("Soru")
                         .HasColumnType("text");
 
-                    b.Property<string>("SoruDurumu")
-                        .HasColumnType("text");
+                    b.Property<bool?>("SoruDurumu")
+                        .HasColumnType("bit");
 
                     b.Property<int>("SoruKategoriId")
                         .HasColumnType("int");
@@ -435,38 +486,13 @@ namespace YOGBIS.Data.Migrations
 
                     b.HasKey("SoruBankasiId");
 
+                    b.HasIndex("KaydedenId");
+
+                    b.HasIndex("OnaylayanId");
+
+                    b.HasIndex("SoruKategoriId");
+
                     b.ToTable("SoruBankasis");
-                });
-
-            modelBuilder.Entity("YOGBIS.Data.DbModels.SoruBankasiLog", b =>
-                {
-                    b.Property<int>("SoruBankasiLogId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Cevap")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Islem")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("KayitTarihi")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("KullaniciAdi")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Soru")
-                        .HasColumnType("text");
-
-                    b.Property<int>("SoruBankasiId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SoruBankasiLogId");
-
-                    b.HasIndex("SoruBankasiId");
-
-                    b.ToTable("SoruBankasiLogs");
                 });
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.SoruKategori", b =>
@@ -484,39 +510,47 @@ namespace YOGBIS.Data.Migrations
                     b.Property<int>("SoruId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SoruKategorilerSoruKategoriId")
+                    b.Property<int?>("SoruKategorilerId")
                         .HasColumnType("int");
 
                     b.HasKey("SoruKategoriId");
 
                     b.HasIndex("SoruBankasiId");
 
-                    b.HasIndex("SoruKategorilerSoruKategoriId");
+                    b.HasIndex("SoruKategorilerId");
 
                     b.ToTable("SoruKategoris");
                 });
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.SoruKategoriler", b =>
                 {
-                    b.Property<int>("SoruKategoriId")
+                    b.Property<int>("SoruKategorilerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("SoruKategoriAdi")
+                    b.Property<DateTime>("KayitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("KullaniciId")
+                        .HasColumnType("varchar(767)");
+
+                    b.Property<string>("SoruKategorilerAdi")
                         .HasColumnType("text");
 
-                    b.Property<string>("SoruKategoriDerece")
+                    b.Property<string>("SoruKategorilerDerece")
                         .HasColumnType("text");
 
-                    b.Property<string>("SoruKategoriKullanimi")
+                    b.Property<string>("SoruKategorilerKullanimi")
                         .HasColumnType("text");
 
-                    b.Property<int>("SoruKategoriPuan")
+                    b.Property<int>("SoruKategorilerPuan")
                         .HasColumnType("int");
 
-                    b.HasKey("SoruKategoriId");
+                    b.HasKey("SoruKategorilerId");
 
-                    b.ToTable("SoruKategoriler");
+                    b.HasIndex("KullaniciId");
+
+                    b.ToTable("SoruKategorilers");
                 });
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.UlkeGruplari", b =>
@@ -525,6 +559,12 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("KayitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("KullaniciId")
+                        .HasColumnType("varchar(767)");
+
                     b.Property<string>("UlkeGrupAciklama")
                         .HasColumnType("text");
 
@@ -532,6 +572,8 @@ namespace YOGBIS.Data.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("UlkeGrupId");
+
+                    b.HasIndex("KullaniciId");
 
                     b.ToTable("UlkeGruplaris");
                 });
@@ -542,11 +584,17 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("KayitTarihi")
+                        .HasColumnType("datetime");
+
                     b.Property<int>("KitaId")
                         .HasColumnType("int");
 
                     b.Property<int?>("KitalarKitaId")
                         .HasColumnType("int");
+
+                    b.Property<string>("KullaniciId")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<string>("UlkeAciklama")
                         .HasColumnType("text");
@@ -554,12 +602,14 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("UlkeAdi")
                         .HasColumnType("text");
 
-                    b.Property<string>("UlkeBayrak")
-                        .HasColumnType("text");
+                    b.Property<byte[]>("UlkeBayrak")
+                        .HasColumnType("varbinary(4000)");
 
                     b.HasKey("UlkeId");
 
                     b.HasIndex("KitalarKitaId");
+
+                    b.HasIndex("KullaniciId");
 
                     b.ToTable("Ulkelers");
                 });
@@ -576,6 +626,12 @@ namespace YOGBIS.Data.Migrations
 
                     b.Property<DateTime>("DogumTarihi")
                         .HasColumnType("datetime");
+
+                    b.Property<int>("KulaniciAdDegLimiti")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("KullaniciResim")
+                        .HasColumnType("varbinary(4000)");
 
                     b.Property<string>("Soyad")
                         .HasColumnType("text");
@@ -639,6 +695,10 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.Eyaletler", b =>
                 {
+                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
+                        .WithMany()
+                        .HasForeignKey("KullaniciId");
+
                     b.HasOne("YOGBIS.Data.DbModels.Ulkeler", "Ulkeler")
                         .WithMany()
                         .HasForeignKey("UlkelerUlkeId");
@@ -653,9 +713,32 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.MulakatSorulari", b =>
                 {
+                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
+                        .WithMany()
+                        .HasForeignKey("KullaniciId");
+
                     b.HasOne("YOGBIS.Data.DbModels.Mulakatlar", "Mulakatlar")
                         .WithMany()
                         .HasForeignKey("MulakatlarMulakatId");
+
+                    b.HasOne("YOGBIS.Data.DbModels.SoruBankasi", "SoruBankasi")
+                        .WithMany()
+                        .HasForeignKey("SoruId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("YOGBIS.Data.DbModels.SoruKategoriler", "SoruKategoriler")
+                        .WithMany()
+                        .HasForeignKey("SoruKategoriId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("YOGBIS.Data.DbModels.Mulakatlar", b =>
+                {
+                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
+                        .WithMany()
+                        .HasForeignKey("KullaniciId");
                 });
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.Sehirler", b =>
@@ -663,13 +746,25 @@ namespace YOGBIS.Data.Migrations
                     b.HasOne("YOGBIS.Data.DbModels.Eyaletler", "Eyaletler")
                         .WithMany()
                         .HasForeignKey("EyaletlerEyaletId");
+
+                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
+                        .WithMany()
+                        .HasForeignKey("KullaniciId");
                 });
 
-            modelBuilder.Entity("YOGBIS.Data.DbModels.SoruBankasiLog", b =>
+            modelBuilder.Entity("YOGBIS.Data.DbModels.SoruBankasi", b =>
                 {
-                    b.HasOne("YOGBIS.Data.DbModels.SoruBankasi", "SoruBankasi")
+                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kaydeden")
                         .WithMany()
-                        .HasForeignKey("SoruBankasiId")
+                        .HasForeignKey("KaydedenId");
+
+                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Onaylayan")
+                        .WithMany()
+                        .HasForeignKey("OnaylayanId");
+
+                    b.HasOne("YOGBIS.Data.DbModels.SoruKategoriler", "SoruKategoriler")
+                        .WithMany()
+                        .HasForeignKey("SoruKategoriId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -682,7 +777,21 @@ namespace YOGBIS.Data.Migrations
 
                     b.HasOne("YOGBIS.Data.DbModels.SoruKategoriler", "SoruKategoriler")
                         .WithMany("SoruKategoris")
-                        .HasForeignKey("SoruKategorilerSoruKategoriId");
+                        .HasForeignKey("SoruKategorilerId");
+                });
+
+            modelBuilder.Entity("YOGBIS.Data.DbModels.SoruKategoriler", b =>
+                {
+                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
+                        .WithMany()
+                        .HasForeignKey("KullaniciId");
+                });
+
+            modelBuilder.Entity("YOGBIS.Data.DbModels.UlkeGruplari", b =>
+                {
+                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
+                        .WithMany()
+                        .HasForeignKey("KullaniciId");
                 });
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.Ulkeler", b =>
@@ -690,6 +799,10 @@ namespace YOGBIS.Data.Migrations
                     b.HasOne("YOGBIS.Data.DbModels.Kitalar", "Kitalar")
                         .WithMany()
                         .HasForeignKey("KitalarKitaId");
+
+                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
+                        .WithMany()
+                        .HasForeignKey("KullaniciId");
                 });
 #pragma warning restore 612, 618
         }

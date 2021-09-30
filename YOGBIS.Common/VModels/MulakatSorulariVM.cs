@@ -6,7 +6,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
 {
-    public class MulakatSorulariVM
+    public class MulakatSorulariVM:BaseVM
     {
         [Key]
         public int MulakatSorulariId { get; set; }
@@ -17,11 +17,13 @@ namespace YOGBIS.Common.VModels
 
         [Range(0, int.MaxValue, ErrorMessage = "Girilen değer bir sayı değil !")]
         [Required(ErrorMessage = "Soru Numarası yazınız...")]
-        public int SoruNo { get; set; }
+        public int SoruId { get; set; }
+        public SoruBankasiVM SoruBankasiVm { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Girilen değer bir sayı değil !")]
         [Required(ErrorMessage = "Kategori Numarasını yazınız...")]
         public int SoruKategoriId { get; set; }
+        public SoruKategorilerVM SoruKategorilerVm { get; set; }
 
         [Required(ErrorMessage = "Kategori Adını yazınız...")]
         public string SoruKategoriAdi { get; set; }
@@ -32,6 +34,8 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Cevabı yazınız...")]
         public string Cevap { get; set; }
         public int MulakatId { get; set; }
-        public Mulakatlar Mulakatlar { get; set; }
+        public MulakatlarVM MulakatlarVm { get; set; }
+        public string KullaniciId { get; set; }     
+        public KullaniciVM KullaniciVm { get; set; }
     }
 }

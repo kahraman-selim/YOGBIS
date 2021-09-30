@@ -14,6 +14,8 @@ namespace YOGBIS.BusinessEngine.Contracts
 
         Result<SoruBankasiVM> SoruGuncelle(SoruBankasiVM model);
         
-        Result<bool> SoruSil(int id);        
+        Result<bool> SoruSil(int id);
+
+        Result<List<SoruBankasiVM>> GetAllByKullaniciId(string userId);
     }
 }

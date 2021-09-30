@@ -11,6 +11,8 @@ namespace YOGBIS.Data.DbModels
         public string Ad { get; set; }
         public string Soyad { get; set; }
         public DateTime DogumTarihi { get; set; }
+        public int KulaniciAdDegLimiti { get; set; } = 10;
+        public byte[] KullaniciResim { get; set; }
         public bool? Aktif { get; set; }
     }
 }

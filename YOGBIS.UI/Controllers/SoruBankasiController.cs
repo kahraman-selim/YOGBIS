@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
@@ -15,28 +19,47 @@ namespace YOGBIS.UI.Controllers
     {
        
         private readonly ISoruBankasiBE _soruBankasiBE;
-        public SoruBankasiController(ISoruBankasiBE soruBankasiBE)
+        private readonly ISoruKategorileriBE _soruKategorileriBE;
+        public SoruBankasiController(ISoruBankasiBE soruBankasiBE, ISoruKategorileriBE soruKategorileriBE)
         {
             _soruBankasiBE = soruBankasiBE;
-        }        
-        
+            _soruKategorileriBE = soruKategorileriBE;
+        }
         public IActionResult Index()
         {
-            var data = _soruBankasiBE.GetAllSorular();
-            if (data.IsSuccess)
-            {
-                var result = data.Data;
-                return View(result);
-            }
-            return View();
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            var requestModel = _soruBankasiBE.GetAllByKullaniciId(user.LoginId);
+            ViewBag.SoruKategorileri=_soruKategorileriBE.GetAllSoruKategoriler();
+            if (requestModel.IsSuccess)
+                return View(requestModel.Data);  
+            
+                return View(user);
+                     
+
+            //var data = _soruBankasiBE.GetAllSorular();
+            //if (data.IsSuccess)
+            //{
+            //    var result = data.Data;
+            //    return View(result);
+            //}
+            //return View(user);
         }
         public IActionResult SoruEkle()
         {
+            ViewBag.SoruKategorileri = _soruKategorileriBE.GetAllSoruKategoriler().Data;
+            //var data = _soruKategorileriBE.GetAllSoruKategoriler();
+            //ViewBag.SoruKategorileri = data.Data.Select(q => new SelectListItem
+            //{
+            //    Text = q.SoruKategorilerAdi,
+            //    Value = q.SoruKategorilerId.ToString()
+            //});
+
             return View();
         }        
         [HttpPost]
         public IActionResult SoruEkle(SoruBankasiVM model)
         {
+            
             #region Ekleme ve Güncelleme Örneği
             //if (model.MulakatSorulariId>0)
             //{

@@ -147,7 +147,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         MulakatSorulariId = item.MulakatSorulariId,
                         SoruSiraNo = item.SoruSiraNo,
-                        SoruNo = item.SoruNo,
+                        SoruId = item.SoruId,
                         SoruKategoriId = item.SoruKategoriId,
                         SoruKategoriAdi = item.SoruKategoriAdi,
                         Derecesi = item.Derecesi,

@@ -19,8 +19,7 @@ namespace YOGBIS.Common.Mappings
             CreateMap<SoruKategoriler, SoruKategorilerVM>().ReverseMap();
             CreateMap<Mulakatlar, MulakatlarVM>().ReverseMap();
             CreateMap<MulakatSorulari, MulakatSorulariVM>().ReverseMap();
-            CreateMap<SoruBankasi, SoruBankasiVM>().ReverseMap();
-            CreateMap<SoruBankasiLog, SoruBankasiLogVM>().ReverseMap();
+            CreateMap<SoruBankasi, SoruBankasiVM>().ReverseMap();            
             CreateMap<SoruKategori, SoruKategoriVM>().ReverseMap();
             CreateMap<Kullanici, KullaniciVM>().ReverseMap();
         }

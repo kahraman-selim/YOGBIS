@@ -6,23 +6,25 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
 {
-    public class SoruKategorilerVM
+    public class SoruKategorilerVM:BaseVM
     {
         [Key]
         [Required(ErrorMessage = "Kategori numarasını yazınız...")]
-        public int SoruKategoriId { get; set; }
+        public int SoruKategorilerId { get; set; }
         [Required(ErrorMessage = "Kategori adını yazınız...")]
-        public string SoruKategoriAdi { get; set; }
+        public string SoruKategorilerAdi { get; set; }
 
         [Required(ErrorMessage = "Kategori kullanımını seçiniz...")]
-        public string SoruKategoriKullanimi { get; set; }
+        public string SoruKategorilerKullanimi { get; set; }
 
         [Range(0, 25, ErrorMessage = "25 den fazla bir sayı giremezsiniz !")]
         [Required(ErrorMessage = "Kategori puanını yazınız...")]
-        public int SoruKategoriPuan { get; set; }
+        public int SoruKategorilerPuan { get; set; }
 
         [Required(ErrorMessage = "Kategori derecesini seçiniz...")]
-        public string SoruKategoriDerece { get; set; }
+        public string SoruKategorilerDerece { get; set; }
+        public string KullaniciId { get; set; }
+        public KullaniciVM KullaniciVm { get; set; }
         public List<SoruKategori> SoruKategoris { get; set; }
     }
 }

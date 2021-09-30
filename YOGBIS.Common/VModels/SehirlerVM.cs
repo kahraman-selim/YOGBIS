@@ -5,7 +5,7 @@ using System.Text;
 
 namespace YOGBIS.Common.VModels
 {
-    public class SehirlerVM
+    public class SehirlerVM:BaseVM
     {
         [Key]
         public int SehirId { get; set; }
@@ -14,5 +14,7 @@ namespace YOGBIS.Common.VModels
         public string SehirAciklama { get; set; }
         public int EyaletId { get; set; }
         public EyaletlerVM EyaletlerVm { get; set; }
+        public string KullaniciId { get; set; }
+        public KullaniciVM KullaniciVm { get; set; }
     }
 }

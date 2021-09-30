@@ -5,14 +5,16 @@ using System.Text;
 
 namespace YOGBIS.Common.VModels
 {
-    public class UlkelerVM
+    public class UlkelerVM:BaseVM
     {
         [Key]
         public int UlkeId { get; set; }
         public string UlkeAdi { get; set; }
-        public string UlkeBayrak { get; set; }
+        public byte[] UlkeBayrak { get; set; }
         public string UlkeAciklama { get; set; }
         public int KitaId { get; set; }
         public KitalarVM KitalarVm { get; set; }
+        public string KullaniciId { get; set; }        
+        public KullaniciVM KullaniciVm { get; set; }
     }
 }

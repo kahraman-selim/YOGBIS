@@ -44,7 +44,7 @@ namespace YOGBIS.Data.DataContext
             });
         }
 
-        #region DbSet
+        #region DbSetler
         public DbSet<Kullanici> Kullanicis { get; set; }
         public DbSet<Eyaletler> Eyaletlers { get; set; }
         public DbSet<Kitalar> Kitalars { get; set; }
@@ -53,9 +53,9 @@ namespace YOGBIS.Data.DataContext
         public DbSet<Sehirler> Sehirlers { get; set; }
         public DbSet<Mulakatlar> Mulakatlars { get; set; }
         public DbSet<MulakatSorulari> MulakatSorularis { get; set; }
-        public DbSet<SoruBankasi> SoruBankasis { get; set; }
-        public DbSet<SoruBankasiLog> SoruBankasiLogs { get; set; }
-        public DbSet<SoruKategori> SoruKategoris { get; set; } 
+        public DbSet<SoruBankasi> SoruBankasis { get; set; }        
+        public DbSet<SoruKategori> SoruKategoris { get; set; }
+        public DbSet<SoruKategoriler> SoruKategorilers { get; set; }
         #endregion
     }
 }

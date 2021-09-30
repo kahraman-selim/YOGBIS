@@ -24,18 +24,18 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<SoruKategorilerVM>> GetAllSoruKategoriler()
         {
-            var data = _unitOfWork.kategorilerRepository.GetAll().ToList();
-            var soruKategorileri = _mapper.Map<List<SoruKategoriler>, List<SoruKategorilerVM>>(data);
-            return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, soruKategorileri);
+            var data = _unitOfWork.sorukategorilerRepository.GetAll().ToList();
+            var soruKategoriler = _mapper.Map<List<SoruKategoriler>, List<SoruKategorilerVM>>(data);
+            return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, soruKategoriler);
         }
 
         public Result<SoruKategorilerVM> GetAllSoruKategoriler(int id)
         {
-            var data = _unitOfWork.kategorilerRepository.Get(id);
+            var data = _unitOfWork.sorukategorilerRepository.Get(id);
             if (data != null)
             {
-                var soruKategori = _mapper.Map<SoruKategoriler, SoruKategorilerVM>(data);
-                return new Result<SoruKategorilerVM>(true, ResultConstant.RecordFound, soruKategori);
+                var soruKategoriler = _mapper.Map<SoruKategoriler, SoruKategorilerVM>(data);
+                return new Result<SoruKategorilerVM>(true, ResultConstant.RecordFound, soruKategoriler);
             }
             else
             {
@@ -50,7 +50,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var soruKategori = _mapper.Map<SoruKategorilerVM, SoruKategoriler>(model);
-                    _unitOfWork.kategorilerRepository.Add(soruKategori);
+                    _unitOfWork.sorukategorilerRepository.Add(soruKategori);
                     _unitOfWork.Save();
                     return new Result<SoruKategorilerVM>(true, ResultConstant.RecordCreateSuccess);
                 }
@@ -73,7 +73,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var soruKategori = _mapper.Map<SoruKategorilerVM, SoruKategoriler>(model);
-                    _unitOfWork.kategorilerRepository.Update(soruKategori);
+                    _unitOfWork.sorukategorilerRepository.Update(soruKategori);
                     _unitOfWork.Save();
                     return new Result<SoruKategorilerVM>(true, ResultConstant.RecordCreateSuccess);
                 }
@@ -91,10 +91,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
         public Result<bool> SoruKategoriSil(int id)
         {
-            var data = _unitOfWork.kategorilerRepository.Get(id);
+            var data = _unitOfWork.sorukategorilerRepository.Get(id);
             if (data != null)
             {
-                _unitOfWork.kategorilerRepository.Remove(data);
+                _unitOfWork.sorukategorilerRepository.Remove(data);
                 _unitOfWork.Save();
                 return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
             }

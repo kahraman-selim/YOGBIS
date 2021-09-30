@@ -11,10 +11,9 @@ namespace YOGBIS.Data.Contracts
          IUlkelerRepository ulkelerRepository { get;  }
          IEyaletlerRepository eyaletlerRepository { get;  }
          ISehirlerRepository sehirlerRepository { get;  }
-         ISoruBankasiLogRepository soruBankasiLogRepository { get;  }
          ISoruBankasiRepository soruBankasiRepository { get;  }
          ISoruKategoriRepository soruKategoriRepository { get;  }
-         ISoruKategorilerRepository kategorilerRepository { get;  }
+         ISoruKategorilerRepository sorukategorilerRepository { get;  }
          IMulakatlarRepository mulakatlarRepository { get;  }
          IMulakatSorulariRepository mulakatSorulariRepository { get; }  
          IKullaniciRepository kullaniciRepository { get; }

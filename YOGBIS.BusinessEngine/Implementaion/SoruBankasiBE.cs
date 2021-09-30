@@ -23,6 +23,41 @@ namespace YOGBIS.BusinessEngine.Implementaion
             _mapper = mapper;
         }
 
+        public Result<List<SoruBankasiVM>> GetAllByKullaniciId(string userId)
+        {
+            var data = _unitOfWork.soruBankasiRepository.GetAll(u => u.KaydedenId == userId, 
+                includeProperties: "Kaydeden,SoruKategoriler").ToList();
+            if (data != null)
+            {
+                List<SoruBankasiVM> returnData = new List<SoruBankasiVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new SoruBankasiVM()
+                    {
+                        SoruBankasiId = item.SoruBankasiId,
+                        SoruKategoriId = item.SoruKategoriId,
+                        SoruKategorilerAdi=item.SoruKategoriler.SoruKategorilerAdi,
+                        Soru =item.Soru,
+                        Cevap=item.Cevap,
+                        Derecesi=item.Derecesi,
+                        SorulmaSayisi=0,
+                        SoruDurumu=true,
+                        KaydedenId=item.KaydedenId,
+                        OnaylayanId=item.OnaylayanId,
+                        OnayDurumu=item.OnayDurumu,
+                        OnayAciklama=item.OnayAciklama,
+                        KayitTarihi=DateTime.Now
+                    });
+                }
+                return new Result<List<SoruBankasiVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<SoruBankasiVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+
         public Result<List<SoruBankasiVM>> GetAllSorular()
         {
             var data = _unitOfWork.soruBankasiRepository.GetAll().ToList();

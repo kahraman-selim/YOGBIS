@@ -56,18 +56,18 @@
                             sirano++;
                     <tr>
                         <td>@sirano</td>
-                        <td>@item.SoruKategoriId</td>
-                        <td>@item.SoruKategoriAdi</td>
-                        <td>@item.SoruKategoriDerece</td>
-                        <td>@item.SoruKategoriKullanimi</td>
-                        <td>@item.SoruKategoriPuan</td>
+                        <td>@item.SoruKategorilerId</td>
+                        <td>@item.SoruKategorilerAdi</td>
+                        <td>@item.SoruKategorilerDerece</td>
+                        <td>@item.SoruKategorilerKullanimi</td>
+                        <td>@item.SoruKategorilerPuan</td>
                         <td class="text-center">
-                            <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="SoruKategorileri" asp-action="SoruKategoriGuncelle" asp-route-id="@item.SoruKategoriId">
+                            <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="SoruKategorileri" asp-action="SoruKategoriGuncelle" asp-route-id="@item.SoruKategorilerId">
                                 <i class="fas fa-edit"></i>
                             </a>
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="btnSoruSil" data-id="@item.SoruKategoriId">
+                            <a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="btnSoruSil" data-id="@item.SoruKategorilerId">
                                 <i class="fas fa-trash text-white"></i>
                             </a>
                         </td>
