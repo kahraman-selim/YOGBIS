@@ -29,7 +29,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             var requestModel = _soruBankasiBE.GetAllByKullaniciId(user.LoginId);
-            ViewBag.SoruKategorileri=_soruKategorileriBE.GetAllSoruKategoriler();
+            //ViewBag.SoruKategorileri=_soruKategorileriBE.GetAllSoruKategoriler();
             if (requestModel.IsSuccess)
                 return View(requestModel.Data);  
             
@@ -46,7 +46,7 @@ namespace YOGBIS.UI.Controllers
         }
         public IActionResult SoruEkle()
         {
-            ViewBag.SoruKategorileri = _soruKategorileriBE.GetAllSoruKategoriler().Data;
+            //ViewBag.SoruKategorileri = _soruKategorileriBE.GetAllSoruKategoriler().Data;
             //var data = _soruKategorileriBE.GetAllSoruKategoriler();
             //ViewBag.SoruKategorileri = data.Data.Select(q => new SelectListItem
             //{

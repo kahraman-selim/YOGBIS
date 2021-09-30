@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
@@ -22,13 +25,28 @@ namespace YOGBIS.UI.Controllers
         
         public IActionResult Index()
         {
-            var data = _soruKategorileriBE.GetAllSoruKategoriler();
-            if (data.IsSuccess)
+            if (User.IsInRole(ResultConstant.Admin_Role))
             {
-                var result = data.Data;
-                return View(result);
+                var data = _soruKategorileriBE.GetAllSoruKategoriler();
+                if (data.IsSuccess)
+                {
+                    var result = data.Data;
+                    return View(result);
+                }
+                return View();
             }
-            return View();
+            else
+            {
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                var requestModel = _soruKategorileriBE.GetAllByKullaniciId(user.LoginId);
+                //ViewBag.SoruKategorileri=_soruKategorileriBE.GetAllSoruKategoriler();
+                if (requestModel.IsSuccess)
+                    return View(requestModel.Data);
+
+                return View(user);
+            }
+
+
         }
         public IActionResult SoruKategoriEkle()
         {

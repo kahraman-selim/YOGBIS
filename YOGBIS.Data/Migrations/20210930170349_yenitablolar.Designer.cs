@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20210930170349_yenitablolar")]
+    partial class yenitablolar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -309,57 +311,6 @@ namespace YOGBIS.Data.Migrations
                     b.HasIndex("UlkeGruplariUlkeGrupId");
 
                     b.ToTable("Kitalars");
-
-                    b.HasData(
-                        new
-                        {
-                            KitaId = 1,
-                            KitaAciklama = "Afrika",
-                            KitaAdi = "Afrika",
-                            UlkeGrupId = 0
-                        },
-                        new
-                        {
-                            KitaId = 2,
-                            KitaAciklama = "Antartika",
-                            KitaAdi = "Antartika",
-                            UlkeGrupId = 0
-                        },
-                        new
-                        {
-                            KitaId = 3,
-                            KitaAciklama = "Asya",
-                            KitaAdi = "Asya",
-                            UlkeGrupId = 0
-                        },
-                        new
-                        {
-                            KitaId = 4,
-                            KitaAciklama = "Avrupa",
-                            KitaAdi = "Avrupa",
-                            UlkeGrupId = 0
-                        },
-                        new
-                        {
-                            KitaId = 5,
-                            KitaAciklama = "Avustralya",
-                            KitaAdi = "Avustralya",
-                            UlkeGrupId = 0
-                        },
-                        new
-                        {
-                            KitaId = 6,
-                            KitaAciklama = "Güney Amerika",
-                            KitaAdi = "Güney Amerika",
-                            UlkeGrupId = 0
-                        },
-                        new
-                        {
-                            KitaId = 7,
-                            KitaAciklama = "Kuzey Amerika",
-                            KitaAdi = "Kuzey Amerika",
-                            UlkeGrupId = 0
-                        });
                 });
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.MulakatSorulari", b =>

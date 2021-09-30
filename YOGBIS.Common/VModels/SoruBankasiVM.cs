@@ -9,8 +9,6 @@ namespace YOGBIS.Common.VModels
     public class SoruBankasiVM:BaseVM
     {
         [Key]
-        [Range(0, int.MaxValue, ErrorMessage = "Girilen sayı uygun değil !")]
-        [Required(ErrorMessage = "Soru numarasını yazınız...")]
         public int SoruBankasiId { get; set; }
 
         [Required(ErrorMessage = "Kategoriyi seçiniz...")]

@@ -118,7 +118,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
 
-        #region MulakatSoruSil
         public Result<bool> MulakatSorusuSil(int id)
         {
             var data = _unitOfWork.mulakatSorulariRepository.Get(id);
@@ -133,8 +132,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         }
-        #endregion
-
+       
         public Result<List<MulakatSorulariVM>> GetAllMulakatSorulariById(int id, string derece)
         {
             var data = _unitOfWork.mulakatSorulariRepository.GetAll(k => k.SoruSiraNo == id && k.Derecesi == derece).ToList();

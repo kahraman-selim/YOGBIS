@@ -42,6 +42,23 @@ namespace YOGBIS.Data.DataContext
                 entity.Property(m => m.LoginProvider).HasMaxLength(127);
                 entity.Property(m => m.Name).HasMaxLength(127);
             });
+
+            builder.Entity<Kitalar>().HasData(
+                new Kitalar() 
+                { KitaId = 1, KitaAdi = "Afrika", KitaAciklama = "Afrika"},
+                new Kitalar()
+                { KitaId = 2, KitaAdi = "Antartika", KitaAciklama = "Antartika" },
+                new Kitalar()
+                { KitaId = 3, KitaAdi = "Asya", KitaAciklama = "Asya" },
+                new Kitalar()
+                { KitaId = 4, KitaAdi = "Avrupa", KitaAciklama = "Avrupa" },
+                new Kitalar()
+                { KitaId = 5, KitaAdi = "Avustralya", KitaAciklama = "Avustralya" },
+                new Kitalar()
+                { KitaId = 6, KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika" },
+                new Kitalar()
+                { KitaId = 7, KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika" }
+                );
         }
 
         #region DbSetler

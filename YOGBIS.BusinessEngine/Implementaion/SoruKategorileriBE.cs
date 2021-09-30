@@ -28,7 +28,34 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var soruKategoriler = _mapper.Map<List<SoruKategoriler>, List<SoruKategorilerVM>>(data);
             return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, soruKategoriler);
         }
+        public Result<List<SoruKategorilerVM>> GetAllByKullaniciId(string userId)
+        {
+            var data = _unitOfWork.sorukategorilerRepository.GetAll(u => u.KullaniciId == userId,
+                includeProperties: "Kullanici").ToList();
+            if (data != null)
+            {
+                List<SoruKategorilerVM> returnData = new List<SoruKategorilerVM>();
 
+                foreach (var item in data)
+                {
+                    returnData.Add(new SoruKategorilerVM()
+                    {
+                        SoruKategorilerId = item.SoruKategorilerId,
+                        SoruKategorilerAdi=item.SoruKategorilerAdi,
+                        SoruKategorilerDerece=item.SoruKategorilerDerece,
+                        SoruKategorilerKullanimi=item.SoruKategorilerKullanimi,
+                        SoruKategorilerPuan=item.SoruKategorilerPuan,
+                        KayitTarihi = DateTime.Today,
+                        KullaniciId=item.KullaniciId
+                    });
+                }
+                return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<SoruKategorilerVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
         public Result<SoruKategorilerVM> GetAllSoruKategoriler(int id)
         {
             var data = _unitOfWork.sorukategorilerRepository.Get(id);
@@ -42,7 +69,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<SoruKategorilerVM>(false, ResultConstant.RecordNotFound);
             }
         }
-
         public Result<SoruKategorilerVM> SoruKategoriEkle(SoruKategorilerVM model)
         {
             if (model != null)
@@ -65,7 +91,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<SoruKategorilerVM>(false, "Boş veri olamaz");
             }
         }
-
         public Result<SoruKategorilerVM> SoruKategoriGuncelle(SoruKategorilerVM model)
         {
             if (model != null)
@@ -88,7 +113,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<SoruKategorilerVM>(false, "Boş veri olamaz");
             }
         }
-
         public Result<bool> SoruKategoriSil(int id)
         {
             var data = _unitOfWork.sorukategorilerRepository.Get(id);
