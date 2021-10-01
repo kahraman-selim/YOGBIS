@@ -22,7 +22,7 @@ namespace YOGBIS.UI.Controllers
         
         public IActionResult Index()
         {
-            var data = _mulakatSorulariBE.GetAllMulakatSorulari();
+            var data = _mulakatSorulariBE.MulakatSorulariGetir();
             if (data.IsSuccess)
             {
                 var result = data.Data;
@@ -80,7 +80,7 @@ namespace YOGBIS.UI.Controllers
         {
             if (id < 0)
                 return View();
-            var data = _mulakatSorulariBE.GetAllMulakatSorulari(id);
+            var data = _mulakatSorulariBE.MulakatSorulariGetir(id);
             if (data.IsSuccess)
                 return View(data.Data);
             return View();

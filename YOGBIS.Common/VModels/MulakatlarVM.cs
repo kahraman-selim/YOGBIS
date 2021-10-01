@@ -21,7 +21,7 @@ namespace YOGBIS.Common.VModels
         public DateTime BitisTarihi { get; set; }
         public int AdaySayisi { get; set; } = 0;
         public int SorulanSoruSayisi { get; set; } = 0;
-        public bool? Durumu { get; set; }
+        public bool Durumu { get; set; } = true;
         public string MulakatAciklama { get; set; }
         public string KullaniciId { get; set; }
         public KullaniciVM KullaniciVm { get; set; }

@@ -22,14 +22,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
             _mapper = mapper;
         }
 
-        public Result<List<KullaniciVM>> GetAllKullanici()
+        public Result<List<KullaniciVM>> KullaniciGetir()
         {
             var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
             var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
             return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, kullanicilar);
         }
 
-        public Result<KullaniciVM> GetAllKullanici(int id)
+        public Result<KullaniciVM> KullaniciGetir(int id)
         {
             var data = _unitOfWork.kullaniciRepository.Get(id);
             if (data != null)

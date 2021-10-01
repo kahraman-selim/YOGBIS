@@ -10,6 +10,7 @@ namespace YOGBIS.Common.VModels
     {
         [Key]
         [Required(ErrorMessage = "Kategori numarasını yazınız...")]
+        [Range(1, int.MaxValue, ErrorMessage = "{0} dan küçük bir sayı giremezsiniz !")]
         public int SoruKategorilerId { get; set; }
         [Required(ErrorMessage = "Kategori adını yazınız...")]
         public string SoruKategorilerAdi { get; set; }
@@ -17,7 +18,7 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Kategori kullanımını seçiniz...")]
         public string SoruKategorilerKullanimi { get; set; }
 
-        [Range(0, 25, ErrorMessage = "25 den fazla bir sayı giremezsiniz !")]
+        [Range(0, 30, ErrorMessage = "30 dan fazla bir sayı giremezsiniz !")]
         [Required(ErrorMessage = "Kategori puanını yazınız...")]
         public int SoruKategorilerPuan { get; set; }
 

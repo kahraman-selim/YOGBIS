@@ -22,13 +22,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public Result<List<SoruKategorilerVM>> GetAllSoruKategoriler()
+        public Result<List<SoruKategorilerVM>> SoruKategoriGetir()
         {
             var data = _unitOfWork.sorukategorilerRepository.GetAll().ToList();
             var soruKategoriler = _mapper.Map<List<SoruKategoriler>, List<SoruKategorilerVM>>(data);
             return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, soruKategoriler);
         }
-        public Result<List<SoruKategorilerVM>> GetAllByKullaniciId(string userId)
+        public Result<List<SoruKategorilerVM>> SoruKategoriKullaniciId(string userId)
         {
             var data = _unitOfWork.sorukategorilerRepository.GetAll(u => u.KullaniciId == userId,
                 includeProperties: "Kullanici").ToList();
@@ -45,7 +45,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruKategorilerDerece=item.SoruKategorilerDerece,
                         SoruKategorilerKullanimi=item.SoruKategorilerKullanimi,
                         SoruKategorilerPuan=item.SoruKategorilerPuan,
-                        KayitTarihi = DateTime.Today,
+                        KayitTarihi = item.KayitTarihi,
                         KullaniciId=item.KullaniciId
                     });
                 }
@@ -56,7 +56,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<SoruKategorilerVM>>(false, ResultConstant.RecordNotFound);
             }
         }
-        public Result<SoruKategorilerVM> GetAllSoruKategoriler(int id)
+        public Result<SoruKategorilerVM> SoruKategoriGetir(int id)
         {
             var data = _unitOfWork.sorukategorilerRepository.Get(id);
             if (data != null)

@@ -7,7 +7,7 @@ namespace YOGBIS.BusinessEngine.Contracts
 {
     public interface IMulakatSorulariBE
     {
-        Result<List<MulakatSorulariVM>> GetAllMulakatSorulari();
+        Result<List<MulakatSorulariVM>> MulakatSorulariGetir();
         /// <summary>
         /// Mülakat Sorusu Ekleme Methodu
         /// </summary>
@@ -19,12 +19,12 @@ namespace YOGBIS.BusinessEngine.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Result<MulakatSorulariVM> GetAllMulakatSorulari(int id);
+        Result<MulakatSorulariVM> MulakatSorulariGetir(int id);
 
         Result<MulakatSorulariVM> MulakatSorusuGuncelle(MulakatSorulariVM model);
         
         Result<bool> MulakatSorusuSil(int id);
 
-        Result<List<MulakatSorulariVM>> GetAllMulakatSorulariById(int id, string derece);
+        Result<List<MulakatSorulariVM>> MulakatSorulariGetir(int id, string derece);
     }
 }

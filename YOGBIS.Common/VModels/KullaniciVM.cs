@@ -14,10 +14,16 @@ namespace YOGBIS.Common.VModels
         public string EMail { get; set; }
         [Display(Name = "Telefon Numarası")]
         public string PhoneNumber { get; set; }
+        [StringLength(11,ErrorMessage ="TC Kimlik Numaranızı kontrol ediniz")]
         public string TcKimlikNo { get; set; }
+        [Required (ErrorMessage ="{0} boş geçilemez")]
         public string Ad { get; set; }
+        [Required(ErrorMessage = "{0} boş geçilemez")]
         public string Soyad { get; set; }
-        public DateTime DogumTarihi { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0,d}")]
+        [DataType(DataType.DateTime)]
+        public DateTime KayitTarihi { get; set; } = DateTime.Now;
         public int KulaniciAdDegLimiti { get; set; } = 10;
         public byte[] KullaniciResim { get; set; }
         public bool? Aktif { get; set; }

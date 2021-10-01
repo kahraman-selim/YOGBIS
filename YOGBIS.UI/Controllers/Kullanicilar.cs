@@ -29,7 +29,7 @@ namespace YOGBIS.UI.Controllers
 
         public IActionResult Index()
         {
-            var data = _kullaniciBE.GetAllKullanici();
+            var data = _kullaniciBE.KullaniciGetir();
             if (data.IsSuccess)
             {
                 var result = data.Data;
@@ -43,7 +43,7 @@ namespace YOGBIS.UI.Controllers
         {
             if (id < 0)
                 return View();
-            var data = _kullaniciBE.GetAllKullanici(id);
+            var data = _kullaniciBE.KullaniciGetir(id);
             if (data.IsSuccess)
                 return View(data.Data);
             return View();

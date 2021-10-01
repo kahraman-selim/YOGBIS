@@ -12,7 +12,5 @@ namespace YOGBIS.Common.VModels
         public string Changed { get; set; }
         public int Kind { get; set; }
         public DateTime Created { get; set; }
-        public string KullaniciId { get; set; }       
-        public KullaniciVM KullaniciVm { get; set; }
     }
 }

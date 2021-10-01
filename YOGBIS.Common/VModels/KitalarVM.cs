@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
 {
@@ -11,7 +12,6 @@ namespace YOGBIS.Common.VModels
         public int KitaId { get; set; }
         public string KitaAdi { get; set; }
         public string KitaAciklama { get; set; }
-        public int UlkeGrupId { get; set; }
-        public UlkeGruplariVM UlkeGruplariVm { get; set; }
+        public List<UlkeGruplariKitalar> UlkeGruplariKitalarsVm { get; set; }
     }
 }

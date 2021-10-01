@@ -9,6 +9,7 @@ namespace YOGBIS.Common.VModels
     {
         [Key]
         public int UlkeId { get; set; }
+        [Required (ErrorMessage ="Ülke adı zorunlu bir alandır")]
         public string UlkeAdi { get; set; }
         public byte[] UlkeBayrak { get; set; }
         public string UlkeAciklama { get; set; }

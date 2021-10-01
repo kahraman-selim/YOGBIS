@@ -7,15 +7,15 @@ namespace YOGBIS.BusinessEngine.Contracts
 {
     public interface ISoruBankasiBE
     {
-        Result<List<SoruBankasiVM>> GetAllSorular();
+        Result<List<SoruBankasiVM>> SoruGetir();
         Result<SoruBankasiVM> SoruEkle(SoruBankasiVM model);
 
-        Result<SoruBankasiVM> GetAllSorular(int id);
+        Result<SoruBankasiVM> SoruGetir(int id);
 
         Result<SoruBankasiVM> SoruGuncelle(SoruBankasiVM model);
         
         Result<bool> SoruSil(int id);
 
-        Result<List<SoruBankasiVM>> GetAllByKullaniciId(string userId);
+        Result<List<SoruBankasiVM>> SoruGetirKullaniciId(string userId);
     }
 }

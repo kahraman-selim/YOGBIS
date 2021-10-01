@@ -27,7 +27,7 @@ namespace YOGBIS.UI.Controllers
         {
             if (User.IsInRole(ResultConstant.Admin_Role))
             {
-                var data = _soruKategorileriBE.GetAllSoruKategoriler();
+                var data = _soruKategorileriBE.SoruKategoriGetir();
                 if (data.IsSuccess)
                 {
                     var result = data.Data;
@@ -38,7 +38,7 @@ namespace YOGBIS.UI.Controllers
             else
             {
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-                var requestModel = _soruKategorileriBE.GetAllByKullaniciId(user.LoginId);
+                var requestModel = _soruKategorileriBE.SoruKategoriKullaniciId(user.LoginId);
                 //ViewBag.SoruKategorileri=_soruKategorileriBE.GetAllSoruKategoriler();
                 if (requestModel.IsSuccess)
                     return View(requestModel.Data);
@@ -98,7 +98,7 @@ namespace YOGBIS.UI.Controllers
         {
             if (id < 0)
                 return View();
-            var data = _soruKategorileriBE.GetAllSoruKategoriler(id);
+            var data = _soruKategorileriBE.SoruKategoriGetir(id);
             if (data.IsSuccess)
                 return View(data.Data);
             return View();

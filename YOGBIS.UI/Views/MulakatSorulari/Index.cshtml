@@ -66,7 +66,7 @@
                                 <td>@item.Soru</td>
                                 <td>@item.Cevap</td>
                                 <td class="text-center">
-                                    <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="MulakatSorulari" asp-action="MulakatSoruGuncelle" asp-route-id="@item.MulakatSorulariId">
+                                    <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="MulakatSorulari" asp-action="MulakatSorusuGuncelle" asp-route-id="@item.MulakatSorulariId">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 </td>
@@ -104,7 +104,7 @@
                         var id = btn.data("id");
                         $.ajax({
                             type: "DELETE",
-                            url: "/MulakatSorulari/MulakatSoruSil/" + id,
+                            url: "/MulakatSorulari/MulakatSorusuSil/" + id,
                             success: function () {
                                 btn.parent().parent().remove();
                                 location.reload();

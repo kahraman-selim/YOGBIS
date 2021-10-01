@@ -45,19 +45,19 @@ namespace YOGBIS.Data.DataContext
 
             builder.Entity<Kitalar>().HasData(
                 new Kitalar() 
-                { KitaId = 1, KitaAdi = "Afrika", KitaAciklama = "Afrika"},
+                { KitaId = 1, KitaAdi = "Afrika", KitaAciklama = "Afrika Kıtası"},
                 new Kitalar()
-                { KitaId = 2, KitaAdi = "Antartika", KitaAciklama = "Antartika" },
+                { KitaId = 2, KitaAdi = "Antartika", KitaAciklama = "Antartika Kıtası"},
                 new Kitalar()
-                { KitaId = 3, KitaAdi = "Asya", KitaAciklama = "Asya" },
+                { KitaId = 3, KitaAdi = "Asya", KitaAciklama = "Asya Kıtası"},
                 new Kitalar()
-                { KitaId = 4, KitaAdi = "Avrupa", KitaAciklama = "Avrupa" },
+                { KitaId = 4, KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası"},
                 new Kitalar()
-                { KitaId = 5, KitaAdi = "Avustralya", KitaAciklama = "Avustralya" },
+                { KitaId = 5, KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası"},
                 new Kitalar()
-                { KitaId = 6, KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika" },
+                { KitaId = 6, KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası"},
                 new Kitalar()
-                { KitaId = 7, KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika" }
+                { KitaId = 7, KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası"}
                 );
         }
 
@@ -73,6 +73,9 @@ namespace YOGBIS.Data.DataContext
         public DbSet<SoruBankasi> SoruBankasis { get; set; }        
         public DbSet<SoruKategori> SoruKategoris { get; set; }
         public DbSet<SoruKategoriler> SoruKategorilers { get; set; }
+        public DbSet<UlkeGruplariKitalar> UlkeGruplariKitalars { get; set; }
+        public DbSet<Gecmis> Gecmiss { get; set; }        
+
         #endregion
     }
 }

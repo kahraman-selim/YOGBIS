@@ -22,7 +22,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             _mapper = mapper;
         }
 
-        public Result<List<MulakatSorulariVM>> GetAllMulakatSorulari()
+        public Result<List<MulakatSorulariVM>> MulakatSorulariGetir()
         {
             //1. Yöntem
             var data = _unitOfWork.mulakatSorulariRepository.GetAll().ToList();            
@@ -58,7 +58,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             #endregion
         }
 
-        public Result<MulakatSorulariVM> GetAllMulakatSorulari(int id)
+        public Result<MulakatSorulariVM> MulakatSorulariGetir(int id)
         {
             var data = _unitOfWork.mulakatSorulariRepository.Get(id);
             if (data!=null)
@@ -133,7 +133,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
        
-        public Result<List<MulakatSorulariVM>> GetAllMulakatSorulariById(int id, string derece)
+        public Result<List<MulakatSorulariVM>> MulakatSorulariGetir(int id, string derece)
         {
             var data = _unitOfWork.mulakatSorulariRepository.GetAll(k => k.SoruSiraNo == id && k.Derecesi == derece).ToList();
             if (data != null)

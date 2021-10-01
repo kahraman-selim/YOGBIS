@@ -7,10 +7,10 @@ namespace YOGBIS.BusinessEngine.Contracts
 {
     public interface ISoruKategorileriBE
     {
-        Result<List<SoruKategorilerVM>> GetAllSoruKategoriler();
+        Result<List<SoruKategorilerVM>> SoruKategoriGetir();
         Result<SoruKategorilerVM> SoruKategoriEkle(SoruKategorilerVM model);
-        Result<List<SoruKategorilerVM>> GetAllByKullaniciId(string userId);        
-        Result<SoruKategorilerVM> GetAllSoruKategoriler(int id);
+        Result<List<SoruKategorilerVM>> SoruKategoriKullaniciId(string userId);        
+        Result<SoruKategorilerVM> SoruKategoriGetir(int id);
         Result<SoruKategorilerVM> SoruKategoriGuncelle(SoruKategorilerVM model);        
         Result<bool> SoruKategoriSil(int id);        
     }

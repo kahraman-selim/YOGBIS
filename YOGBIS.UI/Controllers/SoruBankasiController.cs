@@ -28,7 +28,7 @@ namespace YOGBIS.UI.Controllers
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            var requestModel = _soruBankasiBE.GetAllByKullaniciId(user.LoginId);
+            var requestModel = _soruBankasiBE.SoruGetirKullaniciId(user.LoginId);
             //ViewBag.SoruKategorileri=_soruKategorileriBE.GetAllSoruKategoriler();
             if (requestModel.IsSuccess)
                 return View(requestModel.Data);  
@@ -103,7 +103,7 @@ namespace YOGBIS.UI.Controllers
         {
             if (id < 0)
                 return View();
-            var data = _soruBankasiBE.GetAllSorular(id);
+            var data = _soruBankasiBE.SoruGetir(id);
             if (data.IsSuccess)
                 return View(data.Data);
             return View();

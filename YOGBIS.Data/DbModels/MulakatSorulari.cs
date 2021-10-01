@@ -20,9 +20,9 @@ namespace YOGBIS.Data.DbModels
         public string SoruKategoriAdi { get; set; }
         public string Derecesi { get; set; }
         public string Soru { get; set; }
-        public string Cevap { get; set; }
-        [ForeignKey("MulakatId")]
+        public string Cevap { get; set; }        
         public int MulakatId { get; set; }
+        [ForeignKey("MulakatId")]
         public Mulakatlar Mulakatlar { get; set; }
         public string KullaniciId { get; set; }
         [ForeignKey("KullaniciId")]
