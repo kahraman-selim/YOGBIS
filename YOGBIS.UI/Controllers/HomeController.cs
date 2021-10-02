@@ -21,12 +21,12 @@ namespace YOGBIS.UI.Controllers
        public IActionResult Index()
         {
 
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            //var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
             if (User.IsInRole(ResultConstant.Admin_Role))
             {
-                return View(user);
-                //return View();
+                //return View(user);
+                return View();
             }
             else
             {

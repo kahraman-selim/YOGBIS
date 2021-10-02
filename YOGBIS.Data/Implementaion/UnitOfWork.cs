@@ -26,6 +26,7 @@ namespace YOGBIS.Data.Implementaion
             kullaniciRepository = new KullaniciRepository(_ctx);
             autoHistoryRepository = new GecmişRepository(_ctx);
             ulkeGruplariKitalarRepository = new UlkeGruplariKitalarRepository(_ctx);
+            derecelerRepository = new DerecelerRepository(_ctx);
         }
 
         public IUlkeGruplariRepository ulkeGruplariRepository { get; private set; }
@@ -41,8 +42,8 @@ namespace YOGBIS.Data.Implementaion
         public  IKullaniciRepository kullaniciRepository { get; private set; }
         public IGecmişRepository autoHistoryRepository { get; private set; }
         public IUlkeGruplariKitalarRepository ulkeGruplariKitalarRepository { get; private set; }
+        public IDerecelerRepository derecelerRepository { get; private set; }
         
-
         public void Save()
         {
             _ctx.EnsureAutoHistory();

@@ -39,14 +39,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruKategoriId = item.SoruKategoriId,                        
                         Soru =item.Soru,
                         Cevap=item.Cevap,
-                        Derecesi=item.Derecesi,
+                        Id=item.Id,
                         SorulmaSayisi=item.SorulmaSayisi,
                         SoruDurumu=item.SoruDurumu,
                         KaydedenId=item.KaydedenId,
                         OnaylayanId=item.OnaylayanId,
                         OnayDurumu=item.OnayDurumu,
                         OnayAciklama=item.OnayAciklama,
-                        KayitTarihi=DateTime.Now
+                        KayitTarihi=item.KayitTarihi
                     });
                 }
                 return new Result<List<SoruBankasiVM>>(true, ResultConstant.RecordFound, returnData);

@@ -46,6 +46,9 @@ namespace YOGBIS.UI
             services.AddScoped<IMulakatSorulariBE, MulakatSorulariBE>();
             services.AddScoped<ISoruKategorileriBE, SoruKategorileriBE>();
             services.AddScoped<IKullaniciBE, KullaniciBE>();
+            services.AddScoped<IDerecelerBE, DerecelerBE>();
+            services.AddScoped<IUlkelerBE, UlkelerBE>();
+            services.AddScoped<IKitalarBE, KitalarBE>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(Maps));
 
@@ -58,7 +61,7 @@ namespace YOGBIS.UI
             services.AddMvc();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(60);
+                options.IdleTimeout = TimeSpan.FromSeconds(3600);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });

@@ -41,12 +41,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new SoruKategorilerVM()
                     {
                         SoruKategorilerId = item.SoruKategorilerId,
-                        SoruKategorilerAdi=item.SoruKategorilerAdi,
-                        SoruKategorilerDerece=item.SoruKategorilerDerece,
+                        SoruKategorilerAdi=item.SoruKategorilerAdi,                        
                         SoruKategorilerKullanimi=item.SoruKategorilerKullanimi,
                         SoruKategorilerPuan=item.SoruKategorilerPuan,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId=item.KullaniciId
+                        KullaniciId=item.KullaniciId,
+                        Id=item.Id,
+                        DereceAdi=item.DereceAdi
                     });
                 }
                 return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, returnData);

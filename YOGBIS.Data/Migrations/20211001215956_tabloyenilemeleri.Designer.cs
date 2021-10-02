@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20211001215956_tabloyenilemeleri")]
+    partial class tabloyenilemeleri
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -534,8 +536,8 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("Cevap")
                         .HasColumnType("text");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Derecesi")
+                        .HasColumnType("text");
 
                     b.Property<string>("KaydedenId")
                         .HasColumnType("varchar(767)");
@@ -565,8 +567,6 @@ namespace YOGBIS.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("SoruBankasiId");
-
-                    b.HasIndex("Id");
 
                     b.HasIndex("KaydedenId");
 
@@ -878,12 +878,6 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.SoruBankasi", b =>
                 {
-                    b.HasOne("YOGBIS.Data.DbModels.Dereceler", "Dereceler")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kaydeden")
                         .WithMany()
                         .HasForeignKey("KaydedenId");

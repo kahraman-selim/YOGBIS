@@ -15,7 +15,9 @@ namespace YOGBIS.Data.DbModels
         public SoruKategoriler SoruKategoriler { get; set; }
         public string Soru { get; set; }
         public string Cevap { get; set; }
-        public string Derecesi { get; set; }
+        public int Id { get; set; }
+        [ForeignKey("Id")]
+        public Dereceler Dereceler { get; set; }
         public int SorulmaSayisi { get; set; } = 0;
         public bool SoruDurumu { get; set; } = true;      
         public string KaydedenId { get; set; }

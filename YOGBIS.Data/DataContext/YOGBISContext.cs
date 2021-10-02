@@ -74,7 +74,8 @@ namespace YOGBIS.Data.DataContext
         public DbSet<SoruKategori> SoruKategoris { get; set; }
         public DbSet<SoruKategoriler> SoruKategorilers { get; set; }
         public DbSet<UlkeGruplariKitalar> UlkeGruplariKitalars { get; set; }
-        public DbSet<Gecmis> Gecmiss { get; set; }        
+        public DbSet<Gecmis> Gecmiss { get; set; }
+        public DbSet<Dereceler> Derecelers { get; set; }
 
         #endregion
     }
