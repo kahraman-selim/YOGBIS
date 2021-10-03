@@ -62,15 +62,17 @@ namespace YOGBIS.UI.Controllers
         }
 
         [HttpPost]
-        public IActionResult UlkeEkle(UlkelerVM model,int? Id)
+        public IActionResult UlkeEkle(UlkelerVM model, int? UlkeId)
         {            
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
-            if (Id>0)
+            if (UlkeId>0)
             {
-                var data = _ulkelerBE.UlkeGuncelle(model);
-                return View(model);
+                var data = _ulkelerBE.UlkeGuncelle(model, user);
+
+                return RedirectToAction("Index");
             }
             else
             {
@@ -99,6 +101,8 @@ namespace YOGBIS.UI.Controllers
 
         public ActionResult Guncelle(int? id) 
         {
+            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
+
             if (id>0)
             {
                 var data = _ulkelerBE.UlkeGetir((int)id);

@@ -69,13 +69,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
 
-        public Result<UlkelerVM> UlkeGuncelle(UlkelerVM model)
+        public Result<UlkelerVM> UlkeGuncelle(UlkelerVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
                     var ulkeler = _mapper.Map<UlkelerVM, Ulkeler>(model);
+                    ulkeler.KullaniciId = user.LoginId;
                     _unitOfWork.ulkelerRepository.Update(ulkeler);
                     _unitOfWork.Save();
                     return new Result<UlkelerVM>(true, ResultConstant.RecordCreateSuccess);

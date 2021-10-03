@@ -54,12 +54,12 @@
                                     <td>@item.UlkeAciklama</td>
                                     <td>@item.KullaniciAdi</td>
                                     <td class="text-center">
-                                        <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Ulkeler" asp-action="UlkeEkle" asp-route-id="@item.UlkeId">
+                                        <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Ulkeler" asp-action="Guncelle" asp-route-id="@item.UlkeId">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                     </td>
                                     <td class="text-center">
-                                        <a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="btnSil" data-id="@item.UlkeId">
+                                        <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.UlkeId">
                                             <i class="fas fa-trash text-white"></i>
                                         </a>
                                     </td>
