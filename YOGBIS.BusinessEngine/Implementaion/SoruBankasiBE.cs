@@ -38,15 +38,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruBankasiId = item.SoruBankasiId,
                         SoruKategoriId = item.SoruKategoriId,                        
                         Soru =item.Soru,
-                        Cevap=item.Cevap,
-                        Id=item.Id,
+                        Cevap=item.Cevap,                        
                         SorulmaSayisi=item.SorulmaSayisi,
                         SoruDurumu=item.SoruDurumu,
                         KaydedenId=item.KaydedenId,
                         OnaylayanId=item.OnaylayanId,
                         OnayDurumu=item.OnayDurumu,
                         OnayAciklama=item.OnayAciklama,
-                        KayitTarihi=item.KayitTarihi
+                        KayitTarihi=item.KayitTarihi,
+                        DereceId=item.DereceId
                     });
                 }
                 return new Result<List<SoruBankasiVM>>(true, ResultConstant.RecordFound, returnData);

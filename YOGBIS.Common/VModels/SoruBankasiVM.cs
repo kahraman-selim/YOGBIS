@@ -20,7 +20,7 @@ namespace YOGBIS.Common.VModels
         public string Cevap { get; set; }
 
         [Required(ErrorMessage = "Derecesini seçiniz...")]
-        public int Id { get; set; }
+        public int DereceId { get; set; }
         public DerecelerVM DerecelerVm { get; set; }
         public int SorulmaSayisi { get; set; } = 0;
 

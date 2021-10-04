@@ -46,7 +46,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruKategorilerPuan=item.SoruKategorilerPuan,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciId=item.KullaniciId,
-                        Id=item.Id,
+                        DereceId=item.DereceId,
                         DereceAdi=item.Dereceler.DereceAdi
                     });
                 }

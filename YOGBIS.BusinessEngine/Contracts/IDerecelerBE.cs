@@ -8,7 +8,7 @@ namespace YOGBIS.BusinessEngine.Contracts
 {
     public interface IDerecelerBE
     {
-        Result<List<DerecelerVM>> DereceGetir();
+        Result<List<DerecelerVM>> DereceleriGetir();
         Result<DerecelerVM> DereceEkle(DerecelerVM model, SessionContext user);
 
         Result<DerecelerVM> DereceGetir(int id);

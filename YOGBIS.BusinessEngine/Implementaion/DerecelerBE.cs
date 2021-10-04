@@ -23,7 +23,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public Result<List<DerecelerVM>> DereceGetir()
+        public Result<List<DerecelerVM>> DereceleriGetir()
         {
             var data = _unitOfWork.derecelerRepository.GetAll().ToList();
             var dereceler = _mapper.Map<List<Dereceler>, List<DerecelerVM>>(data);
@@ -40,7 +40,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     returnData.Add(new DerecelerVM()
                     {                        
-                        Id=item.Id,
+                        DereceId=item.DereceId,
                         DereceAdi=item.DereceAdi,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciId = item.KullaniciId                        

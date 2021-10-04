@@ -25,13 +25,12 @@ namespace YOGBIS.UI.Controllers
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            var data = _derecelerBE.DereceGetir(); 
-            if (data.IsSuccess)
+            var requestmodel= _derecelerBE.DereceleriGetir(); 
+            if (requestmodel.IsSuccess)
             {
-                var result = data.Data;
-                return View(result);
+                return View(requestmodel.Data);
             }
-            return View();
+            return View(user);
         }
 
         public IActionResult DereceEkle() 
@@ -39,12 +38,13 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             return View();
         }
+        
         [HttpPost]
-        public IActionResult DereceEkle(DerecelerVM model, int? Id) 
+        public IActionResult DereceEkle(DerecelerVM model, int? DereceId) 
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            if (Id > 0)
+            if (DereceId > 0)
             {
                 var data = _derecelerBE.DereceGuncelle(model, user);
 

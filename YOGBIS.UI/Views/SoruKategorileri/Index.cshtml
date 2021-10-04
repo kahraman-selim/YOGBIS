@@ -62,12 +62,12 @@
                         <td>@item.SoruKategorilerKullanimi</td>
                         <td>@item.SoruKategorilerPuan</td>
                         <td class="text-center">
-                            <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="SoruKategorileri" asp-action="SoruKategoriGuncelle" asp-route-id="@item.SoruKategorilerId">
+                            <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="SoruKategorileri" asp-action="Guncelle" asp-route-id="@item.SoruKategorilerId">
                                 <i class="fas fa-edit"></i>
                             </a>
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="btnSoruSil" data-id="@item.SoruKategorilerId">
+                            <a class="btn btn-sm btn-danger btnSoruSil" title="Sil" id="btnSil" data-id="@item.SoruKategorilerId">
                                 <i class="fas fa-trash text-white"></i>
                             </a>
                         </td>
@@ -94,7 +94,7 @@
     <script type="text/javascript">
 
         $(function () {
-            $("#myTable").on("click", ".btnSoruSil", function () {
+            $("#myTable").on("click", ".btnSil", function () {
                 var btn = $(this);
                 bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
                     if (result) {

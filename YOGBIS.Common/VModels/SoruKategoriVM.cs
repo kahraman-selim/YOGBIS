@@ -8,7 +8,7 @@ namespace YOGBIS.Common.VModels
 {
     public class SoruKategoriVM
     {
-        public int Id { get; set; }
+        public int SoruKategoriId { get; set; }
         public int SoruId { get; set; }
         public SoruBankasiVM SoruBankasiVm { get; set; }
         public int KategoriId { get; set; }

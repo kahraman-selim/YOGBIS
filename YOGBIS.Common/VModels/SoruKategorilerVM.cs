@@ -23,7 +23,7 @@ namespace YOGBIS.Common.VModels
         public int SoruKategorilerPuan { get; set; }
 
         [Required(ErrorMessage = "Kategori derecesini seçiniz...")]
-        public int Id { get; set; }
+        public int DereceId { get; set; }
         public string DereceAdi { get; set; }
         public DerecelerVM DerecelerVm { get; set; }
         public string KullaniciId { get; set; }

@@ -255,7 +255,7 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.Dereceler", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DereceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -268,7 +268,7 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("KullaniciId")
                         .HasColumnType("varchar(767)");
 
-                    b.HasKey("Id");
+                    b.HasKey("DereceId");
 
                     b.HasIndex("KullaniciId");
 
@@ -503,7 +503,7 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("Cevap")
                         .HasColumnType("text");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("DereceId")
                         .HasColumnType("int");
 
                     b.Property<string>("KaydedenId")
@@ -535,7 +535,7 @@ namespace YOGBIS.Data.Migrations
 
                     b.HasKey("SoruBankasiId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("DereceId");
 
                     b.HasIndex("KaydedenId");
 
@@ -548,7 +548,7 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.SoruKategori", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("SoruKategoriId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -564,7 +564,7 @@ namespace YOGBIS.Data.Migrations
                     b.Property<int?>("SoruKategorilerId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("SoruKategoriId");
 
                     b.HasIndex("SoruBankasiId");
 
@@ -579,7 +579,7 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("DereceId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("KayitTarihi")
@@ -599,7 +599,7 @@ namespace YOGBIS.Data.Migrations
 
                     b.HasKey("SoruKategorilerId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("DereceId");
 
                     b.HasIndex("KullaniciId");
 
@@ -839,7 +839,7 @@ namespace YOGBIS.Data.Migrations
                 {
                     b.HasOne("YOGBIS.Data.DbModels.Dereceler", "Dereceler")
                         .WithMany()
-                        .HasForeignKey("Id")
+                        .HasForeignKey("DereceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -873,7 +873,7 @@ namespace YOGBIS.Data.Migrations
                 {
                     b.HasOne("YOGBIS.Data.DbModels.Dereceler", "Dereceler")
                         .WithMany()
-                        .HasForeignKey("Id")
+                        .HasForeignKey("DereceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

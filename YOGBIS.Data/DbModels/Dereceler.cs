@@ -9,7 +9,7 @@ namespace YOGBIS.Data.DbModels
     public class Dereceler:Base
     {
         [Key]
-        public int Id { get; set; }
+        public int DereceId { get; set; }
         public string DereceAdi { get; set; }
         public string KullaniciId { get; set; }
         [ForeignKey("KullaniciId")]

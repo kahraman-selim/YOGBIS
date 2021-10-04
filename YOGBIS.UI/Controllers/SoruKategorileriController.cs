@@ -18,112 +18,68 @@ namespace YOGBIS.UI.Controllers
     {
        
         private readonly ISoruKategorileriBE _soruKategorileriBE;
-        public SoruKategorileriController(ISoruKategorileriBE soruKategorileriBE)
+        private readonly IDerecelerBE _derecelerBE;
+        public SoruKategorileriController(ISoruKategorileriBE soruKategorileriBE, IDerecelerBE derecelerBE)
         {
             _soruKategorileriBE = soruKategorileriBE;
+            _derecelerBE = derecelerBE;
         }        
         
         public IActionResult Index()
         {
-            if (User.IsInRole(ResultConstant.Admin_Role))
-            {
-                var data = _soruKategorileriBE.SoruKategoriGetir();
-                if (data.IsSuccess)
-                {
-                    var result = data.Data;
-                    return View(result);
-                }
-                return View();
-            }
-            else
-            {
-                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-                var requestModel = _soruKategorileriBE.SoruKategoriKullaniciId(user.LoginId);
-                //ViewBag.SoruKategorileri=_soruKategorileriBE.GetAllSoruKategoriler();
-                if (requestModel.IsSuccess)
-                    return View(requestModel.Data);
 
-                return View(user);
-            }
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir();
 
+            var requestModel = _soruKategorileriBE.SoruKategoriGetir();
+            if (requestModel.IsSuccess)
+                return View(requestModel.Data);
+
+            return View(user);
 
         }
         public IActionResult SoruKategoriEkle()
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir();
             return View();
         }        
         [HttpPost]
-        public IActionResult SoruKategoriEkle(SoruKategorilerVM model)
+        public IActionResult SoruKategoriEkle(SoruKategorilerVM model, int? SoruKategorilerId)
         {
-            #region Ekleme ve Güncelleme Örneği
-            //if (model.MulakatSorulariId>0)
-            //{
-            //    var data = _mulakatSorulariBE.MulakatSorusuGuncelle(model);
-            //}
-            //else
-            //{
-            //    if (ModelState.IsValid)
-            //    {
-            //        var data = _mulakatSorulariBE.MulakatSorusuEkle(model);
-            //        if (data.IsSuccess)
-            //        {
-            //            return RedirectToAction("Index");
-            //        }
-            //        return View(model);
-            //    }
-            //    else
-            //    {
-            //        return View(model);
-            //    }
-            //} 
-            #endregion
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            if (ModelState.IsValid)
-            {
-                var data = _soruKategorileriBE.SoruKategoriEkle(model,user);
-                if (data.IsSuccess)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View(model);
-            }
-            else
-            {
-                return View(model);
-            }
-        }
-        
-        [HttpGet]
-        public IActionResult SoruKategoriGuncelle(int id)
-        {
-            if (id < 0)
-                return View();
-            var data = _soruKategorileriBE.SoruKategoriGetir(id);
-            if (data.IsSuccess)
-                return View(data.Data);
-            return View();
-        }
-        
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public IActionResult SoruKategoriGuncelle(SoruKategorilerVM model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-                var data = _soruKategorileriBE.SoruKategoriGuncelle(model,user);
-                if (data.IsSuccess)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View(model);
-            }
-            else
-            {
-                return View(model);
-            }
-        }
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir();
 
+            if (SoruKategorilerId>0)
+            {
+                var data = _soruKategorileriBE.SoruKategoriGuncelle(model, user);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var data = _soruKategorileriBE.SoruKategoriEkle(model, user);
+                if (data.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+                return View(model);
+            }
+        }
+        
+        public IActionResult Guncelle(int? id)
+        {
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir();
+
+            if (id>0)
+            {
+                var data = _soruKategorileriBE.SoruKategoriGetir((int)id);
+                return View(data.Data);
+            }
+            else
+            {
+                return View();
+            }
+        }
         
         [HttpDelete]
         public IActionResult SoruKategoriSil(int id)

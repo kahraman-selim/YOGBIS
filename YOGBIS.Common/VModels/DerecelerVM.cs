@@ -9,7 +9,7 @@ namespace YOGBIS.Common.VModels
     public class DerecelerVM:BaseVM
     {
         [Key]
-        public int Id { get; set; }
+        public int DereceId { get; set; }
         [Required (ErrorMessage ="Dereceyi yazınz")]
         public string DereceAdi { get; set; }
         public string KullaniciId { get; set; }

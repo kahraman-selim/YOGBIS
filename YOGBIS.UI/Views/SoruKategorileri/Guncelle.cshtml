@@ -12,9 +12,9 @@
     </div>
     <div class="card-body">
         <form class="form-group m-0" asp-action="SoruKategoriEkle">
-            @Html.HiddenFor(x=>x.SoruKategorilerId)
+            @Html.HiddenFor(x => x.SoruKategorilerId)
             <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-            @*<div class="form-row">
+            <div class="form-row">
                 <div class="col-md-3">
                     <div class="form-group">
                         <label asp-for="SoruKategorilerId" class="small mb-1 font-weight-bold">Kategori Numarası</label>
@@ -22,7 +22,7 @@
                         <span class="text-danger" asp-validation-for="SoruKategorilerId"></span>
                     </div>
                 </div>
-            </div>*@
+            </div>
             <div class="form-row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -36,12 +36,12 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label asp-for="DereceAdi" class="small mb-1 font-weight-bold">Derece</label>
-                        @*@Html.DropDownListFor(u => u.DereceId, new SelectList(ViewBag.Dereceler, "DereceId", "DereceAdi"), "Dereceyi seçiniz", new { @class = "form-control-range form-control py-2" })*@
+                        @Html.DropDownListFor(u => u.DereceId, new SelectList(ViewBag.Dereceler, "DereceId", "DereceAdi"), "Dereceyi seçiniz", new { @class = "form-control-range form-control py-2" })
                         @*<select asp-for="DereceAdi" class="form-control-range form-control py-2" aria-label="Default select example">
-                            <option asp-for="Derecesi" selected class="text-center"></option>
-                            <option asp-for="Derecesi" value="Öğretmen">Öğretmen</option>
-                            <option asp-for="Derecesi" value="Okutman">Okutman</option>
-                        </select>*@
+                                <option asp-for="Derecesi" selected class="text-center"></option>
+                                <option asp-for="Derecesi" value="Öğretmen">Öğretmen</option>
+                                <option asp-for="Derecesi" value="Okutman">Okutman</option>
+                            </select>*@
                         <span class="text-danger" asp-validation-for="DereceAdi"></span>
                     </div>
                 </div>
@@ -64,13 +64,13 @@
                     <div class="form-group">
                         <label asp-for="SoruKategorilerPuan" class="small mb-1 font-weight-bold">Kategori Puan</label>
                         <input asp-for="SoruKategorilerPuan" type="number" max="30" min="0" class="form-control py-2" id="CreateTypeInput" placeholder="Kategori Puanını Giriniz">
-                        <span class="text-danger" asp-validation-for="SoruKategorilerPuan"></span>                        
+                        <span class="text-danger" asp-validation-for="SoruKategorilerPuan"></span>
                     </div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="col-md-6">
-                    <input type="submit" value="Kaydet" class="btn btn-success" />
+                    <input type="submit" value="Değiştir" class="btn btn-success" />
                     <a asp-controller="SoruKategorileri" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger">Vazgeç</a>
                 </div>
             </div>
@@ -82,3 +82,5 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
 }
+
+

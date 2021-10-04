@@ -23,15 +23,15 @@ namespace YOGBIS.UI.Controllers
 
             //var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            if (User.IsInRole(ResultConstant.Admin_Role))
-            {
-                //return View(user);
+            //if (User.IsInRole(ResultConstant.Admin_Role))
+            //{
+            //    //return View(user);
                 return View();
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }            
+            //}
+            //else
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}            
         }
     }
 }
