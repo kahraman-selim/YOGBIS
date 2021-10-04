@@ -37,7 +37,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var ulkeler = _mapper.Map<UlkelerVM, Ulkeler>(model);
-                    //ulkeler.KitaId = 1;
+                    //ulkeler.KitaId = 1; Başlangıçta manuel ekleme için
                     ulkeler.KullaniciId = user.LoginId;
                     _unitOfWork.ulkelerRepository.Add(ulkeler);                    
                     _unitOfWork.Save();
@@ -95,7 +95,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
         public Result<bool> UlkeSil(int id)
         {
-            throw new NotImplementedException();
+            var data = _unitOfWork.ulkelerRepository.Get(id);
+            if (data != null)
+            {
+                _unitOfWork.ulkelerRepository.Remove(data);
+                _unitOfWork.Save();
+                return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
+            }
+            else
+            {
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
         }
 
         public Result<List<UlkelerVM>> UlkeGetirKullaniciId(string userId)

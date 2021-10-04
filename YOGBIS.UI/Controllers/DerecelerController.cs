@@ -24,46 +24,70 @@ namespace YOGBIS.UI.Controllers
         }
         public IActionResult Index()
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            var data = _derecelerBE.DereceGetir(); 
+            if (data.IsSuccess)
+            {
+                var result = data.Data;
+                return View(result);
+            }
             return View();
         }
 
-        public IActionResult Ekle() 
+        public IActionResult DereceEkle() 
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             return View();
         }
         [HttpPost]
-        public IActionResult Ekle(DerecelerVM model) 
+        public IActionResult DereceEkle(DerecelerVM model, int? Id) 
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            //if (model.Id > 0)
-            //{
-            //    //var data = _derecelerBE.DereceGuncelle(model);
-            //    return View(model);
-            //}
-            //else
-            //{
-
-            //    var data = _derecelerBE.DereceEkle(model, user);
-            //    if (data.IsSuccess)
-            //    {
-            //        return RedirectToAction("Index");
-            //    }
-            //    return View(model);
-            //}
-            if (ModelState.IsValid)
+            if (Id > 0)
             {
-                var data = _derecelerBE.DereceEkle(model); 
+                var data = _derecelerBE.DereceGuncelle(model, user);
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var data = _derecelerBE.DereceEkle(model, user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
                 }
                 return View(model);
             }
+        }
+
+        public ActionResult Guncelle(int? id)
+        {
+            
+            if (id > 0)
+            {
+                var data = _derecelerBE.DereceGetir((int)id); 
+                return View(data.Data);
+            }
             else
             {
-                return View(model);
+                return View();
             }
+
+        }
+
+        [HttpDelete]
+        public IActionResult DereceSil(int id)
+        {
+            if (id < 0)
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+
+            var data = _derecelerBE.DereceSil(id); 
+            if (data.IsSuccess)
+                return Json(new { success = data.IsSuccess, message = data.Message });
+            else
+                return Json(new { success = data.IsSuccess, message = data.Message });
+
         }
     }
 }

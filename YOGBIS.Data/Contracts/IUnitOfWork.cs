@@ -17,7 +17,7 @@ namespace YOGBIS.Data.Contracts
          IMulakatlarRepository mulakatlarRepository { get;  }
          IMulakatSorulariRepository mulakatSorulariRepository { get; }  
          IKullaniciRepository kullaniciRepository { get; }
-         IGecmişRepository autoHistoryRepository { get; }
+         IAutoHistoryRepository autoHistoryRepository { get; }
          IUlkeGruplariKitalarRepository ulkeGruplariKitalarRepository { get; }
          IDerecelerRepository derecelerRepository { get; }
 

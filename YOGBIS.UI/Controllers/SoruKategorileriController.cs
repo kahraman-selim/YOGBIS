@@ -77,10 +77,10 @@ namespace YOGBIS.UI.Controllers
             //    }
             //} 
             #endregion
-
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             if (ModelState.IsValid)
             {
-                var data = _soruKategorileriBE.SoruKategoriEkle(model);
+                var data = _soruKategorileriBE.SoruKategoriEkle(model,user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
@@ -110,7 +110,8 @@ namespace YOGBIS.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = _soruKategorileriBE.SoruKategoriGuncelle(model);
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                var data = _soruKategorileriBE.SoruKategoriGuncelle(model,user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");

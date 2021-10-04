@@ -31,8 +31,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<DerecelerVM>> DereceGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.derecelerRepository.GetAll(u => u.KullaniciId == userId,
-                includeProperties: "Kullanici").ToList();
+            var data = _unitOfWork.derecelerRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici").ToList();
             if (data != null)
             {
                 List<DerecelerVM> returnData = new List<DerecelerVM>();
@@ -41,9 +40,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     returnData.Add(new DerecelerVM()
                     {                        
+                        Id=item.Id,
                         DereceAdi=item.DereceAdi,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KullaniciId
+                        KullaniciId = item.KullaniciId                        
                     });
                 }
                 return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, returnData);
@@ -66,14 +66,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<DerecelerVM>(false, ResultConstant.RecordNotFound);
             }
         }
-        public Result<DerecelerVM> DereceEkle(DerecelerVM model)//, SessionContext user
+        public Result<DerecelerVM> DereceEkle(DerecelerVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
                     var derece = _mapper.Map<DerecelerVM, Dereceler>(model);
-                    //derece.KullaniciId = user.LoginId;                    
+                     derece.KullaniciId = user.LoginId;                    
                     _unitOfWork.derecelerRepository.Add(derece);
                     _unitOfWork.Save();
                     return new Result<DerecelerVM>(true, ResultConstant.RecordCreateSuccess);
@@ -89,13 +89,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<DerecelerVM>(false, "Boş veri olamaz");
             }
         }
-        public Result<DerecelerVM> DereceGuncelle(DerecelerVM model)
+        public Result<DerecelerVM> DereceGuncelle(DerecelerVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
                     var derece = _mapper.Map<DerecelerVM, Dereceler>(model);
+                    derece.KullaniciId = user.LoginId;
                     _unitOfWork.derecelerRepository.Update(derece);
                     _unitOfWork.Save();
                     return new Result<DerecelerVM>(true, ResultConstant.RecordCreateSuccess);

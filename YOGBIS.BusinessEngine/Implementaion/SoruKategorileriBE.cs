@@ -6,6 +6,7 @@ using System.Text;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.ResultModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
@@ -30,8 +31,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<SoruKategorilerVM>> SoruKategoriKullaniciId(string userId)
         {
-            var data = _unitOfWork.sorukategorilerRepository.GetAll(u => u.KullaniciId == userId,
-                includeProperties: "Kullanici").ToList();
+            var data = _unitOfWork.sorukategorilerRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici, Dereceler").ToList();
             if (data != null)
             {
                 List<SoruKategorilerVM> returnData = new List<SoruKategorilerVM>();
@@ -47,7 +47,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KayitTarihi = item.KayitTarihi,
                         KullaniciId=item.KullaniciId,
                         Id=item.Id,
-                        DereceAdi=item.DereceAdi
+                        DereceAdi=item.Dereceler.DereceAdi
                     });
                 }
                 return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, returnData);
@@ -70,13 +70,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<SoruKategorilerVM>(false, ResultConstant.RecordNotFound);
             }
         }
-        public Result<SoruKategorilerVM> SoruKategoriEkle(SoruKategorilerVM model)
+        public Result<SoruKategorilerVM> SoruKategoriEkle(SoruKategorilerVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
                     var soruKategori = _mapper.Map<SoruKategorilerVM, SoruKategoriler>(model);
+                    soruKategori.KullaniciId = user.LoginId;
                     _unitOfWork.sorukategorilerRepository.Add(soruKategori);
                     _unitOfWork.Save();
                     return new Result<SoruKategorilerVM>(true, ResultConstant.RecordCreateSuccess);
@@ -92,13 +93,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<SoruKategorilerVM>(false, "Boş veri olamaz");
             }
         }
-        public Result<SoruKategorilerVM> SoruKategoriGuncelle(SoruKategorilerVM model)
+        public Result<SoruKategorilerVM> SoruKategoriGuncelle(SoruKategorilerVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
                     var soruKategori = _mapper.Map<SoruKategorilerVM, SoruKategoriler>(model);
+                    soruKategori.KullaniciId = user.LoginId;
                     _unitOfWork.sorukategorilerRepository.Update(soruKategori);
                     _unitOfWork.Save();
                     return new Result<SoruKategorilerVM>(true, ResultConstant.RecordCreateSuccess);

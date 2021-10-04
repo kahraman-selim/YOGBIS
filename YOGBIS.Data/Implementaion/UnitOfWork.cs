@@ -24,7 +24,7 @@ namespace YOGBIS.Data.Implementaion
             soruBankasiRepository = new SoruBankasiRepository(_ctx);
             soruKategoriRepository = new SoruKategoriRepository(_ctx);
             kullaniciRepository = new KullaniciRepository(_ctx);
-            autoHistoryRepository = new GecmişRepository(_ctx);
+            autoHistoryRepository = new AutoHistoryRepository(_ctx);
             ulkeGruplariKitalarRepository = new UlkeGruplariKitalarRepository(_ctx);
             derecelerRepository = new DerecelerRepository(_ctx);
         }
@@ -40,7 +40,7 @@ namespace YOGBIS.Data.Implementaion
         public IMulakatlarRepository mulakatlarRepository { get; private set; }
         public IMulakatSorulariRepository mulakatSorulariRepository { get; private set; }
         public  IKullaniciRepository kullaniciRepository { get; private set; }
-        public IGecmişRepository autoHistoryRepository { get; private set; }
+        public IAutoHistoryRepository autoHistoryRepository { get; private set; }
         public IUlkeGruplariKitalarRepository ulkeGruplariKitalarRepository { get; private set; }
         public IDerecelerRepository derecelerRepository { get; private set; }
         

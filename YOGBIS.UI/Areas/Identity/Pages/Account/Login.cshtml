@@ -42,7 +42,15 @@
                 </div>
                 <div class="card-footer text-center">
                     <div asp-validation-summary="All" class="text-danger"></div>
-                    @*<div class="small"><a asp-area="Identity" asp-page="/Account/Register">Yeni bir hesap oluştur</a></div>*@
+                    @if (DateTime.Now != DateTime.Today)
+                    {
+                        <div class="small"><a asp-area="Identity" asp-page="/Account/Register">Yeni bir hesap oluştur</a></div>
+                    }
+                    else
+                    {
+
+                    }
+
                 </div>
             </div>
         </div>

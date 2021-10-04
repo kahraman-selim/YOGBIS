@@ -114,5 +114,19 @@ namespace YOGBIS.UI.Controllers
             }
             
         }
+
+        [HttpDelete]
+        public IActionResult UlkeSil(int id)
+        {
+            if (id < 0)
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+
+            var data = _ulkelerBE.UlkeSil(id);
+            if (data.IsSuccess)
+                return Json(new { success = data.IsSuccess, message = data.Message });
+            else
+                return Json(new { success = data.IsSuccess, message = data.Message });
+
+        }
     }
 }
