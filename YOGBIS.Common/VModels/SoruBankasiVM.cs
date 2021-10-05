@@ -10,18 +10,26 @@ namespace YOGBIS.Common.VModels
     {
         [Key]
         public int SoruBankasiId { get; set; }
+
         [Required(ErrorMessage = "Kategoriyi seçiniz...")]
-        public int SoruKategoriId { get; set; }
+        public int SoruKategorilerId { get; set; }
+
+        [Required(ErrorMessage = "Kategoriyi seçiniz...")]
         public string SoruKategorilerAdi { get; set; }
-        public SoruKategorilerVM SoruKategorilerVm { get; set; }
+        public SoruKategorilerVM SoruKategoriler { get; set; }
+
         [Required(ErrorMessage = "Soruyu yazınız...")]
         public string Soru { get; set; }
+
         [Required(ErrorMessage = "Cevabı yazınız...")]
         public string Cevap { get; set; }
 
         [Required(ErrorMessage = "Derecesini seçiniz...")]
         public int DereceId { get; set; }
-        public DerecelerVM DerecelerVm { get; set; }
+
+        [Required(ErrorMessage = "Derecesini seçiniz...")]
+        public string DereceAdi { get; set; }
+        public DerecelerVM Dereceler { get; set; }
         public int SorulmaSayisi { get; set; } = 0;
 
         [Required(ErrorMessage = "Soru durumunu seçiniz...")]

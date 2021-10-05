@@ -8,8 +8,8 @@ namespace YOGBIS.Common.VModels
     {
         public int Id { get; set; }
         public int UlkeGrupId { get; set; }
-        public UlkeGruplariVM UlkeGruplariVm { get; set; }
+        public UlkeGruplariVM UlkeGruplari { get; set; }
         public int KitaId { get; set; }
-        public KitalarVM KitalarVm { get; set; }
+        public KitalarVM Kitalar { get; set; }
     }
 }

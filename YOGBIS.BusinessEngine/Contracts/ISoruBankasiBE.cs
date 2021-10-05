@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using YOGBIS.Common.ResultModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.DbModels;
 
@@ -7,12 +8,12 @@ namespace YOGBIS.BusinessEngine.Contracts
 {
     public interface ISoruBankasiBE
     {
-        Result<List<SoruBankasiVM>> SoruGetir();
-        Result<SoruBankasiVM> SoruEkle(SoruBankasiVM model);
+        Result<List<SoruBankasiVM>> SorulariGetir();
+        Result<SoruBankasiVM> SoruEkle(SoruBankasiVM model, SessionContext user);
 
         Result<SoruBankasiVM> SoruGetir(int id);
 
-        Result<SoruBankasiVM> SoruGuncelle(SoruBankasiVM model);
+        Result<SoruBankasiVM> SoruGuncelle(SoruBankasiVM model, SessionContext user);
         
         Result<bool> SoruSil(int id);
 

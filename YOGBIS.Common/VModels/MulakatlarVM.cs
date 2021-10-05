@@ -24,6 +24,6 @@ namespace YOGBIS.Common.VModels
         public bool Durumu { get; set; } = true;
         public string MulakatAciklama { get; set; }
         public string KullaniciId { get; set; }
-        public KullaniciVM KullaniciVm { get; set; }
+        public KullaniciVM Kullanici { get; set; }
     }
 }

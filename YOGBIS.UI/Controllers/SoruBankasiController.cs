@@ -20,16 +20,22 @@ namespace YOGBIS.UI.Controllers
        
         private readonly ISoruBankasiBE _soruBankasiBE;
         private readonly ISoruKategorileriBE _soruKategorileriBE;
-        public SoruBankasiController(ISoruBankasiBE soruBankasiBE, ISoruKategorileriBE soruKategorileriBE)
+        private readonly IDerecelerBE _derecelerBE;
+        public SoruBankasiController(ISoruBankasiBE soruBankasiBE, ISoruKategorileriBE soruKategorileriBE, IDerecelerBE derecelerBE)
         {
             _soruBankasiBE = soruBankasiBE;
             _soruKategorileriBE = soruKategorileriBE;
+            _derecelerBE = derecelerBE;
         }
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            var requestModel = _soruBankasiBE.SoruGetirKullaniciId(user.LoginId);
-            //ViewBag.SoruKategorileri=_soruKategorileriBE.GetAllSoruKategoriler();
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
+            ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
+
+            //var requestModel = _soruBankasiBE.SoruGetirKullaniciId(user.LoginId);
+
+            var requestModel = _soruBankasiBE.SorulariGetir();
             if (requestModel.IsSuccess)
                 return View(requestModel.Data);  
             
@@ -46,6 +52,9 @@ namespace YOGBIS.UI.Controllers
         }
         public IActionResult SoruEkle()
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
+            ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
             //ViewBag.SoruKategorileri = _soruKategorileriBE.GetAllSoruKategoriler().Data;
             //var data = _soruKategorileriBE.GetAllSoruKategoriler();
             //ViewBag.SoruKategorileri = data.Data.Select(q => new SelectListItem
@@ -56,78 +65,46 @@ namespace YOGBIS.UI.Controllers
 
             return View();
         }        
+        
         [HttpPost]
-        public IActionResult SoruEkle(SoruBankasiVM model)
+        public IActionResult SoruEkle(SoruBankasiVM model, int? SoruBankasiId)
         {
-            
-            #region Ekleme ve Güncelleme Örneği
-            //if (model.MulakatSorulariId>0)
-            //{
-            //    var data = _mulakatSorulariBE.MulakatSorusuGuncelle(model);
-            //}
-            //else
-            //{
-            //    if (ModelState.IsValid)
-            //    {
-            //        var data = _mulakatSorulariBE.MulakatSorusuEkle(model);
-            //        if (data.IsSuccess)
-            //        {
-            //            return RedirectToAction("Index");
-            //        }
-            //        return View(model);
-            //    }
-            //    else
-            //    {
-            //        return View(model);
-            //    }
-            //} 
-            #endregion
 
-            if (ModelState.IsValid)
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
+            ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
+
+            if (SoruBankasiId>0)
             {
-                var data = _soruBankasiBE.SoruEkle(model);
+                var data = _soruBankasiBE.SoruGuncelle(model, user);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var data = _soruBankasiBE.SoruEkle(model,user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
                 }
                 return View(model);
             }
-            else
-            {
-                return View(model);
-            }
         }
         
-        [HttpGet]
-        public IActionResult SoruGuncelle(int id)
+        public IActionResult Guncelle(int? id)
         {
-            if (id < 0)
-                return View();
-            var data = _soruBankasiBE.SoruGetir(id);
-            if (data.IsSuccess)
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
+            ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
+
+            if (id>0)
+            {
+                var data = _soruBankasiBE.SoruGetir((int)id);
                 return View(data.Data);
-            return View();
-        }
-        
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public IActionResult SoruGuncelle(SoruBankasiVM model)
-        {
-            if (ModelState.IsValid)
-            {
-                var data = _soruBankasiBE.SoruGuncelle(model);
-                if (data.IsSuccess)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View(model);
             }
             else
             {
-                return View(model);
+                return View();
             }
-        }
-
+        }        
         
         [HttpDelete]
         public IActionResult SoruSil(int id)

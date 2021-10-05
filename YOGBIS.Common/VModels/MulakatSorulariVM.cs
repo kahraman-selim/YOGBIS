@@ -34,8 +34,8 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Cevabı yazınız...")]
         public string Cevap { get; set; }
         public int MulakatId { get; set; }
-        public MulakatlarVM MulakatlarVm { get; set; }
+        public MulakatlarVM Mulakatlar { get; set; }
         public string KullaniciId { get; set; }     
-        public KullaniciVM KullaniciVm { get; set; }
+        public KullaniciVM Kullanici { get; set; }
     }
 }

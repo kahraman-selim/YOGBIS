@@ -6,6 +6,7 @@ using System.Text;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.ResultModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
@@ -26,7 +27,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<SoruBankasiVM>> SoruGetirKullaniciId(string userId)
         {
             var data = _unitOfWork.soruBankasiRepository.GetAll(u => u.KaydedenId == userId, 
-                includeProperties: "Kaydeden,SoruKategoriler").ToList();
+                includeProperties: "Kaydeden,SoruKategoriler").OrderByDescending(s => s.SoruBankasiId).ToList();
             if (data != null)
             {
                 List<SoruBankasiVM> returnData = new List<SoruBankasiVM>();
@@ -36,7 +37,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new SoruBankasiVM()
                     {
                         SoruBankasiId = item.SoruBankasiId,
-                        SoruKategoriId = item.SoruKategoriId,                        
+                        SoruKategorilerId = item.SoruKategorilerId,
+                        SoruKategorilerAdi =item.SoruKategoriler.SoruKategorilerAdi,
                         Soru =item.Soru,
                         Cevap=item.Cevap,                        
                         SorulmaSayisi=item.SorulmaSayisi,
@@ -46,7 +48,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OnayDurumu=item.OnayDurumu,
                         OnayAciklama=item.OnayAciklama,
                         KayitTarihi=item.KayitTarihi,
-                        DereceId=item.DereceId
+                        DereceId=item.DereceId,
+                        DereceAdi=item.Dereceler.DereceAdi                        
                     });
                 }
                 return new Result<List<SoruBankasiVM>>(true, ResultConstant.RecordFound, returnData);
@@ -57,9 +60,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
 
-        public Result<List<SoruBankasiVM>> SoruGetir()
+        public Result<List<SoruBankasiVM>> SorulariGetir()
         {
-            var data = _unitOfWork.soruBankasiRepository.GetAll().ToList();
+            var data = _unitOfWork.soruBankasiRepository.GetAll().OrderByDescending(s => s.SoruBankasiId).ToList();            
             var soruBankasi = _mapper.Map<List<SoruBankasi>, List<SoruBankasiVM>>(data);
             return new Result<List<SoruBankasiVM>>(true, ResultConstant.RecordFound, soruBankasi);
         }
@@ -78,13 +81,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
 
-        public Result<SoruBankasiVM> SoruEkle(SoruBankasiVM model)
+        public Result<SoruBankasiVM> SoruEkle(SoruBankasiVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
                     var soruBankasi= _mapper.Map<SoruBankasiVM, SoruBankasi>(model);
+                    soruBankasi.KaydedenId = user.LoginId;
+                    soruBankasi.OnaylayanId = user.LoginId;
                     _unitOfWork.soruBankasiRepository.Add(soruBankasi);
                     _unitOfWork.Save();
                     return new Result<SoruBankasiVM>(true, ResultConstant.RecordCreateSuccess);
@@ -101,13 +106,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
 
-        public Result<SoruBankasiVM> SoruGuncelle(SoruBankasiVM model)
+        public Result<SoruBankasiVM> SoruGuncelle(SoruBankasiVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
                     var soruBankasi = _mapper.Map<SoruBankasiVM, SoruBankasi>(model);
+                    soruBankasi.KaydedenId = user.LoginId;
+                    soruBankasi.OnaylayanId = user.LoginId;
                     _unitOfWork.soruBankasiRepository.Update(soruBankasi);
                     _unitOfWork.Save();
                     return new Result<SoruBankasiVM>(true, ResultConstant.RecordCreateSuccess);

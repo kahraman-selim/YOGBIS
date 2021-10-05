@@ -13,8 +13,8 @@ namespace YOGBIS.Common.VModels
         public bool? Baskent { get; set; }
         public string SehirAciklama { get; set; }
         public int EyaletId { get; set; }
-        public EyaletlerVM EyaletlerVm { get; set; }
+        public EyaletlerVM Eyaletler { get; set; }
         public string KullaniciId { get; set; }
-        public KullaniciVM KullaniciVm { get; set; }
+        public KullaniciVM Kullanici { get; set; }
     }
 }

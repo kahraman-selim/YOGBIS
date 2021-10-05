@@ -14,8 +14,8 @@ namespace YOGBIS.Common.VModels
         public string UlkeGrupAdi { get; set; }
         public string UlkeGrupAciklama { get; set; }
         public string KullaniciId { get; set; }       
-        public KullaniciVM KullaniciVm { get; set; }
-        public List<UlkeGruplariKitalarVM> UlkeGruplariKitalarsVm { get; set; }
+        public KullaniciVM Kullanici { get; set; }
+        public List<UlkeGruplariKitalarVM> UlkeGruplariKitalars { get; set; }
         //VievModel için oluşturma methodu
         //public void SetUlkeGruplari(string ulkeGrupAdi) 
         //{

@@ -23,7 +23,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public Result<List<SoruKategorilerVM>> SoruKategoriGetir()
+        public Result<List<SoruKategorilerVM>> SoruKategorileriGetir()
         {
             var data = _unitOfWork.sorukategorilerRepository.GetAll().ToList();
             var soruKategoriler = _mapper.Map<List<SoruKategoriler>, List<SoruKategorilerVM>>(data);
