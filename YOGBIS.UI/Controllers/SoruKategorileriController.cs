@@ -29,9 +29,9 @@ namespace YOGBIS.UI.Controllers
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.Dereceler = _derecelerBE.DereceleriGetir();
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
-            var requestModel = _soruKategorileriBE.SoruKategoriGetir();
+            var requestModel = _soruKategorileriBE.SoruKategoriKullaniciId(user.LoginId); //SoruKategoriGetir();
             if (requestModel.IsSuccess)
                 return View(requestModel.Data);
 
@@ -41,14 +41,15 @@ namespace YOGBIS.UI.Controllers
         public IActionResult SoruKategoriEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.Dereceler = _derecelerBE.DereceleriGetir();
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             return View();
         }        
+        
         [HttpPost]
         public IActionResult SoruKategoriEkle(SoruKategorilerVM model, int? SoruKategorilerId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.Dereceler = _derecelerBE.DereceleriGetir();
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
             if (SoruKategorilerId>0)
             {
@@ -68,7 +69,7 @@ namespace YOGBIS.UI.Controllers
         
         public IActionResult Guncelle(int? id)
         {
-            ViewBag.Dereceler = _derecelerBE.DereceleriGetir();
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
             if (id>0)
             {

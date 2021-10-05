@@ -42,7 +42,7 @@
                 </div>
                 <div class="card-footer text-center">
                     <div asp-validation-summary="All" class="text-danger"></div>
-                    @if (DateTime.Now != DateTime.Today)
+                    @if (DateTime.Now.Date == DateTime.Parse("05/10/2021").Date)
                     {
                         <div class="small"><a asp-area="Identity" asp-page="/Account/Register">Yeni bir hesap oluştur</a></div>
                     }

@@ -31,7 +31,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<SoruKategorilerVM>> SoruKategoriKullaniciId(string userId)
         {
-            var data = _unitOfWork.sorukategorilerRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici, Dereceler").ToList();
+            var data = _unitOfWork.sorukategorilerRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici,Dereceler").ToList();
             if (data != null)
             {
                 List<SoruKategorilerVM> returnData = new List<SoruKategorilerVM>();
@@ -46,7 +46,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruKategorilerPuan=item.SoruKategorilerPuan,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciId=item.KullaniciId,
-                        DereceId=item.DereceId,
+                        DereceId=item.Dereceler.DereceId,
                         DereceAdi=item.Dereceler.DereceAdi
                     });
                 }
