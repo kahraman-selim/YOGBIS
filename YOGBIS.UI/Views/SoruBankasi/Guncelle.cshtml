@@ -80,9 +80,10 @@
                     <div class="form-row">
                         <div class="col-md-12">
                             <a asp-controller="SoruBankasi" asp-action="SoruEkle" id="yenile" name="yenile" class="btn btn-primary btn-sm mb-1" style="width:100px">Yeni Kayıt</a>
-                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" />
+                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1 disabled" style="width:100px" />
                             <a asp-controller="SoruBankasi" asp-action="SoruEkle" id="yenile" name="degistir" class="btn btn-info btn-sm mb-1" style="width:100px">Değiştir</a>
-                            <a asp-controller="SoruBankasi" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm mb-1 disabled" style="width:100px">Sil</a>
+                            @*<a asp-controller="SoruBankasi" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Sil</a>*@
+                            <a class="btn btn-danger btn-sm mb-1 text-white btnSil" title="Sil" onclick="myFunction()" id="btnSil" data-id="SoruBankasiId" style="width:100px">Sil</a>
                         </div>
                     </div>
                 </form>
@@ -122,5 +123,29 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    
+    <script type="text/javascript">
+
+
+
+        function myFunction() {
+            var btn = $(this);
+
+                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                    if (result) {
+                        var id = 4;
+                        alert(id);
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/SoruBankasi/SoruSil/" + id,
+                            success: function () {
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+
+        }
+    </script>
 }
 

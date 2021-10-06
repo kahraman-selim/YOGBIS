@@ -89,7 +89,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var soruBankasi= _mapper.Map<SoruBankasiVM, SoruBankasi>(model);
                     soruBankasi.KaydedenId = user.LoginId;
-                    soruBankasi.OnaylayanId = user.LoginId;
+                    //soruBankasi.OnaylayanId = user.LoginId;
                     _unitOfWork.soruBankasiRepository.Add(soruBankasi);
                     _unitOfWork.Save();
                     return new Result<SoruBankasiVM>(true, ResultConstant.RecordCreateSuccess);
@@ -114,7 +114,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var soruBankasi = _mapper.Map<SoruBankasiVM, SoruBankasi>(model);
                     soruBankasi.KaydedenId = user.LoginId;
-                    soruBankasi.OnaylayanId = user.LoginId;
+                    //soruBankasi.OnaylayanId = user.LoginId;
                     _unitOfWork.soruBankasiRepository.Update(soruBankasi);
                     _unitOfWork.Save();
                     return new Result<SoruBankasiVM>(true, ResultConstant.RecordCreateSuccess);

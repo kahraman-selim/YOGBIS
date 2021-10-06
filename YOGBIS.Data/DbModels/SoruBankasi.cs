@@ -10,8 +10,7 @@ namespace YOGBIS.Data.DbModels
     {
         [Key]
         public int SoruBankasiId { get; set; }
-        public int SoruKategorilerId { get; set; }
-        
+        public int SoruKategorilerId { get; set; }        
         [ForeignKey ("SoruKategorilerId")]
         public SoruKategoriler SoruKategoriler { get; set; }
         public string Soru { get; set; }
