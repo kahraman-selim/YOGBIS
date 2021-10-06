@@ -124,10 +124,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeBayrak=item.UlkeBayrak,
                         UlkeAciklama=item.UlkeAciklama,
                         KayitTarihi=item.KayitTarihi,
-                        KitaId=item.KitaId,                        
-                        KullaniciId=item.KullaniciId,
-                        KullaniciAdi=item.Kullanici.Ad + " " + item.Kullanici.Soyad,
-                        KitaAdi=item.Kitalar.KitaAdi                        
+                        KitaId=item.KitaId,
+                        KitaAdi = item.Kitalar.KitaAdi,
+                        KullaniciId =item.KullaniciId,
+                        KullaniciAdi=item.Kullanici.Ad + " " + item.Kullanici.Soyad                                               
                     });
                 }
                 return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, returnData);

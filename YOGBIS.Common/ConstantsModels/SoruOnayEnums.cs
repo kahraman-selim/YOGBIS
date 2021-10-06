@@ -5,12 +5,14 @@ using System.Text;
 
 namespace YOGBIS.Common.ConstantsModels
 {
-    public enum Enums
+    public enum SoruOnayEnums
     {
         [Display(Name ="Onaya Gönderildi")]
         Onaya_Gonderildi=1,
+
         [Display(Name = "Onaylandı")]
         Onaylandi =2,
+
         [Display(Name = "Reddedildi")]
         Reddedildi =3
     }

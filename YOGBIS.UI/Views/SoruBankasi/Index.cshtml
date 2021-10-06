@@ -25,6 +25,8 @@
                         <th>Kategori Adı</th>
                         <th>Soru</th>
                         <th>Cevap</th>
+                        <th>Durumu</th>
+                        <th>Kaydeden</th>
                         <th class="text-center">Düzenle</th>
                         <th class="text-center">Sil</th>
                     </tr>
@@ -36,23 +38,36 @@
                         @foreach (var item in Model)
                         {
                             sirano++;
-                            <tr>
-                                <td>@sirano</td>
-                                <td>@item.SoruBankasiId</td>
-                                <td>@item.SoruKategorilerAdi</td>
-                                <td>@item.Soru</td>
-                                <td>@item.Cevap</td>
-                                <td class="text-center">
-                                    <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="SoruBankasi" asp-action="Guncelle" asp-route-id="@item.SoruBankasiId">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </td>
-                                <td class="text-center">
-                                    <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.SoruBankasiId">
-                                        <i class="fas fa-trash text-white"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                    <tr>
+                        <td>@sirano</td>
+                        <td>@item.SoruBankasiId</td>
+                        <td>@item.SoruKategoriler.SoruKategorilerAdi</td>
+                        <td>@item.Soru</td>
+                        <td>@item.Cevap</td>
+                        @if (item.OnayDurumu == SoruOnayEnums.Onaya_Gonderildi)
+                        {
+                            <td style="color:green">@item.OnayDurumuAciklama</td>
+                        }
+                        else if (item.OnayDurumu == SoruOnayEnums.Onaylandi)
+                        {
+                            <td style="color:blue">@item.OnayDurumuAciklama</td>
+                        }
+                        else
+                        {
+                            <td style="color:red">@item.OnayDurumuAciklama</td>
+                        }
+                        <td>@item.KaydedenAdi</td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="SoruBankasi" asp-action="Guncelle" asp-route-id="@item.SoruBankasiId">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.SoruBankasiId">
+                                <i class="fas fa-trash text-white"></i>
+                            </a>
+                        </td>
+                    </tr>
                         }
                     }
                     else

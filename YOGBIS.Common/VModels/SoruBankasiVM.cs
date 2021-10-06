@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
@@ -34,12 +35,15 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Soru durumunu seçiniz...")]
         public bool SoruDurumu { get; set; } = true;
-        public string KaydedenId { get; set; }
-        public KullaniciVM Kaydeden { get; set; }
-        public string OnaylayanId { get; set; }  
-        public KullaniciVM Onaylayan { get; set; }
-        public int OnayDurumu { get; set; } = 1;
+        public SoruOnayEnums OnayDurumu { get; set; }
+        public string OnayDurumuAciklama { get; set; }
         public string OnayAciklama { get; set; }
+        public string KaydedenId { get; set; }
+        public string KaydedenAdi { get; set; }
+        public KullaniciVM Kaydeden { get; set; }
+        public string OnaylayanId { get; set; }
+        public string OnaylayanAdi { get; set; }
+        public KullaniciVM Onaylayan { get; set; }
         public List<SoruKategori> SoruKategoris { get; set; }
     }
 }

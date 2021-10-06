@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.Extentsion;
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
@@ -38,18 +39,21 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SoruBankasiId = item.SoruBankasiId,
                         SoruKategorilerId = item.SoruKategorilerId,
-                        SoruKategorilerAdi =item.SoruKategoriler.SoruKategorilerAdi,
-                        Soru =item.Soru,
-                        Cevap=item.Cevap,                        
-                        SorulmaSayisi=item.SorulmaSayisi,
-                        SoruDurumu=item.SoruDurumu,
-                        KaydedenId=item.KaydedenId,
-                        OnaylayanId=item.OnaylayanId,
-                        OnayDurumu=item.OnayDurumu,
-                        OnayAciklama=item.OnayAciklama,
-                        KayitTarihi=item.KayitTarihi,
-                        DereceId=item.DereceId,
-                        DereceAdi=item.Dereceler.DereceAdi                        
+                        SoruKategorilerAdi = item.SoruKategoriler.SoruKategorilerAdi,
+                        Soru = item.Soru,
+                        Cevap = item.Cevap,
+                        DereceId = item.DereceId,
+                        DereceAdi = item.Dereceler.DereceAdi,
+                        SorulmaSayisi = item.SorulmaSayisi,
+                        SoruDurumu = item.SoruDurumu,
+                        KaydedenId = item.KaydedenId,
+                        KaydedenAdi = item.Kaydeden.Ad +" "+ item.Kaydeden.Soyad,
+                        OnaylayanId = item.OnaylayanId,
+                        OnaylayanAdi = item.Onaylayan.Ad,
+                        OnayDurumu = (SoruOnayEnums)item.OnayDurumu,
+                        OnayDurumuAciklama = EnumExtension<SoruOnayEnums>.GetDisplayValue((SoruOnayEnums)item.OnayDurumu),                        
+                        OnayAciklama = item.OnayAciklama,
+                        KayitTarihi = item.KayitTarihi
                     });
                 }
                 return new Result<List<SoruBankasiVM>>(true, ResultConstant.RecordFound, returnData);
@@ -90,6 +94,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     var soruBankasi= _mapper.Map<SoruBankasiVM, SoruBankasi>(model);
                     soruBankasi.KaydedenId = user.LoginId;
                     //soruBankasi.OnaylayanId = user.LoginId;
+                    soruBankasi.OnayDurumu = (int)SoruOnayEnums.Onaya_Gonderildi;
                     _unitOfWork.soruBankasiRepository.Add(soruBankasi);
                     _unitOfWork.Save();
                     return new Result<SoruBankasiVM>(true, ResultConstant.RecordCreateSuccess);
@@ -114,6 +119,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var soruBankasi = _mapper.Map<SoruBankasiVM, SoruBankasi>(model);
                     soruBankasi.KaydedenId = user.LoginId;
+                    //soruBankasi.OnayDurumu = (Enums);
                     //soruBankasi.OnaylayanId = user.LoginId;
                     _unitOfWork.soruBankasiRepository.Update(soruBankasi);
                     _unitOfWork.Save();
