@@ -49,7 +49,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kaydeden.Ad +" "+ item.Kaydeden.Soyad,
                         OnaylayanId = item.OnaylayanId,
-                        OnaylayanAdi = item.Onaylayan.Ad,
+                        //OnaylayanAdi = item.Onaylayan.Ad,
                         OnayDurumu = (SoruOnayEnums)item.OnayDurumu,
                         OnayDurumuAciklama = EnumExtension<SoruOnayEnums>.GetDisplayValue((SoruOnayEnums)item.OnayDurumu),                        
                         OnayAciklama = item.OnayAciklama,
@@ -66,9 +66,42 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
         public Result<List<SoruBankasiVM>> SorulariGetir()
         {
-            var data = _unitOfWork.soruBankasiRepository.GetAll().OrderByDescending(s => s.SoruBankasiId).ToList();            
+            var data = _unitOfWork.soruBankasiRepository.GetAll(includeProperties: "Kaydeden,SoruKategoriler").OrderByDescending(s => s.SoruBankasiId).ToList();            
             var soruBankasi = _mapper.Map<List<SoruBankasi>, List<SoruBankasiVM>>(data);
-            return new Result<List<SoruBankasiVM>>(true, ResultConstant.RecordFound, soruBankasi);
+
+            if (data != null)
+            {
+                List<SoruBankasiVM> returnData = new List<SoruBankasiVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new SoruBankasiVM()
+                    {
+                        SoruBankasiId = item.SoruBankasiId,
+                        SoruKategorilerId = item.SoruKategorilerId,
+                        SoruKategorilerAdi = item.SoruKategoriler.SoruKategorilerAdi,
+                        Soru = item.Soru,
+                        Cevap = item.Cevap,
+                        DereceId = item.DereceId,
+                        DereceAdi = item.Dereceler.DereceAdi,
+                        SorulmaSayisi = item.SorulmaSayisi,
+                        SoruDurumu = item.SoruDurumu,
+                        KaydedenId = item.KaydedenId,
+                        KaydedenAdi = item.Kaydeden.Ad + " " + item.Kaydeden.Soyad,
+                        OnaylayanId = item.OnaylayanId,
+                        //OnaylayanAdi = item.Onaylayan.Ad,
+                        OnayDurumu = (SoruOnayEnums)item.OnayDurumu,
+                        OnayDurumuAciklama = EnumExtension<SoruOnayEnums>.GetDisplayValue((SoruOnayEnums)item.OnayDurumu),
+                        OnayAciklama = item.OnayAciklama,
+                        KayitTarihi = item.KayitTarihi
+                    });
+                }
+                return new Result<List<SoruBankasiVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<SoruBankasiVM>>(false, ResultConstant.RecordNotFound);
+            }
         }
 
         public Result<SoruBankasiVM> SoruGetir(int id)

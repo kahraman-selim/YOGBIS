@@ -14,7 +14,6 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = ResultConstant.Admin_Role)]
     public class SoruBankasiController : Controller
     {
        
@@ -27,6 +26,8 @@ namespace YOGBIS.UI.Controllers
             _soruKategorileriBE = soruKategorileriBE;
             _derecelerBE = derecelerBE;
         }
+        
+        [Authorize]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -35,7 +36,7 @@ namespace YOGBIS.UI.Controllers
 
             //var requestModel = _soruBankasiBE.SoruGetirKullaniciId(user.LoginId);
 
-            var requestModel = _soruBankasiBE.SorulariGetir();
+            var requestModel = _soruBankasiBE.SorulariGetir(); 
             if (requestModel.IsSuccess)
                 return View(requestModel.Data);  
             
@@ -50,6 +51,8 @@ namespace YOGBIS.UI.Controllers
             //}
             //return View(user);
         }
+        
+        [Authorize(Roles = ResultConstant.Admin_Role)]
         public IActionResult SoruEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
