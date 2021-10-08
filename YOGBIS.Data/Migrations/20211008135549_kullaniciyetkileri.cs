@@ -2,7 +2,7 @@
 
 namespace YOGBIS.Data.Migrations
 {
-    public partial class sorubankasikatidduz : Migration
+    public partial class kullaniciyetkileri : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

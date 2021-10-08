@@ -5,7 +5,7 @@ using System.Text;
 
 namespace YOGBIS.Common.ConstantsModels
 {
-    public enum SoruOnayEnums
+    public enum EnumsSoruOnay
     {
         [Display(Name ="Onaya Gönderildi")]
         Onaya_Gonderildi=1,

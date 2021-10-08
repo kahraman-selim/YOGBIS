@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -83,12 +84,14 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                MailAddress address = new MailAddress(Input.Email);
+                string userName = address.User;
                 var user = new Kullanici 
-                { 
-                    Ad=Input.Ad,
+                {
+                    UserName = userName,
+                    Email = Input.Email,
+                    Ad =Input.Ad,
                     Soyad=Input.Soyad.ToUpper(),
-                    UserName = Input.Email, 
-                    Email = Input.Email, 
                     Aktif=true
                 };
                 
@@ -96,7 +99,8 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                 
                 if (result.Succeeded)
                 {
-                    _userManager.AddToRoleAsync(user, ResultConstant.Kullanici_Role).Wait(); 
+                    //_userManager.AddToRoleAsync(user, ResultConstant.Kullanici_Role).Wait(); 
+                    _userManager.AddToRoleAsync(user, EnumsKullaniciRolleri.SubManager.ToString()).Wait();
                     _logger.LogInformation("User created a new account with password.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);

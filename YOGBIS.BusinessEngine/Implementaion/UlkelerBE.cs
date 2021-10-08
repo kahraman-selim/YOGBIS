@@ -127,7 +127,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KitaId=item.KitaId,
                         KitaAdi = item.Kitalar.KitaAdi,
                         KullaniciId =item.KullaniciId,
-                        KullaniciAdi=item.Kullanici.Ad + " " + item.Kullanici.Soyad                                               
+                        KullaniciAdi = item.Kullanici.UserName
+                        //KullaniciAdi =item.Kullanici.Ad + " " + item.Kullanici.Soyad                                               
                     });
                 }
                 return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, returnData);

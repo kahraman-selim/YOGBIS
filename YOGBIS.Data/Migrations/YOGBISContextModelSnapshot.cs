@@ -515,7 +515,7 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("OnayAciklama")
                         .HasColumnType("text");
 
-                    b.Property<int>("OnayDurumu")
+                    b.Property<int?>("OnayDurumu")
                         .HasColumnType("int");
 
                     b.Property<string>("OnaylayanId")

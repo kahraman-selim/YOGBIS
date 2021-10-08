@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using YOGBIS.Data.DbModels;
 using YOGBIS.Common.ConstantsModels;
+using System.Net.Mail;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account
 {
@@ -87,59 +88,127 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
 
-                var user = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower() && u.Aktif == true);
-                if (user == null)
+                //var user = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower() && u.Aktif == true);
+                var userName = Input.Email;
+                if (IsValidEmail(Input.Email))
                 {
-                    ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
-                    return Page();
-                }
-                else
-                {
-                    var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                    if (result.Succeeded)
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    if (user!=null)
                     {
-                        var userInfo = new SessionContext()
+                        userName = user.UserName;
+                    }
+                    //var currentuser = await _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower() && u.Aktif == true);
+                    if (user.Aktif==true)
+                    {
+                        var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                        if (result.Succeeded)
                         {
-                            Email = user.Email,
-                            FirstName = user.Ad,
-                            //TODO:Admın Bilgisini dinamic olarak getir
-                            IsAdmin = false,
-                            LastName = user.Soyad,
-                            LoginId = user.Id,
-                            Aktif = user.Aktif
-                        };
+                            var userInfo = new SessionContext()
+                            {
+                                Email = user.Email,
+                                FirstName = user.Ad,
+                                //TODO:Admın Bilgisini dinamic olarak getir
+                                IsAdmin = false,
+                                LastName = user.Soyad,
+                                LoginId = user.Id,
+                                Aktif = user.Aktif
+                            };
 
-                        //Set To User ınfo Session
-                        HttpContext.Session.SetString(ResultConstant.LoginUserInfo, JsonConvert.SerializeObject(userInfo));
+                            //Set To User ınfo Session
+                            HttpContext.Session.SetString(ResultConstant.LoginUserInfo, JsonConvert.SerializeObject(userInfo));
 
-                        _logger.LogInformation("User logged in.");
-                        return LocalRedirect(returnUrl);
-
-                    }
-                    // This doesn't count login failures towards account lockout
-                    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-
-                    if (result.RequiresTwoFactor)
-                    {
-                        return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                    }
-                    if (result.IsLockedOut)
-                    {
-                        _logger.LogWarning("User account locked out.");
-                        return RedirectToPage("./Lockout");
+                            _logger.LogInformation("User logged in.");
+                            return LocalRedirect(returnUrl);
+                        }
+                        if (result.RequiresTwoFactor)
+                        {
+                            return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                        }
+                        if (result.IsLockedOut)
+                        {
+                            _logger.LogWarning("User account locked out.");
+                            return RedirectToPage("./Lockout");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
+                            return Page();
+                        }
                     }
                     else
                     {
                         ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
                         return Page();
                     }
-
                 }
+
+
+                //if (user == null)
+                //{
+                //    ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
+                //    return Page();
+                //}
+                //else
+                //{
+                //    var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                //    if (result.Succeeded)
+                //    {
+                //        var userInfo = new SessionContext()
+                //        {
+                //            Email = user.Email,
+                //            FirstName = user.Ad,
+                //            //TODO:Admın Bilgisini dinamic olarak getir
+                //            IsAdmin = false,
+                //            LastName = user.Soyad,
+                //            LoginId = user.Id,
+                //            Aktif = user.Aktif
+                //        };
+
+                //        //Set To User ınfo Session
+                //        HttpContext.Session.SetString(ResultConstant.LoginUserInfo, JsonConvert.SerializeObject(userInfo));
+
+                //        _logger.LogInformation("User logged in.");
+                //        return LocalRedirect(returnUrl);
+
+                //    }
+                //    // This doesn't count login failures towards account lockout
+                //    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+
+                //    if (result.RequiresTwoFactor)
+                //    {
+                //        return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                //    }
+                //    if (result.IsLockedOut)
+                //    {
+                //        _logger.LogWarning("User account locked out.");
+                //        return RedirectToPage("./Lockout");
+                //    }
+                //    else
+                //    {
+                //        ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
+                //        return Page();
+                //    }
+
+                //}
 
             }
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        public bool IsValidEmail(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
         }
     }
 }

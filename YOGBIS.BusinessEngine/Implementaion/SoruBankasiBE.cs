@@ -50,8 +50,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KaydedenAdi = item.Kaydeden.Ad +" "+ item.Kaydeden.Soyad,
                         OnaylayanId = item.OnaylayanId,
                         //OnaylayanAdi = item.Onaylayan.Ad,
-                        OnayDurumu = (SoruOnayEnums)item.OnayDurumu,
-                        OnayDurumuAciklama = EnumExtension<SoruOnayEnums>.GetDisplayValue((SoruOnayEnums)item.OnayDurumu),                        
+                        OnayDurumu = (EnumsSoruOnay)item.OnayDurumu,
+                        OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),                        
                         OnayAciklama = item.OnayAciklama,
                         KayitTarihi = item.KayitTarihi
                     });
@@ -90,8 +90,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KaydedenAdi = item.Kaydeden.Ad + " " + item.Kaydeden.Soyad,
                         OnaylayanId = item.OnaylayanId,
                         //OnaylayanAdi = item.Onaylayan.Ad,
-                        OnayDurumu = (SoruOnayEnums)item.OnayDurumu,
-                        OnayDurumuAciklama = EnumExtension<SoruOnayEnums>.GetDisplayValue((SoruOnayEnums)item.OnayDurumu),
+                        OnayDurumu = (EnumsSoruOnay)item.OnayDurumu,
+                        OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
                         OnayAciklama = item.OnayAciklama,
                         KayitTarihi = item.KayitTarihi
                     });
@@ -127,7 +127,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     var soruBankasi= _mapper.Map<SoruBankasiVM, SoruBankasi>(model);
                     soruBankasi.KaydedenId = user.LoginId;
                     //soruBankasi.OnaylayanId = user.LoginId;
-                    soruBankasi.OnayDurumu = (int)SoruOnayEnums.Onaya_Gonderildi;
+                    soruBankasi.OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi;
                     _unitOfWork.soruBankasiRepository.Add(soruBankasi);
                     _unitOfWork.Save();
                     return new Result<SoruBankasiVM>(true, ResultConstant.RecordCreateSuccess);

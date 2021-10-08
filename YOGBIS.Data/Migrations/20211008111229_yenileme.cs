@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace YOGBIS.Data.Migrations
 {
-    public partial class derecetablo : Migration
+    public partial class yenileme : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -388,7 +388,7 @@ namespace YOGBIS.Data.Migrations
                     SoruBankasiId = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     KayitTarihi = table.Column<DateTime>(nullable: false),
-                    SoruKategoriId = table.Column<int>(nullable: false),
+                    SoruKategorilerId = table.Column<int>(nullable: false),
                     Soru = table.Column<string>(nullable: true),
                     Cevap = table.Column<string>(nullable: true),
                     DereceId = table.Column<int>(nullable: false),
@@ -396,7 +396,7 @@ namespace YOGBIS.Data.Migrations
                     SoruDurumu = table.Column<bool>(nullable: false),
                     KaydedenId = table.Column<string>(nullable: true),
                     OnaylayanId = table.Column<string>(nullable: true),
-                    OnayDurumu = table.Column<int>(nullable: false),
+                    OnayDurumu = table.Column<int>(nullable: true),
                     OnayAciklama = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -421,8 +421,8 @@ namespace YOGBIS.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SoruBankasis_SoruKategorilers_SoruKategoriId",
-                        column: x => x.SoruKategoriId,
+                        name: "FK_SoruBankasis_SoruKategorilers_SoruKategorilerId",
+                        column: x => x.SoruKategorilerId,
                         principalTable: "SoruKategorilers",
                         principalColumn: "SoruKategorilerId",
                         onDelete: ReferentialAction.Cascade);
@@ -649,9 +649,9 @@ namespace YOGBIS.Data.Migrations
                 column: "OnaylayanId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SoruBankasis_SoruKategoriId",
+                name: "IX_SoruBankasis_SoruKategorilerId",
                 table: "SoruBankasis",
-                column: "SoruKategoriId");
+                column: "SoruKategorilerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SoruKategorilers_DereceId",

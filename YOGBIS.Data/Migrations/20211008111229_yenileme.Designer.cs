@@ -9,8 +9,8 @@ using YOGBIS.Data.DataContext;
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    [Migration("20211005140905_sorubankasiduz")]
-    partial class sorubankasiduz
+    [Migration("20211008111229_yenileme")]
+    partial class yenileme
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -517,7 +517,7 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("OnayAciklama")
                         .HasColumnType("text");
 
-                    b.Property<int>("OnayDurumu")
+                    b.Property<int?>("OnayDurumu")
                         .HasColumnType("int");
 
                     b.Property<string>("OnaylayanId")

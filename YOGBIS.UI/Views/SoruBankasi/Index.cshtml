@@ -44,17 +44,17 @@
                         <td>@item.SoruKategorilerAdi</td>
                         <td>@item.Soru</td>
                         <td>@item.Cevap</td>
-                        @if (item.OnayDurumu == SoruOnayEnums.Onaya_Gonderildi)
+                        @if (item.OnayDurumu == EnumsSoruOnay.Onaya_Gonderildi)
                         {
-                            <td style="color:green">@item.OnayDurumuAciklama</td>
+                            <td style="color:green" class="font-weight-bold">@item.OnayDurumuAciklama</td>
                         }
-                        else if (item.OnayDurumu == SoruOnayEnums.Onaylandi)
+                        else if (item.OnayDurumu == EnumsSoruOnay.Onaylandi)
                         {
-                            <td style="color:blue">@item.OnayDurumuAciklama</td>
+                            <td style="color:blue" class="font-weight-bold">@item.OnayDurumuAciklama</td>
                         }
                         else
                         {
-                            <td style="color:red">@item.OnayDurumuAciklama</td>
+                            <td style="color:red" class="font-weight-bold">@item.OnayDurumuAciklama</td>
                         }
                         <td>@item.KaydedenAdi</td>
                         <td class="text-center">
