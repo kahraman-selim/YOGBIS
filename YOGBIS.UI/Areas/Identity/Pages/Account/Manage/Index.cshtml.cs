@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,7 +16,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
 {
-    [Authorize(Roles = ResultConstant.Admin_Role)]
+    [Authorize]
     public partial class IndexModel : PageModel
     {
         private readonly UserManager<Kullanici> _userManager;
@@ -28,38 +30,55 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        [Display(Name = "Kullanıcı")]
+        [Display(Name = "Kullanıcı Adı")]
         public string Username { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
+
+        [TempData]
+        public string UserNameChangeLimitMessage { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
         public class InputModel
         {
-            [Phone]
+            [Display(Name = "Ad")]
+            public string Ad { get; set; }
+
+            [Display(Name = "Soyad")]
+            public string Soyad { get; set; }
+
+            [Display(Name = "Kullanıcı Adı")]
+            public string Username { get; set; }
+
+            [Phone(ErrorMessage ="Telefon numarası bilgisi geçersiz...")]
             [Display(Name = "Telefon Numarası")]
             public string PhoneNumber { get; set; }
-            public string Ad { get; set; }
-            public string Soyad { get; set; }
-            public bool? Aktif { get; set; }
+
+            [Display(Name = "Profil Fotoğrafı")]
+            public byte[] KullaniciResim { get; set; }
+
+
         }
 
         private async Task LoadAsync(Kullanici user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            
+            var ad = user.Ad;
+            var soyad = user.Soyad;
+            var kullaniciResim = user.KullaniciResim;
             Username = userName;
-            
+
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
                 Ad=user.Ad,
                 Soyad=user.Soyad,
-                Aktif=user.Aktif
+                Username = userName,
+                KullaniciResim =kullaniciResim
             };
         }
 
@@ -68,9 +87,10 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Kimliğe sahip kullanıcı yüklenemiyor. Kullanıcı= '{_userManager.GetUserId(User)}'.");
             }
 
+            UserNameChangeLimitMessage = $"Kullanıcı adınızı en fazla {user.KulaniciAdDegLimiti} kez değiştirebilirsiniz.";
             await LoadAsync(user);
             return Page();
         }
@@ -80,7 +100,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Kimliğe sahip kullanıcı yüklenemiyor. Kullanıcı= '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -95,22 +115,58 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = "Telefon numarasını ayarlamaya çalışırken beklenmeyen bir hata oluştu.";
                     return RedirectToPage();
                 }
             }
+            var ad = user.Ad;
+            var soyad = user.Soyad;
+
             if (Input.Ad != user.Ad)
             {
                 user.Ad = Input.Ad;
+                await _userManager.UpdateAsync(user);
             }
             if (Input.Soyad != user.Soyad)
             {
                 user.Soyad = Input.Soyad;
+                await _userManager.UpdateAsync(user);
             }
-            if (Input.Aktif != user.Aktif)
+            if (user.KulaniciAdDegLimiti > 0)
             {
-                user.Aktif = Input.Aktif;
+                if (Input.Ad != user.Ad)
+                {
+                    var userNameExists = await _userManager.FindByNameAsync(Input.Ad);
+                    if (userNameExists != null)
+                    {
+                        StatusMessage = "Kullanıcı adı önceden alınmış. Farklı bir kullanıcı adı seçin.";
+                        return RedirectToPage();
+                    }
+
+                    var setUserName = await _userManager.SetUserNameAsync(user, Input.Ad);
+                    if (!setUserName.Succeeded)
+                    {
+                        StatusMessage = "Kullanıcı adını ayarlamaya çalışırken beklenmeyen bir hata oluştu.";
+                        return RedirectToPage();
+                    }
+                    else
+                    {
+                        user.KulaniciAdDegLimiti -= 1;
+                        await _userManager.UpdateAsync(user);
+                    }
+                }
             }
+            if (Request.Form.Files.Count > 0)
+            {
+                IFormFile file = Request.Form.Files.FirstOrDefault();
+                using (var dataStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(dataStream);
+                    user.KullaniciResim = dataStream.ToArray();
+                }
+                await _userManager.UpdateAsync(user);
+            }
+
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Kullanıcı bilgileriniz güncellendi !";
             return RedirectToPage();

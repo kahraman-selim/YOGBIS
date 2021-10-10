@@ -11,7 +11,7 @@ using YOGBIS.Common.ConstantsModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
 {
-    [Authorize(Roles = ResultConstant.Admin_Role)]
+    [Authorize(Roles = "Administrator")]
     public class ShowRecoveryCodesModel : PageModel
     {
         [TempData]

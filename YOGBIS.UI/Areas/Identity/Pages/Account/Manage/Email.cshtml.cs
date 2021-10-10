@@ -16,7 +16,7 @@ using YOGBIS.Common.ConstantsModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
 {
-    [Authorize(Roles = ResultConstant.Admin_Role)]
+    [Authorize(Roles = "Administrator")]
     public partial class EmailModel : PageModel
     {
         private readonly UserManager<Kullanici> _userManager;

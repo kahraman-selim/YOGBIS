@@ -28,14 +28,16 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
         private readonly UserManager<Kullanici> _userManager;
         private readonly SignInManager<Kullanici> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
         public LoginModel(SignInManager<Kullanici> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<Kullanici> userManager, IUnitOfWork unitOfWork)
+            UserManager<Kullanici> userManager, IUnitOfWork unitOfWork, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -96,38 +98,43 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                     if (user!=null)
                     {
                         userName = user.UserName;
-                    }
-                    //var currentuser = await _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower() && u.Aktif == true);
-                    if (user.Aktif==true)
-                    {
-                        var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                        if (result.Succeeded)
+
+                        if (user.Aktif == true)
                         {
-                            var userInfo = new SessionContext()
+                            var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                            if (result.Succeeded)
                             {
-                                Email = user.Email,
-                                FirstName = user.Ad,
-                                //TODO:Admın Bilgisini dinamic olarak getir
-                                IsAdmin = false,
-                                LastName = user.Soyad,
-                                LoginId = user.Id,
-                                Aktif = user.Aktif
-                            };
+                                var userInfo = new SessionContext()
+                                {
+                                    Email = user.Email,
+                                    FirstName = user.Ad,
+                                    //TODO:Admın Bilgisini dinamic olarak getir
+                                    IsAdmin = false,
+                                    LastName = user.Soyad,
+                                    LoginId = user.Id,
+                                    Aktif = user.Aktif
+                                };
 
-                            //Set To User ınfo Session
-                            HttpContext.Session.SetString(ResultConstant.LoginUserInfo, JsonConvert.SerializeObject(userInfo));
+                                //Set To User ınfo Session
+                                HttpContext.Session.SetString(ResultConstant.LoginUserInfo, JsonConvert.SerializeObject(userInfo));
 
-                            _logger.LogInformation("User logged in.");
-                            return LocalRedirect(returnUrl);
-                        }
-                        if (result.RequiresTwoFactor)
-                        {
-                            return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                        }
-                        if (result.IsLockedOut)
-                        {
-                            _logger.LogWarning("User account locked out.");
-                            return RedirectToPage("./Lockout");
+                                _logger.LogInformation("User logged in.");
+                                return LocalRedirect(returnUrl);
+                            }
+                            if (result.RequiresTwoFactor)
+                            {
+                                return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                            }
+                            if (result.IsLockedOut)
+                            {
+                                _logger.LogWarning("User account locked out.");
+                                return RedirectToPage("./Lockout");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
+                                return Page();
+                            }
                         }
                         else
                         {
@@ -140,6 +147,8 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                         ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
                         return Page();
                     }
+                    //var currentuser = await _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Email == Input.Email.ToLower() && u.Aktif == true);
+
                 }
 
 

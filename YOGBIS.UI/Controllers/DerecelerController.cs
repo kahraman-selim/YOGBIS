@@ -8,12 +8,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.Extentsion;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = ResultConstant.Admin_Role)]
+    [Authorize(Roles ="Administrator")]
     public class DerecelerController : Controller
     {
         private readonly IDerecelerBE _derecelerBE;

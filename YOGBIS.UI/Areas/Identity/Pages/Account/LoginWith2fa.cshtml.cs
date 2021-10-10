@@ -13,8 +13,8 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account
 {
-    //[AllowAnonymous]
-    [Authorize(Roles = ResultConstant.Admin_Role)]
+    
+    [Authorize(Roles = "Administrator")]
     public class LoginWith2faModel : PageModel
     {
         private readonly SignInManager<Kullanici> _signInManager;

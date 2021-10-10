@@ -61,7 +61,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Şifrenizi yazmalısınız...")]
-            [StringLength(100, ErrorMessage = " Şifreniz en az {2}, en fazla {1} karakter uzunluğunda olmalıdır. En az bir küçük harf, büyük harf ve alfanümerik karakter içermelidir.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Şifreniz en az {2}, en fazla {1} karakter uzunluğunda olmalıdır. En az bir küçük harf, büyük harf, sayı ve alfanümerik karakter içermelidir.(Örnek:Sifre123?)", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Şifre")]
             public string Password { get; set; }
@@ -100,7 +100,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     //_userManager.AddToRoleAsync(user, ResultConstant.Kullanici_Role).Wait(); 
-                    _userManager.AddToRoleAsync(user, EnumsKullaniciRolleri.SubManager.ToString()).Wait();
+                    _userManager.AddToRoleAsync(user, EnumsKullaniciRolleri.Teacher.ToString()).Wait();
                     _logger.LogInformation("User created a new account with password.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);

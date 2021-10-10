@@ -33,13 +33,13 @@
                     @foreach (var item in Model)
                     {
 
-                        if (item.EMail!="selim.kahraman@meb.gov.tr")
+                        if (item.EMail!="yogbis@meb.gov.tr")
                         {
                             sirano++;
                             <tr>
                                 <td>@sirano</td>
                                 <td>@item.UserName</td>
-                                <td>@item.Ad</td>
+                                <td class="text-capitalize">@item.Ad</td>
                                 <td>@item.Soyad</td>
                                 <td>
                                     <a asp-action="Durum" asp-route-id="@item.Id">

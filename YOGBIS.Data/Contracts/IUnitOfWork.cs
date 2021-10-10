@@ -20,6 +20,8 @@ namespace YOGBIS.Data.Contracts
          IAutoHistoryRepository autoHistoryRepository { get; }
          IUlkeGruplariKitalarRepository ulkeGruplariKitalarRepository { get; }
          IDerecelerRepository derecelerRepository { get; }
+         IOkullarRepository okullarRepository { get; }
+         IOkulBilgiRepository okulBilgiRepository { get; }
 
         void Save();
     }

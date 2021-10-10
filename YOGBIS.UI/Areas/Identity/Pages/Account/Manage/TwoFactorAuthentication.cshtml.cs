@@ -12,7 +12,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
 {
-    [Authorize(Roles = ResultConstant.Admin_Role)]
+    [Authorize(Roles = "Administrator")]
     public class TwoFactorAuthenticationModel : PageModel
     {
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";

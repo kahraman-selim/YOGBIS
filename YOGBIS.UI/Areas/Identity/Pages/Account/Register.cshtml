@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "Yeni Kullanıcı";
 }
-@if (SignInManager.IsSignedIn(User))
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
 {
     <div class="container">
         <div class="row justify-content-center">
@@ -55,7 +55,7 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group mt-4 mb-0">
-                                        <button type="submit" class="btn btn-primary btn-block">Kaydet</button>                                       
+                                        <button type="submit" class="btn btn-primary btn-block">Kaydet</button>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -73,70 +73,77 @@
         </div>
     </div>
 }
+else if (SignInManager.IsSignedIn(User) && !User.IsInRole("Administrator"))
+{
+    <header>
+        <h1 class="text-danger">Hata</h1>
+        <p class="text-danger">Bu sayfaya erişim yetkiniz yok.</p>
+    </header>
+}
 else
 {
     <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-7">
-            <div class="card shadow-lg rounded-lg mt-2">
-                <div class="card-header"><h3 class="text-center font-weight-light my-4">Yeni Kullanıcı Oluştur</h3></div>
-                <div class="card-body">
-                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" asp-for="Input.Ad">Kullanıcı Adı</label>
-                                    <input class="form-control py-4" id="inputFirstName" type="text" asp-for="Input.Ad" placeholder="Kullanıcı adını yazınız..." />
-                                    <span asp-validation-for="Input.Ad" class="text-danger"></span>
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="card shadow-lg rounded-lg mt-2">
+                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Yeni Kullanıcı Oluştur</h3></div>
+                    <div class="card-body">
+                        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small mb-1" asp-for="Input.Ad">Kullanıcı Adı</label>
+                                        <input class="form-control py-4" id="inputFirstName" type="text" asp-for="Input.Ad" placeholder="Kullanıcı adını yazınız..." />
+                                        <span asp-validation-for="Input.Ad" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small mb-1" asp-for="Input.Soyad">Kullanıcı Soyadı</label>
+                                        <input class="form-control py-4" id="inputLastName" type="text" asp-for="Input.Soyad" placeholder="Kullanıcı soyadını yazınız..." />
+                                        <span asp-validation-for="Input.Soyad" class="text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" asp-for="Input.Soyad">Kullanıcı Soyadı</label>
-                                    <input class="form-control py-4" id="inputLastName" type="text" asp-for="Input.Soyad" placeholder="Kullanıcı soyadını yazınız..." />
-                                    <span asp-validation-for="Input.Soyad" class="text-danger"></span>
+                            <div class="form-group">
+                                <label class="small mb-1" asp-for="Input.Email">E-Posta</label>
+                                <input class="form-control py-4" id="inputEmailAddress" type="email" aria-describedby="emailHelp" asp-for="Input.Email" placeholder="Kullanıcı E-Posta adresini yazınız..." />
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small mb-1" asp-for="Input.Password">Kullanıcı Şifresi</label>
+                                        <input class="form-control py-4" id="inputPassword" type="password" asp-for="Input.Password" placeholder="Şifrenizi yazınız..." />
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small mb-1" asp-for="Input.ConfirmPassword">Şifreyi Onayla</label>
+                                        <input class="form-control py-4" id="inputConfirmPassword" type="password" asp-for="Input.ConfirmPassword" placeholder="Şifreyi onayla..." />
+                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="small mb-1" asp-for="Input.Email">E-Posta</label>
-                            <input class="form-control py-4" id="inputEmailAddress" type="email" aria-describedby="emailHelp" asp-for="Input.Email" placeholder="Kullanıcı E-Posta adresini yazınız..." />
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" asp-for="Input.Password">Kullanıcı Şifresi</label>
-                                    <input class="form-control py-4" id="inputPassword" type="password" asp-for="Input.Password" placeholder="Şifrenizi yazınız..." />
-                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" asp-for="Input.ConfirmPassword">Şifreyi Onayla</label>
-                                    <input class="form-control py-4" id="inputConfirmPassword" type="password" asp-for="Input.ConfirmPassword" placeholder="Şifreyi onayla..." />
-                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mt-4 mb-0"><button type="submit" class="btn btn-primary btn-block">Kaydet</button></div>
-                    </form>
-                </div>
-                <div class="card-footer text-center">
+                            <div class="form-group mt-4 mb-0"><button type="submit" class="btn btn-primary btn-block">Kaydet</button></div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="layoutAuthentication_footer">
-        <footer class="py-4 bg-light mt-auto fixed-bottom">
-            <div class="container">
-                <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">M.E.B &copy;  @DateTime.Now.Year - Tüm Hakları Saklıdır. Gizlilik, Kullanım ve Telif Hakları bildiriminde belirtilen kurallar çerçevesinde hizmet sunulmaktadır. <a href="http://yyegm.meb.gov.tr/" target="blank">YYEGM-Yurt Dışı Eğitim ve Öğretim Daire Başkanlığı</a></div>
+        <div id="layoutAuthentication_footer">
+            <footer class="py-4 bg-light mt-auto fixed-bottom">
+                <div class="container">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">M.E.B &copy;  @DateTime.Now.Year - Tüm Hakları Saklıdır. Gizlilik, Kullanım ve Telif Hakları bildiriminde belirtilen kurallar çerçevesinde hizmet sunulmaktadır. <a href="http://yyegm.meb.gov.tr/" target="blank">YYEGM-Yurt Dışı Eğitim ve Öğretim Daire Başkanlığı</a></div>
+                    </div>
                 </div>
-            </div>
-        </footer>
+            </footer>
+        </div>
     </div>
-</div>
 }
 
 

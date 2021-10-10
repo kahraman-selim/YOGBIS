@@ -11,7 +11,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
 {
-    [Authorize(Roles = ResultConstant.Admin_Role)]
+    [Authorize(Roles = "Administrator")]
     public class DeletePersonalDataModel : PageModel
     {
         private readonly UserManager<Kullanici> _userManager;

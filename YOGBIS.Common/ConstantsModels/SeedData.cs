@@ -22,10 +22,9 @@ namespace YOGBIS.Common.ConstantsModels
             //Seed Default User
             var defaultUser = new Kullanici
             {
-                UserName = ConstantsModels.EnumsKullaniciRolleri.Administrator.ToString(),                
+                UserName = "Administrator",                
                 Email = "yogbis@meb.gov.tr",
-                Ad = "YOGBİS",
-                Soyad = "MEB",
+                Ad = "YOGBİS",                
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                 Aktif = true

@@ -18,8 +18,8 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account
 {
-    //[AllowAnonymous]
-    [Authorize(Roles = ResultConstant.Admin_Role)]
+    
+    [Authorize(Roles = "Administrator")]
     public class ExternalLoginModel : PageModel
     {
         private readonly SignInManager<Kullanici> _signInManager;

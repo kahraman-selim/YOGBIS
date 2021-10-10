@@ -12,7 +12,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = ResultConstant.Admin_Role)]
+    [Authorize(Roles = "Administrator")]
     public class KullanicilarController : Controller
     {
 

@@ -14,7 +14,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = ResultConstant.Admin_Role)]
+    [Authorize(Roles = "Administrator")]
     public class UlkelerController : Controller
     {
         private readonly IUlkelerBE _ulkelerBE;

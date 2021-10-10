@@ -13,7 +13,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
 {
-    [Authorize(Roles = ResultConstant.Admin_Role)]
+    [Authorize]
     public class ChangePasswordModel : PageModel
     {
         private readonly UserManager<Kullanici> _userManager;
@@ -38,20 +38,21 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage ="Geçerli Şifre zorunludur")]
             [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
+            [Display(Name = "Geçerli Şifre")]
             public string OldPassword { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Şifreniz en az {2}, en fazla {1} karakter uzunluğunda olmalıdır. En az bir küçük harf, büyük harf, sayı ve alfanümerik karakter içermelidir.(Örnek:Sifre123?)", MinimumLength = 6)]
+            [Required(ErrorMessage = "Yeni Şifre zorunludur")]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Yeni Şifre")]
             public string NewPassword { get; set; }
 
+            [Required(ErrorMessage = "Şifreyi doğrulamak zorunludur")]
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "Şifreyi Doğrula")]
+            [Compare("NewPassword", ErrorMessage = "Yeni şifre ve doğrulam şifresi eşleşmiyor")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -97,7 +98,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
+            StatusMessage = "Şifreniz değiştirildi.";
 
             return RedirectToPage();
         }
