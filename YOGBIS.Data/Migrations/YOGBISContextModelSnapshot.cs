@@ -758,8 +758,8 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("UlkeAdi")
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("UlkeBayrak")
-                        .HasColumnType("varbinary(4000)");
+                    b.Property<string>("UlkeBayrak")
+                        .HasColumnType("text");
 
                     b.HasKey("UlkeId");
 

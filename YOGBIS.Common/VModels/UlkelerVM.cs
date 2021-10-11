@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -11,7 +12,10 @@ namespace YOGBIS.Common.VModels
         public int UlkeId { get; set; }
         [Required (ErrorMessage ="Ülke adı zorunlu bir alandır")]
         public string UlkeAdi { get; set; }
-        public byte[] UlkeBayrak { get; set; }
+
+        [Required(ErrorMessage = "Ülkenin Bayrağını yükleyiniz")]
+        public IFormFile UlkeBayrak { get; set; }
+        public string UlkeBayrakText { get; set; }
         public string UlkeAciklama { get; set; }
 
         [Required(ErrorMessage = "Kıta adı zorunlu bir alandır")]

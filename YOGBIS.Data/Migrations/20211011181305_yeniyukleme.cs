@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace YOGBIS.Data.Migrations
 {
-    public partial class yenileme : Migration
+    public partial class yeniyukleme : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -84,6 +84,21 @@ namespace YOGBIS.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Kitalars", x => x.KitaId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Okullars",
+                columns: table => new
+                {
+                    OkulId = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    KayitTarihi = table.Column<DateTime>(nullable: false),
+                    OkulKodu = table.Column<int>(nullable: false),
+                    OkulAdi = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Okullars", x => x.OkulId);
                 });
 
             migrationBuilder.CreateTable(
@@ -382,6 +397,50 @@ namespace YOGBIS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OkulBilgis",
+                columns: table => new
+                {
+                    OkulBilgiId = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    KayitTarihi = table.Column<DateTime>(nullable: false),
+                    OkulTelefon = table.Column<string>(nullable: true),
+                    OkulAdres = table.Column<string>(nullable: true),
+                    MudurAdiSoyadi = table.Column<string>(nullable: true),
+                    MudurTelefon = table.Column<string>(nullable: true),
+                    MudurEPosta = table.Column<string>(nullable: true),
+                    MudurDonusYil = table.Column<string>(nullable: true),
+                    MdYrdAdiSoyadi = table.Column<string>(nullable: true),
+                    MdYrdTelefon = table.Column<string>(nullable: true),
+                    MdYrdEPosta = table.Column<string>(nullable: true),
+                    MdYrdDonusYil = table.Column<string>(nullable: true),
+                    OkulId = table.Column<int>(nullable: false),
+                    UlkeId = table.Column<int>(nullable: false),
+                    KullaniciId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OkulBilgis", x => x.OkulBilgiId);
+                    table.ForeignKey(
+                        name: "FK_OkulBilgis_AspNetUsers_KullaniciId",
+                        column: x => x.KullaniciId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OkulBilgis_Okullars_OkulId",
+                        column: x => x.OkulId,
+                        principalTable: "Okullars",
+                        principalColumn: "OkulId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OkulBilgis_Ulkelers_UlkeId",
+                        column: x => x.UlkeId,
+                        principalTable: "Ulkelers",
+                        principalColumn: "UlkeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SoruBankasis",
                 columns: table => new
                 {
@@ -624,6 +683,21 @@ namespace YOGBIS.Data.Migrations
                 column: "SoruKategoriId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OkulBilgis_KullaniciId",
+                table: "OkulBilgis",
+                column: "KullaniciId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OkulBilgis_OkulId",
+                table: "OkulBilgis",
+                column: "OkulId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OkulBilgis_UlkeId",
+                table: "OkulBilgis",
+                column: "UlkeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sehirlers_EyaletId",
                 table: "Sehirlers",
                 column: "EyaletId");
@@ -723,6 +797,9 @@ namespace YOGBIS.Data.Migrations
                 name: "MulakatSorularis");
 
             migrationBuilder.DropTable(
+                name: "OkulBilgis");
+
+            migrationBuilder.DropTable(
                 name: "Sehirlers");
 
             migrationBuilder.DropTable(
@@ -736,6 +813,9 @@ namespace YOGBIS.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Mulakatlars");
+
+            migrationBuilder.DropTable(
+                name: "Okullars");
 
             migrationBuilder.DropTable(
                 name: "Eyaletlers");

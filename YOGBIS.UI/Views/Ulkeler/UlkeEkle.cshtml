@@ -12,7 +12,7 @@
                 <b>Ülke Ekleme/Güncelleme</b>
             </div>
             <div class="card-body">
-                <form class="form-group m-0" asp-action="UlkeEkle">
+                <form class="form-group m-0" asp-action="UlkeEkle" enctype="multipart/form-data">
                     @Html.HiddenFor(x=>x.UlkeId)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="row">
@@ -47,31 +47,29 @@
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <input type="submit" value="Kaydet" class="btn btn-success btn-sm" />
-                                    <a asp-controller="Ulkeler" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm">Vazgeç</a>
-                                    <input type="file"
-                                           accept=".png,.jpg,.jpeg,.gif,.tif"
-                                           asp-for="UlkeBayrak"
-                                           class="form-control btn-sm"
-                                           style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
-                                           onchange="document.getElementById('ulkeBayrak').src = window.URL.createObjectURL(this.files[0])" />
-                                    <span asp-validation-for="UlkeBayrak" class="text-danger"></span>
+                                    <a asp-controller="Ulkeler" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm">Vazgeç</a>                                
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
-                                <label asp-for="UlkeBayrak" style="width: 100%;">Ülke Bayrağı</label>
-                                @*@if (true)
-                                {
-                                    <img id="ulkeBayrak" style="width:350px;height:350px; object-fit:unset" src="data:image/*;base64,@(Convert.ToBase64String(Model.UlkeBayrak))">
-                                    <img id="ulkeBayrak" style="width:350px;height:350px; object-fit:unset" src="data:image/*;base64,">
-                                }
-                                else
-                                {
-                                    <img id="ulkeBayrak" style="width: 350px; height: 350px; object-fit:unset" alt="Ülke Bayrağı" src="@(Convert.ToBase64String(Model.UlkeBayrak))">
-                                }*@
+                                <label style="width: 100%;">Ülke Bayrağı</label>
                                 <img id="ulkeBayrak" style="width: 350px; height: 350px; object-fit:unset" alt="Ülke Bayrağı">
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="UlkeBayrak">Ülke Bayrağı seçiniz</label>
+                                        <input type="file"
+                                               accept=".png,.jpg,.jpeg,.gif,.tif"
+                                               asp-for="UlkeBayrak"
+                                               class="form-control-file" title="Bayrak seçiniz"  placeholder="Ülke Bayrağı" id="FormControlFile1"
+                                               style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                                               onchange="document.getElementById('ulkeBayrak').src = window.URL.createObjectURL(this.files[0])" />
+                                        <span asp-validation-for="UlkeBayrak" class="text-danger"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -102,7 +100,7 @@
                 todayHighlight: true
             });
 
-            $('.limited').inputlimiter({
+            $('textarea.limited').inputlimiter({
                 remText: '%n karakter%s kaldı...',
                 limitText:'max allowed:%n'
             });

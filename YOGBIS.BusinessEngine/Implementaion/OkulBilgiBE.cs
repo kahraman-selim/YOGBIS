@@ -26,8 +26,44 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<OkulBilgiVM>> OkulBilgileriGetir()
         {
             var data = _unitOfWork.okulBilgiRepository.GetAll(includeProperties: "Kullanici,Okullar,Ulkeler").OrderBy(u => u.Ulkeler.UlkeAdi).ToList();
-            var okulbilgiler = _mapper.Map<List<OkulBilgi>, List<OkulBilgiVM>>(data);
-            return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, okulbilgiler);
+            //var okulbilgiler = _mapper.Map<List<OkulBilgi>, List<OkulBilgiVM>>(data);
+            //return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, okulbilgiler);
+            if (data != null)
+            {
+                List<OkulBilgiVM> returnData = new List<OkulBilgiVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new OkulBilgiVM()
+                    {
+                        OkulBilgiId = item.OkulBilgiId,
+                        OkulTelefon = item.OkulTelefon,
+                        OkulAdres = item.OkulAdres,
+                        //*************************                        
+                        MudurAdiSoyadi = item.MudurAdiSoyadi,
+                        MudurTelefon = item.MudurTelefon,
+                        MudurEPosta = item.MudurEPosta,
+                        MudurDonusYil = item.MudurDonusYil,
+                        //****************************
+                        MdYrdAdiSoyadi = item.MdYrdAdiSoyadi,
+                        MdYrdTelefon = item.MdYrdTelefon,
+                        MdYrdEPosta = item.MdYrdEPosta,
+                        MdYrdDonusYil = item.MdYrdDonusYil,
+                        //********************************
+                        OkulId = item.OkulId,
+                        OkulAdi = item.Okullar.OkulAdi,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = item.Ulkeler.UlkeAdi,
+                        KayitTarihi = item.KayitTarihi,
+                        KullaniciId = item.KullaniciId
+                    });
+                }
+                return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<OkulBilgiVM>>(false, ResultConstant.RecordNotFound);
+            }
         }
         public Result<List<OkulBilgiVM>> OkulBilgiGetirKullaniciId(string userId)
         {

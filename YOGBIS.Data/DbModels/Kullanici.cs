@@ -15,7 +15,7 @@ namespace YOGBIS.Data.DbModels
         [DisplayFormat(DataFormatString = "{0,d}")]
         [DataType(DataType.DateTime)]
         public DateTime KayitTarihi { get; set; } = DateTime.Now;
-        public int KulaniciAdDegLimiti { get; set; } = 10;
+        public int KulaniciAdDegLimiti { get; set; } = 10;        
         public byte[] KullaniciResim { get; set; }
         public bool? Aktif { get; set; }
     }

@@ -1,18 +1,18 @@
 ﻿@model YOGBIS.Common.VModels.UlkelerVM
 @{
-    ViewData["Title"] = "Güncelle";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Ülke Güncelle";
+    var imagePath = "~/img/" + Model.UlkeBayrakText;
 }
 
 <div class="row">
     <div class="col-md-6">
-        <div class="card shadow-lg rounded-lg mt-0 h-100">
+        <div class="card shadow-lg rounded-lg mt-0" style="width:100%">
             <div class="card-header">
-                <i class="fas fa-table mr-1"></i>
+                <i class="fas fa-pen mr-1"></i>
                 <b>Ülke Ekleme/Güncelleme</b>
             </div>
             <div class="card-body">
-                <form class="form-group m-0" asp-action="UlkeEkle">
+                <form class="form-group m-0" asp-action="UlkeEkle" enctype="multipart/form-data">
                     @Html.HiddenFor(x => x.UlkeId)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="row">
@@ -39,20 +39,39 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="UlkeAciklama" class="small mb-1 font-weight-bold">Ülke Bilgisi</label>
-                                        <textarea asp-for="UlkeAciklama" placeholder="Ülke bilgisi giriniz" class="form-control py-2 limiterBox" id="UlkeTextArea" rows="5" maxlength="250"></textarea>
+                                        <textarea asp-for="UlkeAciklama" placeholder="Ülke bilgisi giriniz" class="form-control py-2 limited" id="UlkeTextArea" rows="5" maxlength="250"></textarea>
                                         <span class="text-danger" asp-validation-for="UlkeAciklama"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
-                                    <input type="submit" value="Değiştir" class="btn btn-success btn-sm" />
+                                    <input type="submit" value="Kaydet" class="btn btn-success btn-sm" />
                                     <a asp-controller="Ulkeler" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm">Vazgeç</a>
-                                    <input type="file" value="Bayrak" class="form-control-file small mt-2" />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">bayrak resmi</div>
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label style="width: 100%;">Ülke Bayrağı</label>
+                                <img id="ulkeBayrak" style="width: 350px; height: 350px; object-fit:unset" alt="Ülke Bayrağı" src="@imagePath" asp-append-version="true">
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="UlkeBayrak">Ülke Bayrağı seçiniz</label>
+                                        <input type="file"
+                                               accept=".png,.jpg,.jpeg,.gif,.tif"
+                                               asp-for="UlkeBayrak"
+                                               class="form-control-file" title="Bayrak seçiniz" placeholder="Ülke Bayrağı" id="FormControlFile1"
+                                               style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                                               onchange="document.getElementById('ulkeBayrak').src = window.URL.createObjectURL(this.files[0])" />
+                                        <span asp-validation-for="UlkeBayrak" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -81,13 +100,11 @@
                 todayHighlight: true
             });
 
-            $('.limiterBox').inputlimiter({
+            $('textarea.limited').inputlimiter({
                 remText: '%n karakter%s kaldı...',
                 limitText: 'max allowed:%n'
             });
         });
     </script>
 }
-
-
 

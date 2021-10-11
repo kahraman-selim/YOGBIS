@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
@@ -19,10 +21,15 @@ namespace YOGBIS.UI.Controllers
     {
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IKitalarBE _kitalarBE;
-        public UlkelerController(IUlkelerBE ulkelerBE, IKitalarBE kitalarBE)
+        [Obsolete]
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        [Obsolete]
+        public UlkelerController(IUlkelerBE ulkelerBE, IKitalarBE kitalarBE, IHostingEnvironment hostingEnvironment)
         {
             _ulkelerBE = ulkelerBE;
             _kitalarBE = kitalarBE;
+            _hostingEnvironment = hostingEnvironment;
         }
         public IActionResult Index()
         {
@@ -51,6 +58,7 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
             return View();
+
             //ViewBag.KitaAdi = _kitalarBE.KitalariGetir(); 1.yöntem
 
             //var kitaadi = _kitalarBE.KitalariGetir(); 2. yöntem
@@ -62,21 +70,32 @@ namespace YOGBIS.UI.Controllers
         }
 
         [HttpPost]
+        [Obsolete]
         public IActionResult UlkeEkle(UlkelerVM model, int? UlkeId)
-        {            
+        {
+
+            string uniqueFileName = null;
+            if (model.UlkeBayrak!=null)
+            {
+                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
+                uniqueFileName = Guid.NewGuid().ToString() + "-" + model.UlkeBayrak.FileName;
+                string dosyaYolu = Path.Combine(uploadsFolder, uniqueFileName);
+                model.UlkeBayrak.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
+            }
+            
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
             if (UlkeId>0)
             {
-                var data = _ulkelerBE.UlkeGuncelle(model, user);
+                var data = _ulkelerBE.UlkeGuncelle(model, user, uniqueFileName);
 
                 return RedirectToAction("Index");
             }
             else
             {
-                var data = _ulkelerBE.UlkeEkle(model, user);
+                var data = _ulkelerBE.UlkeEkle(model, user, uniqueFileName);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
