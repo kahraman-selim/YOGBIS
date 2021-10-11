@@ -52,19 +52,19 @@ namespace YOGBIS.BusinessEngine.Implementaion
         //    }
         //}
 
-        //public Result<OkullarVM> OkulGetir(int id)
-        //{
-        //    var data = _unitOfWork.derecelerRepository.Get(id);
-        //    if (data != null)
-        //    {
-        //        var dereceler = _mapper.Map<Dereceler, DerecelerVM>(data);
-        //        return new Result<DerecelerVM>(true, ResultConstant.RecordFound, dereceler);
-        //    }
-        //    else
-        //    {
-        //        return new Result<DerecelerVM>(false, ResultConstant.RecordNotFound);
-        //    }
-        //}
+        public Result<OkullarVM> OkulGetir(int id)
+        {
+            var data = _unitOfWork.okullarRepository.Get(id);
+            if (data != null)
+            {
+                var dereceler = _mapper.Map<Okullar, OkullarVM>(data);
+                return new Result<OkullarVM>(true, ResultConstant.RecordFound, dereceler);
+            }
+            else
+            {
+                return new Result<OkullarVM>(false, ResultConstant.RecordNotFound);
+            }
+        }
         public Result<OkullarVM> OkulEkle(OkullarVM model, SessionContext user)
         {
             if (model != null)

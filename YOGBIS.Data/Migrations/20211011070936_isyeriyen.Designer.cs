@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20211011070936_isyeriyen")]
+    partial class isyeriyen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -473,33 +475,6 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("KullaniciId")
                         .HasColumnType("varchar(767)");
 
-                    b.Property<string>("MdYrdAdiSoyadi")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MdYrdDonusYil")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MdYrdEPosta")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MdYrdTelefon")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MudurAdiSoyadi")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MudurDonusYil")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MudurEPosta")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MudurTelefon")
-                        .HasColumnType("text");
-
-                    b.Property<string>("OkulAdres")
-                        .HasColumnType("text");
-
                     b.Property<int>("OkulId")
                         .HasColumnType("int");
 
@@ -508,6 +483,15 @@ namespace YOGBIS.Data.Migrations
 
                     b.Property<int>("UlkeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("YoneticiAdiSoyadi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("YoneticiGorev")
+                        .HasColumnType("text");
+
+                    b.Property<string>("YoneticiTelefon")
+                        .HasColumnType("text");
 
                     b.HasKey("OkulBilgiId");
 

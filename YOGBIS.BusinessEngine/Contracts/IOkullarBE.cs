@@ -11,7 +11,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<List<OkullarVM>> OkullariGetir();
         Result<OkullarVM> OkulEkle(OkullarVM model, SessionContext user);
 
-        //Result<OkullarVM> OkulGetir(int id);
+        Result<OkullarVM> OkulGetir(int id);
 
         Result<OkullarVM> OkulGuncelle(OkullarVM model, SessionContext user);
         

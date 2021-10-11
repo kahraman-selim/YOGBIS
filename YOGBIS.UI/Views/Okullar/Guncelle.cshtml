@@ -1,0 +1,66 @@
+﻿@model YOGBIS.Common.VModels.OkullarVM
+@{
+    ViewData["Title"] = "OkulEkle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-lg rounded-lg mt-0" style="width:100%">
+            <div class="card-header">
+                <i class="fas fa-pen mr-1"></i>
+                <b>Okul Ekleme/Güncelleme</b>
+            </div>
+            <div class="card-body">
+                <form class="form-group m-0" asp-action="OkulEkle">
+                    @Html.HiddenFor(x => x.OkulId)
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="OkulKodu" class="small mb-1 font-weight-bold">Okul Kodu</label>
+                                        <input asp-for="OkulKodu" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Okul Kodunu yazınız">
+                                        <span class="text-danger" asp-validation-for="OkulKodu"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="OkulAdi" class="small mb-1 font-weight-bold">Derece</label>
+                                        <input asp-for="OkulAdi" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Okul adını yazınız">
+                                        <span class="text-danger" asp-validation-for="OkulAdi"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <input type="submit" value="Değiştir" class="btn btn-success btn-sm" />
+                                    <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm">Vazgeç</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-lg rounded-lg mt-0 h-100">
+            <div class="card-header">
+                <i class="fas fa-table mr-1"></i>
+                <b>Okul Listesi</b>
+            </div>
+            <div class="card-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+

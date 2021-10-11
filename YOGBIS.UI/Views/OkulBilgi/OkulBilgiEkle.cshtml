@@ -1,0 +1,152 @@
+﻿@model YOGBIS.Common.VModels.OkulBilgiVM
+@{
+    ViewData["Title"] = "Okul Bilgileri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-lg rounded-lg mt-0 h-100">
+            <div class="card-header">
+                <i class="fas fa-pen mr-1"></i>
+                <b>Okul Yönetici Bilgisi Ekleme/Güncelleme</b>
+            </div>
+            <div class="card-body">
+                <form class="form-group m-0" asp-action="OkulBilgiEkle">
+                    @Html.HiddenFor(x => x.OkulBilgiId)
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="UlkeAdi" class="small mb-1 font-weight-bold">Ülke</label>
+                                @Html.DropDownListFor(u => u.UlkeId, new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Ülkeyi seçiniz", new { @class = "form-control-range form-control py-2" })
+                                <span class="text-danger" asp-validation-for="UlkeId"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="OkulAdi" class="small mb-1 font-weight-bold">Okul Adı</label>
+                                @Html.DropDownListFor(u => u.OkulId, new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okul adını seçiniz", new { @class = "form-control-range form-control py-2" })
+                                <span class="text-danger" asp-validation-for="OkulId"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="OkulAdres" class="small mb-1 font-weight-bold">Okul Adresi</label>
+                                <textarea asp-for="OkulAdres" placeholder="Okul adresini buraya yazınız..." class="form-control" id="CevapTextArea" rows="3"></textarea>
+                                <span class="text-danger" asp-validation-for="OkulAdres"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="small mb-1 font-weight-bold">Okul Telefon Numarası</label>
+                                <input type="text" asp-for="OkulTelefon" class="form-control py-2" id="CreateTypeInput" maxlength="14" placeholder="Okul telefon numarasını yazınız...">
+                                <span class="text-danger" asp-validation-for="OkulTelefon"></span>
+                                <span class="text-danger">Format : +(ÜlkeKodu)(Ulusal Operatör)(Abone Numarası)</span>
+                                <span class="text-danger">Örnek:+903884131697</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="small mb-1 font-weight-bold">Okul Müdürü Adı Soyadı</label>
+                                        <input type="text" asp-for="MudurAdiSoyadi" class="form-control py-2" id="CreateTypeInput" placeholder="Okul Müdürü adını soyadını yazınız...">
+                                        <span class="text-danger" asp-validation-for="MudurAdiSoyadi"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="small mb-1 font-weight-bold">Okul Müdürü Telefon Numarası</label>
+                                        <input type="text" asp-for="MudurTelefon" class="form-control py-2" id="CreateTypeInput" placeholder="Okul Müdürü telefon numarasını yazınız...">
+                                        <span class="text-danger" asp-validation-for="MudurTelefon"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="small mb-1 font-weight-bold">Okul Müdürü E-Posta</label>
+                                        <input type="text" asp-for="MudurEPosta" class="form-control py-2" id="CreateTypeInput" placeholder="Okul Müdürü E-Posta adresini yazınız">
+                                        <span class="text-danger" asp-validation-for="MudurEPosta"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="small mb-1 font-weight-bold">Okul Müdürü Dönüş Yılı</label>
+                                        <input type="number" min="0" max="9999" asp-for="MudurDonusYil" class="form-control py-2" id="CreateTypeInput" placeholder="">
+                                        <span class="text-danger" asp-validation-for="MudurDonusYil"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="small mb-1 font-weight-bold">Müdür Yardımcısı Adı Soyadı</label>
+                                        <input type="text" asp-for="MdYrdAdiSoyadi" class="form-control py-2" id="CreateTypeInput" placeholder="Müdür Yardımcısı adını soyadını yazınız...">
+                                        <span class="text-danger" asp-validation-for="MdYrdAdiSoyadi"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="small mb-1 font-weight-bold">Müdür Yardımcısı Telefon Numarası</label>
+                                        <input type="text" asp-for="MdYrdTelefon" class="form-control py-2" id="CreateTypeInput" placeholder="Müdür Yardımcısı telefon numarasını yazınız...">
+                                        <span class="text-danger" asp-validation-for="MdYrdTelefon"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="small mb-1 font-weight-bold">Müdür Yardımcısı E-Posta</label>
+                                        <input type="text" asp-for="MdYrdEPosta" class="form-control py-2" id="CreateTypeInput" placeholder="Müdür Yardımcısı E-Posta adresini yazınız">
+                                        <span class="text-danger" asp-validation-for="MdYrdEPosta"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="small mb-1 font-weight-bold">Müdür Yardımcısı Dönüş Yılı</label>
+                                        <input type="number" min="0" max="9999" asp-for="MdYrdDonusYil" class="form-control py-2" id="CreateTypeInput" placeholder="">
+                                        <span class="text-danger" asp-validation-for="MdYrdDonusYil"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <a asp-controller="OkulBilgi" asp-action="OkulBilgiEkle" id="yenile" name="yenile" class="btn btn-primary btn-sm mb-1" style="width:100px">Yeni Kayıt</a>
+                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" />
+                            <a asp-controller="OkulBilgi" asp-action="OkulBilgiEkle" id="yenile" name="degistir" class="btn btn-info btn-sm mb-1 disabled" style="width:100px">Değiştir</a>
+                            <a asp-controller="OkulBilgi" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Vazgeç</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>    
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+

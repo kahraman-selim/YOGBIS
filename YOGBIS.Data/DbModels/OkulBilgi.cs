@@ -11,9 +11,19 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public int OkulBilgiId { get; set; }
         public string OkulTelefon { get; set; }
-        public string YoneticiGorev { get; set; }
-        public string YoneticiAdiSoyadi { get; set; }
-        public string YoneticiTelefon { get; set; }
+        public string OkulAdres { get; set; }
+        //****************************************
+        public string MudurAdiSoyadi { get; set; }
+        public string MudurTelefon { get; set; }
+        public string MudurEPosta { get; set; }
+        public string MudurDonusYil { get; set; }
+        //*****************************************
+        public string MdYrdAdiSoyadi { get; set; }
+        public string MdYrdTelefon { get; set; }
+        public string MdYrdEPosta { get; set; }
+        public string MdYrdDonusYil { get; set; }
+
+        //****************************************
         public int OkulId { get; set; }
 
         [ForeignKey("OkulId")]

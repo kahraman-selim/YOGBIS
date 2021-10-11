@@ -24,6 +24,8 @@ namespace YOGBIS.Common.Mappings
             CreateMap<Kullanici, KullaniciVM>().ReverseMap();
             CreateMap<Dereceler, DerecelerVM>().ReverseMap();
             CreateMap<UlkeGruplariKitalar, UlkeGruplariKitalarVM>().ReverseMap();
+            CreateMap<Okullar, OkullarVM>().ReverseMap();
+            CreateMap<OkulBilgi, OkulBilgiVM>().ReverseMap();
         }
     }
 }

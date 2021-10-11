@@ -25,13 +25,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OkulBilgiVM>> OkulBilgileriGetir()
         {
-            var data = _unitOfWork.okulBilgiRepository.GetAll().ToList();
+            var data = _unitOfWork.okulBilgiRepository.GetAll(includeProperties: "Kullanici,Okullar,Ulkeler").OrderBy(u => u.Ulkeler.UlkeAdi).ToList();
             var okulbilgiler = _mapper.Map<List<OkulBilgi>, List<OkulBilgiVM>>(data);
             return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, okulbilgiler);
         }
         public Result<List<OkulBilgiVM>> OkulBilgiGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici,Okullar").ToList();
+            var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
             if (data != null)
             {
                 List<OkulBilgiVM> returnData = new List<OkulBilgiVM>();
@@ -42,10 +42,19 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {                        
                         OkulBilgiId=item.OkulBilgiId,
                         OkulTelefon=item.OkulTelefon,
-                        YoneticiGorev=item.YoneticiGorev,
-                        YoneticiAdiSoyadi=item.YoneticiAdiSoyadi,
-                        YoneticiTelefon=item.YoneticiTelefon,
-                        OkulId=item.OkulId,
+                        OkulAdres = item.OkulAdres,
+                        //*************************                        
+                        MudurAdiSoyadi=item.MudurAdiSoyadi,
+                        MudurTelefon = item.MudurTelefon,
+                        MudurEPosta = item.MudurEPosta,
+                        MudurDonusYil = item.MudurDonusYil,
+                        //****************************
+                        MdYrdAdiSoyadi=item.MdYrdAdiSoyadi,
+                        MdYrdTelefon=item.MdYrdTelefon,
+                        MdYrdEPosta=item.MdYrdEPosta,
+                        MdYrdDonusYil=item.MdYrdDonusYil,
+                        //********************************
+                        OkulId =item.OkulId,
                         OkulAdi=item.Okullar.OkulAdi,
                         UlkeId=item.UlkeId,
                         UlkeAdi=item.Ulkeler.UlkeAdi,
