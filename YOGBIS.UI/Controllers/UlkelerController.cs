@@ -35,7 +35,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            var requestmodel = _ulkelerBE.UlkeGetirKullaniciId(user.LoginId);
+            var requestmodel = _ulkelerBE.UlkeleriGetir();  //UlkeGetirKullaniciId(user.LoginId);
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir();
 
             if (requestmodel.IsSuccess)

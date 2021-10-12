@@ -5,11 +5,16 @@
 }
 
 <ol class="breadcrumb mb-4 mt-2">
-    <li>
-        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
+    <li class="m-1">
+        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-success btn-circle btn-sm" style="width:100px;" title="Yeni Kayıt">
             Yeni Kayıt <i class="fas fa-plus-circle"></i>
         </a>
     </li>
+    <li class="m-1">
+        <a asp-controller="KullaniciYetkileri" asp-action="Index" class="btn btn-info btn-circle btn-sm" style="width:100px;" title="Yetkiler">
+            Yetkiler <i class="fas fa-vote-yea"></i>
+        </a>
+    </li>            
 </ol>
 <div class="card mt-2 mb-4">
     <div class="card-header">

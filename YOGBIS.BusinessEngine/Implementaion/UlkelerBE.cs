@@ -25,9 +25,36 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
         public Result<List<UlkelerVM>> UlkeleriGetir()
         {
-            var data = _unitOfWork.ulkelerRepository.GetAll().OrderBy(u=>u.UlkeAdi).ToList();
-            var ulkeler = _mapper.Map<List<Ulkeler>, List<UlkelerVM>>(data);
-            return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, ulkeler);
+            //var data = _unitOfWork.ulkelerRepository.GetAll().OrderBy(u=>u.UlkeAdi).ToList();
+            //var ulkeler = _mapper.Map<List<Ulkeler>, List<UlkelerVM>>(data);
+            //return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, ulkeler);
+
+            var data = _unitOfWork.ulkelerRepository.GetAll(includeProperties: "Kullanici,Kitalar").OrderBy(u => u.UlkeAdi).ToList();
+
+            if (data != null)
+            {
+                List<UlkelerVM> returnData = new List<UlkelerVM>();
+                foreach (var item in data)
+                {
+                    returnData.Add(new UlkelerVM()
+                    {
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = item.UlkeAdi,
+                        UlkeBayrakText = item.UlkeBayrak,
+                        UlkeAciklama = item.UlkeAciklama,
+                        KayitTarihi = item.KayitTarihi,
+                        KitaId = item.KitaId,
+                        KitaAdi = item.Kitalar.KitaAdi,
+                        KullaniciId = item.KullaniciId,
+                        KullaniciAdi = item.Kullanici.UserName
+                    });
+                }
+                return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<UlkelerVM>>(false, ResultConstant.RecordNotFound);
+            }
         }
 
         public Result<UlkelerVM> UlkeEkle(UlkelerVM model, SessionContext user, string uniqueFileName)
@@ -76,8 +103,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     UlkelerVM ulke = new UlkelerVM();
                     ulke.UlkeId = data.UlkeId;
                     ulke.UlkeAdi = data.UlkeAdi;
-                    ulke.UlkeAciklama = data.UlkeAciklama;
+                    ulke.UlkeAciklama = data.UlkeAciklama;                    
                     ulke.UlkeBayrakText = data.UlkeBayrak;
+                    ulke.KitaId = data.KitaId;
                     ulke.KitaAdi = data.Kitalar.KitaAdi;
                     return new Result<UlkelerVM>(true, ResultConstant.RecordFound, ulke);
                 }
