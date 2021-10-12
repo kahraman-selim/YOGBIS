@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace YOGBIS.UI.Controllers
 {
     [Authorize]
-    public class Duyurular : Controller
+    public class SSSController : Controller
     {
         public IActionResult Index()
         {
