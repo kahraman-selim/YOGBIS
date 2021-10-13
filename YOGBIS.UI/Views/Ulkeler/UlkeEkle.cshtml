@@ -13,7 +13,7 @@
             </div>
             <div class="card-body">
                 <form class="form-group m-0" asp-action="UlkeEkle" enctype="multipart/form-data">
-                    @Html.HiddenFor(x=>x.UlkeId)
+                    @Html.HiddenFor(x => x.UlkeId)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="row">
                         <div class="col-md-6">
@@ -39,7 +39,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="UlkeAciklama" class="small mb-1 font-weight-bold">Ülke Bilgisi</label>
-                                        <textarea asp-for="UlkeAciklama" placeholder="Ülke bilgisi giriniz" class="form-control py-2 limited" id="UlkeTextArea" rows="5" maxlength="250"></textarea>                                        
+                                        <textarea asp-for="UlkeAciklama" placeholder="Ülke bilgisi giriniz" class="form-control py-2 limited" id="UlkeTextArea" rows="5" maxlength="250"></textarea>
                                         <span class="text-danger" asp-validation-for="UlkeAciklama"></span>
                                     </div>
                                 </div>
@@ -47,7 +47,7 @@
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <input type="submit" value="Kaydet" class="btn btn-success btn-sm" />
-                                    <a asp-controller="Ulkeler" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm">Vazgeç</a>                                
+                                    <a asp-controller="Ulkeler" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm">Vazgeç</a>
                                 </div>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                                         <input type="file"
                                                accept=".png,.jpg,.jpeg,.gif,.tif"
                                                asp-for="UlkeBayrak"
-                                               class="form-control-file" title="Bayrak seçiniz"  placeholder="Ülke Bayrağı" id="FormControlFile1"
+                                               class="form-control-file" title="Bayrak seçiniz" placeholder="Ülke Bayrağı" id="FormControlFile1"
                                                style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
                                                onchange="document.getElementById('ulkeBayrak').src = window.URL.createObjectURL(this.files[0])" />
                                         <span asp-validation-for="UlkeBayrak" class="text-danger"></span>
@@ -107,4 +107,6 @@
         });
     </script>
 }
+
+
 

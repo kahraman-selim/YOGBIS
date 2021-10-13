@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -36,7 +35,7 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
             var requestmodel = _ulkelerBE.UlkeleriGetir();  //UlkeGetirKullaniciId(user.LoginId);
-            ViewBag.KitaAdi = _kitalarBE.KitalariGetir();
+            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
             if (requestmodel.IsSuccess)
             {
@@ -53,7 +52,7 @@ namespace YOGBIS.UI.Controllers
             //return View();
         }
 
-        public IActionResult UlkeEkle() 
+        public IActionResult UlkeEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
@@ -75,19 +74,19 @@ namespace YOGBIS.UI.Controllers
         {
 
             string uniqueFileName = null;
-            if (model.UlkeBayrak!=null)
+            if (model.UlkeBayrak != null)
             {
                 string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
                 uniqueFileName = Guid.NewGuid().ToString() + "-" + model.UlkeBayrak.FileName;
                 string dosyaYolu = Path.Combine(uploadsFolder, uniqueFileName);
                 model.UlkeBayrak.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
             }
-            
+
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
-            if (UlkeId>0)
+            if (UlkeId > 0)
             {
                 var data = _ulkelerBE.UlkeGuncelle(model, user, uniqueFileName);
 
@@ -118,11 +117,11 @@ namespace YOGBIS.UI.Controllers
             //}
         }
 
-        public ActionResult Guncelle(int? id) 
+        public ActionResult Guncelle(int? id)
         {
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
-            if (id>0)
+            if (id > 0)
             {
                 var data = _ulkelerBE.UlkeGetir((int)id);
                 return View(data.Data);
@@ -131,7 +130,7 @@ namespace YOGBIS.UI.Controllers
             {
                 return View();
             }
-            
+
         }
 
         [HttpDelete]
