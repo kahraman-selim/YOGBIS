@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
@@ -22,6 +25,8 @@ namespace YOGBIS.UI.Controllers
         
         public IActionResult Index()
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
             var data = _mulakatSorulariBE.MulakatSorulariGetir();
             if (data.IsSuccess)
             {
@@ -32,6 +37,7 @@ namespace YOGBIS.UI.Controllers
         }
         public IActionResult MulakatSoruEkle()
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             return View();
         }        
         [HttpPost]
@@ -59,10 +65,11 @@ namespace YOGBIS.UI.Controllers
             //    }
             //} 
             #endregion
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
             if (ModelState.IsValid)
             {
-                var data = _mulakatSorulariBE.MulakatSorusuEkle(model);
+                var data = _mulakatSorulariBE.MulakatSorusuEkle(model,user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
@@ -78,6 +85,8 @@ namespace YOGBIS.UI.Controllers
         [HttpGet]
         public IActionResult MulakatSoruGuncelle(int id)
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
             if (id < 0)
                 return View();
             var data = _mulakatSorulariBE.MulakatSorulariGetir(id);
@@ -90,9 +99,11 @@ namespace YOGBIS.UI.Controllers
         [HttpPost]
         public IActionResult MulakatSoruGuncelle(MulakatSorulariVM model)
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
             if (ModelState.IsValid)
             {
-                var data = _mulakatSorulariBE.MulakatSorusuGuncelle(model);
+                var data = _mulakatSorulariBE.MulakatSorusuGuncelle(model,user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");

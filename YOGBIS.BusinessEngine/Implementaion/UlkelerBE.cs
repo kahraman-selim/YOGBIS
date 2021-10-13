@@ -25,11 +25,11 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
         public Result<List<UlkelerVM>> UlkeleriGetir()
         {
-            //var data = _unitOfWork.ulkelerRepository.GetAll().OrderBy(u=>u.UlkeAdi).ToList();
+            //var data = _unitOfWork.ulkelerRepository.GetAll(includeProperties: "Kullanici,Kitalar").OrderBy(u => u.UlkeAdi).ToList();
             //var ulkeler = _mapper.Map<List<Ulkeler>, List<UlkelerVM>>(data);
             //return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, ulkeler);
 
-            var data = _unitOfWork.ulkelerRepository.GetAll(includeProperties: "Kullanici,Kitalar").OrderBy(u => u.UlkeAdi).ToList();
+            var data = _unitOfWork.ulkelerRepository.GetAll(includeProperties: "Kitalar,Kullanici").OrderBy(u => u.UlkeAdi).ToList();
 
             if (data != null)
             {
@@ -43,10 +43,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeBayrakText = item.UlkeBayrak,
                         UlkeAciklama = item.UlkeAciklama,
                         KayitTarihi = item.KayitTarihi,
-                        KitaId = item.KitaId,
+                        KitaId = item.Kitalar.KitaId,
                         KitaAdi = item.Kitalar.KitaAdi,
                         KullaniciId = item.KullaniciId,
-                        KullaniciAdi = item.Kullanici.UserName
+                        KullaniciAdi = item.Kullanici.Ad+" "+item.Kullanici.Soyad
                     });
                 }
                 return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, returnData);

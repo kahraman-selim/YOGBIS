@@ -15,6 +15,7 @@ namespace YOGBIS.Common.VModels
         public int EyaletId { get; set; }
         public EyaletlerVM Eyaletler { get; set; }
         public string KullaniciId { get; set; }
+        public string KullaniciAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
     }
 }

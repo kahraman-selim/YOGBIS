@@ -25,9 +25,32 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<DerecelerVM>> DereceleriGetir()
         {
-            var data = _unitOfWork.derecelerRepository.GetAll().ToList();
+            //var data = _unitOfWork.derecelerRepository.GetAll().ToList();
+            //var dereceler = _mapper.Map<List<Dereceler>, List<DerecelerVM>>(data);
+            //return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, dereceler);
+
+            var data = _unitOfWork.derecelerRepository.GetAll(includeProperties: "Kullanici").ToList();
             var dereceler = _mapper.Map<List<Dereceler>, List<DerecelerVM>>(data);
-            return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, dereceler);
+
+            if (data != null)
+            {
+                List<DerecelerVM> returnData = new List<DerecelerVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new DerecelerVM()
+                    {
+                        DereceId=item.DereceId,
+                        DereceAdi=item.DereceAdi,                        
+                        KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad
+                    });
+                }
+                return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<DerecelerVM>>(false, ResultConstant.RecordNotFound);
+            }
         }
         public Result<List<DerecelerVM>> DereceGetirKullaniciId(string userId)
         {
@@ -43,6 +66,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         DereceId=item.DereceId,
                         DereceAdi=item.DereceAdi,
                         KayitTarihi = item.KayitTarihi,
+                        KullaniciAdi=item.Kullanici.Ad+" "+item.Kullanici.Soyad,
                         KullaniciId = item.KullaniciId                        
                     });
                 }

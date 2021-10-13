@@ -25,9 +25,37 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<SoruKategorilerVM>> SoruKategorileriGetir()
         {
-            var data = _unitOfWork.sorukategorilerRepository.GetAll().ToList();
-            var soruKategoriler = _mapper.Map<List<SoruKategoriler>, List<SoruKategorilerVM>>(data);
-            return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, soruKategoriler);
+            //var data = _unitOfWork.sorukategorilerRepository.GetAll().ToList();
+            //var soruKategoriler = _mapper.Map<List<SoruKategoriler>, List<SoruKategorilerVM>>(data);
+            //return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, soruKategoriler);
+
+            var data = _unitOfWork.sorukategorilerRepository.GetAll(includeProperties: "Dereceler,Kullanici").ToList();
+            var dereceler = _mapper.Map<List<SoruKategoriler>, List<SoruKategorilerVM>>(data);
+
+            if (data != null)
+            {
+                List<SoruKategorilerVM> returnData = new List<SoruKategorilerVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new SoruKategorilerVM()
+                    {
+                        SoruKategorilerId=item.SoruKategorilerId,
+                        SoruKategorilerAdi=item.SoruKategorilerAdi,
+                        SoruKategorilerKullanimi=item.SoruKategorilerKullanimi,
+                        SoruKategorilerPuan=item.SoruKategorilerPuan,
+                        DereceId=item.Dereceler.DereceId,
+                        DereceAdi=item.Dereceler.DereceAdi,
+                        KullaniciId=item.Kullanici.Id,
+                        KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad
+                    });
+                }
+                return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<SoruKategorilerVM>>(false, ResultConstant.RecordNotFound);
+            }
         }
         public Result<List<SoruKategorilerVM>> SoruKategoriKullaniciId(string userId)
         {

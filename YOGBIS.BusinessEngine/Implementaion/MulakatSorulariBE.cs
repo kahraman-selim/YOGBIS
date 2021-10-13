@@ -6,6 +6,7 @@ using System.Text;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.ResultModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
@@ -25,36 +26,43 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<MulakatSorulariVM>> MulakatSorulariGetir()
         {
             //1. Yöntem
-            var data = _unitOfWork.mulakatSorulariRepository.GetAll().ToList();            
-            var mulakatSorulari = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
-            return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, mulakatSorulari);
+            //var data = _unitOfWork.mulakatSorulariRepository.GetAll().ToList();            
+            //var mulakatSorulari = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
+            //return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, mulakatSorulari);
 
             #region 2.Yöntem
-            //2. Yöntem
-            //if (data != null)
-            //{
-            //    List<MulakatSorulari> returnData = new List<MulakatSorulari>();
+            var data = _unitOfWork.mulakatSorulariRepository.GetAll(includeProperties: "SoruBankasi,SoruKategoriler,Dereceler,Mulakatlar,Kullanici").ToList();
+            var soruBankasi = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
 
-            //    foreach (var item in data)
-            //    {
-            //        returnData.Add(new MulakatSorulari()
-            //        {
-            //            MulakatSorulariId = item.MulakatSorulariId,
-            //            SoruSiraNo = item.SoruSiraNo,
-            //            SoruNo = item.SoruNo,
-            //            Soru = item.Soru,
-            //            Cevap = item.Cevap,
-            //            Derecesi = item.Derecesi,
-            //            KategoriId = item.KategoriId,
-            //            MulakatId = item.MulakatId
-            //        });
-            //    }
-            //    return new Result<List<MulakatSorulari>>(true, ResultConstant.RecordFound, returnData);
-            //}
-            //else
-            //{
-            //    return new Result<List<MulakatSorulari>>(false, ResultConstant.RecordNotFound);
-            //} 
+            if (data != null)
+            {
+                List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new MulakatSorulariVM()
+                    {
+                        MulakatSorulariId=item.MulakatSorulariId,
+                        SoruSiraNo=item.SoruSiraNo,
+                        SoruId=item.SoruBankasi.SoruBankasiId,
+                        SoruKategoriId=item.SoruKategoriler.SoruKategorilerId,
+                        SoruKategoriAdi=item.SoruKategoriler.SoruKategorilerAdi,
+                        DereceId=item.Dereceler.DereceId,
+                        DereceAdi=item.Dereceler.DereceAdi,
+                        Soru=item.Soru,
+                        Cevap=item.Cevap,
+                        MulakatId=item.Mulakatlar.MulakatId,
+                        MulakatAdi=item.Mulakatlar.MulakatAdi,
+                        KullaniciId=item.Kullanici.Id,
+                        KullaniciAdi=item.Kullanici.Ad+" "+item.Kullanici.Soyad
+                    });
+                }
+                return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
+            }
             #endregion
         }
 
@@ -72,13 +80,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
 
-        public Result<MulakatSorulariVM> MulakatSorusuEkle(MulakatSorulariVM model)
+        public Result<MulakatSorulariVM> MulakatSorusuEkle(MulakatSorulariVM model, SessionContext user)
         {
             if (model!=null)
             {
                 try
                 {
                     var mulakatSoru = _mapper.Map<MulakatSorulariVM, MulakatSorulari>(model);
+                    mulakatSoru.KullaniciId = user.LoginId;
                     _unitOfWork.mulakatSorulariRepository.Add(mulakatSoru);
                     _unitOfWork.Save();
                     return new Result<MulakatSorulariVM>(true, ResultConstant.RecordCreateSuccess);
@@ -95,13 +104,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
 
-        public Result<MulakatSorulariVM> MulakatSorusuGuncelle(MulakatSorulariVM model)
+        public Result<MulakatSorulariVM> MulakatSorusuGuncelle(MulakatSorulariVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
                     var mulakatSoru = _mapper.Map<MulakatSorulariVM, MulakatSorulari>(model);
+                    mulakatSoru.KullaniciId = user.LoginId;
                     _unitOfWork.mulakatSorulariRepository.Update(mulakatSoru);
                     _unitOfWork.Save();
                     return new Result<MulakatSorulariVM>(true, ResultConstant.RecordCreateSuccess);
@@ -135,7 +145,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
        
         public Result<List<MulakatSorulariVM>> MulakatSorulariGetir(int id, string derece)
         {
-            var data = _unitOfWork.mulakatSorulariRepository.GetAll(k => k.SoruSiraNo == id && k.Derecesi == derece).ToList();
+            var data = _unitOfWork.mulakatSorulariRepository.GetAll(k => k.SoruSiraNo == id && k.Dereceler.DereceAdi == derece).ToList();
             if (data != null)
             {
                 List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
@@ -148,7 +158,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruId = item.SoruId,
                         SoruKategoriId = item.SoruKategoriId,
                         SoruKategoriAdi = item.SoruKategoriAdi,
-                        Derecesi = item.Derecesi,
+                        DereceAdi=item.Dereceler.DereceAdi,
                         Soru = item.Soru,
                         Cevap = item.Cevap
                     });

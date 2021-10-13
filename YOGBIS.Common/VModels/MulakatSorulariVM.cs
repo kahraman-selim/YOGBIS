@@ -10,32 +10,34 @@ namespace YOGBIS.Common.VModels
     {
         [Key]
         public int MulakatSorulariId { get; set; }
-
-        [Range(0, int.MaxValue, ErrorMessage = "Girilen değer bir sayı değil !")]
+                
         [Required(ErrorMessage = "Soru Sıra Numarası yazınız...")]
         public int SoruSiraNo { get; set; }
-
-        [Range(0, int.MaxValue, ErrorMessage = "Girilen değer bir sayı değil !")]
+                
         [Required(ErrorMessage = "Soru Numarası yazınız...")]
         public int SoruId { get; set; }
-        public SoruBankasiVM SoruBankasiVm { get; set; }
-
-        [Range(0, int.MaxValue, ErrorMessage = "Girilen değer bir sayı değil !")]
-        [Required(ErrorMessage = "Kategori Numarasını yazınız...")]
+        public SoruBankasiVM SoruBankasi { get; set; }
+                
+        [Required(ErrorMessage = "Kategori seçimi yazınız...")]
         public int SoruKategoriId { get; set; }
-        public SoruKategorilerVM SoruKategorilerVm { get; set; }
-
-        [Required(ErrorMessage = "Kategori Adını yazınız...")]
         public string SoruKategoriAdi { get; set; }
+        public SoruKategorilerVM SoruKategoriler { get; set; }
+
         [Required(ErrorMessage = "Soru Derecesini seçiniz...")]
-        public string Derecesi { get; set; }
+        public int DereceId { get; set; }
+        public string DereceAdi { get; set; }
+        public Dereceler Dereceler { get; set; }
+
         [Required(ErrorMessage = "Soruyu yazınız...")]
         public string Soru { get; set; }
+
         [Required(ErrorMessage = "Cevabı yazınız...")]
         public string Cevap { get; set; }
         public int MulakatId { get; set; }
+        public string MulakatAdi { get; set; }
         public MulakatlarVM Mulakatlar { get; set; }
-        public string KullaniciId { get; set; }     
+        public string KullaniciId { get; set; }
+        public string KullaniciAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
     }
 }

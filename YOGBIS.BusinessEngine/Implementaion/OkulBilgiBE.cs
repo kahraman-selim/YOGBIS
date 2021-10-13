@@ -25,7 +25,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OkulBilgiVM>> OkulBilgileriGetir()
         {
-            var data = _unitOfWork.okulBilgiRepository.GetAll(includeProperties: "Kullanici,Okullar,Ulkeler").OrderBy(u => u.Ulkeler.UlkeAdi).ToList();
+            var data = _unitOfWork.okulBilgiRepository.GetAll(includeProperties: "Okullar,Ulkeler,Kullanici").OrderBy(u => u.Ulkeler.UlkeAdi).ToList();
             //var okulbilgiler = _mapper.Map<List<OkulBilgi>, List<OkulBilgiVM>>(data);
             //return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, okulbilgiler);
             if (data != null)
@@ -55,7 +55,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeId = item.UlkeId,
                         UlkeAdi = item.Ulkeler.UlkeAdi,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KullaniciId
+                        KullaniciId = item.KullaniciId,
+                        KullaniciAdi =item.Kullanici.Ad+" "+item.Kullanici.Soyad                        
                     });
                 }
                 return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, returnData);
@@ -95,7 +96,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeId=item.UlkeId,
                         UlkeAdi=item.Ulkeler.UlkeAdi,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KullaniciId                        
+                        KullaniciAdi=item.Kullanici.Ad+" "+item.Kullanici.Soyad,
+                        KullaniciId = item.KullaniciId,
+                        
                     });
                 }
                 return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, returnData);

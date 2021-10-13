@@ -29,6 +29,7 @@ namespace YOGBIS.Common.VModels
         public string DereceAdi { get; set; }
         public DerecelerVM Dereceler { get; set; }
         public string KullaniciId { get; set; }
+        public string KullaniciAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<SoruKategori> SoruKategoris { get; set; }
     }

@@ -56,6 +56,7 @@ namespace YOGBIS.Common.VModels
         public string UlkeAdi { get; set; }
         public UlkelerVM Ulkeler { get; set; }
         public string KullaniciId { get; set; }
+        public string KullaniciAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
     }
 }

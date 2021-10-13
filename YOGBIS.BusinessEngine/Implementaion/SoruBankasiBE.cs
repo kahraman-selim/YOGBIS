@@ -66,7 +66,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
         public Result<List<SoruBankasiVM>> SorulariGetir()
         {
-            var data = _unitOfWork.soruBankasiRepository.GetAll(includeProperties: "Kaydeden,SoruKategoriler").OrderByDescending(s => s.SoruBankasiId).ToList();            
+            var data = _unitOfWork.soruBankasiRepository.GetAll(includeProperties: "SoruKategoriler,Dereceler,Kaydeden,Onaylayan").OrderByDescending(s => s.SoruBankasiId).ToList();            
             var soruBankasi = _mapper.Map<List<SoruBankasi>, List<SoruBankasiVM>>(data);
 
             if (data != null)
@@ -88,8 +88,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruDurumu = item.SoruDurumu,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kaydeden.Ad + " " + item.Kaydeden.Soyad,
-                        OnaylayanId = item.OnaylayanId,
-                        //OnaylayanAdi = item.Onaylayan.Ad,
+                        //OnaylayanId = item.OnaylayanId,
+                        //OnaylayanAdi = item.Onaylayan.Ad+" "+item.Onaylayan.Soyad,
                         OnayDurumu = (EnumsSoruOnay)item.OnayDurumu,
                         OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
                         OnayAciklama = item.OnayAciklama,

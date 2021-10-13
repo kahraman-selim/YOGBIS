@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using YOGBIS.Common.ResultModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.DbModels;
 
@@ -13,7 +14,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        Result<MulakatSorulariVM> MulakatSorusuEkle(MulakatSorulariVM model);        
+        Result<MulakatSorulariVM> MulakatSorusuEkle(MulakatSorulariVM model, SessionContext user);        
         /// <summary>
         /// Seçilen Mülakat Sorusu bilgilerini getiren method
         /// </summary>
@@ -21,7 +22,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         /// <returns></returns>
         Result<MulakatSorulariVM> MulakatSorulariGetir(int id);
 
-        Result<MulakatSorulariVM> MulakatSorusuGuncelle(MulakatSorulariVM model);
+        Result<MulakatSorulariVM> MulakatSorusuGuncelle(MulakatSorulariVM model, SessionContext user);
         
         Result<bool> MulakatSorusuSil(int id);
 
