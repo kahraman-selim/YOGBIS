@@ -18,11 +18,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
+        #region Ctor
         public DerecelerBE(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+        #endregion
+
+        #region DereceleriGetir
         public Result<List<DerecelerVM>> DereceleriGetir()
         {
             //var data = _unitOfWork.derecelerRepository.GetAll().ToList();
@@ -40,8 +44,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     returnData.Add(new DerecelerVM()
                     {
-                        DereceId=item.DereceId,
-                        DereceAdi=item.DereceAdi,                        
+                        DereceId = item.DereceId,
+                        DereceAdi = item.DereceAdi,
                         KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad
                     });
                 }
@@ -52,6 +56,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<DerecelerVM>>(false, ResultConstant.RecordNotFound);
             }
         }
+        #endregion
+
+        #region DereceGetirKullaniciId
         public Result<List<DerecelerVM>> DereceGetirKullaniciId(string userId)
         {
             var data = _unitOfWork.derecelerRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici").ToList();
@@ -62,12 +69,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 foreach (var item in data)
                 {
                     returnData.Add(new DerecelerVM()
-                    {                        
-                        DereceId=item.DereceId,
-                        DereceAdi=item.DereceAdi,
+                    {
+                        DereceId = item.DereceId,
+                        DereceAdi = item.DereceAdi,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciAdi=item.Kullanici.Ad+" "+item.Kullanici.Soyad,
-                        KullaniciId = item.KullaniciId                        
+                        KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad,
+                        KullaniciId = item.KullaniciId
                     });
                 }
                 return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, returnData);
@@ -77,6 +84,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<DerecelerVM>>(false, ResultConstant.RecordNotFound);
             }
         }
+        #endregion
+
+        #region DereceGetir(int id)
         public Result<DerecelerVM> DereceGetir(int id)
         {
             var data = _unitOfWork.derecelerRepository.Get(id);
@@ -90,6 +100,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<DerecelerVM>(false, ResultConstant.RecordNotFound);
             }
         }
+        #endregion
+
+        #region DereceEkle
         public Result<DerecelerVM> DereceEkle(DerecelerVM model, SessionContext user)
         {
             if (model != null)
@@ -97,7 +110,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var derece = _mapper.Map<DerecelerVM, Dereceler>(model);
-                     derece.KullaniciId = user.LoginId;                    
+                    derece.KullaniciId = user.LoginId;
                     _unitOfWork.derecelerRepository.Add(derece);
                     _unitOfWork.Save();
                     return new Result<DerecelerVM>(true, ResultConstant.RecordCreateSuccess);
@@ -113,6 +126,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<DerecelerVM>(false, "Boş veri olamaz");
             }
         }
+        #endregion
+
+        #region DereceGuncelle
         public Result<DerecelerVM> DereceGuncelle(DerecelerVM model, SessionContext user)
         {
             if (model != null)
@@ -136,6 +152,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<DerecelerVM>(false, "Boş veri olamaz");
             }
         }
+        #endregion
+
+        #region DereceSil
         public Result<bool> DereceSil(int id)
         {
             var data = _unitOfWork.derecelerRepository.Get(id);
@@ -149,6 +168,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
-        }
+        } 
+        #endregion
     }
 }

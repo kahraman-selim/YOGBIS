@@ -94,6 +94,7 @@ namespace YOGBIS.UI.Controllers
         
         public IActionResult Guncelle(int? id)
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
 

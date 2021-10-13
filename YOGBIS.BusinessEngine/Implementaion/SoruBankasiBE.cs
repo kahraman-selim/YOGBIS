@@ -16,14 +16,18 @@ namespace YOGBIS.BusinessEngine.Implementaion
 {
     public class SoruBankasiBE : ISoruBankasiBE
     {
+        #region Değişkenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        #endregion
 
+        #region Dönüştürücüler
         public SoruBankasiBE(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-        }
+        } 
+        #endregion
 
         public Result<List<SoruBankasiVM>> SoruGetirKullaniciId(string userId)
         {
@@ -88,8 +92,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruDurumu = item.SoruDurumu,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kaydeden.Ad + " " + item.Kaydeden.Soyad,
-                        //OnaylayanId = item.OnaylayanId,
-                        //OnaylayanAdi = item.Onaylayan.Ad+" "+item.Onaylayan.Soyad,
+                        OnaylayanId = item.OnaylayanId,
+                        OnaylayanAdi = item.Onaylayan != null ? item.Onaylayan.Ad + " " + item.Onaylayan.Soyad : string.Empty,
                         OnayDurumu = (EnumsSoruOnay)item.OnayDurumu,
                         OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
                         OnayAciklama = item.OnayAciklama,
@@ -126,7 +130,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var soruBankasi= _mapper.Map<SoruBankasiVM, SoruBankasi>(model);
                     soruBankasi.KaydedenId = user.LoginId;
-                    //soruBankasi.OnaylayanId = user.LoginId;
                     soruBankasi.OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi;
                     _unitOfWork.soruBankasiRepository.Add(soruBankasi);
                     _unitOfWork.Save();
@@ -152,8 +155,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var soruBankasi = _mapper.Map<SoruBankasiVM, SoruBankasi>(model);
                     soruBankasi.KaydedenId = user.LoginId;
-                    //soruBankasi.OnayDurumu = (Enums);
-                    //soruBankasi.OnaylayanId = user.LoginId;
+                    soruBankasi.OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi;
                     _unitOfWork.soruBankasiRepository.Update(soruBankasi);
                     _unitOfWork.Save();
                     return new Result<SoruBankasiVM>(true, ResultConstant.RecordCreateSuccess);

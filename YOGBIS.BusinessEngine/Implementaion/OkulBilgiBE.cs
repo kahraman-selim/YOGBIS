@@ -110,11 +110,51 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<OkulBilgiVM> OkulBilgiGetir(int id)
         {
-            var data = _unitOfWork.okulBilgiRepository.Get(id);
-            if (data != null)
+            //var data = _unitOfWork.okulBilgiRepository.Get(id);
+            //if (data != null)
+            //{
+            //    var okulbilgi = _mapper.Map<OkulBilgi, OkulBilgiVM>(data);
+            //    return new Result<OkulBilgiVM>(true, ResultConstant.RecordFound, okulbilgi);
+            //}
+            //else
+            //{
+            //    return new Result<OkulBilgiVM>(false, ResultConstant.RecordNotFound);
+            //}
+
+            if (id>0)
             {
-                var okulbilgi = _mapper.Map<OkulBilgi, OkulBilgiVM>(data);
-                return new Result<OkulBilgiVM>(true, ResultConstant.RecordFound, okulbilgi);
+                var data = _unitOfWork.okulBilgiRepository.GetFirstOrDefault(u => u.OkulBilgiId == id, includeProperties: "Okullar,Ulkeler,Kullanici");
+
+                if (data!=null)
+                {
+                    OkulBilgiVM okulbilgi = new OkulBilgiVM();
+                    okulbilgi.OkulBilgiId = data.OkulBilgiId;
+                    okulbilgi.OkulTelefon = data.OkulTelefon;
+                    okulbilgi.OkulAdres = data.OkulAdres;
+                    //************************************
+                    okulbilgi.MudurAdiSoyadi = data.MudurAdiSoyadi;
+                    okulbilgi.MudurTelefon = data.MudurTelefon;
+                    okulbilgi.MudurEPosta = data.MudurEPosta;
+                    okulbilgi.MudurDonusYil = data.MudurDonusYil;
+                    //***************************************
+                    okulbilgi.MdYrdAdiSoyadi = data.MdYrdAdiSoyadi;
+                    okulbilgi.MdYrdTelefon = data.MdYrdTelefon;
+                    okulbilgi.MdYrdEPosta = data.MdYrdEPosta;
+                    okulbilgi.MdYrdDonusYil = data.MdYrdDonusYil;
+                    //******************************************
+                    okulbilgi.OkulId = data.Okullar.OkulId;
+                    okulbilgi.OkulAdi = data.Okullar.OkulAdi;
+                    okulbilgi.UlkeId = data.Ulkeler.UlkeId;
+                    okulbilgi.UlkeAdi = data.Ulkeler.UlkeAdi;
+                    okulbilgi.KullaniciId = data.Kullanici.Id;
+                    okulbilgi.KullaniciAdi = data.Kullanici.Ad + " " + data.Kullanici.Soyad;
+
+                    return new Result<OkulBilgiVM>(true, ResultConstant.RecordFound, okulbilgi);
+                }
+                else
+                {
+                    return new Result<OkulBilgiVM>(false, ResultConstant.RecordNotFound);
+                }
             }
             else
             {
