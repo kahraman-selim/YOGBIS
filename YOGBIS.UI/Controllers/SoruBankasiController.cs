@@ -28,7 +28,6 @@ namespace YOGBIS.UI.Controllers
             _derecelerBE = derecelerBE;
         }
         
-        [Authorize]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -53,7 +52,6 @@ namespace YOGBIS.UI.Controllers
             //return View(user);
         }
         
-        [Authorize(Roles = ResultConstant.Admin_Role)]
         public IActionResult SoruEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));

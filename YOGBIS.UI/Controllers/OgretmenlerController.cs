@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace YOGBIS.UI.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class OgretmenlerController : Controller
     {
-        [Authorize(Roles = "Administrator")]
         public IActionResult Index()
         {
             return View();
