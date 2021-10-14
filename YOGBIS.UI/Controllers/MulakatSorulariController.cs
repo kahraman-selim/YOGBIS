@@ -40,6 +40,7 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             return View();
         }        
+        
         [HttpPost]
         public IActionResult MulakatSoruEkle(MulakatSorulariVM model)
         {

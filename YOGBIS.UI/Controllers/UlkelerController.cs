@@ -52,6 +52,7 @@ namespace YOGBIS.UI.Controllers
             //return View();
         }
 
+        [HttpGet]
         public IActionResult UlkeEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -68,10 +69,15 @@ namespace YOGBIS.UI.Controllers
             //});
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         [Obsolete]
         public IActionResult UlkeEkle(UlkelerVM model, int? UlkeId)
         {
+
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
+
 
             string uniqueFileName = null;
             if (model.UlkeBayrak != null)
@@ -82,9 +88,6 @@ namespace YOGBIS.UI.Controllers
                 model.UlkeBayrak.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
             }
 
-
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
             if (UlkeId > 0)
             {

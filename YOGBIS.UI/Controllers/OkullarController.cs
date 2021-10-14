@@ -18,15 +18,19 @@ namespace YOGBIS.UI.Controllers
     public class OkullarController : Controller
     {
         private readonly IOkullarBE _okullarBE;
+        private readonly IUlkelerBE _ulkelerBE;
 
-        public OkullarController(IOkullarBE okullarBE)
+        public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE)
         {
             _okullarBE = okullarBE;
+            _ulkelerBE = ulkelerBE;
         }
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            var requestmodel= _okullarBE.OkullariGetir(); 
+
+            var requestmodel = _okullarBE.OkullariGetir();
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             if (requestmodel.IsSuccess)
             {
                 return View(requestmodel.Data);
@@ -34,16 +38,20 @@ namespace YOGBIS.UI.Controllers
             return View(user);
         }
 
+        [HttpGet]
         public IActionResult OkulEkle() 
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             return View();
         }
-        
+
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult OkulEkle(OkullarVM model, int? OkulId) 
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
 
             if (OkulId > 0)
             {
@@ -64,7 +72,8 @@ namespace YOGBIS.UI.Controllers
 
         public ActionResult Guncelle(int? id)
         {
-            
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+
             if (id > 0)
             {
                 var data = _okullarBE.OkulGetir((int)id); 

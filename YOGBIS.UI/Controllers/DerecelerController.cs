@@ -34,12 +34,14 @@ namespace YOGBIS.UI.Controllers
             return View(user);
         }
 
+        [HttpGet]
         public IActionResult DereceEkle() 
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             return View();
         }
-        
+
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult DereceEkle(DerecelerVM model, int? DereceId) 
         {

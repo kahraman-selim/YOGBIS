@@ -38,7 +38,8 @@ namespace YOGBIS.UI.Controllers
             }
             return View(userRolesViewModel);
         }
-
+        
+        [HttpGet]
         public async Task<IActionResult> Yonetim(string userId)
         {
             ViewBag.userId = userId;
@@ -69,6 +70,7 @@ namespace YOGBIS.UI.Controllers
             }
             return View(model);
         }
+        
         [HttpPost]
         public async Task<IActionResult> Yonetim(List<KullaniciYekiYonetimVM> model, string userId)
         {

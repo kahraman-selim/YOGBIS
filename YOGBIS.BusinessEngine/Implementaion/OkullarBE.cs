@@ -25,12 +25,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OkullarVM>> OkullariGetir()
         {
-            //var data = _unitOfWork.okullarRepository.GetAll().ToList();
+            //var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Ulkeler,Kullanici").OrderBy(u => u.OkulAdi).ToList();
             //var okullar = _mapper.Map<List<Okullar>, List<OkullarVM>>(data);
             //return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, okullar);
 
-            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Kullanici").ToList();
-            var dereceler = _mapper.Map<List<Okullar>, List<OkullarVM>>(data);
+            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Ulkeler,Kullanici").OrderBy(u => u.OkulAdi).ToList();
+            //var okullar = _mapper.Map<List<Okullar>, List<OkullarVM>>(data);
 
             if (data != null)
             {
@@ -40,10 +40,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     returnData.Add(new OkullarVM()
                     {
-                        OkulId=item.OkulId,
-                        OkulKodu=item.OkulKodu,
-                        OkulAdi=item.OkulAdi,
-                        KullaniciId=item.Kullanici.Id,
+                        OkulId = item.OkulId,
+                        OkulKodu = item.OkulKodu,
+                        OkulAdi = item.OkulAdi,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = item.Ulkeler.UlkeAdi,
+                        KullaniciId = item.KullaniciId,
                         KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad
                     });
                 }
@@ -56,7 +58,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OkullarVM>> OkulGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.okullarRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici").ToList();
+            var data = _unitOfWork.okullarRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Ulkeler,Kullanici").ToList();
             if (data != null)
             {
                 List<OkullarVM> returnData = new List<OkullarVM>();
@@ -68,6 +70,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulId = item.OkulId,
                         OkulKodu=item.OkulKodu,
                         OkulAdi=item.OkulAdi,
+                        UlkeId=item.UlkeId,
+                        UlkeAdi=item.Ulkeler.UlkeAdi,
+                        KullaniciId=item.KullaniciId,
                         KullaniciAdi=item.Kullanici.Ad+" "+item.Kullanici.Soyad
                     });
                 }
@@ -80,11 +85,28 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<OkullarVM> OkulGetir(int id)
         {
-            var data = _unitOfWork.okullarRepository.Get(id);
-            if (data != null)
+            if (id>0)
             {
-                var dereceler = _mapper.Map<Okullar, OkullarVM>(data);
-                return new Result<OkullarVM>(true, ResultConstant.RecordFound, dereceler);
+                var data = _unitOfWork.okullarRepository.GetFirstOrDefault(u => u.OkulId == id, includeProperties: "Ulkeler,Kullanici");
+                if (data != null)
+                {
+                    OkullarVM okul= new OkullarVM();
+
+                    okul.OkulId = data.OkulId;
+                    okul.OkulKodu = data.OkulKodu;
+                    okul.OkulAdi = data.OkulAdi;
+                    okul.UlkeId = data.UlkeId;
+                    okul.UlkeAdi = data.Ulkeler.UlkeAdi;
+                    okul.KullaniciId = data.KullaniciId;
+                    okul.KullaniciAdi = data.KullaniciId;
+                    okul.KullaniciAdi = data.Kullanici.Ad + " " + data.Kullanici.Soyad;
+
+                    return new Result<OkullarVM>(true, ResultConstant.RecordFound, okul);                   
+                }
+                else
+                {
+                    return new Result<OkullarVM>(false, ResultConstant.RecordNotFound);
+                }
             }
             else
             {

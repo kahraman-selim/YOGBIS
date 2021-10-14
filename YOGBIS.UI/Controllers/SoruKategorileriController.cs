@@ -38,13 +38,16 @@ namespace YOGBIS.UI.Controllers
             return View(user);
 
         }
+        
+        [HttpGet]
         public IActionResult SoruKategoriEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             return View();
-        }        
-        
+        }
+
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult SoruKategoriEkle(SoruKategorilerVM model, int? SoruKategorilerId)
         {
