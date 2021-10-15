@@ -56,7 +56,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeAdi = item.Ulkeler.UlkeAdi,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciId = item.KullaniciId,
-                        KullaniciAdi =item.Kullanici.Ad+" "+item.Kullanici.Soyad                        
+                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
                 }
                 return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, returnData);
@@ -96,8 +96,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeId=item.UlkeId,
                         UlkeAdi=item.Ulkeler.UlkeAdi,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciAdi=item.Kullanici.Ad+" "+item.Kullanici.Soyad,
                         KullaniciId = item.KullaniciId,
+                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty                        
                         
                     });
                 }
@@ -142,12 +142,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okulbilgi.MdYrdEPosta = data.MdYrdEPosta;
                     okulbilgi.MdYrdDonusYil = data.MdYrdDonusYil;
                     //******************************************
-                    okulbilgi.OkulId = data.Okullar.OkulId;
+                    okulbilgi.OkulId = data.OkulId;
                     okulbilgi.OkulAdi = data.Okullar.OkulAdi;
-                    okulbilgi.UlkeId = data.Ulkeler.UlkeId;
+                    okulbilgi.UlkeId = data.UlkeId;
                     okulbilgi.UlkeAdi = data.Ulkeler.UlkeAdi;
                     okulbilgi.KullaniciId = data.Kullanici.Id;
-                    okulbilgi.KullaniciAdi = data.Kullanici.Ad + " " + data.Kullanici.Soyad;
+                    okulbilgi.KullaniciAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
                     return new Result<OkulBilgiVM>(true, ResultConstant.RecordFound, okulbilgi);
                 }
@@ -167,8 +167,22 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 try
                 {
-                    var okulbilgi = _mapper.Map<OkulBilgiVM, OkulBilgi>(model);
-                     okulbilgi.KullaniciId = user.LoginId;                    
+                    //var okulbilgi = _mapper.Map<OkulBilgiVM, OkulBilgi>(model);
+                    OkulBilgi okulbilgi= new OkulBilgi();
+                    okulbilgi.KullaniciId = user.LoginId;
+                    okulbilgi.MdYrdAdiSoyadi = model.MdYrdAdiSoyadi;
+                    okulbilgi.MdYrdDonusYil = model.MdYrdDonusYil;
+                    okulbilgi.MdYrdEPosta = model.MdYrdEPosta;
+                    okulbilgi.MdYrdTelefon = model.MdYrdTelefon;
+                    okulbilgi.MudurAdiSoyadi = model.MudurAdiSoyadi;
+                    okulbilgi.MudurDonusYil = model.MudurDonusYil;
+                    okulbilgi.MudurEPosta = model.MudurEPosta;
+                    okulbilgi.MudurTelefon = model.MudurTelefon;
+                    okulbilgi.OkulAdres = model.OkulAdres;
+                    okulbilgi.OkulId = model.OkulId;
+                    okulbilgi.OkulTelefon = model.OkulTelefon;
+                    okulbilgi.UlkeId = model.UlkeId;
+                                       
                     _unitOfWork.okulBilgiRepository.Add(okulbilgi);
                     _unitOfWork.Save();
                     return new Result<OkulBilgiVM>(true, ResultConstant.RecordCreateSuccess);
@@ -186,15 +200,37 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<OkulBilgiVM> OkulBilgiGuncelle(OkulBilgiVM model, SessionContext user)
         {
-            if (model != null)
+            if (model.OkulBilgiId>0)
             {
                 try
                 {
-                    var okulbilgi = _mapper.Map<OkulBilgiVM, OkulBilgi>(model);
-                    okulbilgi.KullaniciId = user.LoginId;
-                    _unitOfWork.okulBilgiRepository.Update(okulbilgi);
-                    _unitOfWork.Save();
-                    return new Result<OkulBilgiVM>(true, ResultConstant.RecordCreateSuccess);
+                    //var okulbilgi = _mapper.Map<OkulBilgiVM, OkulBilgi>(model);
+                    var data = _unitOfWork.okulBilgiRepository.Get(model.OkulBilgiId);
+                    if (data!=null)
+                    {
+                        data.KullaniciId = user.LoginId;
+                        data.MdYrdAdiSoyadi = model.MdYrdAdiSoyadi;
+                        data.MdYrdDonusYil = model.MdYrdDonusYil;
+                        data.MdYrdEPosta = model.MdYrdEPosta;
+                        data.MdYrdTelefon = model.MdYrdTelefon;
+                        data.MudurAdiSoyadi = model.MudurAdiSoyadi;
+                        data.MudurDonusYil = model.MudurDonusYil;
+                        data.MudurEPosta = model.MudurEPosta;
+                        data.MudurTelefon = model.MudurTelefon;
+                        data.OkulAdres = model.OkulAdres;
+                        data.OkulId = model.OkulId;
+                        data.OkulTelefon = model.OkulTelefon;
+                        data.UlkeId = model.UlkeId;
+
+                        _unitOfWork.okulBilgiRepository.Update(data);
+                        _unitOfWork.Save();
+                        return new Result<OkulBilgiVM>(true, ResultConstant.RecordCreateSuccess);
+                    }
+                    else
+                    {
+                        return new Result<OkulBilgiVM>(false, "Lütfen kayıt seçiniz");
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -204,7 +240,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
             else
             {
-                return new Result<OkulBilgiVM>(false, "Boş veri olamaz");
+                return new Result<OkulBilgiVM>(false, "Lütfen kayıt seçiniz");
             }
         }
         public Result<bool> OkulBilgiSil(int id)

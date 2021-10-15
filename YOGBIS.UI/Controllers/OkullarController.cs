@@ -31,6 +31,7 @@ namespace YOGBIS.UI.Controllers
 
             var requestmodel = _okullarBE.OkullariGetir();
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+
             if (requestmodel.IsSuccess)
             {
                 return View(requestmodel.Data);
@@ -46,38 +47,58 @@ namespace YOGBIS.UI.Controllers
             return View();
         }
 
-        [ValidateAntiForgeryToken]
+        
         [HttpPost]
         public IActionResult OkulEkle(OkullarVM model, int? OkulId) 
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
 
-            if (OkulId > 0)
-            {
-                var data = _okullarBE.OkulGuncelle(model, user);
+            //if (OkulId > 0)
+            //{
+            //    var data = _okullarBE.OkulGuncelle(model, user);
 
-                return RedirectToAction("Index");
-            }
-            else
-            {
+            //    return RedirectToAction("Index");
+            //}
+            //else
+            //{
                 var data = _okullarBE.OkulEkle(model, user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
                 }
                 return View(model);
-            }
+            //}
         }
+
 
         public ActionResult Guncelle(int? id)
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
 
             if (id > 0)
             {
-                var data = _okullarBE.OkulGetir((int)id); 
+                var data = _okullarBE.OkulGetir((int)id);
                 return View(data.Data);
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+
+        [ValidateAntiForgeryToken]
+        public ActionResult Guncelle(OkullarVM model)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+
+            var data = _okullarBE.OkulGuncelle(model, user);
+            if (data.IsSuccess)
+            {
+                return RedirectToAction("Index");
             }
             else
             {

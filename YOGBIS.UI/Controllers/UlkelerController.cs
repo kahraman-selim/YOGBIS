@@ -69,10 +69,10 @@ namespace YOGBIS.UI.Controllers
             //});
         }
 
-        [ValidateAntiForgeryToken]
+        
         [HttpPost]
         [Obsolete]
-        public IActionResult UlkeEkle(UlkelerVM model, int? UlkeId)
+        public IActionResult UlkeEkle(UlkelerVM model)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -89,21 +89,21 @@ namespace YOGBIS.UI.Controllers
             }
 
 
-            if (UlkeId > 0)
-            {
-                var data = _ulkelerBE.UlkeGuncelle(model, user, uniqueFileName);
+            //if (UlkeId > 0)
+            //{
+            //    var data = _ulkelerBE.UlkeGuncelle(model, user, uniqueFileName);
 
-                return RedirectToAction("Index");
-            }
-            else
-            {
+            //    return RedirectToAction("Index");
+            //}
+            //else
+            //{
                 var data = _ulkelerBE.UlkeEkle(model, user, uniqueFileName);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
                 }
                 return View(model);
-            }
+            //}
 
             //if (ModelState.IsValid) //tekli kayıt yöntemi
             //{
@@ -122,6 +122,7 @@ namespace YOGBIS.UI.Controllers
 
         public ActionResult Guncelle(int? id)
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
             if (id > 0)
@@ -134,6 +135,33 @@ namespace YOGBIS.UI.Controllers
                 return View();
             }
 
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Guncelle(UlkelerVM model)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
+
+            string uniqueFileName = null;
+            if (model.UlkeBayrak != null)
+            {
+                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
+                uniqueFileName = Guid.NewGuid().ToString() + "-" + model.UlkeBayrak.FileName;
+                string dosyaYolu = Path.Combine(uploadsFolder, uniqueFileName);
+                model.UlkeBayrak.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
+            }
+
+            var data = _ulkelerBE.UlkeGuncelle(model, user, uniqueFileName);
+            if (data.IsSuccess)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpDelete]

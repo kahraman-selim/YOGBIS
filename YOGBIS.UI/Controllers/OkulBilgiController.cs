@@ -51,34 +51,35 @@ namespace YOGBIS.UI.Controllers
             return View();
         }
 
-        [ValidateAntiForgeryToken]
+        
         [HttpPost]
-        public IActionResult OkulBilgiEkle(OkulBilgiVM model, int? OkulId)
+        public IActionResult OkulBilgiEkle(OkulBilgiVM model)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
 
-            if (OkulId > 0)
-            {
-                var data = _okulBilgiBE.OkulBilgiGuncelle(model, user);
+            //if (OkulId > 0)
+            //{
+            //    var data = _okulBilgiBE.OkulBilgiGuncelle(model, user);
 
-                return RedirectToAction("Index");
-            }
-            else
-            {
+            //    return RedirectToAction("Index");
+            //}
+            //else
+            //{
                 var data = _okulBilgiBE.OkulBilgiEkle(model, user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
                 }
                 return View(model);
-            }
+            //}
         }
 
         public ActionResult Guncelle(int? id)
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
 
@@ -91,6 +92,34 @@ namespace YOGBIS.UI.Controllers
             {
                 return View();
             }
+
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Guncelle(OkulBilgiVM model)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+
+            //if (id > 0)
+            //{
+                var data = _okulBilgiBE.OkulBilgiGuncelle(model,user);
+            if (data.IsSuccess)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View();
+            }
+                
+            //}
+            //else
+            //{
+            //    return View();
+            //}
 
         }
 
