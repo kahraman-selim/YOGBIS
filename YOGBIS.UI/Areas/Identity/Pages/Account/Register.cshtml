@@ -7,6 +7,17 @@
     ViewData["Title"] = "Yeni Kullanıcı";
 }
 
+
+@if (DateTime.Now.Date >= DateTime.Parse("19/10/2021").Date)
+{
+
+    <header>
+        <h1 class="text-danger text-center">Hata</h1>
+        <p class="text-danger text-center">Bu sayfaya erişim yetkiniz yok.</p>
+    </header>
+}
+else
+{
     @if (SignInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
     {
         <div class="container">
@@ -147,6 +158,7 @@
         </div>
     }
 
+}
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -90,6 +90,7 @@ namespace YOGBIS.UI.Controllers
         }
 
         [ValidateAntiForgeryToken]
+        [HttpPost]
         public ActionResult Guncelle(OkullarVM model)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));

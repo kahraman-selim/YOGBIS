@@ -13,9 +13,9 @@ namespace YOGBIS.Common.VModels
         [Required (ErrorMessage ="Ülke adı zorunlu bir alandır")]
         public string UlkeAdi { get; set; }
 
-        [Required(ErrorMessage = "Ülkenin Bayrağını yükleyiniz")]
-        public IFormFile UlkeBayrak { get; set; }
-        public string UlkeBayrakText { get; set; }
+        //[Required(ErrorMessage = "Ülkenin Bayrağını yükleyiniz")]
+        //public IFormFile UlkeBayrak { get; set; }
+        //public string UlkeBayrakText { get; set; }
         public string UlkeAciklama { get; set; }
 
         [Required(ErrorMessage = "Kıta adı zorunlu bir alandır")]

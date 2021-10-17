@@ -79,14 +79,14 @@ namespace YOGBIS.UI.Controllers
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
 
-            string uniqueFileName = null;
-            if (model.UlkeBayrak != null)
-            {
-                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
-                uniqueFileName = Guid.NewGuid().ToString() + "-" + model.UlkeBayrak.FileName;
-                string dosyaYolu = Path.Combine(uploadsFolder, uniqueFileName);
-                model.UlkeBayrak.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
-            }
+            //string uniqueFileName = null;
+            //if (model.UlkeBayrak != null)
+            //{
+            //    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
+            //    uniqueFileName = Guid.NewGuid().ToString() + "-" + model.UlkeBayrak.FileName;
+            //    string dosyaYolu = Path.Combine(uploadsFolder, uniqueFileName);
+            //    model.UlkeBayrak.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
+            //}
 
 
             //if (UlkeId > 0)
@@ -97,7 +97,7 @@ namespace YOGBIS.UI.Controllers
             //}
             //else
             //{
-                var data = _ulkelerBE.UlkeEkle(model, user, uniqueFileName);
+                var data = _ulkelerBE.UlkeEkle(model, user);//, uniqueFileName);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
@@ -139,21 +139,22 @@ namespace YOGBIS.UI.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
+        [Obsolete]
         public ActionResult Guncelle(UlkelerVM model)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
-            string uniqueFileName = null;
-            if (model.UlkeBayrak != null)
-            {
-                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
-                uniqueFileName = Guid.NewGuid().ToString() + "-" + model.UlkeBayrak.FileName;
-                string dosyaYolu = Path.Combine(uploadsFolder, uniqueFileName);
-                model.UlkeBayrak.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
-            }
+            //string uniqueFileName = null;
+            //if (model.UlkeBayrak != null)
+            //{
+            //    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
+            //    uniqueFileName = Guid.NewGuid().ToString() + "-" + model.UlkeBayrak.FileName;
+            //    string dosyaYolu = Path.Combine(uploadsFolder, uniqueFileName);
+            //    model.UlkeBayrak.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
+            //}
 
-            var data = _ulkelerBE.UlkeGuncelle(model, user, uniqueFileName);
+            var data = _ulkelerBE.UlkeGuncelle(model, user);//, uniqueFileName);
             if (data.IsSuccess)
             {
                 return RedirectToAction("Index");

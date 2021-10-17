@@ -41,10 +41,6 @@ namespace YOGBIS.Common.ConstantsModels
                     //await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.Follower).ToString());
                     //await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.Lecturer).ToString());
                     //await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.Teacher).ToString());
-                    //await userManager.AddToRoleAsync(defaultUser, Enums.Roles.Basic.ToString());
-                    //await userManager.AddToRoleAsync(defaultUser, Enums.Roles.Moderator.ToString());
-                    //await userManager.AddToRoleAsync(defaultUser, Enums.Roles.Admin.ToString());
-                    //await userManager.AddToRoleAsync(defaultUser, Enums.Roles.SuperAdmin.ToString());
                 }
 
             }
@@ -61,6 +57,7 @@ namespace YOGBIS.Common.ConstantsModels
             await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.Teacher.ToString()));
         }
 
+        #region EskiYöntem
         //private static void SeedUsers(UserManager<Kullanici> userManager)
         //{
         //    if (userManager.FindByNameAsync(ResultConstant.Admin_Email).Result==null)
@@ -97,8 +94,9 @@ namespace YOGBIS.Common.ConstantsModels
         //        };
         //        var result = roleManager.CreateAsync(role).Result;
         //    }
-        //}       
+        //}        
+        #endregion
 
-       
+
     }
 }

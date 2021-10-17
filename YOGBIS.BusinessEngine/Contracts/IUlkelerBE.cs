@@ -10,9 +10,9 @@ namespace YOGBIS.BusinessEngine.Contracts
     {
         Result<List<UlkelerVM>> UlkeleriGetir();
         Result<List<UlkelerVM>> UlkeGetirKullaniciId(string userId);
-        Result<UlkelerVM> UlkeEkle(UlkelerVM model, SessionContext user, string uniqueFileName);        
+        Result<UlkelerVM> UlkeEkle(UlkelerVM model, SessionContext user); //, string uniqueFileName);        
         Result<UlkelerVM> UlkeGetir(int id);
-        Result<UlkelerVM> UlkeGuncelle(UlkelerVM model, SessionContext user, string uniqueFileName);        
+        Result<UlkelerVM> UlkeGuncelle(UlkelerVM model, SessionContext user);//, string uniqueFileName);        
         Result<bool> UlkeSil(int id);        
     }
 }

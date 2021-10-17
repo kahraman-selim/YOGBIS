@@ -12,7 +12,7 @@
                 <b>Ülke Ekleme/Güncelleme</b>
             </div>
             <div class="card-body">
-                <form class="form-group m-0" asp-action="UlkeEkle" enctype="multipart/form-data">
+                <form class="form-group m-0" asp-action="UlkeEkle"> @*enctype="multipart/form-data">*@
                     @Html.HiddenFor(x => x.UlkeId)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="row">
@@ -57,7 +57,7 @@
                                 <label style="width: 100%;">Ülke Bayrağı</label>
                                 <img id="ulkeBayrak" style="width: 350px; height: 350px; object-fit:unset" alt="Ülke Bayrağı">
                             </div>
-                            <div class="form-row">
+                            @*<div class="form-row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="UlkeBayrak">Ülke Bayrağı seçiniz</label>
@@ -70,7 +70,7 @@
                                         <span asp-validation-for="UlkeBayrak" class="text-danger"></span>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                 </form>

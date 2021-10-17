@@ -1,4 +1,6 @@
 ﻿@model List<YOGBIS.Common.VModels.KullaniciYekiYonetimVM>
+@using YOGBIS.Common.ConstantsModels
+@using YOGBIS.Common.Extentsion
 @{
     ViewData["Title"] = "Yonetim";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,7 +10,7 @@
     <div class="card">
         <div class="card-header">
             <h2>Kullanıcı Yetkileri Yönetimi</h2>
-             @ViewBag.UserName için Yetki Ekle/Sil
+            <a class="font-weight-bold text-success">@ViewBag.UserName </a> kullanıcısı için Yetki Ekle/Sil
         </div>
         <div class="card-body">
             @for (int i = 0; i < Model.Count; i++)
@@ -21,12 +23,12 @@
                         @Model[i].RoleName
                     </label>
                 </div>           
-               }
+            }
             <div asp-validation-summary="All" class="text-danger"></div>
         </div>
         <div class="card-footer">
-            <input type="submit" value="Güncelle" class="btn btn-primary" style="width:auto" />
-            <a asp-controller="KullaniciYetkileri" asp-action="Index" asp-route-id="@ViewBag.userId" class="btn btn-danger" style="width:auto">Vazgeç</a>
+            <input type="submit" value="Güncelle" class="btn btn-sm btn-info" style="width:auto" />
+            <a asp-controller="KullaniciYetkileri" asp-action="Index" asp-route-id="@ViewBag.userId" class="btn btn-sm btn-danger" style="width:auto">Vazgeç</a>
         </div>
     </div>
 </form>

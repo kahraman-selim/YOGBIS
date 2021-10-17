@@ -36,10 +36,10 @@ namespace YOGBIS.UI.Controllers
                 thisViewModel.EnumsKullaniciRolleri = await GetUserRoles(user);
                 userRolesViewModel.Add(thisViewModel);
             }
+            
             return View(userRolesViewModel);
-        }
+        }        
         
-        [HttpGet]
         public async Task<IActionResult> Yonetim(string userId)
         {
             ViewBag.userId = userId;
@@ -49,7 +49,9 @@ namespace YOGBIS.UI.Controllers
                 ViewBag.ErrorMessage = $"Kullanıcı bulunamadı Id = {userId}";
                 return View("NotFound");
             }
+            
             ViewBag.UserName = user.UserName;
+
             var model = new List<KullaniciYekiYonetimVM>();
             foreach (var role in _roleManager.Roles)
             {
@@ -58,6 +60,7 @@ namespace YOGBIS.UI.Controllers
                     RoleId = role.Id,
                     RoleName = role.Name
                 };
+
                 //if (await _userManager.IsInRoleAsync(user, role.Name))
                 //{
                 //    userRolesViewModel.Selected = true;
@@ -66,6 +69,7 @@ namespace YOGBIS.UI.Controllers
                 //{
                 //    userRolesViewModel.Selected = false;
                 //}
+
                 model.Add(userRolesViewModel);
             }
             return View(model);
