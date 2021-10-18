@@ -15,7 +15,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    
     public class UlkelerController : Controller
     {
         private readonly IUlkelerBE _ulkelerBE;
@@ -30,6 +30,8 @@ namespace YOGBIS.UI.Controllers
             _kitalarBE = kitalarBE;
             _hostingEnvironment = hostingEnvironment;
         }
+
+        [Authorize(Roles = "Administrator,Manager")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -52,6 +54,7 @@ namespace YOGBIS.UI.Controllers
             //return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         public IActionResult UlkeEkle()
         {
@@ -69,7 +72,7 @@ namespace YOGBIS.UI.Controllers
             //});
         }
 
-        
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [Obsolete]
         public IActionResult UlkeEkle(UlkelerVM model)
@@ -120,6 +123,7 @@ namespace YOGBIS.UI.Controllers
             //}
         }
 
+        [Authorize(Roles = "Administrator")]
         public ActionResult Guncelle(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -137,6 +141,7 @@ namespace YOGBIS.UI.Controllers
 
         }
 
+        [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Obsolete]
@@ -165,6 +170,7 @@ namespace YOGBIS.UI.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpDelete]
         public IActionResult UlkeSil(int id)
         {

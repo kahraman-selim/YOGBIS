@@ -35,7 +35,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             //var okullar = _mapper.Map<List<Okullar>, List<OkullarVM>>(data);
             //return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, okullar);
 
-            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Ulkeler,Kullanici").OrderBy(u => u.OkulAdi).ToList();
+            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Ulkeler,Kullanici").OrderBy(o => o.OkulAdi).OrderBy(u => u.Ulkeler.UlkeAdi).ToList();
             //var okullar = _mapper.Map<List<Okullar>, List<OkullarVM>>(data);
 
             if (data != null)
