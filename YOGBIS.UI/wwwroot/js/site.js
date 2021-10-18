@@ -24,6 +24,10 @@ $(document).ready(function () {
         fixedColumns: true,
         "responsive": true,
         "dom": '<"html5buttons"B>lTfgitp',
+        "scrollY": "200px",
+        "scrollCollapse": true,
+        "paging": true,
+        "scrollX": true,
         "language": {
             "emptyTable": "Gösterilecek veri yok.",
             "processing": "Veriler yükleniyor",
