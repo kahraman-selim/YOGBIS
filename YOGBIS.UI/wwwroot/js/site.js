@@ -20,14 +20,15 @@ function myFunction() {
 
 $(document).ready(function () {
     $('#myTable').DataTable({
-        fixedHeader: true,
-        fixedColumns: true,
+        "fixedHeader": true,
+        "fixedColumns": true,
         "responsive": true,
         "dom": '<"html5buttons"B>lTfgitp',
-        "scrollY": "200px",
+        "scrollY": "350px",
         "scrollCollapse": true,
         "paging": true,
         "scrollX": true,
+        "autoFill": true,
         "language": {
             "emptyTable": "Gösterilecek veri yok.",
             "processing": "Veriler yükleniyor",

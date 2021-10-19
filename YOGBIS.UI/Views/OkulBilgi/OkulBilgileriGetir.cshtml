@@ -11,12 +11,18 @@
         top: 95px;
     }
 </style>
-<h1 class="text-center text-info">YURTDIŞI OKUL YÖNETİCİ BİLGİLERİ</h1>
+@*<h1 class="text-center text-info">YURTDIŞI OKUL YÖNETİCİ BİLGİLERİ</h1>*@
 <ol class="breadcrumb mb-4 mt-2">
-    <li>
-        <a asp-controller="OkulBilgi" asp-action="OkulBilgiEkle" class="btn btn-success btn-circle btn-sm w-100 disabled" title="Yeni Kayıt">
+    <li class="ml-2 mr-2">
+        <a asp-controller="OkulBilgi" asp-action="OkulBilgiEkle" class="btn btn-success btn-circle btn-sm disabled" style="width:100px" title="Yeni Kayıt">
             Yeni Kayıt <i class="fas fa-plus-circle"></i>
         </a>
+    </li>
+    <li class="ml-2 mr-2">
+        <label class="small mb-1 font-weight-bold">Bulunduğu Ülkeyi Seç</label>
+    </li>
+    <li class="ml-2 mr-2">
+        @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), " ", new { @class = "form-control-range form-control py-1 w-100" })
     </li>
 </ol>
 <div class="card mb-3">
@@ -98,25 +104,44 @@
 
     <script type="text/javascript">
 
-            $(function () {
-                $("#myTable").on("click", ".btnSil", function () {
-                    var btn = $(this);
-                    bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
-                        if (result) {
-                            var id = btn.data("id");
-                            $.ajax({
-                                type: "DELETE",
-                                url: "/OkulBilgi/OkulBilgiSil/" + id,
-                                success: function () {
-                                    btn.parent().parent().remove();
-                                    location.reload();
-                                }
-                            });
-                        }
-                    });
+        $(function () {
+            $("#myTable").on("click", ".btnSil", function () {
+                var btn = $(this);
+                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                    if (result) {
+                        var id = btn.data("id");
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/OkulBilgi/OkulBilgiSil/" + id,
+                            success: function () {
+                                btn.parent().parent().remove();
+                                location.reload();
+                            }
+                        });
+                    }
                 });
             });
+        });
 
+        $("#UlkeListesi").on("change", function () {
+            
+            var Id = $("#UlkeListesi").val();
+            alert(Id);
+            $.ajax({
+                type: "GET",
+                url: "/OkulBilgi/OkulBilgiGetirUlkeId/" + Id,
+                success: function (data) {
+                    if (data.isSuccess) {
+                        window.location.href = "?ulkeId=" + Id;
+                        /*toastr.success(data.message);*/                        
+                    } else {
+                        bootbox.confirm("Seçilen ülke de kayıt bulunamadı");
+                    }
+                }
+
+            });
+
+        });
     </script>
 }
 

@@ -257,5 +257,47 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         }
+        public Result<List<OkulBilgiVM>> OkulBilgiGetirUlkeId(int ulkeId)
+        {
+            var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.UlkeId == ulkeId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
+            if (data != null)
+            {
+                List<OkulBilgiVM> returnData = new List<OkulBilgiVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new OkulBilgiVM()
+                    {
+                        OkulBilgiId = item.OkulBilgiId,
+                        OkulTelefon = item.OkulTelefon,
+                        OkulAdres = item.OkulAdres,
+                        //*************************                        
+                        MudurAdiSoyadi = item.MudurAdiSoyadi,
+                        MudurTelefon = item.MudurTelefon,
+                        MudurEPosta = item.MudurEPosta,
+                        MudurDonusYil = item.MudurDonusYil,
+                        //****************************
+                        MdYrdAdiSoyadi = item.MdYrdAdiSoyadi,
+                        MdYrdTelefon = item.MdYrdTelefon,
+                        MdYrdEPosta = item.MdYrdEPosta,
+                        MdYrdDonusYil = item.MdYrdDonusYil,
+                        //********************************
+                        OkulId = item.OkulId,
+                        OkulAdi = item.Okullar.OkulAdi,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = item.Ulkeler.UlkeAdi,
+                        KayitTarihi = item.KayitTarihi,
+                        KullaniciId = item.KullaniciId,
+                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+
+                    });
+                }
+                return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<OkulBilgiVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
     }
 }

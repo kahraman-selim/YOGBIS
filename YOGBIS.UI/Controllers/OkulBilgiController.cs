@@ -50,7 +50,6 @@ namespace YOGBIS.UI.Controllers
             ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
             return View();
         }
-
         
         [HttpPost]
         public IActionResult OkulBilgiEkle(OkulBilgiVM model)
@@ -151,6 +150,17 @@ namespace YOGBIS.UI.Controllers
             }
 
             return View(user);
+        }
+
+        public ActionResult OkulBilgiGetirUlkeId(int Id) 
+        {
+            var data = _okulBilgiBE.OkulBilgiGetirUlkeId(Id);
+            if (data.IsSuccess)
+            {
+                return View(data.Data);
+            }
+
+            return View();
         }
     }
 }
