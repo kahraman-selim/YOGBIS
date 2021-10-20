@@ -29,10 +29,10 @@ namespace YOGBIS.UI.Controllers
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
-            var requestmodel = _okulBilgiBE.OkulBilgiGetirKullaniciId(user.LoginId);
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+
+            var requestmodel = _okulBilgiBE.OkulBilgiGetirKullaniciId(user.LoginId);
 
             if (requestmodel.IsSuccess)
             {
@@ -43,14 +43,14 @@ namespace YOGBIS.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult OkulBilgiEkle() 
+        public IActionResult OkulBilgiEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
             return View();
         }
-        
+
         [HttpPost]
         public IActionResult OkulBilgiEkle(OkulBilgiVM model)
         {
@@ -67,12 +67,12 @@ namespace YOGBIS.UI.Controllers
             //}
             //else
             //{
-                var data = _okulBilgiBE.OkulBilgiEkle(model, user);
-                if (data.IsSuccess)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View(model);
+            var data = _okulBilgiBE.OkulBilgiEkle(model, user);
+            if (data.IsSuccess)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(model);
             //}
         }
 
@@ -104,7 +104,7 @@ namespace YOGBIS.UI.Controllers
 
             //if (id > 0)
             //{
-                var data = _okulBilgiBE.OkulBilgiGuncelle(model,user);
+            var data = _okulBilgiBE.OkulBilgiGuncelle(model, user);
             if (data.IsSuccess)
             {
                 return RedirectToAction("Index");
@@ -113,7 +113,7 @@ namespace YOGBIS.UI.Controllers
             {
                 return View();
             }
-                
+
             //}
             //else
             //{
@@ -136,20 +136,36 @@ namespace YOGBIS.UI.Controllers
 
         }
 
-        public IActionResult OkulBilgileriGetir()
+        public IActionResult OkulBilgileriGetir(int ulkeId)
         {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            var requestmodel = _okulBilgiBE.OkulBilgileriGetir();
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
-
-            if (requestmodel.IsSuccess)
+            if (ulkeId > 0)
             {
-                return View(requestmodel.Data);
+                var data = _okulBilgiBE.OkulBilgiGetirUlkeId(ulkeId);
+                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+
+                if (data.IsSuccess)
+                {
+                    return View(data.Data);
+                }
+
+                return View();
+            }
+            else
+            {
+                var requestmodel = _okulBilgiBE.OkulBilgileriGetir();
+                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+
+                if (requestmodel.IsSuccess)
+                {
+                    return View(requestmodel.Data);
+                }
+
+                return View();
             }
 
-            return View(user);
         }
 
         public ActionResult OkulBilgiGetirUlkeId(int Id) 
@@ -157,10 +173,13 @@ namespace YOGBIS.UI.Controllers
             var data = _okulBilgiBE.OkulBilgiGetirUlkeId(Id);
             if (data.IsSuccess)
             {
-                return View(data.Data);
+                return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
             }
-
-            return View();
+            else
+            {
+                return RedirectToAction("OkulBilgileriGetir", new { ulkeId = Id });
+            }            
         }
+       
     }
 }
