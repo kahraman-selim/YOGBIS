@@ -19,6 +19,7 @@ function myFunction() {
 }
 
 $(document).ready(function () {
+    var selected = [];
     $('#myTable').DataTable({
         "fixedHeader": true,
         "fixedColumns": true,
@@ -29,6 +30,14 @@ $(document).ready(function () {
         "paging": true,
         "scrollX": true,
         "autoFill": true,
+        //"processing": true,
+        //"serverSide": true,
+        //"ajax": "scripts/ids-arrays.php",
+        //"rowCallback": function (row, data) {
+        //    if ($.inArray(data.DT_RowId, selected) !== -1) {
+        //        $(row).addClass('selected');
+        //    }
+        //},
         "language": {
             "emptyTable": "Gösterilecek veri yok.",
             "processing": "Veriler yükleniyor",
@@ -58,6 +67,31 @@ $(document).ready(function () {
                     "1": "1 kayıt seçildi"
                 }
             }
-        }
+        },
+        columnDefs: [{
+            targets: 0,
+            data: null,
+            defaultContent: '',
+            orderable: false,
+            className: 'select-checkbox'
+        }],
+        select: {
+            style: 'os',
+            selector: 'td:first-child'
+        },
+        order: [[1, 'asc']]
+        
     });
+    //$('#myTable tbody').on('click', 'tr', function () {
+    //    var id = this.id;
+    //    var index = $.inArray(id, selected);
+
+    //    if (index === -1) {
+    //        selected.push(id);
+    //    } else {
+    //        selected.splice(index, 1);
+    //    }
+
+    //    $(this).toggleClass('selected');
+    //});
 });

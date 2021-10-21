@@ -31,10 +31,11 @@
             <table class="table table-bordered table-hover" id="myTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Sıra No</th>
-                        <th>Ülke</th>
-                        <th>Okul Kodu</th>
-                        <th>Okul Adı</th>
+                        <th class="align-middle text-center">Seç</th>
+                        <th class="text-center">Sıra No</th>
+                        <th class="text-center">Ülke</th>
+                        <th class="text-center">Okul Kodu</th>
+                        <th class="text-center">Okul Adı</th>
                         <th class="text-center">Düzenle</th>
                         <th class="text-center">Sil</th>
                     </tr>
@@ -47,6 +48,7 @@
                         {
                             sirano++;
                             <tr>
+                                <td></td>
                                 <td>@sirano</td>
                                 <td>@item.UlkeAdi</td>
                                 <td>@item.OkulKodu</td>

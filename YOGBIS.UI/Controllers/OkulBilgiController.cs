@@ -13,7 +13,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class OkulBilgiController : Controller
     {
         private readonly IOkulBilgiBE _okulBilgiBE;
@@ -26,6 +26,8 @@ namespace YOGBIS.UI.Controllers
             _ulkelerBE = ulkelerBE;
             _okullarBE = okullarBE;
         }
+        
+        [Authorize(Roles = "Administrator,Manager,Teacher")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -42,6 +44,7 @@ namespace YOGBIS.UI.Controllers
             return View(user);
         }
 
+        [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpGet]
         public IActionResult OkulBilgiEkle()
         {
@@ -51,6 +54,7 @@ namespace YOGBIS.UI.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpPost]
         public IActionResult OkulBilgiEkle(OkulBilgiVM model)
         {
@@ -76,6 +80,7 @@ namespace YOGBIS.UI.Controllers
             //}
         }
 
+        [Authorize(Roles = "Administrator,Manager,Teacher")]
         public ActionResult Guncelle(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -94,6 +99,7 @@ namespace YOGBIS.UI.Controllers
 
         }
 
+        [Authorize(Roles = "Administrator,Manager,Teacher")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Guncelle(OkulBilgiVM model)
@@ -122,6 +128,7 @@ namespace YOGBIS.UI.Controllers
 
         }
 
+        [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpDelete]
         public IActionResult OkulBilgiSil(int id)
         {
@@ -136,6 +143,7 @@ namespace YOGBIS.UI.Controllers
 
         }
 
+        [Authorize(Roles = "Administrator,Manager")]
         public IActionResult OkulBilgileriGetir(int ulkeId)
         {
 
@@ -168,6 +176,7 @@ namespace YOGBIS.UI.Controllers
 
         }
 
+        [Authorize(Roles = "Administrator,Manager")]
         public ActionResult OkulBilgiGetirUlkeId(int Id) 
         {
             var data = _okulBilgiBE.OkulBilgiGetirUlkeId(Id);
@@ -179,6 +188,12 @@ namespace YOGBIS.UI.Controllers
             {
                 return RedirectToAction("OkulBilgileriGetir", new { ulkeId = Id });
             }            
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult OkulBilgiYazdir() 
+        {
+            return View();
         }
        
     }
