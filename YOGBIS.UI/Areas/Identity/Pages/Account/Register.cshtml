@@ -8,16 +8,16 @@
 }
 
 
-@if (DateTime.Now.Date >= DateTime.Parse("22/10/2021").Date)
-{
+@*@if (DateTime.Now.Date >= DateTime.Parse("22/10/2021").Date)
+    {
 
-    <header>
-        <h1 class="text-danger text-center">Hata</h1>
-        <p class="text-danger text-center">Bu sayfaya erişim yetkiniz yok.</p>
-    </header>
-}
-else
-{
+        <header>
+            <h1 class="text-danger text-center">Hata</h1>
+            <p class="text-danger text-center">Bu sayfaya erişim yetkiniz yok.</p>
+        </header>
+    }
+    else
+    {*@
     @if (SignInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
     {
         <div class="container">
@@ -85,14 +85,7 @@ else
             </div>
         </div>
     }
-    else if (SignInManager.IsSignedIn(User) && !User.IsInRole("Administrator"))
-    {
-        <header>
-            <h1 class="text-danger text-center">Hata</h1>
-            <p class="text-danger text-center">Bu sayfaya erişim yetkiniz yok.</p>
-        </header>
-    }
-    else
+    @*else if (SignInManager.IsSignedIn(User) && !User.IsInRole("Administrator"))
     {
         <div class="container">
             <div class="row justify-content-center">
@@ -156,9 +149,17 @@ else
                 </footer>
             </div>
         </div>
+    }*@
+    else
+    {
+
+        <header>
+            <h1 class="text-danger text-center">Hata</h1>
+            <p class="text-danger text-center">Bu sayfaya erişim yetkiniz yok.</p>
+        </header>
     }
 
-}
+@*}*@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
