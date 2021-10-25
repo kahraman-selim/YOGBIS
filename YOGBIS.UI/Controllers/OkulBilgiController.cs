@@ -190,10 +190,35 @@ namespace YOGBIS.UI.Controllers
             }            
         }
 
-        [Authorize(Roles = "Administrator")]
-        public ActionResult OkulBilgiYazdir() 
+        [Authorize(Roles = "Administrator,Manager")]
+        public ActionResult OkulBilgiYazdir(int ulkeId) 
         {
-            return View();
+            if (ulkeId > 0)
+            {
+                var data = _okulBilgiBE.OkulBilgiGetirUlkeId(ulkeId);
+                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+
+                if (data.IsSuccess)
+                {
+                    return View(data.Data);
+                }
+
+                return View();
+            }
+            else
+            {
+                var requestmodel = _okulBilgiBE.OkulBilgileriGetir();
+                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+
+                if (requestmodel.IsSuccess)
+                {
+                    return View(requestmodel.Data);
+                }
+
+                return View();
+            }
         }
        
     }

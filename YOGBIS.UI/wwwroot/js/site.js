@@ -68,20 +68,70 @@ $(document).ready(function () {
                 }
             }
         },
+        //columnDefs: [{
+        //    targets: 0,
+        //    data: null,
+        //    defaultContent: '',
+        //    orderable: false,
+        //    className: 'select-checkbox'
+        //}],
+        //select: {
+        //    style: 'os',
+        //    selector: 'td:first-child'
+        //},
+        //order: [[1, 'asc']],
+        /*dom: 'Bfrtip',*/
+        buttons: [
+            {
+                text: 'Kopyala',
+                extend: 'copy',
+                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2'
+            },
+            {
+                text: 'Excel',
+                extend: 'excel',
+                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2'
+            },
+            {
+                text: 'Pdf',
+                extend: 'pdf',
+                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2'
+            },
+            {
+                text: 'PdfYatay',
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2',
+                download:'open'
+            },
+            {
+                text: 'Yazdır',
+                extend: 'print',
+                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2',
+                exportOptions: {
+                    columns: ':visible',
+                    modifier: {
+                        selected: null
+                    }
+                }
+            },
+            {
+                text: 'Kolonlar',
+                extend: 'colvis',
+                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2'
+            },
+        ],
         columnDefs: [{
-            targets: 0,
-            data: null,
-            defaultContent: '',
-            orderable: false,
-            className: 'select-checkbox'
+            targets: -1,
+            visible: false
         }],
-        select: {
-            style: 'os',
-            selector: 'td:first-child'
-        },
-        order: [[1, 'asc']]
-        
+        select: true
+
     });
+        //table.buttons().container()
+        //.appendTo('#example_wrapper .small-6.columns:eq(0)');
+
     //$('#myTable tbody').on('click', 'tr', function () {
     //    var id = this.id;
     //    var index = $.inArray(id, selected);

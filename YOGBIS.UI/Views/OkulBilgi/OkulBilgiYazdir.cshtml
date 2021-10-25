@@ -1,52 +1,154 @@
-﻿
+﻿@model IEnumerable<YOGBIS.Common.VModels.OkulBilgiVM>
 @{
     ViewData["Title"] = "OkulBilgiYazdir";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link href="~/css/sayfa.css" rel="stylesheet" />
-@*<link href="~/css/sayfa-a4yatay.css" rel="stylesheet" />*@
-<link href="~/css/sayfa-a4.css" rel="stylesheet" />
-<div class="container">
-    @*<div class="page"><img src="~/img/kapak.png" class="img-fluid p-0"/></div>*@
-    <div class="page" contenteditable="true">
-        <p class="text-center h4">Okul Yönetici Bilgileri</p>
-        @*<p>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-            <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>*@
-        <table class="table table-bordered table-hover">
-
-            @for (int i = 1; i < 21; i++)
-            {
-
-                <tr style="height:15px;">
-                    <td>@i</td>
-                </tr>
-
-            }
-        </table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Okul Yönetici Bilgileri</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css">
+</head>
+<body>
+    <ol class="breadcrumb m-2">
+        <li class="ml-2 mr-2">
+            @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Bulunduğu Ülkeyi Seç", new { @class = "form-control-range form-control py-1 w-100" })
+        </li>
+    </ol>
+    <div class="card m-2">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            <b>Okul Yönetici Bilgileri</b>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover dt-responsive nowrap" id="example" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Seç</th>
+                            <th>Seç</th>
+                            <th>Sıra No</th>
+                            <th>Ülke</th>
+                            <th>Okul Adı</th>
+                            <th>Okul Telefon</th>
+                            <th>Okul Adres</th>
+                            <th>Müdür</th>
+                            <th>Dönüş Yılı</th>
+                            <th>Müdür Cep</th>
+                            <th>Müdür E-Posta</th>
+                            <th>Müdür Yardımcısı</th>
+                            <th>Dönüş Yılı</th>
+                            <th>Müdür Yrd. Cep</th>
+                            <th>Müdür Yrd. E-Posta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ var sirano = 0;}
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+                                sirano++;
+                                <tr>
+                                    <td style="vertical-align:middle"></td>
+                                    <td style="vertical-align:middle"></td>
+                                    <td>@sirano</td>
+                                    <td>@item.UlkeAdi</td>
+                                    <td>@item.OkulAdi</td>
+                                    <td>@item.OkulTelefon</td>
+                                    <td>@item.OkulAdres</td>
+                                    <td class="text-capitalize">@item.MudurAdiSoyadi</td>
+                                    <td>@item.MudurDonusYil</td>
+                                    <td>@item.MudurTelefon</td>
+                                    <td>@item.MudurEPosta</td>
+                                    <td class="text-capitalize">@item.MdYrdAdiSoyadi</td>
+                                    <td>@item.MdYrdDonusYil</td>
+                                    <td>@item.MdYrdTelefon</td>
+                                    <td>@item.MdYrdEPosta</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>Kayıt bulunamadı!</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <div class="page" contenteditable="true">
-        <p>Second <code>.page</code> element</p>
-        @*<p>
-                Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.
-                Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p>
-                Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat
-                nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis
-                dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                tincidunt ut laoreet dolore magna aliquam erat volutpat.
-            </p>
-            <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
-            <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
 
-            <div class="page-break" contenteditable="false"></div>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+    <script>
+        //$(document).ready(function () {
+        //    var table = $('#example').DataTable({
+        //        lengthChange: false,
+        //        dom: 'Bfrtip',
+        //        buttons: [
+        //            {
+        //                'copy', 'excel', 'csv', 'pdf', 'print', 'colvis',
+        //                 orientation: 'landscape'
+        //                }
+        //        ]
+                
+        //    });
 
-            <p>This sentence is preceded by a manual page break:<br />&nbsp;&nbsp;&nbsp;&nbsp;<code>&lt;div class="page-break" contenteditable="false"&gt;&lt;/div&gt;</code></p>
-            <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, At accusam aliquyam diam diam dolore dolores duo eirmod eos erat, et nonumy sed tempor et et invidunt justo labore Stet clita ea et gubergren, kasd magna no rebum. sanctus sea sed takimata ut vero voluptua. est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.</p>
-            <p>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>*@
-    </div>
-</div>
-<script type="text/javascript">window.print();</script>
+        //    table.buttons().container()
+        //        .appendTo('#example_wrapper .col-md-6:eq(0)');
+        //});
+
+        $(document).ready(function () {
+            $('#example').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+                    }
+                ]
+            });
+        });
+
+        $("#UlkeListesi").on("change", function () {
+
+            var Id = $("#UlkeListesi").val();
+            /*alert(Id);*/
+            $.ajax({
+                type: "DELETE",
+                url: "/OkulBilgi/OkulBilgiGetirUlkeId/" + Id,
+                success: function (data) {
+                    if (data.isSucces) {
+                        window.location.href = "?ulkeId=" + Id;
+                        /*alert("başarılı");*/
+                    } else {
+                        /*bootbox.dialog("Birşeyler kötü gitti !");*/
+                        alert("Birşeyler kötü gitti !");
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
