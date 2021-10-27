@@ -20,15 +20,18 @@ function myFunction() {
 
 $(document).ready(function () {
     var selected = [];
-    $('#myTable').DataTable({
-        "fixedHeader": true,
-        "fixedColumns": true,
-        "responsive": true,
-        "dom": '<"html5buttons"B>lTfgitp',
-        "scrollY": "350px",
-        "scrollCollapse": true,
+    var table=$('#myTable').DataTable({
+        /*fixedHeader: true,*/
+        //"fixedColumns": true,
+/*        "responsive": true,*/
+        dom: '<"html5buttons"B>lTfgitp',
+        //scroller: true,
+        //scrollY: 300,
+        //deferRender: true,
+        
+        /*"scrollCollapse": true,*/
         "paging": true,
-        "scrollX": true,
+        /*"scrollX": true,*/
         "autoFill": true,
         //"processing": true,
         //"serverSide": true,
@@ -95,7 +98,8 @@ $(document).ready(function () {
             {
                 text: 'Pdf',
                 extend: 'pdf',
-                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2'
+                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2',
+                download: 'open'
             },
             {
                 text: 'PdfYatay',
@@ -103,7 +107,7 @@ $(document).ready(function () {
                 orientation: 'landscape',
                 pageSize: 'LEGAL',
                 className: 'btn btn-info btn-sm mt-1 mb-2 ml-2',
-                download:'open'
+                download: 'open'
             },
             {
                 text: 'Yazdır',
@@ -111,9 +115,6 @@ $(document).ready(function () {
                 className: 'btn btn-info btn-sm mt-1 mb-2 ml-2',
                 exportOptions: {
                     columns: ':visible',
-                    modifier: {
-                        selected: null
-                    }
                 }
             },
             {
@@ -123,13 +124,17 @@ $(document).ready(function () {
             },
         ],
         columnDefs: [{
-            targets: -1,
+            /*targets: -1,*/
             visible: false
         }],
         select: true
 
     });
-        //table.buttons().container()
+
+    new $.fn.dataTable.FixedHeader(table, {
+        footer: true
+    });
+    //table.buttons().container()
         //.appendTo('#example_wrapper .small-6.columns:eq(0)');
 
     //$('#myTable tbody').on('click', 'tr', function () {

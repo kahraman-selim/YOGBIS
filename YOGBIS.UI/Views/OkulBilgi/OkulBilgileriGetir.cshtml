@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<YOGBIS.Common.VModels.OkulBilgiVM>
 @{
-    ViewData["Title"] = "OkulBilgileri";
-    Layout = "~/Views/Shared/_Layout.cshtml";    
+    ViewData["Title"] = "Okul Yönetici Bilgileri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<title>Okul Yönetici Bilgileri</title>
+
 <style>
     .block {
         position: fixed;
@@ -40,7 +40,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover" id="myTable" cellspacing="0">
+            <table class="table table-bordered table-hover table-striped dt-responsive nowrap" id="myTable" style="width:100%">
                 <thead>
                     <tr>
                         <th>Sıra No</th>

@@ -1,7 +1,7 @@
 ﻿
 @model IEnumerable<YOGBIS.Common.VModels.OkullarVM>
 @{
-    ViewData["Title"] = "OKullar";
+    ViewData["Title"] = "Okullar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -31,7 +31,7 @@
             <table class="table table-bordered table-hover" id="myTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th class="align-middle text-center">Seç</th>
+                        @*<th class="align-middle text-center">Seç</th>*@
                         <th class="text-center">Sıra No</th>
                         <th class="text-center">Ülke</th>
                         <th class="text-center">Okul Kodu</th>
@@ -48,7 +48,7 @@
                         {
                             sirano++;
                             <tr>
-                                <td></td>
+                                @*<td></td>*@
                                 <td>@sirano</td>
                                 <td>@item.UlkeAdi</td>
                                 <td>@item.OkulKodu</td>
