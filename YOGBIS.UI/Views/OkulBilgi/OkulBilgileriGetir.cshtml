@@ -12,35 +12,19 @@
         top: 95px;
     }
 </style>
-@*<h1 class="text-center text-info">YURTDIŞI OKUL YÖNETİCİ BİLGİLERİ</h1>*@
-<ol class="breadcrumb m-2">
+<ol class="breadcrumb mb-4 mt-2">
     <li class="ml-2 mr-2">
         @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Bulunduğu Ülkeyi Seç", new { @class = "form-control-range form-control py-1 w-100" })
     </li>
-    @*<li class="ml-2 mr-2">
-        <a asp-controller="OkulBilgi" asp-action="OkulBilgiYazdir" class="btn btn-secondary btn-circle pt-2" target="_blank" title="Yazdır">
-            <i class="fas fa-print"></i>
-        </a>
-    </li>*@
-    @*<li class="ml-2 mr-2">
-        <a asp-controller="OkulBilgi" asp-action="OkulBilgiYazdir" class="btn btn-success btn-circle pt-2" title="Excel">
-            <i class="fas fa-file-excel"></i>
-        </a>
-    </li>
-    <li class="ml-2 mr-2">
-        <a asp-controller="OkulBilgi" asp-action="OkulBilgiYazdir" class="btn btn-danger btn-circle pt-2" title="Pdf">
-            <i class="fas fa-file-pdf"></i>
-        </a>
-    </li>*@
 </ol>
-<div class="card m-2">
+<div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
         <b>Okul Yönetici Bilgileri</b>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped dt-responsive nowrap" id="myTable" style="width:100%">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%">
                 <thead>
                     <tr>
                         <th>Sıra No</th>

@@ -1,7 +1,4 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your Javascript code.
+﻿
 function myFunction() {
     var input, filter, ul, li, a, i;
     input = document.getElementById("mySearch");
@@ -21,26 +18,19 @@ function myFunction() {
 $(document).ready(function () {
     var selected = [];
     var table=$('#myTable').DataTable({
-        /*fixedHeader: true,*/
-        //"fixedColumns": true,
-/*        "responsive": true,*/
+        //fixedHeader: {
+        //    header: true,
+        //    headerOffset: $('#navbar').height()
+        //},  
+        deferRender: true,
+        scrollY: 300,
+        scrollX:true,
+        scrollCollapse: true,
+        scroller: true,
+        stateSave: true,
+        responsive: true,
         dom: '<"html5buttons"B>lTfgitp',
-        //scroller: true,
-        //scrollY: 300,
-        //deferRender: true,
-        
-        /*"scrollCollapse": true,*/
         "paging": true,
-        /*"scrollX": true,*/
-        "autoFill": true,
-        //"processing": true,
-        //"serverSide": true,
-        //"ajax": "scripts/ids-arrays.php",
-        //"rowCallback": function (row, data) {
-        //    if ($.inArray(data.DT_RowId, selected) !== -1) {
-        //        $(row).addClass('selected');
-        //    }
-        //},
         "language": {
             "emptyTable": "Gösterilecek veri yok.",
             "processing": "Veriler yükleniyor",
@@ -71,19 +61,6 @@ $(document).ready(function () {
                 }
             }
         },
-        //columnDefs: [{
-        //    targets: 0,
-        //    data: null,
-        //    defaultContent: '',
-        //    orderable: false,
-        //    className: 'select-checkbox'
-        //}],
-        //select: {
-        //    style: 'os',
-        //    selector: 'td:first-child'
-        //},
-        //order: [[1, 'asc']],
-        /*dom: 'Bfrtip',*/
         buttons: [
             {
                 text: 'Kopyala',
@@ -123,30 +100,12 @@ $(document).ready(function () {
                 className: 'btn btn-info btn-sm mt-1 mb-2 ml-2'
             },
         ],
-        columnDefs: [{
-            /*targets: -1,*/
+        columnDefs: [{            
             visible: false
         }],
         select: true
-
     });
 
-    new $.fn.dataTable.FixedHeader(table, {
-        footer: true
-    });
-    //table.buttons().container()
-        //.appendTo('#example_wrapper .small-6.columns:eq(0)');
-
-    //$('#myTable tbody').on('click', 'tr', function () {
-    //    var id = this.id;
-    //    var index = $.inArray(id, selected);
-
-    //    if (index === -1) {
-    //        selected.push(id);
-    //    } else {
-    //        selected.splice(index, 1);
-    //    }
-
-    //    $(this).toggleClass('selected');
-    //});
+    new $.fn.dataTable.FixedHeader(table);
+    new $.fn.dataTable.Responsive(table);
 });

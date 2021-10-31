@@ -40,7 +40,7 @@
     {
         <!-- Navbar-->
         #region Navbar
-        <nav class="sb-topnav navbar navbar-expand navbar-light bg-white topbar mb-4 shadow sb-nav-fixed h-auto">
+        <nav class="sb-topnav navbar navbar-expand navbar-light bg-white topbar mb-4 shadow sb-nav-fixed h-auto" id="navbar">
             <!-- Navbar Logo-->
             <div class="sidebar-brand-icon d-none d-sm-block">
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Home" asp-action="Index">
@@ -388,13 +388,17 @@
 
 
     @***************************JavaScripts******************************@
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
     <script src="~/lib/bootstrap/dist/js/sb-admin-2.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/scripts.js"></script>
     @*<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>*@
     <script src="~/js/datatables.min.js"></script>
 
-    @*datatablebuttons*@
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    @***********************datatableproperties*****************************@
+
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
@@ -411,8 +415,7 @@
     <script src="https://cdn.datatables.net/fixedheader/3.2.0/js/dataTables.fixedHeader.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     @*--------------------------------************************************************----------*@
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/scripts.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/jquery.easing.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
