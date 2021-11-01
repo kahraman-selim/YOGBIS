@@ -18,18 +18,13 @@ function myFunction() {
 $(document).ready(function () {
     var selected = [];
     var table=$('#myTable').DataTable({
-        //fixedHeader: {
-        //    header: true,
-        //    headerOffset: $('#navbar').height()
-        //},  
-        deferRender: true,
-        scrollY: 300,
-        scrollX:true,
-        scrollCollapse: true,
-        scroller: true,
+        fixedHeader: {
+            header: true,
+            headerOffset: $('#navbar').height()
+        },  
         stateSave: true,
         responsive: true,
-        dom: '<"html5buttons"B>lTfgitp',
+        dom: '<"html5buttons"B>lTfgitp',  
         "paging": true,
         "language": {
             "emptyTable": "Gösterilecek veri yok.",
@@ -107,5 +102,4 @@ $(document).ready(function () {
     });
 
     new $.fn.dataTable.FixedHeader(table);
-    new $.fn.dataTable.Responsive(table);
 });

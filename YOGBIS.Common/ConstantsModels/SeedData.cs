@@ -51,6 +51,7 @@ namespace YOGBIS.Common.ConstantsModels
             //Seed Roles
             await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.Administrator.ToString()));
             await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.Manager.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.Representative.ToString()));
             await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.SubManager.ToString()));
             await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.Follower.ToString()));
             await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.Lecturer.ToString()));

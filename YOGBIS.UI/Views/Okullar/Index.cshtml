@@ -28,7 +28,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped display dt-responsive nowrap" id="myTable" width="100%">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
                 <thead>
                     <tr>
                         @*<th class="align-middle text-center">Seç</th>*@
@@ -36,7 +36,7 @@
                         <th class="text-center">Ülke</th>
                         <th class="text-center">Okul Kodu</th>
                         <th class="text-center">Okul Adı</th>
-                        <th class="text-center">Düzenle</th>
+                        @*<th class="text-center">Düzenle</th>*@
                         <th class="text-center">Sil</th>
                     </tr>
                 </thead>
@@ -50,14 +50,14 @@
                             <tr>
                                 @*<td></td>*@
                                 <td>@sirano</td>
-                                <td>@item.UlkeAdi</td>
+                                <td><a asp-controller="Ulkeler" asp-action="Guncelle" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
                                 <td>@item.OkulKodu</td>
-                                <td>@item.OkulAdi</td>
-                                <td class="text-center">
+                                <td><a asp-controller="Okullar" asp-action="Guncelle" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
+                                @*<td class="text-center">
                                     <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Okullar" asp-action="Guncelle" asp-route-id="@item.OkulId">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                </td>
+                                </td>*@
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.OkulId">
                                         <i class="fas fa-trash text-white"></i>

@@ -11,7 +11,9 @@ namespace YOGBIS.Common.ConstantsModels
         Administrator,
         [Display(Name = "Yönetici")]
         Manager,
-        [Display(Name = "Alt Yöneticisi")]
+        [Display(Name = "Temsilci")]
+        Representative,
+        [Display(Name = "Okul Yöneticisi")]
         SubManager,
         [Display(Name = "Personel")]
         Follower,

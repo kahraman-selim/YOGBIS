@@ -24,7 +24,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Sıra No</th>
@@ -112,10 +112,8 @@
                     url: "/OkulBilgi/OkulBilgiGetirUlkeId/"+Id,
                     success: function (data) {
                         if (data.isSucces) {
-                            window.location.href = "?ulkeId="+Id;
-                            /*alert("başarılı");*/
-                        } else {
-                            /*bootbox.dialog("Birşeyler kötü gitti !");*/
+                            window.location.href = "?ulkeId="+Id;                            
+                        } else {                            
                             alert("Birşeyler kötü gitti !");
                         }
                     }
