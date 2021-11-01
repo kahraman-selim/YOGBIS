@@ -7,15 +7,15 @@ using YOGBIS.BusinessEngine.Contracts;
 
 namespace YOGBIS.UI.ViewComponents
 {
-    public class DereceListesiComponent : ViewComponent
+    public class DereceListesiViewComponent : ViewComponent
     {
         private readonly IDerecelerBE _derecelerBE;
 
-        public DereceListesiComponent(IDerecelerBE derecelerBE)
+        public DereceListesiViewComponent(IDerecelerBE derecelerBE)
         {
             _derecelerBE = derecelerBE;
         }
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
            
             var requestmodel = _derecelerBE.DereceleriGetir();
