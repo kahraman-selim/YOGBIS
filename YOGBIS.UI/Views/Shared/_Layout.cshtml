@@ -10,30 +10,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Yükseköğretim ve Yurt Dışı Eğitim Genel Müdürlüğü - @ViewData["Title"]</title>
+    @************************CSS********************************************************@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/sb-admin-2.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/styles.css" />
     <link rel="stylesheet" href="~/css/all.min.css" />
-    <link href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/datatables.min.css" />
+    @*<link rel="stylesheet" href="~/css/datatables.min.css" />*@    
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.2.0/css/fixedHeader.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
 
-
-    @*<link href="~/css/sayfa.css" rel="stylesheet" />*@
-    @*
-        <link href="~/css/sayfa-a4.css" rel="stylesheet" />*@
-    @*
-        <link href="~/css/sayfa-a4yatay.css" rel="stylesheet" />*@
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
+    @*************************************************************************************@
+
 </head>
 <body id="page-top" class="sb-nav-fixed">
     @if (SignInManager.IsSignedIn(User))
@@ -388,14 +384,14 @@
 
 
     @***************************JavaScripts******************************@
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/sb-admin-2.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/scripts.js"></script>
-    @*<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>*@
-    <script src="~/js/datatables.min.js"></script>
-
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/jquery.easing.min.js"></script>
+    <script src="~/js/bootbox.min.js"></script>
+    @*<script src="~/js/datatables.min.js"></script>*@
 
     @***********************datatableproperties*****************************@
 
@@ -416,10 +412,9 @@
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     @*--------------------------------************************************************----------*@
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/jquery.easing.min.js"></script>
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="~/js/bootbox.min.js"></script>
+
 
     @RenderSection("Scripts", required: false)
 </body>

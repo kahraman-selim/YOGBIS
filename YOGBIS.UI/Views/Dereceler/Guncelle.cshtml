@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <div class="card shadow-lg rounded-lg mt-0" style="width:100%">
+        <div class="card mb-3">
             <div class="card-header">
                 <i class="fas fa-pen mr-1"></i>
                 <b>Derece Ekleme/Güncelleme</b>
@@ -14,6 +14,7 @@
             <div class="card-body">
                 <form class="form-group m-0" asp-action="DereceEkle">
                     @Html.HiddenFor(x => x.DereceId)
+                    <input asp-for="DereceId" Name="some_property" name="SomeProperty" id="DereceId" type="hidden" value="DereceId" />
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="row">
                         <div class="col-md-6">
@@ -28,8 +29,8 @@
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
-                                    <input type="submit" value="Değiştir" class="btn btn-info btn-sm" />
-                                    <a asp-controller="Dereceler" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm">Vazgeç</a>
+                                    <input type="submit" value="Değiştir" class="btn btn-info btn-sm" style="width:100px"/>
+                                    <a class="btn btn-danger btn-sm text-white" title="Sil" id="btnSil" style="width:100px">Sil</a>
                                 </div>
                             </div>
                         </div>
@@ -39,19 +40,35 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="card shadow-lg rounded-lg mt-0 h-100">
-            <div class="card-header">
-                <i class="fas fa-table mr-1"></i>
-                <b>Derece Listesi</b>
-            </div>
-            <div class="card-body">
-
-            </div>
-        </div>
+        @await Component.InvokeAsync("DereceListesi")
     </div>
 </div>
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnSil").on("click", function () {
+
+                document.getElementById("DereceId").focus();
+                var soruno = $("#DereceId").val();
+                var id = parseInt(soruno);
+                /*alert(id);*/
+
+                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/Dereceler/DereceSil/" + id,
+                            success: function () {
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+
+            });
+        });
+    </script>
 }
 

@@ -23,15 +23,23 @@ namespace YOGBIS.UI.Controllers
         {
             _derecelerBE = derecelerBE;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            var requestmodel= _derecelerBE.DereceleriGetir(); 
-            if (requestmodel.IsSuccess)
+            //var requestmodel= _derecelerBE.DereceleriGetir(); 
+            //if (requestmodel.IsSuccess)
+            //{
+            //    return View(requestmodel.Data);
+            //}
+            if (id > 0)
             {
-                return View(requestmodel.Data);
+                var data = _derecelerBE.DereceGetir((int)id);
+                return View(data.Data);
             }
-            return View(user);
+            else
+            {
+                return View();
+            }
         }
 
         [HttpGet]
@@ -64,20 +72,20 @@ namespace YOGBIS.UI.Controllers
             }
         }
 
-        public ActionResult Guncelle(int? id)
-        {
+        //public ActionResult Guncelle(int? id)
+        //{
             
-            if (id > 0)
-            {
-                var data = _derecelerBE.DereceGetir((int)id); 
-                return View(data.Data);
-            }
-            else
-            {
-                return View();
-            }
+        //    if (id > 0)
+        //    {
+        //        var data = _derecelerBE.DereceGetir((int)id); 
+        //        return View(data.Data);
+        //    }
+        //    else
+        //    {
+        //        return View();
+        //    }
 
-        }
+        //}
 
         [HttpDelete]
         public IActionResult DereceSil(int id)
