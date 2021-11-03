@@ -1,0 +1,80 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
+@inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
+@model List<YOGBIS.Common.VModels.SoruBankasiVM>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        <b>Soru Bankası</b>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sıra No</th>
+                        <th>Soru No</th>
+                        <th>Durumu</th>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <th>Kaydeden</th>
+                        }
+                        <th>Soru</th>
+                        <th>Cevap</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ var sirano = 0;}
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            sirano++;
+                    <tr>
+                        <td>@sirano</td>
+                        <td class="text-center">
+                            <a class="font-weight-bold" asp-controller="SoruBankasi" asp-route-id="@item.SoruBankasiId" id="SoruBankasiId" title="Değişiklik yapmak için seçiniz">
+                                @item.SoruBankasiId
+                            </a>
+                        </td>
+                        @if (item.OnayDurumu == EnumsSoruOnay.Onaya_Gonderildi)
+                        {
+                            @if (User.IsInRole("Administrator"))
+                            {
+                                <td style="color:green" class="font-weight-bold">Onay Bekliyor</td>
+                            }
+                            else
+                            {
+                                <td style="color:green" class="font-weight-bold">@item.OnayDurumuAciklama</td>
+
+                            }
+                        }
+                        else if (item.OnayDurumu == EnumsSoruOnay.Onaylandi)
+                        {
+                            <td style="color:blue" class="font-weight-bold">@item.OnayDurumuAciklama</td>
+                        }
+                        else
+                        {
+                            <td style="color:red" class="font-weight-bold">@item.OnayDurumuAciklama</td>
+                        }
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <td class="text-capitalize">@item.KaydedenAdi</td>
+                        }
+                        <td>@item.Soru</td>
+                        <td>@item.Cevap</td>
+                    </tr>
+                    }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>Kayıt bulunamadı!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

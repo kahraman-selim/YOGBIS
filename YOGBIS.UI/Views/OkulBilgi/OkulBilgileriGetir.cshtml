@@ -16,6 +16,9 @@
     <li class="ml-2 mr-2">
         @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Bulunduğu Ülkeyi Seç", new { @class = "form-control-range form-control py-1 w-100" })
     </li>
+    <li class="m-2">
+        <a asp-controller="OkulBilgi" asp-action="OkulBilgileriGetir"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
+    </li>
 </ol>
 <div class="card mb-3">
     <div class="card-header">

@@ -1,0 +1,66 @@
+﻿@model List<YOGBIS.Common.VModels.SoruKategorilerVM>
+
+
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        <b>Soru Kategorileri</b>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sıra No</th>
+                        <th>Kategori No</th>
+                        <th>Kategori Adı</th>
+                        <th>Derece</th>
+                        <th>Kategori Kullanımı</th>
+                        <th>Puan</th>
+                        @*<th class="text-center">Düzenle</th>
+                            <th class="text-center">Sil</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ var sirano = 0;}
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            sirano++;
+                            <tr>
+                                <td>@sirano</td>
+                                <td class="text-center">
+                                    <a class="font-weight-bold" asp-controller="SoruKategorileri" asp-route-id="@item.SoruKategorilerId" id="SoruKategoriler" title="Değişiklik yapmak için seçiniz">
+                                        @item.SoruKategorilerId
+                                    </a>
+                                </td>
+                                <td>@item.SoruKategorilerAdi</td>
+                                <td>@item.DereceAdi</td>
+                                <td>@item.SoruKategorilerKullanimi</td>
+                                <td>@item.SoruKategorilerPuan</td>
+                                @*<td class="text-center">
+                                        <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="SoruKategorileri" asp-action="Guncelle" asp-route-id="@item.SoruKategorilerId">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.SoruKategorilerId">
+                                            <i class="fas fa-trash text-white"></i>
+                                        </a>
+                                    </td>*@
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>Kayıt bulunamadı!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,84 +1,136 @@
-﻿@model List<YOGBIS.Common.VModels.SoruBankasiVM>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
+@inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
+@model YOGBIS.Common.VModels.SoruBankasiVM
 @{
     ViewData["Title"] = "Soru Bankası";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<ol class="breadcrumb mb-4 mt-2">
-    <li>
-        <a asp-controller="SoruBankasi" asp-action="SoruEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
-            Yeni Kayıt <i class="fas fa-plus-circle"></i>
-        </a>
-    </li>
-</ol>
-<div class="card mb-3">
-    <div class="card-header">
-        <i class="fas fa-table mr-1"></i>
-        <b>Soru Bankası</b>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover" id="myTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Sıra No</th>
-                        <th>Soru No</th>
-                        <th>Kategori Adı</th>
-                        <th>Soru</th>
-                        <th>Cevap</th>
-                        <th>Durumu</th>
-                        <th>Kaydeden</th>
-                        <th class="text-center">Düzenle</th>
-                        <th class="text-center">Sil</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{ var sirano = 0;}
-                    @if (Model != null)
-                    {
-                        @foreach (var item in Model)
+@*<ol class="breadcrumb mb-4 mt-2">
+        <li>
+            <a asp-controller="SoruBankasi" asp-action="SoruEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
+                Yeni Kayıt <i class="fas fa-plus-circle"></i>
+            </a>
+        </li>
+    </ol>*@
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fas fa-pen mr-1"></i>
+                <b>Soru Bankası Ekleme/Güncelleme</b>
+            </div>
+            <div class="card-body">
+                <form class="form-group m-0" asp-action="SoruEkle">
+                    @Html.HiddenFor(x => x.SoruBankasiId)
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    <div class="form-row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="small mb-1 font-weight-bold">Soru Numarası</label>
+                                <input asp-for="SoruBankasiId" type="number" class="form-control py-2 text-center font-weight-bold" id="SoruBankasiId" placeholder="" disabled>
+                                <span class="text-danger" asp-validation-for="SoruBankasiId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="DereceId" class="small mb-1 font-weight-bold">Derece</label>
+                                @Html.DropDownListFor(u => u.DereceId, new SelectList(ViewBag.Dereceler, "DereceId", "DereceAdi"), "Dereceyi seçiniz", new { @class = "form-control-range form-control py-2" })
+                                <span class="text-danger" asp-validation-for="DereceId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="SoruDurumu" class="small mb-1 font-weight-bold">Sorulabilir ?</label>
+                                <select asp-for="SoruDurumu" class="form-control-range form-control py-2" aria-label="Default select example">
+                                    <option asp-for="SoruDurumu" selected class="text-center"></option>
+                                    <option asp-for="SoruDurumu" value="True">Evet</option>
+                                    <option asp-for="SoruDurumu" value="False">Hayır</option>
+                                </select>
+                                <span class="text-danger" asp-validation-for="SoruDurumu"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="small mb-1 font-weight-bold">Sorulma Sayısı</label>
+                                <input asp-for="SorulmaSayisi" type="number" class="form-control py-2 text-center font-weight-bold" id="CreateTypeInput" placeholder="" disabled>
+                                <span class="text-danger" asp-validation-for="SorulmaSayisi"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="SoruKategorilerId" class="small mb-1 font-weight-bold">Kategorisi</label>
+                                @Html.DropDownListFor(a => a.SoruKategorilerId, new SelectList(ViewBag.Kategoriler, "SoruKategorilerId", "SoruKategorilerAdi"), " ", new { @class = "form-control-range form-control py-2" })
+                                <span class="text-danger" asp-validation-for="SoruKategorilerId"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Soru" class="small mb-1 font-weight-bold">Soru</label>
+                                <textarea asp-for="Soru" placeholder="Soruyu buraya yazınız..." class="form-control" id="SoruTextArea" rows="7"></textarea>
+                                <span class="text-danger" asp-validation-for="Soru"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Cevap" class="small mb-1 font-weight-bold">Cevap</label>
+                                <textarea asp-for="Cevap" placeholder="Cevabı buraya yazınız..." class="form-control" id="CevapTextArea" rows="5"></textarea>
+                                <span class="text-danger" asp-validation-for="Cevap"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        @if (User.IsInRole("Administrator"))
                         {
-                            sirano++;
-                    <tr>
-                        <td>@sirano</td>
-                        <td>@item.SoruBankasiId</td>
-                        <td>@item.SoruKategorilerAdi</td>
-                        <td>@item.Soru</td>
-                        <td>@item.Cevap</td>
-                        @if (item.OnayDurumu == EnumsSoruOnay.Onaya_Gonderildi)
-                        {
-                            <td style="color:green" class="font-weight-bold">@item.OnayDurumuAciklama</td>
-                        }
-                        else if (item.OnayDurumu == EnumsSoruOnay.Onaylandi)
-                        {
-                            <td style="color:blue" class="font-weight-bold">@item.OnayDurumuAciklama</td>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="small mb-1 font-weight-bold">Onay Seçimi</label>
+                                    <select class="form-control-range form-control py-2" aria-label="Default select example">
+                                        <option asp-for="OnayDurumu" selected class="text-center"></option>
+                                        <option asp-for="OnayDurumu" value="True">Onayla</option>
+                                        <option asp-for="OnayDurumu" value="False">Reddet</option>
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="SoruDurumu"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label class="small mb-1 font-weight-bold">Onay Açıklama</label>
+                                    <textarea asp-for="OnayDurumuAciklama" placeholder="Açıklamaları yazınız..." class="form-control" id="AciklamaTextArea" rows="3"></textarea>
+                                    <span class="text-danger" asp-validation-for="OnayDurumuAciklama"></span>
+                                </div>
+                            </div>
                         }
                         else
                         {
-                            <td style="color:red" class="font-weight-bold">@item.OnayDurumuAciklama</td>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="small mb-1 font-weight-bold">Onay Açıklama</label>
+                                    <textarea asp-for="OnayDurumuAciklama" placeholder="Açıklamaları yazınız..." class="form-control" id="AciklamaTextArea" rows="3"></textarea>
+                                    <span class="text-danger" asp-validation-for="OnayDurumuAciklama"></span>
+                                </div>
+                            </div>
                         }
-                        <td>@item.KaydedenAdi</td>
-                        <td class="text-center">
-                            <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="SoruBankasi" asp-action="Guncelle" asp-route-id="@item.SoruBankasiId">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.SoruBankasiId">
-                                <i class="fas fa-trash text-white"></i>
-                            </a>
-                        </td>
-                    </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td>Kayıt bulunamadı!</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px">Yeni Kayıt</a>
+                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" />
+                            <a class="btn btn-danger btn-sm text-white mb-1" id="btnSil" style="width:100px">Sil</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
+    </div>
+    <div class="col-md-6">
+        @await Component.InvokeAsync("SoruBankasi")
     </div>
 </div>
 
@@ -89,24 +141,60 @@
 
     <script type="text/javascript">
 
-        $(function () {
-            $("#myTable").on("click", ".btnSil", function () {
-                var btn = $(this);
-                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
-                    if (result) {
-                        var id = btn.data("id");
-                        $.ajax({
-                            type: "DELETE",
-                            url: "/SoruBankasi/SoruSil/" + id,
-                            success: function () {
-                                btn.parent().parent().remove();
-                                location.reload();
-                            }
-                        });
-                    }
-                });
+        $("#btnSil").on("click", function () {
+
+            document.getElementById("SoruBankasiId").focus();
+            var soruno = $("#SoruBankasiId").val();
+            var id = parseInt(soruno);
+            /*alert(id);*/
+
+            bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                if (result) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/SoruBankasi/SoruSil/" + id,
+                        success: function () {
+                            location.reload();
+                        }
+                    });
+                }
             });
+
         });
+
+            //$("#btnYeni").on("click", function () {
+            //    document.getElementById("SoruKategorilerId").focus();
+            //    document.getElementById("SoruKategorilerId").value = "";
+            //    document.getElementById("btnSil").className += " disabled";
+            //    document.getElementById("SoruKategorilerPuan").focus();
+            //    document.getElementById("SoruKategorilerPuan").value = "";
+            //    document.getElementById("SoruKategorilerKullanimi").focus();
+            //    document.getElementById("SoruKategorilerKullanimi").value = "";
+            //    document.getElementById("DereceId").focus();
+            //    document.getElementById("DereceId").value = "";
+            //    document.getElementById("SoruKategorilerAdi").focus();
+            //    document.getElementById("SoruKategorilerAdi").value = "";
+            //});
+
+            //$(function () {
+            //    $("#myTable").on("click", ".btnSil", function () {
+            //        var btn = $(this);
+            //        bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+            //            if (result) {
+            //                var id = btn.data("id");
+            //                $.ajax({
+            //                    type: "DELETE",
+            //                    url: "/SoruBankasi/SoruSil/" + id,
+            //                    success: function () {
+            //                        btn.parent().parent().remove();
+            //                        location.reload();
+            //                    }
+            //                });
+            //            }
+            //        });
+            //    });
+            //});
+
     </script>
 }
 

@@ -28,7 +28,7 @@ namespace YOGBIS.UI.Controllers
             _derecelerBE = derecelerBE;
         }
         
-        public IActionResult Index()
+        public IActionResult Index(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
@@ -36,20 +36,21 @@ namespace YOGBIS.UI.Controllers
 
             //var requestModel = _soruBankasiBE.SoruGetirKullaniciId(user.LoginId);
 
-            var requestModel = _soruBankasiBE.SorulariGetir(); 
-            if (requestModel.IsSuccess)
-                return View(requestModel.Data);  
-            
-                return View(user);
-                     
+            //var requestModel = _soruBankasiBE.SorulariGetir(); 
+            //if (requestModel.IsSuccess)
+            //    return View(requestModel.Data);  
 
-            //var data = _soruBankasiBE.GetAllSorular();
-            //if (data.IsSuccess)
-            //{
-            //    var result = data.Data;
-            //    return View(result);
-            //}
-            //return View(user);
+            //    return View(user);
+            if (id > 0)
+            {
+                var data = _soruBankasiBE.SoruGetir((int)id);
+                return View(data.Data);
+            }
+            else
+            {
+                return View();
+            }
+
         }
 
         [HttpGet]

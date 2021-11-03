@@ -57,34 +57,34 @@ $(document).ready(function () {
             }
         },
         buttons: [
-            {
-                text: 'Kopyala',
-                extend: 'copy',
-                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2'
-            },
+            //{
+            //    text: 'Kopyala',
+            //    extend: 'copy',
+            //    className: 'btn btn-info btn-sm mt-1 mb-2 ml-2'
+            //},
             {
                 text: 'Excel',
                 extend: 'excel',
-                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2'
+                className: 'btn btn-success btn-sm mt-1 mb-2 ml-1 rounded w-25 h-25'
             },
             {
                 text: 'Pdf',
                 extend: 'pdf',
-                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2',
+                className: 'btn btn-danger btn-sm mt-1 mb-2 ml-1 rounded w-25 h-25',
                 download: 'open'
             },
             {
-                text: 'PdfYatay',
+                text: 'Pdf-y',
                 extend: 'pdfHtml5',
                 orientation: 'landscape',
                 pageSize: 'LEGAL',
-                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2',
+                className: 'btn btn-danger btn-sm mt-1 mb-2 ml-1 rounded w-50 h-25',
                 download: 'open'
             },
             {
                 text: 'Yazdır',
                 extend: 'print',
-                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2',
+                className: 'btn btn-warning btn-sm mt-1 mb-2 ml-1 rounded w-25 h-25',
                 exportOptions: {
                     columns: ':visible',
                 }
@@ -92,7 +92,7 @@ $(document).ready(function () {
             {
                 text: 'Kolonlar',
                 extend: 'colvis',
-                className: 'btn btn-info btn-sm mt-1 mb-2 ml-2'
+                className: 'btn btn-info btn-sm mt-1 mb-2 ml-1 rounded'
             },
         ],
         columnDefs: [{            

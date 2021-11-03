@@ -25,18 +25,26 @@ namespace YOGBIS.UI.Controllers
             _derecelerBE = derecelerBE;
         }        
         
-        public IActionResult Index()
+        public IActionResult Index(int? id)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
-            var requestModel = _soruKategorileriBE.SoruKategoriKullaniciId(user.LoginId); //SoruKategoriGetir();
-            if (requestModel.IsSuccess)
-                return View(requestModel.Data);
+            //var requestModel = _soruKategorileriBE.SoruKategoriKullaniciId(user.LoginId); //SoruKategoriGetir();
+            //if (requestModel.IsSuccess)
+            //    return View(requestModel.Data);
 
-            return View(user);
-
+            //return View(user);
+            if (id > 0)
+            {
+                var data = _soruKategorileriBE.SoruKategoriGetir((int)id);
+                return View(data.Data);
+            }
+            else
+            {
+                return View();
+            }
         }
         
         [HttpGet]
