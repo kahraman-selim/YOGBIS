@@ -80,7 +80,7 @@ namespace YOGBIS.UI
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 //options.Cookie.Name = "YourAppCookieName";
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(15); 
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(3); 
                 options.LoginPath = "/Identity/Account/Login";
                 // ReturnUrlParameter requires 
                 //using Microsoft.AspNetCore.Authentication.Cookies;
