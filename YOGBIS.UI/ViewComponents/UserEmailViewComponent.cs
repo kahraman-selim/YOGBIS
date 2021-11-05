@@ -27,9 +27,9 @@ namespace YOGBIS.UI.ViewComponents
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             var userFromDb = _uow.kullaniciRepository.GetFirstOrDefault(u => u.Id == claims.Value);
 
-            var employeeToDb = _mapper.Map<Kullanici, KullaniciVM>(userFromDb);
+            var kullaniciToDb = _mapper.Map<Kullanici, KullaniciVM>(userFromDb);
 
-            return View(employeeToDb);
+            return View(kullaniciToDb);
         }
     }
 }
