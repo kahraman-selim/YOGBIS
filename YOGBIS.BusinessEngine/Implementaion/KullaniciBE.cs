@@ -66,5 +66,32 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
 
+        public Result<List<KullaniciVM>> OnayKullaniciGetir()
+        {
+
+            var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
+            var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
+
+            if (data != null)
+            {
+                List<KullaniciVM> returnData = new List<KullaniciVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new KullaniciVM()
+                    {
+                        Id=item.Id,
+                        Ad=item.Ad,
+                        Soyad=item.Soyad,
+                        AdSoyad=item.Ad+" "+item.Soyad
+                    });
+                }
+                return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<KullaniciVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
     }
 }

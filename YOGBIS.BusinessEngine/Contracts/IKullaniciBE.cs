@@ -15,6 +15,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         /// <returns></returns>
         Result<KullaniciVM> KullaniciGetir(int id);
         Result<KullaniciVM> KullaniciGuncelle(KullaniciVM model);
-
+        Result<List<KullaniciVM>> OnayKullaniciGetir();
     }
 }

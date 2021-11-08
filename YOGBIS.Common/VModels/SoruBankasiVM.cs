@@ -35,6 +35,8 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Soru durumunu seçiniz...")]
         public bool SoruDurumu { get; set; } = true;
+
+        [Required(ErrorMessage = "Onay durumunu seçiniz...")]
         public EnumsSoruOnay OnayDurumu { get; set; }
         public string OnayDurumuAciklama { get; set; }
         public string OnayAciklama { get; set; }

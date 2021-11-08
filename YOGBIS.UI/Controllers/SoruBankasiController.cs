@@ -21,11 +21,13 @@ namespace YOGBIS.UI.Controllers
         private readonly ISoruBankasiBE _soruBankasiBE;
         private readonly ISoruKategorileriBE _soruKategorileriBE;
         private readonly IDerecelerBE _derecelerBE;
-        public SoruBankasiController(ISoruBankasiBE soruBankasiBE, ISoruKategorileriBE soruKategorileriBE, IDerecelerBE derecelerBE)
+        private readonly IKullaniciBE _kullaniciBE;
+        public SoruBankasiController(ISoruBankasiBE soruBankasiBE, ISoruKategorileriBE soruKategorileriBE, IDerecelerBE derecelerBE, IKullaniciBE kullaniciBE)
         {
             _soruBankasiBE = soruBankasiBE;
             _soruKategorileriBE = soruKategorileriBE;
             _derecelerBE = derecelerBE;
+            _kullaniciBE = kullaniciBE;
         }
         
         public IActionResult Index(int? id)
@@ -33,7 +35,7 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
-
+            ViewBag.Onaylayan = _kullaniciBE.OnayKullaniciGetir().Data;
             //var requestModel = _soruBankasiBE.SoruGetirKullaniciId(user.LoginId);
 
             //var requestModel = _soruBankasiBE.SorulariGetir(); 

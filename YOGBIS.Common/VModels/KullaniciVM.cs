@@ -21,6 +21,8 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "{0} boş geçilemez")]
         public string Soyad { get; set; }
 
+        public string AdSoyad { get; set; }
+
         [DisplayFormat(DataFormatString = "{0,d}")]
         [DataType(DataType.DateTime)]
         public DateTime KayitTarihi { get; set; } = DateTime.Now;
