@@ -51,6 +51,7 @@ namespace YOGBIS.UI
             services.AddScoped<IKitalarBE, KitalarBE>();
             services.AddScoped<IOkullarBE, OkullarBE>();
             services.AddScoped<IOkulBilgiBE, OkulBilgiBE>();
+            services.AddScoped<IOgrencilerBE, OgrencilerBE>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(Maps));
 

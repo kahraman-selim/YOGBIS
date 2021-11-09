@@ -1,0 +1,114 @@
+﻿@model IEnumerable<YOGBIS.Common.VModels.OgrencilerVM>
+@{
+    ViewData["Title"] = "ÖğrenciBilgileri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb mb-4 mt-2">
+    <li>
+        <a asp-controller="Ogrenciler" asp-action="OgrenciEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
+            Yeni Kayıt <i class="fas fa-plus-circle"></i>
+        </a>
+    </li>
+</ol>
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        <b>Öğrenci Bilgileri</b>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sıra No</th>
+                        <th>Ülke</th>
+                        <th>Okul Adı</th>
+                        <th>Yıl</th>
+                        <th>Ay</th>
+                        <th>TCErkek</th>
+                        <th>TCKız</th>
+                        <th>TCToplam</th>
+                        <th>DiğerErkek</th>
+                        <th>DiğerKız</th>
+                        <th>DiğerToplam</th>
+                        <th>ToplamErkek</th>
+                        <th>ToplamKız</th>
+                        <th>Genel Toplam</th>
+                        <th class="text-center">Düzenle</th>
+                        <th class="text-center">Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ var sirano = 0;}
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            sirano++;
+                            <tr>
+                                <td>@sirano</td>
+                                @*<td>@item.UlkeAdi</td>
+                                <td>@item.OkulAdi</td>
+                                <td>@item.OkulTelefon</td>
+                                <td>@item.OkulAdres</td>
+                                <td class="text-capitalize">@item.MudurAdiSoyadi</td>
+                                <td>@item.MudurDonusYil</td>
+                                <td>@item.MudurTelefon</td>
+                                <td>@item.MudurEPosta</td>
+                                <td class="text-capitalize">@item.MdYrdAdiSoyadi</td>
+                                <td>@item.MdYrdDonusYil</td>
+                                <td>@item.MdYrdTelefon</td>
+                                <td>@item.MdYrdEPosta</td>*@
+                                <td class="text-center">
+                                    <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Ogrenciler" asp-action="Guncelle" asp-route-id="@item.OgrencilerId">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.OgrencilerId">
+                                        <i class="fas fa-trash text-white"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>Kayıt bulunamadı!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript">
+
+            $(function () {
+                $("#myTable").on("click", ".btnSil", function () {
+                    var btn = $(this);
+                    bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                        if (result) {
+                            var id = btn.data("id");
+                            $.ajax({
+                                type: "DELETE",
+                                url: "/Ogrenciler/OgrenciSil/" + id,
+                                success: function () {
+                                    btn.parent().parent().remove();
+                                    location.reload();
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+    </script>
+}
+
