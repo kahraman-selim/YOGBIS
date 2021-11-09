@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<YOGBIS.Common.VModels.OgrencilerVM>
 @{
-    ViewData["Title"] = "ÖğrenciBilgileri";
+    ViewData["Title"] = "Öğrenci Bilgileri";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -26,14 +26,14 @@
                         <th>Okul Adı</th>
                         <th>Yıl</th>
                         <th>Ay</th>
-                        <th>TCErkek</th>
-                        <th>TCKız</th>
-                        <th>TCToplam</th>
-                        <th>DiğerErkek</th>
-                        <th>DiğerKız</th>
-                        <th>DiğerToplam</th>
-                        <th>ToplamErkek</th>
-                        <th>ToplamKız</th>
+                        <th>TC Erkek</th>
+                        <th>TC Kız</th>
+                        <th>TC Toplam</th>
+                        <th>Diğer Erkek</th>
+                        <th>Diğer Kız</th>
+                        <th>Diğer Toplam</th>
+                        <th>Toplam Erkek</th>
+                        <th>Toplam Kız</th>
                         <th>Genel Toplam</th>
                         <th class="text-center">Düzenle</th>
                         <th class="text-center">Sil</th>
@@ -46,31 +46,37 @@
                         @foreach (var item in Model)
                         {
                             sirano++;
-                            <tr>
-                                <td>@sirano</td>
-                                @*<td>@item.UlkeAdi</td>
-                                <td>@item.OkulAdi</td>
-                                <td>@item.OkulTelefon</td>
-                                <td>@item.OkulAdres</td>
-                                <td class="text-capitalize">@item.MudurAdiSoyadi</td>
-                                <td>@item.MudurDonusYil</td>
-                                <td>@item.MudurTelefon</td>
-                                <td>@item.MudurEPosta</td>
-                                <td class="text-capitalize">@item.MdYrdAdiSoyadi</td>
-                                <td>@item.MdYrdDonusYil</td>
-                                <td>@item.MdYrdTelefon</td>
-                                <td>@item.MdYrdEPosta</td>*@
-                                <td class="text-center">
-                                    <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Ogrenciler" asp-action="Guncelle" asp-route-id="@item.OgrencilerId">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </td>
-                                <td class="text-center">
-                                    <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.OgrencilerId">
-                                        <i class="fas fa-trash text-white"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                    <tr>
+                        <td>@sirano</td>
+                        <td>@item.UlkeAdi</td>
+                        <td>@item.OkulAdi</td>
+                        <td>@item.Yil</td>
+                        <td>@item.Ay</td>
+                        <td class="text-center">@item.TCEOg</td>
+                        <td class="text-center">@item.TCKOg</td>
+                        @{ var toptc = Convert.ToInt32(item.TCEOg.ToString()) + Convert.ToInt32(item.TCKOg.ToString());}
+                        <td class="text-center">@toptc</td>
+                        <td class="text-center">@item.DEOg</td>
+                        <td class="text-center">@item.DKOg</td>
+                        @{ var topdg = Convert.ToInt32(item.DEOg.ToString()) + Convert.ToInt32(item.DKOg.ToString());}
+                        <td class="text-center">@topdg</td>
+                        @{ var toper = Convert.ToInt32(item.TCEOg.ToString()) + Convert.ToInt32(item.DEOg.ToString());}
+                        <td class="text-center">@toper</td>
+                        @{ var topkz = Convert.ToInt32(item.TCKOg.ToString()) + Convert.ToInt32(item.DKOg.ToString());}
+                        <td class="text-center">@topkz</td>
+                        @{ var toplam = Convert.ToInt32(toper.ToString()) + Convert.ToInt32(topkz.ToString());}
+                        <td class="text-center">@toplam</td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Ogrenciler" asp-action="Guncelle" asp-route-id="@item.OgrencilerId">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.OgrencilerId">
+                                <i class="fas fa-trash text-white"></i>
+                            </a>
+                        </td>
+                    </tr>
                         }
                     }
                     else

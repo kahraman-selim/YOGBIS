@@ -271,6 +271,20 @@
                                     Okul İletişim
                                 </a>
                             }
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                            {
+                                <a class="nav-link" asp-controller="Ogrenciler" asp-action="OgrencileriGetir">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
+                                    Öğrenci Bilgileri
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-controller="Ogrenciler" asp-action="Index">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
+                                    Öğrenci Bilgileri
+                                </a>
+                            }
                             <!--Modüller-->
                             @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                             {

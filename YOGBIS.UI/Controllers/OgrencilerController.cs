@@ -159,7 +159,7 @@ namespace YOGBIS.UI.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        public ActionResult OgrenciGetirUlkeId(int Id) 
+        public ActionResult OgrencileriGetirUlkeId(int Id) 
         {
             var data = _ogrencilerBE.OgrenciGetirUlkeId(Id);
             if (data.IsSuccess)
@@ -172,36 +172,38 @@ namespace YOGBIS.UI.Controllers
             }            
         }
 
-        //[Authorize(Roles = "Administrator,Manager")]
-        //public ActionResult OkulBilgiYazdir(int ulkeId) 
-        //{
-        //    if (ulkeId > 0)
-        //    {
-        //        var data = _okulBilgiBE.OkulBilgiGetirUlkeId(ulkeId);
-        //        ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-        //        ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+        [Authorize(Roles = "Administrator,Manager")]
+        public IActionResult OgrencileriGetir(int ulkeId)
+        {
 
-        //        if (data.IsSuccess)
-        //        {
-        //            return View(data.Data);
-        //        }
+            if (ulkeId > 0)
+            {
+                var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
+                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
 
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        var requestmodel = _okulBilgiBE.OkulBilgileriGetir();
-        //        ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-        //        ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+                if (data.IsSuccess)
+                {
+                    return View(data.Data);
+                }
 
-        //        if (requestmodel.IsSuccess)
-        //        {
-        //            return View(requestmodel.Data);
-        //        }
+                return View();
+            }
+            else
+            {
+                var requestmodel = _ogrencilerBE.OgrencileriGetir();
+                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
 
-        //        return View();
-        //    }
-        //}
-       
+                if (requestmodel.IsSuccess)
+                {
+                    return View(requestmodel.Data);
+                }
+
+                return View();
+            }
+
+        }
+
     }
 }

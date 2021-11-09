@@ -77,6 +77,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<Dereceler> Derecelers { get; set; }
         public DbSet<Okullar> Okullars { get; set; }
         public DbSet<OkulBilgi> OkulBilgis { get; set; }
+        public DbSet<Ogrenciler> Ogrencilers { get; set; }
 
         #endregion
     }

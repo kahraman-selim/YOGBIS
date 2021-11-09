@@ -1,0 +1,118 @@
+﻿
+@model IEnumerable<YOGBIS.Common.VModels.OgrencilerVM>
+@{
+    ViewData["Title"] = "Öğrenci Bilgileri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb mb-4 mt-2">
+    <li class="ml-2 mr-2">
+        @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Bulunduğu Ülkeyi Seç", new { @class = "form-control-range form-control py-1 w-100" })
+    </li>
+    <li class="m-2">
+        <a asp-controller="Ogrenciler" asp-action="OgrencileriGetir"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
+    </li>
+</ol>
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        <b>Öğrenci Bilgileri</b>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sıra No</th>
+                        <th>Ülke</th>
+                        <th>Okul Adı</th>
+                        <th>Yıl</th>
+                        <th>Ay</th>
+                        <th>TC Erkek</th>
+                        <th>TC Kız</th>
+                        <th>TC Toplam</th>
+                        <th>Diğer Erkek</th>
+                        <th>Diğer Kız</th>
+                        <th>Diğer Toplam</th>
+                        <th>Toplam Erkek</th>
+                        <th>Toplam Kız</th>
+                        <th>Genel Toplam</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ var sirano = 0;}
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            sirano++;
+                            <tr>
+                                <td>@sirano</td>
+                                <td>@item.UlkeAdi</td>
+                                <td>@item.OkulAdi</td>
+                                <td>@item.Yil</td>
+                                <td>@item.Ay</td>
+                                <td class="text-center">@item.TCEOg</td>
+                                <td class="text-center">@item.TCKOg</td>
+                                @{ var toptc = Convert.ToInt32(item.TCEOg.ToString()) + Convert.ToInt32(item.TCKOg.ToString());}
+                                <td class="text-center">@toptc</td>
+                                <td class="text-center">@item.DEOg</td>
+                                <td class="text-center">@item.DKOg</td>
+                                @{ var topdg = Convert.ToInt32(item.DEOg.ToString()) + Convert.ToInt32(item.DKOg.ToString());}
+                                <td class="text-center">@topdg</td>
+                                @{ var toper = Convert.ToInt32(item.TCEOg.ToString()) + Convert.ToInt32(item.DEOg.ToString());}
+                                <td class="text-center">@toper</td>
+                                @{ var topkz = Convert.ToInt32(item.TCKOg.ToString()) + Convert.ToInt32(item.DKOg.ToString());}
+                                <td class="text-center">@topkz</td>
+                                @{ var toplam = Convert.ToInt32(toper.ToString()) + Convert.ToInt32(topkz.ToString());}
+                                <td class="text-center">@toplam</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>Kayıt bulunamadı!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            
+
+            $("#UlkeListesi").on("change", function () {
+
+                var Id = $("#UlkeListesi").val();
+                /*alert(Id);*/
+                $.ajax({
+                    type: "DELETE",
+                    url: "/Ogrenciler/OgrencileriGetirUlkeId/" + Id,
+                    success: function (data) {
+                        if (data.isSucces) {
+                            window.location.href = "?ulkeId=" + Id;
+                        } else {
+                            alert("Birşeyler kötü gitti !");
+                        }
+                    }
+                });
+
+            });
+
+        });
+
+
+    </script>
+}
+
+
+
