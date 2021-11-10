@@ -13,7 +13,7 @@
         @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç", new { @class = "form-control-range form-control py-1 w-100" })
     </li>
     <li class="ml-2 mr-2">
-        @Html.DropDownList("AyListesi", new SelectList(Enum.GetNames(typeof(EnumAylar).ToString())), "Ay Seç", new { @class = "form-control-range form-control py-1 w-100" })
+        @Html.DropDownList("AyListesi", new SelectList(Enum.GetNames(typeof(EnumAylar))), "Ay Seç", new { @class = "form-control-range form-control py-1 w-100" })
         @*@Html.DropDownList("AyListesi", new SelectList(ViewBag.Aylar), "Ay Seç", new { @class = "form-control-range form-control py-1 w-100" })*@        
     </li>
     <li class="m-2">
@@ -94,47 +94,62 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function () {
-            
+        //$(document).ready(function () {
+        //});
 
-            $("#UlkeListesi").on("change", function () {
+        $("#UlkeListesi").on("change", function () {
 
-                var Id = $("#UlkeListesi").val();
-                /*alert(Id);*/
-                $.ajax({
-                    type: "DELETE",
-                    url: "/Ogrenciler/OgrencileriGetirUlkeId/" + Id,
-                    success: function (data) {
-                        if (data.isSucces) {
-                            window.location.href = "?ulkeId=" + Id;
-                        } else {
-                            alert("Birşeyler kötü gitti !");
-                        }
+            var UlkeId = $("#UlkeListesi").val();
+            /*alert(Id);*/
+            $.ajax({
+                type: "DELETE",
+                url: "/Ogrenciler/OgrencileriGetirUlkeId/" + UlkeId,
+                success: function (data) {
+                    if (data.isSucces) {
+                        window.location.href = "?ulkeId=" + UlkeId;
+                    } else {
+                        alert("Birşeyler kötü gitti !");
                     }
-                });
-
-            });
-
-            $("#OkulListesi").on("change", function () {
-
-                var Id = $("#OkulListesi").val();
-                /*alert(Id);*/
-                $.ajax({
-                    type: "DELETE",
-                    url: "/Ogrenciler/OgrencileriGetirOkulId/" + Id,
-                    success: function (data) {
-                        if (data.isSucces) {
-                            window.location.href = "?okulId=" + Id;
-                        } else {
-                            alert("Birşeyler kötü gitti !");
-                        }
-                    }
-                });
-
+                }
             });
 
         });
 
+        $("#OkulListesi").on("change", function () {
+
+            var OkulId = $("#OkulListesi").val();
+            /*alert(Id);*/
+            $.ajax({
+                type: "DELETE",
+                url: "/Ogrenciler/OgrencileriGetirOkulId/" + OkulId,
+                success: function (data) {
+                    if (data.isSucces) {
+                        window.location.href = "?okulId=" + OkulId;
+                    } else {
+                        alert("Birşeyler kötü gitti !");
+                    }
+                }
+            });
+
+        });
+
+        $("#AyListesi").on("change", function () {
+
+            var Id = $("#AyListesi").val();
+            /*alert(Id);*/
+            //$.ajax({
+            //    type: "DELETE",
+            //    url: "/Ogrenciler/OgrencileriGetirOkulId/" + Id,
+            //    success: function (data) {
+            //        if (data.isSucces) {
+            //            window.location.href = "?okulId=" + Id;
+            //        } else {
+            //            alert("Birşeyler kötü gitti !");
+            //        }
+            //    }
+            //});
+
+        });
 
     </script>
 }

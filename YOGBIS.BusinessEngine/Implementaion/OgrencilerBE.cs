@@ -132,9 +132,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
             if (model.OgrencilerId>0)
             {
                 try
-                {                    
-                    var data = _unitOfWork.ogrencilerRepository.Get(model.OgrencilerId);
-                    if (data!=null)
+                {
+                    var data = _mapper.Map<OgrencilerVM, Ogrenciler>(model);
+                    //var data = _unitOfWork.ogrencilerRepository.Get(model.OgrencilerId);
+                    if (data != null)
                     {
                         data.KullaniciId = user.LoginId;
                         data.TCEOg = model.TCEOg;
@@ -166,6 +167,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<OgrencilerVM>(false, "Lütfen kayıt seçiniz");
             }
+
         }
         public Result<bool> OgrenciSil(int id)
         {
@@ -218,32 +220,43 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<OgrencilerVM> OgrenciGetir(int id)
         {
-            if (id > 0)
+            //if (id > 0)
+            //{
+            //    var data = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == id, includeProperties: "Okullar,Ulkeler,Kullanici");
+
+            //    if (data != null)
+            //    {
+            //        OgrencilerVM ogrenciler = new OgrencilerVM();
+            //        ogrenciler.TCEOg = data.TCEOg;
+            //        ogrenciler.TCKOg = data.TCKOg;
+            //        ogrenciler.DEOg = data.DEOg;
+            //        ogrenciler.DKOg = data.DKOg;
+            //        ogrenciler.Yil = data.Yil;
+            //        //ogrenciler.Ay = data.Ay;
+            //        ogrenciler.OkulId = data.OkulId;
+            //        ogrenciler.OkulAdi = data.Okullar.OkulAdi;
+            //        ogrenciler.UlkeId = data.UlkeId;
+            //        ogrenciler.UlkeAdi = data.Ulkeler.UlkeAdi;
+            //        ogrenciler.KullaniciId = data.Kullanici.Id;
+            //        ogrenciler.KullaniciAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+
+            //        return new Result<OgrencilerVM>(true, ResultConstant.RecordFound, ogrenciler);
+            //    }
+            //    else
+            //    {
+            //        return new Result<OgrencilerVM>(false, ResultConstant.RecordNotFound);
+            //    }
+            //}
+            //else
+            //{
+            //    return new Result<OgrencilerVM>(false, ResultConstant.RecordNotFound);
+            //}
+
+            var data = _unitOfWork.ogrencilerRepository.Get(id);
+            if (data != null)
             {
-                var data = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(u => u.OgrencilerId == id, includeProperties: "Okullar,Ulkeler,Kullanici");
-
-                if (data != null)
-                {
-                    OgrencilerVM ogrenciler = new OgrencilerVM();
-                    ogrenciler.TCEOg = data.TCEOg;
-                    ogrenciler.TCKOg = data.TCKOg;
-                    ogrenciler.DEOg = data.DEOg;
-                    ogrenciler.DKOg = data.DKOg;
-                    ogrenciler.Yil = data.Yil;
-                    //ogrenciler.Ay = data.Ay;
-                    ogrenciler.OkulId = data.OkulId;
-                    ogrenciler.OkulAdi = data.Okullar.OkulAdi;
-                    ogrenciler.UlkeId = data.UlkeId;
-                    ogrenciler.UlkeAdi = data.Ulkeler.UlkeAdi;
-                    ogrenciler.KullaniciId = data.Kullanici.Id;
-                    ogrenciler.KullaniciAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
-
-                    return new Result<OgrencilerVM>(true, ResultConstant.RecordFound, ogrenciler);
-                }
-                else
-                {
-                    return new Result<OgrencilerVM>(false, ResultConstant.RecordNotFound);
-                }
+                var ogrenciler = _mapper.Map<Ogrenciler, OgrencilerVM>(data);
+                return new Result<OgrencilerVM>(true, ResultConstant.RecordFound, ogrenciler);
             }
             else
             {
