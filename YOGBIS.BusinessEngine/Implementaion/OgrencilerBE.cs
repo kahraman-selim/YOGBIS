@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.Extentsion;
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
@@ -40,8 +41,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         TCKOg=item.TCKOg,
                         DEOg=item.DEOg,
                         DKOg=item.DKOg,
-                        Ay=item.Ay,
-                        Yil=item.Yil,
+                        //Ay= EnumExtension<EnumAylar>.GetDisplayValue((EnumAylar)item.Ay).ToString(),
+                        Yil =item.Yil,
                         OkulId = item.OkulId,
                         OkulAdi = item.Okullar.OkulAdi,
                         UlkeId = item.UlkeId,
@@ -74,7 +75,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         TCKOg = item.TCKOg,
                         DEOg = item.DEOg,
                         DKOg = item.DKOg,
-                        Ay = item.Ay,
+                        //Ay = item.Ay,
                         Yil = item.Yil,
                         OkulId =item.OkulId,
                         OkulAdi=item.Okullar.OkulAdi,
@@ -106,7 +107,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ogrenciler.TCKOg = model.TCKOg;
                     ogrenciler.DEOg = model.DEOg;
                     ogrenciler.DKOg = model.DKOg;
-                    ogrenciler.Ay = model.Ay;
+                    //ogrenciler.Ay = model.Ay;
                     ogrenciler.Yil = model.Yil;
                     ogrenciler.OkulId = model.OkulId;
                     ogrenciler.UlkeId = model.UlkeId;
@@ -140,7 +141,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.TCKOg = model.TCKOg;
                         data.DEOg = model.DEOg;
                         data.DKOg = model.DKOg;
-                        data.Ay = model.Ay;
+                        //data.Ay = model.Ay;
                         data.Yil = model.Yil;
                         data.OkulId = model.OkulId;
                         data.UlkeId = model.UlkeId;
@@ -196,7 +197,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         TCKOg = item.TCKOg,
                         DEOg = item.DEOg,
                         DKOg = item.DKOg,
-                        Ay = item.Ay,
+                        //Ay = item.Ay,
                         Yil = item.Yil,
                         OkulId = item.OkulId,
                         OkulAdi = item.Okullar.OkulAdi,
@@ -229,7 +230,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ogrenciler.DEOg = data.DEOg;
                     ogrenciler.DKOg = data.DKOg;
                     ogrenciler.Yil = data.Yil;
-                    ogrenciler.Ay = data.Ay;
+                    //ogrenciler.Ay = data.Ay;
                     ogrenciler.OkulId = data.OkulId;
                     ogrenciler.OkulAdi = data.Okullar.OkulAdi;
                     ogrenciler.UlkeId = data.UlkeId;
@@ -247,6 +248,41 @@ namespace YOGBIS.BusinessEngine.Implementaion
             else
             {
                 return new Result<OgrencilerVM>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        public Result<List<OgrencilerVM>> OgrenciGetirOkulId(int okulId)
+        {
+            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.OkulId == okulId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
+            if (data != null)
+            {
+                List<OgrencilerVM> returnData = new List<OgrencilerVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new OgrencilerVM()
+                    {
+                        OgrencilerId = item.OgrencilerId,
+                        TCEOg = item.TCEOg,
+                        TCKOg = item.TCKOg,
+                        DEOg = item.DEOg,
+                        DKOg = item.DKOg,
+                        //Ay = item.Ay,
+                        Yil = item.Yil,
+                        OkulId = item.OkulId,
+                        OkulAdi = item.Okullar.OkulAdi,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = item.Ulkeler.UlkeAdi,
+                        KayitTarihi = item.KayitTarihi,
+                        KullaniciId = item.KullaniciId,
+                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+
+                    });
+                }
+                return new Result<List<OgrencilerVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<OgrencilerVM>>(false, ResultConstant.RecordNotFound);
             }
         }
     }

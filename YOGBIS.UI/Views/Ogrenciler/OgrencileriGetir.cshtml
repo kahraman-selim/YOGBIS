@@ -9,6 +9,13 @@
     <li class="ml-2 mr-2">
         @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Bulunduğu Ülkeyi Seç", new { @class = "form-control-range form-control py-1 w-100" })
     </li>
+    <li class="ml-2 mr-2">
+        @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç", new { @class = "form-control-range form-control py-1 w-100" })
+    </li>
+    <li class="ml-2 mr-2">
+        @Html.DropDownList("AyListesi", new SelectList(Enum.GetNames(typeof(EnumAylar).ToString())), "Ay Seç", new { @class = "form-control-range form-control py-1 w-100" })
+        @*@Html.DropDownList("AyListesi", new SelectList(ViewBag.Aylar), "Ay Seç", new { @class = "form-control-range form-control py-1 w-100" })*@        
+    </li>
     <li class="m-2">
         <a asp-controller="Ogrenciler" asp-action="OgrencileriGetir"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
     </li>
@@ -100,6 +107,24 @@
                     success: function (data) {
                         if (data.isSucces) {
                             window.location.href = "?ulkeId=" + Id;
+                        } else {
+                            alert("Birşeyler kötü gitti !");
+                        }
+                    }
+                });
+
+            });
+
+            $("#OkulListesi").on("change", function () {
+
+                var Id = $("#OkulListesi").val();
+                /*alert(Id);*/
+                $.ajax({
+                    type: "DELETE",
+                    url: "/Ogrenciler/OgrencileriGetirOkulId/" + Id,
+                    success: function (data) {
+                        if (data.isSucces) {
+                            window.location.href = "?okulId=" + Id;
                         } else {
                             alert("Birşeyler kötü gitti !");
                         }

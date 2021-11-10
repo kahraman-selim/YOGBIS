@@ -32,7 +32,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
             var requestmodel = _okulBilgiBE.OkulBilgiGetirKullaniciId(user.LoginId);
 
@@ -50,7 +50,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
             return View();
         }
 
@@ -61,7 +61,7 @@ namespace YOGBIS.UI.Controllers
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
             //if (OkulId > 0)
             //{
@@ -85,7 +85,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
             if (id > 0)
             {
@@ -106,7 +106,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
             //if (id > 0)
             //{
@@ -151,7 +151,7 @@ namespace YOGBIS.UI.Controllers
             {
                 var data = _okulBilgiBE.OkulBilgiGetirUlkeId(ulkeId);
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
                 if (data.IsSuccess)
                 {
@@ -197,7 +197,7 @@ namespace YOGBIS.UI.Controllers
             {
                 var data = _okulBilgiBE.OkulBilgiGetirUlkeId(ulkeId);
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
                 if (data.IsSuccess)
                 {
@@ -210,7 +210,7 @@ namespace YOGBIS.UI.Controllers
             {
                 var requestmodel = _okulBilgiBE.OkulBilgileriGetir();
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
                 if (requestmodel.IsSuccess)
                 {

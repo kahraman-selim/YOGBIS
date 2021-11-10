@@ -64,6 +64,37 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region OkullarıGetirAZ
+        public Result<List<OkullarVM>> OkullariGetirAZ()
+        {
+            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Ulkeler,Kullanici").OrderBy(o => o.OkulAdi).ToList();            
+
+            if (data != null)
+            {
+                List<OkullarVM> returnData = new List<OkullarVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new OkullarVM()
+                    {
+                        OkulId = item.OkulId,
+                        OkulKodu = item.OkulKodu,
+                        OkulAdi = item.OkulAdi,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = item.Ulkeler.UlkeAdi,
+                        KullaniciId = item.KullaniciId,
+                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                    });
+                }
+                return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<OkullarVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
         #region OkulGetirKullanıcıId
         public Result<List<OkullarVM>> OkulGetirKullaniciId(string userId)
         {

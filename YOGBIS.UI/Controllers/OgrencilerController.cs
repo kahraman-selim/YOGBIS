@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Mvc.Html;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.Extentsion;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 
@@ -32,8 +35,9 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
-
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+            //ViewBag.Aylar = EnumExtension<EnumAylar>.GetDisplayValue(EnumAylar.Agustos);
+           
             var requestmodel = _ogrencilerBE.OgrenciGetirKullaniciId(user.LoginId);
 
             if (requestmodel.IsSuccess)
@@ -50,7 +54,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
             return View();
         }
 
@@ -61,7 +65,7 @@ namespace YOGBIS.UI.Controllers
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
             var data = _ogrencilerBE.OgrenciEkle(model, user);
             if (data.IsSuccess)
@@ -76,7 +80,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
             if (id > 0)
             {
@@ -97,7 +101,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
             var data = _ogrencilerBE.OgrenciGuncelle(model, user);
             if (data.IsSuccess)
@@ -127,13 +131,13 @@ namespace YOGBIS.UI.Controllers
 
         [Authorize(Roles = "Administrator,Manager")]
         public IActionResult OgrenciGetir(int ulkeId)
-        {
-
+        {            
+            
             if (ulkeId > 0)
             {
                 var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;                
 
                 if (data.IsSuccess)
                 {
@@ -171,6 +175,20 @@ namespace YOGBIS.UI.Controllers
                 return RedirectToAction("OgrenciGetir", new { ulkeId = Id });
             }            
         }
+        
+        [Authorize(Roles = "Administrator,Manager")]
+        public ActionResult OgrencileriGetirOkulId(int Id)
+        {
+            var data = _ogrencilerBE.OgrenciGetirOkulId(Id);
+            if (data.IsSuccess)
+            {
+                return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
+            }
+            else
+            {
+                return RedirectToAction("OgrenciGetir", new { ulkeId = Id });
+            }
+        }
 
         [Authorize(Roles = "Administrator,Manager")]
         public IActionResult OgrencileriGetir(int ulkeId)
@@ -180,7 +198,8 @@ namespace YOGBIS.UI.Controllers
             {
                 var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+                //ViewBag.Aylar = EnumExtension<EnumAylar>.GetDisplayValues((EnumAylar)int.Parse(EnumAylar).ToString()); //GetDisplayValue(EnumAylar).ToList();
 
                 if (data.IsSuccess)
                 {
@@ -193,7 +212,8 @@ namespace YOGBIS.UI.Controllers
             {
                 var requestmodel = _ogrencilerBE.OgrencileriGetir();
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+                ViewBag.Aylar = EnumExtension<EnumAylar>.GetDisplayValue(EnumAylar.Agustos);
 
                 if (requestmodel.IsSuccess)
                 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using YOGBIS.Common.ConstantsModels;
 
 namespace YOGBIS.Common.VModels
 {
@@ -26,7 +27,7 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "En az 0 değeri gereklidir")]
         public int DKOg { get; set; }
         [Required(ErrorMessage = "Ay seçimi gereklidir")]
-        public string Ay { get; set; }
+        public EnumAylar Ay { get; set; }
         [Required(ErrorMessage = "Yıl seçimi gereklidir")]
         public string Yil { get; set; }
         public string KullaniciId { get; set; }
