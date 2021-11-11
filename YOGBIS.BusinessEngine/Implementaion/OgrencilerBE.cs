@@ -26,7 +26,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OgrencilerVM>> OgrencileriGetir()
         {
-            var data = _unitOfWork.ogrencilerRepository.GetAll(includeProperties: "Okullar,Ulkeler,Kullanici").OrderBy(u => u.Ulkeler.UlkeAdi).ToList();
+            var data = _unitOfWork.ogrencilerRepository.GetAll(includeProperties: "Okullar,Ulkeler,Kullanici").OrderBy(u => u.Ulkeler.UlkeAdi).ThenBy(o=>o.Okullar.OkulAdi).ToList();
 
             if (data != null)
             {
@@ -41,7 +41,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         TCKOg=item.TCKOg,
                         DEOg=item.DEOg,
                         DKOg=item.DKOg,
-                        //Ay= EnumExtension<EnumAylar>.GetDisplayValue((EnumAylar)item.Ay).ToString(),
+                        Ay= item.Ay,
                         Yil =item.Yil,
                         OkulId = item.OkulId,
                         OkulAdi = item.Okullar.OkulAdi,
@@ -61,7 +61,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OgrencilerVM>> OgrenciGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
+            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici,Okullar,Ulkeler").OrderBy(u => u.Okullar.OkulAdi).ToList();
             if (data != null)
             {
                 List<OgrencilerVM> returnData = new List<OgrencilerVM>();
@@ -75,7 +75,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         TCKOg = item.TCKOg,
                         DEOg = item.DEOg,
                         DKOg = item.DKOg,
-                        //Ay = item.Ay,
+                        Ay = item.Ay,
                         Yil = item.Yil,
                         OkulId =item.OkulId,
                         OkulAdi=item.Okullar.OkulAdi,
@@ -107,7 +107,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ogrenciler.TCKOg = model.TCKOg;
                     ogrenciler.DEOg = model.DEOg;
                     ogrenciler.DKOg = model.DKOg;
-                    //ogrenciler.Ay = model.Ay;
+                    ogrenciler.Ay = model.Ay;
                     ogrenciler.Yil = model.Yil;
                     ogrenciler.OkulId = model.OkulId;
                     ogrenciler.UlkeId = model.UlkeId;
@@ -142,7 +142,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.TCKOg = model.TCKOg;
                         data.DEOg = model.DEOg;
                         data.DKOg = model.DKOg;
-                        //data.Ay = model.Ay;
+                        data.Ay = model.Ay;
                         data.Yil = model.Yil;
                         data.OkulId = model.OkulId;
                         data.UlkeId = model.UlkeId;
@@ -183,7 +183,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         }
-        public Result<List<OgrencilerVM>> OgrenciGetirUlkeId(int ulkeId)
+        public Result<List<OgrencilerVM>> OgrenciGetirUlkeId(int? ulkeId)
         {
             var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.UlkeId == ulkeId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
             if (data != null)
@@ -199,7 +199,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         TCKOg = item.TCKOg,
                         DEOg = item.DEOg,
                         DKOg = item.DKOg,
-                        //Ay = item.Ay,
+                        Ay = item.Ay,
                         Yil = item.Yil,
                         OkulId = item.OkulId,
                         OkulAdi = item.Okullar.OkulAdi,
@@ -232,7 +232,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             //        ogrenciler.DEOg = data.DEOg;
             //        ogrenciler.DKOg = data.DKOg;
             //        ogrenciler.Yil = data.Yil;
-            //        //ogrenciler.Ay = data.Ay;
+            //        ogrenciler.Ay = data.Ay;
             //        ogrenciler.OkulId = data.OkulId;
             //        ogrenciler.OkulAdi = data.Okullar.OkulAdi;
             //        ogrenciler.UlkeId = data.UlkeId;
@@ -263,7 +263,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<OgrencilerVM>(false, ResultConstant.RecordNotFound);
             }
         }
-        public Result<List<OgrencilerVM>> OgrenciGetirOkulId(int okulId)
+        public Result<List<OgrencilerVM>> OgrenciGetirOkulId(int? okulId)
         {
             var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.OkulId == okulId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
             if (data != null)
@@ -279,7 +279,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         TCKOg = item.TCKOg,
                         DEOg = item.DEOg,
                         DKOg = item.DKOg,
-                        //Ay = item.Ay,
+                        Ay = item.Ay,
                         Yil = item.Yil,
                         OkulId = item.OkulId,
                         OkulAdi = item.Okullar.OkulAdi,

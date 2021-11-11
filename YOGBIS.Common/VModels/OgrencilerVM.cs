@@ -27,7 +27,7 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "En az 0 değeri gereklidir")]
         public int DKOg { get; set; }
         [Required(ErrorMessage = "Ay seçimi gereklidir")]
-        public EnumAylar Ay { get; set; }
+        public string Ay { get; set; }
         [Required(ErrorMessage = "Yıl seçimi gereklidir")]
         public string Yil { get; set; }
         public string KullaniciId { get; set; }

@@ -129,7 +129,7 @@ namespace YOGBIS.UI.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        public IActionResult OgrenciGetir(int ulkeId)
+        public IActionResult OgrenciGetir(int? ulkeId)
         {            
             
             if (ulkeId > 0)
@@ -162,35 +162,35 @@ namespace YOGBIS.UI.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        public ActionResult OgrencileriGetirUlkeId(int Id) 
+        public ActionResult OgrencileriGetirUlkeId(int? ulkeId) 
         {
-            var data = _ogrencilerBE.OgrenciGetirUlkeId(Id);
+            var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
             if (data.IsSuccess)
             {
                 return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
             }
             else
             {
-                return RedirectToAction("OgrenciGetir", new { ulkeId = Id });
+                return RedirectToAction("OgrenciGetir", new { ulkeId = ulkeId});
             }            
         }
         
         [Authorize(Roles = "Administrator,Manager")]
-        public ActionResult OgrencileriGetirOkulId(int Id)
+        public ActionResult OgrencileriGetirOkulId(int? OkulId)
         {
-            var data = _ogrencilerBE.OgrenciGetirOkulId(Id);
+            var data = _ogrencilerBE.OgrenciGetirOkulId(OkulId);
             if (data.IsSuccess)
             {
                 return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
             }
             else
             {
-                return RedirectToAction("OgrenciGetir", new { ulkeId = Id });
+                return RedirectToAction("OgrenciGetir", new { okulKodu = OkulId });
             }
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        public IActionResult OgrencileriGetir(int ulkeId)
+        public IActionResult OgrencileriGetir(int? ulkeId)
         {
 
             if (ulkeId > 0)
@@ -211,8 +211,7 @@ namespace YOGBIS.UI.Controllers
             {
                 var requestmodel = _ogrencilerBE.OgrencileriGetir();
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
-                ViewBag.Aylar = EnumExtension<EnumAylar>.GetDisplayValue(EnumAylar.Agustos);
+                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;                
 
                 if (requestmodel.IsSuccess)
                 {

@@ -7,14 +7,29 @@
 
 <ol class="breadcrumb mb-4 mt-2">
     <li class="ml-2 mr-2">
-        @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Bulunduğu Ülkeyi Seç", new { @class = "form-control-range form-control py-1 w-100" })
+        @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Ülke seçimi", new { @class = "form-control-range form-control py-1 w-100" })
     </li>
     <li class="ml-2 mr-2">
-        @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç", new { @class = "form-control-range form-control py-1 w-100" })
+        @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okul seçimi", new { @class = "form-control-range form-control py-1 w-100" })
     </li>
     <li class="ml-2 mr-2">
-        @Html.DropDownList("AyListesi", new SelectList(Enum.GetNames(typeof(EnumAylar))), "Ay Seç", new { @class = "form-control-range form-control py-1 w-100" })
-        @*@Html.DropDownList("AyListesi", new SelectList(ViewBag.Aylar), "Ay Seç", new { @class = "form-control-range form-control py-1 w-100" })*@        
+        @*@Html.DropDownList("AyListesi", new SelectList(Enum.GetNames(typeof(EnumAylar))), "Ay Seç", new { @class = "form-control-range form-control py-1 w-100" })*@
+        @*@Html.DropDownList("AyListesi", new SelectList(ViewBag.Aylar), "Ay Seç", new { @class = "form-control-range form-control py-1 w-100" })*@ 
+        <select class="form-control-range form-control py-2" aria-label="Default select example" id="AyListesi">
+            <option asp-for="Ay" selected class="text-center">Ay seçimi</option>
+            <option asp-for="Ay" value="Ocak">Ocak</option>
+            <option asp-for="Ay" value="Şubat">Şubat</option>
+            <option asp-for="Ay" value="Mart">Mart</option>
+            <option asp-for="Ay" value="Nisan">Nisan</option>
+            <option asp-for="Ay" value="Mayıs">Mayıs</option>
+            <option asp-for="Ay" value="Haziran">Haziran</option>
+            <option asp-for="Ay" value="Temmuz">Temmuz</option>
+            <option asp-for="Ay" value="Ağustos">Ağustos</option>
+            <option asp-for="Ay" value="Eylül">Eylül</option>
+            <option asp-for="Ay" value="Ekim">Ekim</option>
+            <option asp-for="Ay" value="Kasım">Kasım</option>
+            <option asp-for="Ay" value="Aralık">Aralık</option>
+        </select>
     </li>
     <li class="m-2">
         <a asp-controller="Ogrenciler" asp-action="OgrencileriGetir"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
@@ -102,7 +117,7 @@
             var UlkeId = $("#UlkeListesi").val();
             /*alert(Id);*/
             $.ajax({
-                type: "DELETE",
+                type: "GET",
                 url: "/Ogrenciler/OgrencileriGetirUlkeId/" + UlkeId,
                 success: function (data) {
                     if (data.isSucces) {
@@ -112,7 +127,7 @@
                     }
                 }
             });
-
+            
         });
 
         $("#OkulListesi").on("change", function () {
@@ -120,7 +135,7 @@
             var OkulId = $("#OkulListesi").val();
             /*alert(Id);*/
             $.ajax({
-                type: "DELETE",
+                type: "GET",
                 url: "/Ogrenciler/OgrencileriGetirOkulId/" + OkulId,
                 success: function (data) {
                     if (data.isSucces) {
@@ -130,7 +145,7 @@
                     }
                 }
             });
-
+            
         });
 
         $("#AyListesi").on("change", function () {
@@ -151,6 +166,12 @@
 
         });
 
+        //$('#myTable').DataTable({
+        //    order: [[1, 'asc']],
+        //    rowGroup: {
+        //        dataSrc: 1
+        //    }
+        //});
     </script>
 }
 

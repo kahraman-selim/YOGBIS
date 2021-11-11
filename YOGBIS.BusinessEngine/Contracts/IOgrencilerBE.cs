@@ -14,7 +14,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<OgrencilerVM> OgrenciGuncelle(OgrencilerVM model, SessionContext user);        
         Result<bool> OgrenciSil(int id);
         Result<List<OgrencilerVM>> OgrenciGetirKullaniciId(string userId);
-        Result<List<OgrencilerVM>> OgrenciGetirUlkeId(int ulkeId);
-        Result<List<OgrencilerVM>> OgrenciGetirOkulId(int okulId);
+        Result<List<OgrencilerVM>> OgrenciGetirUlkeId(int? ulkeId);
+        Result<List<OgrencilerVM>> OgrenciGetirOkulId(int? okulId);
     }
 }
