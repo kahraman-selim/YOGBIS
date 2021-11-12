@@ -109,69 +109,222 @@
 
     <script type="text/javascript">
 
-        //$(document).ready(function () {
-        //});
+        $(document).ready(function () {
 
-        $("#UlkeListesi").on("change", function () {
+            $("#UlkeListesi").on("change", function () {
 
-            var UlkeId = $("#UlkeListesi").val();
-            /*alert(Id);*/
-            $.ajax({
-                type: "GET",
-                url: "/Ogrenciler/OgrencileriGetirUlkeId/" + UlkeId,
-                success: function (data) {
-                    if (data.isSucces) {
-                        window.location.href = "?ulkeId=" + UlkeId;
-                    } else {
-                        alert("Birşeyler kötü gitti !");
+                var UlkeId = $("#UlkeListesi").val();
+                /*alert(Id);*/
+                $.ajax({
+                    type: "GET",
+                    url: "/Ogrenciler/OgrencileriGetirUlkeId/"+UlkeId,
+                    success: function (data) {
+                        if (data.isSucces) {
+                            window.location.href = "?ulkeId="+UlkeId;                            
+                        } else {                            
+                            alert("Birşeyler kötü gitti !");
+                        }
                     }
+                });
+
+            });
+
+            $("#OkulListesi").on("change", function () {
+
+                var OkulId = $("#OkulListesi").val();
+                /*alert(Id);*/
+                $.ajax({
+                    type: "GET",
+                    url: "/Ogrenciler/OgrencileriGetirOkulId/" + OkulId,
+                    success: function (data) {
+                        if (data.isSucces) {
+                            window.location.href = "?okulId=" + OkulId;
+                        } else {
+                            alert("Birşeyler kötü gitti !");
+                        }
+                    }
+                });
+            
+            });
+
+            $("#AyListesi").on("change", function () {
+
+                var Id = $("#AyListesi").val();
+                /*alert(Id);*/
+                //$.ajax({
+                //    type: "DELETE",
+                //    url: "/Ogrenciler/OgrencileriGetirOkulId/" + Id,
+                //    success: function (data) {
+                //        if (data.isSucces) {
+                //            window.location.href = "?okulId=" + Id;
+                //        } else {
+                //            alert("Birşeyler kötü gitti !");
+                //        }
+                //    }
+                //});
+
+            });
+
+            var table = $('#myTable').DataTable({
+
+                destroy: true,
+                order: [[1, 'asc']],
+                rowGroup: {
+                startRender: null,
+                endRender: function (rows, group) {
+
+                    var TCErkek = rows
+                        .data()
+                        .pluck(5)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                     var TCKiz = rows
+                        .data()
+                        .pluck(6)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                     var TCToplam = rows
+                        .data()
+                        .pluck(7)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                      var DErkek = rows
+                        .data()
+                        .pluck(8)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                      var DKiz = rows
+                        .data()
+                        .pluck(9)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                     var DToplam = rows
+                        .data()
+                        .pluck(10)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                     var ToplamErkek = rows
+                        .data()
+                        .pluck(11)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                      var ToplamKiz = rows
+                        .data()
+                        .pluck(12)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                      var GToplam = rows
+                        .data()
+                        .pluck(13)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                    return $('<tr/>')
+                        .append('<td colspan="5">Toplam ' + group + '</td>')
+                        .append('<td class="text-center">' + TCErkek.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + TCKiz.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + TCToplam.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + DErkek.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + DKiz.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + DToplam.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + ToplamErkek.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + ToplamKiz.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + GToplam.toFixed(0) + '</td>'); 
+                },
+                dataSrc: 1
                 }
             });
-            
-        });
 
-        $("#OkulListesi").on("change", function () {
+            //$('#myTable').DataTable( {
 
-            var OkulId = $("#OkulListesi").val();
-            /*alert(Id);*/
-            $.ajax({
-                type: "GET",
-                url: "/Ogrenciler/OgrencileriGetirOkulId/" + OkulId,
-                success: function (data) {
-                    if (data.isSucces) {
-                        window.location.href = "?okulId=" + OkulId;
-                    } else {
-                        alert("Birşeyler kötü gitti !");
-                    }
-                }
-            });
-            
-        });
+            //    destroy: true,
+                
+            //    order: [[1, 'asc']],
+            //    rowGroup: {
+            //    startRender: null,
+            //    endRender: function (rows, group) {
 
-        $("#AyListesi").on("change", function () {
-
-            var Id = $("#AyListesi").val();
-            /*alert(Id);*/
-            //$.ajax({
-            //    type: "DELETE",
-            //    url: "/Ogrenciler/OgrencileriGetirOkulId/" + Id,
-            //    success: function (data) {
-            //        if (data.isSucces) {
-            //            window.location.href = "?okulId=" + Id;
-            //        } else {
-            //            alert("Birşeyler kötü gitti !");
-            //        }
+            //        var TCErkek = rows
+            //            .data()
+            //            .pluck(5)
+            //            .reduce(function (a, b) {
+            //                return a + b * 1;
+            //            }, 0);
+            //         var TCKiz = rows
+            //            .data()
+            //            .pluck(6)
+            //            .reduce(function (a, b) {
+            //                return a + b * 1;
+            //            }, 0);
+            //         var TCToplam = rows
+            //            .data()
+            //            .pluck(7)
+            //            .reduce(function (a, b) {
+            //                return a + b * 1;
+            //            }, 0);
+            //          var DErkek = rows
+            //            .data()
+            //            .pluck(8)
+            //            .reduce(function (a, b) {
+            //                return a + b * 1;
+            //            }, 0);
+            //          var DKiz = rows
+            //            .data()
+            //            .pluck(9)
+            //            .reduce(function (a, b) {
+            //                return a + b * 1;
+            //            }, 0);
+            //         var DToplam = rows
+            //            .data()
+            //            .pluck(10)
+            //            .reduce(function (a, b) {
+            //                return a + b * 1;
+            //            }, 0);
+            //         var ToplamErkek = rows
+            //            .data()
+            //            .pluck(11)
+            //            .reduce(function (a, b) {
+            //                return a + b * 1;
+            //            }, 0);
+            //          var ToplamKiz = rows
+            //            .data()
+            //            .pluck(12)
+            //            .reduce(function (a, b) {
+            //                return a + b * 1;
+            //            }, 0);
+            //          var GToplam = rows
+            //            .data()
+            //            .pluck(13)
+            //            .reduce(function (a, b) {
+            //                return a + b * 1;
+            //            }, 0);
+            //        return $('<tr/>')
+            //            .append('<td colspan="5">Toplam ' + group + '</td>')
+            //            .append('<td class="text-center">' + TCErkek.toFixed(0) + '</td>')
+            //            .append('<td class="text-center">' + TCKiz.toFixed(0) + '</td>')
+            //            .append('<td class="text-center">' + TCToplam.toFixed(0) + '</td>')
+            //            .append('<td class="text-center">' + DErkek.toFixed(0) + '</td>')
+            //            .append('<td class="text-center">' + DKiz.toFixed(0) + '</td>')
+            //            .append('<td class="text-center">' + DToplam.toFixed(0) + '</td>')
+            //            .append('<td class="text-center">' + ToplamErkek.toFixed(0) + '</td>')
+            //            .append('<td class="text-center">' + ToplamKiz.toFixed(0) + '</td>')
+            //            .append('<td class="text-center">' + GToplam.toFixed(0) + '</td>'); 
+            //    },
+            //    dataSrc: 1
             //    }
-            //});
+            
+            //} );
+
 
         });
-
-        //$('#myTable').DataTable({
-        //    order: [[1, 'asc']],
-        //    rowGroup: {
-        //        dataSrc: 1
-        //    }
-        //});
     </script>
 }
 

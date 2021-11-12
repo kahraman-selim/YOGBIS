@@ -98,7 +98,8 @@ $(document).ready(function () {
         columnDefs: [{            
             visible: false
         }],
-        select: true
+        select: true     
+
     });
 
     new $.fn.dataTable.FixedHeader(table);
