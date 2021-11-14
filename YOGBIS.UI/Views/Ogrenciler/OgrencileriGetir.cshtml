@@ -165,9 +165,10 @@
 
             });
 
+            var selected = [];
             var table = $('#myTable').DataTable({
 
-                destroy: true,
+                destroy: true,                
                 order: [[1, 'asc']],
                 rowGroup: {
                 startRender: null,
@@ -240,89 +241,85 @@
                         .append('<td class="text-center">' + GToplam.toFixed(0) + '</td>'); 
                 },
                 dataSrc: 1
-                }
-            });
-
-            //$('#myTable').DataTable( {
-
-            //    destroy: true,
+                },
+                fixedHeader: {
+                header: true,
+                headerOffset: $('#navbar').height()
+                },  
+                stateSave: true,
+                responsive: true,
+                dom: '<"html5buttons"B>lTfgitp',  
+                "paging": true,
+                "language": {
+                    "emptyTable": "Gösterilecek veri yok.",
+                    "processing": "Veriler yükleniyor",
+                    "sDecimal": ".",
+                    "sInfo": "_TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
+                    "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "Sayfada _MENU_ kayıt göster",
+                    "sLoadingRecords": "Yükleniyor...",
+                    "sSearch": "Ara:",
+                    "sZeroRecords": "Eşleşen kayıt bulunamadı",
+                    "oPaginate": {
+                        "sFirst": "İlk",
+                        "sLast": "Son",
+                        "sNext": "Sonraki",
+                        "sPrevious": "Önceki"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": artan sütun sıralamasını aktifleştir",
+                        "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
+                    },
+                    "select": {
+                        "rows": {
+                            "_": "%d kayıt seçildi",
+                            "0": "",
+                            "1": "1 kayıt seçildi"
+                        }
+                    }
+                },
+                buttons: [
+                    {
+                        text: 'Excel',
+                        extend: 'excel',
+                        className: 'btn btn-success btn-sm mt-1 mb-2 ml-1 rounded w-25 h-25'
+                    },
+                    {
+                        text: 'Pdf',
+                        extend: 'pdf',
+                        className: 'btn btn-danger btn-sm mt-1 mb-2 ml-1 rounded w-25 h-25',
+                        download: 'open'
+                    },
+                    {
+                        text: 'Pdf-y',
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL',
+                        className: 'btn btn-danger btn-sm mt-1 mb-2 ml-1 rounded w-50 h-25',
+                        download: 'open'
+                    },
+                    {
+                        text: 'Yazdır',
+                        extend: 'print',
+                        className: 'btn btn-warning btn-sm mt-1 mb-2 ml-1 rounded w-25 h-25',
+                        exportOptions: {
+                            columns: ':visible',
+                        }
+                    },
+                    {
+                        text: 'Kolonlar',
+                        extend: 'colvis',
+                        className: 'btn btn-info btn-sm mt-1 mb-2 ml-1 rounded'
+                    },
+                ],
+                columnDefs: [{            
+                    visible: false
+                }],
+                select: true
                 
-            //    order: [[1, 'asc']],
-            //    rowGroup: {
-            //    startRender: null,
-            //    endRender: function (rows, group) {
-
-            //        var TCErkek = rows
-            //            .data()
-            //            .pluck(5)
-            //            .reduce(function (a, b) {
-            //                return a + b * 1;
-            //            }, 0);
-            //         var TCKiz = rows
-            //            .data()
-            //            .pluck(6)
-            //            .reduce(function (a, b) {
-            //                return a + b * 1;
-            //            }, 0);
-            //         var TCToplam = rows
-            //            .data()
-            //            .pluck(7)
-            //            .reduce(function (a, b) {
-            //                return a + b * 1;
-            //            }, 0);
-            //          var DErkek = rows
-            //            .data()
-            //            .pluck(8)
-            //            .reduce(function (a, b) {
-            //                return a + b * 1;
-            //            }, 0);
-            //          var DKiz = rows
-            //            .data()
-            //            .pluck(9)
-            //            .reduce(function (a, b) {
-            //                return a + b * 1;
-            //            }, 0);
-            //         var DToplam = rows
-            //            .data()
-            //            .pluck(10)
-            //            .reduce(function (a, b) {
-            //                return a + b * 1;
-            //            }, 0);
-            //         var ToplamErkek = rows
-            //            .data()
-            //            .pluck(11)
-            //            .reduce(function (a, b) {
-            //                return a + b * 1;
-            //            }, 0);
-            //          var ToplamKiz = rows
-            //            .data()
-            //            .pluck(12)
-            //            .reduce(function (a, b) {
-            //                return a + b * 1;
-            //            }, 0);
-            //          var GToplam = rows
-            //            .data()
-            //            .pluck(13)
-            //            .reduce(function (a, b) {
-            //                return a + b * 1;
-            //            }, 0);
-            //        return $('<tr/>')
-            //            .append('<td colspan="5">Toplam ' + group + '</td>')
-            //            .append('<td class="text-center">' + TCErkek.toFixed(0) + '</td>')
-            //            .append('<td class="text-center">' + TCKiz.toFixed(0) + '</td>')
-            //            .append('<td class="text-center">' + TCToplam.toFixed(0) + '</td>')
-            //            .append('<td class="text-center">' + DErkek.toFixed(0) + '</td>')
-            //            .append('<td class="text-center">' + DKiz.toFixed(0) + '</td>')
-            //            .append('<td class="text-center">' + DToplam.toFixed(0) + '</td>')
-            //            .append('<td class="text-center">' + ToplamErkek.toFixed(0) + '</td>')
-            //            .append('<td class="text-center">' + ToplamKiz.toFixed(0) + '</td>')
-            //            .append('<td class="text-center">' + GToplam.toFixed(0) + '</td>'); 
-            //    },
-            //    dataSrc: 1
-            //    }
-            
-            //} );
-
+            });
 
         });
     </script>
