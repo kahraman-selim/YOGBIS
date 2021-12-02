@@ -27,7 +27,7 @@ namespace YOGBIS.UI.Controllers
             _okullarBE = okullarBE;
         }
         
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
+        [Authorize(Roles = "Administrator,Manager,Teacher,Follower")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));

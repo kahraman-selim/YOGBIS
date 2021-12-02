@@ -13,7 +13,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Result<KullaniciVM> KullaniciGetir(int id);
+        Result<KullaniciVM> KullaniciGetir(int Id);
         Result<KullaniciVM> KullaniciGuncelle(KullaniciVM model);
         Result<List<KullaniciVM>> OnayKullaniciGetir();
     }

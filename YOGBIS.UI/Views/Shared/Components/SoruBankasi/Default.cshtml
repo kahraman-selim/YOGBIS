@@ -16,7 +16,7 @@
                         <th>Sıra No</th>
                         <th>Soru No</th>
                         <th>Durumu</th>
-                        @if (User.IsInRole("Administrator"))
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                         {
                             <th>Kaydeden</th>
                         }
@@ -40,7 +40,7 @@
                         </td>
                         @if (item.OnayDurumu == EnumsSoruOnay.Onaya_Gonderildi)
                         {
-                            @if (User.IsInRole("Administrator"))
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                             {
                                 <td style="color:green" class="font-weight-bold">Onay Bekliyor</td>
                             }
@@ -58,7 +58,7 @@
                         {
                             <td style="color:red" class="font-weight-bold">@item.OnayDurumuAciklama</td>
                         }
-                        @if (User.IsInRole("Administrator"))
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                         {
                             <td class="text-capitalize">@item.KaydedenAdi</td>
                         }

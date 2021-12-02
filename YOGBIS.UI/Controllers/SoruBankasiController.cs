@@ -14,7 +14,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = "Administrator,Manager")]
+    [Authorize(Roles = "Administrator,Manager,Follower")]
     public class SoruBankasiController : Controller
     {
        

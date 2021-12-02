@@ -67,7 +67,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<SoruBankasiVM>>(false, ResultConstant.RecordNotFound);
             }
         }
-
         public Result<List<SoruBankasiVM>> SorulariGetir()
         {
             var data = _unitOfWork.soruBankasiRepository.GetAll(includeProperties: "SoruKategoriler,Dereceler,Kaydeden,Onaylayan").OrderByDescending(s => s.SoruBankasiId).ToList();            
@@ -107,7 +106,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<SoruBankasiVM>>(false, ResultConstant.RecordNotFound);
             }
         }
-
         public Result<SoruBankasiVM> SoruGetir(int id)
         {
             var data = _unitOfWork.soruBankasiRepository.Get(id);
@@ -121,7 +119,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<SoruBankasiVM>(false, ResultConstant.RecordNotFound);
             }
         }
-
         public Result<SoruBankasiVM> SoruEkle(SoruBankasiVM model, SessionContext user)
         {
             if (model != null)
@@ -146,7 +143,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<SoruBankasiVM>(false, "Boş veri olamaz");
             }
         }
-
         public Result<SoruBankasiVM> SoruGuncelle(SoruBankasiVM model, SessionContext user)
         {
             if (model != null)
@@ -171,7 +167,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<SoruBankasiVM>(false, "Boş veri olamaz");
             }
         }
-
         public Result<bool> SoruSil(int id)
         {
             var data = _unitOfWork.soruBankasiRepository.Get(id);
@@ -186,6 +181,48 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         }
-        
+        public Result<List<SoruBankasiVM>> SoruGetirOnaylayanId(string userId)
+        {
+            var data = _unitOfWork.soruBankasiRepository.GetAll(u => u.OnaylayanId == userId,
+            includeProperties: "Kaydeden,SoruKategoriler").OrderByDescending(s => s.SoruBankasiId).ToList();
+            if (data != null)
+            {
+                List<SoruBankasiVM> returnData = new List<SoruBankasiVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new SoruBankasiVM()
+                    {
+                        SoruBankasiId = item.SoruBankasiId,
+                        SoruKategorilerId = item.SoruKategorilerId,
+                        SoruKategorilerAdi = item.SoruKategoriler.SoruKategorilerAdi,
+                        Soru = item.Soru,
+                        Cevap = item.Cevap,
+                        DereceId = item.DereceId,
+                        DereceAdi = item.Dereceler.DereceAdi,
+                        SorulmaSayisi = item.SorulmaSayisi,
+                        SoruDurumu = item.SoruDurumu,
+                        KaydedenId = item.KaydedenId,
+                        KaydedenAdi = item.Kaydeden.Ad + " " + item.Kaydeden.Soyad,
+                        OnaylayanId = item.OnaylayanId,
+                        //OnaylayanAdi = item.Onaylayan.Ad,
+                        OnayDurumu = (EnumsSoruOnay)item.OnayDurumu,
+                        OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
+                        OnayAciklama = item.OnayAciklama,
+                        KayitTarihi = item.KayitTarihi
+                    });
+                }
+                return new Result<List<SoruBankasiVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<SoruBankasiVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+
+        public object SoruGetirOnaylayanId()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

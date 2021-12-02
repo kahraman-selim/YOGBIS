@@ -29,9 +29,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
             return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, kullanicilar);
         }
 
-        public Result<KullaniciVM> KullaniciGetir(int id)
+        public Result<KullaniciVM> KullaniciGetir(int Id)
         {
-            var data = _unitOfWork.kullaniciRepository.Get(id);
+            var data = _unitOfWork.kullaniciRepository.Get(Id);
             if (data != null)
             {
                 var kullanici = _mapper.Map<Kullanici, KullaniciVM>(data);
