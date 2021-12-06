@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
     @*************************************************************************************@
+    @RenderSection("Styles",false)
 </head>
 <body id="page-top" class="sb-nav-fixed">
     @if (SignInManager.IsSignedIn(User))
@@ -218,7 +219,7 @@
                         </a>
                         @if (User.IsInRole("Administrator"))
                         {
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" asp-controller="Notlar" asp-action="Index">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Notlarım
                             </a>
@@ -446,10 +447,9 @@
 
     @*--------------------------------************************************************----------*@
 
-
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>

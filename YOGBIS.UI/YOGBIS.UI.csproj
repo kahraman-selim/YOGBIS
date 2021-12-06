@@ -10,6 +10,123 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\lib\fullcalendar\.DS_Store" />
+    <None Include="wwwroot\lib\fullcalendar\bootstrap\main.esm.js" />
+    <None Include="wwwroot\lib\fullcalendar\bootstrap\main.js" />
+    <None Include="wwwroot\lib\fullcalendar\bootstrap\main.min.js" />
+    <None Include="wwwroot\lib\fullcalendar\bootstrap\README.md" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales-all.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales-all.min.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\af.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ar-dz.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ar-kw.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ar-ly.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ar-ma.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ar-sa.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ar-tn.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ar.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\az.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\bg.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\bs.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ca.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\cs.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\da.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\de.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\el.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\en-au.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\en-gb.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\en-nz.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\es-us.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\es.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\et.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\eu.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\fa.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\fi.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\fr-ca.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\fr-ch.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\fr.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\gl.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\he.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\hi.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\hr.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\hu.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\id.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\is.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\it.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ja.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ka.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\kk.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ko.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\lb.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\lt.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\lv.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\mk.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ms.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\nb.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\nl.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\nn.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\pl.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\pt-br.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\pt.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ro.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ru.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\sk.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\sl.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\sq.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\sr-cyrl.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\sr.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\sv.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\th.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\tr.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\ug.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\uk.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\uz.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\vi.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\zh-cn.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\locales\zh-tw.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\main.esm.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\main.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\main.min.js" />
+    <None Include="wwwroot\lib\fullcalendar\core\README.md" />
+    <None Include="wwwroot\lib\fullcalendar\daygrid\main.esm.js" />
+    <None Include="wwwroot\lib\fullcalendar\daygrid\main.js" />
+    <None Include="wwwroot\lib\fullcalendar\daygrid\main.min.js" />
+    <None Include="wwwroot\lib\fullcalendar\daygrid\README.md" />
+    <None Include="wwwroot\lib\fullcalendar\google-calendar\main.esm.js" />
+    <None Include="wwwroot\lib\fullcalendar\google-calendar\main.js" />
+    <None Include="wwwroot\lib\fullcalendar\google-calendar\main.min.js" />
+    <None Include="wwwroot\lib\fullcalendar\google-calendar\README.md" />
+    <None Include="wwwroot\lib\fullcalendar\interaction\main.esm.js" />
+    <None Include="wwwroot\lib\fullcalendar\interaction\main.js" />
+    <None Include="wwwroot\lib\fullcalendar\interaction\main.min.js" />
+    <None Include="wwwroot\lib\fullcalendar\interaction\README.md" />
+    <None Include="wwwroot\lib\fullcalendar\list\main.esm.js" />
+    <None Include="wwwroot\lib\fullcalendar\list\main.js" />
+    <None Include="wwwroot\lib\fullcalendar\list\main.min.js" />
+    <None Include="wwwroot\lib\fullcalendar\list\README.md" />
+    <None Include="wwwroot\lib\fullcalendar\luxon\main.esm.js" />
+    <None Include="wwwroot\lib\fullcalendar\luxon\main.js" />
+    <None Include="wwwroot\lib\fullcalendar\luxon\main.min.js" />
+    <None Include="wwwroot\lib\fullcalendar\luxon\README.md" />
+    <None Include="wwwroot\lib\fullcalendar\moment-timezone\main.esm.js" />
+    <None Include="wwwroot\lib\fullcalendar\moment-timezone\main.js" />
+    <None Include="wwwroot\lib\fullcalendar\moment-timezone\main.min.js" />
+    <None Include="wwwroot\lib\fullcalendar\moment-timezone\README.md" />
+    <None Include="wwwroot\lib\fullcalendar\moment\main.esm.js" />
+    <None Include="wwwroot\lib\fullcalendar\moment\main.js" />
+    <None Include="wwwroot\lib\fullcalendar\moment\main.min.js" />
+    <None Include="wwwroot\lib\fullcalendar\moment\README.md" />
+    <None Include="wwwroot\lib\fullcalendar\rrule\main.esm.js" />
+    <None Include="wwwroot\lib\fullcalendar\rrule\main.js" />
+    <None Include="wwwroot\lib\fullcalendar\rrule\main.min.js" />
+    <None Include="wwwroot\lib\fullcalendar\rrule\README.md" />
+    <None Include="wwwroot\lib\fullcalendar\timegrid\main.esm.js" />
+    <None Include="wwwroot\lib\fullcalendar\timegrid\main.js" />
+    <None Include="wwwroot\lib\fullcalendar\timegrid\main.min.js" />
+    <None Include="wwwroot\lib\fullcalendar\timegrid\README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core.tr" Version="2.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.15" />
@@ -27,6 +144,20 @@
     <ProjectReference Include="..\YOGBIS.BusinessEngine\YOGBIS.BusinessEngine.csproj" />
     <ProjectReference Include="..\YOGBIS.Common\YOGBIS.Common.csproj" />
     <ProjectReference Include="..\YOGBIS.Data\YOGBIS.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\bootstrap\main.d.ts" />
+    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\core\main.d.ts" />
+    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\daygrid\main.d.ts" />
+    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\google-calendar\main.d.ts" />
+    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\interaction\main.d.ts" />
+    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\list\main.d.ts" />
+    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\luxon\main.d.ts" />
+    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\moment-timezone\main.d.ts" />
+    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\moment\main.d.ts" />
+    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\rrule\main.d.ts" />
+    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\timegrid\main.d.ts" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+
+    <link href='~/lib/fullcalendar/core/main.css' rel='stylesheet' />
+    <link href='~/lib/fullcalendar/daygrid/main.css' rel='stylesheet' />
+    <link href='~/lib/fullcalendar/timegrid/main.css' rel='stylesheet' />
+}
+
+<div id="calendar">
+
+</div>
+
+
+
+
+
+@section Scripts{
+
+    <script src='~/lib/fullcalendar/core/main.js'></script>
+    <script src='~/lib/fullcalendar/daygrid/main.js'></script>
+    <script src='~/lib/fullcalendar/timegrid/main.js'></script>
+    <script src='~/lib/fullcalendar/core/locales/tr.js'></script>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          plugins: [ 'dayGrid','timeGrid' ],
+          locale:'tr',
+          header:{
+              left:'prev, next, today',
+              center:'title',
+              right:'dayGridMonth,timeGridWeek'
+          },
+          defaultView:'timeGridWeek', //haftalıkgörünümün default gelmesi
+          weekends:true //haftasonlarının görünmemesi için
+        });
+
+        calendar.render();
+      });
+
+    </script>
+}
