@@ -79,7 +79,7 @@ namespace YOGBIS.UI
             services.ConfigureApplicationCookie(options =>
             {
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-                //options.Cookie.Name = "YourAppCookieName";
+                options.Cookie.Name = "YOGBISCookies";
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(3); 
                 options.LoginPath = "/Identity/Account/Login";

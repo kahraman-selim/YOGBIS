@@ -153,9 +153,7 @@
     <TypeScriptCompile Include="wwwroot\lib\fullcalendar\google-calendar\main.d.ts" />
     <TypeScriptCompile Include="wwwroot\lib\fullcalendar\interaction\main.d.ts" />
     <TypeScriptCompile Include="wwwroot\lib\fullcalendar\list\main.d.ts" />
-    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\luxon\main.d.ts" />
     <TypeScriptCompile Include="wwwroot\lib\fullcalendar\moment-timezone\main.d.ts" />
-    <TypeScriptCompile Include="wwwroot\lib\fullcalendar\moment\main.d.ts" />
     <TypeScriptCompile Include="wwwroot\lib\fullcalendar\rrule\main.d.ts" />
     <TypeScriptCompile Include="wwwroot\lib\fullcalendar\timegrid\main.d.ts" />
   </ItemGroup>

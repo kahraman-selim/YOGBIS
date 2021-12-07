@@ -4,14 +4,25 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles{
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
     <link href='~/lib/fullcalendar/core/main.css' rel='stylesheet' />
     <link href='~/lib/fullcalendar/daygrid/main.css' rel='stylesheet' />
     <link href='~/lib/fullcalendar/timegrid/main.css' rel='stylesheet' />
+    <link href="~/lib/fullcalendar/bootstrap/main.css" rel="stylesheet" />
 }
 
-<div id="calendar">
 
+<div class="row">
+    <div class="col-md-2">
+        <div id="otherEvents">
+
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div id="calendar">
+
+        </div>
+    </div>
 </div>
 
 
@@ -23,26 +34,47 @@
     <script src='~/lib/fullcalendar/core/main.js'></script>
     <script src='~/lib/fullcalendar/daygrid/main.js'></script>
     <script src='~/lib/fullcalendar/timegrid/main.js'></script>
+    <script src='~/lib/fullcalendar/interaction/main.js'></script>
     <script src='~/lib/fullcalendar/core/locales/tr.js'></script>
+    <script src="~/lib/fullcalendar/bootstrap/main.js"></script>
     <script>
 
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          plugins: [ 'dayGrid','timeGrid' ],
-          locale:'tr',
-          header:{
-              left:'prev, next, today',
-              center:'title',
-              right:'dayGridMonth,timeGridWeek'
-          },
-          defaultView:'timeGridWeek', //haftalıkgörünümün default gelmesi
-          weekends:false //haftasonlarının görünmemesi için
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: ['interaction', 'dayGrid', 'timeGrid', 'bootstrap'],
+                themeSystem: 'bootstrap',
+                locale: 'tr',
+                header: {
+                    left: 'prev, next, today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                defaultView: 'dayGridMonth', // timeGridWeek haftalıkgörünümün default gelmesi
+                weekends: true, //haftasonlarının görünmemesi için
+                allDaySlot: false, //tüm gün satırını gizler
+                titleFormat: {
+                    year: 'numeric',
+                    month: 'long',
+                    /*day:'numeric' */
+                },
+                /* titleRangeSperator: '/',*/
+                //columHeaderFormat: {
+                //    weekday:'long',
+                //},
+                selectable: true,
+                select: function (selectionInfo) {
+
+                },
+                edittable: true,
+                eventDragMindistance: 100,
+                dragRevertDuration: 3000,
+
+            });
+
+            calendar.render();
         });
-
-        calendar.render();
-      });
 
     </script>
 }
