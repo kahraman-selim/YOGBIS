@@ -55,7 +55,12 @@ namespace YOGBIS.UI
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(Maps));
 
-            services.AddIdentity<Kullanici, IdentityRole>()
+            services.AddIdentity<Kullanici, IdentityRole>(options => {
+                options.User.RequireUniqueEmail = true; //kullanýcý email giriþi zorunluluðu
+                //options.User.AllowedUserNameCharacters="" izin verilen karakterler için
+                //options.SignIn.RequireConfirmedEmail= email doðrulama zorunluluðu,
+                //options.Password.RequireDigit þifrenin sayý zorunluluðu
+            })
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<YOGBISContext>();
 

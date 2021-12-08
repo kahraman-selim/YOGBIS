@@ -28,13 +28,23 @@ namespace YOGBIS.UI.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var Loginuser = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            //var Loginuser = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             //var user = _userManager.FindByIdAsync(Loginuser.LoginId);
-            var user = _roleManager.FindByIdAsync(Loginuser.LoginId);
+            Kullanici user = _userManager.Users.SingleOrDefault(x => x.UserName == HttpContext.User.Identity.Name);
+            //var userRole = _roleManager.FindByIdAsync(user.Id);
 
-            if (user != null)
+            if (_userManager.IsInRoleAsync(user, "Manager").Result)
             {
-                var requestmodel = _soruBankasiBE.SoruGetirOnaylayanId(Loginuser.LoginId);
+                var requestmodel = _soruBankasiBE.SoruGetirOnaylayanId(user.Id);
+                if (requestmodel.IsSuccess)
+                {
+                    return View(requestmodel.Data);
+                }
+                return View();
+            }
+            else if (_userManager.IsInRoleAsync(user, "Follower").Result)
+            {
+                var requestmodel = _soruBankasiBE.SoruGetirKullaniciId(user.Id);
                 if (requestmodel.IsSuccess)
                 {
                     return View(requestmodel.Data);
@@ -43,14 +53,8 @@ namespace YOGBIS.UI.ViewComponents
             }
             else
             {
-                var requestmodel = _soruBankasiBE.SoruGetirKullaniciId(Loginuser.LoginId);
-                if (requestmodel.IsSuccess)
-                {
-                    return View(requestmodel.Data);
-                }
                 return View();
             }
-
         }
     }
 }

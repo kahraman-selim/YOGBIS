@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +18,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public KullaniciBE(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly UserManager<Kullanici> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public KullaniciBE(IUnitOfWork unitOfWork, IMapper mapper, UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public Result<List<KullaniciVM>> KullaniciGetir()
@@ -69,21 +75,22 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<KullaniciVM>> OnayKullaniciGetir()
         {
 
-            var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
-            var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
+            //var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
+            var data = _roleManager.Roles.Where(x => x.Name == "Manager").ToList();
+            //var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
 
             if (data != null)
             {
                 List<KullaniciVM> returnData = new List<KullaniciVM>();
 
-                foreach (var item in data)
+                foreach (var item in returnData)
                 {
                     returnData.Add(new KullaniciVM()
                     {
-                        Id=item.Id,
-                        Ad=item.Ad,
-                        Soyad=item.Soyad,
-                        AdSoyad=item.Ad+" "+item.Soyad
+                        Id = item.Id,
+                        Ad = item.Ad,
+                        Soyad = item.Soyad,
+                        AdSoyad = item.Ad + " " + item.Soyad
                     });
                 }
                 return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, returnData);
