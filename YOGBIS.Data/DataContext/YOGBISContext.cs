@@ -78,6 +78,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<Okullar> Okullars { get; set; }
         public DbSet<OkulBilgi> OkulBilgis { get; set; }
         public DbSet<Ogrenciler> Ogrencilers { get; set; }
+        public DbSet<Notlar> Notlars { get; set; }
 
         #endregion
     }

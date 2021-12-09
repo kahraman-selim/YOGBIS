@@ -30,6 +30,7 @@ namespace YOGBIS.Data.Implementaion
             okullarRepository = new OkullarRepository(_ctx);
             okulBilgiRepository = new OkulBilgiRepository(_ctx);
             ogrencilerRepository = new OgrencilerRepository(_ctx);
+            notlarRepository = new NotlarRepository(_ctx);
         }
 
         public IUlkeGruplariRepository ulkeGruplariRepository { get; private set; }
@@ -49,6 +50,7 @@ namespace YOGBIS.Data.Implementaion
         public IOkullarRepository okullarRepository { get; private set; }
         public IOkulBilgiRepository okulBilgiRepository { get; private set; }
         public IOgrencilerRepository ogrencilerRepository { get; private set; }
+        public INotlarRepository notlarRepository { get; private set; }
         public void Save()
         {
             _ctx.EnsureAutoHistory();

@@ -70,7 +70,7 @@ namespace YOGBIS.UI.Controllers
 
         public IActionResult Durum(string id)
         {
-            #region MyRegion
+         
             var user = _userManager.FindByIdAsync(id);
 
             if (user.Result.Aktif == true)
@@ -80,9 +80,7 @@ namespace YOGBIS.UI.Controllers
 
             _userManager.UpdateAsync(user.Result);
 
-            return RedirectToAction("Index");
-
-            #endregion
+            return RedirectToAction("Index");           
 
         }
 
