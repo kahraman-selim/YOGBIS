@@ -15,10 +15,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
 {
     public class NotlarBE : INotlarBE
     {
+        #region Değişkenler
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IMapper _mapper; 
+        #endregion
 
-        #region Ctor
+        #region Dönüştürücüler
         public NotlarBE(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;

@@ -20,6 +20,10 @@
                         {
                             <th>Kaydeden</th>
                         }
+                        @if (User.IsInRole("Follower"))
+                        {
+                            <th>Onaylayan</th>
+                        }
                         <th>Soru</th>
                         <th>Cevap</th>
                     </tr>
@@ -31,41 +35,45 @@
                         @foreach (var item in Model)
                         {
                             sirano++;
-                    <tr>
-                        <td>@sirano</td>
-                        <td class="text-center">
-                            <a class="font-weight-bold" asp-controller="SoruBankasi" asp-route-id="@item.SoruBankasiId" id="SoruBankasiId" title="Değişiklik yapmak için seçiniz">
-                                @item.SoruBankasiId
-                            </a>
-                        </td>
-                        @if (item.OnayDurumu == EnumsSoruOnay.Onaya_Gonderildi)
-                        {
-                            @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
-                            {
-                                <td style="color:green" class="font-weight-bold">Onay Bekliyor</td>
-                            }
-                            else
-                            {
-                                <td style="color:green" class="font-weight-bold">@item.OnayDurumuAciklama</td>
+                            <tr>
+                                <td>@sirano</td>
+                                <td class="text-center">
+                                    <a class="font-weight-bold" asp-controller="SoruBankasi" asp-route-id="@item.SoruBankasiId" id="SoruBankasiId" title="Değişiklik yapmak için seçiniz">
+                                        @item.SoruBankasiId
+                                    </a>
+                                </td>
+                                @if (item.OnayDurumu == EnumsSoruOnay.Onaya_Gonderildi)
+                                {
+                                    @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                                    {
+                                        <td style="color:green" class="font-weight-bold">Onay Bekliyor</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="color:green" class="font-weight-bold">@item.OnayDurumuAciklama</td>
 
-                            }
+                                    }
+                                }
+                                else if (item.OnayDurumu == EnumsSoruOnay.Onaylandi)
+                                {
+                                    <td style="color:blue" class="font-weight-bold">@item.OnayDurumuAciklama</td>
+                                }
+                                else
+                                {
+                                    <td style="color:red" class="font-weight-bold">@item.OnayDurumuAciklama</td>
+                                }
+                                @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                                {
+                                    <td class="text-capitalize">@item.KaydedenAdi</td>
+                                }
+                                else
+                                {
+                                    <td class="text-capitalize">@item.OnaylayanAdi</td>
+                                }
+                                <td>@item.Soru</td>
+                                <td>@item.Cevap</td>
+                            </tr>
                         }
-                        else if (item.OnayDurumu == EnumsSoruOnay.Onaylandi)
-                        {
-                            <td style="color:blue" class="font-weight-bold">@item.OnayDurumuAciklama</td>
-                        }
-                        else
-                        {
-                            <td style="color:red" class="font-weight-bold">@item.OnayDurumuAciklama</td>
-                        }
-                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
-                        {
-                            <td class="text-capitalize">@item.KaydedenAdi</td>
-                        }
-                        <td>@item.Soru</td>
-                        <td>@item.Cevap</td>
-                    </tr>
-                    }
                     }
                     else
                     {

@@ -12,8 +12,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<List<SoruBankasiVM>> SoruGetirOnaylayanId(string userId);
         Result<List<SoruBankasiVM>> SorulariGetir();
         Result<SoruBankasiVM> SoruEkle(SoruBankasiVM model, SessionContext user);
-        Result<SoruBankasiVM> SoruGetir(int id);
-        object SoruGetirOnaylayanId();
+        Result<SoruBankasiVM> SoruGetir(int id);        
         Result<SoruBankasiVM> SoruGuncelle(SoruBankasiVM model, SessionContext user);        
         Result<bool> SoruSil(int id);        
     }

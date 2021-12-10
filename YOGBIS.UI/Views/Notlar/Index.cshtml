@@ -50,6 +50,7 @@
                         <div class="form-group col-md-6">
                             <label class="form-control-label">Not Başlığı : </label>
                             <input id="inputDescription" type="text" class="form-control" />
+                            <span class="text-danger">Örn: Toplantı, Görüşme vb.</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label class="form-control-label">Notum : </label>
@@ -321,7 +322,7 @@
             function getAppointments() {
                 $.ajax({
                     type: 'GET',
-                    url: '/appointment/GetAppointments',
+                    url: '/Notlar/NotGetirKullaniciId',
                     success: function (response) {
                         events = [];
                         var sources = calendar.getEventSources();
@@ -353,7 +354,7 @@
             function getAppointmentsByDentist(dentistId) {
                 $.ajax({
                     type: 'GET',
-                    url: '/appointment/GetAppointmentsByDentist?userId=' + dentistId,
+                    url: '/Notlar/NotGetirKullaniciId?userId=' + dentistId,
                     success: function (response) {
                         events = [];
                         var sources = calendar.getEventSources();

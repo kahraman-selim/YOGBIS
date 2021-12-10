@@ -8,11 +8,6 @@ namespace YOGBIS.BusinessEngine.Contracts
     public interface IKullaniciBE
     {
         Result<List<KullaniciVM>> KullaniciGetir();
-        /// <summary>
-        /// Seçilen Kullanıcı bilgilerini getiren method
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         Result<KullaniciVM> KullaniciGetir(int Id);
         Result<KullaniciVM> KullaniciGuncelle(KullaniciVM model);
         Result<List<KullaniciVM>> OnayKullaniciGetir();

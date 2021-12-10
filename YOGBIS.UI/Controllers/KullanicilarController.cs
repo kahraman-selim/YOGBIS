@@ -16,16 +16,20 @@ namespace YOGBIS.UI.Controllers
     public class KullanicilarController : Controller
     {
 
+        #region Değişkenler
         private readonly IKullaniciBE _kullaniciBE;
         private readonly UserManager<Kullanici> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        #endregion
+
+        #region Dönüştürücüler
         public KullanicilarController(IKullaniciBE kullaniciBE, UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
         {
             _kullaniciBE = kullaniciBE;
             _userManager = userManager;
             _roleManager = roleManager;
-        }
-
+        } 
+        #endregion
 
         public IActionResult Index()
         {

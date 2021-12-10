@@ -16,10 +16,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
 {
     public class KullaniciBE : IKullaniciBE
     {
+
+        #region Değişkenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly UserManager<Kullanici> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        #endregion
+
+        #region Dönüştürücüler
         public KullaniciBE(IUnitOfWork unitOfWork, IMapper mapper, UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
         {
             _unitOfWork = unitOfWork;
@@ -27,14 +32,18 @@ namespace YOGBIS.BusinessEngine.Implementaion
             _userManager = userManager;
             _roleManager = roleManager;
         }
+        #endregion
 
+        #region KullaniciGetir
         public Result<List<KullaniciVM>> KullaniciGetir()
         {
             var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
             var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
             return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, kullanicilar);
         }
+        #endregion
 
+        #region KullaniciGetir(int Id)
         public Result<KullaniciVM> KullaniciGetir(int Id)
         {
             var data = _unitOfWork.kullaniciRepository.Get(Id);
@@ -48,7 +57,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<KullaniciVM>(false, ResultConstant.RecordNotFound);
             }
         }
+        #endregion
 
+        #region KullaniciGuncelle
         public Result<KullaniciVM> KullaniciGuncelle(KullaniciVM model)
         {
             if (model != null)
@@ -71,19 +82,20 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<KullaniciVM>(false, "Boş veri olamaz");
             }
         }
+        #endregion
 
+        #region OnayKullaniciGetir
         public Result<List<KullaniciVM>> OnayKullaniciGetir()
         {
-
-            //var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
-            var data = _roleManager.Roles.Where(x => x.Name == "Manager").ToList();
-            //var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
+            var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
+            //var data = _roleManager.Roles.Select(x => x.Name == "Manager").ToList();
+            var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
 
             if (data != null)
             {
                 List<KullaniciVM> returnData = new List<KullaniciVM>();
 
-                foreach (var item in returnData)
+                foreach (var item in data)
                 {
                     returnData.Add(new KullaniciVM()
                     {
@@ -99,6 +111,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<List<KullaniciVM>>(false, ResultConstant.RecordNotFound);
             }
-        }
+        } 
+        #endregion
     }
 }

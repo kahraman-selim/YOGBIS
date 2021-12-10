@@ -17,19 +17,24 @@ namespace YOGBIS.UI.Controllers
     [Authorize(Roles = "Administrator,Manager,Follower")]
     public class SoruBankasiController : Controller
     {
-       
+
+        #region Değişkenler
         private readonly ISoruBankasiBE _soruBankasiBE;
         private readonly ISoruKategorileriBE _soruKategorileriBE;
         private readonly IDerecelerBE _derecelerBE;
         private readonly IKullaniciBE _kullaniciBE;
+        #endregion
+
+        #region Dönüştürücüler
         public SoruBankasiController(ISoruBankasiBE soruBankasiBE, ISoruKategorileriBE soruKategorileriBE, IDerecelerBE derecelerBE, IKullaniciBE kullaniciBE)
         {
             _soruBankasiBE = soruBankasiBE;
             _soruKategorileriBE = soruKategorileriBE;
             _derecelerBE = derecelerBE;
             _kullaniciBE = kullaniciBE;
-        }
-        
+        } 
+        #endregion
+
         public IActionResult Index(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));

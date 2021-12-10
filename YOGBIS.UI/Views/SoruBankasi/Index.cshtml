@@ -297,19 +297,20 @@
             }
         }
 
-        //$("#btnYeni").on("click", function () {
-        //    document.getElementById("SoruKategorilerId").focus();
-        //    document.getElementById("SoruKategorilerId").value = "";
-        //    document.getElementById("btnSil").className += " disabled";
-        //    document.getElementById("SoruKategorilerPuan").focus();
-        //    document.getElementById("SoruKategorilerPuan").value = "";
-        //    document.getElementById("SoruKategorilerKullanimi").focus();
-        //    document.getElementById("SoruKategorilerKullanimi").value = "";
-        //    document.getElementById("DereceId").focus();
-        //    document.getElementById("DereceId").value = "";
-        //    document.getElementById("SoruKategorilerAdi").focus();
-        //    document.getElementById("SoruKategorilerAdi").value = "";
-        //});
+        $("#btnYeni").on("click", function () {
+            document.getElementById("SoruKategorilerId").focus();
+            document.getElementById("SoruKategorilerId").value = "";
+            document.getElementById("btnSil").className += " disabled";
+            document.getElementById("SoruKategorilerPuan").focus();
+            document.getElementById("SoruKategorilerPuan").value = "";
+            document.getElementById("SoruKategorilerKullanimi").focus();
+            document.getElementById("SoruKategorilerKullanimi").value = "";
+            document.getElementById("DereceId").focus();
+            document.getElementById("DereceId").value = "";
+            document.getElementById("SoruKategorilerAdi").focus();
+            document.getElementById("SoruKategorilerAdi").value = "";
+            location.reload();
+        });
 
         //$(function () {
         //    $("#myTable").on("click", ".btnSil", function () {
