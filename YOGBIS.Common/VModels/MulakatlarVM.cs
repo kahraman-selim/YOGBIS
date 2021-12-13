@@ -15,6 +15,7 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "{0} zorunlu bir alandır")]
         public string MulakatAdi { get; set; }
         [Required(ErrorMessage = "{0} zorunlu bir alandır")]
+        public int DereceId { get; set; }
         public string Derecesi { get; set; }
         [Required(ErrorMessage = "{0} zorunlu bir alandır")]
         public DateTime BaslamaTarihi { get; set; }

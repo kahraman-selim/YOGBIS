@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.ResultModels;
@@ -88,7 +86,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<KullaniciVM>> OnayKullaniciGetir()
         {
             var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
-            //var data = _roleManager.Roles.Select(x => x.Name == "Manager").ToList();
+            var role = _roleManager.Roles.Select(x => x.Name == "Manager");
             var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
 
             if (data != null)
