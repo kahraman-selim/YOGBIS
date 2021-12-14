@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using YOGBIS.Data.Contracts;
+﻿using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DataContext;
 using YOGBIS.Data.DbModels;
 

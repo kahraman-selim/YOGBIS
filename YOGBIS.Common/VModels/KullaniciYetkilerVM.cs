@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using YOGBIS.Common.ConstantsModels;
+﻿using System.Collections.Generic;
 
 namespace YOGBIS.Common.VModels
 {

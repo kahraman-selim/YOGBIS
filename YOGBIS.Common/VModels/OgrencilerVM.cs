@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using YOGBIS.Common.ConstantsModels;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Common.VModels
 {

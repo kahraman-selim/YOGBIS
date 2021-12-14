@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Common.VModels
 {
@@ -11,6 +10,9 @@ namespace YOGBIS.Common.VModels
         public string TableName { get; set; }
         public string Changed { get; set; }
         public int Kind { get; set; }
-        public DateTime Created { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0,d}")]
+        [DataType(DataType.DateTime)]
+        public DateTime Created { get; set; } = DateTime.Now;
     }
 }

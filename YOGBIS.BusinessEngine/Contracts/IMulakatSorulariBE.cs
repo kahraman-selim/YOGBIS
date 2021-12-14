@@ -2,19 +2,20 @@
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
-using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.BusinessEngine.Contracts
 {
     public interface IMulakatSorulariBE
     {
         Result<List<MulakatSorulariVM>> MulakatSorulariGetir();
+
         /// <summary>
         /// Mülakat Sorusu Ekleme Methodu
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        Result<MulakatSorulariVM> MulakatSorusuEkle(MulakatSorulariVM model, SessionContext user);        
+        Result<MulakatSorulariVM> MulakatSorusuEkle(MulakatSorulariVM model, SessionContext user); 
+        
         /// <summary>
         /// Seçilen Mülakat Sorusu bilgilerini getiren method
         /// </summary>

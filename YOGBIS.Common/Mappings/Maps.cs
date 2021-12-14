@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.DbModels;
 
@@ -28,6 +25,7 @@ namespace YOGBIS.Common.Mappings
             CreateMap<OkulBilgi, OkulBilgiVM>().ReverseMap();
             CreateMap<Ogrenciler, OgrencilerVM>().ReverseMap();
             CreateMap<Notlar, NotlarVM>().ReverseMap();
+            CreateMap<Adaylar, AdaylarVM>().ReverseMap();
         }
     }
 }

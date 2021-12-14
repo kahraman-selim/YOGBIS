@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using YOGBIS.Data.DbModels;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Common.VModels
 {

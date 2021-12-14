@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace YOGBIS.Common.VModels
+﻿namespace YOGBIS.Common.VModels
 {
     public class UlkeGruplariKitalarVM
     {

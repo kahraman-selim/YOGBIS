@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace YOGBIS.Common.ConstantsModels
+﻿namespace YOGBIS.Common.ConstantsModels
 {
     public static class ResultConstant
     {

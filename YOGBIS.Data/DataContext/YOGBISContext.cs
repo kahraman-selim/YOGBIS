@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Data.DataContext
@@ -79,6 +76,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<OkulBilgi> OkulBilgis { get; set; }
         public DbSet<Ogrenciler> Ogrencilers { get; set; }
         public DbSet<Notlar> Notlars { get; set; }
+        public DbSet<Adaylar> Adaylars { get; set; }
 
         #endregion
     }

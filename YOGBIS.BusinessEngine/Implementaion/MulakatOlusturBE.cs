@@ -2,10 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
-using YOGBIS.Common.Extentsion;
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
@@ -33,7 +31,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region MulakatlariGetir
         public Result<List<MulakatlarVM>> MulakatlariGetir()
         {
-            var data = _unitOfWork.mulakatlarRepository.GetAll(includeProperties: "Kaydeden").OrderByDescending(s => s.MulakatId).ToList();
+            var data = _unitOfWork.mulakatlarRepository.GetAll(includeProperties: "Kullanici").OrderByDescending(s => s.MulakatId).ToList();
             if (data != null)
             {
                 List<MulakatlarVM> returnData = new List<MulakatlarVM>();
@@ -91,8 +89,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var mulakatlar = _mapper.Map<MulakatlarVM, Mulakatlar>(model);
-                    mulakatlar.KullaniciId = user.LoginId;
-                    mulakatlar.MulakatAdi = "";
+                    mulakatlar.KullaniciId = user.LoginId;                    
                     _unitOfWork.mulakatlarRepository.Add(mulakatlar);
                     _unitOfWork.Save();
                     return new Result<MulakatlarVM>(true, ResultConstant.RecordCreateSuccess);

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
 {
@@ -17,9 +14,16 @@ namespace YOGBIS.Common.VModels
         public int DereceId { get; set; }
         public string DereceAdi { get; set; }
         [Required(ErrorMessage = "{0} zorunlu bir alandır")]
-        public DerecelerVM DerecelerVm { get; set; }
-        public DateTime BaslamaTarihi { get; set; }
+        public DerecelerVM Dereceler { get; set; }
+
         [Required(ErrorMessage = "{0} zorunlu bir alandır")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
+        public DateTime BaslamaTarihi { get; set; }
+        
+        [Required(ErrorMessage = "{0} zorunlu bir alandır")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime BitisTarihi { get; set; }
         public int AdaySayisi { get; set; } = 0;
         public int SorulanSoruSayisi { get; set; } = 0;

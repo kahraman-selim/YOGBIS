@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.VModels;
-using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.BusinessEngine.Contracts
 {

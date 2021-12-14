@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace YOGBIS.Common.SessionOperations
+﻿namespace YOGBIS.Common.SessionOperations
 {
     public class SessionContext
     {

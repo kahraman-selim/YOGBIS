@@ -1,17 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using YOGBIS.Common.ConstantsModels;
-using YOGBIS.Common.SessionOperations;
-using YOGBIS.Data.Contracts;
-using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Controllers
 {

@@ -150,15 +150,7 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="card mb-3">
-            <div class="card-header">
-                <i class="fas fa-table mr-1"></i>
-                <b>Mülakat Listesi</b>
-            </div>
-            <div class="card-body">
-
-            </div>
-        </div>
+        @await Component.InvokeAsync("MulakatListesi")
     </div>
 </div>
 @section Scripts{

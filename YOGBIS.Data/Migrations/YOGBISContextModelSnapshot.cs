@@ -253,6 +253,35 @@ namespace YOGBIS.Data.Migrations
                     b.ToTable("AutoHistory");
                 });
 
+            modelBuilder.Entity("YOGBIS.Data.DbModels.Adaylar", b =>
+                {
+                    b.Property<int>("AdayId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("AdayAd")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AdayAd2")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AdaySoyad")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AdaySoyad2")
+                        .HasColumnType("text");
+
+                    b.Property<int>("AdayTC")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("KayitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("AdayId");
+
+                    b.ToTable("Adaylars");
+                });
+
             modelBuilder.Entity("YOGBIS.Data.DbModels.Dereceler", b =>
                 {
                     b.Property<int>("DereceId")
@@ -432,8 +461,8 @@ namespace YOGBIS.Data.Migrations
                     b.Property<DateTime>("BitisTarihi")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Derecesi")
-                        .HasColumnType("text");
+                    b.Property<int>("DereceId")
+                        .HasColumnType("int");
 
                     b.Property<bool?>("Durumu")
                         .HasColumnType("bit");
@@ -457,6 +486,8 @@ namespace YOGBIS.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("MulakatId");
+
+                    b.HasIndex("DereceId");
 
                     b.HasIndex("KullaniciId");
 
@@ -995,6 +1026,12 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.Mulakatlar", b =>
                 {
+                    b.HasOne("YOGBIS.Data.DbModels.Dereceler", "Dereceler")
+                        .WithMany()
+                        .HasForeignKey("DereceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
                         .WithMany()
                         .HasForeignKey("KullaniciId");

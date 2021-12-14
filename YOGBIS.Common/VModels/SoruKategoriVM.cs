@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using YOGBIS.Data.DbModels;
-
-namespace YOGBIS.Common.VModels
+﻿namespace YOGBIS.Common.VModels
 {
     public class SoruKategoriVM
     {

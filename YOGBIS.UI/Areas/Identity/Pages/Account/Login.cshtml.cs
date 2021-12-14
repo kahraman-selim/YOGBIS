@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using YOGBIS.Data.Contracts;
-using YOGBIS.Common.SessionOperations;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Http;
-using YOGBIS.Data.DbModels;
-using YOGBIS.Common.ConstantsModels;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net.Mail;
+using System.Threading.Tasks;
+using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.SessionOperations;
+using YOGBIS.Data.Contracts;
+using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account
 {

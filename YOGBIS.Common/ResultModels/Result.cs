@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace YOGBIS.Common.ResultModels
+﻿namespace YOGBIS.Common.ResultModels
 {
     public class Result<T> : IResult
     {

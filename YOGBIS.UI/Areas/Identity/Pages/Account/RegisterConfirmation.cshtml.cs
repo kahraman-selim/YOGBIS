@@ -1,17 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using YOGBIS.Common.ConstantsModels;
+using System.Text;
+using System.Threading.Tasks;
 using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Areas.Identity.Pages.Account
 {
-    
+
     [Authorize(Roles = "Administrator")]
     public class RegisterConfirmationModel : PageModel
     {

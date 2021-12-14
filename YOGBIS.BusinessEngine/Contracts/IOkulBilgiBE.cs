@@ -2,7 +2,6 @@
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
-using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.BusinessEngine.Contracts
 {
