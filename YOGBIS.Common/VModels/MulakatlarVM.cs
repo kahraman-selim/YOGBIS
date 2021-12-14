@@ -11,13 +11,13 @@ namespace YOGBIS.Common.VModels
         [Key]
         public int MulakatId { get; set; }
         [Required(ErrorMessage ="{0} zorunlu bir alandır")]
-        public string OnaySayisi { get; set; }
-        [Required(ErrorMessage = "{0} zorunlu bir alandır")]
+        public string OnaySayisi { get; set; }        
         public string MulakatAdi { get; set; }
         [Required(ErrorMessage = "{0} zorunlu bir alandır")]
         public int DereceId { get; set; }
-        public string Derecesi { get; set; }
+        public string DereceAdi { get; set; }
         [Required(ErrorMessage = "{0} zorunlu bir alandır")]
+        public DerecelerVM DerecelerVm { get; set; }
         public DateTime BaslamaTarihi { get; set; }
         [Required(ErrorMessage = "{0} zorunlu bir alandır")]
         public DateTime BitisTarihi { get; set; }

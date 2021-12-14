@@ -1,6 +1,10 @@
 ﻿@model YOGBIS.Common.VModels.MulakatlarVM
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Mülakat Güncelle";
+}
+@section Styles{
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css" integrity="sha512-3JRrEUwaCkFUBLK1N8HehwQgu8e23jTH4np5NHOmQOobuC4ROQxFwFgBLTnhcnQRMs84muMh0PnnwXlPq5MGjg==" crossorigin="anonymous" />
 }
 
 <div class="row">
@@ -26,13 +30,14 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="Derecesi" class="small mb-1 font-weight-bold">Derecesi</label>
-                                @*@Html.DropDownListFor(a => a.DereceId, new SelectList(ViewBag.Dereceler, "DereceId", "Derecesi"), " ", new { @class = "form-control-range form-control py-2" })*@
-                                <select asp-for="Derecesi" class="form-control-range form-control py-2" aria-label="Default select example">
-                                    <option asp-for="Derecesi" selected class="text-center"></option>
-                                    <option asp-for="Derecesi" value="True">Öğretmen</option>
-                                    <option asp-for="Derecesi" value="False">Okutman</option>
-                                </select>
+                                <label asp-for="DereceId" class="small mb-1 font-weight-bold">Derecesi</label>
+                                @Html.DropDownListFor(a => a.DereceId, new SelectList(ViewBag.Dereceler, "DereceId",
+                               "DereceAdi"), "Dereceyi seçiniz", new { @class = "form-control-range form-control" })
+                                @*<select asp-for="DereceId" class="form-control-range form-control" aria-label="Default select example">
+                                        <option asp-for="Derecesi" selected class="text-center"></option>
+                                        <option asp-for="Derecesi" value="True">Öğretmen</option>
+                                        <option asp-for="Derecesi" value="False">Okutman</option>
+                                    </select>*@
                                 <span class="text-danger" asp-validation-for="DereceId"></span>
                             </div>
                         </div>
@@ -114,11 +119,12 @@
                         <div class="col-md-12">
                             <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1 center" style="width:25%" />
                             <a class="btn btn-danger btn-sm text-white mb-1 center" id="btnSil" style="width:25%">Sil</a>
+                            <a class="btn btn-primary btn-sm text-white mb-1" id="btnDetay" style="width: 25%">Detay</a>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">
-                            <a class="btn btn-primary btn-sm text-white mb-1" id="btnDetay" style="width: 25%">Detay</a>
+                            <a class="btn btn-primary btn-sm text-white mb-1" id="btnAday" style="width: 25%">Adaylar</a>
                             <a class="btn btn-info btn-sm text-white mb-1" id="btnSoruHazirla" style="width: 25%">Soru Hazırla</a>
                             <a class="btn btn-warning btn-sm text-white mb-1" id="btnSoruDuzenle" style="width: 25%">Soru Düzenle</a>
                         </div>
@@ -152,4 +158,21 @@
         </div>
     </div>
 </div>
+@section Scripts{
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js" integrity="sha512-k6/Bkb8Fxf/c1Tkyl39yJwcOZ1P4cRrJu77p83zJjN2Z55prbFHxPs9vN7q3l3+tSMGPDdoH51AEU8Vgo1cgAA==" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $('#datetimepicker1, #datetimepicker2').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+    </script>
+
+}
+
+
+
+
 

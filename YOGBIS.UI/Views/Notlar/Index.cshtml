@@ -60,7 +60,7 @@
 
                         @*<div class="form-group col-md-6">
                                 <label class="form-control-label">Diş Hekimi : </label>
-                                <select id="selectDentistId" class="form-control" asp-items="@Model.DentistsSelectList">
+                                <select id="selectKullaniciId" class="form-control" asp-items="@Model.DentistsSelectList">
                                     <option value="0">Lütfen diş hekimini seçiniz.</option>
                                 </select>
                             </div>*@
@@ -68,8 +68,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
-                <button id="btnSave" type="button" class="btn btn-primary">Kaydet</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat&nbsp;</button>
+                <button id="btnKaydet" type="button" class="btn btn-primary">Kaydet</button>
             </div>
         </div>
     </div>
@@ -118,7 +118,7 @@
                         </div>
                         @*<div class="form-group col-md-6">
                                 <label class="form-control-label">Diş Hekimi : </label>
-                                <select disabled id="selectDentistIdDetail" class="form-control" asp-items="@Model.DentistsSelectList">
+                                <select disabled id="selectKullaniciIdDetail" class="form-control" asp-items="@Model.DentistsSelectList">
                                     <option value="0">Lütfen diş hekimini seçiniz.</option>
                                 </select>
                             </div>*@
@@ -126,8 +126,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button id="btnDelete" type="button" class="btn btn-danger">Sil</button>
-                <button id="btnUpdate" type="button" class="btn btn-primary">Güncelle</button>
+                <button id="btnSil" type="button" class="btn btn-danger">Sil</button>
+                <button id="btnGuncelle" type="button" class="btn btn-primary">Güncelle</button>
             </div>
         </div>
     </div>
@@ -252,74 +252,73 @@
                         id: 0,
                         start: moment(selectionInfo.start),
                         end: moment(selectionInfo.end),
-                        patientName: "",
+                        NotBaslik: "",
                         patientSurname: "",
                         description: "",
-                        dentistId: 0
+                        KullaniciId: 0
                     }
 
-                    openAddOrUpdateModal();
+                    openEkleVeyaGuncelleModal();
                 },
                 eventClick: function (info) {
                     selectedEvent = {
                         id: info.event.id,
                         start: moment(info.event.start),
                         end: moment(info.event.end),
-                        patientName: info.event.extendedProps.patientName,
-                        patientSurname: info.event.extendedProps.patientSurname,
-                        description: info.event.extendedProps.description,
-                        dentistId: info.event.extendedProps.userId
+                        NotBaslik: info.event.extendedProps.NotBaslik,                        
+                        NotDetay: info.event.extendedProps.description,
+                        KullaniciId: info.event.extendedProps.userId
                     };
 
-                    $('#selectDentistIdDetail').val(info.event.extendedProps.userId);
+                    $('#selectKullaniciIdDetail').val(info.event.extendedProps.userId);
                     $('#inputStartDateDetail').val(moment(info.event.start).format('DD/MM/YYYY HH:ss'));
                     $('#inputEndDateDetail').val(moment(info.event.end).format('DD/MM/YYYY HH:ss'))
-                    $('#inputPatientNameDetail').val(info.event.extendedProps.patientName);
+                    $('#inputNotBaslikDetail').val(info.event.extendedProps.NotBaslik);
                     $('#inputPatientSurnameDetail').val(info.event.extendedProps.patientSurname);
-                    $('#inputDescriptionDetail').val(info.event.extendedProps.description);
+                    $('#inputNotDetayDetail').val(info.event.extendedProps.description);
 
                     $('#detailModal').modal();
                 },
                 editable: true,
                 eventDrop: function (dropEventInfo) {
-                    var appointment = {
+                    var Kullanici = {
                         Id: dropEventInfo.event.id,
                         UserId: dropEventInfo.event.extendedProps.userId,
                         StartDate: moment(dropEventInfo.event.start).format('DD/MM/YYYY HH:mm'),
                         EndDate: moment(dropEventInfo.event.end).format('DD/MM/YYYY HH:mm'),
-                        PatientName: dropEventInfo.event.extendedProps.patientName,
+                        NotBaslik: dropEventInfo.event.extendedProps.NotBaslik,
                         PatientSurname: dropEventInfo.event.extendedProps.patientSurname,
                         Description: dropEventInfo.event.extendedProps.description
                     }
 
-                    saveAppointment(appointment);
+                    NotEkle(Kullanici);
 
 
                 },
                 eventResize: function (dropEventInfo) {
-                    var appointment = {
+                    var Kullanici = {
                         Id: dropEventInfo.event.id,
                         UserId: dropEventInfo.event.extendedProps.userId,
                         StartDate: moment(dropEventInfo.event.start).format('DD/MM/YYYY HH:mm'),
                         EndDate: moment(dropEventInfo.event.end).format('DD/MM/YYYY HH:mm'),
-                        PatientName: dropEventInfo.event.extendedProps.patientName,
+                        NotBaslik: dropEventInfo.event.extendedProps.NotBaslik,
                         PatientSurname: dropEventInfo.event.extendedProps.patientSurname,
                         Description: dropEventInfo.event.extendedProps.description
                     }
 
-                    saveAppointment(appointment);
+                    NotEkle(Kullanici);
                 },
 
             });
 
             calendar.render();
-            getAppointments();
+            NotlariGetirKullaniciId();
 
             $('#datetimepicker1, #datetimepicker2').datetimepicker({
                 format: 'DD/MM/YYYY HH:mm'
             });
 
-            function getAppointments() {
+            function NotlariGetir() {
                 $.ajax({
                     type: 'GET',
                     url: '/Notlar/NotGetirKullaniciId',
@@ -333,7 +332,7 @@
                             events.push({
                                 id: response[i].id,
                                 title: response[i].dentist,
-                                patientName: response[i].patientName,
+                                NotBaslik: response[i].NotBaslik,
                                 patientSurname: response[i].patientSurname,
                                 start: response[i].startDate,
                                 end: response[i].endDate,
@@ -346,15 +345,15 @@
                     },
                     error: function () {
                         $('#saveModal').modal('hide');
-                        alertify.error('Notunuz eklenirken bir problem oluştu.');
+                        alertify.error('Notlarınız yüklenirken bir problem oluştu.');
                     }
                 });
             }
 
-            function getAppointmentsByDentist(dentistId) {
+            function NotlariGetirKullaniciId(KullaniciId) {
                 $.ajax({
                     type: 'GET',
-                    url: '/Notlar/NotGetirKullaniciId?userId=' + dentistId,
+                    url: '/Notlar/NotGetirKullaniciId?userId=' + KullaniciId,
                     success: function (response) {
                         events = [];
                         var sources = calendar.getEventSources();
@@ -365,7 +364,7 @@
                             events.push({
                                 id: response[i].id,
                                 title: response[i].dentist,
-                                patientName: response[i].patientName,
+                                NotBaslik: response[i].NotBaslik,
                                 patientSurname: response[i].patientSurname,
                                 start: response[i].startDate,
                                 end: response[i].endDate,
@@ -378,34 +377,34 @@
                     },
                     error: function () {
                         $('#saveModal').modal('hide');
-                        alertify.error('Notunuz eklenirken bir problem oluştu.');
+                        alertify.error('Notlarınız yüklenirken bir problem oluştu.');
                     }
                 });
             }
 
-            function openAddOrUpdateModal() {
+            function openEkleVeyaGuncelleModal() {
                 if (selectedEvent != null) {
                     $('#apointmentId').val(selectedEvent.id);
                     $('#inputStartDate').val(selectedEvent.start.format('DD/MM/YYYY HH:mm'));
                     $('#inputEndDate').val(selectedEvent.end.format('DD/MM/YYYY HH:mm'));
-                    $('#inputPatientName').val(selectedEvent.patientName);
+                    $('#inputNotBaslik').val(selectedEvent.NotBaslik);
                     $('#inputPatientSurname').val(selectedEvent.patientSurname);
                     $('#inputDescription').val(selectedEvent.description);
-                    $('#selectDentistId').val(selectedEvent.dentistId);
+                    $('#selectKullaniciId').val(selectedEvent.KullaniciId);
                 }
 
                 $('#saveModal').modal();
             }
 
-            function saveAppointment(data) {
+            function NotEkle(data) {
 
                 $.ajax({
                     type: 'POST',
-                    url: '/appointment/AddOrUpdateAppointment',
+                    url: '/Kullanici/AddOrUpdateKullanici',
                     data: data,
                     success: function (response) {
                         if (response === "200") {
-                            getAppointments();
+                            NotlariGetir();
                             $('#saveModal').modal('hide');
                             data.Id === "0" ? alertify.success('Randevunuz başarıyla eklendi.') : alertify.success('Randevunuz başarıyla güncellenmiştir.');
                         } else {
@@ -420,9 +419,9 @@
                 });
             }
 
-            $('#btnSave').click(function () {
+            $('#btnKaydet').click(function () {
                 //validasyon
-                if ($('#inputPatientName').val() === "") {
+                if ($('#inputNotBaslik').val() === "") {
                     alert("Hasta adı belirtilmelidir.");
                     return;
                 }
@@ -432,30 +431,30 @@
                     return;
                 }
 
-                var appointment = {
+                var Kullanici = {
                     Id: $('#apointmentId').val(),
-                    UserId: $('#selectDentistId').val(),
+                    UserId: $('#selectKullaniciId').val(),
                     StartDate: $('#inputStartDate').val(),
                     EndDate: $('#inputEndDate').val(),
-                    PatientName: $('#inputPatientName').val(),
+                    NotBaslik: $('#inputNotBaslik').val(),
                     PatientSurname: $('#inputPatientSurname').val(),
                     Description: $('#inputDescription').val()
                 }
 
 
-                saveAppointment(appointment);
+                NotEkle(Kullanici);
             });
 
-            $('#btnUpdate').click(function () {
+            $('#btnGuncelle').click(function () {
                 $('#detailModal').modal('hide');
-                openAddOrUpdateModal();
+                openEkleVeyaGuncelleModal();
             });
 
-            $('#btnDelete').click(function () {
+            $('#btnSil').click(function () {
                 if (confirm('Randevuyu silmek istediğinize emin misiniz?')) {
                     $.ajax({
                         type: 'GET',
-                        url: '/appointment/DeleteAppointment?id=' + selectedEvent.id,
+                        url: '/Kullanici/DeleteKullanici?id=' + selectedEvent.id,
                         success: function (response) {
                             if (response === '200') {
                                 var event = calendar.getEventById(selectedEvent.id);
@@ -475,7 +474,7 @@
             $('.list-group-item').click(function () {
                 $('.list-group-item').removeClass('active');
                 $(this).addClass('active');
-                getAppointmentsByDentist($(this).data('value'));
+                NotlariGetirKullaniciId($(this).data('value'));
             });
 
         });

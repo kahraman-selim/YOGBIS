@@ -13,6 +13,7 @@ namespace YOGBIS.Data.DbModels
         public string OnaySayisi { get; set; }
         public string MulakatAdi { get; set; }
         public string Derecesi { get; set; }
+        public Dereceler Dereceler { get; set; }
         public DateTime BaslamaTarihi { get; set; }
         public DateTime BitisTarihi { get; set; }
         public int AdaySayisi { get; set; }
