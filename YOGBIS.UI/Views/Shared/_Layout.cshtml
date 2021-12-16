@@ -328,7 +328,7 @@
                                     {
                                         <a class="nav-link" asp-controller="SoruBankasi" asp-action="Index">Soru Bankası</a>
                                     }
-                                    @if (User.IsInRole("Administrator"))
+                                    @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                                     {
                                         <a class="nav-link" asp-controller="Mulakatlar" asp-action="Index">Mülakat Oluştur</a>
                                     }

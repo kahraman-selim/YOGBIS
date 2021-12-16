@@ -9,7 +9,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-
+    [Authorize]
     public class OkullarController : Controller
     {
         private readonly IOkullarBE _okullarBE;

@@ -9,7 +9,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class OkulBilgiController : Controller
     {
         private readonly IOkulBilgiBE _okulBilgiBE;
