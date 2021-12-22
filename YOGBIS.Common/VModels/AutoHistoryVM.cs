@@ -11,8 +11,8 @@ namespace YOGBIS.Common.VModels
         public string Changed { get; set; }
         public int Kind { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0,d}")]
-        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime Created { get; set; } = DateTime.Now;
     }
 }

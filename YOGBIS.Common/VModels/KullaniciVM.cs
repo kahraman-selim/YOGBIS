@@ -21,8 +21,8 @@ namespace YOGBIS.Common.VModels
 
         public string AdSoyad { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0,d}")]
-        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime KayitTarihi { get; set; } = DateTime.Now;
         public int KulaniciAdDegLimiti { get; set; } = 10;        
         public byte[] KullaniciResim { get; set; }

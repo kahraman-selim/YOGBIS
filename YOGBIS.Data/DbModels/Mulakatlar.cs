@@ -13,11 +13,7 @@ namespace YOGBIS.Data.DbModels
         public int DereceId { get; set; }
         [ForeignKey("DereceId")]
         public Dereceler Dereceler { get; set; }
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
-        [DataType(DataType.Date)]
         public DateTime BaslamaTarihi { get; set; }
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
-        [DataType(DataType.Date)]
         public DateTime BitisTarihi { get; set; }
         public int AdaySayisi { get; set; }
         public int SorulanSoruSayisi { get; set; }

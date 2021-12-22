@@ -5,8 +5,8 @@ namespace YOGBIS.Common.VModels
 {
     public class BaseVM
     {
-        [DisplayFormat(DataFormatString = "{0,d}")]
-        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime KayitTarihi { get; set; } = DateTime.Now;
     }
 }
