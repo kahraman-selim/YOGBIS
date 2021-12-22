@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using YOGBIS.Common.ConstantsModels;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -19,15 +20,15 @@ namespace YOGBIS.UI.Controllers
 
             //var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            //if (User.IsInRole(ResultConstant.Admin_Role))
-            //{
-            //    //return View(user);
+            if (User.IsInRole(EnumsKullaniciRolleri.Administrator.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Manager.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Follower.ToString()))
+            {
+                //return View(user);
                 return View();
-            //}
-            //else
-            //{
-            //    return RedirectToAction("Index", "Home");
-            //}            
+            }
+            else
+            {
+                return RedirectToAction("Index", "Notlar");
+            }
         }
     }
 }

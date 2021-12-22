@@ -23,7 +23,7 @@ namespace YOGBIS.UI.Controllers
             _okullarBE = okullarBE;
         }
         
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
+        [Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -41,7 +41,7 @@ namespace YOGBIS.UI.Controllers
             return View(user);
         }
 
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
+        [Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
         [HttpGet]
         public IActionResult OgrenciEkle()
         {
@@ -51,7 +51,7 @@ namespace YOGBIS.UI.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
+        [Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
         [HttpPost]
         public IActionResult OgrenciEkle(OgrencilerVM model)
         {
@@ -68,7 +68,7 @@ namespace YOGBIS.UI.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
+        [Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
         public ActionResult Guncelle(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -87,7 +87,7 @@ namespace YOGBIS.UI.Controllers
 
         }
 
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
+        [Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Guncelle(OgrencilerVM model)
@@ -107,7 +107,7 @@ namespace YOGBIS.UI.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
+        [Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
         [HttpDelete]
         public IActionResult OgrenciSil(int id)
         {
@@ -122,7 +122,7 @@ namespace YOGBIS.UI.Controllers
 
         }
 
-        [Authorize(Roles = "Administrator,Manager")]
+        [Authorize(Roles = "Administrator,Follower,Manager")]
         public IActionResult OgrenciGetir(int? ulkeId)
         {            
             
@@ -155,7 +155,7 @@ namespace YOGBIS.UI.Controllers
 
         }
 
-        [Authorize(Roles = "Administrator,Manager")]
+        [Authorize(Roles = "Administrator,Follower,Manager")]
         public ActionResult OgrencileriGetirUlkeId(int? ulkeId) 
         {
             var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
@@ -169,7 +169,7 @@ namespace YOGBIS.UI.Controllers
             }            
         }
         
-        [Authorize(Roles = "Administrator,Manager")]
+        [Authorize(Roles = "Administrator,Follower,Manager")]
         public ActionResult OgrencileriGetirOkulId(int? OkulId)
         {
             var data = _ogrencilerBE.OgrenciGetirOkulId(OkulId);
@@ -183,7 +183,7 @@ namespace YOGBIS.UI.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrator,Manager")]
+        [Authorize(Roles = "Administrator,Follower,Manager")]
         public IActionResult OgrencileriGetir(int? ulkeId)
         {
 
