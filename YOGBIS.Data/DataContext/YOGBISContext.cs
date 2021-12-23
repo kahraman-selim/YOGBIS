@@ -40,22 +40,54 @@ namespace YOGBIS.Data.DataContext
                 entity.Property(m => m.Name).HasMaxLength(127);
             });
 
+            #region Kıtalar
             builder.Entity<Kitalar>().HasData(
-                new Kitalar() 
-                { KitaId = 1, KitaAdi = "Afrika", KitaAciklama = "Afrika Kıtası"},
-                new Kitalar()
-                { KitaId = 2, KitaAdi = "Antartika", KitaAciklama = "Antartika Kıtası"},
-                new Kitalar()
-                { KitaId = 3, KitaAdi = "Asya", KitaAciklama = "Asya Kıtası"},
-                new Kitalar()
-                { KitaId = 4, KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası"},
-                new Kitalar()
-                { KitaId = 5, KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası"},
-                new Kitalar()
-                { KitaId = 6, KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası"},
-                new Kitalar()
-                { KitaId = 7, KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası"}
-                );
+        new Kitalar()
+        { KitaId = 1, KitaAdi = "Afrika", KitaAciklama = "Afrika Kıtası" },
+        new Kitalar()
+        { KitaId = 2, KitaAdi = "Antartika", KitaAciklama = "Antartika Kıtası" },
+        new Kitalar()
+        { KitaId = 3, KitaAdi = "Asya", KitaAciklama = "Asya Kıtası" },
+        new Kitalar()
+        { KitaId = 4, KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası" },
+        new Kitalar()
+        { KitaId = 5, KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası" },
+        new Kitalar()
+        { KitaId = 6, KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası" },
+        new Kitalar()
+        { KitaId = 7, KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası" }
+        );
+            #endregion
+
+            builder.Entity<SoruKategori>()
+                .HasKey(o => new { o.SoruId, o.KategoriId });
+
+            builder.Entity<SoruDerece>()
+                .HasKey(o => new { o.SoruId, o.DereceId });
+
+            builder.Entity<SoruDerece>()
+                .HasOne<SoruBankasi>(s => s.SoruBankasi)
+                .WithMany(g => g.SoruDereces)
+                .HasForeignKey(f => f.SoruId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<SoruDerece>()
+                .HasOne<Dereceler>(s => s.Dereceler)
+                .WithMany(g => g.SoruDereces)
+                .HasForeignKey(f => f.SoruId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<SoruKategori>()
+                .HasOne<SoruBankasi>(s => s.SoruBankasi)
+                .WithMany(g => g.SoruKategoris)
+                .HasForeignKey(f => f.SoruId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<SoruKategori>()
+                .HasOne<SoruKategoriler>(s => s.SoruKategoriler)
+                .WithMany(g => g.SoruKategoris)
+                .HasForeignKey(f => f.KategoriId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         #region DbSetler
@@ -77,6 +109,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<Ogrenciler> Ogrencilers { get; set; }
         public DbSet<Notlar> Notlars { get; set; }
         public DbSet<Adaylar> Adaylars { get; set; }
+        public DbSet<SoruDerece> SoruDereces { get; set; }
 
         #endregion
     }

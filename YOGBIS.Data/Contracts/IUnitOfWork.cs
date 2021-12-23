@@ -22,7 +22,7 @@ namespace YOGBIS.Data.Contracts
         IOkulBilgiRepository okulBilgiRepository { get; }
         IOgrencilerRepository ogrencilerRepository { get; }
         INotlarRepository notlarRepository { get; }
-
+        ISoruDereceRepository soruDereceRepository { get; }
 
         void Save();
     }

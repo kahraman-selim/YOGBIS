@@ -8,16 +8,10 @@ namespace YOGBIS.Data.DbModels
     {
         [Key]
         public int SoruBankasiId { get; set; }
-        public int SoruKategorilerId { get; set; }
-        [ForeignKey("SoruKategorilerId")]
-        public SoruKategoriler SoruKategoriler { get; set; }
         public string Soru { get; set; }
         public string Cevap { get; set; }
-        public int DereceId { get; set; }
-        [ForeignKey("DereceId")]
-        public Dereceler Dereceler { get; set; }
-        public int SorulmaSayisi { get; set; } = 0;
-        public bool SoruDurumu { get; set; } = true;      
+        public int SorulmaSayisi { get; set; }
+        public bool SoruDurumu { get; set; }     
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kaydeden { get; set; }
@@ -27,6 +21,6 @@ namespace YOGBIS.Data.DbModels
         public int? OnayDurumu { get; set; }
         public string OnayAciklama { get; set; }
         public List<SoruKategori> SoruKategoris { get; set; }
-
+        public List<SoruDerece> SoruDereces { get; set; }
     }
 }

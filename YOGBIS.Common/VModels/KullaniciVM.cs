@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Common.VModels
@@ -18,7 +19,6 @@ namespace YOGBIS.Common.VModels
         public string Ad { get; set; }
         [Required(ErrorMessage = "{0} boş geçilemez")]
         public string Soyad { get; set; }
-
         public string AdSoyad { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
@@ -27,5 +27,7 @@ namespace YOGBIS.Common.VModels
         public int KulaniciAdDegLimiti { get; set; } = 10;        
         public byte[] KullaniciResim { get; set; }
         public bool? Aktif { get; set; }
+        public List<DerecelerVM> Derecelers { get; set; }
+        public List<SoruKategorilerVM> SoruKategorilers { get; set; }
     }
 }

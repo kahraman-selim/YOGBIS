@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
@@ -11,5 +12,7 @@ namespace YOGBIS.Data.DbModels
         public string KullaniciId { get; set; }
         [ForeignKey("KullaniciId")]
         public Kullanici Kullanici { get; set; }
+        public List<SoruDerece> SoruDereces { get; set; }
+        public List<SoruKategoriler> SoruKategorilers { get; set; }
     }
 }

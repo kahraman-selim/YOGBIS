@@ -27,7 +27,7 @@
                             <div class="form-group">
                                 <label asp-for="SoruKategorilerAdi" class="small mb-1 font-weight-bold">Kategori Adı</label>
                                 <input asp-for="SoruKategorilerAdi" type="text" class="form-control py-2" id="SoruKategorilerAdi" placeholder="Kategori Adını Giriniz">
-                                <span class="text-danger" asp-validation-for="SoruKategorilerAdi"></span>
+                                <span class="text-danger" asp-validation-for="SoruKategorilerAdi" id="SoruKategorilerAdiVal"></span>
                             </div>
                         </div>
                     </div>
@@ -107,6 +107,7 @@
         });
 
         $("#btnYeni").on("click", function () {
+
             document.getElementById("SoruKategorilerId").focus();
             document.getElementById("SoruKategorilerId").value = "";
             document.getElementById("btnSil").className += " disabled";
@@ -118,6 +119,10 @@
             document.getElementById("DereceId").value = "";
             document.getElementById("SoruKategorilerAdi").focus();
             document.getElementById("SoruKategorilerAdi").value = "";
+            document.getElementById("SoruKategorilerAdiVal").focus();
+            document.getElementById("SoruKategorilerAdiVal").value = "fssdfsdfs";
+            //işlemleri tamamla en başa konumlan
+            document.getElementById("SoruKategorilerAdi").focus();
         });
 
     </script>

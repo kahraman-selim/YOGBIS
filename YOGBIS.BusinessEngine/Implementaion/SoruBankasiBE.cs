@@ -32,7 +32,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<SoruBankasiVM>> SoruGetirKullaniciId(string userId)
         {
             var data = _unitOfWork.soruBankasiRepository.GetAll(u => u.KaydedenId == userId,
-                includeProperties: "Kaydeden,SoruKategoriler").OrderByDescending(s => s.SoruBankasiId).ToList();
+                includeProperties: "Kaydeden").OrderByDescending(s => s.SoruBankasiId).ToList(); // Kaydeden, SoruKategorileri idi önceden
             if (data != null)
             {
                 List<SoruBankasiVM> returnData = new List<SoruBankasiVM>();
@@ -42,12 +42,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new SoruBankasiVM()
                     {
                         SoruBankasiId = item.SoruBankasiId,
-                        SoruKategorilerId = item.SoruKategorilerId,
-                        SoruKategorilerAdi = item.SoruKategoriler.SoruKategorilerAdi,
+                        //SoruKategorilerId = item.SoruKategorilerId,
+                        //SoruKategorilerAdi = item.SoruKategoriler.SoruKategorilerAdi,
                         Soru = item.Soru,
                         Cevap = item.Cevap,
-                        DereceId = item.DereceId,
-                        DereceAdi = item.Dereceler.DereceAdi,
+                        //DereceId = item.DereceId,
+                        //DereceAdi = item.Dereceler.DereceAdi,
                         SorulmaSayisi = item.SorulmaSayisi,
                         SoruDurumu = item.SoruDurumu,
                         KaydedenId = item.KaydedenId,
@@ -83,12 +83,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new SoruBankasiVM()
                     {
                         SoruBankasiId = item.SoruBankasiId,
-                        SoruKategorilerId = item.SoruKategorilerId,
-                        SoruKategorilerAdi = item.SoruKategoriler.SoruKategorilerAdi,
+                        //SoruKategorilerId = item.SoruKategorilerId,
+                        //SoruKategorilerAdi = item.SoruKategoriler.SoruKategorilerAdi,
                         Soru = item.Soru,
                         Cevap = item.Cevap,
-                        DereceId = item.DereceId,
-                        DereceAdi = item.Dereceler.DereceAdi,
+                        //DereceId = item.DereceId,
+                        //DereceAdi = item.Dereceler.DereceAdi,
                         SorulmaSayisi = item.SorulmaSayisi,
                         SoruDurumu = item.SoruDurumu,
                         KaydedenId = item.KaydedenId,
@@ -125,12 +125,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new SoruBankasiVM()
                     {
                         SoruBankasiId = item.SoruBankasiId,
-                        SoruKategorilerId = item.SoruKategorilerId,
-                        SoruKategorilerAdi = item.SoruKategoriler.SoruKategorilerAdi,
+                        //SoruKategorilerId = item.SoruKategorilerId,
+                        //SoruKategorilerAdi = item.SoruKategoriler.SoruKategorilerAdi,
                         Soru = item.Soru,
                         Cevap = item.Cevap,
-                        DereceId = item.DereceId,
-                        DereceAdi = item.Dereceler.DereceAdi,
+                        //DereceId = item.DereceId,
+                        //DereceAdi = item.Dereceler.DereceAdi,
                         SorulmaSayisi = item.SorulmaSayisi,
                         SoruDurumu = item.SoruDurumu,
                         KaydedenId = item.KaydedenId,

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Data.DbModels
@@ -13,5 +14,7 @@ namespace YOGBIS.Data.DbModels
         public int KulaniciAdDegLimiti { get; set; }        
         public byte[] KullaniciResim { get; set; }
         public bool? Aktif { get; set; }
+        public List<Dereceler> Derecelers { get; set; }
+        public List<SoruKategoriler> SoruKategorilers { get; set; }
     }
 }

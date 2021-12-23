@@ -26,6 +26,7 @@ namespace YOGBIS.Common.Mappings
             CreateMap<Ogrenciler, OgrencilerVM>().ReverseMap();
             CreateMap<Notlar, NotlarVM>().ReverseMap();
             CreateMap<Adaylar, AdaylarVM>().ReverseMap();
+            CreateMap<SoruDerece, SoruDereceVM>().ReverseMap();
         }
     }
 }
