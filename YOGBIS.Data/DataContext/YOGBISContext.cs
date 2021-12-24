@@ -64,6 +64,9 @@ namespace YOGBIS.Data.DataContext
 
             builder.Entity<SoruDerece>()
                 .HasKey(o => new { o.SoruId, o.DereceId });
+            
+            builder.Entity<Adaylar>()
+                .HasKey(o => new { o.AdayTC, o.KaydedenId });
 
             builder.Entity<SoruDerece>()
                 .HasOne<SoruBankasi>(s => s.SoruBankasi)

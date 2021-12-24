@@ -50,7 +50,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         DereceAdi=item.Dereceler.DereceAdi,
                         Durumu=item.Durumu.HasValue,
                         MulakatAciklama=item.MulakatAciklama,
-                        KullaniciId=item.KullaniciId,
+                        KullaniciId=item.KaydedenId,
                         KullaniciAdi=item.Kullanici.Ad + " " + item.Kullanici.Soyad,
                         SorulanSoruSayisi=item.SorulanSoruSayisi,                        
                         KayitTarihi = item.KayitTarihi
@@ -89,7 +89,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var mulakatlar = _mapper.Map<MulakatlarVM, Mulakatlar>(model);
-                    mulakatlar.KullaniciId = user.LoginId;                    
+                    mulakatlar.KaydedenId = user.LoginId;                    
                     _unitOfWork.mulakatlarRepository.Add(mulakatlar);
                     _unitOfWork.Save();
                     return new Result<MulakatlarVM>(true, ResultConstant.RecordCreateSuccess);
@@ -115,7 +115,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var mulakatlar = _mapper.Map<MulakatlarVM, Mulakatlar>(model);
-                    mulakatlar.KullaniciId = user.LoginId;
+                    mulakatlar.KaydedenId = user.LoginId;
                     _unitOfWork.mulakatlarRepository.Update(mulakatlar);
                     _unitOfWork.Save();
                     return new Result<MulakatlarVM>(true, ResultConstant.RecordCreateSuccess);

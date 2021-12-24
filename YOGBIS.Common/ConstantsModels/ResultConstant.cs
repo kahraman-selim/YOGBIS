@@ -12,8 +12,8 @@
         public const string Admin_Role = "Administrator";
         public const string Kullanici_Role = "Kullanici";
         
-        public const string Admin_Email = "selim.kahraman@meb.gov.tr";
-        public const string Admin_Password = "Selim81.";
+        public const string Admin_Email = "";
+        public const string Admin_Password = "";
 
         public const string LoginUserInfo = "Giriş Yapan Kullanıcı Bilgisi";
     }

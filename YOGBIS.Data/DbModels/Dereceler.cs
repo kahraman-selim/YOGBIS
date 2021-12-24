@@ -9,7 +9,7 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public int DereceId { get; set; }
         public string DereceAdi { get; set; }
-        public string KullaniciId { get; set; }
+        public string KaydedenId { get; set; }
         [ForeignKey("KullaniciId")]
         public Kullanici Kullanici { get; set; }
         public List<SoruDerece> SoruDereces { get; set; }

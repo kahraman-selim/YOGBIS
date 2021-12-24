@@ -62,7 +62,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region DereceGetirKullaniciId
         public Result<List<DerecelerVM>> DereceGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.derecelerRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici").ToList();
+            var data = _unitOfWork.derecelerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici").ToList();
             if (data != null)
             {
                 List<DerecelerVM> returnData = new List<DerecelerVM>();
@@ -75,7 +75,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         DereceAdi = item.DereceAdi,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad,
-                        KullaniciId = item.KullaniciId
+                        KullaniciId = item.KaydedenId
                     });
                 }
                 return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, returnData);
@@ -111,7 +111,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var derece = _mapper.Map<DerecelerVM, Dereceler>(model);
-                    derece.KullaniciId = user.LoginId;
+                    derece.KaydedenId = user.LoginId;
                     _unitOfWork.derecelerRepository.Add(derece);
                     _unitOfWork.Save();
                     return new Result<DerecelerVM>(true, ResultConstant.RecordCreateSuccess);
@@ -137,7 +137,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var derece = _mapper.Map<DerecelerVM, Dereceler>(model);
-                    derece.KullaniciId = user.LoginId;
+                    derece.KaydedenId = user.LoginId;
                     _unitOfWork.derecelerRepository.Update(derece);
                     _unitOfWork.Save();
                     return new Result<DerecelerVM>(true, ResultConstant.RecordCreateSuccess);

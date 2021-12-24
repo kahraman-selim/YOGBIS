@@ -43,11 +43,11 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         MulakatSorulariId=item.MulakatSorulariId,
                         SoruSiraNo=item.SoruSiraNo,
-                        SoruId=item.SoruBankasi.SoruBankasiId,
-                        SoruKategoriId=item.SoruKategoriler.SoruKategorilerId,
-                        SoruKategoriAdi=item.SoruKategoriler.SoruKategorilerAdi,
-                        DereceId=item.Dereceler.DereceId,
-                        DereceAdi=item.Dereceler.DereceAdi,
+                        //SoruId=item.SoruBankasi.SoruBankasiId,
+                        //SoruKategoriId=item.SoruKategoriler.SoruKategorilerId,
+                        //SoruKategoriAdi=item.SoruKategoriler.SoruKategorilerAdi,
+                        //DereceId=item.Dereceler.DereceId,
+                        //DereceAdi=item.Dereceler.DereceAdi,
                         Soru=item.Soru,
                         Cevap=item.Cevap,
                         MulakatId=item.Mulakatlar.MulakatId,
@@ -86,7 +86,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var mulakatSoru = _mapper.Map<MulakatSorulariVM, MulakatSorulari>(model);
-                    mulakatSoru.KullaniciId = user.LoginId;
+                    mulakatSoru.KaydedenId = user.LoginId;
                     _unitOfWork.mulakatSorulariRepository.Add(mulakatSoru);
                     _unitOfWork.Save();
                     return new Result<MulakatSorulariVM>(true, ResultConstant.RecordCreateSuccess);
@@ -110,7 +110,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var mulakatSoru = _mapper.Map<MulakatSorulariVM, MulakatSorulari>(model);
-                    mulakatSoru.KullaniciId = user.LoginId;
+                    mulakatSoru.KaydedenId = user.LoginId;
                     _unitOfWork.mulakatSorulariRepository.Update(mulakatSoru);
                     _unitOfWork.Save();
                     return new Result<MulakatSorulariVM>(true, ResultConstant.RecordCreateSuccess);
@@ -144,7 +144,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
        
         public Result<List<MulakatSorulariVM>> MulakatSorulariGetir(int id, string derece)
         {
-            var data = _unitOfWork.mulakatSorulariRepository.GetAll(k => k.SoruSiraNo == id && k.Dereceler.DereceAdi == derece).ToList();
+            var data = _unitOfWork.mulakatSorulariRepository.GetAll(k => k.SoruSiraNo == id).ToList(); //&& k.Dereceler.DereceAdi == derece (parantez içi eklenecek)
             if (data != null)
             {
                 List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
@@ -157,7 +157,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruId = item.SoruId,
                         SoruKategoriId = item.SoruKategoriId,
                         SoruKategoriAdi = item.SoruKategoriAdi,
-                        DereceAdi=item.Dereceler.DereceAdi,
+                        //DereceAdi=item.Dereceler.DereceAdi,
                         Soru = item.Soru,
                         Cevap = item.Cevap
                     });

@@ -58,7 +58,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<SoruKategorilerVM>> SoruKategoriKullaniciId(string userId)
         {
-            var data = _unitOfWork.sorukategorilerRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici,Dereceler").ToList();
+            var data = _unitOfWork.sorukategorilerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici,Dereceler").ToList();
             if (data != null)
             {
                 List<SoruKategorilerVM> returnData = new List<SoruKategorilerVM>();
@@ -72,7 +72,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruKategorilerKullanimi=item.SoruKategorilerKullanimi,
                         SoruKategorilerPuan=item.SoruKategorilerPuan,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId=item.KullaniciId,
+                        KullaniciId=item.KaydedenId,
                         DereceId=item.Dereceler.DereceId,
                         DereceAdi=item.Dereceler.DereceAdi
                     });
@@ -104,7 +104,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var soruKategori = _mapper.Map<SoruKategorilerVM, SoruKategoriler>(model);
-                    soruKategori.KullaniciId = user.LoginId;
+                    soruKategori.KaydedenId = user.LoginId;
                     _unitOfWork.sorukategorilerRepository.Add(soruKategori);
                     _unitOfWork.Save();
                     return new Result<SoruKategorilerVM>(true, ResultConstant.RecordCreateSuccess);
@@ -127,7 +127,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var soruKategori = _mapper.Map<SoruKategorilerVM, SoruKategoriler>(model);
-                    soruKategori.KullaniciId = user.LoginId;
+                    soruKategori.KaydedenId = user.LoginId;
                     _unitOfWork.sorukategorilerRepository.Update(soruKategori);
                     _unitOfWork.Save();
                     return new Result<SoruKategorilerVM>(true, ResultConstant.RecordCreateSuccess);

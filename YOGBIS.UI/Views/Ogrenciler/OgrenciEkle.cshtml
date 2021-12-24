@@ -24,8 +24,8 @@
                                 <span class="text-danger" asp-validation-for="UlkeId"></span>
                             </div>
                         </div>
-                    @*</div>
-                    <div class="form-row">*@
+                        @*</div>
+            <div class="form-row">*@
                         <div class="col-md-8">
                             <div class="form-group">
                                 <label asp-for="OkulAdi" class="small mb-1 font-weight-bold">Okul Adı</label>
@@ -91,6 +91,8 @@
                                 <span class="text-danger"></span>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="col-md-1">
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Diğer Erkek</label>
@@ -112,6 +114,8 @@
                                 <span class="text-danger"></span>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Erkek Toplam</label>
@@ -134,14 +138,13 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="col-md-12">                            
-                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" />
-                            <a asp-controller="Ogrenciler" asp-action="OgrenciEkle" id="degistir" name="degistir" class="btn btn-info btn-sm mb-1 disabled" style="width:100px">Değiştir</a>
-                            <a asp-controller="Ogrenciler" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Vazgeç</a>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" />
+                                <a asp-controller="Ogrenciler" asp-action="OgrenciEkle" id="degistir" name="degistir" class="btn btn-info btn-sm mb-1 disabled" style="width:100px">Değiştir</a>
+                                <a asp-controller="Ogrenciler" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Vazgeç</a>
+                            </div>
                         </div>
-                    </div>
                 </form>
             </div>
         </div>
