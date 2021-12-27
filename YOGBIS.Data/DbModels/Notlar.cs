@@ -13,8 +13,8 @@ namespace YOGBIS.Data.DbModels
         public DateTime BaTarihi { get; set; }
         public DateTime BiTarihi { get; set; }
         public string NotRenk { get; set; }
-        public string KullaniciId { get; set; }
-        [ForeignKey("KullaniciId")]
+        public string KaydedenId { get; set; }
+        [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
     }
 }

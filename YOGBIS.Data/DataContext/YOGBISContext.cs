@@ -63,10 +63,7 @@ namespace YOGBIS.Data.DataContext
                 .HasKey(o => new { o.SoruId, o.KategoriId });
 
             builder.Entity<SoruDerece>()
-                .HasKey(o => new { o.SoruId, o.DereceId });
-            
-            builder.Entity<Adaylar>()
-                .HasKey(o => new { o.AdayTC, o.KaydedenId });
+                .HasKey(o => new { o.SoruId, o.DereceId });            
 
             builder.Entity<SoruDerece>()
                 .HasOne<SoruBankasi>(s => s.SoruBankasi)
@@ -91,6 +88,18 @@ namespace YOGBIS.Data.DataContext
                 .WithMany(g => g.SoruKategoris)
                 .HasForeignKey(f => f.KategoriId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UlkeGruplariKitalar>()
+                .HasOne<Kitalar>(s => s.Kitalar)
+                .WithMany(g => g.UlkeGruplariKitalars)
+                .HasForeignKey(f => f.KitaId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UlkeGruplariKitalar>()
+                .HasOne<UlkeGruplari>(s => s.UlkeGruplari)
+                .WithMany(g => g.UlkeGruplariKitalars)
+                .HasForeignKey(f => f.UlkeGrupId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         #region DbSetler
@@ -108,11 +117,16 @@ namespace YOGBIS.Data.DataContext
         public DbSet<UlkeGruplariKitalar> UlkeGruplariKitalars { get; set; }        
         public DbSet<Dereceler> Derecelers { get; set; }
         public DbSet<Okullar> Okullars { get; set; }
-        public DbSet<OkulBilgi> OkulBilgis { get; set; }
-        public DbSet<Ogrenciler> Ogrencilers { get; set; }
+        public DbSet<OkulBilgi> OkulBilgis { get; set; }        
         public DbSet<Notlar> Notlars { get; set; }
         public DbSet<Adaylar> Adaylars { get; set; }
         public DbSet<SoruDerece> SoruDereces { get; set; }
+        public DbSet<Ogretmenler> Ogretmenlers { get; set; }
+        public DbSet<Okutmanlar> Okutmanlars { get; set; }
+        public DbSet<Universiteler> Universitelers { get; set; }
+        public DbSet<Subeler> Subelers { get; set; }
+        public DbSet<Siniflar> Siniflars { get; set; }
+        public DbSet<Ogrenciler> Ogrencilers { get; set; }
 
         #endregion
     }

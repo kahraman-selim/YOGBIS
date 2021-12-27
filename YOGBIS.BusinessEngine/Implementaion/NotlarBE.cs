@@ -62,7 +62,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region NotGetirKullaniciId
         public Result<List<NotlarVM>> NotGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.notlarRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici").ToList();
+            var data = _unitOfWork.notlarRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici").ToList();
             if (data != null)
             {
                 List<NotlarVM> returnData = new List<NotlarVM>();
@@ -77,7 +77,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         NotRenk=item.NotRenk,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad,
-                        KullaniciId = item.KullaniciId
+                        KullaniciId = item.KaydedenId
                     });
                 }
                 return new Result<List<NotlarVM>>(true, ResultConstant.RecordFound, returnData);

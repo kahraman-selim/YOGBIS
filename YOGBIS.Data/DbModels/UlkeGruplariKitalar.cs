@@ -2,7 +2,6 @@
 {
     public class UlkeGruplariKitalar
     {
-        public int Id { get; set; }
         public int UlkeGrupId { get; set; }
         public UlkeGruplari UlkeGruplari { get; set; }
         public int KitaId { get; set; }

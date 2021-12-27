@@ -10,5 +10,6 @@ namespace YOGBIS.Data.DbModels
         public string KitaAdi { get; set; }
         public string KitaAciklama { get; set; }
         public List<UlkeGruplariKitalar> UlkeGruplariKitalars { get; set; }
+        public List<Ulkeler> Ulkelers { get; set; }
     }
 }

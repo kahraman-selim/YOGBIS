@@ -198,7 +198,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.OkulKodu = model.OkulKodu;
                         data.OkulAdi = model.OkulAdi;
                         data.UlkeId = model.UlkeId;
-                        data.KullaniciId = user.LoginId;
+                        data.KaydedenId = user.LoginId;
 
                         _unitOfWork.okullarRepository.Update(data);
                         _unitOfWork.Save();

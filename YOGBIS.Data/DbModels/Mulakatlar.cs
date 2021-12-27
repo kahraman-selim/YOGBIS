@@ -21,7 +21,7 @@ namespace YOGBIS.Data.DbModels
         public bool? Durumu { get; set; }
         public string MulakatAciklama { get; set; }
         public string KaydedenId { get; set; }
-        [ForeignKey("KullaniciId")]
+        [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
         public List<MulakatSorulari> MulakatSorularis { get; set; }
         public List<Adaylar> Adaylars { get; set; }

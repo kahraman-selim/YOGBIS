@@ -24,7 +24,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OgrencilerVM>> OgrencileriGetir()
         {
-            var data = _unitOfWork.ogrencilerRepository.GetAll(includeProperties: "Okullar,Ulkeler,Kullanici").OrderBy(u => u.Ulkeler.UlkeAdi).ThenBy(o=>o.Okullar.OkulAdi).ToList();
+            var data = _unitOfWork.ogrencilerRepository.GetAll(includeProperties: "Okullar,Ulkeler,Kullanici")
+                .OrderBy(u => u.Siniflar.Subeler.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi)
+                .ThenBy(o=>o.Siniflar.Subeler.Okullar.OkulAdi).ToList();
 
             if (data != null)
             {
@@ -35,18 +37,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new OgrencilerVM()
                     {
                         OgrencilerId=item.OgrencilerId,
-                        TCEOg=item.TCEOg,
-                        TCKOg=item.TCKOg,
-                        DEOg=item.DEOg,
-                        DKOg=item.DKOg,
-                        Ay= item.Ay,
-                        Yil =item.Yil,
-                        OkulId = item.OkulId,
-                        OkulAdi = item.Okullar.OkulAdi,
-                        UlkeId = item.UlkeId,
-                        UlkeAdi = item.Ulkeler.UlkeAdi,
+                        
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KullaniciId,
+                        KullaniciId = item.KaydedenId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
                 }
@@ -59,7 +52,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OgrencilerVM>> OgrenciGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici,Okullar,Ulkeler").OrderBy(u => u.Okullar.OkulAdi).ToList();
+            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici,Okullar,Ulkeler")
+                .OrderBy(u => u.Siniflar.Subeler.Okullar.OkulAdi).ToList();
             if (data != null)
             {
                 List<OgrencilerVM> returnData = new List<OgrencilerVM>();
@@ -69,18 +63,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new OgrencilerVM()
                     {
                         OgrencilerId = item.OgrencilerId,
-                        TCEOg = item.TCEOg,
-                        TCKOg = item.TCKOg,
-                        DEOg = item.DEOg,
-                        DKOg = item.DKOg,
-                        Ay = item.Ay,
-                        Yil = item.Yil,
-                        OkulId =item.OkulId,
-                        OkulAdi=item.Okullar.OkulAdi,
-                        UlkeId=item.UlkeId,
-                        UlkeAdi=item.Ulkeler.UlkeAdi,
+
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KullaniciId,
+                        KullaniciId = item.KaydedenId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty                        
                         
                     });
@@ -100,15 +85,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     
                     Ogrenciler ogrenciler= new Ogrenciler();
-                    ogrenciler.KullaniciId = user.LoginId;
-                    ogrenciler.TCEOg = model.TCEOg;
-                    ogrenciler.TCKOg = model.TCKOg;
-                    ogrenciler.DEOg = model.DEOg;
-                    ogrenciler.DKOg = model.DKOg;
-                    ogrenciler.Ay = model.Ay;
-                    ogrenciler.Yil = model.Yil;
-                    ogrenciler.OkulId = model.OkulId;
-                    ogrenciler.UlkeId = model.UlkeId;
+                    ogrenciler.KaydedenId = user.LoginId;
+ 
 
                     _unitOfWork.ogrencilerRepository.Add(ogrenciler);
                     _unitOfWork.Save();
@@ -135,15 +113,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     //var data = _unitOfWork.ogrencilerRepository.Get(model.OgrencilerId);
                     if (data != null)
                     {
-                        data.KullaniciId = user.LoginId;
-                        data.TCEOg = model.TCEOg;
-                        data.TCKOg = model.TCKOg;
-                        data.DEOg = model.DEOg;
-                        data.DKOg = model.DKOg;
-                        data.Ay = model.Ay;
-                        data.Yil = model.Yil;
-                        data.OkulId = model.OkulId;
-                        data.UlkeId = model.UlkeId;
+                        data.KaydedenId = user.LoginId;
+
 
                         _unitOfWork.ogrencilerRepository.Update(data);
                         _unitOfWork.Save();
@@ -183,7 +154,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OgrencilerVM>> OgrenciGetirUlkeId(int? ulkeId)
         {
-            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.UlkeId == ulkeId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
+            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.Siniflar.Subeler.Okullar.Sehirler.Eyaletler.UlkeId == ulkeId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
             if (data != null)
             {
                 List<OgrencilerVM> returnData = new List<OgrencilerVM>();
@@ -193,18 +164,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new OgrencilerVM()
                     {
                         OgrencilerId = item.OgrencilerId,
-                        TCEOg = item.TCEOg,
-                        TCKOg = item.TCKOg,
-                        DEOg = item.DEOg,
-                        DKOg = item.DKOg,
-                        Ay = item.Ay,
-                        Yil = item.Yil,
-                        OkulId = item.OkulId,
-                        OkulAdi = item.Okullar.OkulAdi,
-                        UlkeId = item.UlkeId,
-                        UlkeAdi = item.Ulkeler.UlkeAdi,
+
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KullaniciId,
+                        KullaniciId = item.KaydedenId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
 
                     });
@@ -263,7 +225,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OgrencilerVM>> OgrenciGetirOkulId(int? okulId)
         {
-            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.OkulId == okulId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
+            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.Siniflar.Subeler.OkulId == okulId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
             if (data != null)
             {
                 List<OgrencilerVM> returnData = new List<OgrencilerVM>();
@@ -273,18 +235,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new OgrencilerVM()
                     {
                         OgrencilerId = item.OgrencilerId,
-                        TCEOg = item.TCEOg,
-                        TCKOg = item.TCKOg,
-                        DEOg = item.DEOg,
-                        DKOg = item.DKOg,
-                        Ay = item.Ay,
-                        Yil = item.Yil,
-                        OkulId = item.OkulId,
-                        OkulAdi = item.Okullar.OkulAdi,
-                        UlkeId = item.UlkeId,
-                        UlkeAdi = item.Ulkeler.UlkeAdi,
+
+                        OkulId = item.Siniflar.Subeler.OkulId,
+                        OkulAdi = item.Siniflar.Subeler.Okullar.OkulAdi,
+                        UlkeId = item.Siniflar.Subeler.Okullar.Sehirler.Eyaletler.UlkeId,
+                        UlkeAdi = item.Siniflar.Subeler.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KullaniciId,
+                        KullaniciId = item.KaydedenId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
 
                     });

@@ -5,10 +5,11 @@ namespace YOGBIS.Data.DbModels
 {
     public class Adaylar:Base
     {
+        [Key]
         public string AdayTC { get; set; }
-        [ForeignKey("TcKimlikNo")]
-        public Kullanici Kullanici { get; set; }
         public string KaydedenId { get; set; }
+        [ForeignKey("KaydedenId")]        
+        public Kullanici Kullanici { get; set; }
         public string AdayAd { get; set; }
         public string AdayAd2 { get; set; }
         public string AdaySoyad { get; set; }
