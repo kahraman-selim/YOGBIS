@@ -45,7 +45,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruKategorilerPuan=item.SoruKategorilerPuan,
                         DereceId=item.Dereceler.DereceId,
                         DereceAdi=item.Dereceler.DereceAdi,
-                        KullaniciId=item.Kullanici.Id,
+                        KaydedenId =item.Kullanici.Id,
                         KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad
                     });
                 }
@@ -72,7 +72,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruKategorilerKullanimi=item.SoruKategorilerKullanimi,
                         SoruKategorilerPuan=item.SoruKategorilerPuan,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId=item.KaydedenId,
+                        KaydedenId =item.KaydedenId,
                         DereceId=item.Dereceler.DereceId,
                         DereceAdi=item.Dereceler.DereceAdi
                     });

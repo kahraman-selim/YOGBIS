@@ -77,7 +77,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         NotRenk=item.NotRenk,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad,
-                        KullaniciId = item.KaydedenId
+                        KaydedenId = item.KaydedenId
                     });
                 }
                 return new Result<List<NotlarVM>>(true, ResultConstant.RecordFound, returnData);
@@ -113,7 +113,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var not = _mapper.Map<NotlarVM, Notlar>(model);
-                    not.KullaniciId = user.LoginId;
+                    not.KaydedenId = user.LoginId;
                     _unitOfWork.notlarRepository.Add(not);
                     _unitOfWork.Save();
                     return new Result<NotlarVM>(true, ResultConstant.RecordCreateSuccess);
@@ -139,7 +139,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var not = _mapper.Map<NotlarVM, Notlar>(model);
-                    not.KullaniciId = user.LoginId;
+                    not.KaydedenId = user.LoginId;
                     _unitOfWork.notlarRepository.Update(not);
                     _unitOfWork.Save();
                     return new Result<NotlarVM>(true, ResultConstant.RecordCreateSuccess);

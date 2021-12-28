@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
 {
@@ -10,6 +9,6 @@ namespace YOGBIS.Common.VModels
         public int KitaId { get; set; }
         public string KitaAdi { get; set; }
         public string KitaAciklama { get; set; }
-        public List<UlkeGruplariKitalar> UlkeGruplariKitalars { get; set; }
+        public List<UlkeGruplariKitalarVM> UlkeGruplariKitalars { get; set; }
     }
 }

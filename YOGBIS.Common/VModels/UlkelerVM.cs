@@ -20,7 +20,7 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Kıta adı zorunlu bir alandır")]
         public string KitaAdi { get; set; }
         public KitalarVM Kitalar { get; set; }
-        public string KullaniciId { get; set; }
+        public string KaydedenId { get; set; }
         public string KullaniciAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
     }

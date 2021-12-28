@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Common.VModels
 {
@@ -11,8 +12,10 @@ namespace YOGBIS.Common.VModels
         public string SehirAciklama { get; set; }
         public int EyaletId { get; set; }
         public EyaletlerVM Eyaletler { get; set; }
-        public string KullaniciId { get; set; }
-        public string KullaniciAdi { get; set; }
+        public string KaydedenId { get; set; }
         public KullaniciVM Kullanici { get; set; }
+        public List<OkullarVM> Okullars { get; set; }
+        public List<UniversitelerVM> Universitelers { get; set; }
+        public List<OgretmenlerVM> Ogretmenlers { get; set; }
     }
 }

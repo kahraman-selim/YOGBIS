@@ -25,44 +25,44 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<MulakatSorulariVM>> MulakatSorulariGetir()
         {
             //1. Yöntem
-            //var data = _unitOfWork.mulakatSorulariRepository.GetAll().ToList();            
-            //var mulakatSorulari = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
-            //return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, mulakatSorulari);
+            var data = _unitOfWork.mulakatSorulariRepository.GetAll().ToList();
+            var mulakatSorulari = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
+            return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, mulakatSorulari);
 
-            #region 2.Yöntem
-            var data = _unitOfWork.mulakatSorulariRepository.GetAll(includeProperties: "SoruBankasi,SoruKategoriler,Dereceler,Mulakatlar,Kullanici").ToList();
-            var soruBankasi = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
+            //#region 2.Yöntem
+            //var data = _unitOfWork.mulakatSorulariRepository.GetAll(includeProperties: "SoruBankasi,SoruKategoriler,Dereceler,Mulakatlar,Kullanici").ToList();
+            //var soruBankasi = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
 
-            if (data != null)
-            {
-                List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
+            //if (data != null)
+            //{
+            //    List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
 
-                foreach (var item in data)
-                {
-                    returnData.Add(new MulakatSorulariVM()
-                    {
-                        MulakatSorulariId=item.MulakatSorulariId,
-                        SoruSiraNo=item.SoruSiraNo,
-                        //SoruId=item.SoruBankasi.SoruBankasiId,
-                        //SoruKategoriId=item.SoruKategoriler.SoruKategorilerId,
-                        //SoruKategoriAdi=item.SoruKategoriler.SoruKategorilerAdi,
-                        //DereceId=item.Dereceler.DereceId,
-                        //DereceAdi=item.Dereceler.DereceAdi,
-                        Soru=item.Soru,
-                        Cevap=item.Cevap,
-                        MulakatId=item.Mulakatlar.MulakatId,
-                        MulakatAdi=item.Mulakatlar.MulakatAdi,
-                        KullaniciId=item.Kullanici.Id,
-                        KullaniciAdi=item.Kullanici.Ad+" "+item.Kullanici.Soyad
-                    });
-                }
-                return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
-            }
-            else
-            {
-                return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
-            }
-            #endregion
+            //    foreach (var item in data)
+            //    {
+            //        returnData.Add(new MulakatSorulariVM()
+            //        {
+            //            MulakatSorulariId=item.MulakatSorulariId,
+            //            SoruSiraNo=item.SoruSiraNo,
+            //            //SoruId=item.SoruBankasi.SoruBankasiId,
+            //            //SoruKategoriId=item.SoruKategoriler.SoruKategorilerId,
+            //            //SoruKategoriAdi=item.SoruKategoriler.SoruKategorilerAdi,
+            //            //DereceId=item.Dereceler.DereceId,
+            //            //DereceAdi=item.Dereceler.DereceAdi,
+            //            Soru=item.Soru,
+            //            Cevap=item.Cevap,
+            //            MulakatId=item.Mulakatlar.MulakatId,
+            //            MulakatAdi=item.Mulakatlar.MulakatAdi,
+            //            KaydedenId =item.Kullanici.Id,
+            //            //KullaniciAdi=item.Kullanici.Ad+" "+item.Kullanici.Soyad
+            //        });
+            //    }
+            //    return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
+            //}
+            //else
+            //{
+            //    return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
+            //}
+            //#endregion
         }
 
         public Result<MulakatSorulariVM> MulakatSorulariGetir(int id)

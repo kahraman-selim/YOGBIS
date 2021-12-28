@@ -18,39 +18,39 @@
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-row">
                         <div class="col-md-4">
-                            <div class="form-group">
+                            @*<div class="form-group">
                                 <label asp-for="UlkeAdi" class="small mb-1 font-weight-bold">Ülke</label>
                                 @Html.DropDownListFor(u => u.UlkeId, new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Ülkeyi seçiniz", new { @class = "form-control-range form-control py-2" })
                                 <span class="text-danger" asp-validation-for="UlkeId"></span>
-                            </div>
+                            </div>*@
                         </div>
                         @*</div>
             <div class="form-row">*@
                         <div class="col-md-8">
-                            <div class="form-group">
+                            @*<div class="form-group">
                                 <label asp-for="OkulAdi" class="small mb-1 font-weight-bold">Okul Adı</label>
                                 @Html.DropDownListFor(u => u.OkulId, new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okul adını seçiniz", new { @class = "form-control-range form-control py-2" })
                                 <span class="text-danger" asp-validation-for="OkulId"></span>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="Yil" class="small mb-1 font-weight-bold">Dönem Yıl</label>
+                                <!--<label asp-for="Yil" class="small mb-1 font-weight-bold">Dönem Yıl</label>
                                 <select asp-for="Yil" class="form-control-range form-control py-2" aria-label="Default select example">
-                                    <option asp-for="Yil" selected class="text-center"></option>
+                                    <option asp-for="Yil" selected class="text-center"></option>-->
                                     @*<option asp-for="Yil" value="2020">2020</option>*@
-                                    <option asp-for="Yil" value="2021">2021</option>
+                                    <!--<option asp-for="Yil" value="2021">2021</option>
                                 </select>
-                                <span class="text-danger" asp-validation-for="Yil"></span>
+                                <span class="text-danger" asp-validation-for="Yil"></span>-->
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="Ay" class="small mb-1 font-weight-bold">Dönem Ay</label>
+                                <!--<label asp-for="Ay" class="small mb-1 font-weight-bold">Dönem Ay</label>-->
                                 @*@Html.DropDownList("AyListesi", new SelectList(Enum.GetValues(typeof(EnumAylar))), "Ay Seç", new { @class = "form-control-range form-control py-1 w-100" })*@
-                                <select asp-for="Ay" class="form-control-range form-control py-2" aria-label="Default select example">
+                                <!--<select asp-for="Ay" class="form-control-range form-control py-2" aria-label="Default select example">
                                     <option asp-for="Ay" selected class="text-center"></option>
                                     <option asp-for="Ay" value="Ocak">Ocak</option>
                                     <option asp-for="Ay" value="Şubat">Şubat</option>
@@ -65,23 +65,23 @@
                                     <option asp-for="Ay" value="Kasım">Kasım</option>
                                     <option asp-for="Ay" value="Aralık">Aralık</option>
                                 </select>
-                                <span class="text-danger" asp-validation-for="Ay"></span>
+                                <span class="text-danger" asp-validation-for="Ay"></span>-->
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-1">
                             <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">TC Erkek</label>
+                                @*<label class="small mb-1 font-weight-bold">TC Erkek</label>
                                 <input type="number" min="0" max="9999" asp-for="TCEOg" class="form-control py-2 ogrsay" id="TCErkek" placeholder="">
-                                <span class="text-danger" asp-validation-for="TCEOg"></span>
+                                <span class="text-danger" asp-validation-for="TCEOg"></span>*@
                             </div>
                         </div>
                         <div class="col-md-1">
                             <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">TC Kız</label>
+                                @*<label class="small mb-1 font-weight-bold">TC Kız</label>
                                 <input type="number" min="0" max="9999" asp-for="TCKOg" class="form-control py-2 ogrsay" id="TCKiz" placeholder="">
-                                <span class="text-danger" asp-validation-for="TCKOg"></span>
+                                <span class="text-danger" asp-validation-for="TCKOg"></span>*@
                             </div>
                         </div>
                         <div class="col-md-1">
@@ -95,16 +95,16 @@
                     <div class="form-row">
                         <div class="col-md-1">
                             <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">Diğer Erkek</label>
+                                @*<label class="small mb-1 font-weight-bold">Diğer Erkek</label>
                                 <input type="number" min="0" max="9999" asp-for="DEOg" class="form-control py-2 ogrsay" id="DigerErkek" placeholder="">
-                                <span class="text-danger" asp-validation-for="DEOg"></span>
+                                <span class="text-danger" asp-validation-for="DEOg"></span>*@
                             </div>
                         </div>
                         <div class="col-md-1">
                             <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">Diğer Kız</label>
+                                @*<label class="small mb-1 font-weight-bold">Diğer Kız</label>
                                 <input type="number" min="0" max="9999" asp-for="DKOg" class="form-control py-2 ogrsay" id="DigerKiz" placeholder="">
-                                <span class="text-danger" asp-validation-for="DKOg"></span>
+                                <span class="text-danger" asp-validation-for="DKOg"></span>*@
                             </div>
                         </div>
                         <div class="col-md-1">

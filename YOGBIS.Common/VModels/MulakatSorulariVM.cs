@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
 {
@@ -13,18 +12,15 @@ namespace YOGBIS.Common.VModels
                 
         [Required(ErrorMessage = "Soru Numarası yazınız...")]
         public int SoruId { get; set; }
-        public SoruBankasiVM SoruBankasi { get; set; }
-                
+                       
         [Required(ErrorMessage = "Kategori seçimi yazınız...")]
         public int SoruKategoriId { get; set; }
         public string SoruKategoriAdi { get; set; }
-        public SoruKategorilerVM SoruKategoriler { get; set; }
-
+        
         [Required(ErrorMessage = "Soru Derecesini seçiniz...")]
         public int DereceId { get; set; }
         public string DereceAdi { get; set; }
-        public Dereceler Dereceler { get; set; }
-
+       
         [Required(ErrorMessage = "Soruyu yazınız...")]
         public string Soru { get; set; }
 
@@ -33,7 +29,7 @@ namespace YOGBIS.Common.VModels
         public int MulakatId { get; set; }
         public string MulakatAdi { get; set; }
         public MulakatlarVM Mulakatlar { get; set; }
-        public string KullaniciId { get; set; }
+        public string KaydedenId { get; set; }
         public string KullaniciAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
     }

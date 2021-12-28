@@ -8,7 +8,7 @@ namespace YOGBIS.Data.DbModels
     public class Siniflar:Base
     {
         [Key]
-        public int SinifId { get; set; }      
+        public int SinifId { get; set; }
         public string SinifAdi { get; set; }
         public DateTime SinifAcilisTarihi { get; set; }
         public int SubeId { get; set; }
@@ -16,6 +16,7 @@ namespace YOGBIS.Data.DbModels
         public Subeler Subeler { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }        
+        public Kullanici Kullanici { get; set; }
+        public List<Ogrenciler> Ogrencilers { get; set; }
     }
 }

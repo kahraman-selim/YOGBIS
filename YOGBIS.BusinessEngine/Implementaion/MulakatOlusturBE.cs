@@ -50,7 +50,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         DereceAdi=item.Dereceler.DereceAdi,
                         Durumu=item.Durumu.HasValue,
                         MulakatAciklama=item.MulakatAciklama,
-                        KullaniciId=item.KaydedenId,
+                        KaydedenId=item.KaydedenId,
                         KullaniciAdi=item.Kullanici.Ad + " " + item.Kullanici.Soyad,
                         SorulanSoruSayisi=item.SorulanSoruSayisi,                        
                         KayitTarihi = item.KayitTarihi

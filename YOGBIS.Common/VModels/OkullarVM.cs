@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Common.VModels
 {
@@ -12,15 +14,20 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Okul adı zorunlu bir alandır")]
         public string OkulAdi { get; set; }
+        public string OkulLogo { get; set; }
+        public string OkulFoto { get; set; }
+        public bool? OkulLab { get; set; }
+        public bool? OkulKutuphane { get; set; }
+        public string OkulBilgi { get; set; }
+        public DateTime OkulAcilisTarihi { get; set; }
+        public bool? OkulDurumu { get; set; }
 
-        [Required(ErrorMessage = "Ülke seçimi yapınız")]
-        public int UlkeId { get; set; }        
-
-        [Required(ErrorMessage = "Ülke seçimi yapınız")]
-        public string UlkeAdi { get; set; }
-        public UlkelerVM Ulkeler { get; set; }
-        public string KullaniciId { get; set; }
-        public string KullaniciAdi { get; set; }
+        [Required(ErrorMessage = "Şehir seçimi yapınız")]
+        public int SehirId { get; set; }
+        public SehirlerVM Sehirler { get; set; }
+        public string KaydedenId { get; set; }
         public KullaniciVM Kullanici { get; set; }
+        public List<SubelerVM> Subelers { get; set; }
+        public List<OgretmenlerVM> Ogretmenlers { get; set; }
     }
 }

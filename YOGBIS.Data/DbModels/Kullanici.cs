@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Data.DbModels
 {
     public class Kullanici : IdentityUser
     {
-        public string TcKimlikNo { get; set; }
+        public int TcKimlikNo { get; set; }
         public string Ad { get; set; }
         public string Soyad { get; set; }
         public DateTime KayitTarihi { get; set; }
@@ -33,6 +32,7 @@ namespace YOGBIS.Data.DbModels
         public List<Subeler> Subelers { get; set; }
         public List<Siniflar> Siniflars { get; set; }
         public List<Ogrenciler> Ogrencilers { get; set; }
+        public List<GorevKaydi> GorevKaydis { get; set; }
         #endregion
     }
 }

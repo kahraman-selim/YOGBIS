@@ -13,6 +13,7 @@ namespace YOGBIS.Data.DbModels
         public Siniflar Siniflar { get; set; }
         public string Uyruk { get; set; }
         public bool Cinsiyet { get; set; }
+        public DateTime OkulKayitTarihi { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

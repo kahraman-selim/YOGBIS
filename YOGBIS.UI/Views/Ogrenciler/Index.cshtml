@@ -47,7 +47,7 @@
                         {
                             sirano++;
                     <tr>
-                        <td>@sirano</td>
+                        @*<td>@sirano</td>
                         <td>@item.UlkeAdi</td>
                         <td>@item.OkulAdi</td>
                         <td>@item.Yil</td>
@@ -65,7 +65,7 @@
                         @{ var topkz = Convert.ToInt32(item.TCKOg.ToString()) + Convert.ToInt32(item.DKOg.ToString());}
                         <td class="text-center">@topkz</td>
                         @{ var toplam = Convert.ToInt32(toper.ToString()) + Convert.ToInt32(topkz.ToString());}
-                        <td class="text-center">@toplam</td>
+                        <td class="text-center">@toplam</td>*@
                         <td class="text-center">
                             <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Ogrenciler" asp-action="Guncelle" asp-route-id="@item.OgrencilerId">
                                 <i class="fas fa-edit"></i>

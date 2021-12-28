@@ -30,43 +30,43 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkullarıGetir
         public Result<List<OkullarVM>> OkullariGetir()
         {
-            //var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Ulkeler,Kullanici").OrderBy(u => u.OkulAdi).ToList();
+            var data = _unitOfWork.okullarRepository.GetAll().OrderBy(u => u.OkulAdi).ToList();
+            var okullar = _mapper.Map<List<Okullar>, List<OkullarVM>>(data);
+            return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, okullar);
+
+            //var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Ulkeler,Kullanici").OrderBy(o => o.OkulAdi).OrderBy(u => u.Sehirler.Eyaletler.Ulkeler.UlkeAdi).ToList();
             //var okullar = _mapper.Map<List<Okullar>, List<OkullarVM>>(data);
-            //return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, okullar);
 
-            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Ulkeler,Kullanici").OrderBy(o => o.OkulAdi).OrderBy(u => u.Ulkeler.UlkeAdi).ToList();
-            //var okullar = _mapper.Map<List<Okullar>, List<OkullarVM>>(data);
+            //if (data != null)
+            //{
+            //    List<OkullarVM> returnData = new List<OkullarVM>();
 
-            if (data != null)
-            {
-                List<OkullarVM> returnData = new List<OkullarVM>();
-
-                foreach (var item in data)
-                {
-                    returnData.Add(new OkullarVM()
-                    {
-                        OkulId = item.OkulId,
-                        OkulKodu = item.OkulKodu,
-                        OkulAdi = item.OkulAdi,
-                        UlkeId = item.UlkeId,
-                        UlkeAdi = item.Ulkeler.UlkeAdi,
-                        KullaniciId = item.KullaniciId,
-                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
-                    });
-                }
-                return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, returnData);
-            }
-            else
-            {
-                return new Result<List<OkullarVM>>(false, ResultConstant.RecordNotFound);
-            }
+            //    foreach (var item in data)
+            //    {
+            //        returnData.Add(new OkullarVM()
+            //        {
+            //            OkulId = item.OkulId,
+            //            OkulKodu = item.OkulKodu,
+            //            OkulAdi = item.OkulAdi,
+            //            //UlkeId = item.UlkeId,
+            //            //UlkeAdi = item.Ulkeler.UlkeAdi,
+            //            KaydedenId = item.KaydedenId,
+            //            //KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+            //        });
+            //    }
+            //    return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, returnData);
+            //}
+            //else
+            //{
+            //    return new Result<List<OkullarVM>>(false, ResultConstant.RecordNotFound);
+            //}
         }
         #endregion
 
         #region OkullarıGetirAZ
         public Result<List<OkullarVM>> OkullariGetirAZ()
         {
-            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Ulkeler,Kullanici").OrderBy(o => o.OkulAdi).ToList();            
+            var data = _unitOfWork.okullarRepository.GetAll().OrderBy(o => o.OkulAdi).ToList();     //GetAll(includeProperties: "Ulkeler,Kullanici")       
 
             if (data != null)
             {
@@ -79,10 +79,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulId = item.OkulId,
                         OkulKodu = item.OkulKodu,
                         OkulAdi = item.OkulAdi,
-                        UlkeId = item.UlkeId,
-                        UlkeAdi = item.Ulkeler.UlkeAdi,
-                        KullaniciId = item.KullaniciId,
-                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                        //UlkeId = item.UlkeId,
+                        //UlkeAdi = item.Ulkeler.UlkeAdi,
+                        KaydedenId = item.KaydedenId,
+                        //KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
                 }
                 return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, returnData);
@@ -97,7 +97,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkulGetirKullanıcıId
         public Result<List<OkullarVM>> OkulGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.okullarRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Ulkeler,Kullanici").OrderBy(u => u.OkulAdi).ToList();
+            var data = _unitOfWork.okullarRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Ulkeler,Kullanici").OrderBy(u => u.OkulAdi).ToList();
             if (data != null)
             {
                 List<OkullarVM> returnData = new List<OkullarVM>();
@@ -109,10 +109,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulId = item.OkulId,
                         OkulKodu = item.OkulKodu,
                         OkulAdi = item.OkulAdi,
-                        UlkeId = item.UlkeId,
-                        UlkeAdi = item.Ulkeler.UlkeAdi,
-                        KullaniciId = item.KullaniciId,
-                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                        //UlkeId = item.UlkeId,
+                        //UlkeAdi = item.Ulkeler.UlkeAdi,
+                        KaydedenId = item.KaydedenId,
+                        //KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
                 }
                 return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, returnData);
@@ -136,11 +136,11 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okul.OkulId = data.OkulId;
                     okul.OkulKodu = data.OkulKodu;
                     okul.OkulAdi = data.OkulAdi;
-                    okul.UlkeId = data.UlkeId;
-                    okul.UlkeAdi = data.Ulkeler.UlkeAdi;
-                    okul.KullaniciId = data.KullaniciId;
-                    okul.KullaniciAdi = data.KullaniciId;
-                    okul.KullaniciAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+                    //okul.UlkeId = data.UlkeId;
+                    //okul.UlkeAdi = data.Ulkeler.UlkeAdi;
+                    okul.KaydedenId = data.KaydedenId;
+                    //okul.KullaniciAdi = data.KullaniciId;
+                    //okul.KullaniciAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
                     return new Result<OkullarVM>(true, ResultConstant.RecordFound, okul);
                 }
@@ -166,8 +166,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     Okullar okullar = new Okullar();
                     okullar.OkulKodu = model.OkulKodu;
                     okullar.OkulAdi = model.OkulAdi;
-                    okullar.UlkeId = model.UlkeId;
-                    okullar.KullaniciId = user.LoginId;
+                    //okullar.UlkeId = model.UlkeId;
+                    okullar.KaydedenId = user.LoginId;
                     _unitOfWork.okullarRepository.Add(okullar);
                     _unitOfWork.Save();
                     return new Result<OkullarVM>(true, ResultConstant.RecordCreateSuccess);
@@ -197,7 +197,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         data.OkulKodu = model.OkulKodu;
                         data.OkulAdi = model.OkulAdi;
-                        data.UlkeId = model.UlkeId;
+                        //data.UlkeId = model.UlkeId;
                         data.KaydedenId = user.LoginId;
 
                         _unitOfWork.okullarRepository.Update(data);

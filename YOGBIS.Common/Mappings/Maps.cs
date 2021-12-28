@@ -8,25 +8,32 @@ namespace YOGBIS.Common.Mappings
     {
         public Maps()
         {
-            CreateMap<UlkeGruplari, UlkeGruplariVM>().ReverseMap();
-            CreateMap<Kitalar, KitalarVM>().ReverseMap();
-            CreateMap<Ulkeler, UlkelerVM>().ReverseMap();
+            CreateMap<Adaylar, AdaylarVM>().ReverseMap();
+            CreateMap<Dereceler, DerecelerVM>().ReverseMap();
             CreateMap<Eyaletler, EyaletlerVM>().ReverseMap();
-            CreateMap<Sehirler, SehirlerVM>().ReverseMap();
-            CreateMap<SoruKategoriler, SoruKategorilerVM>().ReverseMap();
+            CreateMap<GorevKaydi, GorevKaydiVM>().ReverseMap();
+            CreateMap<Kitalar, KitalarVM>().ReverseMap();
+            CreateMap<Kullanici, KullaniciVM>().ReverseMap();
             CreateMap<Mulakatlar, MulakatlarVM>().ReverseMap();
             CreateMap<MulakatSorulari, MulakatSorulariVM>().ReverseMap();
-            CreateMap<SoruBankasi, SoruBankasiVM>().ReverseMap();            
-            CreateMap<SoruKategori, SoruKategoriVM>().ReverseMap();
-            CreateMap<Kullanici, KullaniciVM>().ReverseMap();
-            CreateMap<Dereceler, DerecelerVM>().ReverseMap();
-            CreateMap<UlkeGruplariKitalar, UlkeGruplariKitalarVM>().ReverseMap();
-            CreateMap<Okullar, OkullarVM>().ReverseMap();
-            CreateMap<OkulBilgi, OkulBilgiVM>().ReverseMap();
-            CreateMap<Ogrenciler, OgrencilerVM>().ReverseMap();
             CreateMap<Notlar, NotlarVM>().ReverseMap();
-            CreateMap<Adaylar, AdaylarVM>().ReverseMap();
+            CreateMap<Ogrenciler, OgrencilerVM>().ReverseMap();
+            CreateMap<Ogretmenler, OgretmenlerVM>().ReverseMap();
+            CreateMap<OkulBilgi, OkulBilgiVM>().ReverseMap();
+            CreateMap<Okullar, OkullarVM>().ReverseMap();
+            CreateMap<Okutmanlar, OkutmanlarVM>().ReverseMap();
+            CreateMap<Sehirler, SehirlerVM>().ReverseMap();
+            CreateMap<Siniflar, SiniflarVM>().ReverseMap();
+            CreateMap<SoruBankasi, SoruBankasiVM>().ReverseMap();
             CreateMap<SoruDerece, SoruDereceVM>().ReverseMap();
+            CreateMap<SoruKategori, SoruKategoriVM>().ReverseMap();
+            CreateMap<SoruKategoriler, SoruKategorilerVM>().ReverseMap();
+            CreateMap<Subeler, SubelerVM>().ReverseMap();
+            CreateMap<UlkeGruplari, UlkeGruplariVM>().ReverseMap();
+            CreateMap<UlkeGruplariKitalar, UlkeGruplariKitalarVM>().ReverseMap();
+            CreateMap<Ulkeler, UlkelerVM>().ReverseMap();
+            CreateMap<Universiteler, UniversitelerVM>().ReverseMap();
+
         }
     }
 }

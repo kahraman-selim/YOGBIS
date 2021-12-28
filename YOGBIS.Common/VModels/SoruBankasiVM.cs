@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using YOGBIS.Common.ConstantsModels;
-using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
 {
@@ -10,25 +9,11 @@ namespace YOGBIS.Common.VModels
         [Key]
         public int SoruBankasiId { get; set; }
 
-        [Required(ErrorMessage = "Kategoriyi seçiniz...")]
-        public int SoruKategorilerId { get; set; }
-
-        [Required(ErrorMessage = "Kategoriyi seçiniz...")]
-        public string SoruKategorilerAdi { get; set; }
-        public SoruKategorilerVM SoruKategoriler { get; set; }
-
         [Required(ErrorMessage = "Soruyu yazınız...")]
         public string Soru { get; set; }
 
         [Required(ErrorMessage = "Cevabı yazınız...")]
         public string Cevap { get; set; }
-
-        [Required(ErrorMessage = "Derecesini seçiniz...")]
-        public int DereceId { get; set; }
-
-        [Required(ErrorMessage = "Derecesini seçiniz...")]
-        public string DereceAdi { get; set; }
-        public DerecelerVM Dereceler { get; set; }
         public int SorulmaSayisi { get; set; } = 0;
 
         [Required(ErrorMessage = "Soru durumunu seçiniz...")]
@@ -36,7 +21,6 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Onay durumunu seçiniz...")]
         public EnumsSoruOnay OnayDurumu { get; set; }
-        public string OnayDurumuAciklama { get; set; }
         public string OnayAciklama { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }

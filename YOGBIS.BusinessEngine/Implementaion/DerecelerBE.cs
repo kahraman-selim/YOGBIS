@@ -75,7 +75,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         DereceAdi = item.DereceAdi,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad,
-                        KullaniciId = item.KaydedenId
+                        KaydedenId = item.KaydedenId
                     });
                 }
                 return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, returnData);

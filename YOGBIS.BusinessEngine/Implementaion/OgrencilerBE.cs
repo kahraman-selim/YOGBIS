@@ -24,9 +24,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OgrencilerVM>> OgrencileriGetir()
         {
-            var data = _unitOfWork.ogrencilerRepository.GetAll(includeProperties: "Okullar,Ulkeler,Kullanici")
+            var data = _unitOfWork.ogrencilerRepository.GetAll()
                 .OrderBy(u => u.Siniflar.Subeler.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi)
-                .ThenBy(o=>o.Siniflar.Subeler.Okullar.OkulAdi).ToList();
+                .ThenBy(o=>o.Siniflar.Subeler.Okullar.OkulAdi).ToList(); //GetAll(includeProperties: "Okullar,Ulkeler,Kullanici")
 
             if (data != null)
             {
@@ -39,7 +39,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OgrencilerId=item.OgrencilerId,
                         
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KaydedenId,
+                        KaydedenId = item.KaydedenId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
                 }
@@ -65,7 +65,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OgrencilerId = item.OgrencilerId,
 
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KaydedenId,
+                        KaydedenId = item.KaydedenId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty                        
                         
                     });
@@ -166,7 +166,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OgrencilerId = item.OgrencilerId,
 
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KaydedenId,
+                        KaydedenId = item.KaydedenId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
 
                     });
@@ -236,12 +236,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         OgrencilerId = item.OgrencilerId,
 
-                        OkulId = item.Siniflar.Subeler.OkulId,
-                        OkulAdi = item.Siniflar.Subeler.Okullar.OkulAdi,
-                        UlkeId = item.Siniflar.Subeler.Okullar.Sehirler.Eyaletler.UlkeId,
-                        UlkeAdi = item.Siniflar.Subeler.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi,
+                        //OkulId = item.Siniflar.Subeler.OkulId,
+                        //OkulAdi = item.Siniflar.Subeler.Okullar.OkulAdi,
+                        //UlkeId = item.Siniflar.Subeler.Okullar.Sehirler.Eyaletler.UlkeId,
+                        //UlkeAdi = item.Siniflar.Subeler.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KaydedenId,
+                        KaydedenId = item.KaydedenId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
 
                     });

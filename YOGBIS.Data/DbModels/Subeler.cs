@@ -8,7 +8,7 @@ namespace YOGBIS.Data.DbModels
     public class Subeler:Base
     {
         [Key]
-        public int SubeId { get; set; }      
+        public int SubeId { get; set; }
         public string OkulAdi { get; set; }
         public DateTime SubeAcilisTarihi { get; set; }
         public int OkulId { get; set; }

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace YOGBIS.Data.DbModels
+﻿namespace YOGBIS.Data.DbModels
 {
     public class SoruKategori
     {

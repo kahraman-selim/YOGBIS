@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Common.VModels
@@ -27,10 +28,12 @@ namespace YOGBIS.Common.VModels
         public DateTime BitisTarihi { get; set; }
         public int AdaySayisi { get; set; } = 0;
         public int SorulanSoruSayisi { get; set; } = 0;
-        public bool Durumu { get; set; } = true;
+        public bool? Durumu { get; set; } = true;
         public string MulakatAciklama { get; set; }
-        public string KullaniciId { get; set; }
+        public string KaydedenId { get; set; }
         public string KullaniciAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
+        public List<MulakatSorulariVM> MulakatSorularis { get; set; }
+        public List<AdaylarVM> Adaylars { get; set; }
     }
 }

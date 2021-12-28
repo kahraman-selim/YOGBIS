@@ -59,11 +59,18 @@ namespace YOGBIS.Data.DataContext
         );
             #endregion
 
+            #region FP
             builder.Entity<SoruKategori>()
-                .HasKey(o => new { o.SoruId, o.KategoriId });
+        .HasKey(o => new { o.SoruId, o.KategoriId });
 
             builder.Entity<SoruDerece>()
-                .HasKey(o => new { o.SoruId, o.DereceId });            
+                .HasKey(o => new { o.SoruId, o.DereceId });
+
+            builder.Entity<UlkeGruplariKitalar>()
+                .HasKey(o => new { o.KitaId, o.UlkeGrupId });
+
+            builder.Entity<GorevKaydi>()
+                .HasKey(o => new { o.GorevId, o.GorevliTC });
 
             builder.Entity<SoruDerece>()
                 .HasOne<SoruBankasi>(s => s.SoruBankasi)
@@ -99,34 +106,36 @@ namespace YOGBIS.Data.DataContext
                 .HasOne<UlkeGruplari>(s => s.UlkeGruplari)
                 .WithMany(g => g.UlkeGruplariKitalars)
                 .HasForeignKey(f => f.UlkeGrupId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade); 
+            #endregion
         }
 
-        #region DbSetler
-        public DbSet<Kullanici> Kullanicis { get; set; }
+        #region DbSets
+        public DbSet<Adaylar> Adaylars { get; set; }
+        public DbSet<Dereceler> Derecelers { get; set; }
         public DbSet<Eyaletler> Eyaletlers { get; set; }
+        public DbSet<GorevKaydi> GorevKaydis { get; set; }
         public DbSet<Kitalar> Kitalars { get; set; }
-        public DbSet<UlkeGruplari> UlkeGruplaris { get; set; }
-        public DbSet<Ulkeler> Ulkelers { get; set; }
-        public DbSet<Sehirler> Sehirlers { get; set; }
+        public DbSet<Kullanici> Kullanicis { get; set; }
         public DbSet<Mulakatlar> Mulakatlars { get; set; }
         public DbSet<MulakatSorulari> MulakatSorularis { get; set; }
-        public DbSet<SoruBankasi> SoruBankasis { get; set; }        
+        public DbSet<Notlar> Notlars { get; set; }
+        public DbSet<Ogrenciler> Ogrencilers { get; set; }
+        public DbSet<Ogretmenler> Ogretmenlers { get; set; }
+        public DbSet<OkulBilgi> OkulBilgis { get; set; } // geçici tablo
+        public DbSet<Okullar> Okullars { get; set; }
+        public DbSet<Okutmanlar> Okutmanlars { get; set; }
+        public DbSet<Sehirler> Sehirlers { get; set; }
+        public DbSet<Siniflar> Siniflars { get; set; }
+        public DbSet<SoruBankasi> SoruBankasis { get; set; }
+        public DbSet<SoruDerece> SoruDereces { get; set; }
         public DbSet<SoruKategori> SoruKategoris { get; set; }
         public DbSet<SoruKategoriler> SoruKategorilers { get; set; }
-        public DbSet<UlkeGruplariKitalar> UlkeGruplariKitalars { get; set; }        
-        public DbSet<Dereceler> Derecelers { get; set; }
-        public DbSet<Okullar> Okullars { get; set; }
-        public DbSet<OkulBilgi> OkulBilgis { get; set; }        
-        public DbSet<Notlar> Notlars { get; set; }
-        public DbSet<Adaylar> Adaylars { get; set; }
-        public DbSet<SoruDerece> SoruDereces { get; set; }
-        public DbSet<Ogretmenler> Ogretmenlers { get; set; }
-        public DbSet<Okutmanlar> Okutmanlars { get; set; }
-        public DbSet<Universiteler> Universitelers { get; set; }
         public DbSet<Subeler> Subelers { get; set; }
-        public DbSet<Siniflar> Siniflars { get; set; }
-        public DbSet<Ogrenciler> Ogrencilers { get; set; }
+        public DbSet<UlkeGruplari> UlkeGruplaris { get; set; }
+        public DbSet<UlkeGruplariKitalar> UlkeGruplariKitalars { get; set; }
+        public DbSet<Ulkeler> Ulkelers { get; set; }
+        public DbSet<Universiteler> Universitelers { get; set; }        
 
         #endregion
     }

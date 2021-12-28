@@ -42,7 +42,7 @@
                                         @item.SoruBankasiId
                                     </a>
                                 </td>
-                                @if (item.OnayDurumu == EnumsSoruOnay.Onaya_Gonderildi)
+                                @*@if (item.OnayDurumu == EnumsSoruOnay.Onaya_Gonderildi)
                                 {
                                     @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                                     {
@@ -69,7 +69,7 @@
                                 else
                                 {
                                     <td class="text-capitalize">@item.OnaylayanAdi</td>
-                                }
+                                }*@
                                 <td>@item.Soru</td>
                                 <td>@item.Cevap</td>
                             </tr>

@@ -15,7 +15,7 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Bitiş tarihini seçiniz")]
         public DateTime BiTarihi { get; set; }
         public string NotRenk { get; set; }
-        public string KullaniciId { get; set; }
+        public string KaydedenId { get; set; }
         public string KullaniciAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
     }

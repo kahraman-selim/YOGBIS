@@ -55,7 +55,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OnaylayanId = item.OnaylayanId,
                         OnaylayanAdi = item.Onaylayan.Ad + " " + item.Onaylayan.Soyad,
                         OnayDurumu = (EnumsSoruOnay)item.OnayDurumu,
-                        OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
+                        //OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
                         OnayAciklama = item.OnayAciklama,
                         KayitTarihi = item.KayitTarihi
                     });
@@ -96,7 +96,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OnaylayanId = item.OnaylayanId,
                         //OnaylayanAdi = item.Onaylayan.Ad,
                         OnayDurumu = (EnumsSoruOnay)item.OnayDurumu,
-                        OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
+                        //OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
                         OnayAciklama = item.OnayAciklama,
                         KayitTarihi = item.KayitTarihi
                     });
@@ -138,7 +138,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OnaylayanId = item.OnaylayanId,
                         OnaylayanAdi = item.Onaylayan != null ? item.Onaylayan.Ad + " " + item.Onaylayan.Soyad : string.Empty,
                         OnayDurumu = (EnumsSoruOnay)item.OnayDurumu,
-                        OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
+                        //OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
                         OnayAciklama = item.OnayAciklama,
                         KayitTarihi = item.KayitTarihi
                     });
