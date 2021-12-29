@@ -12,7 +12,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<AktivitelerVM> EtkinlikGetir(int id);
         Result<AktivitelerVM> EtkinlikGuncelle(AktivitelerVM model, SessionContext user);        
         Result<bool> EtkinlikSil(int id);
-        Result<List<AktivitelerVM>> EtkinlikleriGetirKullaniciId(string userId);
+        Result<List<AktivitelerVM>> EtkinlikGetirKullaniciId(string userId);
         Result<List<AktivitelerVM>> EtkinlikGetirUlkeId(int ulkeId);
         Result<List<AktivitelerVM>> EtkinlikGetirOkulId(int okulId);
     }

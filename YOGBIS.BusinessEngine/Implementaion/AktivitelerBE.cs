@@ -129,21 +129,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     Aktiviteler Etkinlik= new Aktiviteler();
-                    Etkinlik.KullaniciId = user.LoginId;
-                    Etkinlik.MdYrdAdiSoyadi = model.MdYrdAdiSoyadi;
-                    Etkinlik.MdYrdDonusYil = model.MdYrdDonusYil;
-                    Etkinlik.MdYrdEPosta = model.MdYrdEPosta;
-                    Etkinlik.MdYrdTelefon = model.MdYrdTelefon;
-                    Etkinlik.MudurAdiSoyadi = model.MudurAdiSoyadi;
-                    Etkinlik.MudurDonusYil = model.MudurDonusYil;
-                    Etkinlik.MudurEPosta = model.MudurEPosta;
-                    Etkinlik.MudurTelefon = model.MudurTelefon;
-                    Etkinlik.OkulAdres = model.OkulAdres;
+                    Etkinlik.AktiviteAdi = model.AktiviteAdi;
+                    Etkinlik.AktiviteBilgi = model.AktiviteBilgi;
+                    Etkinlik.BasTarihi = model.BasTarihi;
+                    Etkinlik.BitTarihi = model.BitTarihi;
+                    Etkinlik.DuzenleyenAdiSoyadi = model.DuzenleyenAdiSoyadi;
+                    Etkinlik.KatilimciSayisi = model.KatilimciSayisi;
+                    Etkinlik.KayitTarihi = model.KayitTarihi;
                     Etkinlik.OkulId = model.OkulId;
-                    Etkinlik.OkulTelefon = model.OkulTelefon;
-                    Etkinlik.UlkeId = model.UlkeId;
+                    Etkinlik.KaydedenId = user.LoginId;
                                        
-                    _unitOfWork.EtkinlikRepository.Add(Etkinlik);
+                    _unitOfWork.aktivitelerRepository.Add(Etkinlik);
                     _unitOfWork.Save();
                     return new Result<AktivitelerVM>(true, ResultConstant.RecordCreateSuccess);
                 }
@@ -160,55 +156,51 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<AktivitelerVM> EtkinlikGuncelle(AktivitelerVM model, SessionContext user)
         {
-            if (model.EtkinlikId>0)
+            if (model.AktiviteId>0)
             {
                 try
                 {
-                    //var Etkinlik = _mapper.Map<EtkinlikVM, Etkinlik>(model);
-                    var data = _unitOfWork.EtkinlikRepository.Get(model.EtkinlikId);
+                    
+                    var data = _unitOfWork.aktivitelerRepository.Get(model.AktiviteId);
                     if (data!=null)
                     {
-                        data.KullaniciId = user.LoginId;
-                        data.MdYrdAdiSoyadi = model.MdYrdAdiSoyadi;
-                        data.MdYrdDonusYil = model.MdYrdDonusYil;
-                        data.MdYrdEPosta = model.MdYrdEPosta;
-                        data.MdYrdTelefon = model.MdYrdTelefon;
-                        data.MudurAdiSoyadi = model.MudurAdiSoyadi;
-                        data.MudurDonusYil = model.MudurDonusYil;
-                        data.MudurEPosta = model.MudurEPosta;
-                        data.MudurTelefon = model.MudurTelefon;
-                        data.OkulAdres = model.OkulAdres;
+                        data.AktiviteAdi = model.AktiviteAdi;
+                        data.AktiviteBilgi = model.AktiviteBilgi;
+                        data.BasTarihi = model.BasTarihi;
+                        data.BitTarihi = model.BitTarihi;
+                        data.DuzenleyenAdiSoyadi = model.DuzenleyenAdiSoyadi;
+                        data.KatilimciSayisi = model.KatilimciSayisi;
+                        data.KayitTarihi = model.KayitTarihi;
                         data.OkulId = model.OkulId;
-                        data.OkulTelefon = model.OkulTelefon;
-                        data.UlkeId = model.UlkeId;
+                        data.KaydedenId = user.LoginId;
 
-                        _unitOfWork.EtkinlikRepository.Update(data);
+                        _unitOfWork.aktivitelerRepository.Update(data);
                         _unitOfWork.Save();
-                        return new Result<EtkinlikVM>(true, ResultConstant.RecordCreateSuccess);
+                        return new Result<AktivitelerVM>(true, ResultConstant.RecordCreateSuccess);
                     }
                     else
                     {
-                        return new Result<EtkinlikVM>(false, "Lütfen kayıt seçiniz");
+                        return new Result<AktivitelerVM>(false, "Lütfen kayıt seçiniz");
                     }
 
                 }
                 catch (Exception ex)
                 {
 
-                    return new Result<EtkinlikVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                    return new Result<AktivitelerVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
                 }
             }
             else
             {
-                return new Result<EtkinlikVM>(false, "Lütfen kayıt seçiniz");
+                return new Result<AktivitelerVM>(false, "Lütfen kayıt seçiniz");
             }
         }
         public Result<bool> EtkinlikSil(int id)
         {
-            var data = _unitOfWork.EtkinlikRepository.Get(id);
+            var data = _unitOfWork.aktivitelerRepository.Get(id);
             if (data != null)
             {
-                _unitOfWork.EtkinlikRepository.Remove(data);
+                _unitOfWork.aktivitelerRepository.Remove(data);
                 _unitOfWork.Save();
                 return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
             }
@@ -217,46 +209,70 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         }
-        public Result<List<AktivitelerVM>> EtkinlikGetirUlkeId(int ulkeId)
+        public Result<List<AktivitelerVM>> EtkinlikGetirUlkeId(int okulId)
         {
-            var data = _unitOfWork.EtkinlikRepository.GetAll(u => u.UlkeId == ulkeId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
+            var data = _unitOfWork.aktivitelerRepository.GetAll(u => u.OkulId == okulId, includeProperties: "Kullanici,Okullar").ToList();
             if (data != null)
             {
-                List<EtkinlikVM> returnData = new List<EtkinlikVM>();
+                List<AktivitelerVM> returnData = new List<AktivitelerVM>();
 
                 foreach (var item in data)
                 {
-                    returnData.Add(new EtkinlikVM()
+                    returnData.Add(new AktivitelerVM()
                     {
-                        EtkinlikId = item.EtkinlikId,
-                        OkulTelefon = item.OkulTelefon,
-                        OkulAdres = item.OkulAdres,
-                        //*************************                        
-                        MudurAdiSoyadi = item.MudurAdiSoyadi,
-                        MudurTelefon = item.MudurTelefon,
-                        MudurEPosta = item.MudurEPosta,
-                        MudurDonusYil = item.MudurDonusYil,
-                        //****************************
-                        MdYrdAdiSoyadi = item.MdYrdAdiSoyadi,
-                        MdYrdTelefon = item.MdYrdTelefon,
-                        MdYrdEPosta = item.MdYrdEPosta,
-                        MdYrdDonusYil = item.MdYrdDonusYil,
-                        //********************************
+                        AktiviteId=item.AktiviteId,
+                        AktiviteAdi=item.AktiviteAdi,
+                        AktiviteBilgi=item.AktiviteBilgi,
+                        BasTarihi=item.BasTarihi,
+                        BitTarihi=item.BitTarihi,
+                        DuzenleyenAdiSoyadi=item.DuzenleyenAdiSoyadi,
+                        KatilimciSayisi=item.KatilimciSayisi,
                         OkulId = item.OkulId,
                         OkulAdi = item.Okullar.OkulAdi,
-                        UlkeId = item.UlkeId,
-                        UlkeAdi = item.Ulkeler.UlkeAdi,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KullaniciId,
-                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                        KaydedenId = item.KaydedenId,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
 
                     });
                 }
-                return new Result<List<EtkinlikVM>>(true, ResultConstant.RecordFound, returnData);
+                return new Result<List<AktivitelerVM>>(true, ResultConstant.RecordFound, returnData);
             }
             else
             {
-                return new Result<List<EtkinlikVM>>(false, ResultConstant.RecordNotFound);
+                return new Result<List<AktivitelerVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        public Result<List<AktivitelerVM>> EtkinlikGetirOkulId(int okulId)
+        {
+            var data = _unitOfWork.aktivitelerRepository.GetAll(u => u.OkulId == okulId, includeProperties: "Kullanici,Okullar").ToList();
+            if (data != null)
+            {
+                List<AktivitelerVM> returnData = new List<AktivitelerVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new AktivitelerVM()
+                    {
+                        AktiviteId = item.AktiviteId,
+                        AktiviteAdi = item.AktiviteAdi,
+                        AktiviteBilgi = item.AktiviteBilgi,
+                        BasTarihi = item.BasTarihi,
+                        BitTarihi = item.BitTarihi,
+                        DuzenleyenAdiSoyadi = item.DuzenleyenAdiSoyadi,
+                        KatilimciSayisi = item.KatilimciSayisi,
+                        OkulId = item.OkulId,
+                        OkulAdi = item.Okullar.OkulAdi,
+                        KayitTarihi = item.KayitTarihi,
+                        KaydedenId = item.KaydedenId,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+
+                    });
+                }
+                return new Result<List<AktivitelerVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<AktivitelerVM>>(false, ResultConstant.RecordNotFound);
             }
         }
     }

@@ -46,8 +46,9 @@ namespace YOGBIS.UI
             services.AddScoped<IUlkelerBE, UlkelerBE>();
             services.AddScoped<IKitalarBE, KitalarBE>();
             services.AddScoped<IOkullarBE, OkullarBE>();
-            services.AddScoped<IOkulBilgiBE, OkulBilgiBE>();
-            services.AddScoped<IOgrencilerBE, OgrencilerBE>();
+            services.AddScoped<IOkulBilgiBE, OkulBilgiBE>(); //gecici tablo
+            services.AddScoped<IOgrencilerBE, OgrencilerBE>(); //gecici tablo
+            services.AddScoped<IAktivitelerBE, AktivitelerBE>(); //gecici tablo
             services.AddScoped<INotlarBE, NotlarBE>();
             services.AddScoped<IMulakatOlusturBE, MulakatOlusturBE>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -166,7 +166,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     Okullar okullar = new Okullar();
                     okullar.OkulKodu = model.OkulKodu;
                     okullar.OkulAdi = model.OkulAdi;
-                    //okullar.UlkeId = model.UlkeId;
+                    okullar.OkulLab = model.OkulLab;
+                    okullar.OkulKutuphane = model.OkulKutuphane;
+                    okullar.OkulBilgi = model.OkulBilgi;
+                    okullar.OkulAcilisTarihi = model.OkulAcilisTarihi;
+                    okullar.OkulDurumu = true;
+                    okullar.SehirId = model.Sehirler.SehirId;
+                    okullar.Sehirler.SehirAdi = model.Sehirler.SehirAdi;
+                    okullar.Sehirler.EyaletId = model.Sehirler.EyaletId;
+                    okullar.Sehirler.Eyaletler.EyaletAdi = model.Sehirler.Eyaletler.EyaletAdi;
+                    
                     okullar.KaydedenId = user.LoginId;
                     _unitOfWork.okullarRepository.Add(okullar);
                     _unitOfWork.Save();

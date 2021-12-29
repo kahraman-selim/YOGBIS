@@ -8,13 +8,15 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public int AdayId { get; set; }
         public int AdayTC { get; set; }
-        public string KaydedenId { get; set; }
-        [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }
         public string AdayAd { get; set; }
         public string AdayAd2 { get; set; }
         public string AdaySoyad { get; set; }
         public string AdaySoyad2 { get; set; }
+        public string AdayBabaAd { get; set; }
+        public string AdayAnaAd { get; set; }
+        public string KaydedenId { get; set; }
+        [ForeignKey("KaydedenId")]
+        public Kullanici Kullanici { get; set; }
         public int MulakatId { get; set; }
         [ForeignKey("MulakatId")]
         public Mulakatlar Mulakatlar { get; set; }
