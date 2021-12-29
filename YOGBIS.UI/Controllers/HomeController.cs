@@ -6,7 +6,7 @@ using YOGBIS.Common.ConstantsModels;
 namespace YOGBIS.UI.Controllers
 {
 
-    [Authorize] //*///(Roles = ResultConstant.Admin_Role)]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -27,7 +27,7 @@ namespace YOGBIS.UI.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Notlar");
+                return RedirectToAction("Index", "Duyurular");
             }
         }
     }

@@ -18,7 +18,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Not Ekleme/Güncelleme</h5>
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-pen mr-1"></i>Not Ekleme/Güncelleme</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -30,7 +30,7 @@
                         <div class="form-group col-md-6">
                             <label class="form-control-label">Başlangıç Tarihi : </label>
                             <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                <input id="inputStartDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                                <input id="inputBasTar" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
                                 <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
@@ -39,7 +39,7 @@
                         <div class="form-group col-md-6">
                             <label class="form-control-label">Bitiş Tarihi : </label>
                             <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                                <input id="inputEndDate" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
+                                <input id="inputBitTar" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
                                 <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
@@ -49,107 +49,39 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label class="form-control-label">Not Başlığı : </label>
-                            <input id="inputDescription" type="text" class="form-control" />
-                            <span class="text-danger">Örn: Toplantı, Görüşme vb.</span>
+                            <input id="inputBaslik" type="text" class="form-control" />
+                            <span class="text-danger">Örn: Toplantı, Doğum Günü vb.</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label class="form-control-label">Notum : </label>
-                            <textarea placeholder="Notunuzu buraya yazınız..." class="form-control" rows="3"></textarea>
+                            <textarea id="inputNot" placeholder="Notunuzu buraya yazınız..." class="form-control" rows="3"></textarea>
                             <span class="text-danger"></span>
                         </div>
-
-                        @*<div class="form-group col-md-6">
-                                <label class="form-control-label">Diş Hekimi : </label>
-                                <select id="selectKullaniciId" class="form-control" asp-items="@Model.DentistsSelectList">
-                                    <option value="0">Lütfen diş hekimini seçiniz.</option>
-                                </select>
-                            </div>*@
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat&nbsp;</button>
-                <button id="btnKaydet" type="button" class="btn btn-primary">Kaydet</button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Kapat&nbsp;</button>
+                <button id="btnKaydet" type="button" class="btn btn-primary btn-sm">Kaydet</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Not Görüntüleme</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label class="form-control-label">Başlangıç Tarihi : </label>
-                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                <input disabled id="inputStartDateDetail" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
-                                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="form-control-label">Bitiş Tarihi : </label>
-                            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                                <input disabled id="inputEndDateDetail" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
-                                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label class="form-control-label">Açıklama : </label>
-                            <input disabled id="inputDescriptionDetail" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="form-control-label">Notum : </label>
-                            <textarea placeholder="Notunuzu buraya yazınız..." class="form-control" rows="3"></textarea>
-                            <span class="text-danger"></span>
-                        </div>
-                        @*<div class="form-group col-md-6">
-                                <label class="form-control-label">Diş Hekimi : </label>
-                                <select disabled id="selectKullaniciIdDetail" class="form-control" asp-items="@Model.DentistsSelectList">
-                                    <option value="0">Lütfen diş hekimini seçiniz.</option>
-                                </select>
-                            </div>*@
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button id="btnSil" type="button" class="btn btn-danger">Sil</button>
-                <button id="btnGuncelle" type="button" class="btn btn-primary">Güncelle</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="row">
     <div class="col-md-3">
         <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Notlarım</h5>
-                <h6 class="card-subtitle mb-2 text-muted">@*@Model.User.Name @Model.User.Surname*@</h6>
-                <p class="card-text">Notlarınızı aşağıda görebilirsiniz</p>
+            <div class="card-header">
+                <i class="fas fa-pen mr-1"></i>
+                <b>Notlarım</b>
             </div>
-        </div>
-        <br />
-        <div class="card">
             <div class="card-body">
                 <ul class="list-group">
                     @*@foreach (var item in Model.Dentists)
-                        {
-                            <li data-value="@item.Id" class="list-group-item">Dt. @item.Name @item.Surname<button class="btn btn-sm mt-2 pull-right" style="background-color:@item.Color;"></button></li>
-                        }*@
+            {
+                <li data-value="@item.Id" class="list-group-item">@item.Name<button class="btn btn-sm mt-2 pull-right" style="background-color:@item.Color;"></button></li>
+            }*@
                 </ul>
             </div>
         </div>
@@ -253,8 +185,7 @@
                         start: moment(selectionInfo.start),
                         end: moment(selectionInfo.end),
                         NotBaslik: "",
-                        patientSurname: "",
-                        description: "",
+                        Not: "",
                         KullaniciId: 0
                     }
 
@@ -266,15 +197,14 @@
                         start: moment(info.event.start),
                         end: moment(info.event.end),
                         NotBaslik: info.event.extendedProps.NotBaslik,                        
-                        NotDetay: info.event.extendedProps.description,
+                        Not: info.event.extendedProps.description,
                         KullaniciId: info.event.extendedProps.userId
                     };
 
                     $('#selectKullaniciIdDetail').val(info.event.extendedProps.userId);
                     $('#inputStartDateDetail').val(moment(info.event.start).format('DD/MM/YYYY HH:ss'));
                     $('#inputEndDateDetail').val(moment(info.event.end).format('DD/MM/YYYY HH:ss'))
-                    $('#inputNotBaslikDetail').val(info.event.extendedProps.NotBaslik);
-                    $('#inputPatientSurnameDetail').val(info.event.extendedProps.patientSurname);
+                    $('#inputNotBaslikDetail').val(info.event.extendedProps.NotBaslik);                    
                     $('#inputNotDetayDetail').val(info.event.extendedProps.description);
 
                     $('#detailModal').modal();
@@ -286,9 +216,8 @@
                         UserId: dropEventInfo.event.extendedProps.userId,
                         StartDate: moment(dropEventInfo.event.start).format('DD/MM/YYYY HH:mm'),
                         EndDate: moment(dropEventInfo.event.end).format('DD/MM/YYYY HH:mm'),
-                        NotBaslik: dropEventInfo.event.extendedProps.NotBaslik,
-                        PatientSurname: dropEventInfo.event.extendedProps.patientSurname,
-                        Description: dropEventInfo.event.extendedProps.description
+                        NotBaslik: dropEventInfo.event.extendedProps.NotBaslik,                        
+                        Not: dropEventInfo.event.extendedProps.description
                     }
 
                     NotEkle(Kullanici);
@@ -301,9 +230,8 @@
                         UserId: dropEventInfo.event.extendedProps.userId,
                         StartDate: moment(dropEventInfo.event.start).format('DD/MM/YYYY HH:mm'),
                         EndDate: moment(dropEventInfo.event.end).format('DD/MM/YYYY HH:mm'),
-                        NotBaslik: dropEventInfo.event.extendedProps.NotBaslik,
-                        PatientSurname: dropEventInfo.event.extendedProps.patientSurname,
-                        Description: dropEventInfo.event.extendedProps.description
+                        NotBaslik: dropEventInfo.event.extendedProps.NotBaslik,                        
+                        Not: dropEventInfo.event.extendedProps.description
                     }
 
                     NotEkle(Kullanici);
@@ -330,13 +258,11 @@
                         }
                         for (var i = 0; i < response.length; i++) {
                             events.push({
-                                id: response[i].id,
-                                title: response[i].dentist,
-                                NotBaslik: response[i].NotBaslik,
-                                patientSurname: response[i].patientSurname,
+                                id: response[i].id,                                
+                                NotBaslik: response[i].NotBaslik,                                
                                 start: response[i].startDate,
                                 end: response[i].endDate,
-                                description: response[i].description,
+                                not: response[i].description,
                                 color: response[i].color,
                                 userId: response[i].userId
                             });
@@ -345,7 +271,7 @@
                     },
                     error: function () {
                         $('#saveModal').modal('hide');
-                        alertify.error('Notlarınız yüklenirken bir problem oluştu.');
+                        alertify.error('Notlarınız yüklenirken bir hata oluştu.');
                     }
                 });
             }
@@ -362,13 +288,11 @@
                         }
                         for (var i = 0; i < response.length; i++) {
                             events.push({
-                                id: response[i].id,
-                                title: response[i].dentist,
-                                NotBaslik: response[i].NotBaslik,
-                                patientSurname: response[i].patientSurname,
+                                id: response[i].id,                                
+                                NotBaslik: response[i].NotBaslik,                                
                                 start: response[i].startDate,
                                 end: response[i].endDate,
-                                description: response[i].description,
+                                not: response[i].description,
                                 color: response[i].color,
                                 userId: response[i].userId
                             });
@@ -377,19 +301,18 @@
                     },
                     error: function () {
                         $('#saveModal').modal('hide');
-                        alertify.error('Notlarınız yüklenirken bir problem oluştu.');
+                        alertify.error('Notlarınız yüklenirken bir hata oluştu.');
                     }
                 });
             }
 
             function openEkleVeyaGuncelleModal() {
                 if (selectedEvent != null) {
-                    $('#apointmentId').val(selectedEvent.id);
+                    $('#notId').val(selectedEvent.id);
                     $('#inputStartDate').val(selectedEvent.start.format('DD/MM/YYYY HH:mm'));
                     $('#inputEndDate').val(selectedEvent.end.format('DD/MM/YYYY HH:mm'));
-                    $('#inputNotBaslik').val(selectedEvent.NotBaslik);
-                    $('#inputPatientSurname').val(selectedEvent.patientSurname);
-                    $('#inputDescription').val(selectedEvent.description);
+                    $('#inputNotBaslik').val(selectedEvent.NotBaslik);                    
+                    $('#inputNot').val(selectedEvent.description);
                     $('#selectKullaniciId').val(selectedEvent.KullaniciId);
                 }
 
@@ -406,10 +329,10 @@
                         if (response === "200") {
                             NotlariGetir();
                             $('#saveModal').modal('hide');
-                            data.Id === "0" ? alertify.success('Randevunuz başarıyla eklendi.') : alertify.success('Randevunuz başarıyla güncellenmiştir.');
+                            data.Id === "0" ? alertify.success('Notunuz başarıyla eklendi.') : alertify.success('Notunuz başarıyla güncellenmiştir.');
                         } else {
                             $('#saveModal').modal('hide');
-                            alertify.warning('Randevu eklenemedi.');
+                            alertify.warning('Notunuz eklenemedi.');
                         }
                     },
                     error: function () {
@@ -422,23 +345,22 @@
             $('#btnKaydet').click(function () {
                 //validasyon
                 if ($('#inputNotBaslik').val() === "") {
-                    alert("Hasta adı belirtilmelidir.");
+                    alert("Not adı belirtilmelidir.");
                     return;
                 }
 
-                if ($('#inputPatientSurname').val() === "") {
-                    alert("Hasta soyismi belirtilmelidir.");
+                if ($('#inputNot').val() === "") {
+                    alert("Notunuzu yazmalısınız.");
                     return;
                 }
 
                 var Kullanici = {
-                    Id: $('#apointmentId').val(),
+                    Id: $('#notId').val(),
                     UserId: $('#selectKullaniciId').val(),
                     StartDate: $('#inputStartDate').val(),
                     EndDate: $('#inputEndDate').val(),
                     NotBaslik: $('#inputNotBaslik').val(),
-                    PatientSurname: $('#inputPatientSurname').val(),
-                    Description: $('#inputDescription').val()
+                    Not: $('#inputNot').val()
                 }
 
 

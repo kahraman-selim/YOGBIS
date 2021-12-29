@@ -47,10 +47,9 @@
                         @foreach (var item in Model)
                         {
                             sirano++;
-                            <tr>
-                                @*<td></td>*@
+                            <tr>                                
                                 <td>@sirano</td>
-                                @*<td><a asp-controller="Ulkeler" asp-action="Guncelle" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>*@
+                                <td><a asp-controller="Ulkeler" asp-action="Guncelle" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
                                 <td>@item.OkulKodu</td>
                                 <td><a asp-controller="Okullar" asp-action="Guncelle" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
                                 @*<td class="text-center">

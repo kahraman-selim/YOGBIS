@@ -9,6 +9,7 @@ namespace YOGBIS.Common.VModels
         public int OgrencilerId { get; set; }
         [Required(ErrorMessage = "Sınıfı seçiniz")]
         public int SinifId { get; set; }
+        public string SinifAdi { get; set; }
         public SiniflarVM Siniflar { get; set; }
         public string Uyruk { get; set; }
         public bool Cinsiyet { get; set; }

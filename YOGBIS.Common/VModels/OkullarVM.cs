@@ -24,8 +24,16 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Şehir seçimi yapınız")]
         public int SehirId { get; set; }
+        public string SehirAdi { get; set; }
         public SehirlerVM Sehirler { get; set; }
+        public int EyaletId { get; set; }
+        public string EyaletAdi { get; set; }
+        public EyaletlerVM Eyaletler { get; set; }
+        public int UlkeId { get; set; }
+        public string UlkeAdi { get; set; }
+        public UlkelerVM Ulkeler { get; set; }
         public string KaydedenId { get; set; }
+        public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<SubelerVM> Subelers { get; set; }
         public List<OgretmenlerVM> Ogretmenlers { get; set; }

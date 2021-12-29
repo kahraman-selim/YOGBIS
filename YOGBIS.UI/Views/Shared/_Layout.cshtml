@@ -269,7 +269,7 @@
                                     Okul İletişim
                                 </a>
                             }
-                            @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                            @*@if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                             {
                                 <a class="nav-link" asp-controller="Ogrenciler" asp-action="OgrencileriGetir">
                                     <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
@@ -281,6 +281,20 @@
                                 <a class="nav-link" asp-controller="Ogrenciler" asp-action="Index">
                                     <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
                                     Öğrenci Bilgileri
+                                </a>
+                            }*@
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                            {
+                                <a class="nav-link" asp-controller="Etkinlik" asp-action="EtkinlikleriGetir">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
+                                    Etkinlik Bilgileri
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-controller="Etkinlik" asp-action="Index">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
+                                    Etkinlik Bilgileri
                                 </a>
                             }
                             <!--Modüller-->

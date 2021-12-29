@@ -52,7 +52,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OgrencilerVM>> OgrenciGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici,Okullar,Ulkeler")
+            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici") //Okullar,Ulkeler
                 .OrderBy(u => u.Siniflar.Subeler.Okullar.OkulAdi).ToList();
             if (data != null)
             {

@@ -9,7 +9,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     public class OgrencilerController : Controller
     {
         private readonly IOgrencilerBE _ogrencilerBE;

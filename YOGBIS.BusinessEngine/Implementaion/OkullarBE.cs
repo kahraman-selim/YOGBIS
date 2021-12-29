@@ -34,7 +34,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var okullar = _mapper.Map<List<Okullar>, List<OkullarVM>>(data);
             return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, okullar);
 
-            //var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Ulkeler,Kullanici").OrderBy(o => o.OkulAdi).OrderBy(u => u.Sehirler.Eyaletler.Ulkeler.UlkeAdi).ToList();
+            //var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Kullanici").OrderBy(o => o.OkulAdi).OrderBy(u => u.Sehirler.Eyaletler.Ulkeler.UlkeAdi).ToList();
             //var okullar = _mapper.Map<List<Okullar>, List<OkullarVM>>(data);
 
             //if (data != null)
@@ -48,10 +48,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
             //            OkulId = item.OkulId,
             //            OkulKodu = item.OkulKodu,
             //            OkulAdi = item.OkulAdi,
-            //            //UlkeId = item.UlkeId,
-            //            //UlkeAdi = item.Ulkeler.UlkeAdi,
+            //            UlkeId = item.Sehirler.Eyaletler.Ulkeler.UlkeId,
+            //            UlkeAdi = item.Sehirler.Eyaletler.Ulkeler.UlkeAdi,
             //            KaydedenId = item.KaydedenId,
-            //            //KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+            //            KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
             //        });
             //    }
             //    return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, returnData);
@@ -129,7 +129,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             if (id > 0)
             {
-                var data = _unitOfWork.okullarRepository.GetFirstOrDefault(u => u.OkulId == id, includeProperties: "Ulkeler,Kullanici");
+                var data = _unitOfWork.okullarRepository.GetFirstOrDefault(u => u.OkulId == id); //includeProperties: "Ulkeler,Kullanici"
                 if (data != null)
                 {
                     OkullarVM okul = new OkullarVM();
