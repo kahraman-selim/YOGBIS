@@ -9,8 +9,8 @@ using YOGBIS.Data.DataContext;
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    [Migration("20211228144258_tabloyukleme2")]
-    partial class tabloyukleme2
+    [Migration("20211229142745_tabloyuk2")]
+    partial class tabloyuk2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -292,6 +292,48 @@ namespace YOGBIS.Data.Migrations
                     b.HasIndex("MulakatId");
 
                     b.ToTable("Adaylars");
+                });
+
+            modelBuilder.Entity("YOGBIS.Data.DbModels.Aktiviteler", b =>
+                {
+                    b.Property<int>("AktiviteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("AktiviteAdi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AktiviteBilgi")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("BasTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("BitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("DuzenleyenAdiSoyadi")
+                        .HasColumnType("text");
+
+                    b.Property<int>("KatilimciSayisi")
+                        .HasColumnType("int");
+
+                    b.Property<string>("KaydedenId")
+                        .HasColumnType("varchar(767)");
+
+                    b.Property<DateTime>("KayitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("OkulId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AktiviteId");
+
+                    b.HasIndex("KaydedenId");
+
+                    b.HasIndex("OkulId");
+
+                    b.ToTable("Aktivitelers");
                 });
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.Dereceler", b =>
@@ -1210,6 +1252,19 @@ namespace YOGBIS.Data.Migrations
                     b.HasOne("YOGBIS.Data.DbModels.Mulakatlar", "Mulakatlar")
                         .WithMany("Adaylars")
                         .HasForeignKey("MulakatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("YOGBIS.Data.DbModels.Aktiviteler", b =>
+                {
+                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
+                        .WithMany("Aktivitelers")
+                        .HasForeignKey("KaydedenId");
+
+                    b.HasOne("YOGBIS.Data.DbModels.Okullar", "Okullar")
+                        .WithMany("Aktivitelers")
+                        .HasForeignKey("OkulId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

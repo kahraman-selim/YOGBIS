@@ -16,6 +16,7 @@ namespace YOGBIS.Data.DbModels
         public bool? Aktif { get; set; }
 
         #region BağlıTablolar
+        public List<Aktiviteler> Aktivitelers { get; set; }
         public List<Dereceler> Derecelers { get; set; }
         public List<SoruKategoriler> SoruKategorilers { get; set; }
         public List<Mulakatlar> Mulakatlars { get; set; }

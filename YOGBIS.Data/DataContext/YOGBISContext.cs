@@ -112,6 +112,7 @@ namespace YOGBIS.Data.DataContext
 
         #region DbSets
         public DbSet<Adaylar> Adaylars { get; set; }
+        public DbSet<Aktiviteler> Aktivitelers { get; set; } //geçici tablo
         public DbSet<Dereceler> Derecelers { get; set; }
         public DbSet<Eyaletler> Eyaletlers { get; set; }
         public DbSet<GorevKaydi> GorevKaydis { get; set; }

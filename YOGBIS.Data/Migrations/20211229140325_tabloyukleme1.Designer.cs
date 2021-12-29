@@ -9,7 +9,7 @@ using YOGBIS.Data.DataContext;
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    [Migration("20211228140637_tabloyukleme1")]
+    [Migration("20211229140325_tabloyukleme1")]
     partial class tabloyukleme1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -292,6 +292,45 @@ namespace YOGBIS.Data.Migrations
                     b.HasIndex("MulakatId");
 
                     b.ToTable("Adaylars");
+                });
+
+            modelBuilder.Entity("YOGBIS.Data.DbModels.Aktiviteler", b =>
+                {
+                    b.Property<int>("AktiviteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("AktiviteAdi")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("BasTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("BitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("DuzenleyenAdiSoyadi")
+                        .HasColumnType("text");
+
+                    b.Property<int>("KatilimciSayisi")
+                        .HasColumnType("int");
+
+                    b.Property<string>("KaydedenId")
+                        .HasColumnType("varchar(767)");
+
+                    b.Property<DateTime>("KayitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("OkulId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AktiviteId");
+
+                    b.HasIndex("KaydedenId");
+
+                    b.HasIndex("OkulId");
+
+                    b.ToTable("Aktivitelers");
                 });
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.Dereceler", b =>
@@ -661,6 +700,65 @@ namespace YOGBIS.Data.Migrations
                     b.HasIndex("SehirId");
 
                     b.ToTable("Ogretmenlers");
+                });
+
+            modelBuilder.Entity("YOGBIS.Data.DbModels.OkulBilgi", b =>
+                {
+                    b.Property<int>("OkulBilgiId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("KayitTarihi")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("KullaniciId")
+                        .HasColumnType("varchar(767)");
+
+                    b.Property<string>("MdYrdAdiSoyadi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MdYrdDonusYil")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MdYrdEPosta")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MdYrdTelefon")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MudurAdiSoyadi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MudurDonusYil")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MudurEPosta")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MudurTelefon")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OkulAdres")
+                        .HasColumnType("text");
+
+                    b.Property<int>("OkulId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OkulTelefon")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UlkeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OkulBilgiId");
+
+                    b.HasIndex("KullaniciId");
+
+                    b.HasIndex("OkulId");
+
+                    b.HasIndex("UlkeId");
+
+                    b.ToTable("OkulBilgis");
                 });
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.Okullar", b =>
@@ -1155,6 +1253,19 @@ namespace YOGBIS.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("YOGBIS.Data.DbModels.Aktiviteler", b =>
+                {
+                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
+                        .WithMany("Aktivitelers")
+                        .HasForeignKey("KaydedenId");
+
+                    b.HasOne("YOGBIS.Data.DbModels.Okullar", "Okullar")
+                        .WithMany("Aktivitelers")
+                        .HasForeignKey("OkulId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("YOGBIS.Data.DbModels.Dereceler", b =>
                 {
                     b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
@@ -1249,6 +1360,25 @@ namespace YOGBIS.Data.Migrations
                     b.HasOne("YOGBIS.Data.DbModels.Sehirler", "Sehirler")
                         .WithMany("Ogretmenlers")
                         .HasForeignKey("SehirId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("YOGBIS.Data.DbModels.OkulBilgi", b =>
+                {
+                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
+                        .WithMany()
+                        .HasForeignKey("KullaniciId");
+
+                    b.HasOne("YOGBIS.Data.DbModels.Okullar", "Okullar")
+                        .WithMany()
+                        .HasForeignKey("OkulId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("YOGBIS.Data.DbModels.Ulkeler", "Ulkeler")
+                        .WithMany()
+                        .HasForeignKey("UlkeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

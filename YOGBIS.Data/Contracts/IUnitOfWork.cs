@@ -5,6 +5,7 @@ namespace YOGBIS.Data.Contracts
     public interface IUnitOfWork : IDisposable
     {
         IAdaylarRepository adaylarRepository { get; }
+        IAktivitelerRepository aktivitelerRepository { get; } // geçici bir tablo sonra silinecek
         IAutoHistoryRepository autoHistoryRepository { get; }
         IDerecelerRepository derecelerRepository { get; }
         IEyaletlerRepository eyaletlerRepository { get; }

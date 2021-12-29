@@ -30,6 +30,7 @@ namespace YOGBIS.Common.VModels
         public bool? Aktif { get; set; }
 
         #region BağlıTablolar
+        public List<AktivitelerVM> Aktivitelers { get; set; }
         public List<DerecelerVM> Derecelers { get; set; }
         public List<SoruKategorilerVM> SoruKategorilers { get; set; }
         public List<MulakatlarVM> Mulakatlars { get; set; }

@@ -12,6 +12,7 @@ namespace YOGBIS.Data.Implementaion
             _ctx = ctx;
 
             adaylarRepository = new AdaylarRepository(_ctx);
+            aktivitelerRepository = new AktivitelerRepository(_ctx);
             autoHistoryRepository = new AutoHistoryRepository(_ctx);
             derecelerRepository = new DerecelerRepository(_ctx);
             eyaletlerRepository = new EyaletlerRepository(_ctx);
@@ -41,6 +42,7 @@ namespace YOGBIS.Data.Implementaion
         }
 
         public IAdaylarRepository adaylarRepository { get; private set; }
+        public IAktivitelerRepository aktivitelerRepository { get; private set; }
         public IAutoHistoryRepository autoHistoryRepository { get; private set; }
         public IDerecelerRepository derecelerRepository { get; private set; }
         public IEyaletlerRepository eyaletlerRepository { get; private set; }
