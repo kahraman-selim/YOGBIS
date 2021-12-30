@@ -1,7 +1,113 @@
-﻿
+﻿@model IEnumerable<YOGBIS.Common.VModels.AktivitelerVM>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Etkinlikler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .block {
+        position: fixed;
+        z-index: 2;
+        right: 15px;
+        top: 95px;
+    }
+</style>
+
+<ol class="breadcrumb mb-4 mt-2">
+    <li>
+        <a asp-controller="Etkinlik" asp-action="EtkinlikEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
+            Yeni Kayıt <i class="fas fa-plus-circle"></i>
+        </a>
+    </li>
+</ol>
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        <b>Etkinlik Bilgileri</b>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sıra No</th>                        
+                        <th>Okul Adı</th>
+                        <th>Etkinlik Adı</th>           
+                        <th>Başlama Tarihi</th>
+                        <th>Bitiş Tarihi</th>
+                        <th>Düzenleneyen Ad Soyad</th>
+                        <th>Katılımcı Sayısı</th>
+                        <th>Etkinik Hakkında</th>
+                        <th class="text-center">Düzenle</th>
+                        <th class="text-center">Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ var sirano = 0;}
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            sirano++;
+                    <tr>
+                        <td>@sirano</td>
+                        <td>@item.OkulAdi</td>
+                        <td>@item.AktiviteAdi</td>
+                        <td>@item.BasTarihi.ToString("dd/MM/yyyy")</td>
+                        <td>@item.BitTarihi.ToString("dd/MM/yyyy")</td>
+                        <td>@item.DuzenleyenAdiSoyadi</td>
+                        <td>@item.KatilimciSayisi</td>
+                        <td>@item.AktiviteBilgi</td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Etkinlik" asp-action="Guncelle" asp-route-id="@item.AktiviteId">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.AktiviteId">
+                                <i class="fas fa-trash text-white"></i>
+                            </a>
+                        </td>
+                    </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>Kayıt bulunamadı!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript">
+
+            $(function () {
+                $("#myTable").on("click", ".btnSil", function () {
+                    var btn = $(this);
+                    bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                        if (result) {
+                            var id = btn.data("id");
+                            $.ajax({
+                                type: "DELETE",
+                                url: "/Etkinlik/EtkinlikSil/" + id,
+                                success: function () {
+                                    btn.parent().parent().remove();
+                                    location.reload();
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+    </script>
 }
 
-<h1>Index</h1>
+
 

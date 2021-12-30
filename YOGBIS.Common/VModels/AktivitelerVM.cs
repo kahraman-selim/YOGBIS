@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
 using YOGBIS.Data.DbModels;
 
@@ -31,6 +32,12 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Etkinliğin sorumlusunu belirtiniz")]
         public string DuzenleyenAdiSoyadi { get; set; }
+        public IFormFile Resim1 { get; set; }
+        public string Resim1Yol { get; set; }
+        public IFormFile Resim2 { get; set; }
+        public string Resim2Yol { get; set; }
+        public IFormFile Resim3 { get; set; }
+        public string Resim3Yol { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }

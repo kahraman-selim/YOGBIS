@@ -122,13 +122,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<AktivitelerVM>(false, ResultConstant.RecordNotFound);
             }
         }
-        public Result<AktivitelerVM> EtkinlikEkle(AktivitelerVM model, SessionContext user)
+        public Result<AktivitelerVM> EtkinlikEkle(AktivitelerVM model, SessionContext user, string etkinlikresimdosya)
         {
             if (model != null)
             {
                 try
                 {
-                    Aktiviteler Etkinlik= new Aktiviteler();
+                    Aktiviteler Etkinlik = new Aktiviteler();
+
                     Etkinlik.AktiviteAdi = model.AktiviteAdi;
                     Etkinlik.AktiviteBilgi = model.AktiviteBilgi;
                     Etkinlik.BasTarihi = model.BasTarihi;
@@ -137,6 +138,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     Etkinlik.KatilimciSayisi = model.KatilimciSayisi;
                     Etkinlik.KayitTarihi = model.KayitTarihi;
                     Etkinlik.OkulId = model.OkulId;
+                    Etkinlik.Resim1Yol = etkinlikresimdosya;
                     Etkinlik.KaydedenId = user.LoginId;
                                        
                     _unitOfWork.aktivitelerRepository.Add(Etkinlik);
@@ -154,7 +156,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<AktivitelerVM>(false, "Boş veri olamaz");
             }
         }
-        public Result<AktivitelerVM> EtkinlikGuncelle(AktivitelerVM model, SessionContext user)
+        public Result<AktivitelerVM> EtkinlikGuncelle(AktivitelerVM model, SessionContext user, string etkinlikresimdosya)
         {
             if (model.AktiviteId>0)
             {

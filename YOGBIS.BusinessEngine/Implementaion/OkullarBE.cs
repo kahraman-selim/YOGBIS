@@ -66,7 +66,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkullarıGetirAZ
         public Result<List<OkullarVM>> OkullariGetirAZ()
         {
-            var data = _unitOfWork.okullarRepository.GetAll().OrderBy(o => o.OkulAdi).ToList();     //GetAll(includeProperties: "Ulkeler,Kullanici")       
+            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Kullanici").OrderBy(o => o.OkulAdi).ToList();     //GetAll(includeProperties: "Ulkeler,Kullanici")       
 
             if (data != null)
             {
@@ -82,7 +82,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         //UlkeId = item.UlkeId,
                         //UlkeAdi = item.Ulkeler.UlkeAdi,
                         KaydedenId = item.KaydedenId,
-                        //KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
                 }
                 return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, returnData);

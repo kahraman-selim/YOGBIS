@@ -17,6 +17,9 @@ namespace YOGBIS.Data.DbModels
         public string AktiviteBilgi { get; set; }
         public int KatilimciSayisi { get; set; }
         public string DuzenleyenAdiSoyadi { get; set; }
+        public string Resim1Yol { get; set; }
+        public string Resim2Yol { get; set; }
+        public string Resim3Yol { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
