@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using YOGBIS.Data.DbModels;
 
@@ -41,5 +42,7 @@ namespace YOGBIS.Common.VModels
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
+        //public IFormFileCollection GaleriDosyalar { get; set; }
+        //public List<FotoGaleriVM> FotoGaleri { get; set; }
     }
 }

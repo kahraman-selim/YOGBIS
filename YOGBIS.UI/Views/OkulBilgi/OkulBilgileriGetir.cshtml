@@ -109,7 +109,7 @@
             $("#UlkeListesi").on("change", function () {
 
                 var Id = $("#UlkeListesi").val();
-                /*alert(Id);*/
+                
                 $.ajax({
                     type: "DELETE",
                     url: "/OkulBilgi/OkulBilgiGetirUlkeId/"+Id,
@@ -117,11 +117,11 @@
                         if (data.isSucces) {
                             window.location.href = "?ulkeId="+Id;                            
                         } else {                            
-                            alert("Birşeyler kötü gitti !");
+                            alert("Bir hata oluştu!");
                         }
                     }
                 });
-
+                
             });
 
             //$("#ulkeGetir").on("click", function () {

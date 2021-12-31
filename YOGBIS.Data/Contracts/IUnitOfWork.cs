@@ -9,6 +9,7 @@ namespace YOGBIS.Data.Contracts
         IAutoHistoryRepository autoHistoryRepository { get; }
         IDerecelerRepository derecelerRepository { get; }
         IEyaletlerRepository eyaletlerRepository { get; }
+        IFotoGaleriRepository fotoGaleriRepository { get; }
         IGorevKaydiRepository gorevKaydiRepository { get; }
         IKitalarRepository kitalarRepository { get; }
         IKullaniciRepository kullaniciRepository { get; }

@@ -66,20 +66,20 @@ namespace YOGBIS.UI.Controllers
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-            string etkinlikresimdosyaup = null;
-            if (model.Resim1 != null)
-            {
-                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
-                etkinlikresimdosya = Guid.NewGuid().ToString() + "-" + model.Resim1.FileName;
-                string dosyaYolu = Path.Combine(uploadsFolder, etkinlikresimdosya);
-                model.Resim1.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
-            }
+            //string etkinlikresimdosyaup = null;
+            //if (model.Resim1 != null)
+            //{
+            //    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
+            //    etkinlikresimdosya = Guid.NewGuid().ToString() + "-" + model.Resim1.FileName;
+            //    string dosyaYolu = Path.Combine(uploadsFolder, etkinlikresimdosya);
+            //    model.Resim1.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
+            //}
 
-            var data = _aktivitelerBE.EtkinlikEkle(model, user, etkinlikresimdosya);
-            if (data.IsSuccess)
-            {
-                return RedirectToAction("Index");
-            }
+            //var data = _aktivitelerBE.EtkinlikEkle(model, user, etkinlikresimdosya);
+            //if (data.IsSuccess)
+            //{
+            //    return RedirectToAction("Index");
+            //}
             return View(model);
 
         }
@@ -139,12 +139,12 @@ namespace YOGBIS.UI.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        public IActionResult Etkinlikler(int okulId)
+        public IActionResult Etkinlikler(int OkulId)
         {
 
-            if (okulId > 0)
+            if (OkulId > 0)
             {
-                var data = _aktivitelerBE.EtkinlikGetirOkulId(okulId);
+                var data = _aktivitelerBE.EtkinlikGetirOkulId(OkulId);
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
                 ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
@@ -179,7 +179,7 @@ namespace YOGBIS.UI.Controllers
             }
             else
             {
-                return RedirectToAction("Etkinlikler", new { okulId = Id });
+                return RedirectToAction("EtkinliklerGetirOkulId", new { okulId = Id });
             }
         }
         

@@ -12,6 +12,7 @@ namespace YOGBIS.Common.Mappings
             CreateMap<Aktiviteler, AktivitelerVM>().ReverseMap();
             CreateMap<Dereceler, DerecelerVM>().ReverseMap();
             CreateMap<Eyaletler, EyaletlerVM>().ReverseMap();
+            CreateMap<FotoGaleri, FotoGaleriVM>().ReverseMap();
             CreateMap<GorevKaydi, GorevKaydiVM>().ReverseMap();
             CreateMap<Kitalar, KitalarVM>().ReverseMap();
             CreateMap<Kullanici, KullaniciVM>().ReverseMap();

@@ -211,9 +211,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         }
-        public Result<List<AktivitelerVM>> EtkinlikGetirUlkeId(int okulId)
+        public Result<List<AktivitelerVM>> EtkinlikGetirUlkeId(int UlkeId)
         {
-            var data = _unitOfWork.aktivitelerRepository.GetAll(u => u.OkulId == okulId, includeProperties: "Kullanici,Okullar").ToList();
+            var data = _unitOfWork.aktivitelerRepository.GetAll(u => u.Okullar.Sehirler.Eyaletler.UlkeId == UlkeId, includeProperties: "Kullanici,Okullar").ToList();
             if (data != null)
             {
                 List<AktivitelerVM> returnData = new List<AktivitelerVM>();

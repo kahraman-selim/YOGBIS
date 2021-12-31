@@ -29,7 +29,7 @@ namespace YOGBIS.UI.Controllers
 
             if (id > 0)
             {
-                var data = _notlarBE.NotGetir((int)id);
+                var data = _notlarBE.NotGetirKullaniciId(user.LoginId);
                 return View(data.Data);
             }
             else

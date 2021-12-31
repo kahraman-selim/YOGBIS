@@ -77,28 +77,24 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function () {
+        $("#OkulListesi").on("change", function () {
 
-            $("#OkulListesi").on("change", function () {
-
-                var Id = $("#OkulListesi").val();
-                $.ajax({
-                    type: "DELETE",
-                    url: "/Etkinlik/EtkinlikGetirOkulId/" + Id,
-                    success: function (data) {
-                        if (data.isSucces) {
-                            window.location.href = "?okulId=" + Id;
-                        } else {
-                            alert("Bir hatayla karşılaşıldı !");                            
-                        }
+            var Id = $("#OkulListesi").val();
+            
+            $.ajax({
+                type: "DELETE",
+                url: "/Etkinlik/EtkinlikGetirOkulId/" + Id,
+                success: function (data) {
+                    if (data.isSucces) {
+                        window.location.href = "?okulId=" + Id;
+                    } else {
+                        alert("Bir hatayla karşılaşıldı !");
                     }
-                });
-
+                }
             });
 
         });
-
-
+       
     </script>
 }
 
