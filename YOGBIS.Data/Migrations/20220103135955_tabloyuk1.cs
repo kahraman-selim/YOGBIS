@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace YOGBIS.Data.Migrations
 {
-    public partial class tabloyukleme1 : Migration
+    public partial class tabloyuk1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -452,11 +452,13 @@ namespace YOGBIS.Data.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     KayitTarihi = table.Column<DateTime>(nullable: false),
                     AdayTC = table.Column<int>(nullable: false),
-                    KaydedenId = table.Column<string>(nullable: true),
                     AdayAd = table.Column<string>(nullable: true),
                     AdayAd2 = table.Column<string>(nullable: true),
                     AdaySoyad = table.Column<string>(nullable: true),
                     AdaySoyad2 = table.Column<string>(nullable: true),
+                    AdayBabaAd = table.Column<string>(nullable: true),
+                    AdayAnaAd = table.Column<string>(nullable: true),
+                    KaydedenId = table.Column<string>(nullable: true),
                     MulakatId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -671,8 +673,11 @@ namespace YOGBIS.Data.Migrations
                     OkulId = table.Column<int>(nullable: false),
                     BasTarihi = table.Column<DateTime>(nullable: false),
                     BitTarihi = table.Column<DateTime>(nullable: false),
+                    AktiviteBilgi = table.Column<string>(nullable: true),
                     KatilimciSayisi = table.Column<int>(nullable: false),
                     DuzenleyenAdiSoyadi = table.Column<string>(nullable: true),
+                    EtkinlikKapakResimUrl = table.Column<string>(nullable: true),
+                    EtkinlikDosyaUrl = table.Column<string>(nullable: true),
                     KaydedenId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -834,6 +839,29 @@ namespace YOGBIS.Data.Migrations
                         principalTable: "Universitelers",
                         principalColumn: "UniId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FotoGaleris",
+                columns: table => new
+                {
+                    FotoGaleriId = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    KayitTarihi = table.Column<DateTime>(nullable: false),
+                    FotoAdi = table.Column<string>(nullable: true),
+                    FotoURL = table.Column<string>(nullable: true),
+                    AktiviteId = table.Column<int>(nullable: false),
+                    AktivitelerAktiviteId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FotoGaleris", x => x.FotoGaleriId);
+                    table.ForeignKey(
+                        name: "FK_FotoGaleris_Aktivitelers_AktivitelerAktiviteId",
+                        column: x => x.AktivitelerAktiviteId,
+                        principalTable: "Aktivitelers",
+                        principalColumn: "AktiviteId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1020,6 +1048,11 @@ namespace YOGBIS.Data.Migrations
                 name: "IX_Eyaletlers_UlkeId",
                 table: "Eyaletlers",
                 column: "UlkeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FotoGaleris_AktivitelerAktiviteId",
+                table: "FotoGaleris",
+                column: "AktivitelerAktiviteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GorevKaydis_KaydedenId",
@@ -1218,9 +1251,6 @@ namespace YOGBIS.Data.Migrations
                 name: "Adaylars");
 
             migrationBuilder.DropTable(
-                name: "Aktivitelers");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -1237,6 +1267,9 @@ namespace YOGBIS.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AutoHistory");
+
+            migrationBuilder.DropTable(
+                name: "FotoGaleris");
 
             migrationBuilder.DropTable(
                 name: "GorevKaydis");
@@ -1264,6 +1297,9 @@ namespace YOGBIS.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Aktivitelers");
 
             migrationBuilder.DropTable(
                 name: "Ogretmenlers");

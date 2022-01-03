@@ -1,4 +1,7 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.AktivitelerVM>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
+@inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
+@model IEnumerable<YOGBIS.Common.VModels.AktivitelerVM>
 @{
     ViewData["Title"] = "Etkinlik Bilgileri";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -35,9 +38,10 @@
                         <th>Etkinlik Adı</th>
                         <th>Başlama Tarihi</th>
                         <th>Bitiş Tarihi</th>
-                        <th>Düzenleneyen Ad Soyad</th>
+                        <th>Sorumlu Öğretmen</th>
                         <th>Katılımcı Sayısı</th>
-                        <th>Etkinik Hakkında</th>
+                        <th>Etkinlik Hakkında</th>
+                        <th>Gözat</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,6 +60,27 @@
                                 <td>@item.DuzenleyenAdiSoyadi</td>
                                 <td>@item.KatilimciSayisi</td>
                                 <td>@item.AktiviteBilgi</td>
+                                @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                                {
+                                    <td class="text-center">
+                                        <a class="btn btn-sm btn-info" title="Detay" asp-controller="Etkinlik" asp-action="Detay" asp-route-id="@item.AktiviteId">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">
+                                        <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Etkinlik" asp-action="Guncelle" asp-route-id="@item.AktiviteId">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.AktiviteId">
+                                            <i class="fas fa-trash text-white"></i>
+                                        </a>
+                                    </td>
+                                }
                             </tr>
                         }
                     }
@@ -80,7 +105,7 @@
         $("#OkulListesi").on("change", function () {
 
             var Id = $("#OkulListesi").val();
-            
+
             $.ajax({
                 type: "DELETE",
                 url: "/Etkinlik/EtkinlikGetirOkulId/" + Id,
@@ -94,7 +119,7 @@
             });
 
         });
-       
+
     </script>
 }
 

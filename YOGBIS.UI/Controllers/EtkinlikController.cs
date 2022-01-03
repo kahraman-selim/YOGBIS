@@ -49,6 +49,7 @@ namespace YOGBIS.UI.Controllers
 
         [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpGet]
+        [Route("Etkinlikler")]
         public IActionResult EtkinlikEkle() 
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -182,6 +183,24 @@ namespace YOGBIS.UI.Controllers
                 return RedirectToAction("EtkinliklerGetirOkulId", new { okulId = Id });
             }
         }
-        
+
+        [Authorize(Roles = "Administrator,Manager")]
+        public ActionResult Detay(int? id)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+
+            if (id > 0)
+            {
+                var data = _aktivitelerBE.EtkinlikGetir((int)id);
+                return View(data.Data);
+            }
+            else
+            {
+                return View();
+            }
+
+        }
     }
 }

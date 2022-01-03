@@ -33,16 +33,14 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Etkinliğin sorumlusunu belirtiniz")]
         public string DuzenleyenAdiSoyadi { get; set; }
-        public IFormFile Resim1 { get; set; }
-        public string Resim1Yol { get; set; }
-        public IFormFile Resim2 { get; set; }
-        public string Resim2Yol { get; set; }
-        public IFormFile Resim3 { get; set; }
-        public string Resim3Yol { get; set; }
+        public IFormFile EtkinlikKapakResim { get; set; }
+        public string EtkinlikKapakResimUrl { get; set; }
+        public IFormFile EtkinlikDosya { get; set; }
+        public string EtkinlikDosyaUrl { get; set; }               
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
-        //public IFormFileCollection GaleriDosyalar { get; set; }
-        //public List<FotoGaleriVM> FotoGaleri { get; set; }
+        public IFormFileCollection GaleriDosyalar { get; set; }
+        public List<FotoGaleriVM> FotoGaleri { get; set; }
     }
 }

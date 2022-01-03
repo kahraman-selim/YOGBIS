@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Common.VModels
 {
     public class GorevKaydiVM:BaseVM
     {
+        [Key]
         public int GorevId { get; set; }
         public int GorevliTC { get; set; }
         public string GörevAdi { get; set; }

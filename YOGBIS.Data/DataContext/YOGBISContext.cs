@@ -115,6 +115,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<Aktiviteler> Aktivitelers { get; set; } //geçici tablo
         public DbSet<Dereceler> Derecelers { get; set; }
         public DbSet<Eyaletler> Eyaletlers { get; set; }
+        public DbSet<FotoGaleri> FotoGaleris { get; set; }
         public DbSet<GorevKaydi> GorevKaydis { get; set; }
         public DbSet<Kitalar> Kitalars { get; set; }
         public DbSet<Kullanici> Kullanicis { get; set; }

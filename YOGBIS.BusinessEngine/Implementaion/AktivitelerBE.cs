@@ -122,25 +122,34 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<AktivitelerVM>(false, ResultConstant.RecordNotFound);
             }
         }
-        public Result<AktivitelerVM> EtkinlikEkle(AktivitelerVM model, SessionContext user, string etkinlikresimdosya)
+        public Result<AktivitelerVM> EtkinlikEkle(AktivitelerVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
-                    Aktiviteler Etkinlik = new Aktiviteler();
+                    Aktiviteler Etkinlik = new Aktiviteler
+                    {
+                        AktiviteAdi = model.AktiviteAdi,
+                        AktiviteBilgi = model.AktiviteBilgi,
+                        BasTarihi = model.BasTarihi,
+                        BitTarihi = model.BitTarihi,
+                        DuzenleyenAdiSoyadi = model.DuzenleyenAdiSoyadi,
+                        KatilimciSayisi = model.KatilimciSayisi,
+                        KayitTarihi = model.KayitTarihi,
+                        OkulId = model.OkulId,
+                        KaydedenId = user.LoginId,
 
-                    Etkinlik.AktiviteAdi = model.AktiviteAdi;
-                    Etkinlik.AktiviteBilgi = model.AktiviteBilgi;
-                    Etkinlik.BasTarihi = model.BasTarihi;
-                    Etkinlik.BitTarihi = model.BitTarihi;
-                    Etkinlik.DuzenleyenAdiSoyadi = model.DuzenleyenAdiSoyadi;
-                    Etkinlik.KatilimciSayisi = model.KatilimciSayisi;
-                    Etkinlik.KayitTarihi = model.KayitTarihi;
-                    Etkinlik.OkulId = model.OkulId;
-                    Etkinlik.Resim1Yol = etkinlikresimdosya;
-                    Etkinlik.KaydedenId = user.LoginId;
-                                       
+                        FotoGaleri = new List<FotoGaleri>()
+                    };
+                    foreach (var file in Etkinlik.FotoGaleri)
+                    {
+                        Etkinlik.FotoGaleri.Add(new FotoGaleri()
+                        {
+                            FotoAdi=file.FotoAdi,
+                            FotoURL=file.FotoURL
+                        });
+                    }
                     _unitOfWork.aktivitelerRepository.Add(Etkinlik);
                     _unitOfWork.Save();
                     return new Result<AktivitelerVM>(true, ResultConstant.RecordCreateSuccess);
@@ -156,7 +165,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<AktivitelerVM>(false, "Boş veri olamaz");
             }
         }
-        public Result<AktivitelerVM> EtkinlikGuncelle(AktivitelerVM model, SessionContext user, string etkinlikresimdosya)
+        public Result<AktivitelerVM> EtkinlikGuncelle(AktivitelerVM model, SessionContext user)
         {
             if (model.AktiviteId>0)
             {
