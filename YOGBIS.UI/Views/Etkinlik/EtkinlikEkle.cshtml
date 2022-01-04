@@ -28,7 +28,7 @@
                 <b>Etkinlik Bilgisi Ekleme/Güncelleme</b>
             </div>
             <div class="card-body">
-                <form class="form-group m-0" asp-action="EtkinlikEkle" enctype="multipart/form-data">
+                <form class="form-group m-0" asp-action="EtkinlikEkle" enctype="multipart/form-data" method="post">
                     @Html.HiddenFor(x => x.AktiviteId)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="row">
@@ -54,6 +54,17 @@
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
+                                    <label class="small mb-1 font-weight-bold">Etkinlik Kapak Fotoğrafı :</label>
+                                    <input type="file"
+                                           accept=".png,.jpg,.jpeg,.gif,.tif" asp-for="EtkinlikKapakResim"
+                                           id="files" name="files"
+                                           class="btn btn-outline-danger mb-1 btn-sm"
+                                           onchange="document.getElementById('etkinlikkapak').src = window.URL.createObjectURL(this.files[0])">
+                                    <span class="text-danger" asp-validation-for="EtkinlikKapakResim"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="AktiviteBilgi" class="small mb-1 font-weight-bold">Etliklik Hakkında Bilgi</label>
                                         <textarea asp-for="AktiviteBilgi" placeholder="Etkinlik hakkında bilgi yazınız..." class="form-control" id="CevapTextArea" rows="3"></textarea>
@@ -63,14 +74,23 @@
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="small mb-1 font-weight-bold">Etkinlik Düzenleyen Öğretmen</label>
-                                        <input type="text" asp-for="DuzenleyenAdiSoyadi" class="form-control py-2" id="CreateTypeInput" maxlength="14" placeholder="Adını soyadını yazınız...">
-                                        <span class="text-danger" asp-validation-for="DuzenleyenAdiSoyadi"></span>
-                                    </div>
+                                    <label class="small mb-1 font-weight-bold">Etkinlik Hakkında Dosya :</label>
+                                    <input type="file"
+                                           accept=".pdf,.doc,.docx,.xls,.xlsx" asp-for="EtkinlikDosya"
+                                           id="files" name="files"
+                                           class="btn btn-outline-danger mb-1 btn-sm">
+                                    <span class="text-danger" asp-validation-for="EtkinlikDosya"></span><br />
+                                    <span class="text-danger">Etkinliğe ilişkin belge (Word,Excel,Powerpoit,.pdf vb.)</span>
                                 </div>
                             </div>
                             <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small mb-1 font-weight-bold">Etkinlik Düzenleyen Öğretmen</label>
+                                        <input type="text" asp-for="DuzenleyenAdiSoyadi" class="form-control py-2" id="CreateTypeInput" maxlength="14" placeholder="Öğretmen adını soyadını yazınız...">
+                                        <span class="text-danger" asp-validation-for="DuzenleyenAdiSoyadi"></span>
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="small mb-1 font-weight-bold">Katılımcı Sayısı</label>
@@ -104,13 +124,13 @@
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <label class="small mb-1 font-weight-bold">Etkinlik Resimlerini Seç :</label>
-                                    <input type="file" 
-                                           accept=".png,.jpg,.jpeg,.gif,.tif"
-                                           id="files" name="files" 
-                                           class="btn btn-outline-danger mb-1 btn-sm" 
+                                    <input type="file"
+                                           accept=".png,.jpg,.jpeg,.gif,.tif" asp-for="FotoGaleri"
+                                           id="files" name="files"
+                                           class="btn btn-outline-danger mb-1 btn-sm"
                                            multiple
                                            onchange="document.getElementById('etkinlikresim').src = window.URL.createObjectURL(this.files[0])">
-                                    @*<span class="text-danger" asp-validation-for="Resim1"></span>*@
+                                    <span class="text-danger" asp-validation-for="FotoGaleri"></span>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -122,8 +142,13 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-row">
-                                <div class="form-group">
+                            <div class="form-row m-2">
+                                <div class="col-md-12">
+                                    <img id="etkinlikkapak" src="~/img/noimage.png" alt="KapakFoto" style="width: 100%; height: 250px;">
+                                </div>
+                            </div>
+                            <div class="form-row m-2">
+                                <div class="form-group col-md-12">
                                     <div id="demo" class="carousel slide" data-ride="carousel">
 
                                         <!-- Indicators -->

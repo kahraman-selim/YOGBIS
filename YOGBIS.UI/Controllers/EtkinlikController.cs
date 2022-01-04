@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -61,28 +63,56 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpPost]
         [Obsolete]
-        public IActionResult EtkinlikEkle(AktivitelerVM model, string etkinlikresimdosya) 
+        public async Task<IActionResult> EtkinlikEkle(AktivitelerVM model) 
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-            //string etkinlikresimdosyaup = null;
-            //if (model.Resim1 != null)
-            //{
-            //    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
-            //    etkinlikresimdosya = Guid.NewGuid().ToString() + "-" + model.Resim1.FileName;
-            //    string dosyaYolu = Path.Combine(uploadsFolder, etkinlikresimdosya);
-            //    model.Resim1.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
-            //}
+            if (ModelState.IsValid)
+            {
+                if (model.EtkinlikKapakResim!=null)
+                {
+                    string dosyalar = "img/EtkinlikKapakFoto";
+                    model.EtkinlikKapakResimUrl = await DosyaYukle(dosyalar, model.EtkinlikKapakResim);
+                }
 
-            //var data = _aktivitelerBE.EtkinlikEkle(model, user, etkinlikresimdosya);
-            //if (data.IsSuccess)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-            return View(model);
+                if (model.FotoGaleri !=null)
+                {
+                    string dosyalar = "img/EtkinlikFoto";
+                    model.FotoGaleri = new List<FotoGaleriVM>();
+                    foreach (var dosya in model.FotoGaleri)
+                    {
+                        var galeri = new FotoGaleriVM()
+                        {
+                            FotoAdi = dosya.FotoAdi,
+                            FotoURL = await DosyaYukle(dosyalar, dosya)
 
+                        };
+                        model.FotoGaleri.Add(galeri);
+                    }
+                }
+
+                if (model.EtkinlikDosya!=null)
+                {
+                    string dosyalar = "img/EtkinlikDosyalar";
+                    model.EtkinlikDosyaUrl = await DosyaYukle(dosyalar, model.EtkinlikDosya);
+                }
+
+                var data = _aktivitelerBE.EtkinlikEkle(model, user);
+                if (data.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+                return View(model);
+            }
+
+            return View();
+        }
+
+        private Task<string> DosyaYukle(string dosyalar, FotoGaleriVM dosya)
+        {
+            throw new NotImplementedException();
         }
 
         [Authorize(Roles = "Administrator,Manager,Teacher")]
@@ -107,13 +137,13 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator,Manager,Teacher")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Guncelle(AktivitelerVM model, string etkinlikresimdosya)
+        public ActionResult Guncelle(AktivitelerVM model)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-            var data = _aktivitelerBE.EtkinlikGuncelle(model, user, etkinlikresimdosya);
+            var data = _aktivitelerBE.EtkinlikGuncelle(model, user);
             if (data.IsSuccess)
             {
                 return RedirectToAction("Index");
@@ -201,6 +231,15 @@ namespace YOGBIS.UI.Controllers
                 return View();
             }
 
+        }
+
+        [Obsolete]
+        private async Task<string> DosyaYukle(string dosyaYolu, IFormFile dosya) 
+        {
+            dosyaYolu += Guid.NewGuid().ToString() + "_" + dosya.FileName;
+            string Dosyalar = Path.Combine(_hostingEnvironment.WebRootPath, dosyaYolu);
+            await dosya.CopyToAsync(new FileStream(Dosyalar, FileMode.Create));
+            return "/" + dosyaYolu;
         }
     }
 }

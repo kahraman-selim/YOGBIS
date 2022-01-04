@@ -185,6 +185,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.OkulId = model.OkulId;
                         data.KaydedenId = user.LoginId;
 
+                        data.FotoGaleri = new List<FotoGaleri>();
+
+                        foreach (var file in data.FotoGaleri)
+                        {
+                            data.FotoGaleri.Add(new FotoGaleri()
+                            {
+                                FotoAdi = file.FotoAdi,
+                                FotoURL = file.FotoURL
+                            });
+                        }
+
                         _unitOfWork.aktivitelerRepository.Update(data);
                         _unitOfWork.Save();
                         return new Result<AktivitelerVM>(true, ResultConstant.RecordCreateSuccess);

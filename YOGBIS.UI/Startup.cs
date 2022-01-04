@@ -51,6 +51,7 @@ namespace YOGBIS.UI
             services.AddScoped<IAktivitelerBE, AktivitelerBE>(); //gecici tablo
             services.AddScoped<INotlarBE, NotlarBE>();
             services.AddScoped<IMulakatOlusturBE, MulakatOlusturBE>();
+            services.AddScoped<IUlkeGruplariBE, UlkeGruplariBE>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(Maps));
 
