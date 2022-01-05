@@ -9,7 +9,7 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public int UlkeId { get; set; }
         public string UlkeAdi { get; set; }
-        public string UlkeBayrak { get; set; }
+        public string UlkeBayrakURL { get; set; }
         public string UlkeAciklama { get; set; }
         public int KitaId { get; set; }
         [ForeignKey("KitaId")]

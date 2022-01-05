@@ -50,6 +50,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KayitTarihi = item.KayitTarihi,
                         KitaId = item.KitaId,
                         KitaAdi = item.Kitalar.KitaAdi,
+                        UlkeGrupId=item.UlkeGrupId,
+                        UlkeGrupAdi=item.UlkeGruplari.UlkeGrupAdi,
                         KaydedenId = item.KaydedenId,
                         KullaniciAdi = item.Kullanici !=null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
@@ -64,7 +66,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region UlkeEkle
-        public Result<UlkelerVM> UlkeEkle(UlkelerVM model, SessionContext user)//, string uniqueFileName)
+        public Result<UlkelerVM> UlkeEkle(UlkelerVM model, SessionContext user, string uniqueFileName)
         {
             if (model != null)
             {
@@ -76,12 +78,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ulkeler.KaydedenId = user.LoginId;
                     ulkeler.UlkeAdi = model.UlkeAdi;
                     ulkeler.UlkeAciklama = model.UlkeAciklama;
-                    //ulkeler.UlkeBayrak = uniqueFileName;
-                    //ulkeler.UlkeBayrakText = uniqueFileName;
-                    //var ulkeler = _mapper.Map<UlkelerVM, Ulkeler>(model);
-                    //ulkeler.KitaId = 1; Başlangıçta manuel ekleme için
-                    //ulkeler.KullaniciId = user.LoginId;
-                    //ulkeler.UlkeBayrak = uniqueFileName;
+                    ulkeler.UlkeGrupId = 0;
+                    ulkeler.UlkeBayrakURL = uniqueFileName;                   
+
 
                     _unitOfWork.ulkelerRepository.Add(ulkeler);
                     _unitOfWork.Save();
@@ -144,7 +143,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region UlkeGuncelle
-        public Result<UlkelerVM> UlkeGuncelle(UlkelerVM model, SessionContext user)//, string uniqueFileName)
+        public Result<UlkelerVM> UlkeGuncelle(UlkelerVM model, SessionContext user, string uniqueFileName)
         {
             if (model.UlkeId>0)
             {
@@ -154,8 +153,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     data.UlkeAdi = model.UlkeAdi;
                     data.UlkeAciklama = model.UlkeAciklama;
                     data.KitaId = model.KitaId;
-                    //data.UlkeBayrak = uniqueFileName;
+                    data.UlkeBayrakURL = uniqueFileName;
                     data.KaydedenId = user.LoginId;
+                    data.UlkeGrupId = model.UlkeGrupId;
 
                     _unitOfWork.ulkelerRepository.Update(data);
                     _unitOfWork.Save();
