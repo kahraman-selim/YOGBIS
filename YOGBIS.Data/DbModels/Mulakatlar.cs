@@ -16,7 +16,7 @@ namespace YOGBIS.Data.DbModels
         public Dereceler Dereceler { get; set; }
         public DateTime BaslamaTarihi { get; set; }
         public DateTime BitisTarihi { get; set; }
-        public int AdaySayisi { get; set; }
+        public int? AdaySayisi { get; set; }
         public int SorulanSoruSayisi { get; set; }
         public bool? Durumu { get; set; }
         public string MulakatAciklama { get; set; }

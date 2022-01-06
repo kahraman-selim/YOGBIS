@@ -14,6 +14,7 @@
                     <tr>
                         <th>Sıra No</th>
                         <th>Onay No</th>
+                        <th>Mulakat Dönemi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,6 +27,7 @@
                             <tr>
                                 <td>@sirano</td>
                                 <td><a asp-controller="Mulakatlar" asp-route-id="@item.MulakatId" id="MulakatOnayNo">@item.OnaySayisi</a></td>
+                                <td>@item.MulakatAdi</td>
                             </tr>
                         }
                     }

@@ -18,6 +18,7 @@ namespace YOGBIS.Data.DataContext
 
             base.OnModelCreating(builder.EnableAutoHistory(null));
 
+            #region MySqlSet
             builder.Entity<IdentityRole>(entity => entity.Property(m => m.Id).HasMaxLength(127));
             builder.Entity<IdentityRole>(entity => entity.Property(m => m.ConcurrencyStamp).HasColumnType("varchar(256)"));
 
@@ -38,7 +39,8 @@ namespace YOGBIS.Data.DataContext
                 entity.Property(m => m.UserId).HasMaxLength(127);
                 entity.Property(m => m.LoginProvider).HasMaxLength(127);
                 entity.Property(m => m.Name).HasMaxLength(127);
-            });
+            }); 
+            #endregion
 
             #region Kıtalar
             builder.Entity<Kitalar>().HasData(
@@ -61,7 +63,7 @@ namespace YOGBIS.Data.DataContext
 
             #region FP
             builder.Entity<SoruKategori>()
-        .HasKey(o => new { o.SoruId, o.KategoriId });
+                .HasKey(o => new { o.SoruId, o.KategoriId });
 
             builder.Entity<SoruDerece>()
                 .HasKey(o => new { o.SoruId, o.DereceId });

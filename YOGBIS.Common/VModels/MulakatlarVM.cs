@@ -8,26 +8,24 @@ namespace YOGBIS.Common.VModels
     {
         [Key]
         public int MulakatId { get; set; }
-        [Required(ErrorMessage ="{0} zorunlu bir alandır")]
+        [Required(ErrorMessage ="Onay Sayısı zorunlu bir alandır !")]
         public string OnaySayisi { get; set; }        
         public string MulakatAdi { get; set; }
-        [Required(ErrorMessage = "{0} zorunlu bir alandır")]
+        [Required(ErrorMessage = "Derece seçimi yapınız !")]
         public int DereceId { get; set; }
         public string DereceAdi { get; set; }
-        [Required(ErrorMessage = "{0} zorunlu bir alandır")]
+        [Required(ErrorMessage = "Derece seçimi yapınız !")]
         public DerecelerVM Dereceler { get; set; }
 
-        [Required(ErrorMessage = "{0} zorunlu bir alandır")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [DataType(DataType.Date)]
+        [Required(ErrorMessage = "Başlama Tarihini belirtiniz !")]
         public DateTime BaslamaTarihi { get; set; }
         
-        [Required(ErrorMessage = "{0} zorunlu bir alandır")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [DataType(DataType.Date)]
+        [Required(ErrorMessage = "Bitiş Tarihini belirtiniz !")]
         public DateTime BitisTarihi { get; set; }
-        public int AdaySayisi { get; set; } = 0;
+        public int? AdaySayisi { get; set; } = 0;
+        [Required(ErrorMessage = "Adaylar için hazırlanacak soru sayısını belirtiniz !")]
         public int SorulanSoruSayisi { get; set; } = 0;
+        [Required(ErrorMessage = "Onay Durumunu belirtiniz !")]
         public bool? Durumu { get; set; } = true;
         public string MulakatAciklama { get; set; }
         public string KaydedenId { get; set; }

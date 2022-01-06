@@ -1,4 +1,5 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.DerecelerVM>
+﻿
+@model IEnumerable<YOGBIS.Common.VModels.DerecelerVM>
 
 
 
@@ -25,7 +26,7 @@
                             sirano++;
                             <tr>
                                 <td>@sirano</td>
-                                <td><a  asp-controller="Dereceler" asp-route-id="@item.DereceId" id ="DereceAdi">@item.DereceAdi</a></td>
+                                <td><a asp-controller="Dereceler" asp-route-id="@item.DereceId" id="DereceAdi">@item.DereceAdi</a></td>
                             </tr>
                         }
                     }

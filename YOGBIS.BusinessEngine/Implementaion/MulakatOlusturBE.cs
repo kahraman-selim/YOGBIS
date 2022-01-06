@@ -89,7 +89,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var mulakatlar = _mapper.Map<MulakatlarVM, Mulakatlar>(model);
-                    mulakatlar.KaydedenId = user.LoginId;                    
+                    mulakatlar.KaydedenId = user.LoginId;
+                    mulakatlar.MulakatAdi = model.BaslamaTarihi.Day.ToString()+"/"+model.BaslamaTarihi.Month.ToString()+"-"+model.BitisTarihi.Day.ToString()+"/"+model.BitisTarihi.Month.ToString()+"-"+model.BitisTarihi.Year.ToString()+" Dönemi";
                     _unitOfWork.mulakatlarRepository.Add(mulakatlar);
                     _unitOfWork.Save();
                     return new Result<MulakatlarVM>(true, ResultConstant.RecordCreateSuccess);
@@ -115,6 +116,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var mulakatlar = _mapper.Map<MulakatlarVM, Mulakatlar>(model);
+                    mulakatlar.MulakatAdi = model.BaslamaTarihi.Day.ToString() + "/" + model.BaslamaTarihi.Month.ToString() + "-" + model.BitisTarihi.Day.ToString() + "/" + model.BitisTarihi.Month.ToString() + "-" + model.BitisTarihi.Year.ToString() + " Dönemi";
                     mulakatlar.KaydedenId = user.LoginId;
                     _unitOfWork.mulakatlarRepository.Update(mulakatlar);
                     _unitOfWork.Save();
