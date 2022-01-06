@@ -27,6 +27,8 @@ namespace YOGBIS.Common.VModels
         public KullaniciVM Kaydeden { get; set; }
         public string OnaylayanId { get; set; }
         public string OnaylayanAdi { get; set; }
+        public int DereceId { get; set; }
+        public int SoruKategorilerId { get; set; }
         public KullaniciVM Onaylayan { get; set; }
         public List<SoruKategoriVM> SoruKategoris { get; set; }
         public List<SoruDereceVM> SoruDereces { get; set; }

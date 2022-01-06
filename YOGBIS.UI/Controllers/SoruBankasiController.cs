@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -30,14 +31,16 @@ namespace YOGBIS.UI.Controllers
         } 
         #endregion
 
-        public IActionResult Index(int? id)
+        public async Task<IActionResult> Index(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
-            ViewBag.Onaylayan = _kullaniciBE.OnayKullaniciGetir().Data;
+            //ViewBag.Onaylayan = await _kullaniciBE.OnayKullaniciGetir().Data;
             //var requestModel = _soruBankasiBE.SoruGetirKullaniciId(user.LoginId);
 
+            var kullanici = await _kullaniciBE.OnayKullaniciGetir();
+            ViewBag.Onaylayan = kullanici.Data;
             //var requestModel = _soruBankasiBE.SorulariGetir(); 
             //if (requestModel.IsSuccess)
             //    return View(requestModel.Data);  

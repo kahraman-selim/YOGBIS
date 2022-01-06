@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
@@ -175,11 +176,35 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 try
                 {
-                    var soruBankasi = _mapper.Map<SoruBankasiVM, SoruBankasi>(model);
-                    soruBankasi.KaydedenId = user.LoginId;
-                    soruBankasi.OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi;
-                    _unitOfWork.soruBankasiRepository.Add(soruBankasi);
+                    //var soruBankasi = _mapper.Map<SoruBankasiVM, SoruBankasi>(model);
+                    //soruBankasi.KaydedenId = user.LoginId;
+                    //soruBankasi.OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi;
+                    var sorubankasi = new SoruBankasi
+                    {
+                        Cevap=model.Cevap,
+                        KaydedenId=user.LoginId,
+                        OnayDurumu=(int)model.OnayDurumu,
+                        OnayAciklama=model.OnayAciklama,
+                        OnaylayanId =user.LoginId,
+                        Soru=model.Soru,
+                        KayitTarihi=model.KayitTarihi,
+                        SoruDurumu=model.SoruDurumu,
+                        SorulmaSayisi=model.SorulmaSayisi,
+                        
+                    };
+
+                    _unitOfWork.soruBankasiRepository.Add(sorubankasi);
                     _unitOfWork.Save();
+
+                    var sorukategoriler = new SoruKategori
+                    {
+                        SoruId=sorubankasi.SoruBankasiId,
+                        KategoriId=model.SoruKategorilerId
+                        
+                    };
+                    _unitOfWork.soruKategoriRepository.Add(sorukategoriler);
+                    _unitOfWork.Save();
+
                     return new Result<SoruBankasiVM>(true, ResultConstant.RecordCreateSuccess);
                 }
                 catch (Exception ex)

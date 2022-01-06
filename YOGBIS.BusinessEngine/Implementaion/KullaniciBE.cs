@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.ResultModels;
@@ -83,23 +84,24 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region OnayKullaniciGetir
-        public Result<List<KullaniciVM>> OnayKullaniciGetir()
+        public async Task<Result<List<KullaniciVM>>> OnayKullaniciGetir()
         {
             var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
-            var role = _roleManager.Roles.Select(x => x.Name == "Manager");
+            var newdata = await _userManager.GetUsersInRoleAsync("Manager");
+            //var role = _roleManager.Roles.Select(x => x.Name == "Manager");
             var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
 
-            if (data != null)
+            if (newdata != null)
             {
                 List<KullaniciVM> returnData = new List<KullaniciVM>();
 
-                foreach (var item in data)
+                foreach (var item in newdata)
                 {
                     returnData.Add(new KullaniciVM()
                     {
                         Id = item.Id,
                         Ad = item.Ad,
-                        Soyad = item.Soyad,
+                        Soyad = item.Soyad,                        
                         AdSoyad = item.Ad + " " + item.Soyad
                     });
                 }

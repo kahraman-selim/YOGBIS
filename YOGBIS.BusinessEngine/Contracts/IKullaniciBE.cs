@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.VModels;
 
@@ -9,6 +10,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<List<KullaniciVM>> KullaniciGetir();
         Result<KullaniciVM> KullaniciGetir(int Id);
         Result<KullaniciVM> KullaniciGuncelle(KullaniciVM model);
-        Result<List<KullaniciVM>> OnayKullaniciGetir();
+        Task<Result<List<KullaniciVM>>> OnayKullaniciGetir();
     }
 }
