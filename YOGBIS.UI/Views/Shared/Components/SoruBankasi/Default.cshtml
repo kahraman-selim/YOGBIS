@@ -4,7 +4,7 @@
 @model List<YOGBIS.Common.VModels.SoruBankasiVM>
 
 <div class="card mb-3">
-    <div class="card-header">
+    <div class="card-header" style="background-color:burlywood;">
         <i class="fas fa-table mr-1"></i>
         <b>Soru Listesi</b>
     </div>
@@ -16,14 +16,14 @@
                         <th>SN</th>
                         <th>Soru No</th>
                         <th>Durumu</th>
-                        @*@if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                         {
                             <th>Kaydeden</th>
                         }
                         @if (User.IsInRole("Follower"))
                         {
-                            <th>Onaylayan</th>
-                        }*@
+                            @*<th>Onaylayan</th>*@
+                        }
                         <th>Soru</th>
                         <th>Cevap</th>
                     </tr>
@@ -42,7 +42,7 @@
                                         @item.SoruBankasiId
                                     </a>
                                 </td>
-                                @*@if (item.OnayDurumu == EnumsSoruOnay.Onaya_Gonderildi)
+                                @if (item.OnayDurumu == EnumsSoruOnay.Onaya_Gonderildi)
                                     {
                                         @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                                         {
@@ -50,7 +50,7 @@
                                         }
                                         else
                                         {
-                                            <td style="color:green" class="font-weight-bold">@item.OnayDurumuAciklama</td>
+                                            <td style="color:brown" class="font-weight-bold">@item.OnayDurumuAciklama</td>
 
                                         }
                                     }
@@ -68,8 +68,8 @@
                                     }
                                     else
                                     {
-                                        <td class="text-capitalize">@item.OnaylayanAdi</td>
-                                    }*@
+                                        @*<td class="text-capitalize">@item.OnaylayanAdi</td>*@
+                                    }
                                 <td>@item.Soru</td>
                                 <td>@item.Cevap</td>
                             </tr>

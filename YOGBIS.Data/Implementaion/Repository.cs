@@ -16,20 +16,14 @@ namespace YOGBIS.Data.Implementaion
             _ctx = ctx;
             this.dbSet = _ctx.Set<T>();
         }
-        /// <summary>
-        /// Gelen tipte veri kaydeden method
-        /// </summary>
-        /// <param name="entity"></param>
         public void Add(T entity)
         {
             dbSet.Add(entity);
         }
-
         public T Get(int id)
         {
             return dbSet.Find(id);
         }
-
         public IQueryable<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderby = null, string includeProperties = null)
         {
             IQueryable<T> query = dbSet;
@@ -54,7 +48,6 @@ namespace YOGBIS.Data.Implementaion
 
             return query;
         }
-
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter = null, string includeProperties = null)
         {
             IQueryable<T> query = dbSet;
@@ -74,12 +67,10 @@ namespace YOGBIS.Data.Implementaion
 
             return query.FirstOrDefault();
         }
-
         public void Remove(T entity)
         {
             dbSet.Remove(entity);
         }
-
         public void Update(T entity)
         {
             dbSet.Update(entity);

@@ -21,16 +21,21 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Onay durumunu seçiniz...")]
         public EnumsSoruOnay OnayDurumu { get; set; }
+        public string OnayDurumuAciklama { get; set; }
         public string OnayAciklama { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kaydeden { get; set; }
+
+        [Required(ErrorMessage = "Onaylayacak Yetkiliyi seçiniz...")]
         public string OnaylayanId { get; set; }
-        public string OnaylayanAdi { get; set; }
-        public int DereceId { get; set; }
-        public int SoruKategorilerId { get; set; }
+
+        [Required(ErrorMessage = "Onaylayacak Yetkiliyi seçiniz...")]
+        public string OnaylayanAdi { get; set; }        
         public KullaniciVM Onaylayan { get; set; }
-        public List<SoruKategoriVM> SoruKategoris { get; set; }
+        public int SoruKategorilerId { get; set; }
+        public int SoruDereceId { get; set; }
+        public List<SoruKategoriVM> SoruKategoris { get; set; }        
         public List<SoruDereceVM> SoruDereces { get; set; }
     }
 }

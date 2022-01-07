@@ -159,9 +159,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\EtkinlikKapakFoto\" />
-    <Folder Include="wwwroot\img\EtkinlikFoto\" />
-    <Folder Include="wwwroot\img\EtkinlikDosyalar\" />
     <Folder Include="wwwroot\img\Bayraklar\" />
   </ItemGroup>
 

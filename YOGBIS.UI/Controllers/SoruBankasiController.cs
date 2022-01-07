@@ -86,7 +86,7 @@ namespace YOGBIS.UI.Controllers
 
             if (SoruBankasiId>0)
             {
-                var data = _soruBankasiBE.SoruGuncelle(model, user);
+                var data = _soruBankasiBE.SoruGuncelle(model,user);
                 return RedirectToAction("Index");
             }
             else

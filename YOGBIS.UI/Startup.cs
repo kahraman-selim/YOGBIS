@@ -38,20 +38,22 @@ namespace YOGBIS.UI
 
             services.AddDbContext<YOGBISContext>(options => options.UseMySQL(Configuration.GetConnectionString("YOGBISConnection")));
 
-            services.AddScoped<ISoruBankasiBE, SoruBankasiBE>();
-            services.AddScoped<IMulakatSorulariBE, MulakatSorulariBE>();
-            services.AddScoped<ISoruKategorileriBE, SoruKategorileriBE>();
-            services.AddScoped<IKullaniciBE, KullaniciBE>();
-            services.AddScoped<IDerecelerBE, DerecelerBE>();
-            services.AddScoped<IUlkelerBE, UlkelerBE>();
-            services.AddScoped<IKitalarBE, KitalarBE>();
-            services.AddScoped<IOkullarBE, OkullarBE>();
-            services.AddScoped<IOkulBilgiBE, OkulBilgiBE>(); //gecici tablo
-            services.AddScoped<IOgrencilerBE, OgrencilerBE>(); //gecici tablo
             services.AddScoped<IAktivitelerBE, AktivitelerBE>(); //gecici tablo
-            services.AddScoped<INotlarBE, NotlarBE>();
+            services.AddScoped<IDerecelerBE, DerecelerBE>();
+            services.AddScoped<IKitalarBE, KitalarBE>();
+            services.AddScoped<IKullaniciBE, KullaniciBE>();
             services.AddScoped<IMulakatOlusturBE, MulakatOlusturBE>();
+            services.AddScoped<IMulakatSorulariBE, MulakatSorulariBE>();
+            services.AddScoped<INotlarBE, NotlarBE>();
+            services.AddScoped<IOgrencilerBE, OgrencilerBE>(); //gecici tablo
+            services.AddScoped<IOkulBilgiBE, OkulBilgiBE>(); //gecici tablo
+            services.AddScoped<IOkullarBE, OkullarBE>();
+            services.AddScoped<ISoruBankasiBE, SoruBankasiBE>();
+            services.AddScoped<ISoruKategorileriBE, SoruKategorileriBE>();
             services.AddScoped<IUlkeGruplariBE, UlkeGruplariBE>();
+            services.AddScoped<IUlkelerBE, UlkelerBE>();
+
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(Maps));
 

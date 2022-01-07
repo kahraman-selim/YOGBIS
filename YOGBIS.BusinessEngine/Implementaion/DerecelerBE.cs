@@ -47,7 +47,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         DereceId = item.DereceId,
                         DereceAdi = item.DereceAdi,
-                        KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad
+                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
                 }
                 return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, returnData);
@@ -74,8 +75,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         DereceId = item.DereceId,
                         DereceAdi = item.DereceAdi,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad,
-                        KaydedenId = item.KaydedenId
+                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
                 }
                 return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, returnData);

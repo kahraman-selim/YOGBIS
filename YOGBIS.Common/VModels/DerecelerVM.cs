@@ -10,7 +10,7 @@ namespace YOGBIS.Common.VModels
         [Required (ErrorMessage ="Dereceyi yazınz")]
         public string DereceAdi { get; set; }
         public string KaydedenId { get; set; }
-        public string KullaniciAdi { get; set; }
+        public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<SoruDereceVM> SoruDereces { get; set; }
         public List<SoruKategorilerVM> SoruKategorilers { get; set; }

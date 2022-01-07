@@ -51,12 +51,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         //DereceAdi = item.Dereceler.DereceAdi,
                         SorulmaSayisi = item.SorulmaSayisi,
                         SoruDurumu = item.SoruDurumu,
-                        KaydedenId = item.KaydedenId,
-                        KaydedenAdi = item.Kaydeden.Ad + " " + item.Kaydeden.Soyad,
-                        OnaylayanId = item.OnaylayanId,
-                        OnaylayanAdi = item.Onaylayan.Ad + " " + item.Onaylayan.Soyad,
+                        KaydedenId = item.Kaydeden != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kaydeden != null ? item.Kaydeden.Ad + " " + item.Kaydeden.Soyad : string.Empty,
+                        OnaylayanId = item.Onaylayan != null ? item.OnaylayanId : string.Empty,
+                        OnaylayanAdi = item.Onaylayan != null ? item.Onaylayan.Ad + " " + item.Onaylayan.Soyad : string.Empty,
                         OnayDurumu = (EnumsSoruOnay)item.OnayDurumu,
-                        //OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
+                        OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
                         OnayAciklama = item.OnayAciklama,
                         KayitTarihi = item.KayitTarihi
                     });
@@ -134,9 +134,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         //DereceAdi = item.Dereceler.DereceAdi,
                         SorulmaSayisi = item.SorulmaSayisi,
                         SoruDurumu = item.SoruDurumu,
-                        KaydedenId = item.KaydedenId,
-                        KaydedenAdi = item.Kaydeden.Ad + " " + item.Kaydeden.Soyad,
-                        OnaylayanId = item.OnaylayanId,
+                        KaydedenId = item.Kaydeden !=null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kaydeden!=null ? item.Kaydeden.Ad + " " + item.Kaydeden.Soyad:string.Empty,
+                        OnaylayanId = item.Onaylayan != null ? item.OnaylayanId:string.Empty,
                         OnaylayanAdi = item.Onaylayan != null ? item.Onaylayan.Ad + " " + item.Onaylayan.Soyad : string.Empty,
                         OnayDurumu = (EnumsSoruOnay)item.OnayDurumu,
                         //OnayDurumuAciklama = EnumExtension<EnumsSoruOnay>.GetDisplayValue((EnumsSoruOnay)item.OnayDurumu),
@@ -181,28 +181,31 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     //soruBankasi.OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi;
                     var sorubankasi = new SoruBankasi
                     {
-                        Cevap=model.Cevap,
-                        KaydedenId=user.LoginId,
-                        OnayDurumu=(int)model.OnayDurumu,
-                        OnayAciklama=model.OnayAciklama,
-                        OnaylayanId =user.LoginId,
-                        Soru=model.Soru,
-                        KayitTarihi=model.KayitTarihi,
-                        SoruDurumu=model.SoruDurumu,
-                        SorulmaSayisi=model.SorulmaSayisi,
-                        
+                        Soru = model.Soru,
+                        Cevap =model.Cevap,
+                        SorulmaSayisi = model.SorulmaSayisi,
+                        SoruDurumu = model.SoruDurumu,
+                        OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi,
+                        KaydedenId =user.LoginId,
+                        KayitTarihi=model.KayitTarihi
                     };
-
                     _unitOfWork.soruBankasiRepository.Add(sorubankasi);
                     _unitOfWork.Save();
 
-                    var sorukategoriler = new SoruKategori
+                    var sorukategori = new SoruKategori
                     {
                         SoruId=sorubankasi.SoruBankasiId,
-                        KategoriId=model.SoruKategorilerId
-                        
+                        KategoriId=model.SoruKategorilerId                        
                     };
-                    _unitOfWork.soruKategoriRepository.Add(sorukategoriler);
+                    _unitOfWork.soruKategoriRepository.Add(sorukategori);
+                    _unitOfWork.Save();
+
+                    var soruderece = new SoruDerece
+                    {
+                        SoruId = sorubankasi.SoruBankasiId,
+                        DereceId = model.SoruDereceId
+                    };
+                    _unitOfWork.soruDereceRepository.Add(soruderece);
                     _unitOfWork.Save();
 
                     return new Result<SoruBankasiVM>(true, ResultConstant.RecordCreateSuccess);
