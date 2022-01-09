@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace YOGBIS.Data.Migrations
 {
-    public partial class tabloyuk1 : Migration
+    public partial class yenileme : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -306,7 +306,7 @@ namespace YOGBIS.Data.Migrations
                     DereceId = table.Column<int>(nullable: false),
                     BaslamaTarihi = table.Column<DateTime>(nullable: false),
                     BitisTarihi = table.Column<DateTime>(nullable: false),
-                    AdaySayisi = table.Column<int>(nullable: false),
+                    AdaySayisi = table.Column<int>(nullable: true),
                     SorulanSoruSayisi = table.Column<int>(nullable: false),
                     Durumu = table.Column<bool>(nullable: true),
                     MulakatAciklama = table.Column<string>(nullable: true),
@@ -415,7 +415,7 @@ namespace YOGBIS.Data.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     KayitTarihi = table.Column<DateTime>(nullable: false),
                     UlkeAdi = table.Column<string>(nullable: true),
-                    UlkeBayrak = table.Column<string>(nullable: true),
+                    UlkeBayrakURL = table.Column<string>(nullable: true),
                     UlkeAciklama = table.Column<string>(nullable: true),
                     KitaId = table.Column<int>(nullable: false),
                     UlkeGrupId = table.Column<int>(nullable: false),

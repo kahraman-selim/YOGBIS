@@ -28,24 +28,19 @@ namespace YOGBIS.UI.Controllers
             _soruKategorileriBE = soruKategorileriBE;
             _derecelerBE = derecelerBE;
             _kullaniciBE = kullaniciBE;
-        } 
+        }
         #endregion
 
+        #region Index
         public async Task<IActionResult> Index(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
-            //ViewBag.Onaylayan = await _kullaniciBE.OnayKullaniciGetir().Data;
-            //var requestModel = _soruBankasiBE.SoruGetirKullaniciId(user.LoginId);
 
             var kullanici = await _kullaniciBE.OnayKullaniciGetir();
             ViewBag.Onaylayan = kullanici.Data;
-            //var requestModel = _soruBankasiBE.SorulariGetir(); 
-            //if (requestModel.IsSuccess)
-            //    return View(requestModel.Data);  
 
-            //    return View(user);
             if (id > 0)
             {
                 var data = _soruBankasiBE.SoruGetir((int)id);
@@ -57,26 +52,23 @@ namespace YOGBIS.UI.Controllers
             }
 
         }
+        #endregion
 
         [HttpGet]
+        #region Ekle
         public IActionResult SoruEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
-            //ViewBag.SoruKategorileri = _soruKategorileriBE.GetAllSoruKategoriler().Data;
-            //var data = _soruKategorileriBE.GetAllSoruKategoriler();
-            //ViewBag.SoruKategorileri = data.Data.Select(q => new SelectListItem
-            //{
-            //    Text = q.SoruKategorilerAdi,
-            //    Value = q.SoruKategorilerId.ToString()
-            //});
 
             return View();
-        }
+        } 
+        #endregion
 
         [ValidateAntiForgeryToken]
         [HttpPost]
+        #region Ekle
         public IActionResult SoruEkle(SoruBankasiVM model, int? SoruBankasiId)
         {
 
@@ -84,14 +76,14 @@ namespace YOGBIS.UI.Controllers
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
 
-            if (SoruBankasiId>0)
+            if (SoruBankasiId > 0)
             {
-                var data = _soruBankasiBE.SoruGuncelle(model,user);
+                var data = _soruBankasiBE.SoruGuncelle(model, user);
                 return RedirectToAction("Index");
             }
             else
             {
-                var data = _soruBankasiBE.SoruEkle(model,user);
+                var data = _soruBankasiBE.SoruEkle(model, user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
@@ -99,14 +91,16 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
-        
-        public IActionResult Guncelle(int? id)
+        #endregion
+
+        #region Güncelle
+        public async Task<IActionResult> Guncelle(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
 
-            if (id>0)
+            if (id > 0)
             {
                 var data = _soruBankasiBE.SoruGetir((int)id);
                 return View(data.Data);
@@ -115,13 +109,15 @@ namespace YOGBIS.UI.Controllers
             {
                 return View();
             }
-        }        
-        
+        } 
+        #endregion
+
         [HttpDelete]
+        #region Sil
         public IActionResult SoruSil(int id)
         {
             if (id < 0)
-                return Json(new {success = false, message = "Silmek için Kayıt Seçiniz" });
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _soruBankasiBE.SoruSil(id);
             if (data.IsSuccess)
@@ -129,7 +125,8 @@ namespace YOGBIS.UI.Controllers
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
-        }
-  
+        } 
+        #endregion
+
     }
 }

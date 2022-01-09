@@ -9,14 +9,14 @@ using YOGBIS.Data.DataContext;
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    [Migration("20220103135955_tabloyuk1")]
-    partial class tabloyuk1
+    [Migration("20220108194613_yenileme")]
+    partial class yenileme
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.15")
+                .HasAnnotation("ProductVersion", "3.1.22")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -592,7 +592,7 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AdaySayisi")
+                    b.Property<int?>("AdaySayisi")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("BaslamaTarihi")
@@ -1151,7 +1151,7 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("UlkeAdi")
                         .HasColumnType("text");
 
-                    b.Property<string>("UlkeBayrak")
+                    b.Property<string>("UlkeBayrakURL")
                         .HasColumnType("text");
 
                     b.Property<int>("UlkeGrupId")

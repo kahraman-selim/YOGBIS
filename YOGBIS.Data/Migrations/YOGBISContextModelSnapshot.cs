@@ -14,7 +14,7 @@ namespace YOGBIS.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.15")
+                .HasAnnotation("ProductVersion", "3.1.22")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -590,7 +590,7 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AdaySayisi")
+                    b.Property<int?>("AdaySayisi")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("BaslamaTarihi")
