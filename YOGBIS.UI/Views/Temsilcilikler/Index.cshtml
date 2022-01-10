@@ -24,7 +24,7 @@
     #mySelectOptions {
         border-radius: inherit;
         border: 0.1em solid #000000;
-        width: 90%;
+        width: 100%; /*select list widht*/
     }
 
         #mySelectOptions label {
@@ -55,7 +55,7 @@
     </select>
 </div>
 
-<div class="form-group col-md-6">
+<div class="form-group col-md-4">
     <label for="myMultiselect">Derece</label>
     <div id="myMultiselect" class="multiselect">
         <div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
@@ -63,14 +63,14 @@
                 <option id="option">
                 </option>
             </select>
-            @*<div class="overSelect"></div>*@
+            <div class="overSelect"></div>
         </div>
-        <div id="mySelectOptions" class="shadow dropdown-menu ">
+        <div id="mySelectOptions" class="shadow dropdown-menu">
             <br />
             @foreach (var item in ViewBag.Dereceler)
             {
                 <label class="label-sm" for="@item.DereceId" @*asp-for="SoruDereceId"*@>
-                    <input type="checkbox" id="@item.DereceId" onchange="checkboxStatusChange()" value="@item.DereceId" /> @item.DereceAdi
+                    <input type="checkbox" class="checkbox" id="@item.DereceId" onchange="checkboxStatusChange()" value="@item.DereceId" /> @item.DereceAdi
                 </label>
             }
         </div>
@@ -80,15 +80,14 @@
 <!-- ikinci -->
 <div class="form-group col-sm-8">
     <label for="myMultiselect">Kategori</label>
-    <div id="myMultiselect1" class="multiselect">
+    <div id="myMultiselect" class="multiselect">
         <div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
             <select id="select" class="form-control">
                 <option>
                 </option>
-            </select>
-            <div class="overSelect"></div>
+            </select>            
         </div>
-        <div id="mySelectOptions1" class="form-control-range dropdown-menu">
+        <div id="mySelectOptions" class="shadow dropdown-menu">
             @foreach (var item in ViewBag.Kategoriler)
             {
                 <label class="label-sm" for="@item.SoruKategorilerId" @*asp-for="SoruDereceId"*@>

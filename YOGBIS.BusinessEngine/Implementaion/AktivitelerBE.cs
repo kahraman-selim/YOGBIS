@@ -128,7 +128,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 try
                 {
-                    Aktiviteler Etkinlik = new Aktiviteler
+                    Etkinlikler Etkinlik = new Etkinlikler
                     {
                         AktiviteAdi = model.AktiviteAdi,
                         AktiviteBilgi = model.AktiviteBilgi,

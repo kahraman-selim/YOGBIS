@@ -2,7 +2,7 @@
 
 namespace YOGBIS.Data.Contracts
 {
-    public interface IDerecelerRepository : IRepositoryBase<Dereceler>
+    public interface IDerecelerRepository : IRepositoryBase<SoruDereceler>
     {
     }
 }

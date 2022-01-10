@@ -4,7 +4,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Data.Implementaion
 {
-    public class DerecelerRepository : Repository<Dereceler>, IDerecelerRepository
+    public class DerecelerRepository : Repository<SoruDereceler>, IDerecelerRepository
     {
         private readonly YOGBISContext _ctx;
 

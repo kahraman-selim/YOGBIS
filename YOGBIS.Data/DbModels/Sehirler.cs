@@ -11,8 +11,8 @@ namespace YOGBIS.Data.DbModels
         public string SehirAdi { get; set; }
         public bool? Baskent { get; set; }
         public string SehirAciklama { get; set; }
-        //public int UlkeId { get; set; }
-        //public Ulkeler Ulkeler { get; set; }
+        public int UlkeId { get; set; }
+        public Ulkeler Ulkeler { get; set; }
         public int EyaletId { get; set; }
         [ForeignKey("EyaletId")]
         public Eyaletler Eyaletler { get; set; }
@@ -22,5 +22,6 @@ namespace YOGBIS.Data.DbModels
         public List<Okullar> Okullars { get; set; }
         public List<Universiteler> Universitelers { get; set; }
         public List<Ogretmenler> Ogretmenlers { get; set; }
+        public ICollection<FotoGaleri> FotoGaleri { get; set; }
     }
 }

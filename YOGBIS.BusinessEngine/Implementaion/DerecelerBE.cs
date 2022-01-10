@@ -35,7 +35,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             //return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, dereceler);
 
             var data = _unitOfWork.derecelerRepository.GetAll(includeProperties: "Kullanici").ToList();
-            var dereceler = _mapper.Map<List<Dereceler>, List<DerecelerVM>>(data);
+            var dereceler = _mapper.Map<List<SoruDereceler>, List<DerecelerVM>>(data);
 
             if (data != null)
             {
@@ -94,7 +94,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var data = _unitOfWork.derecelerRepository.Get(id);
             if (data != null)
             {
-                var dereceler = _mapper.Map<Dereceler, DerecelerVM>(data);
+                var dereceler = _mapper.Map<SoruDereceler, DerecelerVM>(data);
                 return new Result<DerecelerVM>(true, ResultConstant.RecordFound, dereceler);
             }
             else
@@ -111,7 +111,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 try
                 {
-                    var derece = _mapper.Map<DerecelerVM, Dereceler>(model);
+                    var derece = _mapper.Map<DerecelerVM, SoruDereceler>(model);
                     derece.KaydedenId = user.LoginId;
                     _unitOfWork.derecelerRepository.Add(derece);
                     _unitOfWork.Save();
@@ -137,7 +137,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 try
                 {
-                    var derece = _mapper.Map<DerecelerVM, Dereceler>(model);
+                    var derece = _mapper.Map<DerecelerVM, SoruDereceler>(model);
                     derece.KaydedenId = user.LoginId;
                     _unitOfWork.derecelerRepository.Update(derece);
                     _unitOfWork.Save();

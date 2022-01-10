@@ -2,7 +2,7 @@
 
 namespace YOGBIS.Data.Contracts
 {
-    public interface IAktivitelerRepository : IRepositoryBase<Aktiviteler>
+    public interface IAktivitelerRepository : IRepositoryBase<Etkinlikler>
     {
     }
 }

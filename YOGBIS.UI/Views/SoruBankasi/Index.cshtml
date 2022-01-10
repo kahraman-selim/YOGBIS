@@ -8,17 +8,12 @@
 }
 
 <style type="text/css">
-
-    #mySelectOptions {
-        /*border: 1px solid rgba(0, 0, 0, 0.15);*/
-        border-radius: inherit;
-        border: 1px solid #000000;
-        float: left;
+    .multiselect {
+        width: 100%;
     }
 
     .selectBox {
         position: relative;
-        
     }
 
         .selectBox select {
@@ -27,23 +22,27 @@
 
     .overSelect {
         position: sticky;
-        width:100%;
-    }
-
-    #mySelectOptions label {
-        /*font-weight: normal;*/
-        display: block;
         width: 100%;
-        white-space: nowrap;
-        background-color: #ffffff;
-        padding-inline-start: 5px;
-        margin-bottom: 0px;
     }
 
-        #mySelectOptions label:hover {
-            background-color: #2799FF;
-            color: white;
+    #mySelectOptions {
+        border-radius: inherit;
+        border: 0.1em solid #000000;
+        width: 100%; /*select list widht*/
+    }
+
+        #mySelectOptions label {
+            display: block;
+            font-weight: normal;
+            white-space: nowrap;
+            min-height: 1.2em;
+            background-color: #ffffff00;
+            padding-inline-start: 5px;
         }
+
+            #mySelectOptions label:hover {
+                background-color: #1e90ff;
+            }
 </style>
 
 <div class="row">
@@ -67,28 +66,25 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label asp-for="SoruDereceId" class="small mb-1 font-weight-bold">Derece</label>
-                                @*@Html.DropDownListFor(u => u.SoruDereceId, new SelectList(ViewBag.Dereceler, "DereceId",
-        "DereceAdi"), "Dereceyi seçiniz", new { @class = "form-control-range form-control" })*@
+                                <label class="small mb-1 font-weight-bold">Derece</label>
                                 <div id="myMultiselect" class="multiselect">
                                     <div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
-                                        <select class="form-select form-control">
-                                            <option></option>
-                                        </select>
-                                        <div class="overSelect"></div>
+                                        <select id="select" class="form-control">
+                                            <option id="option">
+                                            </option>
+                                        </select>                                        
                                     </div>
-                                    <div id="mySelectOptions" class="shadow form-control-range dropdown-menu">
+                                    <div id="mySelectOptions" class="shadow dropdown-menu">
+                                        <br />
                                         @foreach (var item in ViewBag.Dereceler)
                                         {
-                                            <label class="label" for="@item.DereceId" asp-for="SoruDereceId">
-                                                <input type="checkbox" id="@item.DereceId" onchange="checkboxStatusChange()" value="@item.DereceAdi" /> @item.DereceAdi
+                                            <label class="label-sm" for="@item.DereceId" @*asp-for="SoruDereceId"*@>
+                                                <input type="checkbox" class="checkbox" id="@item.DereceId" onchange="checkboxStatusChange()" value="@item.DereceAdi" /> @item.DereceAdi
                                             </label>
                                         }
                                     </div>
                                 </div>
-                                <span class="text-danger" asp-validation-for="SoruDereceId"></span>
                             </div>
-                            
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
@@ -118,26 +114,7 @@
                                   new { @class = "form-control-range form-control py-2" })
                                 <span class="text-danger" asp-validation-for="SoruKategorilerId"></span>
                             </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div id="myMultiselect" class="multiselect">
-                                <div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
-                                    <select class="form-select">
-                                        <option></option>
-                                    </select>
-                                    <div class="overSelect"></div>
-                                </div>
-                                <div id="mySelectOptions" class="shadow">
-                                    @foreach (var item in ViewBag.Kategoriler)
-                                    {
-                                        <label for="@item.SoruKategorilerId" asp-for="SoruKategorilerId">
-                                            <input class="checkbox" id="@item.SoruKategorilerId" onchange="checkboxStatusChange()" value="@item.SoruKategorilerAdi" /> @item.SoruKategorilerAdi
-                                        </label>
-                                    }
-                                </div>
-                            </div>
-                            <span class="text-danger" asp-validation-for="SoruKategorilerId"></span>
-                        </div>
+                        </div>                        
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">

@@ -4,7 +4,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Data.Implementaion
 {
-    public class AktivitelerRepository : Repository<Aktiviteler>, IAktivitelerRepository
+    public class AktivitelerRepository : Repository<Etkinlikler>, IAktivitelerRepository
     {
         private readonly YOGBISContext _ctx;
 

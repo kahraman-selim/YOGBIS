@@ -4,15 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class UlkeGruplari:Base
+    public class Iller:Base
     {
         [Key]
-        public int UlkeGrupId { get; set; }
-        public string UlkeGrupAdi { get; set; }
-        public string UlkeGrupAciklama { get; set; }
+        public int IlId { get; set; }
+        public string PlakaKodu { get; set; }
+        public string IlAdi { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
-        public List<UlkeGruplariKitalar> UlkeGruplariKitalars { get; set; }        
+        public List<IllerMdEPosta> IllerMdEpostas { get; set; }
     }
 }

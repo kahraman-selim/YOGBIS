@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class Dereceler:Base
+    public class SoruDereceler:Base
     {
         [Key]
         public int DereceId { get; set; }

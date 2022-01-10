@@ -9,8 +9,8 @@ namespace YOGBIS.Common.Mappings
         public Maps()
         {
             CreateMap<Adaylar, AdaylarVM>().ReverseMap();
-            CreateMap<Aktiviteler, AktivitelerVM>().ReverseMap();
-            CreateMap<Dereceler, DerecelerVM>().ReverseMap();
+            CreateMap<Etkinlikler, AktivitelerVM>().ReverseMap();
+            CreateMap<SoruDereceler, DerecelerVM>().ReverseMap();
             CreateMap<Eyaletler, EyaletlerVM>().ReverseMap();
             CreateMap<FotoGaleri, FotoGaleriVM>().ReverseMap();
             CreateMap<GorevKaydi, GorevKaydiVM>().ReverseMap();

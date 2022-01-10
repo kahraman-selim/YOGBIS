@@ -48,11 +48,11 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         BitisTarihi=item.BitisTarihi,
                         DereceId=item.Dereceler.DereceId,
                         DereceAdi=item.Dereceler.DereceAdi,
-                        Durumu=item.Durumu.HasValue,
+                        Durumu=item.Durumu,
                         MulakatAciklama=item.MulakatAciklama,
-                        KaydedenId=item.KaydedenId,
-                        KullaniciAdi=item.Kullanici.Ad + " " + item.Kullanici.Soyad,
-                        SorulanSoruSayisi=item.SorulanSoruSayisi,                        
+                        KaydedenId = item.KaydedenId != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+                        SorulanSoruSayisi =(int)item.SorulanSoruSayisi,                        
                         KayitTarihi = item.KayitTarihi
                     });
                 }

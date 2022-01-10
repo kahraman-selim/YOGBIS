@@ -29,7 +29,7 @@ namespace YOGBIS.Common.VModels
         public bool? Durumu { get; set; } = true;
         public string MulakatAciklama { get; set; }
         public string KaydedenId { get; set; }
-        public string KullaniciAdi { get; set; }
+        public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<MulakatSorulariVM> MulakatSorularis { get; set; }
         public List<AdaylarVM> Adaylars { get; set; }
