@@ -39,26 +39,26 @@ namespace YOGBIS.Data.DataContext
                 entity.Property(m => m.UserId).HasMaxLength(127);
                 entity.Property(m => m.LoginProvider).HasMaxLength(127);
                 entity.Property(m => m.Name).HasMaxLength(127);
-            }); 
+            });
             #endregion
 
             #region Kıtalar
             builder.Entity<Kitalar>().HasData(
-        new Kitalar()
-        { KitaId = 1, KitaAdi = "Afrika", KitaAciklama = "Afrika Kıtası" },
-        new Kitalar()
-        { KitaId = 2, KitaAdi = "Antartika", KitaAciklama = "Antartika Kıtası" },
-        new Kitalar()
-        { KitaId = 3, KitaAdi = "Asya", KitaAciklama = "Asya Kıtası" },
-        new Kitalar()
-        { KitaId = 4, KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası" },
-        new Kitalar()
-        { KitaId = 5, KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası" },
-        new Kitalar()
-        { KitaId = 6, KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası" },
-        new Kitalar()
-        { KitaId = 7, KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası" }
-        );
+            new Kitalar()
+            { KitaId = 1, KitaAdi = "Afrika", KitaAciklama = "Afrika Kıtası" },
+            new Kitalar()
+            { KitaId = 2, KitaAdi = "Antartika", KitaAciklama = "Antartika Kıtası" },
+            new Kitalar()
+            { KitaId = 3, KitaAdi = "Asya", KitaAciklama = "Asya Kıtası" },
+            new Kitalar()
+            { KitaId = 4, KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası" },
+            new Kitalar()
+            { KitaId = 5, KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası" },
+            new Kitalar()
+            { KitaId = 6, KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası" },
+            new Kitalar()
+            { KitaId = 7, KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası" }
+            );
             #endregion
 
             #region FP
@@ -78,7 +78,7 @@ namespace YOGBIS.Data.DataContext
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<SoruDerece>()
-                .HasOne<SoruDereceler>(s => s.Dereceler)
+                .HasOne<SoruDereceler>(s => s.SoruDereceler)
                 .WithMany(g => g.SoruDereces)
                 .HasForeignKey(f => f.SoruId)
                 .OnDelete(DeleteBehavior.Cascade);

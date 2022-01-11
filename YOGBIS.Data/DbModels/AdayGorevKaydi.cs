@@ -30,8 +30,6 @@ namespace YOGBIS.Data.DbModels
         public int? SehirId { get; set; }        
         public int? EyaletId { get; set; }
         public int UlkeId { get; set; }
-        [ForeignKey("UlkeId")]
-        public Ulkeler Ulkeler { get; set; }
         public int KitaId { get; set; }
         [ForeignKey("KitaId")]
         public Kitalar Kitalar { get; set; }

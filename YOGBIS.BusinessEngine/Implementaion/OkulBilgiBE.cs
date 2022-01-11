@@ -24,7 +24,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OkulBilgiVM>> OkulBilgileriGetir()
         {
-            var data = _unitOfWork.okulBilgiRepository.GetAll(includeProperties: "Okullar,Ulkeler,Kullanici").OrderBy(u => u.Ulkeler.UlkeAdi).ToList();
+            var data = _unitOfWork.okulBilgiRepository.GetAll(includeProperties: "Okullar,Kullanici").OrderBy(u => u.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi).ToList();
             //var okulbilgiler = _mapper.Map<List<OkulBilgi>, List<OkulBilgiVM>>(data);
             //return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, okulbilgiler);
             if (data != null)
@@ -52,7 +52,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulId = item.OkulId,
                         OkulAdi = item.Okullar.OkulAdi,
                         UlkeId = item.UlkeId,
-                        UlkeAdi = item.Ulkeler.UlkeAdi,
+                        UlkeAdi = item.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciId = item.KullaniciId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
@@ -67,7 +67,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OkulBilgiVM>> OkulBilgiGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
+            var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici,Okullar").ToList();
             if (data != null)
             {
                 List<OkulBilgiVM> returnData = new List<OkulBilgiVM>();
@@ -93,7 +93,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulId =item.OkulId,
                         OkulAdi=item.Okullar.OkulAdi,
                         UlkeId=item.UlkeId,
-                        UlkeAdi=item.Ulkeler.UlkeAdi,
+                        UlkeAdi=item.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciId = item.KullaniciId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty                        
@@ -144,7 +144,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okulbilgi.OkulId = data.OkulId;
                     okulbilgi.OkulAdi = data.Okullar.OkulAdi;
                     okulbilgi.UlkeId = data.UlkeId;
-                    okulbilgi.UlkeAdi = data.Ulkeler.UlkeAdi;
+                    okulbilgi.UlkeAdi = data.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi;
                     okulbilgi.KullaniciId = data.Kullanici.Id;
                     okulbilgi.KullaniciAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
@@ -258,7 +258,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<OkulBilgiVM>> OkulBilgiGetirUlkeId(int ulkeId)
         {
-            var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.UlkeId == ulkeId, includeProperties: "Kullanici,Okullar,Ulkeler").ToList();
+            var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.UlkeId == ulkeId, includeProperties: "Kullanici,Okullar").ToList();
             if (data != null)
             {
                 List<OkulBilgiVM> returnData = new List<OkulBilgiVM>();
@@ -284,7 +284,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulId = item.OkulId,
                         OkulAdi = item.Okullar.OkulAdi,
                         UlkeId = item.UlkeId,
-                        UlkeAdi = item.Ulkeler.UlkeAdi,
+                        UlkeAdi = item.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciId = item.KullaniciId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty

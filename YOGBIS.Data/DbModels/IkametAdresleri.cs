@@ -8,8 +8,6 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public int Id { get; set; }
         public int IkametIlId { get; set; }
-        [ForeignKey("IkametIlId")]
-        public Iller Iller { get; set; }
         public int IkametIlceId { get; set; }
         [ForeignKey("IkametIlceId")]
         public Ilceler Ilceler { get; set; }

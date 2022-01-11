@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="AutoMapper" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>
