@@ -17,16 +17,16 @@ namespace YOGBIS.UI.Controllers
     [Authorize]
     public class EtkinlikController : Controller
     {
-        private readonly IAktivitelerBE _aktivitelerBE;
+        private readonly IEtkinliklerBE _etkinliklerBE;
         private readonly IOkullarBE _okullarBE;
         private readonly IUlkelerBE _ulkelerBE;
         [Obsolete]
         private readonly IWebHostEnvironment _hostingEnvironment;
 
         [Obsolete]
-        public EtkinlikController(IAktivitelerBE aktivitelerBE, IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IWebHostEnvironment hostingEnvironment)
+        public EtkinlikController(IEtkinliklerBE etkinliklerBE, IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IWebHostEnvironment hostingEnvironment)
         {
-            _aktivitelerBE = aktivitelerBE;
+            _etkinliklerBE = etkinliklerBE;
             _okullarBE = okullarBE;
             _ulkelerBE = ulkelerBE;
             _hostingEnvironment = hostingEnvironment;
@@ -39,7 +39,7 @@ namespace YOGBIS.UI.Controllers
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-            var requestmodel = _aktivitelerBE.EtkinlikGetirKullaniciId(user.LoginId);
+            var requestmodel = _etkinliklerBE.EtkinlikGetirKullaniciId(user.LoginId);
 
             if (requestmodel.IsSuccess)
             {
@@ -63,7 +63,7 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpPost]
         [Obsolete]
-        public async Task<IActionResult> EtkinlikEkle(AktivitelerVM model) 
+        public async Task<IActionResult> EtkinlikEkle(EtkinliklerVM model)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
@@ -71,13 +71,13 @@ namespace YOGBIS.UI.Controllers
 
             if (ModelState.IsValid)
             {
-                if (model.EtkinlikKapakResim!=null)
+                if (model.EtkinlikKapakResim != null)
                 {
                     string dosyalar = "img/EtkinlikKapakFoto";
                     model.EtkinlikKapakResimUrl = await DosyaYukle(dosyalar, model.EtkinlikKapakResim);
                 }
 
-                if (model.FotoGaleri !=null)
+                if (model.FotoGaleri != null)
                 {
                     string dosyalar = "img/EtkinlikFoto";
                     model.FotoGaleri = new List<FotoGaleriVM>();
@@ -93,13 +93,13 @@ namespace YOGBIS.UI.Controllers
                     }
                 }
 
-                if (model.EtkinlikDosya!=null)
+                if (model.EtkinlikDosya != null)
                 {
                     string dosyalar = "img/EtkinlikDosyalar";
                     model.EtkinlikDosyaUrl = await DosyaYukle(dosyalar, model.EtkinlikDosya);
                 }
 
-                var data = _aktivitelerBE.EtkinlikEkle(model, user);
+                var data = _etkinliklerBE.EtkinlikEkle(model, user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
@@ -124,7 +124,7 @@ namespace YOGBIS.UI.Controllers
 
             if (id > 0)
             {
-                var data = _aktivitelerBE.EtkinlikGetir((int)id);
+                var data = _etkinliklerBE.EtkinlikGetir((int)id);
                 return View(data.Data);
             }
             else
@@ -137,13 +137,13 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator,Manager,Teacher")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Guncelle(AktivitelerVM model)
+        public ActionResult Guncelle(EtkinliklerVM model)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-            var data = _aktivitelerBE.EtkinlikGuncelle(model, user);
+            var data = _etkinliklerBE.EtkinlikGuncelle(model, user);
             if (data.IsSuccess)
             {
                 return RedirectToAction("Index");
@@ -161,7 +161,7 @@ namespace YOGBIS.UI.Controllers
             if (id < 0)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
-            var data = _aktivitelerBE.EtkinlikSil(id);
+            var data = _etkinliklerBE.EtkinlikSil(id);
             if (data.IsSuccess)
                 return Json(new { success = data.IsSuccess, message = data.Message });
             else
@@ -175,7 +175,7 @@ namespace YOGBIS.UI.Controllers
 
             if (OkulId > 0)
             {
-                var data = _aktivitelerBE.EtkinlikGetirOkulId(OkulId);
+                var data = _etkinliklerBE.EtkinlikGetirOkulId(OkulId);
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
                 ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
@@ -188,7 +188,7 @@ namespace YOGBIS.UI.Controllers
             }
             else
             {
-                var requestmodel = _aktivitelerBE.EtkinlikleriGetir();
+                var requestmodel = _etkinliklerBE.EtkinlikleriGetir();
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
                 ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
 
@@ -203,7 +203,7 @@ namespace YOGBIS.UI.Controllers
         }
         public ActionResult EtkinlikGetirOkulId(int Id)
         {
-            var data = _aktivitelerBE.EtkinlikGetirOkulId(Id);
+            var data = _etkinliklerBE.EtkinlikGetirOkulId(Id);
             if (data.IsSuccess)
             {
                 return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
@@ -223,7 +223,7 @@ namespace YOGBIS.UI.Controllers
 
             if (id > 0)
             {
-                var data = _aktivitelerBE.EtkinlikGetir((int)id);
+                var data = _etkinliklerBE.EtkinlikGetir((int)id);
                 return View(data.Data);
             }
             else

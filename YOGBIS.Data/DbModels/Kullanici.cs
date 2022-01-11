@@ -17,25 +17,26 @@ namespace YOGBIS.Data.DbModels
 
         #region BağlıTablolar
         public List<AdayDDK> AdayDDKs { get; set; }
+        public List<AdayGorevKaydi> AdayGorevKaydis { get; set; }
         public List<Adaylar> Adaylars { get; set; }
         public List<AdayNot> AdayNots { get; set; }
-        public List<Etkinlikler> Etkinliklers { get; set; }       
+        public List<Branslar> Branslar { get; set; }        
         public List<EPostaAdresleri> EPostaAdresleris { get; set; }
+        public List<Etkinlikler> Etkinliklers { get; set; }
         public List<Eyaletler> Eyaletlers { get; set; }
-        public List<GorevKaydi> GorevKaydis { get; set; }
+        public List<FotoGaleri> FotoGaleris { get; set; }
+        public List<GorevKararPdfGaleri> GorevKararPdfGaleris { get; set; }
         public List<IkametAdresleri> IkametAdresleris { get; set; }
-        public List<Iller> Illers { get; set; }
-        public List<IllerMdEPosta> IllerMdEPostas { get; set; }
         public List<Ilceler> Ilcelers { get; set; }
+        public List<Iller> Illers { get; set; }
+        public List<IllerMdEPosta> IllerMdEPostas { get; set; }        
         public List<Komisyonlar> Komisyonlars { get; set; }
         public List<Mulakatlar> Mulakatlars { get; set; }
         public List<MulakatSorulari> MulakatSorularis { get; set; }
         public List<Notlar> Notlars { get; set; }
         public List<Ogrenciler> Ogrencilers { get; set; }
-        public List<Ogretmenler> Ogretmenlers { get; set; }
         public List<OkulBilgi> OkulBilgis { get; set; }
         public List<Okullar> Okullars { get; set; }
-        public List<Okutmanlar> Okutmanlars { get; set; }
         public List<Sehirler> Sehirlers { get; set; }
         public List<Siniflar> Siniflars { get; set; }
         public List<SoruBankasi> SoruBankasis { get; set; }

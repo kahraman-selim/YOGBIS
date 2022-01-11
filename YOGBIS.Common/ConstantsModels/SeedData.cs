@@ -52,6 +52,8 @@ namespace YOGBIS.Common.ConstantsModels
             await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.Follower.ToString()));
             await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.Lecturer.ToString()));
             await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.Teacher.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.Commissioner.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.CommissionerHead.ToString()));
         }
 
         #region EskiYöntem

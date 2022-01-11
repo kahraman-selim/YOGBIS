@@ -14,5 +14,6 @@ namespace YOGBIS.Data.DbModels
         public Kullanici Kullanici { get; set; }
         public List<SoruDerece> SoruDereces { get; set; }
         public List<SoruKategoriler> SoruKategorilers { get; set; }
+        public List<Adaylar> Adaylars { get; set; }
     }
 }

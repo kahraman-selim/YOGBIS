@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
-@model IEnumerable<YOGBIS.Common.VModels.AktivitelerVM>
+@model IEnumerable<YOGBIS.Common.VModels.EtkinliklerVM>
 @{
     ViewData["Title"] = "Etkinlikler";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -54,16 +54,16 @@
                     <tr>
                         <td>@sirano</td>
                         <td>@item.OkulAdi</td>
-                        <td>@item.AktiviteAdi</td>
+                        <td>@item.EtkinlikAdi</td>
                         <td>@item.BasTarihi.ToString("dd/MM/yyyy")</td>
                         <td>@item.BitTarihi.ToString("dd/MM/yyyy")</td>
                         <td>@item.DuzenleyenAdiSoyadi</td>
                         <td>@item.KatilimciSayisi</td>
-                        <td>@item.AktiviteBilgi</td>
+                        <td>@item.EtkinlikBilgi</td>
                         @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                         {
                             <td class="text-center">
-                                <a class="btn btn-sm btn-info" title="Detay" asp-controller="Etkinlik" asp-action="Detay" asp-route-id="@item.AktiviteId">
+                                <a class="btn btn-sm btn-info" title="Detay" asp-controller="Etkinlik" asp-action="Detay" asp-route-id="@item.EtkinlikId">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             </td>
@@ -71,12 +71,12 @@
                         else
                         {
                             <td class="text-center">
-                                <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Etkinlik" asp-action="Guncelle" asp-route-id="@item.AktiviteId">
+                                <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Etkinlik" asp-action="Guncelle" asp-route-id="@item.EtkinlikId">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.AktiviteId">
+                                <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.EtkinlikId">
                                     <i class="fas fa-trash text-white"></i>
                                 </a>
                             </td>

@@ -37,6 +37,6 @@ namespace YOGBIS.Common.VModels
         public KullaniciVM Kullanici { get; set; }
         public List<SubelerVM> Subelers { get; set; }
         public List<OgretmenlerVM> Ogretmenlers { get; set; }
-        public List<AktivitelerVM> Aktivitelers { get; set; }
+        //public List<AktivitelerVM> Aktivitelers { get; set; }
     }
 }

@@ -17,6 +17,10 @@ namespace YOGBIS.Common.ConstantsModels
         [Display(Name = "Okutman")]
         Lecturer,
         [Display(Name = "Öğretmen")]
-        Teacher
+        Teacher,
+        [Display(Name = "Komisyon Üyesi")]
+        Commissioner,
+        [Display(Name = "Komisyon Başkanı")]
+        CommissionerHead
     }
 }

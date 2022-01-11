@@ -15,7 +15,7 @@ namespace YOGBIS.Common.VModels
         public int DereceId { get; set; }
         public string DereceAdi { get; set; }
         [Required(ErrorMessage = "Derece seçimi yapınız !")]
-        public DerecelerVM Dereceler { get; set; }
+        public SoruDerecelerVM Dereceler { get; set; }
 
         [Required(ErrorMessage = "Başlama Tarihini belirtiniz !")]
         public DateTime BaslamaTarihi { get; set; }

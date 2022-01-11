@@ -9,6 +9,6 @@ namespace YOGBIS.Common.VModels
         public string FotoAdi { get; set; }
         public string FotoURL { get; set; }
         public int AktiviteId { get; set; }
-        public AktivitelerVM Aktiviteler { get; set; }
+        //public AktivitelerVM Aktiviteler { get; set; }
     }
 }

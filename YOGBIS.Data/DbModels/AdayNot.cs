@@ -6,7 +6,7 @@ namespace YOGBIS.Data.DbModels
     public class AdayNot:Base
     {
         [Key]
-        public int Id { get; set; }
+        public int AdayNotId { get; set; }
         public int AdayId { get; set; }
         [ForeignKey("AdayId")]
         public Adaylar Adaylar { get; set; }

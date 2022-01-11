@@ -1,4 +1,4 @@
-﻿@model YOGBIS.Common.VModels.AktivitelerVM
+﻿@model YOGBIS.Common.VModels.EtkinliklerVM
 @{
     ViewData["Title"] = "Etkinlik Bilgileri";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -29,7 +29,7 @@
             </div>
             <div class="card-body">
                 <form class="form-group m-0" asp-action="EtkinlikEkle" enctype="multipart/form-data" method="post">
-                    @Html.HiddenFor(x => x.AktiviteId)
+                    @Html.HiddenFor(x => x.EtkinlikId)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="row">
                         <div class="col-md-6">
@@ -47,8 +47,8 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="small mb-1 font-weight-bold">Etkinlik Adı</label>
-                                        <input type="text" asp-for="AktiviteAdi" class="form-control py-2" id="CreateTypeInput" maxlength="14" placeholder="Etkinlik adını yazınız...">
-                                        <span class="text-danger" asp-validation-for="AktiviteAdi"></span>
+                                        <input type="text" asp-for="EtkinlikAdi" class="form-control py-2" id="CreateTypeInput" maxlength="14" placeholder="Etkinlik adını yazınız...">
+                                        <span class="text-danger" asp-validation-for="EtkinlikAdi"></span>
                                     </div>
                                 </div>
                             </div>
@@ -66,9 +66,9 @@
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label asp-for="AktiviteBilgi" class="small mb-1 font-weight-bold">Etliklik Hakkında Bilgi</label>
-                                        <textarea asp-for="AktiviteBilgi" placeholder="Etkinlik hakkında bilgi yazınız..." class="form-control" id="CevapTextArea" rows="3"></textarea>
-                                        <span class="text-danger" asp-validation-for="AktiviteBilgi"></span>
+                                        <label asp-for="EtkinlikBilgi" class="small mb-1 font-weight-bold">Etliklik Hakkında Bilgi</label>
+                                        <textarea asp-for="EtkinlikBilgi" placeholder="Etkinlik hakkında bilgi yazınız..." class="form-control" id="CevapTextArea" rows="3"></textarea>
+                                        <span class="text-danger" asp-validation-for="EtkinlikBilgi"></span>
                                     </div>
                                 </div>
                             </div>

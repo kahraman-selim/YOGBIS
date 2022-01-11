@@ -7,15 +7,15 @@ namespace YOGBIS.BusinessEngine.Contracts
 {
     public interface IDerecelerBE
     {
-        Result<List<DerecelerVM>> DereceleriGetir();
-        Result<DerecelerVM> DereceEkle(DerecelerVM model, SessionContext user);
+        Result<List<SoruDerecelerVM>> DereceleriGetir();
+        Result<SoruDerecelerVM> DereceEkle(SoruDerecelerVM model, SessionContext user);
 
-        Result<DerecelerVM> DereceGetir(int id);
+        Result<SoruDerecelerVM> DereceGetir(int id);
 
-        Result<DerecelerVM> DereceGuncelle(DerecelerVM model, SessionContext user);
+        Result<SoruDerecelerVM> DereceGuncelle(SoruDerecelerVM model, SessionContext user);
         
         Result<bool> DereceSil(int id);
 
-        Result<List<DerecelerVM>> DereceGetirKullaniciId(string userId);
+        Result<List<SoruDerecelerVM>> DereceGetirKullaniciId(string userId);
     }
 }

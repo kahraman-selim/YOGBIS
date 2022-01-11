@@ -50,8 +50,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KayitTarihi = item.KayitTarihi,
                         KitaId = item.KitaId,
                         KitaAdi = item.Kitalar.KitaAdi,
-                        UlkeGrupId=item.UlkeGrupId,
-                        UlkeGrupAdi=item.UlkeGruplari.UlkeGrupAdi,
+                        //UlkeGrupId=item.UlkeGrupId,
+                        //UlkeGrupAdi=item.UlkeGruplari.UlkeGrupAdi,
                         KaydedenId = item.KaydedenId,
                         KullaniciAdi = item.Kullanici !=null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
@@ -78,7 +78,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ulkeler.KaydedenId = user.LoginId;
                     ulkeler.UlkeAdi = model.UlkeAdi;
                     ulkeler.UlkeAciklama = model.UlkeAciklama;
-                    ulkeler.UlkeGrupId = 0;
                     ulkeler.UlkeBayrakURL = uniqueFileName;                   
 
 
@@ -155,7 +154,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     data.KitaId = model.KitaId;
                     data.UlkeBayrakURL = uniqueFileName;
                     data.KaydedenId = user.LoginId;
-                    data.UlkeGrupId = model.UlkeGrupId;
 
                     _unitOfWork.ulkelerRepository.Update(data);
                     _unitOfWork.Save();

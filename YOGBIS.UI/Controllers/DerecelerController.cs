@@ -46,7 +46,7 @@ namespace YOGBIS.UI.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult DereceEkle(DerecelerVM model, int? DereceId) 
+        public IActionResult DereceEkle(SoruDerecelerVM model, int? DereceId) 
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 

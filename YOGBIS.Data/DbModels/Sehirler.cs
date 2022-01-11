@@ -21,7 +21,7 @@ namespace YOGBIS.Data.DbModels
         public Kullanici Kullanici { get; set; }
         public List<Okullar> Okullars { get; set; }
         public List<Universiteler> Universitelers { get; set; }
-        public List<Ogretmenler> Ogretmenlers { get; set; }
+        public List<AdayGorevKaydi> AdayGorevKaydis { get; set; }
         public ICollection<FotoGaleri> FotoGaleri { get; set; }
     }
 }

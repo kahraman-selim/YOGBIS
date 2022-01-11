@@ -28,22 +28,22 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region DereceleriGetir
-        public Result<List<DerecelerVM>> DereceleriGetir()
+        public Result<List<SoruDerecelerVM>> DereceleriGetir()
         {
             //var data = _unitOfWork.derecelerRepository.GetAll().ToList();
             //var dereceler = _mapper.Map<List<Dereceler>, List<DerecelerVM>>(data);
             //return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, dereceler);
 
-            var data = _unitOfWork.derecelerRepository.GetAll(includeProperties: "Kullanici").ToList();
-            var dereceler = _mapper.Map<List<SoruDereceler>, List<DerecelerVM>>(data);
+            var data = _unitOfWork.soruDerecelerRepository.GetAll(includeProperties: "Kullanici").ToList();
+            var dereceler = _mapper.Map<List<SoruDereceler>, List<SoruDerecelerVM>>(data);
 
             if (data != null)
             {
-                List<DerecelerVM> returnData = new List<DerecelerVM>();
+                List<SoruDerecelerVM> returnData = new List<SoruDerecelerVM>();
 
                 foreach (var item in data)
                 {
-                    returnData.Add(new DerecelerVM()
+                    returnData.Add(new SoruDerecelerVM()
                     {
                         DereceId = item.DereceId,
                         DereceAdi = item.DereceAdi,
@@ -51,26 +51,26 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
                 }
-                return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, returnData);
+                return new Result<List<SoruDerecelerVM>>(true, ResultConstant.RecordFound, returnData);
             }
             else
             {
-                return new Result<List<DerecelerVM>>(false, ResultConstant.RecordNotFound);
+                return new Result<List<SoruDerecelerVM>>(false, ResultConstant.RecordNotFound);
             }
         }
         #endregion
 
         #region DereceGetirKullaniciId
-        public Result<List<DerecelerVM>> DereceGetirKullaniciId(string userId)
+        public Result<List<SoruDerecelerVM>> DereceGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.derecelerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici").ToList();
+            var data = _unitOfWork.soruDerecelerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici").ToList();
             if (data != null)
             {
-                List<DerecelerVM> returnData = new List<DerecelerVM>();
+                List<SoruDerecelerVM> returnData = new List<SoruDerecelerVM>();
 
                 foreach (var item in data)
                 {
-                    returnData.Add(new DerecelerVM()
+                    returnData.Add(new SoruDerecelerVM()
                     {
                         DereceId = item.DereceId,
                         DereceAdi = item.DereceAdi,
@@ -79,79 +79,79 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
                 }
-                return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, returnData);
+                return new Result<List<SoruDerecelerVM>>(true, ResultConstant.RecordFound, returnData);
             }
             else
             {
-                return new Result<List<DerecelerVM>>(false, ResultConstant.RecordNotFound);
+                return new Result<List<SoruDerecelerVM>>(false, ResultConstant.RecordNotFound);
             }
         }
         #endregion
 
         #region DereceGetir(int id)
-        public Result<DerecelerVM> DereceGetir(int id)
+        public Result<SoruDerecelerVM> DereceGetir(int id)
         {
-            var data = _unitOfWork.derecelerRepository.Get(id);
+            var data = _unitOfWork.soruDerecelerRepository.Get(id);
             if (data != null)
             {
-                var dereceler = _mapper.Map<SoruDereceler, DerecelerVM>(data);
-                return new Result<DerecelerVM>(true, ResultConstant.RecordFound, dereceler);
+                var dereceler = _mapper.Map<SoruDereceler, SoruDerecelerVM>(data);
+                return new Result<SoruDerecelerVM>(true, ResultConstant.RecordFound, dereceler);
             }
             else
             {
-                return new Result<DerecelerVM>(false, ResultConstant.RecordNotFound);
+                return new Result<SoruDerecelerVM>(false, ResultConstant.RecordNotFound);
             }
         }
         #endregion
 
         #region DereceEkle
-        public Result<DerecelerVM> DereceEkle(DerecelerVM model, SessionContext user)
+        public Result<SoruDerecelerVM> DereceEkle(SoruDerecelerVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
-                    var derece = _mapper.Map<DerecelerVM, SoruDereceler>(model);
+                    var derece = _mapper.Map<SoruDerecelerVM, SoruDereceler>(model);
                     derece.KaydedenId = user.LoginId;
-                    _unitOfWork.derecelerRepository.Add(derece);
+                    _unitOfWork.soruDerecelerRepository.Add(derece);
                     _unitOfWork.Save();
-                    return new Result<DerecelerVM>(true, ResultConstant.RecordCreateSuccess);
+                    return new Result<SoruDerecelerVM>(true, ResultConstant.RecordCreateSuccess);
                 }
                 catch (Exception ex)
                 {
 
-                    return new Result<DerecelerVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                    return new Result<SoruDerecelerVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
                 }
             }
             else
             {
-                return new Result<DerecelerVM>(false, "Boş veri olamaz");
+                return new Result<SoruDerecelerVM>(false, "Boş veri olamaz");
             }
         }
         #endregion
 
         #region DereceGuncelle
-        public Result<DerecelerVM> DereceGuncelle(DerecelerVM model, SessionContext user)
+        public Result<SoruDerecelerVM> DereceGuncelle(SoruDerecelerVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
-                    var derece = _mapper.Map<DerecelerVM, SoruDereceler>(model);
+                    var derece = _mapper.Map<SoruDerecelerVM, SoruDereceler>(model);
                     derece.KaydedenId = user.LoginId;
-                    _unitOfWork.derecelerRepository.Update(derece);
+                    _unitOfWork.soruDerecelerRepository.Update(derece);
                     _unitOfWork.Save();
-                    return new Result<DerecelerVM>(true, ResultConstant.RecordCreateSuccess);
+                    return new Result<SoruDerecelerVM>(true, ResultConstant.RecordCreateSuccess);
                 }
                 catch (Exception ex)
                 {
 
-                    return new Result<DerecelerVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                    return new Result<SoruDerecelerVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
                 }
             }
             else
             {
-                return new Result<DerecelerVM>(false, "Boş veri olamaz");
+                return new Result<SoruDerecelerVM>(false, "Boş veri olamaz");
             }
         }
         #endregion
@@ -159,10 +159,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region DereceSil
         public Result<bool> DereceSil(int id)
         {
-            var data = _unitOfWork.derecelerRepository.Get(id);
+            var data = _unitOfWork.soruDerecelerRepository.Get(id);
             if (data != null)
             {
-                _unitOfWork.derecelerRepository.Remove(data);
+                _unitOfWork.soruDerecelerRepository.Remove(data);
                 _unitOfWork.Save();
                 return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
             }

@@ -38,7 +38,7 @@ namespace YOGBIS.UI
 
             services.AddDbContext<YOGBISContext>(options => options.UseMySQL(Configuration.GetConnectionString("YOGBISConnection")));
 
-            services.AddScoped<IAktivitelerBE, AktivitelerBE>(); //gecici tablo
+            services.AddScoped<IEtkinliklerBE, EtkinliklerBE>(); //gecici tablo
             services.AddScoped<IDerecelerBE, DerecelerBE>();
             services.AddScoped<IKitalarBE, KitalarBE>();
             services.AddScoped<IKullaniciBE, KullaniciBE>();
