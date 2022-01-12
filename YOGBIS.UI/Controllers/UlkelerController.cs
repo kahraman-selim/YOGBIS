@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -42,13 +43,6 @@ namespace YOGBIS.UI.Controllers
             }
 
             return View(user);
-            //var data = _ulkelerBE.UlkeleriGetir();
-            //if (data.IsSuccess)
-            //{
-            //    var result = data.Data;
-            //    return View(result);
-            //}
-            //return View();
         }
 
         [Authorize(Roles = "Administrator")]
@@ -58,21 +52,12 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
             return View();
-
-            //ViewBag.KitaAdi = _kitalarBE.KitalariGetir(); 1.yöntem
-
-            //var kitaadi = _kitalarBE.KitalariGetir(); 2. yöntem
-            //ViewBag.KitaAdi = kitaadi.Data.Select(q => new SelectListItem
-            //{
-            //    Text = q.KitaAdi,
-            //    Value = q.KitaId.ToString()
-            //});
         }
 
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         [Obsolete]
-        public IActionResult UlkeEkle(UlkelerVM model, int? UlkeId)
+        public async Task<IActionResult> UlkeEkle(UlkelerVM model, int? UlkeId)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -80,25 +65,22 @@ namespace YOGBIS.UI.Controllers
 
             //if (ModelState.IsValid)
             //{
-                string uniqueFileName = null;
-                if (model.UlkeBayrak != null)
+                if (model.UlkeBayrak!=null)
                 {
-                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img/Bayraklar");
-                    uniqueFileName = Guid.NewGuid().ToString() + "-" + model.UlkeBayrak.FileName;
-                    string dosyaYolu = Path.Combine(uploadsFolder, uniqueFileName);
-                    model.UlkeBayrak.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
+                    string klasorler = "img/Bayraklar/";
+                    model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
                 }
 
 
                 if (UlkeId > 0)
                 {
-                    var data = _ulkelerBE.UlkeGuncelle(model, user, uniqueFileName);
+                    var data = _ulkelerBE.UlkeGuncelle(model, user);
 
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    var data = _ulkelerBE.UlkeEkle(model, user, uniqueFileName);
+                    var data = _ulkelerBE.UlkeEkle(model, user);
                     if (data.IsSuccess)
                     {
                         return RedirectToAction("Index");
@@ -119,6 +101,7 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
+
             if (id > 0)
             {
                 var data = _ulkelerBE.UlkeGetir((int)id);
@@ -135,21 +118,18 @@ namespace YOGBIS.UI.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Obsolete]
-        public ActionResult Guncelle(UlkelerVM model)
+        public async Task<ActionResult> Guncelle(UlkelerVM model)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
-            string uniqueFileName = null;
             if (model.UlkeBayrak != null)
             {
-                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
-                uniqueFileName = Guid.NewGuid().ToString() + "-" + model.UlkeBayrak.FileName;
-                string dosyaYolu = Path.Combine(uploadsFolder, uniqueFileName);
-                model.UlkeBayrak.CopyTo(new FileStream(dosyaYolu, FileMode.Create));
+                string klasorler = "img/Bayraklar/";
+                model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
             }
 
-            var data = _ulkelerBE.UlkeGuncelle(model, user,uniqueFileName);
+            var data = _ulkelerBE.UlkeGuncelle(model, user);
             if (data.IsSuccess)
             {
                 return RedirectToAction("Index");
@@ -173,6 +153,19 @@ namespace YOGBIS.UI.Controllers
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
+        }
+
+        [Obsolete]
+        private async Task<string> FotoYukle(string dosyaYolu, IFormFile dosya)
+        {
+
+            dosyaYolu += Guid.NewGuid().ToString() + "_" + dosya.FileName;
+
+            string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaYolu);
+
+            await dosya.CopyToAsync(new FileStream(dosyaKlasor, FileMode.Create));
+
+            return "/" + dosyaYolu;
         }
     }
 }

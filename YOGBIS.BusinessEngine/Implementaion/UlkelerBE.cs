@@ -45,15 +45,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         UlkeId = item.UlkeId,
                         UlkeAdi = item.UlkeAdi,
-                        //UlkeBayrakText = item.UlkeBayrak,
+                        UlkeBayrakURL = item.UlkeBayrakURL,
                         UlkeAciklama = item.UlkeAciklama,
                         KayitTarihi = item.KayitTarihi,
                         KitaId = item.KitaId,
                         KitaAdi = item.Kitalar.KitaAdi,
-                        //UlkeGrupId=item.UlkeGrupId,
-                        //UlkeGrupAdi=item.UlkeGruplari.UlkeGrupAdi,
+                        //UlkeGrupId = item.Kitalar.UlkeGruplariKitalars.Where(x=>x.KitaId==item.KitaId),
+                        //UlkeGrupAdi = item.UlkeGruplari.UlkeGrupAdi,
                         KaydedenId = item.KaydedenId,
-                        KullaniciAdi = item.Kullanici !=null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
                 }
                 return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, returnData);
@@ -66,19 +66,19 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region UlkeEkle
-        public Result<UlkelerVM> UlkeEkle(UlkelerVM model, SessionContext user, string uniqueFileName)
+        public Result<UlkelerVM> UlkeEkle(UlkelerVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
                     var ulkeler = _mapper.Map<UlkelerVM, Ulkeler>(model);
-                    //UlkelerVM ulkeler = new UlkelerVM();
+                    
                     ulkeler.KitaId = model.KitaId;
                     ulkeler.KaydedenId = user.LoginId;
                     ulkeler.UlkeAdi = model.UlkeAdi;
                     ulkeler.UlkeAciklama = model.UlkeAciklama;
-                    ulkeler.UlkeBayrakURL = uniqueFileName;                   
+                    ulkeler.UlkeBayrakURL = model.UlkeBayrakURL;
 
 
                     _unitOfWork.ulkelerRepository.Add(ulkeler);
@@ -120,7 +120,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ulke.UlkeId = data.UlkeId;
                     ulke.UlkeAdi = data.UlkeAdi;
                     ulke.UlkeAciklama = data.UlkeAciklama;
-                    //ulke.UlkeBayrakText = data.UlkeBayrak;
+                    ulke.UlkeBayrakURL = data.UlkeBayrakURL;
                     ulke.KitaId = data.KitaId;
                     ulke.KitaAdi = data.Kitalar.KitaAdi;
                     ulke.KaydedenId = data.KaydedenId;
@@ -142,7 +142,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region UlkeGuncelle
-        public Result<UlkelerVM> UlkeGuncelle(UlkelerVM model, SessionContext user, string uniqueFileName)
+        public Result<UlkelerVM> UlkeGuncelle(UlkelerVM model, SessionContext user)
         {
             if (model.UlkeId>0)
             {
@@ -152,7 +152,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     data.UlkeAdi = model.UlkeAdi;
                     data.UlkeAciklama = model.UlkeAciklama;
                     data.KitaId = model.KitaId;
-                    data.UlkeBayrakURL = uniqueFileName;
+                    data.UlkeBayrakURL = model.UlkeBayrakURL;
                     data.KaydedenId = user.LoginId;
 
                     _unitOfWork.ulkelerRepository.Update(data);

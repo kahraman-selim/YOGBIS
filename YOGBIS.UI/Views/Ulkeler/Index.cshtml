@@ -30,20 +30,21 @@
             <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
                 <thead>
                     <tr>
-                        @*<th>Seç</th>*@
                         <th>Sıra No</th>
                         <th>Bayrak</th>
                         <th>Kıta</th>
+                        <th>Ülke Grubu</th>
                         <th>Ülke</th>
-                        <th>Eyalet</th>
-                        <th>Şehir</th>
+                        <th>Eyalet/Şehir</th>
                         <th>Okul</th>
                         <th>Öğretmen</th>
-                        <th>Öğrenci</th>
                         <th>Okutman</th>
+                        <th>Öğrenci (Okul)</th>
+                        <th>TTK Öğrenci</th>
+                        <th>TTK Öğrenci Mahallinden</th>
+                        <th>Türkçe Kursları</th>
+                        <th>Okutman Öğrenci</th>
                         <th>Temsilci</th>
-                        @*<th class="text-center">Düzenle</th>*@
-                        <th class="text-center">Sil</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,12 +55,11 @@
                         @foreach (var item in Model)
                         {
                             sirano++;
-                            <tr>
-                                @*<td></td>*@
+                            <tr>                                
                                 <td>@sirano</td>
-                                <td></td>
-                                <td style="width:120px;height:50px;"><img id="ulkeBayrak" class="rounded mx-auto d-block shadow" alt="Ülke Bayrağı" style="width:120px;height:50px;" src="~/img/Bayraklar/@item.UlkeBayrak" asp-append-version="true"></td>
+                                <td style="width:120px;height:50px;"><img id="ulkeBayrakURL" class="rounded mx-auto d-block shadow" alt="Ülke Bayrağı" style="width:120px;height:50px;" src="@item.UlkeBayrakURL" asp-append-version="true"></td>
                                 <td>@item.KitaAdi</td>
+                                <td></td>
                                 <td><a asp-controller="Ulkeler" asp-action="Guncelle" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
                                 <td></td>     
                                 <td></td>     
@@ -68,16 +68,9 @@
                                 <td></td>     
                                 <td></td>     
                                 <td></td>                                                              
-                                @*<td class="text-center">
-                                    <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Ulkeler" asp-action="Guncelle" asp-route-id="@item.UlkeId">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </td>*@
-                                <td class="text-center">
-                                    <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.UlkeId">
-                                        <i class="fas fa-trash text-white"></i>
-                                    </a>
-                                </td>
+                                <td></td>                                                              
+                                <td></td>                                                              
+                                <td></td>                                                              
                             </tr>
                         }
                     }

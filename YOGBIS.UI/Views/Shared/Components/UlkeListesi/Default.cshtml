@@ -1,0 +1,45 @@
+﻿@model IEnumerable<YOGBIS.Common.VModels.UlkelerVM>
+
+    <div class="card shadow-lg rounded-lg mt-0" style="width:100%">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            <b>Ülke Listesi</b>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Sıra No</th>
+                            <th>Kıta</th>
+                            <th>Ülke Grubu</th>
+                            <th>Ülke</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ var sirano = 0;}
+
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+                                sirano++;
+                                <tr>
+                                    <td>@sirano</td>
+                                    <td>@item.KitaAdi</td>
+                                    <td></td>
+                                    <td><a asp-controller="Ulkeler" asp-action="Guncelle" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>Kayıt bulunamadı!</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
