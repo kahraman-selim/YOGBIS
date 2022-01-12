@@ -52,11 +52,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="col-md-6">                            
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Ülke Bayrağı</label>
-                                <img id="ulkeBayrak" class="img-thumbnail border-dark" alt="Ülke Bayrağı" src="@imagePath" asp-append-version="true">
+                                <img asp-for="UlkeBayrak" id="ulkeBayrak" class="img-thumbnail border-dark" alt="Ülke Bayrağı" src="@imagePath" asp-append-version="true">
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
@@ -84,20 +83,8 @@
 </div>
 
 @section Scripts{
-    <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/jquery.inputlimiter.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />    
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('.date-picker').datepicker({
-                autoclose: true,
-                todayHighlight: true
-            });
-
-            $('textarea.limited').inputlimiter({
-                remText: '%n karakter%s kaldı...',
-                limitText: 'max allowed:%n'
-            });
-        });
     </script>
 }
 

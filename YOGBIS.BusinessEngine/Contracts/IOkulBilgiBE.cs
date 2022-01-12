@@ -9,15 +9,11 @@ namespace YOGBIS.BusinessEngine.Contracts
     {
         Result<List<OkulBilgiVM>> OkulBilgileriGetir();
         Result<OkulBilgiVM> OkulBilgiEkle(OkulBilgiVM model, SessionContext user);
-
         Result<OkulBilgiVM> OkulBilgiGetir(int id);
-
-        Result<OkulBilgiVM> OkulBilgiGuncelle(OkulBilgiVM model, SessionContext user);
-        
+        Result<OkulBilgiVM> OkulBilgiGuncelle(OkulBilgiVM model, SessionContext user);        
         Result<bool> OkulBilgiSil(int id);
-
         Result<List<OkulBilgiVM>> OkulBilgiGetirKullaniciId(string userId);
-
         Result<List<OkulBilgiVM>> OkulBilgiGetirUlkeId(int ulkeId);
+        Result<List<OkulBilgiVM>> OkulAdGetirUlkeId(int ulkeId);
     }
 }

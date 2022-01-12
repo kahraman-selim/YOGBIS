@@ -7,20 +7,23 @@ namespace YOGBIS.Common.ConstantsModels
 {
     public static class SeedData
     {
+        #region Seed
         public static void Seed(UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
         {
             _ = SeedRolesAsync(roleManager);
             _ = SeedSuperAdminAsync(userManager);
         }
+        #endregion
 
+        #region SeedSuperAdminAsync
         private static async Task SeedSuperAdminAsync(UserManager<Kullanici> userManager)
         {
             //Seed Default User
             var defaultUser = new Kullanici
             {
-                UserName = "Administrator",                
+                UserName = "Administrator",
                 Email = "yogbis@yogbis.com.tr",
-                Ad = "YOGBİS",                
+                Ad = "YOGBİS",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                 Aktif = true
@@ -41,7 +44,9 @@ namespace YOGBIS.Common.ConstantsModels
 
             }
         }
+        #endregion
 
+        #region SeedRolesAsync
         private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             //Seed Roles
@@ -54,7 +59,8 @@ namespace YOGBIS.Common.ConstantsModels
             await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.Teacher.ToString()));
             await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.Commissioner.ToString()));
             await roleManager.CreateAsync(new IdentityRole(ConstantsModels.EnumsKullaniciRolleri.CommissionerHead.ToString()));
-        }
+        } 
+        #endregion
 
         #region EskiYöntem
         //private static void SeedUsers(UserManager<Kullanici> userManager)
@@ -95,7 +101,5 @@ namespace YOGBIS.Common.ConstantsModels
         //    }
         //}        
         #endregion
-
-
     }
 }

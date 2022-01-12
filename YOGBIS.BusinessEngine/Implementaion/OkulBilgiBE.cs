@@ -298,5 +298,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<OkulBilgiVM>>(false, ResultConstant.RecordNotFound);
             }
         }
+        public Result<List<OkulBilgiVM>> OkulAdGetirUlkeId(int ulkeId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

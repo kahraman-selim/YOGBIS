@@ -15,6 +15,7 @@ namespace YOGBIS.Common.VModels
         public IFormFile UlkeBayrak { get; set; }
         public string UlkeBayrakURL { get; set; }
         public string UlkeAciklama { get; set; }
+        public int VatandasSayisi { get; set; }
 
         [Required(ErrorMessage = "Kıta adı zorunlu bir alandır")]
         public int KitaId { get; set; }

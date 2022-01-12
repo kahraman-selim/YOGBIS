@@ -10,6 +10,7 @@ namespace YOGBIS.Data.DbModels
         public int EyaletId { get; set; }
         public string EyaletAdi { get; set; }
         public string EyaletAciklama { get; set; }
+        public int EyaletVatandas { get; set; }
         public int UlkeId { get; set; }
         [ForeignKey("UlkeId")]
         public Ulkeler Ulkeler { get; set; }

@@ -11,6 +11,7 @@ namespace YOGBIS.Data.DbModels
         public string SehirAdi { get; set; }
         public bool? Baskent { get; set; }
         public string SehirAciklama { get; set; }
+        public int SehirVatandas { get; set; }
         public int UlkeId { get; set; }
         public Ulkeler Ulkeler { get; set; }
         public int EyaletId { get; set; }
