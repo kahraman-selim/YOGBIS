@@ -27,7 +27,7 @@ namespace YOGBIS.Common.VModels
         public string UlkeGrupAdi { get; set; }
         public UlkeGruplariVM UlkeGruplari { get; set; }
         public string KaydedenId { get; set; }
-        public string KullaniciAdi { get; set; }
+        public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<EyaletlerVM> Eyaletler { get; set; }
         public List<SehirlerVM> Sehirler { get; set; }

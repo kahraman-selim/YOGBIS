@@ -9,13 +9,9 @@ namespace YOGBIS.BusinessEngine.Contracts
     {
         Result<List<SoruDerecelerVM>> DereceleriGetir();
         Result<SoruDerecelerVM> DereceEkle(SoruDerecelerVM model, SessionContext user);
-
         Result<SoruDerecelerVM> DereceGetir(int id);
-
-        Result<SoruDerecelerVM> DereceGuncelle(SoruDerecelerVM model, SessionContext user);
-        
+        Result<SoruDerecelerVM> DereceGuncelle(SoruDerecelerVM model, SessionContext user);        
         Result<bool> DereceSil(int id);
-
         Result<List<SoruDerecelerVM>> DereceGetirKullaniciId(string userId);
     }
 }

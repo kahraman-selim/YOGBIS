@@ -39,24 +39,28 @@ namespace YOGBIS.UI
             services.AddDbContext<YOGBISContext>(options => options.UseMySQL(Configuration.GetConnectionString("YOGBISConnection")));
             //services.AddDbContext<YOGBISContext>(options => options.UseSqlServer(Configuration.GetConnectionString("YOGBISConnection")));
 
-            services.AddScoped<IEtkinliklerBE, EtkinliklerBE>(); //gecici tablo
+            #region Scopeds
             services.AddScoped<IDerecelerBE, DerecelerBE>();
+            services.AddScoped<IEtkinliklerBE, EtkinliklerBE>();
+            services.AddScoped<IEyaletlerBE, EyaletlerBE>();
             services.AddScoped<IKitalarBE, KitalarBE>();
             services.AddScoped<IKullaniciBE, KullaniciBE>();
             services.AddScoped<IMulakatOlusturBE, MulakatOlusturBE>();
             services.AddScoped<IMulakatSorulariBE, MulakatSorulariBE>();
             services.AddScoped<INotlarBE, NotlarBE>();
-            services.AddScoped<IOgrencilerBE, OgrencilerBE>(); //gecici tablo
-            services.AddScoped<IOkulBilgiBE, OkulBilgiBE>(); //gecici tablo
+            services.AddScoped<IOgrencilerBE, OgrencilerBE>();
+            services.AddScoped<IOkulBilgiBE, OkulBilgiBE>();
             services.AddScoped<IOkullarBE, OkullarBE>();
+            services.AddScoped<ISehirlerBE, SehirlerBE>();
             services.AddScoped<ISoruBankasiBE, SoruBankasiBE>();
             services.AddScoped<ISoruKategorileriBE, SoruKategorileriBE>();
             services.AddScoped<IUlkeGruplariBE, UlkeGruplariBE>();
             services.AddScoped<IUlkelerBE, UlkelerBE>();
 
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(Maps));
+            #endregion
+
 
             services.AddIdentity<Kullanici, IdentityRole>(options => {
                 options.User.RequireUniqueEmail = true; //kullanýcý email giriþi zorunluluðu

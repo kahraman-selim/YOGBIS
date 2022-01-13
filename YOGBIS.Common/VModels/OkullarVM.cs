@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -14,12 +15,13 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Okul adı zorunlu bir alandır")]
         public string OkulAdi { get; set; }
-        public string OkulLogo { get; set; }
+        public string OkulLogoURL { get; set; }
+        public IFormFile OkulLogo { get; set; }
         public string OkulFoto { get; set; }
         public bool? OkulLab { get; set; }
         public bool? OkulKutuphane { get; set; }
-        public string OkulBilgi { get; set; }
         public DateTime OkulAcilisTarihi { get; set; }
+        public string OkulBilgi { get; set; }        
         public bool? OkulDurumu { get; set; }
 
         [Required(ErrorMessage = "Şehir seçimi yapınız")]
@@ -37,6 +39,8 @@ namespace YOGBIS.Common.VModels
         public KullaniciVM Kullanici { get; set; }
         public List<SubelerVM> Subelers { get; set; }
         public List<OgretmenlerVM> Ogretmenlers { get; set; }
-        //public List<AktivitelerVM> Aktivitelers { get; set; }
+        public List<EtkinliklerVM> Etkinlikler { get; set; }
+        public IFormFileCollection FotoGaleris { get; set; }
+        public List<FotoGaleriVM> FotoGaleri { get; set; }
     }
 }
