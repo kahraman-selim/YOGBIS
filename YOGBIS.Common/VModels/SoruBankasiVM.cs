@@ -34,7 +34,7 @@ namespace YOGBIS.Common.VModels
         public string OnaylayanAdi { get; set; }        
         public KullaniciVM Onaylayan { get; set; }
         public int SoruKategorilerId { get; set; }
-        public int SoruDereceId { get; set; }
+        public int DereceId { get; set; }
         public List<SoruKategoriVM> SoruKategoris { get; set; }        
         public List<SoruDereceVM> SoruDereces { get; set; }
     }

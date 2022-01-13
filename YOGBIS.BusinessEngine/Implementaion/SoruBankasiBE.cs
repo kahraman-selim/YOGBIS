@@ -193,16 +193,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     var sorukategori = new SoruKategori
                     {
-                        SoruId=sorubankasi.SoruBankasiId,
-                        KategoriId=model.SoruKategorilerId                        
+                        SoruId = sorubankasi.SoruBankasiId,
+                        KategoriId = model.SoruKategorilerId
                     };
                     _unitOfWork.soruKategoriRepository.Add(sorukategori);
                     _unitOfWork.Save();
 
                     var soruderece = new SoruDerece
                     {
-                        SoruId = sorubankasi.SoruBankasiId,
-                        DereceId = model.SoruDereceId
+                        SoruId = model.SoruBankasiId,
+                        DereceId = model.DereceId                        
                     };
                     _unitOfWork.soruDereceRepository.Add(soruderece);
                     _unitOfWork.Save();

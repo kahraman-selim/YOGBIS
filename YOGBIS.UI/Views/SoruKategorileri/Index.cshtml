@@ -35,7 +35,8 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="DereceId" class="small mb-1 font-weight-bold">Derece</label>
-                                @Html.DropDownListFor(u => u.DereceId, new SelectList(ViewBag.Dereceler, "DereceId", "DereceAdi"), "Dereceyi seçiniz", new { @class = "form-control-range form-control py-2" })
+                                @Html.DropDownListFor(u => u.DereceId, new SelectList(ViewBag.Dereceler, 
+                               "DereceId", "DereceAdi"), "Dereceyi seçiniz", new { @class = "form-control-range form-control py-2" })
                                 <span class="text-danger" asp-validation-for="DereceId"></span>
                             </div>
                         </div>
