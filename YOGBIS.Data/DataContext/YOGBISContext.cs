@@ -80,7 +80,7 @@ namespace YOGBIS.Data.DataContext
             builder.Entity<SoruDerece>()
                 .HasOne<SoruDereceler>(s => s.SoruDereceler)
                 .WithMany(g => g.SoruDereces)
-                .HasForeignKey(f => f.SoruId)
+                .HasForeignKey(f => f.DereceId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<SoruKategori>()
@@ -105,7 +105,7 @@ namespace YOGBIS.Data.DataContext
                 .HasOne<UlkeGruplari>(s => s.UlkeGruplari)
                 .WithMany(g => g.UlkeGruplariKitalars)
                 .HasForeignKey(f => f.UlkeGrupId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
             #endregion
         }
 

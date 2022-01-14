@@ -42,7 +42,7 @@
                                         @item.SoruBankasiId
                                     </a>
                                 </td>
-                                @if (item.OnayDurumu == EnumsSoruOnay.Onaya_Gonderildi)
+                                @if (item.OnayDurumu == (int)EnumsSoruOnay.Onaya_Gonderildi)
                                     {
                                         @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                                         {
@@ -54,7 +54,7 @@
 
                                         }
                                     }
-                                    else if (item.OnayDurumu == EnumsSoruOnay.Onaylandi)
+                                    else if (item.OnayDurumu == (int)EnumsSoruOnay.Onaylandi)
                                     {
                                         <td style="color:blue" class="font-weight-bold">@item.OnayDurumuAciklama</td>
                                     }

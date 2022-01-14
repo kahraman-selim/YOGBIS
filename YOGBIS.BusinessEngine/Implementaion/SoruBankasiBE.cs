@@ -201,8 +201,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     var soruderece = new SoruDerece
                     {
-                        SoruId = model.SoruBankasiId,
-                        DereceId = model.DereceId                        
+                        SoruId = sorubankasi.SoruBankasiId,
+                        DereceId = model.SoruDereceId                        
                     };
                     _unitOfWork.soruDereceRepository.Add(soruderece);
                     _unitOfWork.Save();

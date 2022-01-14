@@ -104,6 +104,22 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region DereceAdGetir(int id)
+        public Result<string> DereceAdGetir(int id)
+        {
+            var data = _unitOfWork.soruDerecelerRepository.Get(id);
+            if (data != null)
+            {
+                var dereceadi = data.DereceAdi;
+                return new Result<string>(true, ResultConstant.RecordFound, dereceadi);
+            }
+            else
+            {
+                return new Result<string>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
         #region DereceEkle
         public Result<SoruDerecelerVM> DereceEkle(SoruDerecelerVM model, SessionContext user)
         {
@@ -172,5 +188,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         } 
         #endregion
+
     }
 }

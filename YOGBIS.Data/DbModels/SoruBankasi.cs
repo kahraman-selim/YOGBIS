@@ -18,5 +18,6 @@ namespace YOGBIS.Data.DbModels
         public List<SoruKategori> SoruKategoris { get; set; }
         public List<SoruDerece> SoruDereces { get; set; }
         public List<SoruOnay> SoruOnays { get; set; }
+        public List<SoruBankasiLog> SoruBankasiLogs { get; set; }
     }
 }

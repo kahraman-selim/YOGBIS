@@ -18,24 +18,20 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Soru durumunu seçiniz...")]
         public bool SoruDurumu { get; set; } = true;
-
-        [Required(ErrorMessage = "Onay durumunu seçiniz...")]
-        public EnumsSoruOnay OnayDurumu { get; set; }
-        public string OnayDurumuAciklama { get; set; }
-        public string OnayAciklama { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kaydeden { get; set; }
-
-        [Required(ErrorMessage = "Onaylayacak Yetkiliyi seçiniz...")]
-        public string OnaylayanId { get; set; }
-
-        [Required(ErrorMessage = "Onaylayacak Yetkiliyi seçiniz...")]
-        public string OnaylayanAdi { get; set; }        
-        public KullaniciVM Onaylayan { get; set; }
+        [Required(ErrorMessage = "Soru kategorisini seçiniz...")]
         public int SoruKategorilerId { get; set; }
-        public int DereceId { get; set; }
-        public List<SoruKategoriVM> SoruKategoris { get; set; }        
+        public List<SoruKategoriVM> SoruKategoris { get; set; }
+        [Required(ErrorMessage = "Soru derecesini seçiniz...")]
+        public int SoruDereceId { get; set; }
         public List<SoruDereceVM> SoruDereces { get; set; }
+        [Required(ErrorMessage = "Onaylayacak kişi/kişileri seçiniz...")]
+        public string OnaylayanId { get; set; }
+        public int OnayDurumu { get; set; }
+        public string OnayDurumuAciklama { get; set; }
+        public List<SoruOnayVM> SoruOnays { get; set; }
+        public List<SoruBankasiLogVM> SoruBankasiLogVMs { get; set; }
     }
 }
