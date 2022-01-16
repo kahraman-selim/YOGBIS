@@ -70,7 +70,7 @@
                 {
                     <li class="nav-item dropdown no-arrow d-sm-none">
                         <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-search fa-fw"></i>
+                            <i class="fas fa-search fa-sm"></i>
                         </a>
                         <!-- Dropdown - Messages -->
                         <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
@@ -344,7 +344,7 @@
                                     }
                                     @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                                     {
-                                        <a class="nav-link" asp-controller="Mulakatlar" asp-action="Index">Mülakat Oluştur</a>
+                                        <a class="nav-link" asp-controller="Mulakatlar" asp-action="Index">Mülakatlar</a>
                                     }
                                     @if (User.IsInRole("Administrator"))
                                     {
@@ -413,7 +413,7 @@
                 <main>
                     @RenderBody()
                 </main>
-                <div id="layoutAuthentication_footer">
+                <div id="layoutAuthentication_footer" class="d-none d-sm-block">
                     <footer class="py-4 bg-light mt-auto fixed-bottom">
                         <div class="container">
                             <div class="d-flex align-items-center justify-content-between small">
