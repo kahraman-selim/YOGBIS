@@ -53,6 +53,8 @@ namespace YOGBIS.Data.DbModels
         public string MYSSinavTedbiri { get; set; }
         public string MYSSTAciklama { get; set; }
         public int DereceId { get; set; }
+        [ForeignKey("DereceId")]
+        public SoruDereceler SoruDereceler { get; set; }
         //Aday başvuru tablosu
         public string MYSPuan { get; set; }
         public string MYSSonuc { get; set; }

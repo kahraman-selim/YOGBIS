@@ -13,11 +13,12 @@ namespace YOGBIS.Data.DbModels
         public string UniStatu { get; set; }
         public string UniLogo { get; set; }
         public string UniBilgi { get; set; }
-        public int? SehirId { get; set; }
-        public int? EyaletId { get; set; }
-        public int UlkeId { get; set; }
-        [ForeignKey("UlkeId")]
-        public Ulkeler Ulkeler { get; set; }
+        public int SehirId { get; set; }
+        [ForeignKey("SehirId")]
+        public Sehirler Sehirler { get; set; }
+        public int EyaletId { get; set; }
+        [ForeignKey("EyaletId")]
+        public Eyaletler Eyaletler { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

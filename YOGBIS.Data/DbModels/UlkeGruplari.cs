@@ -12,7 +12,9 @@ namespace YOGBIS.Data.DbModels
         public string UlkeGrupAciklama { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }
-        public List<UlkeGruplariKitalar> UlkeGruplariKitalars { get; set; }        
+        public Kullanici Kullanici { get; set; }        
+        public int UlkeId { get; set; }
+        public int KitaId { get; set; }
+        public List<Kitalar> Kitalars { get; set; }        
     }
 }

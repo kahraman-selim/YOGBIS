@@ -11,6 +11,8 @@ namespace YOGBIS.Data.DbModels
         public int AdayGorevKaydiId { get; set; }
         public int GorevliTC { get; set; }
         public int DereceId { get; set; }
+        [ForeignKey("DereceId")]
+        public SoruDereceler SoruDereceler { get; set; }
         public string Gorevi { get; set; }
         public int BransId { get; set; }
         [ForeignKey("BransId")]
@@ -25,12 +27,12 @@ namespace YOGBIS.Data.DbModels
         public string GorevAciklama { get; set; }        
         public int? OkulId { get; set; }
         public int? UniId { get; set; }
+        public int? TemsilcilikId { get; set; }
         public int? SehirId { get; set; }        
         public int? EyaletId { get; set; }
         public int UlkeId { get; set; }
-        public int KitaId { get; set; }
-        [ForeignKey("KitaId")]
-        public Kitalar Kitalar { get; set; }
+        [ForeignKey("UlkeId")]
+        public Ulkeler Ulkeler { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

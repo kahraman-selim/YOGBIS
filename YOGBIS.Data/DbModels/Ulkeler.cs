@@ -10,8 +10,7 @@ namespace YOGBIS.Data.DbModels
         public int UlkeId { get; set; }
         public string UlkeAdi { get; set; }
         public string UlkeBayrakURL { get; set; }
-        public string UlkeAciklama { get; set; }
-        public int VatandasSayisi { get; set; }
+        public string UlkeAciklama { get; set; }        
         public int KitaId { get; set; }
         [ForeignKey("KitaId")]
         public Kitalar Kitalar { get; set; }
