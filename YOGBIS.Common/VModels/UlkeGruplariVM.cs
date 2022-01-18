@@ -13,6 +13,5 @@ namespace YOGBIS.Common.VModels
         public string KaydedenId { get; set; }
         public string KullaniciAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
-        public List<UlkeGruplariKitalarVM> UlkeGruplariKitalars { get; set; }
     }
 }

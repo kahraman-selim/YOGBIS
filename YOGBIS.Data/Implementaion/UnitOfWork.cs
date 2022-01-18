@@ -17,6 +17,7 @@ namespace YOGBIS.Data.Implementaion
             adayNotRepository = new AdayNotRepository(_ctx);            
             autoHistoryRepository = new AutoHistoryRepository(_ctx);
             branslarRepository = new BranslarRepository(_ctx);
+            duyurularRepository = new DuyurularRepository(_ctx);
             ePostaAdresleriRepository = new EPostaAdresleriRepository(_ctx);            
             etkinliklerRepository = new EtkinliklerRepository(_ctx);
             eyaletlerRepository = new EyaletlerRepository(_ctx);
@@ -27,6 +28,7 @@ namespace YOGBIS.Data.Implementaion
             illerMdEPostaRepository = new IllerMdEPostaRepository(_ctx);
             illerRepository = new IllerRepository(_ctx);            
             kitalarRepository = new KitalarRepository(_ctx);
+            komisyonlarRepository = new KomisyonlarRepository(_ctx);
             kullaniciRepository = new KullaniciRepository(_ctx);
             mulakatlarRepository = new MulakatlarRepository(_ctx);
             mulakatSorulariRepository = new MulakatSorulariRepository(_ctx);
@@ -44,8 +46,10 @@ namespace YOGBIS.Data.Implementaion
             sorukategorilerRepository = new SoruKategorilerRepository(_ctx);
             soruKategoriRepository = new SoruKategoriRepository(_ctx);
             soruOnayRepository = new SoruOnayRepository(_ctx);
+            sssRepository = new SSSRepository(_ctx);
+            sssCevapRepository = new SSSCevapRepository(_ctx);
             subelerRepository = new SubelerRepository(_ctx);
-            ulkeGruplariKitalarRepository = new UlkeGruplariKitalarRepository(_ctx);
+            temsilciliklerRepository = new TemsilciliklerRepository(_ctx);
             ulkeGruplariRepository = new UlkeGruplariRepository(_ctx);            
             ulkelerRepository = new UlkelerRepository(_ctx);
             universitelerRepository = new UniversitelerRepository(_ctx);
@@ -58,6 +62,7 @@ namespace YOGBIS.Data.Implementaion
         public IAdayNotRepository adayNotRepository { get; private set; }        
         public IAutoHistoryRepository autoHistoryRepository { get; private set; }
         public IBranslarRepository branslarRepository { get; private set; }
+        public IDuyurularRepository duyurularRepository { get; private set; }
         public IEPostaAdresleriRepository ePostaAdresleriRepository { get; private set; }
         public IEtkinliklerRepository etkinliklerRepository { get; private set; }        
         public IEyaletlerRepository eyaletlerRepository { get; private set; }
@@ -68,6 +73,7 @@ namespace YOGBIS.Data.Implementaion
         public IIllerRepository illerRepository { get; private set; }
         public IIllerMdEPostaRepository illerMdEPostaRepository { get; private set; }
         public IKitalarRepository kitalarRepository { get; private set; }
+        public IKomisyonlarRepository komisyonlarRepository { get; private set; }
         public IKullaniciRepository kullaniciRepository { get; private set; }
         public IMulakatlarRepository mulakatlarRepository { get; private set; }
         public IMulakatSorulariRepository mulakatSorulariRepository { get; private set; }
@@ -85,8 +91,10 @@ namespace YOGBIS.Data.Implementaion
         public ISoruKategorilerRepository sorukategorilerRepository { get; private set; }
         public ISoruKategoriRepository soruKategoriRepository { get; private set; }
         public ISoruOnayRepository soruOnayRepository { get; private set; }
+        public ISSSRepository sssRepository { get; private set; }
+        public ISSSCevapRepository sssCevapRepository { get; private set; }
         public ISubelerRepository subelerRepository { get; private set; }
-        public IUlkeGruplariKitalarRepository ulkeGruplariKitalarRepository { get; private set; }
+        public ITemsilciliklerRepository temsilciliklerRepository { get; private set; }
         public IUlkeGruplariRepository ulkeGruplariRepository { get; private set; }        
         public IUlkelerRepository ulkelerRepository { get; private set; }         
         public IUniversitelerRepository universitelerRepository { get; private set; }

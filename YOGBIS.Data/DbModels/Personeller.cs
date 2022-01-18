@@ -5,6 +5,7 @@ namespace YOGBIS.Data.DbModels
     public class Personeller:Base
     {
         public int Id { get; set; }
+        public string PersonelGrupAdi { get; set; }
         public string PersonelAdiSoyadi { get; set; }
         public string PersonelUnvan { get; set; }
         public string PersonelTelefon { get; set; }

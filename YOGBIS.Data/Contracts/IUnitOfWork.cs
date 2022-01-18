@@ -20,6 +20,7 @@ namespace YOGBIS.Data.Contracts
         IIllerRepository illerRepository { get; }
         IIllerMdEPostaRepository illerMdEPostaRepository { get; }
         IKitalarRepository kitalarRepository { get; }
+        IKomisyonlarRepository komisyonlarRepository { get; }
         IKullaniciRepository kullaniciRepository { get; }
         IMulakatlarRepository mulakatlarRepository { get; }
         IMulakatSorulariRepository mulakatSorulariRepository { get; }
@@ -36,8 +37,10 @@ namespace YOGBIS.Data.Contracts
         ISoruKategorilerRepository sorukategorilerRepository { get; }
         ISoruKategoriRepository soruKategoriRepository { get; }
         ISoruOnayRepository soruOnayRepository { get; }
+        ISSSRepository sssRepository { get; }
+        ISSSCevapRepository sssCevapRepository { get; }
         ISubelerRepository subelerRepository { get; }
-        IUlkeGruplariKitalarRepository ulkeGruplariKitalarRepository { get; }
+        ITemsilciliklerRepository temsilciliklerRepository { get; }
         IUlkeGruplariRepository ulkeGruplariRepository { get; }        
         IUlkelerRepository ulkelerRepository { get; }
         IUniversitelerRepository universitelerRepository { get; }

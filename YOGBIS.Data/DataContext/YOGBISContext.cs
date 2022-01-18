@@ -45,19 +45,19 @@ namespace YOGBIS.Data.DataContext
             #region Kıtalar
             builder.Entity<Kitalar>().HasData(
             new Kitalar()
-            { KitaId = 1, KitaAdi = "Afrika", KitaAciklama = "Afrika Kıtası" },
+            { KitaId = 1, KitaAdi = "Afrika", KitaAciklama = "Afrika Kıtası"},
             new Kitalar()
-            { KitaId = 2, KitaAdi = "Antartika", KitaAciklama = "Antartika Kıtası" },
+            { KitaId = 2, KitaAdi = "Antartika", KitaAciklama = "Antartika Kıtası"},
             new Kitalar()
-            { KitaId = 3, KitaAdi = "Asya", KitaAciklama = "Asya Kıtası" },
+            { KitaId = 3, KitaAdi = "Asya", KitaAciklama = "Asya Kıtası"},
             new Kitalar()
-            { KitaId = 4, KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası" },
+            { KitaId = 4, KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası"},
             new Kitalar()
-            { KitaId = 5, KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası" },
+            { KitaId = 5, KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası"},
             new Kitalar()
-            { KitaId = 6, KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası" },
+            { KitaId = 6, KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası"},
             new Kitalar()
-            { KitaId = 7, KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası" }
+            { KitaId = 7, KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası"}
             );
             #endregion
 
@@ -100,6 +100,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<Adaylar> Adaylars { get; set; }
         public DbSet<AdayNot> AdayNots { get; set; }
         public DbSet<Branslar> Branslars { get; set; }
+        public DbSet<Duyurular> Duyurulars { get; set; }
         public DbSet<EPostaAdresleri> EPostaAdresleris { get; set; }
         public DbSet<Etkinlikler> Etkinliklers { get; set; }
         public DbSet<Eyaletler> Eyaletlers { get; set; }
@@ -127,9 +128,12 @@ namespace YOGBIS.Data.DataContext
         public DbSet<SoruDereceler> SoruDerecelers { get; set; }        
         public DbSet<SoruKategori> SoruKategoris { get; set; }
         public DbSet<SoruKategoriler> SoruKategorilers { get; set; }
+        public DbSet<SoruOnay> SoruOnays { get; set; }
+        public DbSet<SSS> SSSs { get; set; }
+        public DbSet<SSSCevap> SSSCevaps { get; set; }
         public DbSet<Subeler> Subelers { get; set; }
-        public DbSet<UlkeGruplari> UlkeGruplaris { get; set; }
-        public DbSet<UlkeGruplariKitalar> UlkeGruplariKitalars { get; set; }
+        public DbSet<Temsilcilikler> Temsilciliklers { get; set; }
+        public DbSet<UlkeGruplari> UlkeGruplaris { get; set; }        
         public DbSet<Ulkeler> Ulkelers { get; set; }
         public DbSet<Universiteler> Universitelers { get; set; }        
 

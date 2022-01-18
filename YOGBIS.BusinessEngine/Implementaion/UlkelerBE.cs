@@ -50,7 +50,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KayitTarihi = item.KayitTarihi,
                         KitaId = item.KitaId,
                         KitaAdi = item.Kitalar.KitaAdi,
-                        VatandasSayisi=item.VatandasSayisi,
+                        //VatandasSayisi=item.VatandasSayisi,
                         //UlkeGrupId = item.Kitalar.UlkeGruplariKitalars.Where(x=>x.KitaId==item.KitaId),
                         //UlkeGrupAdi = item.UlkeGruplari.UlkeGrupAdi,
                         KaydedenId = item.KaydedenId,
@@ -80,7 +80,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ulkeler.UlkeAdi = model.UlkeAdi;
                     ulkeler.UlkeAciklama = model.UlkeAciklama;
                     ulkeler.UlkeBayrakURL = model.UlkeBayrakURL;
-                    ulkeler.VatandasSayisi = 0;
+                    //ulkeler.VatandasSayisi = 0;
 
                     _unitOfWork.ulkelerRepository.Add(ulkeler);
                     _unitOfWork.Save();
@@ -122,7 +122,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ulke.UlkeAdi = data.UlkeAdi;
                     ulke.UlkeAciklama = data.UlkeAciklama;
                     ulke.UlkeBayrakURL = data.UlkeBayrakURL;
-                    ulke.VatandasSayisi = data.VatandasSayisi;
+                    //ulke.VatandasSayisi = data.VatandasSayisi;
                     ulke.KitaId = data.KitaId;
                     ulke.KitaAdi = data.Kitalar.KitaAdi;
                     ulke.KaydedenId = data.KaydedenId;
@@ -156,7 +156,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     data.KitaId = model.KitaId;
                     data.UlkeBayrakURL = model.UlkeBayrakURL;
                     data.KaydedenId = user.LoginId;
-                    data.VatandasSayisi = model.VatandasSayisi;
+                    //data.VatandasSayisi = model.VatandasSayisi;
 
                     _unitOfWork.ulkelerRepository.Update(data);
                     _unitOfWork.Save();
@@ -233,7 +233,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeAciklama = item.UlkeAciklama,
                         KayitTarihi = item.KayitTarihi,
                         KitaId = item.KitaId,
-                        VatandasSayisi=item.VatandasSayisi,
+                        //VatandasSayisi=item.VatandasSayisi,
                         KitaAdi = item.Kitalar.KitaAdi,
                         KaydedenId = item.KaydedenId,                        
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty

@@ -12,10 +12,9 @@ namespace YOGBIS.Data.DbModels
         [ForeignKey("SehirId")]
         public Sehirler Sehirler { get; set; }
         public string TemsilciId { get; set; }
-        [ForeignKey("TemsilciId")]
-        public Kullanici Temsilci { get; set; }
         public string TemsilcilikTel { get; set; }
         public string TemsilcilikEPosta { get; set; }
+        public string TemsilcilikWebAdres { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

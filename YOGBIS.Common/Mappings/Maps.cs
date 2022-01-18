@@ -43,7 +43,6 @@ namespace YOGBIS.Common.Mappings
             CreateMap<SoruOnay, SoruOnayVM>().ReverseMap();
             CreateMap<Subeler, SubelerVM>().ReverseMap();
             CreateMap<UlkeGruplari, UlkeGruplariVM>().ReverseMap();
-            CreateMap<UlkeGruplariKitalar, UlkeGruplariKitalarVM>().ReverseMap();
             CreateMap<Ulkeler, UlkelerVM>().ReverseMap();
             CreateMap<Universiteler, UniversitelerVM>().ReverseMap();
 

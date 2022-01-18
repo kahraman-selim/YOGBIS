@@ -20,7 +20,8 @@ namespace YOGBIS.Data.DbModels
         public List<AdayGorevKaydi> AdayGorevKaydis { get; set; }
         public List<Adaylar> Adaylars { get; set; }
         public List<AdayNot> AdayNots { get; set; }
-        public List<Branslar> Branslar { get; set; }        
+        public List<Branslar> Branslar { get; set; }
+        public List<Duyurular> Duyurulars { get; set; }
         public List<EPostaAdresleri> EPostaAdresleris { get; set; }
         public List<Etkinlikler> Etkinliklers { get; set; }
         public List<Eyaletler> Eyaletlers { get; set; }
@@ -37,6 +38,7 @@ namespace YOGBIS.Data.DbModels
         public List<Ogrenciler> Ogrencilers { get; set; }
         public List<OkulBilgi> OkulBilgis { get; set; }
         public List<Okullar> Okullars { get; set; }
+        public List<Personeller> Personellers { get; set; }
         public List<Sehirler> Sehirlers { get; set; }
         public List<Siniflar> Siniflars { get; set; }
         public List<SoruBankasi> SoruBankasis { get; set; }
@@ -44,7 +46,10 @@ namespace YOGBIS.Data.DbModels
         public List<SoruDereceler> SoruDerecelers { get; set; }
         public List<SoruKategoriler> SoruKategorilers { get; set; }
         public List<SoruOnay> SoruOnays { get; set; }
+        public List<SSS> SSSs { get; set; }
+        public List<SSSCevap> SSSCevaps { get; set; }
         public List<Subeler> Subelers { get; set; }
+        public List<Temsilcilikler> Temsilciliklers { get; set; }
         public List<UlkeGruplari> UlkeGruplaris { get; set; }
         public List<Ulkeler> Ulkelers { get; set; }
         public List<Universiteler> Universitelers { get; set; }

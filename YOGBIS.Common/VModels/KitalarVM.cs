@@ -9,6 +9,5 @@ namespace YOGBIS.Common.VModels
         public int KitaId { get; set; }
         public string KitaAdi { get; set; }
         public string KitaAciklama { get; set; }
-        public List<UlkeGruplariKitalarVM> UlkeGruplariKitalars { get; set; }
     }
 }
