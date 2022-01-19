@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using YOGBIS.Common.ConstantsModels;
 
 namespace YOGBIS.Common.VModels
 {
@@ -23,10 +22,10 @@ namespace YOGBIS.Common.VModels
         public KullaniciVM Kaydeden { get; set; }
         [Required(ErrorMessage = "Soru kategorisini seçiniz...")]
         public int SoruKategorilerId { get; set; }
-        public List<SoruKategoriVM> SoruKategoris { get; set; }
+        public List<SoruKategoriVM> SoruKategori { get; set; }
         [Required(ErrorMessage = "Soru derecesini seçiniz...")]
         public int SoruDereceId { get; set; }
-        public List<SoruDereceVM> SoruDereces { get; set; }
+        public List<SoruDereceVM> SoruDerece { get; set; }
         [Required(ErrorMessage = "Onaylayacak kişi/kişileri seçiniz...")]
         public string OnaylayanId { get; set; }
         public int OnayDurumu { get; set; }

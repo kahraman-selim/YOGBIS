@@ -14,6 +14,7 @@ namespace YOGBIS.Common.Mappings
             CreateMap<AdayNot, AdayNotVM>().ReverseMap();
             CreateMap<AutoHistory, AutoHistoryVM>().ReverseMap();
             CreateMap<Branslar, BranslarVM>().ReverseMap();
+            CreateMap<Duyurular, DuyurularVM>().ReverseMap();
             CreateMap<EPostaAdresleri, EPostaAdresleriVM>().ReverseMap();
             CreateMap<Etkinlikler, EtkinliklerVM>().ReverseMap();
             CreateMap<Eyaletler, EyaletlerVM>().ReverseMap();
@@ -24,6 +25,7 @@ namespace YOGBIS.Common.Mappings
             CreateMap<Iller, IllerVM>().ReverseMap();
             CreateMap<IllerMdEPosta, IllerMdEPostaVM>().ReverseMap();
             CreateMap<Kitalar, KitalarVM>().ReverseMap();
+            CreateMap<Komisyonlar, KomisyonlarVM>().ReverseMap();
             CreateMap<Kullanici, KullaniciVM>().ReverseMap();
             CreateMap<Mulakatlar, MulakatlarVM>().ReverseMap();
             CreateMap<MulakatSorulari, MulakatSorulariVM>().ReverseMap();
@@ -41,7 +43,10 @@ namespace YOGBIS.Common.Mappings
             CreateMap<SoruKategori, SoruKategoriVM>().ReverseMap();
             CreateMap<SoruKategoriler, SoruKategorilerVM>().ReverseMap();
             CreateMap<SoruOnay, SoruOnayVM>().ReverseMap();
+            CreateMap<SSS, SSSVM>().ReverseMap();
+            CreateMap<SSSCevap, SSSCevapVM>().ReverseMap();
             CreateMap<Subeler, SubelerVM>().ReverseMap();
+            CreateMap<Temsilcilikler, TemsilciliklerVM>().ReverseMap();
             CreateMap<UlkeGruplari, UlkeGruplariVM>().ReverseMap();
             CreateMap<Ulkeler, UlkelerVM>().ReverseMap();
             CreateMap<Universiteler, UniversitelerVM>().ReverseMap();

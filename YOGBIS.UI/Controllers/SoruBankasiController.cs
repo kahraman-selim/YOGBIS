@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
@@ -83,6 +84,18 @@ namespace YOGBIS.UI.Controllers
             }
             else
             {
+                model.SoruOnays = new List<SoruOnayVM>();
+                foreach (var item in model.SoruOnays)
+                {
+                    var soruonay = new SoruOnayVM()
+                    {
+                        KayitTarihi = item.KayitTarihi,
+                        OnayAciklama = item.OnayAciklama,
+                        OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi,
+                        OnaylayanId = item.OnaylayanId
+                    };
+                    model.SoruOnays.Add(soruonay);
+                }
                 var data = _soruBankasiBE.SoruEkle(model, user);
                 if (data.IsSuccess)
                 {
