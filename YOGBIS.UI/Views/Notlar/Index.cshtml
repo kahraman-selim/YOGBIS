@@ -309,8 +309,8 @@
             function openEkleVeyaGuncelleModal() {
                 if (selectedEvent != null) {
                     $('#notId').val(selectedEvent.id);
-                    $('#inputStartDate').val(selectedEvent.start.format('DD/MM/YYYY HH:mm'));
-                    $('#inputEndDate').val(selectedEvent.end.format('DD/MM/YYYY HH:mm'));
+                    $('#inputBasTar').val(selectedEvent.start.format('DD/MM/YYYY HH:mm'));
+                    $('#inputBitTar').val(selectedEvent.end.format('DD/MM/YYYY HH:mm'));
                     $('#inputNotBaslik').val(selectedEvent.NotBaslik);                    
                     $('#inputNot').val(selectedEvent.description);
                     $('#selectKullaniciId').val(selectedEvent.KullaniciId);

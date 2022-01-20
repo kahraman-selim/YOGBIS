@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.Extentsion;
@@ -168,15 +169,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KaydedenId =user.LoginId,
                         KayitTarihi=model.KayitTarihi
                     };
-                    _unitOfWork.soruBankasiRepository.Add(sorubankasi);
-                    _unitOfWork.Save();
 
                     sorubankasi.SoruOnays = new List<SoruOnay>();
-                    foreach (var item in model.SoruOnays)
+                    foreach (var item in model.SoruOnay)
                     {
-                        var soruonay = new SoruOnay()
+                        var soruonay = new SoruOnay
                         {
-                            KayitTarihi = item.KayitTarihi,
+                            KayitTarihi=item.KayitTarihi,
                             OnayAciklama = item.OnayAciklama,
                             OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi,
                             OnaylayanId = item.OnaylayanId,
@@ -185,7 +184,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         _unitOfWork.soruOnayRepository.Add(soruonay);
                         _unitOfWork.Save();
                     }
-
+                    _unitOfWork.soruBankasiRepository.Add(sorubankasi);
+                    _unitOfWork.Save();
                     /////////////////////////////////////////////
                     var sorukategori = new SoruKategori
                     {

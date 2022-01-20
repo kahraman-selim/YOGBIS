@@ -84,8 +84,8 @@ namespace YOGBIS.UI.Controllers
             }
             else
             {
-                model.SoruOnays = new List<SoruOnayVM>();
-                foreach (var item in model.SoruOnays)
+                model.SoruOnay = new List<SoruOnayVM>();
+                foreach (var item in model.SoruOnay)
                 {
                     var soruonay = new SoruOnayVM()
                     {
@@ -94,8 +94,9 @@ namespace YOGBIS.UI.Controllers
                         OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi,
                         OnaylayanId = item.OnaylayanId
                     };
-                    model.SoruOnays.Add(soruonay);
+                    model.SoruOnay.Add(soruonay);
                 }
+
                 var data = _soruBankasiBE.SoruEkle(model, user);
                 if (data.IsSuccess)
                 {
@@ -107,7 +108,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Güncelle
-        public async Task<IActionResult> Guncelle(int? id)
+        public IActionResult Guncelle(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;

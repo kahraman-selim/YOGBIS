@@ -30,7 +30,7 @@ namespace YOGBIS.Common.VModels
         public string OnaylayanId { get; set; }
         public int OnayDurumu { get; set; }
         public string OnayDurumuAciklama { get; set; }
-        public List<SoruOnayVM> SoruOnays { get; set; }
-        public List<SoruBankasiLogVM> SoruBankasiLogVMs { get; set; }
+        public List<SoruOnayVM> SoruOnay { get; set; }
+        public List<SoruBankasiLogVM> SoruBankasiLogVM { get; set; }
     }
 }
