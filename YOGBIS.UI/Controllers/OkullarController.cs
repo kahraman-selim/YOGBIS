@@ -121,5 +121,20 @@ namespace YOGBIS.UI.Controllers
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
         }
+
+        [Authorize(Roles = "Administrator,Manager")]
+        public IActionResult OkulDetay()
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var requestmodel = _okullarBE.OkullariGetir();
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+
+            if (requestmodel.IsSuccess)
+            {
+                return View(requestmodel.Data);
+            }
+            return View(user);
+        }
     }
 }

@@ -155,6 +155,22 @@ namespace YOGBIS.UI.Controllers
 
         }
 
+        [Authorize(Roles = "Administrator,Manager")]
+        public IActionResult UlkeDetay()
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var requestmodel = _ulkelerBE.UlkeleriGetir();  //UlkeGetirKullaniciId(user.LoginId);
+            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
+
+            if (requestmodel.IsSuccess)
+            {
+                return View(requestmodel.Data);
+            }
+
+            return View(user);
+        }
+
         [Obsolete]
         private async Task<string> FotoYukle(string dosyaYolu, IFormFile dosya)
         {
