@@ -3,64 +3,131 @@
     ViewData["Title"] = "UlkeDetay";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@section Styles{
+    <link href="~/css/modern-business.css" rel="stylesheet" />
+}
 <div class="row">
     <div class="col-md-4">
         <div class="row">
-            <img id="ulkeresim" class="img-fluid fa-border-none" alt="Ülke Bayrağı" src="~/img/Ulkeler/Azerbaycan.jpg">
+            <img id="ulkeresim" class="img-fluid fa-border-none w-100" alt="Ülke Bayrağı" src="~/img/Ulkeler/Azerbaycan.jpg">
         </div>
         <div class="row">
-            <h5><label class="mb-1 font-weight-bold">Azerbaycan</label></h5> 
-        </div>        
-        <hr class="font-weight-bold"/>
+            <h5><label class="mb-1 font-weight-bold">Azerbaycan</label></h5>
+        </div>
+        <hr />
         <label class="mb-1 font-weight-bold">Özet Bilgiler</label>
-        <div>
-            Azerbaycan, resmî adıyla Azerbaycan Cumhuriyeti, Batı Asya ile Doğu Avrupa'nın kesişim noktası olan Kafkasya'da yer alan bir ülke.
+        <div class="text-justify">
+            Azerbaycan, Batı Asya ile Doğu Avrupa'nın kesişim noktası olan bir Kafkasya ülkesidir. Başkenti Bakü olan Azerbaycan aynı zamanda 59 eyalete ve 75 şehre sahiptir. ... 
+            Başkenti dışında dört büyük şehre ve özerk bir bölgeye sahip olan Azerbaycan Güney Kafkasya'nın en büyük yüz ölçümüne sahiptir.
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-8 pl-5">
         <div class="row">
-            <div class="card m-3 w-100">
-                <div class="card-header">
-                    <i class="fas fa-table mr-1"></i>
-                    <b>Okullar</b>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped display responsive nowrap" id="Table" style="width:100%" cellspacing="0">
-                            <thead>
-                                <tr>                                    
-                                    <th class="text-center">Sıra No</th>                                    
-                                    <th class="text-center">Okul Kodu</th>
-                                    <th class="text-center">Eyalet/Şehir</th>                        
-                                    <th class="text-center">Okul Adı</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <th scope="row">909525</th>
-                                    <td><a class="text-dark text-left">Bakü</a></td>
-                                    <td><a id="OkulAdi" class="text-dark text-left" asp-controller="Okullar" asp-action="OkulDetay">Bakü Türk İlkokulu</a></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <th scope="row">749642</th>
-                                    <td><a class="text-dark text-left">Bakü</a></td>
-                                    <td><a id="OkulAdi" class="text-dark text-left" asp-controller="Okullar" asp-action="OkulDetay">Bakü Türk Ortaokulu</a></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <th scope="row">909513</th>
-                                    <td><a class="text-dark text-left">Bakü</a></td>
-                                    <td><a id="OkulAdi" class="text-dark text-left" asp-controller="Okullar" asp-action="OkulDetay">Bakü Türk Anadolu Lisesi</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <h4>Okullar</h4>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped display responsive nowrap" id="Table" style="width:100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sıra No</th>
+                            <th class="text-center">Okul Kodu</th>
+                            <th class="text-center">Eyalet/Şehir</th>
+                            <th class="text-center">Okul Adı</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <th scope="row">909525</th>
+                            <td><a class="text-dark text-left">Bakü</a></td>
+                            <td><a id="OkulAdi" class="text-dark text-left" asp-controller="Okullar" asp-action="OkulDetay">Bakü Türk İlkokulu</a></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <th scope="row">749642</th>
+                            <td><a class="text-dark text-left">Bakü</a></td>
+                            <td><a id="OkulAdi" class="text-dark text-left" asp-controller="Okullar" asp-action="OkulDetay">Bakü Türk Ortaokulu</a></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <th scope="row">909513</th>
+                            <td><a class="text-dark text-left">Bakü</a></td>
+                            <td><a id="OkulAdi" class="text-dark text-left" asp-controller="Okullar" asp-action="OkulDetay">Bakü Türk Anadolu Lisesi</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <h4>Öğretmenler</h4>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped display responsive nowrap" id="Table" style="width:100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sıra No</th>
+                            <th class="text-center">Eyalet/Şehir</th>
+                            <th class="text-center">Görev Yaptığı Okul</th>
+                            <th class="text-center">Adı Soyadı</th>
+                            <th class="text-center">Görevi</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td><a class="text-dark text-left">Bakü</a></td>
+                            <td><a id="OkulAdi" class="text-dark text-left" asp-controller="Okullar" asp-action="OkulDetay">Bakü Türk İlkokulu</a></td>
+                            <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Nurullah Fevzi YAZICI</a></td>
+                            <td><a class="text-dark text-left">Okul Müdürü</a></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <h4>Okutmanlar</h4>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped display responsive nowrap" id="Table" style="width:100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sıra No</th>
+                            <th class="text-center">Eyalet/Şehir</th>
+                            <th class="text-center">Görev Yaptığı Üniversite</th>
+                            <th class="text-center">Adı Soyadı</th>
+                            <th class="text-center">Görevi</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td><a class="text-dark text-left">Bakü</a></td>
+                            <td><a id="OkulAdi" class="text-dark text-left" href="http://bsu.edu.az/en/welcome_to_baku_state_university" target="_blank">Bakü Devlet Üniversitesi</a></td>
+                            <td><a class="text-dark text-left" asp-controller="Okutmanlar" asp-action="OkutmanDetay">Talip ÖZ</a></td>
+                            <td><a class="text-dark text-left">Doç. Dr.</a></td>
+                        </tr>
+
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script type="text/javascript">
+
+
+    </script>
+}

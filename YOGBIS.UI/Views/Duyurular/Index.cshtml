@@ -3,7 +3,78 @@
     ViewData["Title"] = "Duyurular";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Styles{
+    <link href="~/css/modern-business.css" rel="stylesheet" />
+}
 
-<h1 class="text-center m-4"><i class="text-info">Duyurular</i> bu sayfada gösterilecektir.</h1>
-<h1 class="text-center"><i class="fas fa-bullhorn"></i></h1>
+
+
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+        <!-- Slide One - Set the background image for this slide in the line below -->
+        <div class="carousel-item active" style="background-image: url('../../img/mansetresim.png') ">
+            <div class="carousel-caption d-none d-md-block">
+                <h3 class="text-dark font-weight-bold">YOGBİS Hakkında</h3>
+                <p class="text-dark font-weight-bold"><a href="#" class="text-dark">Yurt Dışı Okutman/Öğretmen Görevlendirme Bilgi İşletim Sistemi kullanılmaya başlamıştır. Detaylar için tıklayın.</a></p>
+            </div>
+        </div>
+        <!-- Slide Two - Set the background image for this slide in the line below -->
+        <div class="carousel-item" style="background-image: url('../../img/mansetresim.png') ">
+            <div class="carousel-caption d-none d-md-block">
+                <h3 class="text-dark font-weight-bold">Duyuru Başlığı</h3>
+                <p class="text-dark font-weight-bold">Duyuru hakkında kısa özet başlık</p>
+            </div>
+        </div>
+        <!-- Slide Three - Set the background image for this slide in the line below -->
+        <div class="carousel-item" style="background-image: url('../../img/mansetresim.png') ">
+            <div class="carousel-caption d-none d-md-block">
+                <h3 class="text-dark font-weight-bold">Duyuru Başlığı</h3>
+                <p class="text-dark font-weight-bold">Duyuru hakkında kısa özet başlık</p>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-8 float-lg-left">
+        <h3>Geçmiş Duyurular</h3>
+    </div>
+    <div class="col-md-4 float-lg-right">
+        <h5 class="float-lg-right"><a href="#">Tüm Duyurular</a></h5>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-2 col-sm-4 mb-4">
+        <img class="img-fluid" src="../../img/mansetresimkucuk.png" alt="" style="width:300px;height:100px;">
+    </div>
+    <div class="col-lg-2 col-sm-4 mb-4">
+        <img class="img-fluid" src="../../img/mansetresimkucuk.png" alt="" style="width:300px;height:100px;">
+    </div>
+    <div class="col-lg-2 col-sm-4 mb-4">
+        <img class="img-fluid" src="../../img/mansetresimkucuk.png" alt="" style="width:300px;height:100px;">
+    </div>
+    <div class="col-lg-2 col-sm-4 mb-4">
+        <img class="img-fluid" src="../../img/mansetresimkucuk.png" alt="" style="width:300px;height:100px;">
+    </div>
+    <div class="col-lg-2 col-sm-4 mb-4">
+        <img class="img-fluid" src="../../img/mansetresimkucuk.png" alt="" style="width:300px;height:100px;">
+    </div>
+    <div class="col-lg-2 col-sm-4 mb-4">
+        <img class="img-fluid" src="../../img/mansetresimkucuk.png" alt="" style="width:300px;height:100px;">
+    </div>
+</div>
+
 

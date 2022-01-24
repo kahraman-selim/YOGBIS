@@ -45,6 +45,23 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <th scope="col">1</th>
+                        <td>Bakü Türk İlkokulu</td>
+                        <td>Öğretmenler Günü Etkinliği</td>
+                        <td>24/11/2021</td>
+                        <td>25/11/2021</td>
+                        <td>Nurullar Fevzi YAZICI</td>
+                        <td>500</td>
+                        <td><img id="etkinlikKapak" class="rounded mx-auto d-block shadow" alt="Etkinlik Kapak Resmi" style="width:170px;height:100px;" @*src="@item.UlkeBayrakURL"*@ src="../../img/EtkinlikKapakFoto/EtkinlikKapakOrnek.png" asp-append-version="true"></td>
+                        <td class="text-center">
+                            <a class="btn btn-info" title="Detay" asp-controller="Etkinlik" asp-action="Detay">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>  
+                </tbody>       
+                @*<tbody>
                     @{ var sirano = 0;}
                     @if (Model != null)
                     {
@@ -90,7 +107,7 @@
                             <td>Kayıt bulunamadı!</td>
                         </tr>
                     }
-                </tbody>
+                </tbody>*@
             </table>
         </div>
     </div>

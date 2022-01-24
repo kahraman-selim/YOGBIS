@@ -58,7 +58,7 @@
                                     <input type="file"
                                            accept=".png,.jpg,.jpeg,.gif,.tif" asp-for="EtkinlikKapakResim"
                                            id="files" name="files"
-                                           class="btn btn-outline-danger mb-1 btn-sm"
+                                           class="btn btn-outline-danger mb-1 btn-sm col-md-12"
                                            onchange="document.getElementById('etkinlikkapak').src = window.URL.createObjectURL(this.files[0])">
                                     <span class="text-danger" asp-validation-for="EtkinlikKapakResim"></span>
                                 </div>
@@ -78,7 +78,7 @@
                                     <input type="file"
                                            accept=".pdf,.doc,.docx,.xls,.xlsx" asp-for="EtkinlikDosya"
                                            id="files" name="files"
-                                           class="btn btn-outline-danger mb-1 btn-sm">
+                                           class="btn btn-outline-danger mb-1 btn-sm col-md-12">
                                     <span class="text-danger" asp-validation-for="EtkinlikDosya"></span><br />
                                     <span class="text-danger">Etkinliğe ilişkin belge (Word,Excel,Powerpoit,.pdf vb.)</span>
                                 </div>
@@ -127,7 +127,7 @@
                                     <input type="file"
                                            accept=".png,.jpg,.jpeg,.gif,.tif" asp-for="FotoGaleri"
                                            id="files" name="files"
-                                           class="btn btn-outline-danger mb-1 btn-sm"
+                                           class="btn btn-outline-danger mb-1 btn-sm col-md-12"
                                            multiple
                                            onchange="document.getElementById('etkinlikresim').src = window.URL.createObjectURL(this.files[0])">
                                     <span class="text-danger" asp-validation-for="FotoGaleri"></span>
@@ -144,7 +144,7 @@
                         <div class="col-md-6">
                             <div class="form-row m-2">
                                 <div class="col-md-12">
-                                    <img id="etkinlikkapak" src="~/img/noimage.png" alt="KapakFoto" style="width: 100%; height: 250px;">
+                                    <img id="etkinlikkapak" src="~/img/EtkinlikKapakFoto/EtkinlikKapakOrnek.png" alt="KapakFoto" style="width: 100%; height: 250px;">
                                 </div>
                             </div>
                             <div class="form-row m-2">
@@ -161,13 +161,13 @@
                                         <!-- The slideshow -->
                                         <div class="carousel-inner">
                                             <div class="carousel-item active">
-                                                <img id="etkinlikresim" src="~/img/Resim1.jpg" alt="Resim1" style="width: 100%; height: 500px; align-content: center;">
+                                                <img id="etkinlikresim" src="~/img/EtkinlikFoto/Resim1.jpg" alt="Resim1" style="width: 100%; height: 500px; align-content: center;">
                                             </div>
                                             <div class="carousel-item">
-                                                <img src="~/img/Resim2.jpg" alt="Resim2" style="width: 100%; height: 500px; align-content: center;">
+                                                <img src="~/img/EtkinlikFoto/Resim2.jpg" alt="Resim2" style="width: 100%; height: 500px; align-content: center;">
                                             </div>
                                             <div class="carousel-item">
-                                                <img src="~/img/NoImages.png" alt="Resim3" style="width: 100%; height: 500px; align-content: center;">
+                                                <img src="~/img/EtkinlikFoto/Resim3.jpg" alt="Resim3" style="width: 100%; height: 500px; align-content: center;">
                                             </div>
                                         </div>
 
