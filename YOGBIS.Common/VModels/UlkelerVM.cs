@@ -15,6 +15,8 @@ namespace YOGBIS.Common.VModels
         public IFormFile UlkeBayrak { get; set; }
         public string UlkeBayrakURL { get; set; }
         public string UlkeAciklama { get; set; }
+        [Required(ErrorMessage = "Ülke Temsil durumunu seçiniz")]
+        public bool Aktif { get; set; }
         public int VatandasSayisi { get; set; }
 
         [Required(ErrorMessage = "Kıta adı zorunlu bir alandır")]

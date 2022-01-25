@@ -50,6 +50,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KayitTarihi = item.KayitTarihi,
                         KitaId = item.KitaId,
                         KitaAdi = item.Kitalar.KitaAdi,
+                        Aktif=item.Aktif,
                         //VatandasSayisi=item.VatandasSayisi,
                         //UlkeGrupId = item.Kitalar.UlkeGruplariKitalars.Where(x=>x.KitaId==item.KitaId),
                         //UlkeGrupAdi = item.UlkeGruplari.UlkeGrupAdi,
@@ -80,6 +81,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ulkeler.UlkeAdi = model.UlkeAdi;
                     ulkeler.UlkeAciklama = model.UlkeAciklama;
                     ulkeler.UlkeBayrakURL = model.UlkeBayrakURL;
+                    ulkeler.Aktif = model.Aktif;
                     //ulkeler.VatandasSayisi = 0;
 
                     _unitOfWork.ulkelerRepository.Add(ulkeler);
@@ -122,6 +124,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ulke.UlkeAdi = data.UlkeAdi;
                     ulke.UlkeAciklama = data.UlkeAciklama;
                     ulke.UlkeBayrakURL = data.UlkeBayrakURL;
+                    ulke.Aktif = data.Aktif;
                     //ulke.VatandasSayisi = data.VatandasSayisi;
                     ulke.KitaId = data.KitaId;
                     ulke.KitaAdi = data.Kitalar.KitaAdi;
@@ -155,6 +158,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     data.UlkeAciklama = model.UlkeAciklama;
                     data.KitaId = model.KitaId;
                     data.UlkeBayrakURL = model.UlkeBayrakURL;
+                    data.Aktif = model.Aktif;
                     data.KaydedenId = user.LoginId;
                     //data.VatandasSayisi = model.VatandasSayisi;
 

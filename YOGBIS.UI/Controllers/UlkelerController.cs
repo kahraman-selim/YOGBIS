@@ -63,39 +63,32 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
-            //if (ModelState.IsValid)
-            //{
-                if (model.UlkeBayrak!=null)
+            if (model.UlkeBayrak != null)
+            {
+                string klasorler = "img/Bayraklar/";
+                model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
+            }
+
+
+            if (UlkeId > 0)
+            {
+                var data = _ulkelerBE.UlkeGuncelle(model, user);
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var data = _ulkelerBE.UlkeEkle(model, user);
+                if (data.IsSuccess)
                 {
-                    string klasorler = "img/Bayraklar/";
-                    model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
-                }
-
-
-                if (UlkeId > 0)
-                {
-                    var data = _ulkelerBE.UlkeGuncelle(model, user);
-
                     return RedirectToAction("Index");
                 }
-                else
-                {
-                    var data = _ulkelerBE.UlkeEkle(model, user);
-                    if (data.IsSuccess)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    return View(model);
-                }
-            //}
-            //else
-            //{
-            //    return View(model);
-            //}
-
+                return View(model);
+            }
         }
 
         [Authorize(Roles = "Administrator")]
+        [Route("Ulkeler/{id:int:min(1)}", Name = "UlkeDetayRoute")]
         public ActionResult Guncelle(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -117,7 +110,7 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        [Obsolete]
+        [Obsolete]        
         public async Task<ActionResult> Guncelle(UlkelerVM model)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -160,7 +153,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            var requestmodel = _ulkelerBE.UlkeleriGetir();  //UlkeGetirKullaniciId(user.LoginId);
+            var requestmodel = _ulkelerBE.UlkeleriGetir();
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
             if (requestmodel.IsSuccess)

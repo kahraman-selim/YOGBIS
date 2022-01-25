@@ -11,9 +11,9 @@
                     <thead>
                         <tr>
                             <th>Sıra No</th>
-                            <th>Kıta</th>
-                            <th>Ülke Grubu</th>
+                            <th>Kıta</th>                            
                             <th>Ülke</th>
+                            <th>Temsil Durumu</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,12 +24,20 @@
                             @foreach (var item in Model)
                             {
                                 sirano++;
-                                <tr>
-                                    <td>@sirano</td>
-                                    <td>@item.KitaAdi</td>
-                                    <td></td>
-                                    <td><a asp-controller="Ulkeler" asp-action="Guncelle" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
-                                </tr>
+                        <tr>
+                            <td>@sirano</td>
+                            <td>@item.KitaAdi</td>
+                            <td><a asp-controller="Ulkeler" asp-action="Guncelle" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
+                            @if (item.Aktif == true)
+                            {
+                                <td style="color:green" class="font-weight-bold">Aktif</td>
+                            }
+                            else
+                            {
+                                <td style="color:red" class="font-weight-bold">Pasif</td>
+                            }
+
+                        </tr>
                             }
                         }
                         else
