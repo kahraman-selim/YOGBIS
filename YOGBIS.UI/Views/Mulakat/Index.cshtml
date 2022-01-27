@@ -3,8 +3,20 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style type="text/css">
+    #soruBlok {
+        display: none;
+    }
 
+    #notBlok {
+        display: none;
+    }
 
+    #btnBitir {
+        display: none;
+    }
+</style>
+<!-- Soru Blok-->
 <div class="row mt-4">
     <div class="col-lg-2">
         <div class="card shadow-lg mb-1" style="height:100px">
@@ -40,36 +52,176 @@
                    placeholder="Soru Numarasını Giriniz" id="soruno">
         </div>
         <div class="row col-lg-12 mb-2">
-            <input type="submit" value="Mülakatı Başlat" class="btn btn-primary col-lg-12" id="baslat"/>
+            <input type="submit" value="Mülakatı Başlat" class="btn btn-primary col-lg-12" id="btnBaslat" />
+            <input type="submit" value="Mülakatı Bitir" class="btn btn-danger col-lg-12" id="btnBitir" />
         </div>
-        <div class="row col-lg-12 mb-2">
-            @*@foreach (var item in Model)
-            {
+        <!-- Soru Blok-->
+        <div class="row col-lg-12 mb-2" id="soruBlok">
+            <div class="row">
+                <!--////////////////////////////////////////////////////-->
                 <div class="col-lg-4">
-                    <div class="card shadow-lg mb-1" style="height:160px">
-                        <h4 class="card-header text-center text-info">Kategori</h4>
-                        <div class="card-body">
-                            <p class="card-text">@item.SoruKategoriAdi</p>
+                    <div class="card shadow-lg mb-1" style="height: 125px">
+                        <h6 class="card-header text-center text-info">KATEGORİ</h6>
+                        <div class="card-body p-1">
+                            <p class="card-text small font-weight-bold text-justify">Türkçe ( Türk Dili ve Edebiyatı,  Dil Bilgisi ve Anlam Bilgisi)</p>
                         </div>
                     </div>
-                    <div class="card shadow-lg mb-1" style="height:300px">
-                        <h4 class="card-header text-center text-danger">Soru</h4>
+                    <div class="card shadow-lg mb-1" style="height: 350px">
+                        <h6 class="card-header text-center text-danger">SORU</h6>
                         <div class="card-body">
-                            <p class="card-text">@item.Soru</p>
+                            <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
                         </div>
                     </div>
-                    <div class="card shadow-lg mb-1" style="height:300px">
-                        <h4 class="card-header text-center text-primary">Cevap</h4>
+                    <div class="card shadow-lg mb-1" style="height:200px">
+                        <h6 class="card-header text-center text-primary">CEVAP</h6>
                         <div class="card-body">
-                            <p class="card-text">@item.Cevap</p>
+                            <p class="card-text">Ziya Osman Saba</p>
                         </div>
                     </div>
                 </div>
-            }*@
+                <!--////////////////////////////////////////////////////-->
+                <div class="col-lg-4">
+                    <div class="card shadow-lg mb-1" style="height: 125px">
+                        <h6 class="card-header text-center text-info">KATEGORİ</h6>
+                        <div class="card-body p-1">
+                            <p class="card-text small font-weight-bold text-justify">T.C. İnkılap Tarihi ve Atatürkçülük, Türk Tarihi, Türk Kültür ve Medeniyeti, Türkiye Coğrafyası, Vatandaşlık Bilgisi</p>
+                        </div>
+                    </div>
+                    <div class="card shadow-lg mb-1" style="height: 350px">
+                        <h6 class="card-header text-center text-danger">SORU</h6>
+                        <div class="card-body">
+                            <p class="card-text">Egemenlik kaynaklarına göre kaç tür devlet yapısı vardır ?</p>
+                        </div>
+                    </div>
+                    <div class="card shadow-lg mb-1" style="height:200px">
+                        <h6 class="card-header text-center text-primary">CEVAP</h6>
+                        <div class="card-body">
+                            <p class="card-text">
+                                4 tür devlet vardır:<br />
+                                1. Monarşikbr <br />
+                                2. Oligarşik <br />
+                                3. Teokratik <br />
+                                4. Demokratik <br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--////////////////////////////////////////////////////-->
+                <div class="col-lg-4">
+                    <div class="card shadow-lg mb-1" style="height: 125px">
+                        <h6 class="card-header text-center text-info">KATEGORİ</h6>
+                        <div class="card-body p-1">
+                            <p class="card-text small font-weight-bold text-justify">Genel Kültür, Millî Eğitim Bakanlığı Mevzuatı</p>
+                        </div>
+                    </div>
+                    <div class="card shadow-lg mb-1" style="height:350px">
+                        <h6 class="card-header text-center text-danger">SORU</h6>
+                        <div class="card-body">
+                            <p class="card-text text-justify">
+                                222 Sayılı İlköğretim ve Eğitim kanununa göre; muhtarların ,
+                                okul müdürüyle iş birliği yaparak hazırladıkları,  köy ve mahallelerindeki mecburi öğrenim çağında
+                                bulunan çocukların künyelerini gösterir 3 nüsha, her yıl derslere başlamadan kaç gün önce ilgili makamlara teslim edilir?
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card shadow-lg mb-1" style="height:200px">
+                        <h6 class="card-header text-center text-primary">CEVAP</h6>
+                        <div class="card-body">
+                            <p class="card-text">15 gün</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Not Blok-->
+            <div class="row">
+                <!--//////////////////////////////////////////////////////-->
+                <div class="col-lg-4">
+                    <div class="card shadow-lg mb-1" style="height: 125px">
+                        <h6 class="card-header text-center text-success">PUAN</h6>
+                        <div class="card-body p-3">
+                            <form action="/" method="post">
+                                <div class="form-row form-group">
+                                    <div class="col-md-6">
+                                        <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px">Kaydet</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <!--//////////////////////////////////////////////////////-->
+                <div class="col-lg-4">
+                    <div class="card shadow-lg mb-1" style="height: 125px">
+                        <h6 class="card-header text-center text-success">PUAN</h6>
+                        <div class="card-body p-3">
+                            <form action="/" method="post">
+                                <div class="form-row form-group">
+                                    <div class="col-md-6">
+                                        <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px">Kaydet</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <!--//////////////////////////////////////////////////////-->
+                <div class="col-lg-4">
+                    <div class="card shadow-lg mb-1" style="height: 125px">
+                        <h6 class="card-header text-center text-success">PUAN</h6>
+                        <div class="card-body p-3">
+                            <form action="/" method="post">
+                                <div class="form-row form-group">
+                                    <div class="col-md-6">
+                                        <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px">Kaydet</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            @*@foreach (var item in Model)
+                {
+                    <div class="col-lg-4">
+                        <div class="card shadow-lg mb-1" style="height:160px">
+                            <h4 class="card-header text-center text-info">Kategori</h4>
+                            <div class="card-body">
+                                <p class="card-text">@item.SoruKategoriAdi</p>
+                            </div>
+                        </div>
+                        <div class="card shadow-lg mb-1" style="height:300px">
+                            <h4 class="card-header text-center text-danger">Soru</h4>
+                            <div class="card-body">
+                                <p class="card-text">@item.Soru</p>
+                            </div>
+                        </div>
+                        <div class="card shadow-lg mb-1" style="height:300px">
+                            <h4 class="card-header text-center text-primary">Cevap</h4>
+                            <div class="card-body">
+                                <p class="card-text">@item.Cevap</p>
+                            </div>
+                        </div>
+                    </div>
+                }*@
+
+
         </div>
         @*</form>*@
     </div>
 </div>
+
 <!-- uyarı Modal-->
 <div class="modal fade" id="ModalUyari" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -87,7 +239,54 @@
         </div>
     </div>
 </div>
-
+<!-- uyarı Not-->
+<div class="modal fade" id="ModalNot" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Mülakat Puan Değerlendirme</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close" onclick="kapat()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalNotBody">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="/" method="post">
+                            <div class="form-row mb-1">
+                                <div class="col-md-3 text-center">
+                                    <span class="text-center font-weight-bold">Kategori-1</span>
+                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" disabled placeholder="20" />
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <span class="text-center font-weight-bold">Kategori-2</span>
+                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" disabled placeholder="15" />
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <span class="text-center font-weight-bold">Kategori-3</span>
+                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" disabled placeholder="15" />
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <span class="text-center font-weight-bold">Kanaat Puanı</span>
+                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" id="inputKanaat"/>
+                                </div>
+                            </div>
+                            <div class="form-row mb-1 justify-content-center">
+                                <div class="col-md-6 text-center">
+                                    <span class="text-center font-weight-bold">TOPLAM</span>
+                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" disabled id="inputToplam" />
+                                </div>
+                            </div>
+                            <div class="form-row mb-1 justify-content-center">
+                                <button class="btn btn-primary col-md-12" type="submit" data-dismiss="modal" id="btnOk" onclick="kapat()">Değerlendirmeyi Tamamla</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts{
 
@@ -106,14 +305,14 @@
         ////        }
         ////        else {
 
-        ////        }           
+        ////        }
 
         ////});
 
         //$("#baslat").click(function () {
 
         /*var selectedText = $("#derece").find("option:selected").text();*/
-        
+
 
         //    if (selectedText.toString() == "Seçim yapınız") {
 
@@ -122,8 +321,8 @@
         //    }
         //    else {
 
-                        /*var soruno = $("#soruno").val();*/
-        var obj = { selectedText: "Öğretmen", soruno = "5"};
+        /*var soruno = $("#soruno").val();*/
+        /*var obj = { selectedText: "Öğretmen", soruno = "5"};*/
 
 
         //        if (soruno.toString() == "") {
@@ -138,85 +337,97 @@
         //        url: "/Mulakat/MulakatSoruGetir/" + soruno & selectedText,
         //    });
         //};
-        var derece = "Öğretmen";
-        var soruno = 5;
-        $('#baslat').click(function () {
+        //var derece = "Öğretmen";
+        //var soruno = 5;
+        $('#btnBaslat').click(function () {
 
-            $.ajax({
-                url: "/Mulakat/MulakatSoruGetir/"+soruno,
-                type: 'GET'                
-            });
+            var saniye = 0;
+            var dakika = 0;
+            var sayac = 0;
+
+            $("#soruBlok").show();
+            $("#notBlok").show();
+            $("#btnBitir").show();
+            $("#btnBaslat").hide();
+            //$.ajax({
+            //    url: "/Mulakat/MulakatSoruGetir/"+soruno,
+            //    type: 'GET'
+            //});
+
         });
-       
+        $('#btnBitir').click(function () {
+
+            $('#ModalNot').modal('show');
+        });
         //            //////////////////////sayaç için başlangıç//////////////
 
-        //            var myVar = setInterval(myTimer, 1000);
-        //            document.getElementById("saniye").innerHTML = "00";
-        //            document.getElementById("dakika").innerHTML = "00";
+        var myVar = setInterval(myTimer, 1000);
+        document.getElementById("saniye").innerHTML = "00";
+        document.getElementById("dakika").innerHTML = "00";
 
-        //            $('.toast').toast('hide')
+        $('.toast').toast('hide')
 
-        //            //if (sayac > 0) {
+                                        //if (sayac > 0) {
 
-        //            function myTimer() {
+                                        //function myTimer() {
 
-        //                   // clearInterval(myVar);
-        //                    var saniye = 0;
-        //                    var dakika = 0;
-        //                    var sayac = 0;
-        //                }
-        //            //}
-        //           // else {
-        //                function myTimer() {
+                                        //       // clearInterval(myVar);
+                                        //        var saniye = 0;
+                                        //        var dakika = 0;
+                                        //        var sayac = 0;
+                                        //    }
+                                        //}
+                                       // else {
+                                            //function myTimer() {
 
-        //                    saniye = saniye + 1;
-        //                    sayac = sayac + 1;
+                                            //    saniye = saniye + 1;
+                                            //    sayac = sayac + 1;
 
 
-        //                    if (saniye < 10) {
-        //                        document.getElementById("saniye").innerHTML = "0" + saniye;
-        //                        document.getElementById("dakika").innerHTML = "00";
-        //                    }
-        //                    else {
-        //                        document.getElementById("saniye").innerHTML = saniye;
-        //                    }
-        //                    if (saniye > 59) {
-        //                        dakika = dakika + 1;
-        //                        document.getElementById("dakika").innerHTML = "0" + dakika;
-        //                        saniye = 0;
-        //                        document.getElementById("saniye").innerHTML = "00";
-        //                    }
-        //                    if (dakika > 0) {
-        //                        document.getElementById("dakika").innerHTML = "0" + dakika;
-        //                    }
-        //                    if (saniye > 5) {
-        //                        $('.toast').toast('show')
-        //                    }
+                                            //    if (saniye < 10) {
+                                            //        document.getElementById("saniye").innerHTML = "0" + saniye;
+                                            //        document.getElementById("dakika").innerHTML = "00";
+                                            //    }
+                                            //    else {
+                                            //        document.getElementById("saniye").innerHTML = saniye;
+                                            //    }
+                                            //    if (saniye > 59) {
+                                            //        dakika = dakika + 1;
+                                            //        document.getElementById("dakika").innerHTML = "0" + dakika;
+                                            //        saniye = 0;
+                                            //        document.getElementById("saniye").innerHTML = "00";
+                                            //    }
+                                            //    if (dakika > 0) {
+                                            //        document.getElementById("dakika").innerHTML = "0" + dakika;
+                                            //    }
+                                            //    if (saniye > 5) {
+                                            //        $('.toast').toast('show')
+                                            //    }
 
-        //                    //if (document.getElementById("sayac").hidden = false) {
-        //                    //    document.getElementById("sayac").hidden = true;
-        //                    //}
-        //                    //else {
-        //                    //    document.getElementById("sayac").hidden = false;
-        //                    //}                       
+                                            //    //if (document.getElementById("sayac").hidden = false) {
+                                            //    //    document.getElementById("sayac").hidden = true;
+                                            //    //}
+                                            //    //else {
+                                            //    //    document.getElementById("sayac").hidden = false;
+                                            //    //}
 
-        //                }
-        //           // }
-        //        }
-        //    }
-        //});
+                                            //}
+                                       // }
+                            //        }
+                            //    }
+                            //});
 
-        //function kapat() {
-        //    $('#ModalUyari').modal('hide');
+                            //function kapat() {
+                            //    $('#ModalUyari').modal('hide');
 
-        //    var deger = $("#modaltext").find("option:selected").text();
-        //    if (deger = "Derece seçiniz !") {
-        //        document.getElementById("derece").focus();
-        //    }
-        //    //var deger1 = $("#modaltext").find("option:selected").text();
-        //    //if (deger1 = "Soru numarası yazınız !") {
-        //    //    document.getElementById("soruno").focus();
-        //    //}
-        //};
+                            //    var deger = $("#modaltext").find("option:selected").text();
+                            //    if (deger = "Derece seçiniz !") {
+                            //        document.getElementById("derece").focus();
+                            //    }
+                            //    //var deger1 = $("#modaltext").find("option:selected").text();
+                            //    //if (deger1 = "Soru numarası yazınız !") {
+                            //    //    document.getElementById("soruno").focus();
+                            //    //}
+                            //};
     </script>
 }

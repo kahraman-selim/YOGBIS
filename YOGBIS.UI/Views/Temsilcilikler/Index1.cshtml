@@ -1,0 +1,198 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<style type="text/css">
+    .multiselect {
+        width: 100%;
+    }
+
+    .selectBox {
+        position: relative;
+    }
+
+        .selectBox select {
+            width: 100%;
+        }
+
+    .overSelect {
+        position: sticky;
+        width: 100%;
+    }
+
+    #mySelectOptions {
+        border-radius: inherit;
+        border: 0.1em solid #000000;
+        width: 100%; /*select list widht*/
+    }
+
+        #mySelectOptions label {
+            display: block;
+            font-weight: normal;
+            white-space: nowrap;
+            min-height: 1.2em;
+            background-color: #ffffff00;
+            padding-inline-start: 5px;
+        }
+
+            #mySelectOptions label:hover {
+                background-color: #1e90ff;
+            }
+</style>
+
+
+
+<div class="form-group col-sm-8">
+    <label for="dur">BS original select</label>
+    <select id="dur" class="form-control">
+        <option value="12" selected>One Year</option>
+        <option value="24">Two Year</option>
+        <option value="36">Three Year</option>
+        <option value="48">Four year</option>
+        <option value="60">Five Year</option>
+    </select>
+</div>
+
+<div class="form-group col-md-4">
+    <label class="small mb-1 font-weight-bold">Derece</label>
+    <div id="myMultiselect" class="multiselect">
+        <div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
+            <select id="select" class="form-control">
+                <option id="option">
+                </option>
+            </select>
+            <div class="overSelect"></div>
+        </div>
+        <div id="mySelectOptions" class="shadow dropdown-menu">
+            <br />
+            @foreach (var item in ViewBag.Dereceler)
+            {
+                <label class="label-sm" for="@item.DereceId" @*asp-for="SoruDereceId"*@>
+                    <input type="checkbox" class="checkbox" id="@item.DereceId" onchange="checkboxStatusChange()" value="@item.DereceId" /> @item.DereceAdi
+                </label>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="form-group col-md-5">
+    <label class="small mb-1 font-weight-bold">Derece</label>
+    <div id="myMultiselect" class="multiselect">
+        <div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
+            <select id="select" class="form-control">
+                <option id="option">
+                </option>
+            </select>
+            <div class="overSelect"></div>
+        </div>
+        <div id="mySelectOptions" class="shadow dropdown-menu">
+            <br />
+            @foreach (var item in ViewBag.Dereceler)
+            {
+                <label class="label-sm" for="@item.DereceId" @*asp-for="SoruDereceId"*@>
+                    <input type="checkbox" class="checkbox" id="@item.DereceId" onchange="checkboxStatusChange()" value="@item.DereceAdi" /> @item.DereceAdi
+                </label>
+            }
+        </div>
+    </div>
+</div>
+
+
+<!-- ikinci -->
+<div class="form-group col-sm-8">
+    <label for="myMultiselect">Kategori</label>
+    <div id="myMultiselect" class="multiselect">
+        <div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
+            <select id="select" class="form-control">
+                <option>
+                </option>
+            </select>
+        </div>
+        <div id="mySelectOptions" class="shadow dropdown-menu">
+            @foreach (var item in ViewBag.Kategoriler)
+            {
+                <label class="label-sm" for="@item.SoruKategorilerId" @*asp-for="SoruDereceId"*@>
+                    <input type="checkbox" id="@item.SoruKategorilerId" onchange="checkboxStatusChange()" value="@item.SoruKategorilerAdi" /> @item.SoruKategorilerAdi
+                </label>
+            }
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript">
+
+        window.onload = (event) => {
+            initMultiselect();
+        };
+
+        function initMultiselect() {
+
+            checkboxStatusChange();
+
+            document.addEventListener("click", function (evt) {
+                var flyoutElement = document.getElementById('myMultiselect'),
+                    targetElement = evt.target; // clicked element
+
+                do {
+                    if (targetElement == flyoutElement) {
+                        // This is a click inside. Do nothing, just return.
+                        //console.log('click inside');
+                        return;
+                    }
+
+                    // Go up the DOM
+                    targetElement = targetElement.parentNode;
+                } while (targetElement);
+
+                // This is a click outside.
+                toggleCheckboxArea(true);
+                //console.log('click outside');
+            });
+        }
+
+        function checkboxStatusChange() {
+
+            var multiselect = document.getElementById("mySelectLabel");
+            var multiselectOption = multiselect.getElementsByTagName('option')[0];
+
+            var values = [];
+            var checkboxes = document.getElementById("mySelectOptions");
+            var checkedCheckboxes = checkboxes.querySelectorAll('input[type=checkbox]:checked');
+
+            for (const item of checkedCheckboxes) {
+                var checkboxValue = item.getAttribute('value');
+                values.push(checkboxValue);
+            }
+
+            var dropdownValue = "Dereceyi seçiniz";
+            if (values.length > 0) {
+                /*document.getElementById("option").className += "";*/
+                dropdownValue = values.join(', ');
+
+            }
+            multiselectOption.innerText = dropdownValue;
+
+        }
+
+        function toggleCheckboxArea(onlyHide = false) {
+            var checkboxes = document.getElementById("mySelectOptions");
+            var displayValue = checkboxes.style.display;
+
+            if (displayValue != "block") {
+                if (onlyHide == false) {
+                    checkboxes.style.display = "block";
+                }
+            } else {
+                checkboxes.style.display = "none";
+            }
+        }
+
+
+    </script>
+}

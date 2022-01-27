@@ -37,40 +37,16 @@
                         <th class="text-center">Okul Kodu</th>
                         <th class="text-center">Okul Adı</th>
                         @*<th class="text-center">Düzenle</th>*@
-                        <th class="text-center">Sil</th>
+                        @*<th class="text-center">Sil</th>*@
                     </tr>
                 </thead>
                 <tbody>
-                    @{ var sirano = 0;}
-                    @if (Model != null)
-                    {
-                        @foreach (var item in Model)
-                        {
-                            sirano++;
-                            <tr>                                
-                                <td>@sirano</td>
-                                <td><a asp-controller="Ulkeler" asp-action="Guncelle" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
-                                <td>@item.OkulKodu</td>
-                                <td><a asp-controller="Okullar" asp-action="Guncelle" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
-                                @*<td class="text-center">
-                                    <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Okullar" asp-action="Guncelle" asp-route-id="@item.OkulId">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </td>*@
-                                <td class="text-center">
-                                    <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.OkulId">
-                                        <i class="fas fa-trash text-white"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td>Kayıt bulunamadı!</td>
-                        </tr>
-                    }
+                    <tr>                                
+                        <td>1</td>
+                        <td><a asp-controller="Ulkeler" asp-action="UlkeDetay">Azerbaycan</a></td>
+                        <td>909525</td>
+                        <td><a asp-controller="Okullar" asp-action="OkulDetay">Bakü Türk İlkokulu</a></td>
+                    </tr>
                 </tbody>
             </table>
         </div>

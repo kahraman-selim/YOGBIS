@@ -10,5 +10,9 @@ namespace YOGBIS.UI.Controllers
         {
             return View();
         }
+        public IActionResult OkutmanDetay() 
+        {
+            return View();
+        }
     }
 }
