@@ -169,13 +169,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KaydedenId =user.LoginId,
                         KayitTarihi=model.KayitTarihi
                     };
-
+                    _unitOfWork.soruBankasiRepository.Add(sorubankasi);
+                    _unitOfWork.Save();
+                    ///////////////////////////////////////////////
                     sorubankasi.SoruOnays = new List<SoruOnay>();
                     foreach (var item in model.SoruOnay)
                     {
                         var soruonay = new SoruOnay
                         {
-                            KayitTarihi=item.KayitTarihi,
+                            KayitTarihi = item.KayitTarihi,
                             OnayAciklama = item.OnayAciklama,
                             OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi,
                             OnaylayanId = item.OnaylayanId,
@@ -184,7 +186,21 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         _unitOfWork.soruOnayRepository.Add(soruonay);
                         _unitOfWork.Save();
                     }
-                    _unitOfWork.soruBankasiRepository.Add(sorubankasi);
+                    /////////////////////////////////////////////
+                    var sorubankasilog = new SoruBankasiLog
+                    {
+                        Cevap=model.Cevap,
+                        DereceId=model.SoruDereceId,
+                        KaydedenId=user.LoginId,
+                        KayitTarihi=model.KayitTarihi,
+                        KayitTuru=(int)EnumKayitTuru.Kayit,
+                        SoruBankasiId=sorubankasi.SoruBankasiId,
+                        Soru=model.Soru,
+                        SoruDurumu=model.SoruDurumu,
+                        SorulmaSayisi=model.SorulmaSayisi,
+                        SoruKategoriId=model.SoruKategorilerId
+                    };
+                    _unitOfWork.soruBankasiLogRepository.Add(sorubankasilog);
                     _unitOfWork.Save();
                     /////////////////////////////////////////////
                     var sorukategori = new SoruKategori

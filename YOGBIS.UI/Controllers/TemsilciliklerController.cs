@@ -22,5 +22,11 @@ namespace YOGBIS.UI.Controllers
 
             return View();
         }
+        public IActionResult Test()
+        {
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
+            ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
+            return View();
+        }
     }
 }

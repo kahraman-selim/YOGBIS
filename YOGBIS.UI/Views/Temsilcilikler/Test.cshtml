@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewData["Title"] = "Test";
+}
+
+
+<style>
+    .myPopUp {
+        display: none;
+        overflow: hidden;
+        position: unset;
+        z-index: 10000;
+        border: thick;
+        width: 100%;
+    }
+
+        .myPopUp label:hover {
+            background-color: #1e90ff;
+            color:white;
+            display: block;
+            width: 100%;
+        }
+</style>
+
+<div class="form-group col-sm-8">
+    <label for="dur">BS original select</label>
+    <select id="dur" class="form-control">
+        <option value="12" selected>One Year</option>
+        <option value="24">Two Year</option>
+        <option value="36">Three Year</option>
+        <option value="48">Four year</option>
+        <option value="60">Five Year</option>
+    </select>
+</div>
+
+<div class="col-md-2">
+    <div class="form-group" id="soruDerece">
+        <label class="small mb-1 font-weight-bold">Derece</label>
+        <input class="form-control py-2" id="soruDerece" placeholder="Dereceyi seçiniz...">
+        <div id="myPopUpDerece" class="col-md-12 shadow p-0 mt-1 myPopUp">
+
+            @foreach (var dereceler in ViewBag.Dereceler)
+            {
+                <label class="label-sm p-1" for="@dereceler.DereceId" id="labelDerece">
+                    <input type="checkbox" class="checkbox" id="@dereceler.DereceId" value="@dereceler.DereceId" /> @dereceler.DereceAdi
+                </label>
+            }
+
+        </div>
+        <span class="text-danger"></span>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="form-group" id="soruKategori">
+        <label class="small mb-1 font-weight-bold">Kategori</label>
+        <input class="form-control py-2" id="soruKategori" placeholder="Kategoriyi seçiniz...">
+        <div id="myPopUpKategori" class="col-md-12 shadow p-0 myPopUp">
+
+            @foreach (var item in ViewBag.Kategoriler)
+            {
+                <label class="label-sm p-1" for="@item.SoruKategorilerId" id="labelKategori">
+                    <input type="checkbox" class="checkbox" id="@item.SoruKategorilerId" value="@item.SoruKategorilerId" onclick="soruKategoriChecked()"/> @item.SoruKategorilerAdi
+                </label>
+            }
+
+        </div>
+        <span class="text-danger"></span>
+    </div>
+</div>
+<label class="small mb-1 font-weight-bold">gaaga</label>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $("#soruDerece").click(function () {
+            $("#myPopUpDerece").show();
+        });
+        $("#soruKategori").click(function () {
+            $("#myPopUpKategori").show();
+        });
+        $("#labelDerece").click(function () {
+            alert(document.getElementById(this).nodeValue);
+        });
+            //$("#label").click(function () {
+            //    document.getElementById("myPopUp").style.display = "none";
+        //});
+        function soruKategoriChecked() {
+            var KategoriId = this.id;
+            alert(KategoriId);
+        }
+    </script>
+}
