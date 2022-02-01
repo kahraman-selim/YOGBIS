@@ -66,6 +66,36 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region SoruKategorileriGetirDereceId
+        public Result<List<SoruKategorilerVM>> SoruKategorileriGetirDereceId(int dereceId)
+        {
+            var data = _unitOfWork.sorukategorilerRepository.GetAll(u => u.DereceId == dereceId, includeProperties: "Kullanici").ToList();
+            if (data != null)
+            {
+                List<SoruKategorilerVM> returnData = new List<SoruKategorilerVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new SoruKategorilerVM()
+                    {
+                        SoruKategorilerId = item.SoruKategorilerId,
+                        SoruKategorilerAdi = item.SoruKategorilerAdi,
+                        SoruKategorilerKullanimi = item.SoruKategorilerKullanimi,
+                        SoruKategorilerPuan = item.SoruKategorilerPuan,
+                        KayitTarihi = item.KayitTarihi,
+                        KaydedenId = item.KaydedenId,
+                        DereceId = item.DereceId,
+                    });
+                }
+                return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<SoruKategorilerVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
         #region SoruKategoriKullaniciId
         public Result<List<SoruKategorilerVM>> SoruKategoriKullaniciId(string userId)
         {

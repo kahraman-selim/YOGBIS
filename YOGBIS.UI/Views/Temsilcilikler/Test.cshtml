@@ -9,8 +9,9 @@
         display: none;
         overflow: hidden;
         position: unset;
-        z-index: 10000;
-        border: thick;
+        z-index: 1070;
+        border: #D7D7D7 1px solid;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 15px;
         width: 100%;
     }
 
@@ -24,24 +25,22 @@
 
 <div class="form-group col-sm-8">
     <label for="dur">BS original select</label>
-    <select id="dur" class="form-control">
-        <option value="12" selected>One Year</option>
-        <option value="24">Two Year</option>
-        <option value="36">Three Year</option>
-        <option value="48">Four year</option>
-        <option value="60">Five Year</option>
+    <select id="selectDerece" class="form-control">
+        <option value="12" selected>Dereceyi seçiniz...</option>
+        <option value="12">Öğretmen</option>
+        <option value="24">Okutman</option>
     </select>
 </div>
 
 <div class="col-md-2">
     <div class="form-group" id="soruDerece">
         <label class="small mb-1 font-weight-bold">Derece</label>
-        <input class="form-control py-2" id="soruDerece" placeholder="Dereceyi seçiniz...">
+        <input class="form-control py-2" id="soruDereceInput" placeholder="Dereceyi seçiniz..." readonly onfocus="onfocusDerece(this)" style="background-color:white;">
         <div id="myPopUpDerece" class="col-md-12 shadow p-0 mt-1 myPopUp">
 
             @foreach (var dereceler in ViewBag.Dereceler)
             {
-                <label class="label-sm p-1" for="@dereceler.DereceId" id="labelDerece">
+                <label class="label-sm pl-2" for="@dereceler.DereceId" id="labelDerece" style="width:100%;">
                     <input type="checkbox" class="checkbox" id="@dereceler.DereceId" value="@dereceler.DereceId" /> @dereceler.DereceAdi
                 </label>
             }
@@ -49,16 +48,17 @@
         </div>
         <span class="text-danger"></span>
     </div>
+    <label id="soruDereceLabel"></label>
 </div>
 <div class="col-md-6">
     <div class="form-group" id="soruKategori">
         <label class="small mb-1 font-weight-bold">Kategori</label>
-        <input class="form-control py-2" id="soruKategori" placeholder="Kategoriyi seçiniz...">
-        <div id="myPopUpKategori" class="col-md-12 shadow p-0 myPopUp">
+        <input class="form-control py-2" id="soruKategoriInput" placeholder="Kategoriyi seçiniz..." readonly style="background-color:white;">
+        <div id="myPopUpKategori" class="col-md-12 shadow p-0 mt-1 myPopUp">
 
             @foreach (var item in ViewBag.Kategoriler)
             {
-                <label class="label-sm p-1" for="@item.SoruKategorilerId" id="labelKategori">
+                <label class="label-sm pl-2" for="@item.SoruKategorilerId" id="labelKategori" style="width:100%;">
                     <input type="checkbox" class="checkbox" id="@item.SoruKategorilerId" value="@item.SoruKategorilerId" onclick="soruKategoriChecked()"/> @item.SoruKategorilerAdi
                 </label>
             }
@@ -67,26 +67,83 @@
         <span class="text-danger"></span>
     </div>
 </div>
-<label class="small mb-1 font-weight-bold">gaaga</label>
+
 
 
 @section Scripts{
     <script type="text/javascript">
-        $("#soruDerece").click(function () {
-            $("#myPopUpDerece").show();
+
+        //function onblurDerece(x) {
+        //    var x = document.getElementById("myPopUpDerece");
+        //    if (x.style.display === "none") {
+        //        x.style.display = "block";
+        //    } else {
+        //        x.style.display = "none";
+        //    }
+        //}
+
+        //function onfocusDerece(x) {
+        //    $("#myPopUpDerece").show();
+        //}
+
+
+        $("#soruDereceInput").click(function () {
+            var x = document.getElementById("myPopUpDerece");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                x.style.zIndex = 1070;
+            } else {
+                x.style.display = "none";
+            }
         });
-        $("#soruKategori").click(function () {
-            $("#myPopUpKategori").show();
+
+
+        $("#soruKategoriInput").click(function () {
+            var x = document.getElementById("myPopUpKategori");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                x.style.zIndex = 1070;
+            } else {
+                x.style.display = "none";
+            }
         });
-        $("#labelDerece").click(function () {
-            alert(document.getElementById(this).nodeValue);
+
+        $(function () {
+            $("#myPopUpDerece").on("click", ".checkbox", function () {
+              
+                
+                var checkbox = $(this);
+
+                if (this.checked == true) {
+
+                    $("#myPopUpDerece").hide();
+
+                    var id = checkbox.val();
+                    var dereceId = parseInt(id);
+                    $.ajax({
+                        type: "GET",
+                        url: "/Temsilcilikler/SoruKategoriGetir/" + dereceId,
+                    });
+                    document.getElementById("soruDereceLabel").innerHTML += dereceId+" ";
+                    document.getElementById("soruDereceInput").value += dereceId+" ";
+                }
+                else {
+                    
+                    $("#myPopUpDerece").hide();
+                    document.getElementById("soruDereceLabel").innerHTML = "";
+                    document.getElementById("soruDereceInput").value = "";
+                }
+            });
         });
-            //$("#label").click(function () {
-            //    document.getElementById("myPopUp").style.display = "none";
-        //});
-        function soruKategoriChecked() {
-            var KategoriId = this.id;
-            alert(KategoriId);
-        }
+
+        $(function () {
+            $("#myPopUpKategori").on("click", ".checkbox", function () {
+                var checkbox = $(this);
+                var id = checkbox.val();
+                var kategoriId = parseInt(id);
+                alert(kategoriId);
+            });
+        });
+
     </script>
 }

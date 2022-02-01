@@ -25,8 +25,24 @@ namespace YOGBIS.UI.Controllers
         public IActionResult Test()
         {
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-            ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
+            ViewBag.Kategoriler = string.Empty;// _soruKategorileriBE.SoruKategorileriGetir().Data;
             return View();
+        }
+
+        public JsonResult SoruKategoriGetir(int dereceId)
+        {
+            if (dereceId < 0)
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+
+            var data = _soruKategorileriBE.SoruKategorileriGetirDereceId(dereceId);
+            if (data.IsSuccess)
+            {
+                return Json(new { success = data.IsSuccess, message = data.Message });
+                ViewBag.Kategoriler = data;
+            }
+            else
+                return Json(new { success = data.IsSuccess, message = data.Message });
+
         }
     }
 }
