@@ -154,7 +154,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region SoruEkle
-        public Result<SoruBankasiVM> SoruEkle(SoruBankasiVM model, SessionContext user)
+        public Result<SoruBankasiVM> SoruEkle(SoruBankasiVM model, SessionContext user, string[] onaylayanId)
         {
             if (model != null)
             {
@@ -172,15 +172,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     _unitOfWork.soruBankasiRepository.Add(sorubankasi);
                     _unitOfWork.Save();
                     ///////////////////////////////////////////////
-                    sorubankasi.SoruOnays = new List<SoruOnay>();
-                    foreach (var item in model.SoruOnay)
+                    //sorubankasi.SoruOnays = new List<SoruOnay>();
+                    foreach (var item in onaylayanId)
                     {
                         var soruonay = new SoruOnay
                         {
-                            KayitTarihi = item.KayitTarihi,
-                            OnayAciklama = item.OnayAciklama,
+                            KayitTarihi = model.KayitTarihi,
+                            OnayAciklama = model.OnayDurumuAciklama,
                             OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi,
-                            OnaylayanId = item.OnaylayanId,
+                            OnaylayanId = item,
                             SoruBankasiId = sorubankasi.SoruBankasiId
                         };
                         _unitOfWork.soruOnayRepository.Add(soruonay);

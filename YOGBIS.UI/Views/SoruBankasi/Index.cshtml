@@ -148,7 +148,7 @@
                                 <div class="form-group">
                                     <label asp-for="OnaylayanId" class="small mb-1 font-weight-bold">Onay Seçimi</label>
                                     @Html.DropDownListFor(u => u.OnaylayanId, new SelectList(ViewBag.Onaylayan, "Id",
-                                    "AdSoyad"), "Seçim yapınız", new { @class = "form-control-range form-control py-2" })
+                                    "AdSoyad"), "Seçim yapınız", new {multiple="multiple", @class = "form-control-range form-control py-2" })
                                     <span class="text-danger" asp-validation-for="OnaylayanId"></span>
                                 </div>
                             </div>

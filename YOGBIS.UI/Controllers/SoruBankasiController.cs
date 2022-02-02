@@ -70,7 +70,7 @@ namespace YOGBIS.UI.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         #region Ekle
-        public IActionResult SoruEkle(SoruBankasiVM model, int? SoruBankasiId)
+        public IActionResult SoruEkle(SoruBankasiVM model, int? SoruBankasiId, string[] OnaylayanId)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -84,20 +84,20 @@ namespace YOGBIS.UI.Controllers
             }
             else
             {
-                model.SoruOnay = new List<SoruOnayVM>();
-                foreach (var item in model.SoruOnay)
-                {
-                    var soruonay = new SoruOnayVM()
-                    {
-                        KayitTarihi = item.KayitTarihi,
-                        OnayAciklama = item.OnayAciklama,
-                        OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi,
-                        OnaylayanId = item.OnaylayanId
-                    };
-                    model.SoruOnay.Add(soruonay);
-                }
+                ////List<SoruOnayVM> soruOnayVMs = new List<SoruOnayVM>();
+                ////foreach (var item in OnaylayanId)
+                ////{
+                //    var soruonay = new SoruOnayVM()
+                //    {
+                //        KayitTarihi = model.KayitTarihi,
+                //        OnayAciklama = model.OnayDurumuAciklama,
+                //        OnayDurumu = (int)EnumsSoruOnay.Onaya_Gonderildi,
+                //        OnaylayanId = item
+                //    };
+                //    soruOnayVMs.Add(soruonay);
+                ////}
 
-                var data = _soruBankasiBE.SoruEkle(model, user);
+                var data = _soruBankasiBE.SoruEkle(model, user, OnaylayanId);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");

@@ -27,10 +27,10 @@ namespace YOGBIS.Common.VModels
         public int SoruDereceId { get; set; }
         public List<SoruDereceVM> SoruDerece { get; set; }
         [Required(ErrorMessage = "Onaylayacak kişi/kişileri seçiniz...")]
-        public string OnaylayanId { get; set; }
+        public string[] OnaylayanId { get; set; }
         public int OnayDurumu { get; set; }
         public string OnayDurumuAciklama { get; set; }
-        public List<SoruOnayVM> SoruOnay { get; set; }
+        public SoruOnayVM SoruOnay { get; set; }
         public List<SoruBankasiLogVM> SoruBankasiLogVM { get; set; }
     }
 }
