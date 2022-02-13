@@ -34,6 +34,7 @@ namespace YOGBIS.Data.Implementaion
             mulakatSorulariRepository = new MulakatSorulariRepository(_ctx);
             notlarRepository = new NotlarRepository(_ctx);
             ogrencilerRepository = new OgrencilerRepository(_ctx);
+            okulBinaBolumRepository = new OkulBinaBolumRepository(_ctx);
             okulBilgiRepository = new OkulBilgiRepository(_ctx);
             okullarRepository = new OkullarRepository(_ctx);
             personellerRepository = new PersonellerRepository(_ctx);
@@ -79,6 +80,7 @@ namespace YOGBIS.Data.Implementaion
         public IMulakatSorulariRepository mulakatSorulariRepository { get; private set; }
         public INotlarRepository notlarRepository { get; private set; }
         public IOgrencilerRepository ogrencilerRepository { get; private set; }
+        public IOkulBinaBolumRepository okulBinaBolumRepository { get; private set; }
         public IOkulBilgiRepository okulBilgiRepository { get; private set; }
         public IOkullarRepository okullarRepository { get; private set; }
         public IPersonellerRepository personellerRepository { get; private set; }

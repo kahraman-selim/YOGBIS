@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Common.VModels
 {
@@ -8,7 +9,8 @@ namespace YOGBIS.Common.VModels
         public int FotoGaleriId { get; set; }
         public string FotoAdi { get; set; }
         public string FotoURL { get; set; }
-        public int AktiviteId { get; set; }
-        //public AktivitelerVM Aktiviteler { get; set; }
+        public string KaydedenId { get; set; }
+        public string KaydedenAdi { get; set; }
+        public KullaniciVM Kullanici { get; set; }
     }
 }

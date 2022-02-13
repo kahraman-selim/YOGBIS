@@ -1,4 +1,4 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.OkullarVM>
+﻿@model IEnumerable<YOGBIS.Common.VModels.UlkelerVM>
 @{
     ViewData["Title"] = "Anasayfa";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -88,80 +88,9 @@
 
             <input type="text" placeholder="Okul ara" class="form-control form-control-sm" id="aramaKutusu" onkeyup="okulAra()" />
         </div>
-        <table class="table table-sm table-hover" id="okulTablo">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-left">
-                        <i class="fas fa-graduation-cap"></i>
-                    </th>
-                    <th>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="tablekapat">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td><a id="OkulAdi" class="text-dark text-sm-left" asp-controller="Okullar" asp-action="OkulDetay"><small>Aşkabat Türk İlkokulu</small></a></td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td><a id="OkulAdi" class="text-dark text-sm-left" asp-controller="Okullar" asp-action="OkulDetay"><small>Bakü Türk İlkokulu</small></a></td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td><a id="OkulAdi" class="text-dark text-sm-left" asp-controller="Okullar" asp-action="OkulDetay"><small>Batum Türk İlkokulu</small></a></td>
-                </tr>
-                <tr>
-                    <th scope="row">4</th>
-                    <td><a id="OkulAdi" class="text-dark text-sm-left" asp-controller="Okullar" asp-action="OkulDetay"><small>Belçika İbni-Sina Anadolu İmam Hatip Lisesi</small></a></td>
-                </tr>
-                <tr>
-                    <th scope="row">5</th>
-                    <td><a id="OkulAdi" class="text-dark text-sm-left" asp-controller="Okullar" asp-action="OkulDetay"><small>Bişkek Türk İlkokulu</small></a></td>
-                </tr>
-                <tr>
-                    <th scope="row">6</th>
-                    <td><a id="OkulAdi" class="text-dark text-sm-left" asp-controller="Okullar" asp-action="OkulDetay"><small>Katar Türk İlkokulu</small></a></td>
-                </tr>
-                <tr>
-                    <th scope="row">7</th>
-                    <td><a id="OkulAdi" class="text-dark text-sm-left" asp-controller="Okullar" asp-action="OkulDetay"><small>Kemal Atatürk Ulusal Koleji</small></a></td>
-                </tr>
-                <tr>
-                    <th scope="row">8</th>
-                    <td><a id="OkulAdi" class="text-dark text-sm-left" asp-controller="Okullar" asp-action="OkulDetay"><small>Kuveyt Türk İlkokulu</small></a></td>
-                </tr>
-                <tr>
-                    <th scope="row">9</th>
-                    <td><a id="OkulAdi" class="text-dark text-sm-left" asp-controller="Okullar" asp-action="OkulDetay"><small>Tahran Türk İlkokulu</small></a></td>
-                </tr>
-                <tr>
-                    <th scope="row">10</th>
-                    <td><a id="OkulAdi" class="text-dark text-sm-left" asp-controller="Okullar" asp-action="OkulDetay"><small>Taşkent Türk İlkokulu</small></a></td>
-                </tr>
-                @*@{ var sirano = 0;}
-        @if (Model != null)
-        {
-            @foreach (var item in Model)
-            {
-                sirano++;
-                <tr>
-                    <th scope="row">@sirano</th>
-                    <td><a asp-controller="Okullar" asp-route-id="@item.OkulId" id="OkulAdi">@item.OkulAdi</a></td>
-                </tr>
-            }
-        }
-        else
-        {
-            <tr>
-                <td>Kayıt bulunamadı!</td>
-            </tr>
-        }*@
-            </tbody>
-        </table>
+        <div>
+            @await Component.InvokeAsync("OkulListesiHome")
+        </div>
     </div>
     <p class="text-left m-1"><span class="badge text-light text-left w-100" style="background-color: #007bff;"><a id="btnOgretmen" class="cursor-pointer" title="Sabitlemek için tıklayın">Öğretmenler</a></span></p>
     <p class="text-left m-1"><span class="badge text-light text-left w-100" style="background-color: #28a745;"><a id="btnOkutman" class="cursor-pointer" title="Sabitlemek için tıklayın">Okutmanlar</a></span></p>

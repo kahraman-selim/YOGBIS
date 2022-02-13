@@ -10,6 +10,9 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public int MulakatId { get; set; }
         public string OnaySayisi { get; set; }
+        public DateTime OnayTarihi { get; set; }
+        public string KararSayisi { get; set; }
+        public DateTime KararTarihi { get; set; }
         public string MulakatAdi { get; set; }
         public int DereceId { get; set; }
         [ForeignKey("DereceId")]

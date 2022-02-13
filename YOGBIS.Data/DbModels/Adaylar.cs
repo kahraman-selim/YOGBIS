@@ -41,6 +41,7 @@ namespace YOGBIS.Data.DbModels
         public string YabanciDilTuru { get; set; }
         public string YabanciDilTarihi { get; set; }
         public string YabanciDilSeviye { get; set; }
+        public string YabanciDilBelgesi { get; set; }
         public string UlkeTercihi { get; set; }
         public string IlTercihi { get; set; }
         public string BasvuranIP { get; set; }

@@ -17,11 +17,12 @@ namespace YOGBIS.Common.VModels
         public string OkulAdi { get; set; }
         public string OkulLogoURL { get; set; }
         public IFormFile OkulLogo { get; set; }
-        public string OkulFoto { get; set; }
+        public string OkulFotoURL { get; set; }
+        public IFormFile OkulFoto { get; set; }
         public bool? OkulLab { get; set; }
         public bool? OkulKutuphane { get; set; }
+        public string OkulBilgi { get; set; }
         public DateTime OkulAcilisTarihi { get; set; }
-        public string OkulBilgi { get; set; }        
         public bool? OkulDurumu { get; set; }
 
         [Required(ErrorMessage = "Şehir seçimi yapınız")]

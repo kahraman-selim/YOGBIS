@@ -27,6 +27,7 @@ namespace YOGBIS.Data.Contracts
         INotlarRepository notlarRepository { get; }
         IOgrencilerRepository ogrencilerRepository { get; }
         IOkulBilgiRepository okulBilgiRepository { get; }
+        IOkulBinaBolumRepository okulBinaBolumRepository { get; }
         IOkullarRepository okullarRepository { get; }
         ISehirlerRepository sehirlerRepository { get; }
         ISiniflarRepository siniflarRepository { get; }

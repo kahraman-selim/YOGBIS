@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -14,7 +15,7 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Telefon Numarası")]
         public string PhoneNumber { get; set; }
         [StringLength(11,ErrorMessage ="TC Kimlik Numaranızı kontrol ediniz")]
-        public int TcKimlikNo { get; set; }
+        public string TcKimlikNo { get; set; }
         [Required (ErrorMessage ="{0} boş geçilemez")]
         public string Ad { get; set; }
         [Required(ErrorMessage = "{0} boş geçilemez")]
@@ -23,14 +24,16 @@ namespace YOGBIS.Common.VModels
 
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
-        public DateTime KayitTarihi { get; set; } = DateTime.Now;
+        public DateTime KayitTarihi { get; set; }
         public int KulaniciAdDegLimiti { get; set; } = 10;        
         public byte[] KullaniciResim { get; set; }
         public string KullaniciResimYol { get; set; }
+        public IFormFile KullaniciResimIFromFile { get; set; }
         public bool? Aktif { get; set; }
+        public IFormFileCollection FotoGaleris { get; set; }
+        public List<FotoGaleriVM> FotoGaleri { get; set; }
 
         #region BağlıTablolar
-        //public List<AktivitelerVM> Aktivitelers { get; set; }
         public List<SoruDerecelerVM> Derecelers { get; set; }
         public List<SoruKategorilerVM> SoruKategorilers { get; set; }
         public List<MulakatlarVM> Mulakatlars { get; set; }

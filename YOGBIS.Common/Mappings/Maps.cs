@@ -32,6 +32,7 @@ namespace YOGBIS.Common.Mappings
             CreateMap<Notlar, NotlarVM>().ReverseMap();
             CreateMap<Ogrenciler, OgrencilerVM>().ReverseMap();
             CreateMap<OkulBilgi, OkulBilgiVM>().ReverseMap();
+            CreateMap<OkulBinaBolum, OkulBinaBolumVM>().ReverseMap();
             CreateMap<Okullar, OkullarVM>().ReverseMap();
             CreateMap<Personeller, PersonellerVM>().ReverseMap();
             CreateMap<Sehirler, SehirlerVM>().ReverseMap();

@@ -118,6 +118,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<Notlar> Notlars { get; set; }
         public DbSet<Ogrenciler> Ogrencilers { get; set; }
         public DbSet<OkulBilgi> OkulBilgis { get; set; }
+        public DbSet<OkulBinaBolum> OkulBinaBolums { get; set; }
         public DbSet<Okullar> Okullars { get; set; }
         public DbSet<Personeller> Personellers { get; set; }
         public DbSet<Sehirler> Sehirlers { get; set; }

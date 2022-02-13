@@ -1,0 +1,53 @@
+﻿@model IEnumerable<YOGBIS.Common.VModels.OkullarVM>
+
+    <div class="card shadow-lg rounded-lg mt-0" style="width:100%">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            <b>Okul Listesi</b>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Sıra No</th>
+                            <th>Okul Kodu</th>
+                            <th>Okul Adi</th>
+                            <th>Durumu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ var sirano = 0;}
+
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+                                sirano++;
+                        <tr>
+                            <td>@sirano</td>
+                            <td>@item.OkulKodu</td>
+                            <td><a asp-controller="Okullar" asp-action="Guncelle" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
+                            @if (item.OkulDurumu == true)
+                            {
+                                <td style="color:green" class="font-weight-bold">Aktif</td>
+                            }
+                            else
+                            {
+                                <td style="color:red" class="font-weight-bold">Pasif</td>
+                            }
+
+                        </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>Kayıt bulunamadı!</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

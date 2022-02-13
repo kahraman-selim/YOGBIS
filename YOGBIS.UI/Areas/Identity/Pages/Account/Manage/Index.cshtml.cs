@@ -49,8 +49,12 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
             public string Username { get; set; }
 
             [Phone(ErrorMessage ="Telefon numarası bilgisi geçersiz...")]
-            [Display(Name = "Telefon Numarası")]
+            [Display(Name = "Telefon Numarası")]            
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "TC Kimlik Numarası")]
+            [StringLength(11, ErrorMessage = "TC Kimlik Numaranızı kontrol ediniz")]
+            public string TcKimlikNo { get; set; }
 
             [Display(Name = "Profil Fotoğrafı")]
             public byte[] KullaniciResim { get; set; }
@@ -64,14 +68,16 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var ad = user.Ad;
             var soyad = user.Soyad;
+            var tcno = user.TcKimlikNo;
             var kullaniciResim = user.KullaniciResim;
             Username = userName;
 
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
-                Ad=user.Ad,
-                Soyad=user.Soyad,
+                Ad = user.Ad,
+                Soyad = user.Soyad,
+                TcKimlikNo = user.TcKimlikNo,
                 Username = userName,
                 KullaniciResim =kullaniciResim
             };
@@ -116,6 +122,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
             }
             var ad = user.Ad;
             var soyad = user.Soyad;
+            var tcno = user.TcKimlikNo;
 
             if (Input.Ad != user.Ad)
             {
@@ -125,6 +132,11 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
             if (Input.Soyad != user.Soyad)
             {
                 user.Soyad = Input.Soyad;
+                await _userManager.UpdateAsync(user);
+            }
+            if (Input.TcKimlikNo != user.TcKimlikNo)
+            {
+                user.TcKimlikNo = Input.TcKimlikNo;
                 await _userManager.UpdateAsync(user);
             }
             if (user.KulaniciAdDegLimiti > 0)

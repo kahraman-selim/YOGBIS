@@ -29,6 +29,15 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
+                                        <label asp-for="UlkeKodu" class="small mb-1 font-weight-bold">Ülke Kodu</label>
+                                        <input asp-for="UlkeKodu" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Ülkeyi kodunuz yazınız">
+                                        <span class="text-danger" asp-validation-for="UlkeKodu"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
                                         <label asp-for="KitaId" class="small mb-1 font-weight-bold">Bulunduğu Kıta</label>
                                         @Html.DropDownListFor(u => u.KitaId, new SelectList(ViewBag.KitaAdi, "KitaId", "KitaAdi"), "Kıtayı seçiniz", new { @class = "form-control-range form-control py-2" })
                                         <span class="text-danger" asp-validation-for="KitaId"></span>
@@ -39,7 +48,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="UlkeAciklama" class="small mb-1 font-weight-bold">Ülke Hakkında</label>
-                                        <textarea asp-for="UlkeAciklama" placeholder="Ülke bilgisi giriniz" class="form-control py-2 limited" id="UlkeTextArea" rows="15" maxlength="1000"></textarea>
+                                        <textarea asp-for="UlkeAciklama" placeholder="Ülke bilgisi giriniz" class="form-control py-2 limited" id="UlkeTextArea" rows="10" maxlength="1000"></textarea>
                                         <span class="text-danger" asp-validation-for="UlkeAciklama"></span>
                                     </div>
                                 </div>
@@ -49,7 +58,7 @@
                                     <div class="form-group">
                                         <div class="form-check-inline">
                                             <label asp-for="Aktif" class="form-check-label mb-1 mr-1 small font-weight-bold">Temsil Durumu</label>
-                                            <input asp-for="Aktif" required class="form-check-input mb-1"/>                                            
+                                            <input asp-for="Aktif" required class="form-check-input mb-1" />
                                             <span class="text-danger mb-1" asp-validation-for="Aktif"></span>
                                         </div>
                                     </div>
@@ -92,6 +101,7 @@
                                                asp-for="FotoGaleris"
                                                class="@(this == null ? "btn btn-outline-danger mb-1 btn-sm col-md-12" : "btn btn-outline-success mb-1 btn-sm col-md-12")"
                                                title="Resim seçiniz" placeholder="Ülke Fotoğrafı" id="FormControlFile1"
+                                               multiple
                                                onchange="document.getElementById('ulkeFoto').src = window.URL.createObjectURL(this.files[0])" />
                                         <span asp-validation-for="FotoGaleris" class="text-danger"></span>
                                     </div>

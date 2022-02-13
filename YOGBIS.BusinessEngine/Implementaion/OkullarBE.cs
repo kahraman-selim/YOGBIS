@@ -166,8 +166,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     Okullar okullar = new Okullar();
                     okullar.OkulKodu = model.OkulKodu;
                     okullar.OkulAdi = model.OkulAdi;
-                    okullar.OkulLab = model.OkulLab;
-                    okullar.OkulKutuphane = model.OkulKutuphane;
                     okullar.OkulBilgi = model.OkulBilgi;
                     okullar.OkulAcilisTarihi = model.OkulAcilisTarihi;
                     okullar.OkulDurumu = model.OkulDurumu;

@@ -3,13 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Data.DbModels;
@@ -89,7 +87,8 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     Ad =Input.Ad,
                     Soyad=Input.Soyad.ToUpper(),
-                    Aktif=true
+                    Aktif=true,
+                    KayitTarihi=System.DateTime.Now
                 };
                 
                 var result = await _userManager.CreateAsync(user, Input.Password);

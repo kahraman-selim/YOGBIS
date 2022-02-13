@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
@@ -59,9 +60,9 @@ namespace YOGBIS.UI.Controllers
         [Obsolete]
         public async Task<IActionResult> UlkeEkle(UlkelerVM model, int? UlkeId)
         {
-
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
+
 
             if (model.UlkeBayrak != null)
             {
@@ -69,12 +70,33 @@ namespace YOGBIS.UI.Controllers
                 model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
             }
 
+            if (model.FotoGaleris != null)
+            {
+                string klasorler = "img/Ulkeler/";
+
+                model.FotoGaleri = new List<FotoGaleriVM>();
+
+                foreach (var file in model.FotoGaleris)
+                {
+                    var galeri = new FotoGaleriVM()
+                    {
+                        FotoAdi = file.FileName,
+                        FotoURL = await FotoYukle(klasorler, file),
+                        KaydedenId = user.LoginId,
+                        KayitTarihi = model.KayitTarihi
+                    };
+                    model.FotoGaleri.Add(galeri);
+                }
+
+            }
 
             if (UlkeId > 0)
             {
                 var data = _ulkelerBE.UlkeGuncelle(model, user);
-
-                return RedirectToAction("Index");
+                if (data.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
@@ -85,6 +107,8 @@ namespace YOGBIS.UI.Controllers
                 }
                 return View(model);
             }
+
+            return View();
         }
 
         [Authorize(Roles = "Administrator")]
@@ -110,7 +134,7 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        [Obsolete]        
+        [Obsolete]
         public async Task<ActionResult> Guncelle(UlkelerVM model)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -149,11 +173,12 @@ namespace YOGBIS.UI.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        public IActionResult UlkeDetay()
+        //[Route("Ulkeler/{id:int:min(1)}", Name = "UlkeGenelDetayRoute")]
+        public IActionResult UlkeDetay(int id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            var requestmodel = _ulkelerBE.UlkeleriGetir();
+            var requestmodel = _ulkelerBE.UlkeGetir(id);
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
             if (requestmodel.IsSuccess)
@@ -167,6 +192,8 @@ namespace YOGBIS.UI.Controllers
         [Obsolete]
         private async Task<string> FotoYukle(string dosyaYolu, IFormFile dosya)
         {
+
+            //fotoadi = dosya.FileName;
 
             dosyaYolu += Guid.NewGuid().ToString() + "_" + dosya.FileName;
 

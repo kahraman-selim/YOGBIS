@@ -1,0 +1,41 @@
+﻿@model IEnumerable<YOGBIS.Common.VModels.OkullarVM>
+
+<table class="table table-sm table-hover" id="okulTablo">
+    <thead>
+        <tr>
+            <th scope="col" class="text-left">
+                <i class="fas fa-graduation-cap"></i>
+            </th>
+            <th>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="tablekapat">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @*<tr>
+            <th scope="row">1</th>
+            <td><a id="OkulAdi" class="text-dark text-sm-left" asp-controller="Okullar" asp-action="OkulDetay"><small>Aşkabat Türk İlkokulu</small></a></td>
+        </tr>*@
+
+        @{ var sirano = 0;}
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    sirano++;
+                    <tr>
+                        <th scope="row">@sirano</th>
+                        <td><a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@item.OkulId" id="OkulAdi"><small>@item.OkulAdi</small></a></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td>Kayıt bulunamadı!</td>
+                </tr>
+            }
+    </tbody>
+</table>

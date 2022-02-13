@@ -4,17 +4,17 @@ using YOGBIS.BusinessEngine.Contracts;
 
 namespace YOGBIS.UI.ViewComponents
 {
-    public class UlkeListesiViewComponent : ViewComponent
+    public class OkulListesiHomeViewComponent : ViewComponent
     {
-        private readonly IUlkelerBE _ulkelerBE;
-        public UlkeListesiViewComponent(IUlkelerBE ulkelerBE)
+        private readonly IOkullarBE _okullarBE;
+        public OkulListesiHomeViewComponent(IOkullarBE okullarBE)
         {
-            _ulkelerBE = ulkelerBE;
+            _okullarBE = okullarBE;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var requestmodel = _ulkelerBE.UlkeleriGetir();
+            var requestmodel = _okullarBE.OkullariGetirAZ();
             if (requestmodel.IsSuccess)
             {
                 return View(requestmodel.Data);

@@ -1,4 +1,7 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.UlkelerVM>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
+@inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
+@model IEnumerable<YOGBIS.Common.VModels.UlkelerVM>
 @{
     ViewData["Title"] = "Ülkeler";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,13 +16,17 @@
     }
 </style>
 
-<ol class="breadcrumb mb-4 mt-2">
-    <li>
-        <a asp-controller="Ulkeler" asp-action="UlkeEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
-            Yeni Kayıt <i class="fas fa-plus-circle"></i>
-        </a>
-    </li>
-</ol>
+@if (User.IsInRole("Administrator"))
+{
+    <ol class="breadcrumb mb-4 mt-2">
+        <li>
+            <a asp-controller="Ulkeler" asp-action="UlkeEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
+                Ülke Kayıt <i class="fas fa-plus-circle"></i>
+            </a>
+        </li>
+    </ol>
+}
+
 <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
@@ -33,7 +40,6 @@
                         <th>Sıra No</th>
                         <th>Bayrak</th>
                         <th>Kıta</th>
-                        <th>Ülke Grubu</th>
                         <th>Ülke</th>
                         <th>Eyalet/Şehir</th>
                         <th>Okul</th>
@@ -55,22 +61,21 @@
                         @foreach (var item in Model)
                         {
                             sirano++;
-                            <tr>                                
+                            <tr>
                                 <td>@sirano</td>
                                 <td><img id="ulkeBayrakURL" class="rounded mx-auto d-block shadow" alt="Ülke Bayrağı" style="width:70px;height:30px;" src="@item.UlkeBayrakURL" asp-append-version="true"></td>
                                 <td>@item.KitaAdi</td>
-                                <td></td>
                                 <td><a asp-controller="Ulkeler" asp-action="UlkeDetay" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
-                                <td></td>     
-                                <td></td>     
-                                <td></td>     
-                                <td></td>     
-                                <td></td>     
-                                <td></td>     
-                                <td></td>                                                              
-                                <td></td>                                                              
-                                <td></td>                                                              
-                                <td></td>                                                              
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         }
                     }
@@ -92,24 +97,24 @@
 
     <script type="text/javascript">
 
-            $(function () {
-                $("#myTable").on("click", ".btnSil", function () {
-                    var btn = $(this);
-                    bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
-                        if (result) {
-                            var id = btn.data("id");
-                            $.ajax({
-                                type: "DELETE",
-                                url: "/Ulkeler/UlkeSil/" + id,
-                                success: function () {
-                                    btn.parent().parent().remove();
-                                    location.reload();
-                                }
-                            });
-                        }
-                    });
+        $(function () {
+            $("#myTable").on("click", ".btnSil", function () {
+                var btn = $(this);
+                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                    if (result) {
+                        var id = btn.data("id");
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/Ulkeler/UlkeSil/" + id,
+                            success: function () {
+                                btn.parent().parent().remove();
+                                location.reload();
+                            }
+                        });
+                    }
                 });
             });
+        });
     </script>
 }
 

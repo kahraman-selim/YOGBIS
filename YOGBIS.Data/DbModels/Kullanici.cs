@@ -6,7 +6,7 @@ namespace YOGBIS.Data.DbModels
 {
     public class Kullanici : IdentityUser
     {
-        public int? TcKimlikNo { get; set; }
+        public string TcKimlikNo { get; set; }
         public string Ad { get; set; }
         public string Soyad { get; set; }
         public DateTime KayitTarihi { get; set; }
@@ -25,8 +25,8 @@ namespace YOGBIS.Data.DbModels
         public List<EPostaAdresleri> EPostaAdresleris { get; set; }
         public List<Etkinlikler> Etkinliklers { get; set; }
         public List<Eyaletler> Eyaletlers { get; set; }
-        public List<FotoGaleri> FotoGaleris { get; set; }
-        public List<GorevKararPdfGaleri> GorevKararPdfGaleris { get; set; }
+        public ICollection<FotoGaleri> FotoGaleri { get; set; }
+        public ICollection<GorevKararPdfGaleri> GorevKararPdfGaleris { get; set; }
         public List<IkametAdresleri> IkametAdresleris { get; set; }
         public List<Ilceler> Ilcelers { get; set; }
         public List<Iller> Illers { get; set; }

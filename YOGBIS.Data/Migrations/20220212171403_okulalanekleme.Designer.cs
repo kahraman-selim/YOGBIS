@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20220212171403_okulalanekleme")]
+    partial class okulalanekleme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -767,10 +769,16 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int?>("AdayId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("AdaylarAdayId")
                         .HasColumnType("int");
 
                     b.Property<int?>("DuyurularId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EtkinlikId")
                         .HasColumnType("int");
 
                     b.Property<int?>("EtkinliklerEtkinlikId")
@@ -791,13 +799,25 @@ namespace YOGBIS.Data.Migrations
                     b.Property<int?>("OkulBinaBolumId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("OkulId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("OkullarOkulId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SehirId")
                         .HasColumnType("int");
 
                     b.Property<int?>("SehirlerSehirId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UlkeId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("UlkelerUlkeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UniId")
                         .HasColumnType("int");
 
                     b.Property<int?>("UniversitelerUniId")
@@ -2169,7 +2189,7 @@ namespace YOGBIS.Data.Migrations
                         .HasForeignKey("EtkinliklerEtkinlikId");
 
                     b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
-                        .WithMany("FotoGaleri")
+                        .WithMany("FotoGaleris")
                         .HasForeignKey("KaydedenId");
 
                     b.HasOne("YOGBIS.Data.DbModels.OkulBinaBolum", null)

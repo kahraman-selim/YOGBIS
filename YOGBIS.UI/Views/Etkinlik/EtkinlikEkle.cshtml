@@ -32,6 +32,7 @@
                     @Html.HiddenFor(x => x.EtkinlikId)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="row">
+                        <!--sol bölüm-->
                         <div class="col-md-6">
                             <div class="form-row">
                                 <div class="col-md-12">
@@ -127,7 +128,7 @@
                                     <input type="file"
                                            accept=".png,.jpg,.jpeg,.gif,.tif" asp-for="FotoGaleri"
                                            id="files" name="files"
-                                           class="btn btn-outline-danger mb-1 btn-sm col-md-12"
+                                           class="btn btn-outline-danger mb-2 btn-sm col-md-12"
                                            multiple
                                            onchange="document.getElementById('etkinlikresim').src = window.URL.createObjectURL(this.files[0])">
                                     <span class="text-danger" asp-validation-for="FotoGaleri"></span>
@@ -141,6 +142,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!--sağ bölüm-->
                         <div class="col-md-6">
                             <div class="form-row m-2">
                                 <div class="col-md-12">
