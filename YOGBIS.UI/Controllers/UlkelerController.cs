@@ -56,6 +56,7 @@ namespace YOGBIS.UI.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
+        [ValidateAntiForgeryToken]
         [HttpPost]
         [Obsolete]
         public async Task<IActionResult> UlkeEkle(UlkelerVM model, int? UlkeId)
@@ -68,6 +69,8 @@ namespace YOGBIS.UI.Controllers
             {
                 string klasorler = "img/Bayraklar/";
                 model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
+                string[] parca = model.UlkeBayrakURL.ToString().Split('_');
+                model.UlkeBayrakAdi = parca[1].ToString();
             }
 
             if (model.FotoGaleris != null)
@@ -131,31 +134,31 @@ namespace YOGBIS.UI.Controllers
 
         }
 
-        [Authorize(Roles = "Administrator")]
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        [Obsolete]
-        public async Task<ActionResult> Guncelle(UlkelerVM model)
-        {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
+        //[Authorize(Roles = "Administrator")]
+        //[ValidateAntiForgeryToken]
+        //[HttpPost]
+        //[Obsolete]
+        //public async Task<ActionResult> Guncelle(UlkelerVM model)
+        //{
+        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+        //    ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
-            if (model.UlkeBayrak != null)
-            {
-                string klasorler = "img/Bayraklar/";
-                model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
-            }
+        //    if (model.UlkeBayrak != null)
+        //    {
+        //        string klasorler = "img/Bayraklar/";
+        //        model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
+        //    }
 
-            var data = _ulkelerBE.UlkeGuncelle(model, user);
-            if (data.IsSuccess)
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return View();
-            }
-        }
+        //    var data = _ulkelerBE.UlkeGuncelle(model, user);
+        //    if (data.IsSuccess)
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //    else
+        //    {
+        //        return View();
+        //    }
+        //}
 
         [Authorize(Roles = "Administrator")]
         [HttpDelete]
@@ -174,7 +177,24 @@ namespace YOGBIS.UI.Controllers
 
         [Authorize(Roles = "Administrator,Manager")]
         //[Route("Ulkeler/{id:int:min(1)}", Name = "UlkeGenelDetayRoute")]
-        public IActionResult UlkeDetay(int id)
+        public IActionResult UlkeDetay(string ulkeKodu)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var requestmodel = _ulkelerBE.UlkeGetirUlkeKodu(ulkeKodu);
+            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
+
+            if (requestmodel.IsSuccess)
+            {
+                return View(requestmodel.Data);
+            }
+
+            return View(user);
+        }
+
+        [Authorize(Roles = "Administrator,Manager")]
+        //[Route("Ulkeler/{id:int:min(1)}", Name = "UlkeGenelDetayRoute")]
+        public IActionResult UC10001(int id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 

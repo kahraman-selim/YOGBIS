@@ -46,6 +46,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeId = item.UlkeId,
                         UlkeAdi = item.UlkeAdi,
                         UlkeBayrakURL = item.UlkeBayrakURL,
+                        UlkeBayrakAdi=item.UlkeBayrakAdi,
                         UlkeAciklama = item.UlkeAciklama,
                         KayitTarihi = item.KayitTarihi,
                         KitaId = item.KitaId,
@@ -84,6 +85,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeAciklama=model.UlkeAciklama,
                         UlkeAdi=model.UlkeAdi,
                         UlkeBayrakURL=model.UlkeBayrakURL,
+                        UlkeBayrakAdi=model.UlkeBayrakAdi,
                         UlkeKodu=model.UlkeKodu                       
                     };
 
@@ -132,6 +134,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ulke.UlkeKodu = data.UlkeKodu;
                     ulke.UlkeAdi = data.UlkeAdi;                    
                     ulke.UlkeBayrakURL = data.UlkeBayrakURL;
+                    ulke.UlkeBayrakAdi = data.UlkeBayrakAdi;
                     ulke.UlkeAciklama = data.UlkeAciklama;
                     ulke.Aktif = data.Aktif;
                     //ulke.VatandasSayisi = data.VatandasSayisi;
@@ -147,6 +150,52 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KayitTarihi = g.KayitTarihi,
                         KaydedenId = g.KaydedenId 
                         
+                    }).ToList();
+
+                    return new Result<UlkelerVM>(true, ResultConstant.RecordFound, ulke);
+                }
+                else
+                {
+                    return new Result<UlkelerVM>(false, ResultConstant.RecordNotFound);
+                }
+            }
+            else
+            {
+                return new Result<UlkelerVM>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+        #region UlkeGetirUlkeKodu(ulkeKodu)
+        public Result<UlkelerVM> UlkeGetirUlkeKodu(string ulkeKodu)
+        {
+
+            if (ulkeKodu != null)
+            {
+                var data = _unitOfWork.ulkelerRepository.GetFirstOrDefault(u => u.UlkeKodu == ulkeKodu, includeProperties: "Kitalar,Kullanici,FotoGaleri");
+                if (data != null)
+                {
+                    UlkelerVM ulke = new UlkelerVM();
+                    ulke.UlkeId = data.UlkeId;
+                    ulke.UlkeKodu = data.UlkeKodu;
+                    ulke.UlkeAdi = data.UlkeAdi;
+                    ulke.UlkeBayrakURL = data.UlkeBayrakURL;
+                    ulke.UlkeBayrakAdi = data.UlkeBayrakAdi;
+                    ulke.UlkeAciklama = data.UlkeAciklama;
+                    ulke.Aktif = data.Aktif;
+                    //ulke.VatandasSayisi = data.VatandasSayisi;
+                    ulke.KitaId = data.KitaId;
+                    ulke.KitaAdi = data.Kitalar.KitaAdi;
+                    ulke.KaydedenId = data.KaydedenId;
+                    ulke.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+                    ulke.FotoGaleri = data.FotoGaleri.Select(g => new FotoGaleriVM()
+                    {
+                        FotoGaleriId = g.FotoGaleriId,
+                        FotoAdi = g.FotoAdi,
+                        FotoURL = g.FotoURL,
+                        KayitTarihi = g.KayitTarihi,
+                        KaydedenId = g.KaydedenId
+
                     }).ToList();
 
                     return new Result<UlkelerVM>(true, ResultConstant.RecordFound, ulke);

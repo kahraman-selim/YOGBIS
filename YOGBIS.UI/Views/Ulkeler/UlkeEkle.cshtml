@@ -15,9 +15,9 @@
                 <form class="form-group m-0" asp-action="UlkeEkle" enctype="multipart/form-data">
                     @Html.HiddenFor(x => x.UlkeId)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-                    <div class="row">
+                    <div class="form-row">
                         <div class="col-md-6">
-                            <div class="row">
+                            <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="UlkeAdi" class="small mb-1 font-weight-bold">Ülke</label>
@@ -26,7 +26,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="UlkeKodu" class="small mb-1 font-weight-bold">Ülke Kodu</label>
@@ -35,7 +35,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="KitaId" class="small mb-1 font-weight-bold">Bulunduğu Kıta</label>
@@ -44,7 +44,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="UlkeAciklama" class="small mb-1 font-weight-bold">Ülke Hakkında</label>
@@ -53,7 +53,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <div class="form-check-inline">
@@ -66,13 +66,15 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="row">
+                            <div class="form-row">
                                 <div class="col-md-12">
-                                    <label class="small mb-1 font-weight-bold">Ülke Bayrağı</label>
-                                    <img id="ulkeBayrak" class="img-thumbnail border-dark" alt="Ülke Bayrağı" src="~/img/NoImages.png" style="width:auto;height:100px;">
+                                    <div class="form-group">
+                                        <label class="small mb-1 font-weight-bold">Ülke Bayrağı</label>
+                                        <img id="ulkeBayrak" class="img-thumbnail border-dark" alt="Ülke Bayrağı" src="~/img/NoImages.png" style="width:auto;height:100px;">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="UlkeBayrak" class="small mb-1 font-weight-bold">Ülke Bayrağı seçiniz</label>
@@ -86,16 +88,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label class="small mb-1 font-weight-bold">Ülkeyi Temsil Eden Bir Fotoğraf</label>
-                                    <img id="ulkeFoto" class="img-thumbnail border-dark" alt="Ülke Fotoğraf" src="~/img/NoImages.png" style="width:auto;height:auto;">
-                                </div>
-                            </div>
-                            <div class="row">
+                            <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label asp-for="FotoGaleris" class="small mb-1 font-weight-bold">Ülkeden Bir Resim Ekleyin</label>
+                                        <label class="small mb-1 font-weight-bold">Ülkeyi Temsil Eden Fotoğraflar</label>
+                                        <img id="ulkeFoto" class="img-thumbnail border-dark" alt="Ülke Fotoğraf" src="~/img/NoImages.png" style="width:auto;height:auto;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="FotoGaleris" class="small mb-1 font-weight-bold">Ülkeden Fotoğraflar Ekleyin</label>
                                         <input type="file"
                                                accept=".png,.jpg,.jpeg,.gif,.tif"
                                                asp-for="FotoGaleris"
@@ -107,16 +111,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <a asp-controller="Ulkeler" asp-action="UlkeDetay" id="UlkeDetay" name="UlkeDetay" class="btn btn-info btn-sm text-white w-100 mb-1">Ülke Detay Gör</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="form-row">
                         <div class="col-md-12">
-                            <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px">Yeni Kayıt</a>
+                            @*<a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px">Yeni Kayıt</a>*@
                             <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" />
                             <a asp-controller="Ulkeler" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Geri Dön</a>
                         </div>

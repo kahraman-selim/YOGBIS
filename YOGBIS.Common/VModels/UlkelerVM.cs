@@ -8,13 +8,14 @@ namespace YOGBIS.Common.VModels
     {
         [Key]
         public int UlkeId { get; set; }
+        [Required(ErrorMessage = "Ülke kodu zorunlu bir alandır")]
         public string UlkeKodu { get; set; }
         [Required (ErrorMessage ="Ülke adı zorunlu bir alandır")]
         public string UlkeAdi { get; set; }
-
-        //[Required(ErrorMessage = "Ülkenin Bayrağını yükleyiniz")]
+        [Required(ErrorMessage = "Ülkenin Bayrağını yükleyiniz")]
         public IFormFile UlkeBayrak { get; set; }
-        public string UlkeBayrakURL { get; set; }
+        public string UlkeBayrakURL { get; set; }        
+        public string UlkeBayrakAdi { get; set; }
         public string UlkeAciklama { get; set; }
         [Required(ErrorMessage = "Ülke Temsil durumunu seçiniz")]
         public bool Aktif { get; set; }

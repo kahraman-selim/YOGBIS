@@ -11,6 +11,7 @@ namespace YOGBIS.Data.DbModels
         public string UlkeKodu { get; set; }
         public string UlkeAdi { get; set; }
         public string UlkeBayrakURL { get; set; }
+        public string UlkeBayrakAdi { get; set; }
         public string UlkeAciklama { get; set; }
         public bool Aktif { get; set; }
         public int KitaId { get; set; }
