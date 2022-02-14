@@ -142,6 +142,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ulke.KitaAdi = data.Kitalar.KitaAdi;
                     ulke.KaydedenId = data.KaydedenId;
                     ulke.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+
                     ulke.FotoGaleri = data.FotoGaleri.Select(g => new FotoGaleriVM()
                     {
                         FotoGaleriId = g.FotoGaleriId,
@@ -188,6 +189,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ulke.KitaAdi = data.Kitalar.KitaAdi;
                     ulke.KaydedenId = data.KaydedenId;
                     ulke.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+
                     ulke.FotoGaleri = data.FotoGaleri.Select(g => new FotoGaleriVM()
                     {
                         FotoGaleriId = g.FotoGaleriId,
@@ -272,7 +274,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region UlkeSil
         public Result<bool> UlkeSil(int id)
         {
-            var data = _unitOfWork.ulkelerRepository.Get(id);
+            var data = _unitOfWork.ulkelerRepository.GetFirstOrDefault(u => u.UlkeId == id, includeProperties: "FotoGaleri");
             if (data != null)
             {
                 _unitOfWork.ulkelerRepository.Remove(data);

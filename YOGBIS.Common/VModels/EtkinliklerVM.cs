@@ -13,6 +13,8 @@ namespace YOGBIS.Common.VModels
         public string OkulAdi { get; set; }
         public int OkulId { get; set; }
         public OkullarVM Okullar { get; set; }
+        public int TemsilcilikId { get; set; }
+        public TemsilciliklerVM Temsilcilikler { get; set; }
         public DateTime BasTarihi { get; set; }
         public DateTime BitTarihi { get; set; }
         public string EtkinlikBilgi { get; set; }
@@ -21,11 +23,12 @@ namespace YOGBIS.Common.VModels
         public IFormFile EtkinlikKapakResim { get; set; }
         public string EtkinlikKapakResimUrl { get; set; }
         public IFormFile EtkinlikDosya { get; set; }
-        public string EtkinlikDosyaUrl { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
-        public IFormFileCollection FotoGaleriDosyalar { get; set; }
+        public IFormFileCollection DosyaGaleris { get; set; }
+        public List<DosyaGaleriVM> DosyaGaleri { get; set; }
+        public IFormFileCollection FotoGaleris { get; set; }
         public List<FotoGaleriVM> FotoGaleri { get; set; }
     }
 }

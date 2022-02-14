@@ -10,6 +10,8 @@ namespace YOGBIS.Data.Contracts
         IAdayNotRepository adayNotRepository { get; }
         IAutoHistoryRepository autoHistoryRepository { get; }
         IBranslarRepository branslarRepository { get; }
+        IDosyaGaleriRepository dosyaGaleriRepository { get; }
+        IDuyurularRepository duyurularRepository { get; }
         IEPostaAdresleriRepository ePostaAdresleriRepository { get; }
         IEtkinliklerRepository etkinliklerRepository { get; }
         IEyaletlerRepository eyaletlerRepository { get; }

@@ -26,6 +26,7 @@ namespace YOGBIS.Data.DbModels
         public List<Etkinlikler> Etkinliklers { get; set; }
         public List<Eyaletler> Eyaletlers { get; set; }
         public ICollection<FotoGaleri> FotoGaleri { get; set; }
+        public ICollection<DosyaGaleri> DosyaGaleri { get; set; }
         public ICollection<GorevKararPdfGaleri> GorevKararPdfGaleris { get; set; }
         public List<IkametAdresleri> IkametAdresleris { get; set; }
         public List<Ilceler> Ilcelers { get; set; }

@@ -17,7 +17,8 @@ namespace YOGBIS.Data.Implementaion
             adayNotRepository = new AdayNotRepository(_ctx);            
             autoHistoryRepository = new AutoHistoryRepository(_ctx);
             branslarRepository = new BranslarRepository(_ctx);
-            duyurularRepository = new DuyurularRepository(_ctx);
+            dosyaGaleriRepository = new DosyaGaleriRepository(_ctx);
+            duyurularRepository = new DuyurularRepository(_ctx);            
             ePostaAdresleriRepository = new EPostaAdresleriRepository(_ctx);            
             etkinliklerRepository = new EtkinliklerRepository(_ctx);
             eyaletlerRepository = new EyaletlerRepository(_ctx);
@@ -63,6 +64,7 @@ namespace YOGBIS.Data.Implementaion
         public IAdayNotRepository adayNotRepository { get; private set; }        
         public IAutoHistoryRepository autoHistoryRepository { get; private set; }
         public IBranslarRepository branslarRepository { get; private set; }
+        public IDosyaGaleriRepository dosyaGaleriRepository { get; private set; }
         public IDuyurularRepository duyurularRepository { get; private set; }
         public IEPostaAdresleriRepository ePostaAdresleriRepository { get; private set; }
         public IEtkinliklerRepository etkinliklerRepository { get; private set; }        

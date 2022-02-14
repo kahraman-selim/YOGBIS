@@ -93,11 +93,11 @@ namespace YOGBIS.UI.Controllers
                     }
                 }
 
-                if (model.EtkinlikDosya != null)
-                {
-                    string dosyalar = "img/EtkinlikDosyalar";
-                    model.EtkinlikDosyaUrl = await DosyaYukle(dosyalar, model.EtkinlikDosya);
-                }
+                //if (model.EtkinlikDosya != null)
+                //{
+                //    string dosyalar = "img/EtkinlikDosyalar";
+                //    model.EtkinlikDosyaUrl = await DosyaYukle(dosyalar, model.EtkinlikDosya);
+                //}
 
                 var data = _etkinliklerBE.EtkinlikEkle(model, user);
                 if (data.IsSuccess)

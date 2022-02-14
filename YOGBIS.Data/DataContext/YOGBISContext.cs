@@ -100,6 +100,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<Adaylar> Adaylars { get; set; }
         public DbSet<AdayNot> AdayNots { get; set; }
         public DbSet<Branslar> Branslars { get; set; }
+        public DbSet<DosyaGaleri> DosyaGaleris { get; set; }
         public DbSet<Duyurular> Duyurulars { get; set; }
         public DbSet<EPostaAdresleri> EPostaAdresleris { get; set; }
         public DbSet<Etkinlikler> Etkinliklers { get; set; }
