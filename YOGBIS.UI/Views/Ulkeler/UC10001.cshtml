@@ -11,6 +11,24 @@
             width: 100%;
             height: 100%;
         }
+
+        .closebtn {
+            position: absolute;
+/*            background: rgb(0, 0, 0);
+            background: rgba(0, 0, 0, 0.5);*/
+            top: 10px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #f1f1f1;
+            font-size: 35px;
+            /*width: 100%;*/
+            cursor: pointer;
+            padding: 20px;
+        }
+        .closebtn:hover{
+            font-size:50px;
+            color:red;
+        }
     </style>
 }
 
@@ -36,9 +54,10 @@
                     <div class="carousel-inner">
                         @for (int i = 0; i < Model.FotoGaleri.Count(); i++)
                         {
-                            <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
-                                <img id="@Model.FotoGaleri[i].FotoGaleriId" src="@Model.FotoGaleri[i].FotoURL" alt="@Model.FotoGaleri[i].FotoAdi">
-                            </div>
+                        <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
+                            <span class="closebtn text-center" id="@Model.FotoGaleri[i].FotoGaleriId">&times;</span>
+                            <img id="@Model.FotoGaleri[i].FotoGaleriId" src="@Model.FotoGaleri[i].FotoURL" alt="@Model.FotoGaleri[i].FotoAdi" class="ulkeFoto">
+                        </div>
                         }
                     </div>
                     <!-- Left and right controls -->
@@ -178,6 +197,25 @@ else
     <partial name="_ValidationScriptsPartial" />
 
     <script type="text/javascript">
+
+        $(".closebtn").click(function () {
+
+            var fotoId = $(this).attr("id");
+
+            bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                if (result) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/Ulkeler/UlkeFotoSil/" + fotoId,
+                        success: function () {
+                            location.reload();
+                        }
+                    });
+                }
+            });
+
+
+        });
 
 
     </script>

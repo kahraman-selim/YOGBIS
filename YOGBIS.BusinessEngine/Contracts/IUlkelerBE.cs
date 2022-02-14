@@ -13,6 +13,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<UlkelerVM> UlkeGetir(int id);
         Result<UlkelerVM> UlkeGetirUlkeKodu(string ulkeKodu);
         Result<UlkelerVM> UlkeGuncelle(UlkelerVM model, SessionContext user);        
-        Result<bool> UlkeSil(int id);        
+        Result<bool> UlkeSil(int id);
+        Result<bool> UlkeFotoSil(int id);
     }
 }

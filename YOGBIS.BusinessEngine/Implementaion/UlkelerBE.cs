@@ -319,7 +319,24 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<List<UlkelerVM>>(false, ResultConstant.RecordNotFound);
             }
-        } 
+        }
+        #endregion
+
+        #region UlkeFotoSil
+        public Result<bool> UlkeFotoSil(int id)
+        {
+            var data = _unitOfWork.fotoGaleriRepository.GetFirstOrDefault(u => u.FotoGaleriId == id);
+            if (data != null)
+            {
+                _unitOfWork.fotoGaleriRepository.Remove(data);
+                _unitOfWork.Save();
+                return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
+            }
+            else
+            {
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+        }
         #endregion
     }
 }

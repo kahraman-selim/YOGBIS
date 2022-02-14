@@ -209,6 +209,18 @@ namespace YOGBIS.UI.Controllers
             return View(user);
         }
 
+        public IActionResult UlkeFotoSil(int id)
+        {
+            if (id < 0)
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+
+            var data = _ulkelerBE.UlkeFotoSil(id);
+            if (data.IsSuccess)
+                return Json(new { success = data.IsSuccess, message = data.Message });
+            else
+                return Json(new { success = data.IsSuccess, message = data.Message });
+
+        }
         [Obsolete]
         private async Task<string> FotoYukle(string dosyaYolu, IFormFile dosya)
         {
