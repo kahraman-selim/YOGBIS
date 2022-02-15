@@ -111,7 +111,38 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<List<KullaniciVM>>(false, ResultConstant.RecordNotFound);
             }
-        } 
+        }
+        #endregion
+
+        #region OkulMuduruGetir
+        public async Task<Result<List<KullaniciVM>>> OkulMuduruGetir()
+        {
+            var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
+            var newdata = await _userManager.GetUsersInRoleAsync("SubManager");
+            //var role = _roleManager.Roles.Select(x => x.Name == "Manager");
+            var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
+
+            if (newdata != null)
+            {
+                List<KullaniciVM> returnData = new List<KullaniciVM>();
+
+                foreach (var item in newdata)
+                {
+                    returnData.Add(new KullaniciVM()
+                    {
+                        Id = item.Id,
+                        Ad = item.Ad,
+                        Soyad = item.Soyad,
+                        AdSoyad = item.Ad + " " + item.Soyad
+                    });
+                }
+                return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<KullaniciVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
         #endregion
     }
 }

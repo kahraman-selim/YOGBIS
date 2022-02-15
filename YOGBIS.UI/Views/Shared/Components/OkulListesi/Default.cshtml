@@ -11,8 +11,8 @@
                     <thead>
                         <tr>
                             <th>Sıra No</th>
-                            <th>Okul Kodu</th>
-                            <th>Okul Adi</th>
+                            <th>Okul Adı</th>
+                            <th>Yönetici</th>
                             <th>Durumu</th>
                         </tr>
                     </thead>
@@ -25,9 +25,9 @@
                             {
                                 sirano++;
                         <tr>
-                            <td>@sirano</td>
-                            <td>@item.OkulKodu</td>
+                            <td>@sirano</td>                            
                             <td><a asp-controller="Okullar" asp-action="Guncelle" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
+                            <td>@item.OkulMudurAdiSoyadi</td>  
                             @if (item.OkulDurumu == true)
                             {
                                 <td style="color:green" class="font-weight-bold">Aktif</td>

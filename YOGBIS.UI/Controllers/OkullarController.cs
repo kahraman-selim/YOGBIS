@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -14,11 +15,12 @@ namespace YOGBIS.UI.Controllers
     {
         private readonly IOkullarBE _okullarBE;
         private readonly IUlkelerBE _ulkelerBE;
-
-        public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE)
+        private readonly IKullaniciBE _kullaniciBE;
+        public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE)
         {
             _okullarBE = okullarBE;
             _ulkelerBE = ulkelerBE;
+            _kullaniciBE = kullaniciBE;
         }
 
         [Authorize(Roles = "Administrator,Manager")]
@@ -38,10 +40,13 @@ namespace YOGBIS.UI.Controllers
 
         [Authorize(Roles = "Administrator")]
         [HttpGet]
-        public IActionResult OkulEkle() 
+        public async Task<IActionResult> OkulEkle() 
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            var okulmuduur = await _kullaniciBE.OkulMuduruGetir();
+            ViewBag.OkulMuduru = okulmuduur.Data;
+       
             return View();
         }
 
