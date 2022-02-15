@@ -91,7 +91,7 @@
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="small mb-1 font-weight-bold">Ülkeyi Temsil Eden Fotoğraflar</label>
+                                        <label class="small mb-1 font-weight-bold">Ülkeden Fotoğraflar</label>
                                         <img id="ulkeImages" class="img-thumbnail border-dark" alt="Ülke Fotoğraf" src="~/img/NoImages.png" 
                                              style="width:auto;height:auto;">
                                     </div>
@@ -104,7 +104,7 @@
                                         <input type="file" id="UlkeImagesInput"
                                                accept=".png,.jpg,.jpeg,.gif,.tif"
                                                asp-for="FotoGaleris"
-                                               class="@(this == null ? "btn btn-outline-danger mb-1 btn-sm col-md-12" : "btn btn-outline-success mb-1 btn-sm col-md-12")"
+                                               class="btn btn-outline-danger mb-1 btn-sm col-md-12"
                                                title="Resim seçiniz" placeholder="Ülke Fotoğrafı" 
                                                multiple
                                                onchange="ImagesFileSize(this);" />
@@ -138,25 +138,34 @@
 
         function ImagesFileSize(input) {
 
-            var maxFileSize = 1194304;            var fileUpload = document.getElementById("UlkeImagesInput");            var fileCount = fileUpload.files.length;
+            var maxFileSize = 1194304;
+            var fileUpload = document.getElementById("UlkeImagesInput");
+            var fileCount = fileUpload.files.length;
 
             for (var i = 0; i < fileCount; i++) {
 
                 if (input.files[i].size > maxFileSize) {
 
-                    $(':input[type="submit"]').prop('disabled', true);                    /*alert("ooppsss");*/                    Swal.fire({
+                    $(':input[type="submit"]').prop('disabled', true);
+                    /*alert("ooppsss");*/
+                    Swal.fire({
                         icon: 'error',
                         title: 'Hata',
                         text: 'Yüklenmek istenilen dosya boyutu 1 MB dan fazla !',
-                    })                                        return false;
+                    })
+                    document.getElementById("UlkeImagesInput").className = "";
+                    document.getElementById("UlkeImagesInput").className += "btn btn-outline-danger mb-1 btn-sm col-md-12";
+                    //this == null ? "btn btn-outline-danger mb-1 btn-sm col-md-12" : "btn btn-outline-success mb-1 btn-sm col-md-12")
+                    return false;
                 }
                 else {
 
                     $(':input[type="submit"]').prop('disabled', false);
+                    document.getElementById("UlkeImagesInput").className = "";
+                    document.getElementById("UlkeImagesInput").className += "btn btn-outline-success mb-1 btn-sm col-md-12";
                 }
             }
         }
-
 
     </script>
 }

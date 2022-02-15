@@ -61,22 +61,33 @@
                         @foreach (var item in Model)
                         {
                             sirano++;
-                            <tr>
-                                <td>@sirano</td>
-                                <td><img id="ulkeBayrakURL" class="rounded mx-auto d-block shadow" alt="Ülke Bayrağı" style="width:70px;height:30px;" src="@item.UlkeBayrakURL" asp-append-version="true"></td>
-                                <td>@item.KitaAdi</td>
-                                <td><a asp-controller="Ulkeler" asp-action="UC10001" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                    <tr>
+                        <td>@sirano</td>
+                        @if (item.UlkeBayrakURL != null)
+                        {
+                            <td>
+                                <img id="ulkeBayrakURL" class="rounded mx-auto d-block shadow" alt="Ülke Bayrağı" style="width:70px;height:30px;" src="@item.UlkeBayrakURL" asp-append-version="true">
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <img id="ulkeBayrakURL" class="rounded mx-auto d-block shadow" alt="Ülke Bayrağı" style="width:70px;height:30px;" src="../../img/Bayraklar/noimage.png" asp-append-version="true">
+                            </td>
+                        }
+                        <td>@item.KitaAdi</td>
+                        <td><a asp-controller="Ulkeler" asp-action="UC10001" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                         }
                     }
                     else

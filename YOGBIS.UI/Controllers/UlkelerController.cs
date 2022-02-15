@@ -62,8 +62,7 @@ namespace YOGBIS.UI.Controllers
         public async Task<IActionResult> UlkeEkle(UlkelerVM model, int? UlkeId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
-
+            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;            
 
             if (model.UlkeBayrak != null)
             {
@@ -71,6 +70,13 @@ namespace YOGBIS.UI.Controllers
                 model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
                 string[] parca = model.UlkeBayrakURL.ToString().Split('_');
                 model.UlkeBayrakAdi = parca[1].ToString();
+            }
+            else
+            {
+                var ulkebayrakurl = _ulkelerBE.UlkeBayrakURLGetir((int)UlkeId);
+                model.UlkeBayrakURL = ulkebayrakurl.ToString();
+                //string[] parca = ulkebayrakurl.ToString().Split('_');
+                //model.UlkeBayrakAdi = parca[1].ToString();
             }
 
             if (model.FotoGaleris != null)

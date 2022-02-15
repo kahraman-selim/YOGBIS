@@ -15,5 +15,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<UlkelerVM> UlkeGuncelle(UlkelerVM model, SessionContext user);        
         Result<bool> UlkeSil(int id);
         Result<bool> UlkeFotoSil(int id);
+        Result<string> UlkeBayrakURLGetir(int id);
     }
 }
