@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20220216070759_okulalanekleme")]
+    partial class okulalanekleme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1383,8 +1385,23 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("AcikAlan")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EPostaAdresi")
+                        .HasColumnType("text");
+
                     b.Property<int>("EyaletId")
                         .HasColumnType("int");
+
+                    b.Property<string>("HizmetGecisDonem")
+                        .HasColumnType("text");
+
+                    b.Property<string>("InternetAdresi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("KapaliAlan")
+                        .HasColumnType("text");
 
                     b.Property<string>("KaydedenId")
                         .HasColumnType("varchar(767)");
@@ -1392,8 +1409,8 @@ namespace YOGBIS.Data.Migrations
                     b.Property<DateTime>("KayitTarihi")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("OkulAcikAlan")
-                        .HasColumnType("text");
+                    b.Property<bool>("MulkiDurum")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("OkulAcilisTarihi")
                         .HasColumnType("datetime");
@@ -1407,18 +1424,6 @@ namespace YOGBIS.Data.Migrations
                     b.Property<bool?>("OkulDurumu")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("OkulEPostaAdresi")
-                        .HasColumnType("text");
-
-                    b.Property<string>("OkulHizmetGecisDonem")
-                        .HasColumnType("text");
-
-                    b.Property<string>("OkulInternetAdresi")
-                        .HasColumnType("text");
-
-                    b.Property<string>("OkulKapaliAlan")
-                        .HasColumnType("text");
-
                     b.Property<int>("OkulKodu")
                         .HasColumnType("int");
 
@@ -1428,16 +1433,13 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("OkulMudurId")
                         .HasColumnType("text");
 
-                    b.Property<bool?>("OkulMulkiDurum")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("OkulTelefon")
                         .HasColumnType("text");
 
-                    b.Property<int>("OkulUlkeId")
+                    b.Property<int>("SehirId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SehirId")
+                    b.Property<int>("UlkeId")
                         .HasColumnType("int");
 
                     b.HasKey("OkulId");

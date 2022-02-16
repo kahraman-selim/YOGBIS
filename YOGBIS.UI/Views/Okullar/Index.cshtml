@@ -1,4 +1,6 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
+@inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
 @model IEnumerable<YOGBIS.Common.VModels.OkullarVM>
 @{
     ViewData["Title"] = "Okullar";
@@ -14,13 +16,16 @@
     }
 </style>
 
-<ol class="breadcrumb mb-4 mt-2">
-    <li>
-        <a asp-controller="Okullar" asp-action="OkulEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
-            Yeni Kayıt <i class="fas fa-plus-circle"></i>
-        </a>
-    </li>
-</ol>
+@if (User.IsInRole("Administrator"))
+{
+    <ol class="breadcrumb mb-4 mt-2">
+        <li>
+            <a asp-controller="Okullar" asp-action="OkulEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
+                Yeni Kayıt <i class="fas fa-plus-circle"></i>
+            </a>
+        </li>
+    </ol>
+}
 <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
@@ -30,24 +35,38 @@
         <div class="table-responsive">
             <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
                 <thead>
-                    <tr>
-                        @*<th class="align-middle text-center">Seç</th>*@
+                    <tr>                        
                         <th class="text-center">Sıra No</th>
                         <th class="text-center">Ülke</th>
                         <th class="text-center">Okul Kodu</th>
                         <th class="text-center">Okul Adı</th>
-                        @*<th class="text-center">Düzenle</th>*@
-                        @*<th class="text-center">Sil</th>*@
+                        <th class="text-center">Okul Müdürü</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>                                
-                        <td>1</td>
-                        <td><a asp-controller="Ulkeler" asp-action="UlkeDetay">Azerbaycan</a></td>
-                        <td>909525</td>
-                        <td><a asp-controller="Okullar" asp-action="OkulDetay">Bakü Türk İlkokulu</a></td>
-                    </tr>
+                    @{ var sirano = 0;}
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            sirano++;
+                            <tr>
+                                <td>@sirano</td>
+                                <td><a asp-controller="Ulkeler" asp-action="UlkeDetay" asp-route-id="@item.OkulUlkeId">@item.OkulUlkeAdi</a></td>
+                                <td>@item.OkulKodu</td>
+                                <td><a asp-controller="Okullar" asp-action="Guncelle" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
+                                <td>@item.OkulMudurAdiSoyadi</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>Kayıt bulunamadı!</td>
+                        </tr>
+                    }
                 </tbody>
+
             </table>
         </div>
     </div>

@@ -16,21 +16,21 @@ namespace YOGBIS.Data.DbModels
         public DateTime? OkulAcilisTarihi { get; set; }
         public bool? OkulDurumu { get; set; }
         public string OkulMudurId { get; set; }
-        public string HizmetGecisDonem { get; set; }
-        public string KapaliAlan { get; set; }
-        public string AcikAlan { get; set; }
-        public bool MulkiDurum { get; set; }
-        public string InternetAdresi { get; set; }
-        public string EPostaAdresi { get; set; }
+        public string OkulHizmetGecisDonem { get; set; }
+        public string OkulKapaliAlan { get; set; }
+        public string OkulAcikAlan { get; set; }
+        public bool? OkulMulkiDurum { get; set; }
+        public string OkulInternetAdresi { get; set; }
+        public string OkulEPostaAdresi { get; set; }
         public string OkulTelefon { get; set; }
-
+        public int OkulUlkeId { get; set; }
         ///////////////////////////////////////////////        
-        public int EyaletId { get; set; }
-        [ForeignKey("EyaletId")]
-        public Eyaletler Eyaletler { get; set; }
         public int SehirId { get; set; }
         [ForeignKey("SehirId")]
         public Sehirler Sehirler { get; set; }
+        public int EyaletId { get; set; }
+        [ForeignKey("EyaletId")]
+        public Eyaletler Eyaletler { get; set; }      
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

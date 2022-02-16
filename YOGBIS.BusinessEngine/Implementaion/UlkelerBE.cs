@@ -382,5 +382,23 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region UlkeAdGetir(id)
+        public Result<string> UlkeAdGetir(int id)
+        {
+
+            var data = _unitOfWork.ulkelerRepository.Get(id);
+            if (data != null)
+            {
+                var ulkeAd = data.UlkeAdi;
+
+                return new Result<string>(true, ResultConstant.RecordFound, ulkeAd);
+            }
+            else
+            {
+                return new Result<string>(false, ResultConstant.RecordNotFound);
+            }
+
+        }
+        #endregion
     }
 }

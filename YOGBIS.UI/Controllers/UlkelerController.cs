@@ -230,9 +230,7 @@ namespace YOGBIS.UI.Controllers
         [Obsolete]
         private async Task<string> FotoYukle(string dosyaYolu, IFormFile dosya)
         {
-
-            //fotoadi = dosya.FileName;
-
+            
             dosyaYolu += Guid.NewGuid().ToString() + "_" + dosya.FileName;
 
             string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaYolu);

@@ -16,5 +16,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<bool> UlkeSil(int id);
         Result<bool> UlkeFotoSil(int id);
         Result<string> UlkeBayrakURLGetir(int id);
+        Result<string> UlkeAdGetir(int id);
     }
 }
