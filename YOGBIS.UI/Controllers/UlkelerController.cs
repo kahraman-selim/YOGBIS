@@ -74,14 +74,14 @@ namespace YOGBIS.UI.Controllers
             else
             {
                 var ulkebayrakurl = _ulkelerBE.UlkeBayrakURLGetir((int)UlkeId);
-                model.UlkeBayrakURL = ulkebayrakurl.ToString();
-                //string[] parca = ulkebayrakurl.ToString().Split('_');
-                //model.UlkeBayrakAdi = parca[1].ToString();
+                model.UlkeBayrakURL = ulkebayrakurl.Data.ToString();
+                string[] parca = ulkebayrakurl.Data.ToString().Split('_');
+                model.UlkeBayrakAdi = parca[1].ToString();
             }
 
             if (model.FotoGaleris != null)
             {
-                string klasorler = "img/Ulkeler/";
+                string fotoklasorler = "img/Ulkeler/";
 
                 model.FotoGaleri = new List<FotoGaleriVM>();
 
@@ -90,7 +90,7 @@ namespace YOGBIS.UI.Controllers
                     var galeri = new FotoGaleriVM()
                     {
                         FotoAdi = file.FileName,
-                        FotoURL = await FotoYukle(klasorler, file),
+                        FotoURL = await FotoYukle(fotoklasorler, file),
                         KaydedenId = user.LoginId,
                         KayitTarihi = model.KayitTarihi
                     };

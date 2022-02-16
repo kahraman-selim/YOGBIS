@@ -90,7 +90,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     };
 
                     ulkeler.FotoGaleri = new List<FotoGaleri>();
-                    if (ulkeler.FotoGaleri.Count > 0)
+                    if (model.FotoGaleri != null)
                     {
                         foreach (var file in model.FotoGaleri)
                         {
@@ -234,11 +234,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     data.UlkeBayrakURL = model.UlkeBayrakURL;
                     data.UlkeBayrakAdi = model.UlkeBayrakAdi;
 
-                    _unitOfWork.ulkelerRepository.Update(data);
-                    _unitOfWork.Save();
-
                     var FotoGaleri = new List<FotoGaleri>();
-                    if (FotoGaleri.Count > 0)
+                    if (model.FotoGaleri != null)
                     {
                         foreach (var file in FotoGaleri)
                         {
@@ -255,6 +252,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         }
                     }
 
+                    _unitOfWork.ulkelerRepository.Update(data);
+                    _unitOfWork.Save();
 
                     return new Result<UlkelerVM>(true, ResultConstant.RecordCreateSuccess);
                 }
