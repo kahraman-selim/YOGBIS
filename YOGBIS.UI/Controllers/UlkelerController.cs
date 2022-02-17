@@ -17,19 +17,24 @@ namespace YOGBIS.UI.Controllers
     [Authorize]
     public class UlkelerController : Controller
     {
+        #region Değişkenler
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IKitalarBE _kitalarBE;
         [Obsolete]
         private readonly IHostingEnvironment _hostingEnvironment;
+        #endregion
 
+        #region Donüştürücüler
         [Obsolete]
         public UlkelerController(IUlkelerBE ulkelerBE, IKitalarBE kitalarBE, IHostingEnvironment hostingEnvironment)
         {
             _ulkelerBE = ulkelerBE;
             _kitalarBE = kitalarBE;
             _hostingEnvironment = hostingEnvironment;
-        }
+        } 
+        #endregion
 
+        #region Index
         [Authorize(Roles = "Administrator,Manager")]
         public IActionResult Index()
         {
@@ -44,8 +49,10 @@ namespace YOGBIS.UI.Controllers
             }
 
             return View(user);
-        }
+        } 
+        #endregion
 
+        #region UlkeEkleGet
         [Authorize(Roles = "Administrator")]
         [HttpGet]
         public IActionResult UlkeEkle()
@@ -53,8 +60,10 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
             return View();
-        }
+        } 
+        #endregion
 
+        #region UlkeEklePost
         [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -62,7 +71,7 @@ namespace YOGBIS.UI.Controllers
         public async Task<IActionResult> UlkeEkle(UlkelerVM model, int? UlkeId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;            
+            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
             if (model.UlkeBayrak != null)
             {
@@ -118,8 +127,10 @@ namespace YOGBIS.UI.Controllers
             }
 
             return View();
-        }
+        } 
+        #endregion
 
+        #region Guncelle
         [Authorize(Roles = "Administrator")]
         [Route("Ulkeler/{id:int:min(1)}", Name = "UlkeDetayRoute")]
         public ActionResult Guncelle(int? id)
@@ -138,34 +149,10 @@ namespace YOGBIS.UI.Controllers
                 return View();
             }
 
-        }
+        } 
+        #endregion
 
-        //[Authorize(Roles = "Administrator")]
-        //[ValidateAntiForgeryToken]
-        //[HttpPost]
-        //[Obsolete]
-        //public async Task<ActionResult> Guncelle(UlkelerVM model)
-        //{
-        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-        //    ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
-
-        //    if (model.UlkeBayrak != null)
-        //    {
-        //        string klasorler = "img/Bayraklar/";
-        //        model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
-        //    }
-
-        //    var data = _ulkelerBE.UlkeGuncelle(model, user);
-        //    if (data.IsSuccess)
-        //    {
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        return View();
-        //    }
-        //}
-
+        #region UlkeSil
         [Authorize(Roles = "Administrator")]
         [HttpDelete]
         public IActionResult UlkeSil(int id)
@@ -179,8 +166,10 @@ namespace YOGBIS.UI.Controllers
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
-        }
+        } 
+        #endregion
 
+        #region UlkeDetayByUlkeKodu
         [Authorize(Roles = "Administrator,Manager")]
         //[Route("Ulkeler/{id:int:min(1)}", Name = "UlkeGenelDetayRoute")]
         public IActionResult UlkeDetay(string ulkeKodu)
@@ -196,8 +185,10 @@ namespace YOGBIS.UI.Controllers
             }
 
             return View(user);
-        }
+        } 
+        #endregion
 
+        #region UC10001-UlkeDetayById
         [Authorize(Roles = "Administrator,Manager")]
         //[Route("Ulkeler/{id:int:min(1)}", Name = "UlkeGenelDetayRoute")]
         public IActionResult UC10001(int id)
@@ -213,8 +204,10 @@ namespace YOGBIS.UI.Controllers
             }
 
             return View(user);
-        }
+        } 
+        #endregion
 
+        #region UlkeFotoSil
         public IActionResult UlkeFotoSil(int id)
         {
             if (id < 0)
@@ -227,10 +220,13 @@ namespace YOGBIS.UI.Controllers
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
         }
+        #endregion
+
+        #region FotoYukle
         [Obsolete]
         private async Task<string> FotoYukle(string dosyaYolu, IFormFile dosya)
         {
-            
+
             dosyaYolu += Guid.NewGuid().ToString() + "_" + dosya.FileName;
 
             string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaYolu);
@@ -239,5 +235,6 @@ namespace YOGBIS.UI.Controllers
 
             return "/" + dosyaYolu;
         }
+        #endregion
     }
 }

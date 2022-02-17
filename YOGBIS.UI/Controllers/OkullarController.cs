@@ -16,12 +16,15 @@ namespace YOGBIS.UI.Controllers
     [Authorize]
     public class OkullarController : Controller
     {
+        #region Değişkenler
         private readonly IOkullarBE _okullarBE;
         private readonly IUlkelerBE _ulkelerBE;
-        private readonly IKullaniciBE _kullaniciBE;        
+        private readonly IKullaniciBE _kullaniciBE;
         [Obsolete]
         private readonly IHostingEnvironment _hostingEnvironment;
+        #endregion
 
+        #region Dönüştürücüler
         [Obsolete]
         public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE, IHostingEnvironment hostingEnvironment)
         {
@@ -30,7 +33,9 @@ namespace YOGBIS.UI.Controllers
             _kullaniciBE = kullaniciBE;
             _hostingEnvironment = hostingEnvironment;
         }
+        #endregion
 
+        #region Index
         [Authorize(Roles = "Administrator,Manager")]
         public IActionResult Index()
         {
@@ -45,24 +50,28 @@ namespace YOGBIS.UI.Controllers
             }
             return View(user);
         }
+        #endregion
 
+        #region OkulEkleGet
         [Authorize(Roles = "Administrator")]
         [HttpGet]
-        public IActionResult OkulEkle() 
+        public IActionResult OkulEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             //var okulmudur = await _kullaniciBE.OkulMuduruGetir();
             //ViewBag.OkulMuduru = okulmudur.Data;
-       
+
             return View();
         }
+        #endregion
 
+        #region OkulEklePost
         [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Obsolete]
-        public IActionResult OkulEkle(OkullarVM model, int? OkulId) 
+        public IActionResult OkulEkle(OkullarVM model, int? OkulId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
@@ -111,7 +120,9 @@ namespace YOGBIS.UI.Controllers
 
             return View();
         }
+        #endregion
 
+        #region Guncelle
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Guncelle(int? id)
         {
@@ -131,7 +142,9 @@ namespace YOGBIS.UI.Controllers
             }
 
         }
+        #endregion
 
+        #region OkulSil
         [Authorize(Roles = "Administrator")]
         [HttpDelete]
         public IActionResult OkulSil(int id)
@@ -139,14 +152,16 @@ namespace YOGBIS.UI.Controllers
             if (id < 0)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
-            var data = _okullarBE.OkulSil(id); 
+            var data = _okullarBE.OkulSil(id);
             if (data.IsSuccess)
                 return Json(new { success = data.IsSuccess, message = data.Message });
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
         }
+        #endregion
 
+        #region OkulDetay
         [Authorize(Roles = "Administrator,Manager")]
         public IActionResult OkulDetay()
         {
@@ -161,7 +176,9 @@ namespace YOGBIS.UI.Controllers
             }
             return View(user);
         }
+        #endregion
 
+        #region FotoYukle
         [Obsolete]
         private async Task<string> FotoYukle(string dosyaYolu, IFormFile dosya)
         {
@@ -175,7 +192,8 @@ namespace YOGBIS.UI.Controllers
             await dosya.CopyToAsync(new FileStream(dosyaKlasor, FileMode.Create));
 
             return "/" + dosyaYolu;
-        }
+        } 
+        #endregion
 
     }
 }
