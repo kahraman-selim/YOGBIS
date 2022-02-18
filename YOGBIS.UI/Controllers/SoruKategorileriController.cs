@@ -12,15 +12,21 @@ namespace YOGBIS.UI.Controllers
     [Authorize(Roles = "Administrator")]
     public class SoruKategorileriController : Controller
     {
-       
+
+        #region Değişkenler
         private readonly ISoruKategorileriBE _soruKategorileriBE;
         private readonly IDerecelerBE _derecelerBE;
+        #endregion
+
+        #region Dönüştürücüler
         public SoruKategorileriController(ISoruKategorileriBE soruKategorileriBE, IDerecelerBE derecelerBE)
         {
             _soruKategorileriBE = soruKategorileriBE;
             _derecelerBE = derecelerBE;
-        }        
-        
+        }
+        #endregion
+
+        #region Index
         public IActionResult Index(int? id)
         {
 
@@ -42,7 +48,9 @@ namespace YOGBIS.UI.Controllers
                 return View();
             }
         }
-        
+        #endregion
+
+        #region SoruKategoriEkleGet
         [HttpGet]
         public IActionResult SoruKategoriEkle()
         {
@@ -50,7 +58,9 @@ namespace YOGBIS.UI.Controllers
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             return View();
         }
+        #endregion
 
+        #region SoruKategoriEklePost
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult SoruKategoriEkle(SoruKategorilerVM model, int? SoruKategorilerId)
@@ -58,7 +68,7 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
-            if (SoruKategorilerId>0)
+            if (SoruKategorilerId > 0)
             {
                 var data = _soruKategorileriBE.SoruKategoriGuncelle(model, user);
                 return RedirectToAction("Index");
@@ -73,12 +83,14 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
-        
+        #endregion
+
+        #region Guncelle
         public IActionResult Guncelle(int? id)
         {
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
-            if (id>0)
+            if (id > 0)
             {
                 var data = _soruKategorileriBE.SoruKategoriGetir((int)id);
                 return View(data.Data);
@@ -88,12 +100,14 @@ namespace YOGBIS.UI.Controllers
                 return View();
             }
         }
-        
+        #endregion
+
+        #region SoruKategoriSil
         [HttpDelete]
         public IActionResult SoruKategoriSil(int id)
         {
             if (id < 0)
-                return Json(new {success = false, message = "Silmek için Kayıt Seçiniz" });
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _soruKategorileriBE.SoruKategoriSil(id);
             if (data.IsSuccess)
@@ -101,7 +115,8 @@ namespace YOGBIS.UI.Controllers
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
-        }
-  
+        } 
+        #endregion
+
     }
 }

@@ -91,7 +91,6 @@ namespace YOGBIS.UI.Controllers
             if (model.FotoGaleris != null)
             {
                 string fotoklasorler = "img/Ulkeler/";
-
                 model.FotoGaleri = new List<FotoGaleriVM>();
 
                 foreach (var file in model.FotoGaleris)
@@ -176,7 +175,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            var requestmodel = _ulkelerBE.UlkeGetirUlkeKodu(ulkeKodu);
+            var requestmodel = _ulkelerBE.UlkeGetirUlkeKodu("AZ");
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
             if (requestmodel.IsSuccess)

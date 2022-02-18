@@ -16,6 +16,7 @@ namespace YOGBIS.UI.Controllers
     [Authorize]
     public class OkullarController : Controller
     {
+        
         #region Değişkenler
         private readonly IOkullarBE _okullarBE;
         private readonly IUlkelerBE _ulkelerBE;
@@ -55,12 +56,12 @@ namespace YOGBIS.UI.Controllers
         #region OkulEkleGet
         [Authorize(Roles = "Administrator")]
         [HttpGet]
-        public IActionResult OkulEkle()
+        public async Task<IActionResult> OkulEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            //var okulmudur = await _kullaniciBE.OkulMuduruGetir();
-            //ViewBag.OkulMuduru = okulmudur.Data;
+            var okulmudur = await _kullaniciBE.OkulMuduruGetir();
+            ViewBag.OkulMuduru = okulmudur.Data;
 
             return View();
         }
@@ -71,17 +72,17 @@ namespace YOGBIS.UI.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Obsolete]
-        public IActionResult OkulEkle(OkullarVM model, int? OkulId)
+        public async Task<IActionResult> OkulEkle(OkullarVM model, int? OkulId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            //var okulmudur = await _kullaniciBE.OkulMuduruGetir();
-            //ViewBag.OkulMuduru = okulmudur.Data;
+            var okulmudur = await _kullaniciBE.OkulMuduruGetir();
+            ViewBag.OkulMuduru = okulmudur.Data;
 
-            //if (okulmudur.Data == null)
-            //{
-            //    model.OkulMudurId = null;
-            //}
+            if (okulmudur.Data == null)
+            {
+                model.OkulMudurId = null;
+            }
             //if (model.OkulLogo != null)
             //{
             //    string klasorler = "img/Okullar/";

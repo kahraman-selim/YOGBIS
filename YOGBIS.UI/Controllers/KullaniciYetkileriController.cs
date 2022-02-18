@@ -13,14 +13,21 @@ namespace YOGBIS.UI.Controllers
     [Authorize(Roles = "Administrator")]
     public class KullaniciYetkileriController : Controller
     {
+        
+        #region Değişkenler
         private readonly UserManager<Kullanici> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        #endregion
 
+        #region Dönüştürücüler
         public KullaniciYetkileriController(UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
         }
+        #endregion
+
+        #region Index
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -35,10 +42,12 @@ namespace YOGBIS.UI.Controllers
                 thisViewModel.EnumsKullaniciRolleri = await GetUserRoles(user);
                 userRolesViewModel.Add(thisViewModel);
             }
-            
+
             return View(userRolesViewModel);
-        }        
-        
+        }
+        #endregion
+
+        #region YonetimGet
         public async Task<IActionResult> Yonetim(string userId)
         {
             ViewBag.userId = userId;
@@ -48,7 +57,7 @@ namespace YOGBIS.UI.Controllers
                 ViewBag.ErrorMessage = $"Kullanıcı bulunamadı Id = {userId}";
                 return View("NotFound");
             }
-            
+
             ViewBag.UserName = user.UserName;
 
             var model = new List<KullaniciYekiYonetimVM>();
@@ -73,7 +82,9 @@ namespace YOGBIS.UI.Controllers
             }
             return View(model);
         }
-        
+        #endregion
+
+        #region YonetimPost
         [HttpPost]
         public async Task<IActionResult> Yonetim(List<KullaniciYekiYonetimVM> model, string userId)
         {
@@ -97,10 +108,13 @@ namespace YOGBIS.UI.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region GetUserRoles
         private async Task<IEnumerable<string>> GetUserRoles(Kullanici user)
         {
             return new List<string>(await _userManager.GetRolesAsync(user));
-        }
+        } 
+        #endregion
     }
 }

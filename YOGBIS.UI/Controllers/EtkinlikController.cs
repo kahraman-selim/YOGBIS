@@ -17,12 +17,16 @@ namespace YOGBIS.UI.Controllers
     [Authorize]
     public class EtkinlikController : Controller
     {
+        
+        #region Değişkenler
         private readonly IEtkinliklerBE _etkinliklerBE;
         private readonly IOkullarBE _okullarBE;
         private readonly IUlkelerBE _ulkelerBE;
         [Obsolete]
         private readonly IWebHostEnvironment _hostingEnvironment;
+        #endregion
 
+        #region Dönüştürücüler
         [Obsolete]
         public EtkinlikController(IEtkinliklerBE etkinliklerBE, IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IWebHostEnvironment hostingEnvironment)
         {
@@ -31,7 +35,9 @@ namespace YOGBIS.UI.Controllers
             _ulkelerBE = ulkelerBE;
             _hostingEnvironment = hostingEnvironment;
         }
+        #endregion
 
+        #region Index
         [Authorize(Roles = "Administrator,Manager,Teacher,Follower")]
         public IActionResult Index()
         {
@@ -48,18 +54,22 @@ namespace YOGBIS.UI.Controllers
 
             return View(user);
         }
+        #endregion
 
+        #region EtkinlikEkleGet
         [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpGet]
         [Route("Etkinlikler")]
-        public IActionResult EtkinlikEkle() 
+        public IActionResult EtkinlikEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
             return View();
         }
+        #endregion
 
+        #region EtkinlikEklePost
         [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpPost]
         [Obsolete]
@@ -73,20 +83,23 @@ namespace YOGBIS.UI.Controllers
             {
                 if (model.EtkinlikKapakResim != null)
                 {
-                    string dosyalar = "img/EtkinlikKapakFoto";
-                    model.EtkinlikKapakResimUrl = await DosyaYukle(dosyalar, model.EtkinlikKapakResim);
+                    string klasorler = "img/EtkinlikKapakFoto";
+                    model.EtkinlikKapakResimUrl = await FotoYukle(klasorler, model.EtkinlikKapakResim);
                 }
 
                 if (model.FotoGaleri != null)
                 {
-                    string dosyalar = "img/EtkinlikFoto";
+                    string fotoklasorler = "img/EtkinlikFoto";
                     model.FotoGaleri = new List<FotoGaleriVM>();
-                    foreach (var dosya in model.FotoGaleri)
+
+                    foreach (var file in model.FotoGaleris)
                     {
                         var galeri = new FotoGaleriVM()
                         {
-                            FotoAdi = dosya.FotoAdi,
-                            FotoURL = await DosyaYukle(dosyalar, dosya)
+                            FotoAdi = file.FileName,
+                            FotoURL = await FotoYukle(fotoklasorler, file),
+                            KaydedenId=user.LoginId,
+                            KayitTarihi=model.KayitTarihi
 
                         };
                         model.FotoGaleri.Add(galeri);
@@ -109,12 +122,9 @@ namespace YOGBIS.UI.Controllers
 
             return View();
         }
+        #endregion
 
-        private Task<string> DosyaYukle(string dosyalar, FotoGaleriVM dosya)
-        {
-            throw new NotImplementedException();
-        }
-
+        #region GuncelleGet
         [Authorize(Roles = "Administrator,Manager,Teacher")]
         public ActionResult Guncelle(int? id)
         {
@@ -133,7 +143,9 @@ namespace YOGBIS.UI.Controllers
             }
 
         }
+        #endregion
 
+        #region GuncellePost
         [Authorize(Roles = "Administrator,Manager,Teacher")]
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -153,7 +165,9 @@ namespace YOGBIS.UI.Controllers
                 return View();
             }
         }
+        #endregion
 
+        #region EtkinlikSil
         [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpDelete]
         public IActionResult EtkinlikSil(int id)
@@ -167,7 +181,8 @@ namespace YOGBIS.UI.Controllers
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
-        }
+        } 
+        #endregion
 
         [Authorize(Roles = "Administrator,Manager")]
         public IActionResult Etkinlikler(int OkulId)
@@ -233,13 +248,19 @@ namespace YOGBIS.UI.Controllers
 
         }
 
+        #region FotoYukle
         [Obsolete]
-        private async Task<string> DosyaYukle(string dosyaYolu, IFormFile dosya) 
+        private async Task<string> FotoYukle(string dosyaYolu, IFormFile dosya)
         {
+
             dosyaYolu += Guid.NewGuid().ToString() + "_" + dosya.FileName;
-            string Dosyalar = Path.Combine(_hostingEnvironment.WebRootPath, dosyaYolu);
-            await dosya.CopyToAsync(new FileStream(Dosyalar, FileMode.Create));
+
+            string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaYolu);
+
+            await dosya.CopyToAsync(new FileStream(dosyaKlasor, FileMode.Create));
+
             return "/" + dosyaYolu;
         }
+        #endregion
     }
 }

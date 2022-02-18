@@ -167,13 +167,18 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var okullar = new Okullar()
                     {
-                    
+
                         OkulUlkeId = model.OkulUlkeId,
                         OkulKodu = model.OkulKodu,
                         OkulAdi = model.OkulAdi,
                         OkulDurumu = model.OkulDurumu,
                         KayitTarihi = model.KayitTarihi,
-                        KaydedenId = user.LoginId
+                        KaydedenId = user.LoginId,
+                        //////////////////////////
+                        OkulAcilisTarihi = DateTime.Now,
+                        EyaletId=1,
+                        SehirId=1,
+                        OkulMulkiDurum=true
                     };
 
                 _unitOfWork.okullarRepository.Add(okullar);

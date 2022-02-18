@@ -13,13 +13,20 @@ namespace YOGBIS.UI.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        #region Değişkenler
         private readonly ILogger<HomeController> _logger;
         private readonly IUlkelerBE _ulkelerBE;
+        #endregion
+
+        #region Dönüştürücüler
         public HomeController(ILogger<HomeController> logger, IUlkelerBE ulkelerBE)
         {
             _logger = logger;
             _ulkelerBE = ulkelerBE;
         }
+        #endregion
+
+        #region Index
         public IActionResult Index()
         {
 
@@ -27,8 +34,8 @@ namespace YOGBIS.UI.Controllers
 
             if (User.IsInRole(EnumsKullaniciRolleri.Administrator.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Manager.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Follower.ToString()))
             {
-                
-                var requestmodel = _ulkelerBE.UlkeleriGetir();                
+
+                var requestmodel = _ulkelerBE.UlkeleriGetir();
 
                 if (requestmodel.IsSuccess)
                 {
@@ -41,6 +48,7 @@ namespace YOGBIS.UI.Controllers
             {
                 return RedirectToAction("Index", "Duyurular");
             }
-        }
+        } 
+        #endregion
     }
 }

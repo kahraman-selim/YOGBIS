@@ -1961,11 +1961,12 @@
 
         $(".country").click(function () {
 
-            var ulkeKodu = $(this).children("path").attr("id");
+            var ulkeKodu = new String();
+            ulkeKodu = $(this).children("path").attr("id");
 
-            alert(ulkeKodu);
-            uk = String(ulkeKodu);
-            window.location.href = "/Ulkeler/UlkeDetay/" + uk;
+            /*alert(ulkeKodu);*/
+
+            window.location.href = "/Ulkeler/UlkeDetay/" + ulkeKodu;
 
         });
 

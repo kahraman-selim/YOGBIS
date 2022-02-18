@@ -20,9 +20,10 @@ namespace YOGBIS.UI.Controllers
         public NotlarController(INotlarBE notlarBE)
         {
             _notlarBE = notlarBE;
-        } 
+        }
         #endregion
 
+        #region Index
         public IActionResult Index(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -37,14 +38,18 @@ namespace YOGBIS.UI.Controllers
                 return View();
             }
         }
+        #endregion
 
+        #region NotEkleGet
         [HttpGet]
         public IActionResult NotEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             return View();
         }
+        #endregion
 
+        #region NotEklePost
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult NotEkle(NotlarVM model, int? NotId)
@@ -67,7 +72,9 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
+        #endregion
 
+        #region NotSil
         [HttpDelete]
         public IActionResult NotSil(int id)
         {
@@ -80,6 +87,7 @@ namespace YOGBIS.UI.Controllers
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
-        }
+        } 
+        #endregion
     }
 }

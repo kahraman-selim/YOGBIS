@@ -2,7 +2,7 @@
 
 namespace YOGBIS.Data.Contracts
 {
-    public interface IOkulBilgiRepository : IRepositoryBase<OkulBilgi>
+    public interface IOkulBinaBolumRepository : IRepositoryBase<OkulBinaBolum>
     {
     }
 }

@@ -54,8 +54,8 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region SoruEkleGet
         [HttpGet]
-        #region Ekle
         public IActionResult SoruEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -63,12 +63,12 @@ namespace YOGBIS.UI.Controllers
             ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
 
             return View();
-        } 
+        }
         #endregion
 
+        #region SoruEklePost
         [ValidateAntiForgeryToken]
         [HttpPost]
-        #region Ekle
         public IActionResult SoruEkle(SoruBankasiVM model, int? SoruBankasiId, string[] OnaylayanId)
         {
 
@@ -122,11 +122,11 @@ namespace YOGBIS.UI.Controllers
             {
                 return View();
             }
-        } 
+        }
         #endregion
 
-        [HttpDelete]
         #region Sil
+        [HttpDelete]
         public IActionResult SoruSil(int id)
         {
             if (id < 0)

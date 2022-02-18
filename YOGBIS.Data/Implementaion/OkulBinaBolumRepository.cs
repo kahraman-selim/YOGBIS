@@ -4,11 +4,11 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Data.Implementaion
 {
-    public class OkulBilgiRepository : Repository<OkulBilgi>, IOkulBilgiRepository
+    public class OkulBinaBolumRepository : Repository<OkulBinaBolum>, IOkulBinaBolumRepository
     {
         private readonly YOGBISContext _ctx;
 
-        public OkulBilgiRepository(YOGBISContext ctx) : base(ctx)
+        public OkulBinaBolumRepository(YOGBISContext ctx) : base(ctx)
         {
             _ctx = ctx;
         }

@@ -23,9 +23,10 @@ namespace YOGBIS.UI.Controllers
             _kullaniciBE = kullaniciBE;
             _userManager = userManager;
             _roleManager = roleManager;
-        } 
+        }
         #endregion
 
+        #region Index
         public IActionResult Index()
         {
             var data = _kullaniciBE.KullaniciGetir();
@@ -36,7 +37,9 @@ namespace YOGBIS.UI.Controllers
             }
             return View();
         }
+        #endregion
 
+        #region KullaniciGuncelleGet
         [HttpGet]
         public ActionResult KullaniciGuncelle(int id)
         {
@@ -47,7 +50,9 @@ namespace YOGBIS.UI.Controllers
                 return View(data.Data);
             return View();
         }
+        #endregion
 
+        #region KullaniciGuncellePost
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult KullaniciGuncelle(KullaniciVM model)
@@ -66,10 +71,12 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
+        #endregion
 
+        #region KullaniciDurum
         public IActionResult Durum(string id)
         {
-         
+
             var user = _userManager.FindByIdAsync(id);
 
             if (user.Result.Aktif == true)
@@ -79,9 +86,10 @@ namespace YOGBIS.UI.Controllers
 
             _userManager.UpdateAsync(user.Result);
 
-            return RedirectToAction("Index");           
+            return RedirectToAction("Index");
 
-        }
+        } 
+        #endregion
 
     }
 }
