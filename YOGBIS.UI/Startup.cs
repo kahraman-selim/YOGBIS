@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Web.Mvc;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.BusinessEngine.Implementaion;
 using YOGBIS.Common.ConstantsModels;
@@ -51,6 +52,7 @@ namespace YOGBIS.UI
             services.AddScoped<IOgrencilerBE, OgrencilerBE>();
             services.AddScoped<IOkulBilgiBE, OkulBilgiBE>();
             services.AddScoped<IOkullarBE, OkullarBE>();
+            services.AddScoped<ISSSBE, SSSBE>();
             services.AddScoped<ISehirlerBE, SehirlerBE>();
             services.AddScoped<ISoruBankasiBE, SoruBankasiBE>();
             services.AddScoped<ISoruKategorileriBE, SoruKategorileriBE>();
@@ -105,31 +107,38 @@ namespace YOGBIS.UI
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
             public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
            UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
-        {
-            if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+                else
+                {
+                    app.UseExceptionHandler("/Error");
+                    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                    app.UseHsts();
+                }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            SeedData.Seed(userManager, roleManager);
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseSession();
+                app.UseHttpsRedirection();
+                app.UseStaticFiles();
+                SeedData.Seed(userManager, roleManager);
+                app.UseRouting();
+                app.UseAuthentication();
+                app.UseAuthorization();
+                app.UseSession();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(name:"default",pattern:"{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
-            });
-        }
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute(
+                        name:"Detail",
+                        pattern: "{controller}/{id:Guid}",
+                        defaults: new { action = "Details", id = UrlParameter.Optional },
+                        constraints: new { id = "[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}" });
+                    endpoints.MapControllerRoute(
+                        name:"default",
+                        pattern:"{controller=Home}/{action=Index}/{id?}");
+                    endpoints.MapRazorPages();
+                });
+            }
     }
 }

@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace YOGBIS.Data.Migrations
 {
-    public partial class ilkyukleme : Migration
+    public partial class yeniyukleme : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -389,8 +389,7 @@ namespace YOGBIS.Data.Migrations
                 name: "SSSs",
                 columns: table => new
                 {
-                    SSSId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    SSSId = table.Column<byte[]>(nullable: false),
                     KayitTarihi = table.Column<DateTime>(nullable: false),
                     Soru = table.Column<string>(nullable: true),
                     KaydedenId = table.Column<string>(nullable: true)
@@ -640,10 +639,9 @@ namespace YOGBIS.Data.Migrations
                 name: "SSSCevaps",
                 columns: table => new
                 {
-                    SSSCevapId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    SSSCevapId = table.Column<byte[]>(nullable: false),
                     KayitTarihi = table.Column<DateTime>(nullable: false),
-                    SSSId = table.Column<int>(nullable: false),
+                    SSSId = table.Column<byte[]>(nullable: false),
                     SSSCevapDetay = table.Column<string>(nullable: true),
                     KaydedenId = table.Column<string>(nullable: true)
                 },
@@ -1048,18 +1046,19 @@ namespace YOGBIS.Data.Migrations
                     OkulAdi = table.Column<string>(nullable: true),
                     OkulLogoURL = table.Column<string>(nullable: true),
                     OkulBilgi = table.Column<string>(nullable: true),
-                    OkulAcilisTarihi = table.Column<DateTime>(nullable: true),
-                    OkulDurumu = table.Column<bool>(nullable: true),
+                    OkulAcilisTarihi = table.Column<DateTime>(nullable: false),
+                    OkulDurumu = table.Column<bool>(nullable: false),
                     OkulMudurId = table.Column<string>(nullable: true),
-                    HizmetGecisDonem = table.Column<string>(nullable: true),
-                    KapaliAlan = table.Column<string>(nullable: true),
-                    AcikAlan = table.Column<string>(nullable: true),
-                    MulkiDurum = table.Column<bool>(nullable: false),
-                    InternetAdresi = table.Column<string>(nullable: true),
-                    EPostaAdresi = table.Column<string>(nullable: true),
+                    OkulHizmetGecisDonem = table.Column<string>(nullable: true),
+                    OkulKapaliAlan = table.Column<string>(nullable: true),
+                    OkulAcikAlan = table.Column<string>(nullable: true),
+                    OkulMulkiDurum = table.Column<bool>(nullable: false),
+                    OkulInternetAdresi = table.Column<string>(nullable: true),
+                    OkulEPostaAdresi = table.Column<string>(nullable: true),
                     OkulTelefon = table.Column<string>(nullable: true),
-                    EyaletId = table.Column<int>(nullable: false),
+                    OkulUlkeId = table.Column<int>(nullable: false),
                     SehirId = table.Column<int>(nullable: false),
+                    EyaletId = table.Column<int>(nullable: false),
                     KaydedenId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -1483,7 +1482,7 @@ namespace YOGBIS.Data.Migrations
                         column: x => x.UlkelerUlkeId,
                         principalTable: "Ulkelers",
                         principalColumn: "UlkeId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_FotoGaleris_Universitelers_UniversitelerUniId",
                         column: x => x.UniversitelerUniId,
@@ -1556,12 +1555,11 @@ namespace YOGBIS.Data.Migrations
                 values: new object[,]
                 {
                     { 1, "Afrika Kıtası", "Afrika", null },
-                    { 2, "Antartika Kıtası", "Antartika", null },
-                    { 3, "Asya Kıtası", "Asya", null },
-                    { 4, "Avrupa Kıtası", "Avrupa", null },
-                    { 5, "Avustralya Kıtası", "Avustralya", null },
-                    { 6, "Güney Amerika Kıtası", "Güney Amerika", null },
-                    { 7, "Kuzey Amerika Kıtası", "Kuzey Amerika", null }
+                    { 2, "Asya Kıtası", "Asya", null },
+                    { 3, "Avrupa Kıtası", "Avrupa", null },
+                    { 4, "Avustralya Kıtası", "Avustralya", null },
+                    { 5, "Güney Amerika Kıtası", "Güney Amerika", null },
+                    { 6, "Kuzey Amerika Kıtası", "Kuzey Amerika", null }
                 });
 
             migrationBuilder.CreateIndex(

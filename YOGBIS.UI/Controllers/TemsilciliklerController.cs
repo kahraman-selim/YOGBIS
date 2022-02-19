@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using YOGBIS.BusinessEngine.Contracts;
+using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.SessionOperations;
+using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -9,11 +14,12 @@ namespace YOGBIS.UI.Controllers
     {
         private readonly ISoruKategorileriBE _soruKategorileriBE;
         private readonly IDerecelerBE _derecelerBE;
-
-        public TemsilciliklerController(ISoruKategorileriBE soruKategorileriBE, IDerecelerBE derecelerBE)
+        private readonly ISSSBE _sSSBE;
+        public TemsilciliklerController(ISoruKategorileriBE soruKategorileriBE, IDerecelerBE derecelerBE, ISSSBE sSSBE)
         {
             _soruKategorileriBE = soruKategorileriBE;
             _derecelerBE = derecelerBE;
+            _sSSBE = sSSBE;
         }
         public IActionResult Index()
         {
@@ -28,7 +34,36 @@ namespace YOGBIS.UI.Controllers
             ViewBag.Kategoriler = string.Empty;// _soruKategorileriBE.SoruKategorileriGetir().Data;
             return View();
         }
+        
+        [HttpGet]
+        public IActionResult SSSEkle()
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            return View();
+        }
 
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public IActionResult SSSEkle(SSSVM model, int? SSSId)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            if (SSSId > 0)
+            {
+                var data = _sSSBE.SSSEkle(model, user);
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var data = _sSSBE.SSSEkle(model, user);
+                if (data.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+                return View(model);
+            }
+        }
         public JsonResult SoruKategoriGetir(int dereceId)
         {
             if (dereceId < 0)

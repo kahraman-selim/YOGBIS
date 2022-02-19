@@ -47,17 +47,15 @@ namespace YOGBIS.Data.DataContext
             new Kitalar()
             { KitaId = 1, KitaAdi = "Afrika", KitaAciklama = "Afrika Kıtası"},
             new Kitalar()
-            { KitaId = 2, KitaAdi = "Antartika", KitaAciklama = "Antartika Kıtası"},
+            { KitaId = 2, KitaAdi = "Asya", KitaAciklama = "Asya Kıtası"},
             new Kitalar()
-            { KitaId = 3, KitaAdi = "Asya", KitaAciklama = "Asya Kıtası"},
+            { KitaId = 3, KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası"},
             new Kitalar()
-            { KitaId = 4, KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası"},
+            { KitaId = 4, KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası"},
             new Kitalar()
-            { KitaId = 5, KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası"},
+            { KitaId = 5, KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası"},
             new Kitalar()
-            { KitaId = 6, KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası"},
-            new Kitalar()
-            { KitaId = 7, KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası"}
+            { KitaId = 6, KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası"}
             );
             #endregion
 
@@ -137,7 +135,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<Temsilcilikler> Temsilciliklers { get; set; }
         public DbSet<UlkeGruplari> UlkeGruplaris { get; set; }        
         public DbSet<Ulkeler> Ulkelers { get; set; }
-        public DbSet<Universiteler> Universitelers { get; set; }        
+        public DbSet<Universiteler> Universitelers { get; set; }
 
         #endregion
     }

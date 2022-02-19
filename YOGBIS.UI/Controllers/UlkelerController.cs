@@ -22,6 +22,7 @@ namespace YOGBIS.UI.Controllers
         private readonly IKitalarBE _kitalarBE;
         [Obsolete]
         private readonly IHostingEnvironment _hostingEnvironment;
+        Guid g = Guid.NewGuid();        
         #endregion
 
         #region Donüştürücüler
@@ -49,12 +50,14 @@ namespace YOGBIS.UI.Controllers
             }
 
             return View(user);
-        } 
+        }
         #endregion
 
         #region UlkeEkleGet
         [Authorize(Roles = "Administrator")]
         [HttpGet]
+        
+        [Route("Ulkeler/UC10002", Name = "UlkeEkleRoute")]
         public IActionResult UlkeEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -68,6 +71,7 @@ namespace YOGBIS.UI.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Obsolete]
+        [Route("Ulkeler/UC10002", Name = "UlkeEkleRoute")]
         public async Task<IActionResult> UlkeEkle(UlkelerVM model, int? UlkeId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -131,7 +135,8 @@ namespace YOGBIS.UI.Controllers
 
         #region Guncelle
         [Authorize(Roles = "Administrator")]
-        [Route("Ulkeler/{id:int:min(1)}", Name = "UlkeDetayRoute")]
+        //[Route("Ulkeler/{id:int:min(1)}", Name = "UlkeDetayRoute")]
+        [Route("Ulkeler/UC10003", Name = "UlkeDetayRoute")]
         public ActionResult Guncelle(int? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));

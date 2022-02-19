@@ -9,8 +9,8 @@ using YOGBIS.Data.DataContext;
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    [Migration("20220216070759_okulalanekleme")]
-    partial class okulalanekleme
+    [Migration("20220219112657_yeniyukleme")]
+    partial class yeniyukleme
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1036,36 +1036,30 @@ namespace YOGBIS.Data.Migrations
                         new
                         {
                             KitaId = 2,
-                            KitaAciklama = "Antartika Kıtası",
-                            KitaAdi = "Antartika"
-                        },
-                        new
-                        {
-                            KitaId = 3,
                             KitaAciklama = "Asya Kıtası",
                             KitaAdi = "Asya"
                         },
                         new
                         {
-                            KitaId = 4,
+                            KitaId = 3,
                             KitaAciklama = "Avrupa Kıtası",
                             KitaAdi = "Avrupa"
                         },
                         new
                         {
-                            KitaId = 5,
+                            KitaId = 4,
                             KitaAciklama = "Avustralya Kıtası",
                             KitaAdi = "Avustralya"
                         },
                         new
                         {
-                            KitaId = 6,
+                            KitaId = 5,
                             KitaAciklama = "Güney Amerika Kıtası",
                             KitaAdi = "Güney Amerika"
                         },
                         new
                         {
-                            KitaId = 7,
+                            KitaId = 6,
                             KitaAciklama = "Kuzey Amerika Kıtası",
                             KitaAdi = "Kuzey Amerika"
                         });
@@ -1385,23 +1379,8 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("AcikAlan")
-                        .HasColumnType("text");
-
-                    b.Property<string>("EPostaAdresi")
-                        .HasColumnType("text");
-
                     b.Property<int>("EyaletId")
                         .HasColumnType("int");
-
-                    b.Property<string>("HizmetGecisDonem")
-                        .HasColumnType("text");
-
-                    b.Property<string>("InternetAdresi")
-                        .HasColumnType("text");
-
-                    b.Property<string>("KapaliAlan")
-                        .HasColumnType("text");
 
                     b.Property<string>("KaydedenId")
                         .HasColumnType("varchar(767)");
@@ -1409,10 +1388,10 @@ namespace YOGBIS.Data.Migrations
                     b.Property<DateTime>("KayitTarihi")
                         .HasColumnType("datetime");
 
-                    b.Property<bool>("MulkiDurum")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("OkulAcikAlan")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime?>("OkulAcilisTarihi")
+                    b.Property<DateTime>("OkulAcilisTarihi")
                         .HasColumnType("datetime");
 
                     b.Property<string>("OkulAdi")
@@ -1421,8 +1400,20 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("OkulBilgi")
                         .HasColumnType("text");
 
-                    b.Property<bool?>("OkulDurumu")
+                    b.Property<bool>("OkulDurumu")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("OkulEPostaAdresi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OkulHizmetGecisDonem")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OkulInternetAdresi")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OkulKapaliAlan")
+                        .HasColumnType("text");
 
                     b.Property<int>("OkulKodu")
                         .HasColumnType("int");
@@ -1433,13 +1424,16 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("OkulMudurId")
                         .HasColumnType("text");
 
+                    b.Property<bool>("OkulMulkiDurum")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("OkulTelefon")
                         .HasColumnType("text");
 
-                    b.Property<int>("SehirId")
+                    b.Property<int>("OkulUlkeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UlkeId")
+                    b.Property<int>("SehirId")
                         .HasColumnType("int");
 
                     b.HasKey("OkulId");
@@ -1492,9 +1486,9 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.SSS", b =>
                 {
-                    b.Property<int>("SSSId")
+                    b.Property<byte[]>("SSSId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("varbinary(16)");
 
                     b.Property<string>("KaydedenId")
                         .HasColumnType("varchar(767)");
@@ -1514,9 +1508,9 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.SSSCevap", b =>
                 {
-                    b.Property<int>("SSSCevapId")
+                    b.Property<byte[]>("SSSCevapId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("varbinary(16)");
 
                     b.Property<string>("KaydedenId")
                         .HasColumnType("varchar(767)");
@@ -1527,8 +1521,9 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("SSSCevapDetay")
                         .HasColumnType("text");
 
-                    b.Property<int>("SSSId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("SSSId")
+                        .IsRequired()
+                        .HasColumnType("varbinary(16)");
 
                     b.HasKey("SSSCevapId");
 

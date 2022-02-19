@@ -1034,36 +1034,30 @@ namespace YOGBIS.Data.Migrations
                         new
                         {
                             KitaId = 2,
-                            KitaAciklama = "Antartika Kıtası",
-                            KitaAdi = "Antartika"
-                        },
-                        new
-                        {
-                            KitaId = 3,
                             KitaAciklama = "Asya Kıtası",
                             KitaAdi = "Asya"
                         },
                         new
                         {
-                            KitaId = 4,
+                            KitaId = 3,
                             KitaAciklama = "Avrupa Kıtası",
                             KitaAdi = "Avrupa"
                         },
                         new
                         {
-                            KitaId = 5,
+                            KitaId = 4,
                             KitaAciklama = "Avustralya Kıtası",
                             KitaAdi = "Avustralya"
                         },
                         new
                         {
-                            KitaId = 6,
+                            KitaId = 5,
                             KitaAciklama = "Güney Amerika Kıtası",
                             KitaAdi = "Güney Amerika"
                         },
                         new
                         {
-                            KitaId = 7,
+                            KitaId = 6,
                             KitaAciklama = "Kuzey Amerika Kıtası",
                             KitaAdi = "Kuzey Amerika"
                         });
@@ -1490,9 +1484,9 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.SSS", b =>
                 {
-                    b.Property<int>("SSSId")
+                    b.Property<byte[]>("SSSId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("varbinary(16)");
 
                     b.Property<string>("KaydedenId")
                         .HasColumnType("varchar(767)");
@@ -1512,9 +1506,9 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.SSSCevap", b =>
                 {
-                    b.Property<int>("SSSCevapId")
+                    b.Property<byte[]>("SSSCevapId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("varbinary(16)");
 
                     b.Property<string>("KaydedenId")
                         .HasColumnType("varchar(767)");
@@ -1525,8 +1519,9 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("SSSCevapDetay")
                         .HasColumnType("text");
 
-                    b.Property<int>("SSSId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("SSSId")
+                        .IsRequired()
+                        .HasColumnType("varbinary(16)");
 
                     b.HasKey("SSSCevapId");
 
