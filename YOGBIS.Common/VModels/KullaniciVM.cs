@@ -15,7 +15,7 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Telefon Numarası")]
         public string PhoneNumber { get; set; }
         [StringLength(11,ErrorMessage ="TC Kimlik Numaranızı kontrol ediniz")]
-        public int TcKimlikNo { get; set; }
+        public string TcKimlikNo { get; set; }
         [Required (ErrorMessage ="{0} boş geçilemez")]
         public string Ad { get; set; }
         [Required(ErrorMessage = "{0} boş geçilemez")]
@@ -25,7 +25,8 @@ namespace YOGBIS.Common.VModels
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime KayitTarihi { get; set; }
-        public int KulaniciAdDegLimiti { get; set; } = 10;        
+        public int KulaniciAdDegLimiti { get; set; } = 10;
+        [MaxLength]
         public byte[] KullaniciResim { get; set; }
         public string KullaniciResimYol { get; set; }
         public IFormFile KullaniciResimIFromFile { get; set; }

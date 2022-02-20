@@ -12,7 +12,7 @@ namespace YOGBIS.Data.DbModels
         public Guid AdayId { get; set; }
         [ForeignKey("AdayId")]
         public Adaylar Adaylar { get; set; }
-        public int AdayTC { get; set; }
+        public string AdayTC { get; set; }
         //diğeralanlar
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]

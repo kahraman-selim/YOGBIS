@@ -9,7 +9,7 @@ namespace YOGBIS.Common.VModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid AdayId { get; set; }
-        public int AdayTC { get; set; }
+        public string AdayTC { get; set; }
         public string AdayAd { get; set; }
         public string AdayAdIki { get; set; }
         public string AdaySoyad { get; set; }

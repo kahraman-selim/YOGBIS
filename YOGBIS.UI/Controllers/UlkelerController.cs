@@ -20,6 +20,7 @@ namespace YOGBIS.UI.Controllers
         #region Değişkenler
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IKitalarBE _kitalarBE;
+        private readonly IFotoGaleriBE _fotoGaleriBE;
         [Obsolete]
         private readonly IHostingEnvironment _hostingEnvironment;
                
@@ -27,10 +28,11 @@ namespace YOGBIS.UI.Controllers
 
         #region Donüştürücüler
         [Obsolete]
-        public UlkelerController(IUlkelerBE ulkelerBE, IKitalarBE kitalarBE, IHostingEnvironment hostingEnvironment)
+        public UlkelerController(IUlkelerBE ulkelerBE, IKitalarBE kitalarBE, IHostingEnvironment hostingEnvironment, IFotoGaleriBE fotoGaleriBE)
         {
             _ulkelerBE = ulkelerBE;
             _kitalarBE = kitalarBE;
+            _fotoGaleriBE = fotoGaleriBE;
             _hostingEnvironment = hostingEnvironment;
         } 
         #endregion
@@ -41,7 +43,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            var requestmodel = _ulkelerBE.UlkeleriGetir();  //UlkeGetirKullaniciId(user.LoginId);
+            var requestmodel = _ulkelerBE.UlkeleriGetir();  
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
             if (requestmodel.IsSuccess)
@@ -79,15 +81,15 @@ namespace YOGBIS.UI.Controllers
 
             if (model.FotoGaleris != null)
             {
-                string fotoklasorler = "img/Ulkeler/";
+                string fotoklasorler = "img/Ulkeler/";                
                 model.FotoGaleri = new List<FotoGaleriVM>();
 
                 foreach (var file in model.FotoGaleris)
                 {
-                    var galeri = new FotoGaleriVM()
-                    {
-                        FotoAdi = file.FileName,
+                    var galeri = new FotoGaleriVM(){
+                        
                         FotoURL = await FotoYukle(fotoklasorler, file),
+                        FotoAdi = file.Name,
                         KaydedenId = user.LoginId,
                         KayitTarihi = model.KayitTarihi
                     };
@@ -114,7 +116,8 @@ namespace YOGBIS.UI.Controllers
 
                     string klasorler = "img/Bayraklar/";
                     model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
-                    model.UlkeBayrakAdi = ulkeBayrakAdi.ToString();
+                    string[] parcala = model.UlkeBayrakURL.ToString().Split("/img/Bayraklar/");
+                    model.UlkeBayrakAdi = parcala[1].ToString();
 
                 }
                 else
@@ -172,12 +175,42 @@ namespace YOGBIS.UI.Controllers
         #region UlkeSil
         [Authorize(Roles = "Administrator")]
         [HttpDelete]
+        [Obsolete]
         public IActionResult UlkeSil(Guid id)
         {
             if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
+            var ulkebayrakurl = _ulkelerBE.UlkeBayrakURLGetir((Guid)id).Data;
+            if (ulkebayrakurl != null)
+            {
+                string[] parcala = ulkebayrakurl.ToString().Split("/img/Bayraklar/");
+                var bayrakadi = parcala[1].ToString();
+
+                if (bayrakadi != null)
+                {
+                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/Ulkeler/" + bayrakadi);
+                }
+            }
+
+            string[] fotourl = _fotoGaleriBE.FotoURLGetirUlkeId((Guid)id).Data;
+
+            if (fotourl != null)
+            {
+                foreach (var item in fotourl.ToString())
+                {
+                    string[] parcalar = item.ToString().Split("/img/Ulkeler/");
+                    var fotoadi = parcalar[1].ToString();
+
+                    if (fotoadi != null)
+                    {
+                        System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/Ulkeler/" + fotoadi);
+                    }
+                }
+            }
+
             var data = _ulkelerBE.UlkeSil(id);
+
             if (data.IsSuccess)
                 return Json(new { success = data.IsSuccess, message = data.Message });
             else
@@ -221,16 +254,26 @@ namespace YOGBIS.UI.Controllers
             }
 
             return View(user);
-        } 
+        }
         #endregion
 
         #region UlkeFotoSil
+        [Obsolete]
         public IActionResult UlkeFotoSil(Guid id)
         {
             if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
-            var data = _ulkelerBE.UlkeFotoSil(id);
+            var ulkefotourl = _fotoGaleriBE.FotoURLGetir((Guid)id);
+            string[] parcalar = ulkefotourl.Data.ToString().Split("/img/Ulkeler/");
+            var ulkeFotoAdi = parcalar[1].ToString();
+
+            if (ulkeFotoAdi != null)
+            {
+                System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/Ulkeler/" + ulkeFotoAdi);
+            }
+
+            var data = _fotoGaleriBE.FotoSil(id);          
             if (data.IsSuccess)
                 return Json(new { success = data.IsSuccess, message = data.Message });
             else

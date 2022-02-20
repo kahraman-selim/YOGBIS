@@ -88,7 +88,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region DereceGetir(int id)
+        #region DereceGetir(Guid id)
         public Result<SoruDerecelerVM> DereceGetir(Guid id)
         {
             var data = _unitOfWork.soruDerecelerRepository.Get(id);
@@ -104,7 +104,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region DereceAdGetir(int id)
+        #region DereceAdGetir(Guid id)
         public Result<string> DereceAdGetir(Guid id)
         {
             var data = _unitOfWork.soruDerecelerRepository.Get(id);

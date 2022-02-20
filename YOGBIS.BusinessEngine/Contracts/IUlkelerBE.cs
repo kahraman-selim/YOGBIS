@@ -9,6 +9,7 @@ namespace YOGBIS.BusinessEngine.Contracts
     public interface IUlkelerBE
     {
         Result<List<UlkelerVM>> UlkeleriGetir();
+        Result<List<UlkelerVM>> UlkeleriGetirViewComponent();
         Result<List<UlkelerVM>> UlkeGetirKullaniciId(string userId);
         Result<UlkelerVM> UlkeEkle(UlkelerVM model, SessionContext user);        
         Result<UlkelerVM> UlkeGetir(Guid id);
@@ -18,6 +19,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<bool> UlkeFotoSil(Guid id);
         Result<string> UlkeBayrakURLGetir(Guid id);
         Result<string> UlkeAdGetir(Guid id);
+        Result<Guid> UlkeIdGetir(Guid id);
         Result<Guid> UlkeIdGetir(string ulkeKodu);
     }
 }

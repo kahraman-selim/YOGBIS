@@ -10,7 +10,7 @@
 
 <form id="profile-form" method="post" enctype="multipart/form-data">
     <div class="row">
-        <div class="col-md-6 justify-content-center">            
+        <div class="col-md-6 justify-content-center">
             <div class="card mb-3">
                 <div class="card-header">
                     <i class=""></i>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="form-group col-12">
                         <label asp-for="Input.TcKimlikNo" class="font-weight-bold"></label>
-                        <input asp-for="Input.TcKimlikNo" class="form-control" type="number"/>
+                        <input asp-for="Input.TcKimlikNo" class="form-control" type="number" />
                         <span asp-validation-for="Input.TcKimlikNo" class="text-danger"></span>
                     </div>
                     <div class="form-group col-12">
@@ -58,25 +58,25 @@
                 </div>
                 <div class="card-body">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
-                            <div class="col-md-12 m-auto justify-content-center">
-                                @if (Model.Input.KullaniciResim != null)
-                                {
-                                    <img id="profilePicture" style="width:auto;height:350px;object-fit:cover;margin:auto;position:relative;"
-                                         src="data:image/*;base64,@(Convert.ToBase64String(Model.Input.KullaniciResim))" class="img-thumbnail">
-                                }
-                                else
-                                {
-                                    <img id="profilePicture" style="width: auto; height: 350px;object-fit:cover;margin:auto;position:relative;" src="~/img/KullaniciGaleri/user.png" class="img-thumbnail">
-                                }
-                            </div>
+                    <div class="form-group">
+                        <div class="col-md-12 m-auto justify-content-center">
+                            @if (Model.Input.KullaniciResim != null)
+                            {
+                                <img id="profilePictureModel" style="width:auto;height:350px;object-fit:cover;margin:auto;position:relative;"
+                                     src="data:image/*;base64,@(Convert.ToBase64String(Model.Input.KullaniciResim))" class="img-thumbnail">
+                            }
+                            else
+                            {
+                                <img id="profilePicture" style="width: auto; height: 350px;object-fit:cover;margin:auto;position:relative;" src="~/img/KullaniciGaleri/user.png" class="img-thumbnail">
+                            }
+                        </div>
                         <div class="col-md-12 mt-2">
                             <input type="file"
                                    accept=".png,.jpg,.jpeg,.gif,.tif"
-                                   asp-for="Input.KullaniciResim"
-                                   class="btn btn-outline-danger col-md-12"
+                                   asp-for="Input.KullaniciResim" id="userImageInput"
+                                   class="btn btn-outline-danger col-md-12 p-0"
                                    style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
-                                   onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                                   onchange="ImagesFileSize(this);" />
                             <span asp-validation-for="Input.KullaniciResim" class="text-danger"></span>
                         </div>
                     </div>
@@ -90,4 +90,40 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript">
+
+        function ImagesFileSize(input) {
+
+            var maxFileSize = 1194304;
+            var fileUpload = document.getElementById("userImageInput");
+            var fileCount = fileUpload.files.length;
+
+            for (var i = 0; i < fileCount; i++) {
+
+                if (input.files[i].size > maxFileSize) {
+
+                    $(':input[type="submit"]').prop('disabled', true);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata',
+                        text: 'Yüklenmek istenilen dosya boyutu 1 MB dan fazla !',
+                    })
+                    document.getElementById("userImageInput").className = "";
+                    document.getElementById("userImageInput").className += "btn btn-outline-danger mb-1 btn-sm col-md-12 p-0";
+                    document.getElementById("userImageInput").value = null;
+                    return false;
+                }
+                else {
+
+                    $(':input[type="submit"]').prop('disabled', false);
+                    document.getElementById("userImageInput").className = "";
+                    document.getElementById("userImageInput").className += "btn btn-outline-success mb-1 btn-sm col-md-12 p-0";
+                    document.getElementById('profilePicture').src = window.URL.createObjectURL(document.getElementById("userImageInput").files[i]);
+                    document.getElementById('profilePictureModel').src = window.URL.createObjectURL(document.getElementById("userImageInput").files[i]);
+                }
+            }
+        }       
+
+    </script>
 }

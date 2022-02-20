@@ -53,8 +53,8 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
 
             [Display(Name = "TC Kimlik Numarası")]
-            //[StringLength(11, ErrorMessage = "TC Kimlik Numaranızı kontrol ediniz")]
-            public int TcKimlikNo { get; set; }
+            [StringLength(11, ErrorMessage = "TC Kimlik Numaranızı kontrol ediniz")]
+            public string TcKimlikNo { get; set; }
 
             [Display(Name = "Profil Fotoğrafı")]
             public byte[] KullaniciResim { get; set; }

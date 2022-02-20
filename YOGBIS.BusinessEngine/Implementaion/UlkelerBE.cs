@@ -30,11 +30,51 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region UlkeleriGetir
         public Result<List<UlkelerVM>> UlkeleriGetir()
         {
-            //var data = _unitOfWork.ulkelerRepository.GetAll(includeProperties: "Kullanici,Kitalar").OrderBy(u => u.UlkeAdi).ToList();
-            //var ulkeler = _mapper.Map<List<Ulkeler>, List<UlkelerVM>>(data);
-            //return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, ulkeler);
 
-            var data = _unitOfWork.ulkelerRepository.GetAll(includeProperties: "Kitalar,Kullanici").OrderBy(u => u.UlkeAdi).ToList();
+            var data = _unitOfWork.ulkelerRepository.GetAll(includeProperties: "Kitalar,Kullanici").OrderBy(o => o.UlkeAdi).ToList();
+
+            if (data != null)
+            {
+                List<UlkelerVM> returnData = new List<UlkelerVM>();
+                foreach (var item in data)
+                {
+                    if (item.Aktif==true)
+                    {
+                        returnData.Add(new UlkelerVM()
+                        {
+                            UlkeId = item.UlkeId,
+                            UlkeAdi = item.UlkeAdi,
+                            UlkeBayrakURL = item.UlkeBayrakURL,
+                            UlkeBayrakAdi = item.UlkeBayrakAdi,
+                            UlkeAciklama = item.UlkeAciklama,
+                            KayitTarihi = item.KayitTarihi,
+                            KitaId = item.KitaId,
+                            KitaAdi = item.Kitalar.KitaAdi,
+                            Aktif = item.Aktif,
+                            UlkeKodu = item.UlkeKodu,
+                            //VatandasSayisi=item.VatandasSayisi,
+                            //UlkeGrupId = item.Kitalar.UlkeGruplariKitalars.Where(x=>x.KitaId==item.KitaId),
+                            //UlkeGrupAdi = item.UlkeGruplari.UlkeGrupAdi,
+                            KaydedenId = item.KaydedenId,
+                            KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                        });
+                    }
+
+                }
+                return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<UlkelerVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+        #region UlkeleriGetirUlkeleriGetirViewComponent
+        public Result<List<UlkelerVM>> UlkeleriGetirViewComponent()
+        {
+
+            var data = _unitOfWork.ulkelerRepository.GetAll(includeProperties: "Kitalar,Kullanici").OrderBy(o => o.UlkeAdi).ToList();
 
             if (data != null)
             {
@@ -45,19 +85,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         UlkeId = item.UlkeId,
                         UlkeAdi = item.UlkeAdi,
-                        UlkeBayrakURL = item.UlkeBayrakURL,
-                        UlkeBayrakAdi = item.UlkeBayrakAdi,
-                        UlkeAciklama = item.UlkeAciklama,
-                        KayitTarihi = item.KayitTarihi,
+                        //UlkeBayrakURL = item.UlkeBayrakURL,
+                        //UlkeBayrakAdi = item.UlkeBayrakAdi,
+                        //UlkeAciklama = item.UlkeAciklama,
+                        //KayitTarihi = item.KayitTarihi,
                         KitaId = item.KitaId,
                         KitaAdi = item.Kitalar.KitaAdi,
                         Aktif = item.Aktif,
-                        UlkeKodu = item.UlkeKodu,
-                        //VatandasSayisi=item.VatandasSayisi,
-                        //UlkeGrupId = item.Kitalar.UlkeGruplariKitalars.Where(x=>x.KitaId==item.KitaId),
-                        //UlkeGrupAdi = item.UlkeGruplari.UlkeGrupAdi,
-                        KaydedenId = item.KaydedenId,
-                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                        //UlkeKodu = item.UlkeKodu,
+                        //KaydedenId = item.KaydedenId,
+                        //KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
                 }
                 return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, returnData);
@@ -358,8 +395,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<bool> UlkeFotoSil(Guid id)
         {
             var data = _unitOfWork.fotoGaleriRepository.GetFirstOrDefault(u => u.FotoGaleriId == id);
-            if (data != null)
-            {
+            if (data != null)          {
+                
                 _unitOfWork.fotoGaleriRepository.Remove(data);
                 _unitOfWork.Save();
                 return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
@@ -405,6 +442,25 @@ namespace YOGBIS.BusinessEngine.Implementaion
             else
             {
                 return new Result<string>(false, ResultConstant.RecordNotFound);
+            }
+
+        }
+        #endregion
+
+        #region UlkeIdGetir(id)
+        public Result<Guid> UlkeIdGetir(Guid id)
+        {
+
+            var data = _unitOfWork.ulkelerRepository.Get(id);
+            if (data != null)
+            {
+                var ulkeId = data.UlkeId;
+
+                return new Result<Guid>(true, ResultConstant.RecordFound, ulkeId);
+            }
+            else
+            {
+                return new Result<Guid>(false, ResultConstant.RecordNotFound);
             }
 
         }
