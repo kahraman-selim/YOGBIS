@@ -1,12 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
     public class OkulBilgi:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int OkulBilgiId { get; set; }
+        public Guid OkulBilgiId { get; set; }
         public string OkulTelefon { get; set; }
         public string OkulAdres { get; set; }
         //****************************************
@@ -21,11 +23,11 @@ namespace YOGBIS.Data.DbModels
         public string MdYrdDonusYil { get; set; }
 
         //****************************************
-        public int OkulId { get; set; }
+        public Guid OkulId { get; set; }
 
         [ForeignKey("OkulId")]
         public Okullar Okullar { get; set; }
-        public int UlkeId { get; set; }
+        public Guid UlkeId { get; set; }
         public string KullaniciId { get; set; }
         [ForeignKey("KullaniciId")]
         public Kullanici Kullanici { get; set; }

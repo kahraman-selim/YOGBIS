@@ -7,14 +7,15 @@ namespace YOGBIS.Data.DbModels
 {
     public class Mulakatlar:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int MulakatId { get; set; }
+        public Guid MulakatId { get; set; }
         public string OnaySayisi { get; set; }
         public DateTime OnayTarihi { get; set; }
         public string KararSayisi { get; set; }
         public DateTime KararTarihi { get; set; }
         public string MulakatAdi { get; set; }
-        public int DereceId { get; set; }
+        public Guid DereceId { get; set; }
         [ForeignKey("DereceId")]
         public SoruDereceler Dereceler { get; set; }
         public DateTime BaslamaTarihi { get; set; }

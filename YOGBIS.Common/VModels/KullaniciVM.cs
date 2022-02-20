@@ -15,7 +15,7 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Telefon Numarası")]
         public string PhoneNumber { get; set; }
         [StringLength(11,ErrorMessage ="TC Kimlik Numaranızı kontrol ediniz")]
-        public string TcKimlikNo { get; set; }
+        public int TcKimlikNo { get; set; }
         [Required (ErrorMessage ="{0} boş geçilemez")]
         public string Ad { get; set; }
         [Required(ErrorMessage = "{0} boş geçilemez")]

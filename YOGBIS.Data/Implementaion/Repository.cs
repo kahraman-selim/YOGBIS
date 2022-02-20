@@ -20,7 +20,7 @@ namespace YOGBIS.Data.Implementaion
         {
             dbSet.Add(entity);
         }
-        public T Get(int id)
+        public T Get(Guid id)
         {
             return dbSet.Find(id);
         }

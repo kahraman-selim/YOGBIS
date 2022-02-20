@@ -1,13 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
     public class AdayDDK:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int Id { get; set; }
-        public int AdayId { get; set; }
+        public Guid Id { get; set; }
+        public Guid AdayId { get; set; }
         [ForeignKey("AdayId")]
         public Adaylar Adaylar { get; set; }
         public int AdayTC { get; set; }

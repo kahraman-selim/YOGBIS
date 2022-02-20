@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,8 +7,9 @@ namespace YOGBIS.Data.DbModels
 {
     public class Duyurular:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int DuyurularId { get; set; }
+        public Guid DuyurularId { get; set; }
         public string DuyuruBaslık { get; set; }
         public string DuyuruDetay { get; set; }
         public string KaydedenId { get; set; }

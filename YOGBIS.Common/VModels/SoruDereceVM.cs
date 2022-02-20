@@ -1,10 +1,12 @@
-﻿namespace YOGBIS.Common.VModels
+﻿using System;
+
+namespace YOGBIS.Common.VModels
 {
     public class SoruDereceVM
     {
-        public int SoruId { get; set; }
+        public Guid SoruId { get; set; }
         public SoruBankasiVM SoruBankasi { get; set; }
-        public int DereceId { get; set; }
+        public Guid DereceId { get; set; }
         public SoruDerecelerVM SoruDereceler { get; set; }
     }
 }

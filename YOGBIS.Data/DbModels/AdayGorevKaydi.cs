@@ -7,14 +7,15 @@ namespace YOGBIS.Data.DbModels
 {
     public class AdayGorevKaydi:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int AdayGorevKaydiId { get; set; }
+        public Guid AdayGorevKaydiId { get; set; }
         public int GorevliTC { get; set; }
-        public int DereceId { get; set; }
+        public Guid DereceId { get; set; }
         [ForeignKey("DereceId")]
         public SoruDereceler SoruDereceler { get; set; }
         public string Gorevi { get; set; }
-        public int BransId { get; set; }
+        public Guid BransId { get; set; }
         [ForeignKey("BransId")]
         public Branslar Branslar { get; set; }        
         public string GorevOnaySayi { get; set; }
@@ -25,12 +26,12 @@ namespace YOGBIS.Data.DbModels
         public DateTime? GorevBitisTarihi { get; set; }
         public int GorevDurumu { get; set; }
         public string GorevAciklama { get; set; }        
-        public int? OkulId { get; set; }
-        public int? UniId { get; set; }
-        public int? TemsilcilikId { get; set; }
-        public int? SehirId { get; set; }        
-        public int? EyaletId { get; set; }
-        public int UlkeId { get; set; }
+        public Guid? OkulId { get; set; }
+        public Guid? UniId { get; set; }
+        public Guid? TemsilcilikId { get; set; }
+        public Guid? SehirId { get; set; }        
+        public Guid? EyaletId { get; set; }
+        public Guid UlkeId { get; set; }
         [ForeignKey("UlkeId")]
         public Ulkeler Ulkeler { get; set; }
         public string KaydedenId { get; set; }

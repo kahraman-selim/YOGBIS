@@ -7,11 +7,12 @@ namespace YOGBIS.Data.DbModels
 {
     public class Subeler:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int SubeId { get; set; }
+        public Guid SubeId { get; set; }
         public string OkulAdi { get; set; }
         public DateTime SubeAcilisTarihi { get; set; }
-        public int OkulId { get; set; }
+        public Guid OkulId { get; set; }
         [ForeignKey("OkulId")]
         public Okullar Okullar { get; set; }
         public string KaydedenId { get; set; }

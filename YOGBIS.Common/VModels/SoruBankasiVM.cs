@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class SoruBankasiVM:BaseVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int SoruBankasiId { get; set; }
+        public Guid SoruBankasiId { get; set; }
 
         [Required(ErrorMessage = "Soruyu yazınız...")]
         public string Soru { get; set; }
@@ -21,10 +24,10 @@ namespace YOGBIS.Common.VModels
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kaydeden { get; set; }
         [Required(ErrorMessage = "Soru kategorisini seçiniz...")]
-        public int SoruKategorilerId { get; set; }
+        public Guid SoruKategorilerId { get; set; }
         public List<SoruKategoriVM> SoruKategori { get; set; }
         [Required(ErrorMessage = "Soru derecesini seçiniz...")]
-        public int SoruDereceId { get; set; }
+        public Guid SoruDereceId { get; set; }
         public List<SoruDereceVM> SoruDerece { get; set; }
         [Required(ErrorMessage = "Onaylayacak kişi/kişileri seçiniz...")]
         public string[] OnaylayanId { get; set; }

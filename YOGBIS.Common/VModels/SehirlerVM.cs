@@ -1,18 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class SehirlerVM:BaseVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int SehirId { get; set; }
+        public Guid SehirId { get; set; }
         [Required(ErrorMessage = "Şehir/Bölge adı zorunlu bir alandır!")]
         public string SehirAdi { get; set; }
         public bool? Baskent { get; set; }
         public string SehirAciklama { get; set; }
         public int SehirVatandas { get; set; }
-        public int EyaletId { get; set; }
+        public Guid EyaletId { get; set; }
         public string EyaletAdi { get; set; }
         public EyaletlerVM Eyaletler { get; set; }
         public string KaydedenId { get; set; }

@@ -66,7 +66,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion                
 
         #region MulakatGetir
-        public Result<MulakatlarVM> MulakatGetir(int id)
+        public Result<MulakatlarVM> MulakatGetir(Guid id)
         {
             var data = _unitOfWork.mulakatlarRepository.Get(id);
             if (data != null)
@@ -136,7 +136,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region MulakatSil
-        public Result<bool> MulakatSil(int id)
+        public Result<bool> MulakatSil(Guid id)
         {
             var data = _unitOfWork.mulakatlarRepository.Get(id);
             if (data != null)

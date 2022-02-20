@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class MulakatlarVM:BaseVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int MulakatId { get; set; }
+        public Guid MulakatId { get; set; }
         [Required(ErrorMessage ="Onay Sayısı zorunlu bir alandır !")]
         public string OnaySayisi { get; set; }        
         public string MulakatAdi { get; set; }
         [Required(ErrorMessage = "Derece seçimi yapınız !")]
-        public int DereceId { get; set; }
+        public Guid DereceId { get; set; }
         public string DereceAdi { get; set; }
         [Required(ErrorMessage = "Derece seçimi yapınız !")]
         public SoruDerecelerVM Dereceler { get; set; }

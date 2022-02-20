@@ -6,8 +6,9 @@ namespace YOGBIS.Data.DbModels
 {
     public class Notlar:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int NotId { get; set; }
+        public Guid NotId { get; set; }
         public string NotAdi { get; set; }
         public string NotDetay { get; set; }
         public DateTime BaTarihi { get; set; }

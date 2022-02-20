@@ -72,7 +72,7 @@ namespace YOGBIS.UI.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Obsolete]
-        public async Task<IActionResult> OkulEkle(OkullarVM model, int? OkulId)
+        public async Task<IActionResult> OkulEkle(OkullarVM model, Guid? OkulId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
@@ -89,7 +89,7 @@ namespace YOGBIS.UI.Controllers
             //    model.OkulLogoURL = await FotoYukle(klasorler, model.OkulLogo);
             //}
 
-            if (OkulId > 0)
+            if (OkulId != null)
             {
                 //if (model.OkulMudurId==user.LoginId)
                 //{
@@ -125,16 +125,16 @@ namespace YOGBIS.UI.Controllers
 
         #region Guncelle
         [Authorize(Roles = "Administrator")]
-        public async Task<ActionResult> Guncelle(int? id)
+        public async Task<ActionResult> Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             var okulmudur = await _kullaniciBE.OkulMuduruGetir();
             ViewBag.OkulMuduru = okulmudur.Data;
 
-            if (id > 0)
+            if (id != null)
             {
-                var data = _okullarBE.OkulGetir((int)id);
+                var data = _okullarBE.OkulGetir((Guid)id);
                 return View(data.Data);
             }
             else
@@ -148,9 +148,9 @@ namespace YOGBIS.UI.Controllers
         #region OkulSil
         [Authorize(Roles = "Administrator")]
         [HttpDelete]
-        public IActionResult OkulSil(int id)
+        public IActionResult OkulSil(Guid id)
         {
-            if (id < 0)
+            if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _okullarBE.OkulSil(id);

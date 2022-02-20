@@ -37,8 +37,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region UlkeGrupGetir(int id)
-        public Result<UlkeGruplariVM> UlkeGrupGetir(int id)
+        #region UlkeGrupGetir(Guid id)
+        public Result<UlkeGruplariVM> UlkeGrupGetir(Guid id)
         {
             var data = _unitOfWork.ulkeGruplariRepository.Get(id);
             if (data != null)
@@ -106,7 +106,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region UlkeGrupSil
-        public Result<bool> UlkeGrupSil(int id)
+        public Result<bool> UlkeGrupSil(Guid id)
         {
             var data = _unitOfWork.ulkeGruplariRepository.Get(id);
             if (data != null)

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -76,9 +77,9 @@ namespace YOGBIS.UI.Controllers
 
         #region NotSil
         [HttpDelete]
-        public IActionResult NotSil(int id)
+        public IActionResult NotSil(Guid id)
         {
-            if (id < 0)
+            if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _notlarBE.NotSil(id);

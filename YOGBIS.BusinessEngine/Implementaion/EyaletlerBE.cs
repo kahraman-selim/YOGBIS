@@ -92,8 +92,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region EyaletGetir(int id)
-        public Result<EyaletlerVM> EyaletGetir(int id)
+        #region EyaletGetir(Guid id)
+        public Result<EyaletlerVM> EyaletGetir(Guid id)
         {
             var data = _unitOfWork.eyaletlerRepository.Get(id);
             if (data != null)
@@ -161,7 +161,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region EyaletSil
-        public Result<bool> EyaletSil(int id)
+        public Result<bool> EyaletSil(Guid id)
         {
             var data = _unitOfWork.eyaletlerRepository.Get(id);
             if (data != null)

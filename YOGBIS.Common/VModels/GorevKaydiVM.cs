@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class GorevKaydiVM:BaseVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int GorevId { get; set; }
+        public Guid GorevId { get; set; }
         public int GorevliTC { get; set; }
         public string GörevAdi { get; set; }
         public DateTime? GorevBasTarihi { get; set; }

@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class KitalarVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int KitaId { get; set; }
+        public Guid KitaId { get; set; }
         public string KitaAdi { get; set; }
         public string KitaAciklama { get; set; }
     }

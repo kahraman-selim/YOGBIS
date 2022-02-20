@@ -39,18 +39,18 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region KullaniciGuncelleGet
-        [HttpGet]
-        public ActionResult KullaniciGuncelle(int id)
-        {
-            if (id < 0)
-                return View();
-            var data = _kullaniciBE.KullaniciGetir(id);
-            if (data.IsSuccess)
-                return View(data.Data);
-            return View();
-        }
-        #endregion
+        //#region KullaniciGuncelleGet
+        //[HttpGet]
+        //public ActionResult KullaniciGuncelle(string id)
+        //{
+        //    if (id != null)
+        //        return View();
+        //    var data = _kullaniciBE.KullaniciGetir(id);
+        //    if (data.IsSuccess)
+        //        return View(data.Data);
+        //    return View();
+        //}
+        //#endregion
 
         #region KullaniciGuncellePost
         [ValidateAntiForgeryToken]

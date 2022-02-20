@@ -6,7 +6,7 @@ namespace YOGBIS.Data.DbModels
 {
     public class Kullanici : IdentityUser
     {
-        public string TcKimlikNo { get; set; }
+        public int TcKimlikNo { get; set; }
         public string Ad { get; set; }
         public string Soyad { get; set; }
         public DateTime KayitTarihi { get; set; }

@@ -6,8 +6,9 @@ namespace YOGBIS.Data.DbModels
 {
     public class Komisyonlar:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int KomisyonId { get; set; }
+        public Guid KomisyonId { get; set; }
         public string KomisyonAdi { get; set; }
         public int KomisyonUyeSiraId { get; set; }
         public int KomisyonGorevi { get; set; }
@@ -18,7 +19,7 @@ namespace YOGBIS.Data.DbModels
         public string KomisyonUyeEPosta { get; set; }
         public DateTime KomisyonGorevBaslamaTarihi { get; set; }
         public DateTime KomisyonGorevBitisTarihi { get; set; }
-        public int MulakatId { get; set; }
+        public Guid MulakatId { get; set; }
         [ForeignKey("MulakatId")]
         public Mulakatlar Mulakatlar { get; set; }
         public string KaydedenId { get; set; }

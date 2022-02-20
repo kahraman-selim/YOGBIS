@@ -1,21 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
     public class AdayNot:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int AdayNotId { get; set; }
-        public int AdayId { get; set; }
+        public Guid AdayNotId { get; set; }
+        public Guid AdayId { get; set; }
         [ForeignKey("AdayId")]
         public Adaylar Adaylar { get; set; }
         public int AdayTC { get; set; }
-        public int KomisyonId { get; set; }
+        public Guid KomisyonId { get; set; }
         public int KomisyonUyeSiraId { get; set; }
-        public int NotKategoriId { get; set; }
+        public Guid NotKategoriId { get; set; }
         public int Not { get; set; }
-        public int MulakatId { get; set; }
+        public Guid MulakatId { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

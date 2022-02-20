@@ -67,7 +67,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region SoruKategorileriGetirDereceId
-        public Result<List<SoruKategorilerVM>> SoruKategorileriGetirDereceId(int dereceId)
+        public Result<List<SoruKategorilerVM>> SoruKategorileriGetirDereceId(Guid dereceId)
         {
             var data = _unitOfWork.sorukategorilerRepository.GetAll(u => u.DereceId == dereceId, includeProperties: "Kullanici").ToList();
             if (data != null)
@@ -127,7 +127,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region SoruKategoriGetir(int id)
-        public Result<SoruKategorilerVM> SoruKategoriGetir(int id)
+        public Result<SoruKategorilerVM> SoruKategoriGetir(Guid id)
         {
             var data = _unitOfWork.sorukategorilerRepository.Get(id);
             if (data != null)
@@ -195,7 +195,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region SoruKategoriSil
-        public Result<bool> SoruKategoriSil(int id)
+        public Result<bool> SoruKategoriSil(Guid id)
         {
             var data = _unitOfWork.sorukategorilerRepository.Get(id);
             if (data != null)

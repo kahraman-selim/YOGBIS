@@ -1,14 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
     public class GorevKararPdfGaleri:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string GorevKararPdfUrl { get; set; }
-        public int AdayGorevKaydiId { get; set; }
+        public Guid AdayGorevKaydiId { get; set; }
         [ForeignKey("AdayGorevKaydiId")]
         public AdayGorevKaydi AdayGorevKaydi { get; set; }
         public string KaydedenId { get; set; }

@@ -23,199 +23,199 @@ namespace YOGBIS.UI.Controllers
             _okullarBE = okullarBE;
         }
         
-        [Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
-        public IActionResult Index()
-        {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
-            //ViewBag.Aylar = EnumExtension<EnumAylar>.GetDisplayValue(EnumAylar.Agustos);
+        //[Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
+        //public IActionResult Index()
+        //{
+        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+        //    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+        //    ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+        //    //ViewBag.Aylar = EnumExtension<EnumAylar>.GetDisplayValue(EnumAylar.Agustos);
            
-            var requestmodel = _ogrencilerBE.OgrenciGetirKullaniciId(user.LoginId);
+        //    var requestmodel = _ogrencilerBE.OgrenciGetirKullaniciId(user.LoginId);
 
-            if (requestmodel.IsSuccess)
-            {
-                return View(requestmodel.Data);
-            }
+        //    if (requestmodel.IsSuccess)
+        //    {
+        //        return View(requestmodel.Data);
+        //    }
 
-            return View(user);
-        }
+        //    return View(user);
+        //}
 
-        [Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
-        [HttpGet]
-        public IActionResult OgrenciEkle()
-        {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
-            return View();
-        }
+        //[Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
+        //[HttpGet]
+        //public IActionResult OgrenciEkle()
+        //{
+        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+        //    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+        //    ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+        //    return View();
+        //}
 
-        [Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
-        [HttpPost]
-        public IActionResult OgrenciEkle(OgrencilerVM model)
-        {
+        //[Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
+        //[HttpPost]
+        //public IActionResult OgrenciEkle(OgrencilerVM model)
+        //{
 
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+        //    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+        //    ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-            var data = _ogrencilerBE.OgrenciEkle(model, user);
-            if (data.IsSuccess)
-            {
-                return RedirectToAction("Index");
-            }
-            return View(model);
-        }
+        //    var data = _ogrencilerBE.OgrenciEkle(model, user);
+        //    if (data.IsSuccess)
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(model);
+        //}
 
-        [Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
-        public ActionResult Guncelle(int? id)
-        {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+        //[Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
+        //public ActionResult Guncelle(int? id)
+        //{
+        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+        //    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+        //    ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-            if (id > 0)
-            {
-                var data = _ogrencilerBE.OgrenciGetir((int)id);
-                return View(data.Data);
-            }
-            else
-            {
-                return View();
-            }
+        //    if (id > 0)
+        //    {
+        //        var data = _ogrencilerBE.OgrenciGetir((int)id);
+        //        return View(data.Data);
+        //    }
+        //    else
+        //    {
+        //        return View();
+        //    }
 
-        }
+        //}
 
-        [Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public ActionResult Guncelle(OgrencilerVM model)
-        {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+        //[Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
+        //[ValidateAntiForgeryToken]
+        //[HttpPost]
+        //public ActionResult Guncelle(OgrencilerVM model)
+        //{
+        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+        //    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+        //    ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-            var data = _ogrencilerBE.OgrenciGuncelle(model, user);
-            if (data.IsSuccess)
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return View();
-            }
-        }
+        //    var data = _ogrencilerBE.OgrenciGuncelle(model, user);
+        //    if (data.IsSuccess)
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //    else
+        //    {
+        //        return View();
+        //    }
+        //}
 
-        [Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
-        [HttpDelete]
-        public IActionResult OgrenciSil(int id)
-        {
-            if (id < 0)
-                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+        //[Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
+        //[HttpDelete]
+        //public IActionResult OgrenciSil(int id)
+        //{
+        //    if (id < 0)
+        //        return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
-            var data = _ogrencilerBE.OgrenciSil(id);
-            if (data.IsSuccess)
-                return Json(new { success = data.IsSuccess, message = data.Message });
-            else
-                return Json(new { success = data.IsSuccess, message = data.Message });
+        //    var data = _ogrencilerBE.OgrenciSil(id);
+        //    if (data.IsSuccess)
+        //        return Json(new { success = data.IsSuccess, message = data.Message });
+        //    else
+        //        return Json(new { success = data.IsSuccess, message = data.Message });
 
-        }
+        //}
 
-        [Authorize(Roles = "Administrator,Follower,Manager")]
-        public IActionResult OgrenciGetir(int? ulkeId)
-        {            
+        //[Authorize(Roles = "Administrator,Follower,Manager")]
+        //public IActionResult OgrenciGetir(int? ulkeId)
+        //{            
             
-            if (ulkeId > 0)
-            {
-                var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
-                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;                
+        //    if (ulkeId > 0)
+        //    {
+        //        var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
+        //        ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+        //        ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;                
 
-                if (data.IsSuccess)
-                {
-                    return View(data.Data);
-                }
+        //        if (data.IsSuccess)
+        //        {
+        //            return View(data.Data);
+        //        }
 
-                return View();
-            }
-            else
-            {
-                var requestmodel = _ogrencilerBE.OgrencileriGetir();
-                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        var requestmodel = _ogrencilerBE.OgrencileriGetir();
+        //        ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+        //        ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
 
-                if (requestmodel.IsSuccess)
-                {
-                    return View(requestmodel.Data);
-                }
+        //        if (requestmodel.IsSuccess)
+        //        {
+        //            return View(requestmodel.Data);
+        //        }
 
-                return View();
-            }
+        //        return View();
+        //    }
 
-        }
+        //}
 
-        [Authorize(Roles = "Administrator,Follower,Manager")]
-        public ActionResult OgrencileriGetirUlkeId(int? ulkeId) 
-        {
-            var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
-            if (data.IsSuccess)
-            {
-                return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
-            }
-            else
-            {
-                return RedirectToAction("OgrenciGetir", new { ulkeId = ulkeId});
-            }            
-        }
+        //[Authorize(Roles = "Administrator,Follower,Manager")]
+        //public ActionResult OgrencileriGetirUlkeId(int? ulkeId) 
+        //{
+        //    var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
+        //    if (data.IsSuccess)
+        //    {
+        //        return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("OgrenciGetir", new { ulkeId = ulkeId});
+        //    }            
+        //}
         
-        [Authorize(Roles = "Administrator,Follower,Manager")]
-        public ActionResult OgrencileriGetirOkulId(int? OkulId)
-        {
-            var data = _ogrencilerBE.OgrenciGetirOkulId(OkulId);
-            if (data.IsSuccess)
-            {
-                return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
-            }
-            else
-            {
-                return RedirectToAction("OgrenciGetir", new { okulKodu = OkulId });
-            }
-        }
+        //[Authorize(Roles = "Administrator,Follower,Manager")]
+        //public ActionResult OgrencileriGetirOkulId(int? OkulId)
+        //{
+        //    var data = _ogrencilerBE.OgrenciGetirOkulId(OkulId);
+        //    if (data.IsSuccess)
+        //    {
+        //        return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("OgrenciGetir", new { okulKodu = OkulId });
+        //    }
+        //}
 
-        [Authorize(Roles = "Administrator,Follower,Manager")]
-        public IActionResult OgrencileriGetir(int? ulkeId)
-        {
+        //[Authorize(Roles = "Administrator,Follower,Manager")]
+        //public IActionResult OgrencileriGetir(int? ulkeId)
+        //{
 
-            if (ulkeId > 0)
-            {
-                var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
-                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
-                //ViewBag.Aylar = EnumExtension<EnumAylar>.GetDisplayValues((EnumAylar)int.Parse(EnumAylar).ToString()); //GetDisplayValue(EnumAylar).ToList();
+        //    if (ulkeId > 0)
+        //    {
+        //        var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
+        //        ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+        //        ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+        //        //ViewBag.Aylar = EnumExtension<EnumAylar>.GetDisplayValues((EnumAylar)int.Parse(EnumAylar).ToString()); //GetDisplayValue(EnumAylar).ToList();
 
-                if (data.IsSuccess)
-                {
-                    return View(data.Data);
-                }
+        //        if (data.IsSuccess)
+        //        {
+        //            return View(data.Data);
+        //        }
 
-                return View();
-            }
-            else
-            {
-                var requestmodel = _ogrencilerBE.OgrencileriGetir();
-                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;                
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        var requestmodel = _ogrencilerBE.OgrencileriGetir();
+        //        ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+        //        ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;                
 
-                if (requestmodel.IsSuccess)
-                {
-                    return View(requestmodel.Data);
-                }
+        //        if (requestmodel.IsSuccess)
+        //        {
+        //            return View(requestmodel.Data);
+        //        }
 
-                return View();
-            }
+        //        return View();
+        //    }
 
-        }
+        //}
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,8 +7,9 @@ namespace YOGBIS.Data.DbModels
 {
     public class SoruBankasi:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int SoruBankasiId { get; set; }
+        public Guid SoruBankasiId { get; set; }
         public string Soru { get; set; }
         public string Cevap { get; set; }
         public int SorulmaSayisi { get; set; }

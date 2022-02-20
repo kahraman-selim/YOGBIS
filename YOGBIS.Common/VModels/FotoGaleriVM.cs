@@ -1,11 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class FotoGaleriVM:BaseVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int FotoGaleriId { get; set; }
+        public Guid FotoGaleriId { get; set; }
         public string FotoAdi { get; set; }
         public string FotoURL { get; set; }
         public string KaydedenId { get; set; }

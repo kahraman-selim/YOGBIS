@@ -2,18 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class EtkinliklerVM:BaseVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int EtkinlikId { get; set; }
+        public Guid EtkinlikId { get; set; }
         public string EtkinlikAdi { get; set; }
         public string OkulAdi { get; set; }
-        public int OkulId { get; set; }
+        public Guid OkulId { get; set; }
         public OkullarVM Okullar { get; set; }
-        public int TemsilcilikId { get; set; }
+        public Guid TemsilcilikId { get; set; }
         public TemsilciliklerVM Temsilcilikler { get; set; }
         public DateTime BasTarihi { get; set; }
         public DateTime BitTarihi { get; set; }

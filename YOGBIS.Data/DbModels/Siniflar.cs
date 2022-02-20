@@ -7,11 +7,12 @@ namespace YOGBIS.Data.DbModels
 {
     public class Siniflar:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int SinifId { get; set; }
+        public Guid SinifId { get; set; }
         public string SinifAdi { get; set; }
         public DateTime SinifAcilisTarihi { get; set; }
-        public int SubeId { get; set; }
+        public Guid SubeId { get; set; }
         [ForeignKey("SubeId")]
         public Subeler Subeler { get; set; }
         public string KaydedenId { get; set; }

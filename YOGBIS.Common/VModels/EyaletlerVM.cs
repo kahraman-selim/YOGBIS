@@ -1,17 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class EyaletlerVM:BaseVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int EyaletId { get; set; }
+        public Guid EyaletId { get; set; }
         [Required(ErrorMessage ="Eyalet adını yazınız!")]
         public string EyaletAdi { get; set; }
         public int EyaletVatandas { get; set; }
         public string EyaletAciklama { get; set; }       
-        public int UlkeId { get; set; }
+        public Guid UlkeId { get; set; }
         public string UlkeAdi { get; set; }
         public UlkelerVM Ulkeler { get; set; }
         public string KaydedenId { get; set; }

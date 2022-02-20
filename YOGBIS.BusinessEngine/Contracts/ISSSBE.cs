@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 
 namespace YOGBIS.BusinessEngine.Contracts
 {
-    public interface IDerecelerBE
+    public interface ISSSBE
     {
-        Result<List<SoruDerecelerVM>> DereceleriGetir();
-        Result<SoruDerecelerVM> DereceEkle(SoruDerecelerVM model, SessionContext user);
-        Result<SoruDerecelerVM> DereceGetir(int id);
-        Result<string> DereceAdGetir(int id);
-        Result<SoruDerecelerVM> DereceGuncelle(SoruDerecelerVM model, SessionContext user);        
-        Result<bool> DereceSil(int id);
-        Result<List<SoruDerecelerVM>> DereceGetirKullaniciId(string userId);
+        //Result<List<SSSVM>> SSSGetir();
+        Result<SSSVM> SSSEkle(SSSVM model, SessionContext user);
+        //Result<SSSVM> SSSGetir(Guid id);
+        //Result<SSSVM> SSSGuncelle(SSSVM model, SessionContext user);        
+        //Result<bool> SSSSil(Guid id);
+        //Result<List<SSSVM>> SSSGetirKullaniciId(string userId);
     }
 }

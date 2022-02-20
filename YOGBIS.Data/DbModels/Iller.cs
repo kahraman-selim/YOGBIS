@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,8 +7,9 @@ namespace YOGBIS.Data.DbModels
 {
     public class Iller:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int IlId { get; set; }
+        public Guid IlId { get; set; }
         public string PlakaKodu { get; set; }
         public string IlAdi { get; set; }
         public string KaydedenId { get; set; }

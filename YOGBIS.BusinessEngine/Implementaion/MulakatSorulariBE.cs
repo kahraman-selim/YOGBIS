@@ -65,7 +65,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             //#endregion
         }
 
-        public Result<MulakatSorulariVM> MulakatSorulariGetir(int id)
+        public Result<MulakatSorulariVM> MulakatSorulariGetir(Guid id)
         {
             var data = _unitOfWork.mulakatSorulariRepository.Get(id);
             if (data!=null)
@@ -127,7 +127,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
 
-        public Result<bool> MulakatSorusuSil(int id)
+        public Result<bool> MulakatSorusuSil(Guid id)
         {
             var data = _unitOfWork.mulakatSorulariRepository.Get(id);
             if (data!=null)
@@ -142,32 +142,32 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
        
-        public Result<List<MulakatSorulariVM>> MulakatSorulariGetir(int id, string derece)
-        {
-            var data = _unitOfWork.mulakatSorulariRepository.GetAll(k => k.SoruSiraNo == id).ToList(); //&& k.Dereceler.DereceAdi == derece (parantez içi eklenecek)
-            if (data != null)
-            {
-                List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
-                foreach (var item in data)
-                {
-                    returnData.Add(new MulakatSorulariVM()
-                    {
-                        MulakatSorulariId = item.MulakatSorulariId,
-                        SoruSiraNo = item.SoruSiraNo,
-                        SoruId = item.SoruId,
-                        SoruKategoriId = item.SoruKategoriId,
-                        SoruKategoriAdi = item.SoruKategoriAdi,
-                        //DereceAdi=item.Dereceler.DereceAdi,
-                        Soru = item.Soru,
-                        Cevap = item.Cevap
-                    });
-                }
-                return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
-            }
-            else
-            {
-                return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
-            }
-        }
+        //public Result<List<MulakatSorulariVM>> MulakatSorulariGetir(Guid id, string derece)
+        //{
+        //    var data = _unitOfWork.mulakatSorulariRepository.GetAll(k => k.SoruSiraNo == id).ToList(); //&& k.Dereceler.DereceAdi == derece (parantez içi eklenecek)
+        //    if (data != null)
+        //    {
+        //        List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
+        //        foreach (var item in data)
+        //        {
+        //            returnData.Add(new MulakatSorulariVM()
+        //            {
+        //                MulakatSorulariId = item.MulakatSorulariId,
+        //                SoruSiraNo = item.SoruSiraNo,
+        //                SoruId = item.SoruId,
+        //                SoruKategoriId = item.SoruKategoriId,
+        //                SoruKategoriAdi = item.SoruKategoriAdi,
+        //                //DereceAdi=item.Dereceler.DereceAdi,
+        //                Soru = item.Soru,
+        //                Cevap = item.Cevap
+        //            });
+        //        }
+        //        return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
+        //    }
+        //    else
+        //    {
+        //        return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
+        //    }
+        //}
     }
 }

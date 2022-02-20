@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -18,7 +19,7 @@ namespace YOGBIS.UI.Controllers
         {
             _derecelerBE = derecelerBE;
         }
-        public IActionResult Index(int? id)
+        public IActionResult Index(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             //var requestmodel= _derecelerBE.DereceleriGetir(); 
@@ -26,9 +27,9 @@ namespace YOGBIS.UI.Controllers
             //{
             //    return View(requestmodel.Data);
             //}
-            if (id > 0)
+            if (id != null)
             {
-                var data = _derecelerBE.DereceGetir((int)id);
+                var data = _derecelerBE.DereceGetir((Guid)id);
                 return View(data.Data);
             }
             else
@@ -46,11 +47,11 @@ namespace YOGBIS.UI.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult DereceEkle(SoruDerecelerVM model, int? DereceId) 
+        public IActionResult DereceEkle(SoruDerecelerVM model, Guid? DereceId) 
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            if (DereceId > 0)
+            if (DereceId != null)
             {
                 var data = _derecelerBE.DereceGuncelle(model, user);
 
@@ -67,25 +68,25 @@ namespace YOGBIS.UI.Controllers
             }
         }
 
-        //public ActionResult Guncelle(int? id)
-        //{
-            
-        //    if (id > 0)
-        //    {
-        //        var data = _derecelerBE.DereceGetir((int)id); 
-        //        return View(data.Data);
-        //    }
-        //    else
-        //    {
-        //        return View();
-        //    }
+        public ActionResult Guncelle(Guid? id)
+        {
 
-        //}
+            if (id != null)
+            {
+                var data = _derecelerBE.DereceGetir((Guid)id);
+                return View(data.Data);
+            }
+            else
+            {
+                return View();
+            }
+
+        }
 
         [HttpDelete]
-        public IActionResult DereceSil(int id)
+        public IActionResult DereceSil(Guid id)
         {
-            if (id < 0)
+            if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _derecelerBE.DereceSil(id); 

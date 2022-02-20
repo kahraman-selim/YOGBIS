@@ -7,13 +7,14 @@ namespace YOGBIS.Data.DbModels
 {
     public class Etkinlikler:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int EtkinlikId { get; set; }
+        public Guid EtkinlikId { get; set; }
         public string EtkinlikAdi { get; set; }
-        public int OkulId { get; set; }
+        public Guid OkulId { get; set; }
         [ForeignKey("OkulId")]
         public Okullar Okullar { get; set; }
-        public int TemsilcilikId { get; set; }
+        public Guid TemsilcilikId { get; set; }
         [ForeignKey("TemsilcilikId")]
         public Temsilcilikler Temsilcilikler { get; set; }
         public DateTime BasTarihi { get; set; }

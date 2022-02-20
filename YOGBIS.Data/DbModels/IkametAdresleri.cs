@@ -1,14 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
     public class IkametAdresleri:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int Id { get; set; }
-        public int IkametIlId { get; set; }
-        public int IkametIlceId { get; set; }
+        public Guid Id { get; set; }
+        public Guid IkametIlId { get; set; }
+        public Guid IkametIlceId { get; set; }
         [ForeignKey("IkametIlceId")]
         public Ilceler Ilceler { get; set; }
         public string PostaKodu { get; set; }

@@ -80,29 +80,13 @@
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        @if (imageName == null)
-                                        {
-                                            <label asp-for="UlkeBayrak" class="small mb-1 font-weight-bold">Ülke Bayrağı seçiniz</label>
-                                            <input type="file"
-                                                   accept=".png,.jpg,.jpeg,.gif,.tif"
-                                                   asp-for="UlkeBayrak"
-                                                   class="@(this != null ? "btn btn-outline-danger mb-1 btn-sm col-md-12" : "btn btn-outline-success mb-1 btn-sm col-md-12")"
-                                                   title="Bayrak seçiniz" placeholder="Ülke Bayrağı" id="ulkeBayrakInput"
-                                                   onchange="BayrakImagesFileSize(this);" />
-                                            <span asp-validation-for="UlkeBayrak" class="text-danger">Boş</span>
-                                        }
-                                        else
-                                        {
-                                            <label asp-for="UlkeBayrak" class="small mb-1 font-weight-bold">Ülke Bayrağı seçiniz</label>
-                                            <input type="file"
-                                                   accept=".png,.jpg,.jpeg,.gif,.tif"
-                                                   class="@(this != null ? "btn btn-outline-danger mb-1 btn-sm col-md-12" : "btn btn-outline-success mb-1 btn-sm col-md-12")"
-                                                   title="Bayrak seçiniz" placeholder="Ülke Bayrağı" id="ulkeBayrakInput"
-                                                   onchange="document.getElementById('ulkeBayrakImages').src = window.URL.createObjectURL(this.files[0])" />
-                                                    
-                                            <input hidden id="UlkeBayrak" value="@imagePath" asp-for="UlkeBayrak" />
-                                            <span asp-validation-for="UlkeBayrak" class="text-success">Dolu</span>
-                                        }
+                                        <label asp-for="UlkeBayrak" class="small mb-1 font-weight-bold">Ülke Bayrağı seçiniz</label>
+                                        <input type="file" asp-for="UlkeBayrak"
+                                               accept=".png,.jpg,.jpeg,.gif,.tif"
+                                               class="@(this != null ? "btn btn-outline-danger mb-1 btn-sm col-md-12" : "btn btn-outline-success mb-1 btn-sm col-md-12")"
+                                               title="Bayrak seçiniz" placeholder="Ülke Bayrağı" id="ulkeBayrakInput"
+                                               onchange="BayrakImagesFileSize(this);" />
+                                        <span asp-validation-for="UlkeBayrak" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
@@ -132,14 +116,15 @@
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
-                                    <a asp-controller="Ulkeler" asp-action="UC10001" asp-route-id="@ulkeId" id="UlkeDetay" name="UlkeDetay" class="btn btn-info btn-sm text-white w-100 mb-1">Ülke Detay Gör</a>
+                                    <a asp-controller="Ulkeler" asp-action="UlkeDetayById" asp-route-id="@ulkeId" id="UlkeDetay" name="UlkeDetay" class="btn btn-info btn-sm text-white w-100 mb-1">Ülke Detay Gör</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">
-                            <input type="submit" value="Güncelle" class="btn btn-info btn-sm text-white mb-1" style="width:100px" />
+                            <input type="submit" value="Güncelle" class="btn btn-info btn-sm text-white mb-1" style="width:100px" id="btnguncelle"/>
+                            @*<a class="btn btn-danger btn-sm text-white mb-1" id="btnguncelle" style="width:100px">ok</a>*@
                             <a class="btn btn-danger btn-sm text-white mb-1" id="btnSil" style="width:100px">Sil</a>
                             <a asp-controller="Ulkeler" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Vazgeç</a>
                         </div>
@@ -163,20 +148,31 @@
 
             document.getElementById("UlkeId").focus();
             var ulkeid = $("#UlkeId").val();
-            var id = parseInt(ulkeid);
+            /*var id = parseInt(ulkeid);*/
             /*alert(id);*/
 
             bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
                 if (result) {
                     $.ajax({
                         type: "DELETE",
-                        url: "/Ulkeler/UlkeSil/" + id,
+                        url: "/Ulkeler/UlkeSil/" + ulkeid,
                         success: function () {
-                            window.location.href = "/Ulkeler/UlkeEkle/";
+                            window.location.href = "/Ulkeler/UC10002";
                         }
                     });
                 }
             });
+
+        });
+
+        $("#btnguncelle").on("click", function () {
+
+            var ulkebayrakadi = document.getElementById("ulkeBayrakInput").value;
+
+            if (ulkebayrakadi == "") {
+                
+                document.getElementById("ulkeBayrakInput").disabled = true;
+            }
 
         });
 
@@ -198,6 +194,7 @@
                     })
                     document.getElementById("UlkeImagesInput").className = "";
                     document.getElementById("UlkeImagesInput").className += "btn btn-outline-danger mb-1 btn-sm col-md-12";
+                    document.getElementById("UlkeImagesInput").value = null;
                     return false;
                 }
                 else {
@@ -205,6 +202,7 @@
                     $(':input[type="submit"]').prop('disabled', false);
                     document.getElementById("UlkeImagesInput").className = "";
                     document.getElementById("UlkeImagesInput").className += "btn btn-outline-success mb-1 btn-sm col-md-12";
+                    document.getElementById('ulkeImages').src = window.URL.createObjectURL(document.getElementById("UlkeImagesInput").files[i]);
                 }
             }
         }
@@ -227,6 +225,7 @@
                     })
                     document.getElementById("ulkeBayrakInput").className = "";
                     document.getElementById("ulkeBayrakInput").className += "btn btn-outline-danger mb-1 btn-sm col-md-12";
+                    document.getElementById("ulkeBayrakInput").value = null;
                     return false;
                 }
                 else {
@@ -234,7 +233,8 @@
                     $(':input[type="submit"]').prop('disabled', false);
                     document.getElementById("ulkeBayrakInput").className = "";
                     document.getElementById("ulkeBayrakInput").className += "btn btn-outline-success mb-1 btn-sm col-md-12";
-                    document.getElementById('ulkeBayrakImages').src = this.files[i];//window.URL.createObjectURL(this.files[i]);
+                    document.getElementById('ulkeBayrakImages').src = window.URL.createObjectURL(document.getElementById("ulkeBayrakInput").files[i]);
+
                 }
             }
         }

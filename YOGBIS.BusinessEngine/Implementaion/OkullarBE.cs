@@ -82,7 +82,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulKodu = item.OkulKodu,
                         OkulAdi = item.OkulAdi,
                         OkulUlkeId = item.OkulUlkeId,
-                        OkulUlkeAdi = _ulkelerBE.UlkeAdGetir(item.OkulUlkeId).Data,
+                        OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
@@ -127,9 +127,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region OkulGetir
-        public Result<OkullarVM> OkulGetir(int id)
+        public Result<OkullarVM> OkulGetir(Guid id)
         {
-            if (id > 0)
+            if (id != null)
             {
                 var data = _unitOfWork.okullarRepository.GetFirstOrDefault(u => u.OkulId == id); //includeProperties: "Ulkeler,Kullanici"
                 if (data != null)
@@ -176,8 +176,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KaydedenId = user.LoginId,
                         //////////////////////////
                         OkulAcilisTarihi = DateTime.Now,
-                        EyaletId=1,
-                        SehirId=1,
+                        EyaletId= null,
+                        SehirId= null,
                         OkulMulkiDurum=true
                     };
 
@@ -202,7 +202,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkulGuncelle
         public Result<OkullarVM> OkulGuncelle(OkullarVM model, SessionContext user)
         {
-            if (model.OkulId > 0)
+            if (model.OkulId != null)
             {
                 try
                 {
@@ -253,7 +253,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region Okulsil
-        public Result<bool> OkulSil(int id)
+        public Result<bool> OkulSil(Guid id)
         {
             var data = _unitOfWork.okullarRepository.Get(id);
             if (data != null)

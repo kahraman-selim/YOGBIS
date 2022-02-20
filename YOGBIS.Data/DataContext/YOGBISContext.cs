@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Data.DataContext
@@ -16,8 +18,8 @@ namespace YOGBIS.Data.DataContext
         {
             base.OnModelCreating(builder);
 
-            base.OnModelCreating(builder.EnableAutoHistory(null));
-
+            base.OnModelCreating(builder.EnableAutoHistory(null));            
+            
             #region MySqlSet
             builder.Entity<IdentityRole>(entity => entity.Property(m => m.Id).HasMaxLength(127));
             builder.Entity<IdentityRole>(entity => entity.Property(m => m.ConcurrencyStamp).HasColumnType("varchar(256)"));
@@ -42,22 +44,22 @@ namespace YOGBIS.Data.DataContext
             });
             #endregion
 
-            #region Kıtalar
-            builder.Entity<Kitalar>().HasData(
-            new Kitalar()
-            { KitaId = 1, KitaAdi = "Afrika", KitaAciklama = "Afrika Kıtası"},
-            new Kitalar()
-            { KitaId = 2, KitaAdi = "Asya", KitaAciklama = "Asya Kıtası"},
-            new Kitalar()
-            { KitaId = 3, KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası"},
-            new Kitalar()
-            { KitaId = 4, KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası"},
-            new Kitalar()
-            { KitaId = 5, KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası"},
-            new Kitalar()
-            { KitaId = 6, KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası"}
-            );
-            #endregion
+            //#region Kıtalar
+            //builder.Entity<Kitalar>().HasData(
+            //new Kitalar()
+            //{ KitaId = Guid.NewGuid(), KitaAdi = "Afrika", KitaAciklama = "Afrika Kıtası"},
+            //new Kitalar()
+            //{ KitaId = Guid.NewGuid(), KitaAdi = "Asya", KitaAciklama = "Asya Kıtası"},
+            //new Kitalar()
+            //{ KitaId = Guid.NewGuid(), KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası"},
+            //new Kitalar()
+            //{ KitaId = Guid.NewGuid(), KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası"},
+            //new Kitalar()
+            //{ KitaId = Guid.NewGuid(), KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası"},
+            //new Kitalar()
+            //{ KitaId = Guid.NewGuid(), KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası"}
+            //);
+            //#endregion
 
             #region FP
             builder.Entity<SoruKategori>()

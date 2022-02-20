@@ -2,13 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class OkullarVM:BaseVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int OkulId { get; set; }
+        public Guid OkulId { get; set; }
 
         [Required(ErrorMessage = "Okul kodu zorunlu bir alandır")]
         public int OkulKodu { get; set; }
@@ -29,12 +31,12 @@ namespace YOGBIS.Common.VModels
         public string OkulInternetAdresi { get; set; }
         public string OkulEPostaAdresi { get; set; }
         public string OkulTelefon { get; set; }
-        public int OkulUlkeId { get; set; }
+        public Guid? OkulUlkeId { get; set; }
         public string OkulUlkeAdi { get; set; }
-        public int SehirId { get; set; }
+        public Guid? SehirId { get; set; }
         public string SehirAdi { get; set; }
         public SehirlerVM Sehirler { get; set; }
-        public int EyaletId { get; set; }
+        public Guid? EyaletId { get; set; }
         public string EyaletAdi { get; set; }
         public EyaletlerVM Eyaletler { get; set; }
         public string KaydedenId { get; set; }

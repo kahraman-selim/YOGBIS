@@ -1,10 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
     public class Personeller:Base
     {
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public Guid Id { get; set; }
         public string PersonelGrupAdi { get; set; }
         public string PersonelAdiSoyadi { get; set; }
         public string PersonelUnvan { get; set; }

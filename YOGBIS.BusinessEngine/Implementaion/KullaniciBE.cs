@@ -42,21 +42,21 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region KullaniciGetir(int Id)
-        public Result<KullaniciVM> KullaniciGetir(int Id)
-        {
-            var data = _unitOfWork.kullaniciRepository.Get(Id);
-            if (data != null)
-            {
-                var kullanici = _mapper.Map<Kullanici, KullaniciVM>(data);
-                return new Result<KullaniciVM>(true, ResultConstant.RecordFound, kullanici);
-            }
-            else
-            {
-                return new Result<KullaniciVM>(false, ResultConstant.RecordNotFound);
-            }
-        }
-        #endregion
+        //#region KullaniciGetir(string Id)
+        //public Result<KullaniciVM> KullaniciGetir(string Id)
+        //{
+        //    var data = _unitOfWork.kullaniciRepository.Get(Id);
+        //    if (data != null)
+        //    {
+        //        var kullanici = _mapper.Map<Kullanici, KullaniciVM>(data);
+        //        return new Result<KullaniciVM>(true, ResultConstant.RecordFound, kullanici);
+        //    }
+        //    else
+        //    {
+        //        return new Result<KullaniciVM>(false, ResultConstant.RecordNotFound);
+        //    }
+        //}
+        //#endregion
 
         #region KullaniciGuncelle
         public Result<KullaniciVM> KullaniciGuncelle(KullaniciVM model)

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -27,14 +28,14 @@ namespace YOGBIS.UI.Controllers
         } 
         #endregion
         
-        public IActionResult Index(int? id)
+        public IActionResult Index(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
-            if (id > 0)
+            if (id != null)
             {
-                var data = _mulakatOlusturBE.MulakatGetir((int)id);
+                var data = _mulakatOlusturBE.MulakatGetir((Guid)id);
                 return View(data.Data);
             }
             else
@@ -54,13 +55,13 @@ namespace YOGBIS.UI.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult MulakatEkle(MulakatlarVM model, int? MulakatId)
+        public IActionResult MulakatEkle(MulakatlarVM model, Guid? MulakatId)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
-            if (MulakatId > 0)
+            if (MulakatId != null)
             {
                 var data = _mulakatOlusturBE.MulakatGuncelle(model, user);
                 return RedirectToAction("Index");
@@ -76,14 +77,14 @@ namespace YOGBIS.UI.Controllers
             }
         }
 
-        public IActionResult Guncelle(int? id)
+        public IActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
-            if (id > 0)
+            if (id != null)
             {
-                var data = _mulakatOlusturBE.MulakatGetir((int)id);
+                var data = _mulakatOlusturBE.MulakatGetir((Guid)id);
                 return View(data.Data);
             }
             else
@@ -93,9 +94,9 @@ namespace YOGBIS.UI.Controllers
         }
 
         [HttpDelete]
-        public IActionResult MulakatSil(int id)
+        public IActionResult MulakatSil(Guid id)
         {
-            if (id < 0)
+            if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _mulakatOlusturBE.MulakatSil(id);

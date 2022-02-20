@@ -1,10 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
     public class DosyaGaleri:Base
     {
-        public int DosyaGaleriId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public Guid DosyaGaleriId { get; set; }
         public string DosyaAdi { get; set; }
         public string DosyaURL { get; set; }
         public string KaydedenId { get; set; }

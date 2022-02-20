@@ -126,15 +126,15 @@ namespace YOGBIS.UI.Controllers
 
         #region GuncelleGet
         [Authorize(Roles = "Administrator,Manager,Teacher")]
-        public ActionResult Guncelle(int? id)
+        public ActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-            if (id > 0)
+            if (id != null)
             {
-                var data = _etkinliklerBE.EtkinlikGetir((int)id);
+                var data = _etkinliklerBE.EtkinlikGetir((Guid)id);
                 return View(data.Data);
             }
             else
@@ -170,9 +170,9 @@ namespace YOGBIS.UI.Controllers
         #region EtkinlikSil
         [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpDelete]
-        public IActionResult EtkinlikSil(int id)
+        public IActionResult EtkinlikSil(Guid id)
         {
-            if (id < 0)
+            if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _etkinliklerBE.EtkinlikSil(id);
@@ -185,10 +185,10 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         [Authorize(Roles = "Administrator,Manager")]
-        public IActionResult Etkinlikler(int OkulId)
+        public IActionResult Etkinlikler(Guid OkulId)
         {
 
-            if (OkulId > 0)
+            if (OkulId != null)
             {
                 var data = _etkinliklerBE.EtkinlikGetirOkulId(OkulId);
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
@@ -216,7 +216,7 @@ namespace YOGBIS.UI.Controllers
             }
 
         }
-        public ActionResult EtkinlikGetirOkulId(int Id)
+        public ActionResult EtkinlikGetirOkulId(Guid Id)
         {
             var data = _etkinliklerBE.EtkinlikGetirOkulId(Id);
             if (data.IsSuccess)
@@ -230,15 +230,15 @@ namespace YOGBIS.UI.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        public ActionResult Detay(int? id)
+        public ActionResult Detay(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-            if (id > 0)
+            if (id != null)
             {
-                var data = _etkinliklerBE.EtkinlikGetir((int)id);
+                var data = _etkinliklerBE.EtkinlikGetir((Guid)id);
                 return View(data.Data);
             }
             else

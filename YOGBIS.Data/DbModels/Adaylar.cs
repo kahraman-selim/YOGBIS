@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,8 +7,9 @@ namespace YOGBIS.Data.DbModels
 {
     public class Adaylar:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int AdayId { get; set; }
+        public Guid AdayId { get; set; }
         public int AdayTC { get; set; }
         public string AdayAd { get; set; }
         public string AdaySoyad { get; set; }
@@ -53,7 +55,7 @@ namespace YOGBIS.Data.DbModels
         public string MYSSinavTarihi { get; set; }
         public string MYSSinavTedbiri { get; set; }
         public string MYSSTAciklama { get; set; }
-        public int DereceId { get; set; }
+        public Guid DereceId { get; set; }
         //Aday başvuru tablosu
         public string MYSPuan { get; set; }
         public string MYSSonuc { get; set; }
@@ -67,7 +69,7 @@ namespace YOGBIS.Data.DbModels
         public string AritmetikOrtalama { get; set; }
         public string SonucDurumu { get; set; }
         public int? GorevDurumu { get; set; }        
-        public int MulakatId { get; set; }
+        public Guid MulakatId { get; set; }
         [ForeignKey("MulakatId")]
         public Mulakatlar Mulakatlar { get; set; }
         public string KaydedenId { get; set; }

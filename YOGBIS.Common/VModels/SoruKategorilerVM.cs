@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class SoruKategorilerVM:BaseVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int SoruKategorilerId { get; set; }
+        public Guid SoruKategorilerId { get; set; }
         [Required(ErrorMessage = "Kategori adını yazınız...")]
         public string SoruKategorilerAdi { get; set; }
 
@@ -19,7 +21,7 @@ namespace YOGBIS.Common.VModels
         public int SoruKategorilerPuan { get; set; }
 
         [Required(ErrorMessage = "Kategori derecesini seçiniz...")]
-        public int DereceId { get; set; }
+        public Guid DereceId { get; set; }
         public string DereceAdi { get; set; }
         public SoruDerecelerVM SoruDereceler { get; set; }
         public string KaydedenId { get; set; }

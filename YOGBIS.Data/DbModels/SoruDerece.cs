@@ -1,10 +1,12 @@
-﻿namespace YOGBIS.Data.DbModels
+﻿using System;
+
+namespace YOGBIS.Data.DbModels
 {
     public class SoruDerece
     {
-        public int SoruId { get; set; }
+        public Guid SoruId { get; set; }
         public SoruBankasi SoruBankasi { get; set; }
-        public int DereceId { get; set; }
+        public Guid DereceId { get; set; }
         public SoruDereceler SoruDereceler { get; set; }
     }
 }

@@ -94,8 +94,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region SehirGetir(int id)
-        public Result<SehirlerVM> SehirGetir(int id)
+        #region SehirGetir(Guid id)
+        public Result<SehirlerVM> SehirGetir(Guid id)
         {
             var data = _unitOfWork.sehirlerRepository.Get(id);
             if (data != null)
@@ -163,7 +163,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region SehirSil
-        public Result<bool> SehirSil(int id)
+        public Result<bool> SehirSil(Guid id)
         {
             var data = _unitOfWork.sehirlerRepository.Get(id);
             if (data != null)

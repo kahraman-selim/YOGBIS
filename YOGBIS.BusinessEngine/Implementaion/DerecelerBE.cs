@@ -89,7 +89,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region DereceGetir(int id)
-        public Result<SoruDerecelerVM> DereceGetir(int id)
+        public Result<SoruDerecelerVM> DereceGetir(Guid id)
         {
             var data = _unitOfWork.soruDerecelerRepository.Get(id);
             if (data != null)
@@ -105,7 +105,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region DereceAdGetir(int id)
-        public Result<string> DereceAdGetir(int id)
+        public Result<string> DereceAdGetir(Guid id)
         {
             var data = _unitOfWork.soruDerecelerRepository.Get(id);
             if (data != null)
@@ -173,7 +173,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region DereceSil
-        public Result<bool> DereceSil(int id)
+        public Result<bool> DereceSil(Guid id)
         {
             var data = _unitOfWork.soruDerecelerRepository.Get(id);
             if (data != null)

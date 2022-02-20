@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,12 +7,13 @@ namespace YOGBIS.Data.DbModels
 {
     public class SoruKategoriler:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int SoruKategorilerId { get; set; }
+        public Guid SoruKategorilerId { get; set; }
         public string SoruKategorilerAdi { get; set; }
         public string SoruKategorilerKullanimi { get; set; }
         public int SoruKategorilerPuan { get; set; }
-        public int DereceId { get; set; }
+        public Guid DereceId { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

@@ -7,8 +7,9 @@ namespace YOGBIS.Data.DbModels
 {
     public class Okullar:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int OkulId { get; set; }
+        public Guid OkulId { get; set; }
         public int OkulKodu { get; set; }
         public string OkulAdi { get; set; }
         public string OkulLogoURL { get; set; } 
@@ -23,12 +24,12 @@ namespace YOGBIS.Data.DbModels
         public string OkulInternetAdresi { get; set; }
         public string OkulEPostaAdresi { get; set; }
         public string OkulTelefon { get; set; }
-        public int OkulUlkeId { get; set; }
+        public Guid? OkulUlkeId { get; set; }
         ///////////////////////////////////////////////        
-        public int SehirId { get; set; }
+        public Guid? SehirId { get; set; }
         [ForeignKey("SehirId")]
         public Sehirler Sehirler { get; set; }
-        public int EyaletId { get; set; }
+        public Guid? EyaletId { get; set; }
         [ForeignKey("EyaletId")]
         public Eyaletler Eyaletler { get; set; }      
         public string KaydedenId { get; set; }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -80,11 +81,11 @@ namespace YOGBIS.UI.Controllers
         }
         
         [HttpGet]
-        public IActionResult MulakatSoruGuncelle(int id)
+        public IActionResult MulakatSoruGuncelle(Guid id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            if (id < 0)
+            if (id == null)
                 return View();
             var data = _mulakatSorulariBE.MulakatSorulariGetir(id);
             if (data.IsSuccess)
@@ -115,9 +116,9 @@ namespace YOGBIS.UI.Controllers
 
         
         [HttpDelete]
-        public IActionResult MulakatSoruSil(int id)
+        public IActionResult MulakatSoruSil(Guid id)
         {
-            if (id < 0)
+            if (id == null)
                 return Json(new {success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _mulakatSorulariBE.MulakatSorusuSil(id);

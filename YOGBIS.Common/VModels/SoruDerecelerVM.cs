@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class SoruDerecelerVM:BaseVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int DereceId { get; set; }
+        public Guid DereceId { get; set; }
         [Required (ErrorMessage ="Dereceyi yazınz")]
         public string DereceAdi { get; set; }
         public string KaydedenId { get; set; }

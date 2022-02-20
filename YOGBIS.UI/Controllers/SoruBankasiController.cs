@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
@@ -32,7 +33,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
@@ -41,9 +42,9 @@ namespace YOGBIS.UI.Controllers
             var kullanici = await _kullaniciBE.OnayKullaniciGetir();
             ViewBag.Onaylayan = kullanici.Data;
 
-            if (id > 0)
+            if (id != null)
             {
-                var data = _soruBankasiBE.SoruGetir((int)id);
+                var data = _soruBankasiBE.SoruGetir((Guid)id);
                 return View(data.Data);
             }
             else
@@ -69,14 +70,14 @@ namespace YOGBIS.UI.Controllers
         #region SoruEklePost
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult SoruEkle(SoruBankasiVM model, int? SoruBankasiId, string[] OnaylayanId)
+        public IActionResult SoruEkle(SoruBankasiVM model, Guid? SoruBankasiId, string[] OnaylayanId)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
 
-            if (SoruBankasiId > 0)
+            if (SoruBankasiId != null)
             {
                 var data = _soruBankasiBE.SoruGuncelle(model, user);
                 return RedirectToAction("Index");
@@ -107,15 +108,15 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Güncelle
-        public IActionResult Guncelle(int? id)
+        public IActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Kategoriler = _soruKategorileriBE.SoruKategorileriGetir().Data;
 
-            if (id > 0)
+            if (id != null)
             {
-                var data = _soruBankasiBE.SoruGetir((int)id);
+                var data = _soruBankasiBE.SoruGetir((Guid)id);
                 return View(data.Data);
             }
             else
@@ -127,9 +128,9 @@ namespace YOGBIS.UI.Controllers
 
         #region Sil
         [HttpDelete]
-        public IActionResult SoruSil(int id)
+        public IActionResult SoruSil(Guid id)
         {
-            if (id < 0)
+            if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _soruBankasiBE.SoruSil(id);

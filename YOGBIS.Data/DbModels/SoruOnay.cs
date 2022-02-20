@@ -1,13 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
     public class SoruOnay:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int SoruOnayId { get; set; }
-        public int SoruBankasiId { get; set; }
+        public Guid SoruOnayId { get; set; }
+        public Guid SoruBankasiId { get; set; }
         [ForeignKey("SoruBankasiId")]
         public SoruBankasi SoruBankasi { get; set; }
         public int OnayDurumu { get; set; }

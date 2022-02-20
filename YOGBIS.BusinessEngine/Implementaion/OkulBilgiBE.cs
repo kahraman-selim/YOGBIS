@@ -107,7 +107,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<OkulBilgiVM>>(false, ResultConstant.RecordNotFound);
             }
         }
-        public Result<OkulBilgiVM> OkulBilgiGetir(int id)
+        public Result<OkulBilgiVM> OkulBilgiGetir(Guid id)
         {
             //var data = _unitOfWork.okulBilgiRepository.Get(id);
             //if (data != null)
@@ -120,7 +120,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             //    return new Result<OkulBilgiVM>(false, ResultConstant.RecordNotFound);
             //}
 
-            if (id>0)
+            if (id != null)
             {
                 var data = _unitOfWork.okulBilgiRepository.GetFirstOrDefault(u => u.OkulBilgiId == id, includeProperties: "Okullar,Ulkeler,Kullanici");
 
@@ -199,7 +199,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<OkulBilgiVM> OkulBilgiGuncelle(OkulBilgiVM model, SessionContext user)
         {
-            if (model.OkulBilgiId>0)
+            if (model.OkulBilgiId != null)
             {
                 try
                 {
@@ -242,7 +242,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<OkulBilgiVM>(false, "Lütfen kayıt seçiniz");
             }
         }
-        public Result<bool> OkulBilgiSil(int id)
+        public Result<bool> OkulBilgiSil(Guid id)
         {
             var data = _unitOfWork.okulBilgiRepository.Get(id);
             if (data != null)
@@ -256,7 +256,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         }
-        public Result<List<OkulBilgiVM>> OkulBilgiGetirUlkeId(int ulkeId)
+        public Result<List<OkulBilgiVM>> OkulBilgiGetirUlkeId(Guid ulkeId)
         {
             var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.UlkeId == ulkeId, includeProperties: "Kullanici,Okullar").ToList();
             if (data != null)
@@ -298,7 +298,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<OkulBilgiVM>>(false, ResultConstant.RecordNotFound);
             }
         }
-        public Result<List<OkulBilgiVM>> OkulAdGetirUlkeId(int ulkeId)
+        public Result<List<OkulBilgiVM>> OkulAdGetirUlkeId(Guid ulkeId)
         {
             throw new NotImplementedException();
         }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -19,14 +20,14 @@ namespace YOGBIS.UI.Controllers
             _ulkeGruplariBE = ulkeGruplariBE;
             _kitalarBE = kitalarBE;
         }
-        public IActionResult Index(int? id)
+        public IActionResult Index(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
-            if (id > 0)
+            if (id != null)
             {
-                var data = _ulkeGruplariBE.UlkeGrupGetir((int)id);
+                var data = _ulkeGruplariBE.UlkeGrupGetir((Guid)id);
                 return View(data.Data);
             }
             else
@@ -45,12 +46,12 @@ namespace YOGBIS.UI.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult UlkeGrupEkle(UlkeGruplariVM model, int? UlkeGrupId)
+        public IActionResult UlkeGrupEkle(UlkeGruplariVM model, Guid? UlkeGrupId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
 
-            if (UlkeGrupId > 0)
+            if (UlkeGrupId != null)
             {
                 var data = _ulkeGruplariBE.UlkeGrupGuncelle(model, user);
 
@@ -68,9 +69,9 @@ namespace YOGBIS.UI.Controllers
         }
 
         [HttpDelete]
-        public IActionResult UlkeGrupSil(int id)
+        public IActionResult UlkeGrupSil(Guid id)
         {
-            if (id < 0)
+            if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _ulkeGruplariBE.UlkeGrupSil(id);

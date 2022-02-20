@@ -2,10 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
-using YOGBIS.Common.Extentsion;
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
@@ -138,7 +136,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region SoruGetir
-        public Result<SoruBankasiVM> SoruGetir(int id)
+        public Result<SoruBankasiVM> SoruGetir(Guid id)
         {
             var data = _unitOfWork.soruBankasiRepository.Get(id);
             if (data != null)
@@ -265,7 +263,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region SoruSil
-        public Result<bool> SoruSil(int id)
+        public Result<bool> SoruSil(Guid id)
         {
             var data = _unitOfWork.soruBankasiRepository.Get(id);
             if (data != null)

@@ -89,8 +89,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region NotGetir(int id)
-        public Result<NotlarVM> NotGetir(int id)
+        #region NotGetir(Guid id)
+        public Result<NotlarVM> NotGetir(Guid id)
         {
             var data = _unitOfWork.notlarRepository.Get(id);
             if (data != null)
@@ -158,7 +158,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region NotSil
-        public Result<bool> NotSil(int id)
+        public Result<bool> NotSil(Guid id)
         {
             var data = _unitOfWork.notlarRepository.Get(id);
             if (data != null)

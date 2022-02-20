@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -27,7 +28,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
-        public IActionResult Index(int? id)
+        public IActionResult Index(Guid? id)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -38,9 +39,9 @@ namespace YOGBIS.UI.Controllers
             //    return View(requestModel.Data);
 
             //return View(user);
-            if (id > 0)
+            if (id != null)
             {
-                var data = _soruKategorileriBE.SoruKategoriGetir((int)id);
+                var data = _soruKategorileriBE.SoruKategoriGetir((Guid)id);
                 return View(data.Data);
             }
             else
@@ -63,12 +64,12 @@ namespace YOGBIS.UI.Controllers
         #region SoruKategoriEklePost
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult SoruKategoriEkle(SoruKategorilerVM model, int? SoruKategorilerId)
+        public IActionResult SoruKategoriEkle(SoruKategorilerVM model, Guid? SoruKategorilerId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
-            if (SoruKategorilerId > 0)
+            if (SoruKategorilerId != null)
             {
                 var data = _soruKategorileriBE.SoruKategoriGuncelle(model, user);
                 return RedirectToAction("Index");
@@ -86,13 +87,13 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Guncelle
-        public IActionResult Guncelle(int? id)
+        public IActionResult Guncelle(Guid? id)
         {
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
-            if (id > 0)
+            if (id != null)
             {
-                var data = _soruKategorileriBE.SoruKategoriGetir((int)id);
+                var data = _soruKategorileriBE.SoruKategoriGetir((Guid)id);
                 return View(data.Data);
             }
             else
@@ -104,9 +105,9 @@ namespace YOGBIS.UI.Controllers
 
         #region SoruKategoriSil
         [HttpDelete]
-        public IActionResult SoruKategoriSil(int id)
+        public IActionResult SoruKategoriSil(Guid id)
         {
-            if (id < 0)
+            if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _soruKategorileriBE.SoruKategoriSil(id);

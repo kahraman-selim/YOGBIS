@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -77,15 +78,15 @@ namespace YOGBIS.UI.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager,Teacher")]
-        public ActionResult Guncelle(int? id)
+        public ActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-            if (id > 0)
+            if (id != null)
             {
-                var data = _okulBilgiBE.OkulBilgiGetir((int)id);
+                var data = _okulBilgiBE.OkulBilgiGetir((Guid)id);
                 return View(data.Data);
             }
             else
@@ -126,9 +127,9 @@ namespace YOGBIS.UI.Controllers
 
         [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpDelete]
-        public IActionResult OkulBilgiSil(int id)
+        public IActionResult OkulBilgiSil(Guid id)
         {
-            if (id < 0)
+            if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _okulBilgiBE.OkulBilgiSil(id);
@@ -140,10 +141,10 @@ namespace YOGBIS.UI.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        public IActionResult OkulBilgileriGetir(int ulkeId)
+        public IActionResult OkulBilgileriGetir(Guid ulkeId)
         {
 
-            if (ulkeId > 0)
+            if (ulkeId != null)
             {
                 var data = _okulBilgiBE.OkulBilgiGetirUlkeId(ulkeId);
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
@@ -173,7 +174,7 @@ namespace YOGBIS.UI.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        public ActionResult OkulBilgiGetirUlkeId(int Id) 
+        public ActionResult OkulBilgiGetirUlkeId(Guid Id) 
         {
             var data = _okulBilgiBE.OkulBilgiGetirUlkeId(Id);
             if (data.IsSuccess)
@@ -187,9 +188,9 @@ namespace YOGBIS.UI.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        public ActionResult OkulBilgiYazdir(int ulkeId) 
+        public ActionResult OkulBilgiYazdir(Guid ulkeId) 
         {
-            if (ulkeId > 0)
+            if (ulkeId != null)
             {
                 var data = _okulBilgiBE.OkulBilgiGetirUlkeId(ulkeId);
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;

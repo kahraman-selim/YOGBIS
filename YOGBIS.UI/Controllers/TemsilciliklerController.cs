@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -44,11 +45,11 @@ namespace YOGBIS.UI.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult SSSEkle(SSSVM model, int? SSSId)
+        public IActionResult SSSEkle(SSSVM model, Guid? SSSId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            if (SSSId > 0)
+            if (SSSId != null)
             {
                 var data = _sSSBE.SSSEkle(model, user);
 
@@ -64,9 +65,9 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
-        public JsonResult SoruKategoriGetir(int dereceId)
+        public JsonResult SoruKategoriGetir(Guid dereceId)
         {
-            if (dereceId < 0)
+            if (dereceId == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _soruKategorileriBE.SoruKategorileriGetirDereceId(dereceId);

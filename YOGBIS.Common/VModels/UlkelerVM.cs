@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class UlkelerVM:BaseVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int UlkeId { get; set; }
+        public Guid UlkeId { get; set; }
         [Required(ErrorMessage = "Ülke kodu zorunlu bir alandır")]
         public string UlkeKodu { get; set; }
         [Required (ErrorMessage ="Ülke adı zorunlu bir alandır")]
@@ -22,12 +25,12 @@ namespace YOGBIS.Common.VModels
         public int VatandasSayisi { get; set; }
 
         [Required(ErrorMessage = "Kıta adı zorunlu bir alandır")]
-        public int KitaId { get; set; }
+        public Guid KitaId { get; set; }
 
         [Required(ErrorMessage = "Kıta adı zorunlu bir alandır")]
         public string KitaAdi { get; set; }
         public KitalarVM Kitalar { get; set; }
-        public int UlkeGrupId { get; set; }
+        public Guid UlkeGrupId { get; set; }
         public string UlkeGrupAdi { get; set; }
         public UlkeGruplariVM UlkeGruplari { get; set; }
         public string KaydedenId { get; set; }

@@ -1,11 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
     public class OkulBilgiVM:BaseVM
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int OkulBilgiId { get; set; }
+        public Guid OkulBilgiId { get; set; }
 
         [Required(ErrorMessage = "Telefon zorunlu bir alandır")]
         public string OkulTelefon { get; set; }
@@ -40,14 +43,14 @@ namespace YOGBIS.Common.VModels
         //******************************************************
 
         [Required(ErrorMessage = "Okul adı zorunlu bir alandır")]
-        public int OkulId { get; set; }
+        public Guid OkulId { get; set; }
 
         [Required(ErrorMessage = "Okul adı zorunlu bir alandır")]
         public string OkulAdi { get; set; }
         public OkullarVM Okullar { get; set; }
 
         [Required(ErrorMessage = "Bulunduğunuz ülkeyi seçiniz")]
-        public int UlkeId { get; set; }
+        public Guid UlkeId { get; set; }
 
         [Required(ErrorMessage = "Bulunduğunuz ülkeyi seçiniz")]
         public string UlkeAdi { get; set; }

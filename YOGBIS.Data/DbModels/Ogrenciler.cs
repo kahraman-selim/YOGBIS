@@ -6,9 +6,10 @@ namespace YOGBIS.Data.DbModels
 {
     public class Ogrenciler:Base
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int OgrencilerId { get; set; }
-        public int SinifId { get; set; }
+        public Guid OgrencilerId { get; set; }
+        public Guid SinifId { get; set; }
         [ForeignKey("SinifId")]
         public Siniflar Siniflar { get; set; }
         public string Uyruk { get; set; }
