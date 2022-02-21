@@ -74,7 +74,7 @@
                             <input type="file"
                                    accept=".png,.jpg,.jpeg,.gif,.tif"
                                    asp-for="Input.KullaniciResim" id="userImageInput"
-                                   class="btn btn-outline-danger col-md-12 p-0"
+                                   class="btn btn-outline-danger col-md-12 p-1"
                                    style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
                                    onchange="ImagesFileSize(this);" />
                             <span asp-validation-for="Input.KullaniciResim" class="text-danger"></span>
@@ -110,7 +110,7 @@
                         text: 'Yüklenmek istenilen dosya boyutu 1 MB dan fazla !',
                     })
                     document.getElementById("userImageInput").className = "";
-                    document.getElementById("userImageInput").className += "btn btn-outline-danger mb-1 btn-sm col-md-12 p-0";
+                    document.getElementById("userImageInput").className += "btn btn-outline-danger mb-1 btn-sm col-md-12 p-1";
                     document.getElementById("userImageInput").value = null;
                     return false;
                 }
@@ -118,7 +118,7 @@
 
                     $(':input[type="submit"]').prop('disabled', false);
                     document.getElementById("userImageInput").className = "";
-                    document.getElementById("userImageInput").className += "btn btn-outline-success mb-1 btn-sm col-md-12 p-0";
+                    document.getElementById("userImageInput").className += "btn btn-outline-success mb-1 btn-sm col-md-12 p-1";
                     document.getElementById('profilePicture').src = window.URL.createObjectURL(document.getElementById("userImageInput").files[i]);
                     document.getElementById('profilePictureModel').src = window.URL.createObjectURL(document.getElementById("userImageInput").files[i]);
                 }

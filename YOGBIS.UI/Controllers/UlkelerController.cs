@@ -181,33 +181,30 @@ namespace YOGBIS.UI.Controllers
             if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
-            var ulkebayrakurl = _ulkelerBE.UlkeBayrakURLGetir((Guid)id).Data;
-            if (ulkebayrakurl != null)
-            {
-                string[] parcala = ulkebayrakurl.ToString().Split("/img/Bayraklar/");
-                var bayrakadi = parcala[1].ToString();
+            var ulkebayrakurl = _ulkelerBE.UlkeBayrakURLGetir((Guid)id);
+            string[] parcala = ulkebayrakurl.Data.ToString().Split("/img/Bayraklar/");
+            var bayrakadi = parcala[1].ToString();
 
-                if (bayrakadi != null)
-                {
-                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/Ulkeler/" + bayrakadi);
-                }
+            if (bayrakadi != null)
+            {
+                System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/Bayraklar/" + bayrakadi);                
             }
 
-            string[] fotourl = _fotoGaleriBE.FotoURLGetirUlkeId((Guid)id).Data;
+            //string[] fotourl = _fotoGaleriBE.FotoURLGetirUlkeId((Guid)id).Data;
 
-            if (fotourl != null)
-            {
-                foreach (var item in fotourl.ToString())
-                {
-                    string[] parcalar = item.ToString().Split("/img/Ulkeler/");
-                    var fotoadi = parcalar[1].ToString();
+            //if (fotourl != null)
+            //{
+            //    foreach (var item in fotourl.ToString())
+            //    {
+            //        string[] parcalar = item.ToString().Split("/img/Ulkeler/");
+            //        var fotoadi = parcalar[1].ToString();
 
-                    if (fotoadi != null)
-                    {
-                        System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/Ulkeler/" + fotoadi);
-                    }
-                }
-            }
+            //        if (fotoadi != null)
+            //        {
+            //            System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/Ulkeler/" + fotoadi);
+            //        }
+            //    }
+            //}
 
             var data = _ulkelerBE.UlkeSil(id);
 

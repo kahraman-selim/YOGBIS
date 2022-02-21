@@ -416,7 +416,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var data = _unitOfWork.ulkelerRepository.Get(id);
             if (data != null)
             {
-                var ulkeBayrakURL = data.UlkeBayrakURL.ToString();
+                var ulkeBayrakURL = data.UlkeBayrakURL;
 
                 return new Result<string>(true, ResultConstant.RecordFound, ulkeBayrakURL);
             }

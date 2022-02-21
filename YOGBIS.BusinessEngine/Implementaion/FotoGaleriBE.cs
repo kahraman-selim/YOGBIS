@@ -126,6 +126,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             if (data != null)
             {
                 var fotourl = data.FotoURL;
+
                 return new Result<string>(true, ResultConstant.RecordFound, fotourl);
             }
             else
