@@ -14,13 +14,13 @@ namespace YOGBIS.Data.DbModels
         public string OkulAdi { get; set; }
         public string OkulLogoURL { get; set; } 
         public string OkulBilgi { get; set; }
-        public DateTime OkulAcilisTarihi { get; set; }
+        public DateTime? OkulAcilisTarihi { get; set; }
         public bool OkulDurumu { get; set; }
         public string OkulMudurId { get; set; }
         public string OkulHizmetGecisDonem { get; set; }
         public string OkulKapaliAlan { get; set; }
         public string OkulAcikAlan { get; set; }
-        public bool OkulMulkiDurum { get; set; }
+        public bool? OkulMulkiDurum { get; set; }
         public string OkulInternetAdresi { get; set; }
         public string OkulEPostaAdresi { get; set; }
         public string OkulTelefon { get; set; }

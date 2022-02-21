@@ -13,19 +13,29 @@ namespace YOGBIS.BusinessEngine.Implementaion
 {
     public class KitalarBE : IKitalarBE
     {
+        #region Değişkenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        #endregion
+
+        #region Dönüştürücüler
         public KitalarBE(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+        #endregion
+
+        #region KitalariGetir
         public Result<List<KitalarVM>> KitalariGetir()
         {
-            var data = _unitOfWork.kitalarRepository.GetAll().ToList();
+            var data = _unitOfWork.kitalarRepository.GetAll().OrderBy(k => k.KitaAdi).ToList();
             var kitalar = _mapper.Map<List<Kitalar>, List<KitalarVM>>(data);
             return new Result<List<KitalarVM>>(true, ResultConstant.RecordFound, kitalar);
         }
+        #endregion
+
+        #region KitaGetir
         public Result<KitalarVM> KitaGetir(Guid id)
         {
             var data = _unitOfWork.kitalarRepository.Get(id);
@@ -38,7 +48,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<KitalarVM>(false, ResultConstant.RecordNotFound);
             }
-        }
+        } 
+        #endregion
 
         #region KıtaEkle
         public Result<KitalarVM> KitaEkle(KitalarVM model)
