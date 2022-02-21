@@ -8,7 +8,7 @@ namespace YOGBIS.BusinessEngine.Contracts
     public interface IKullaniciBE
     {
         Result<List<KullaniciVM>> KullaniciGetir();
-        //Result<KullaniciVM> KullaniciGetir(string Id);
+        Result<string> KullaniciAdSoyadGetir(string UserId);
         Result<KullaniciVM> KullaniciGuncelle(KullaniciVM model);
         Task<Result<List<KullaniciVM>>> OnayKullaniciGetir();
         Task<Result<List<KullaniciVM>>> OkulMuduruGetir();

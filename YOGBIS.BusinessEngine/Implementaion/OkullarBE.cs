@@ -18,14 +18,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IUlkelerBE _ulkelerBE;
+        private readonly IKullaniciBE _kullaniciBE;
         #endregion
 
         #region Dönüştürücüler
-        public OkullarBE(IUnitOfWork unitOfWork, IMapper mapper, IUlkelerBE ulkelerBE)
+        public OkullarBE(IUnitOfWork unitOfWork, IMapper mapper, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _ulkelerBE = ulkelerBE;
+            _kullaniciBE = kullaniciBE;
         }
         #endregion
 
@@ -48,6 +50,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulUlkeId = item.OkulUlkeId,
                         OkulDurumu=item.OkulDurumu,
                         OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
+                        OkulMudurId=item.OkulMudurId,
+                        OkulMudurAdiSoyadi=item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });

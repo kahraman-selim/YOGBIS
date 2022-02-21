@@ -40,23 +40,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
             return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, kullanicilar);
         }
-        #endregion
-
-        //#region KullaniciGetir(string Id)
-        //public Result<KullaniciVM> KullaniciGetir(string Id)
-        //{
-        //    var data = _unitOfWork.kullaniciRepository.Get(Id);
-        //    if (data != null)
-        //    {
-        //        var kullanici = _mapper.Map<Kullanici, KullaniciVM>(data);
-        //        return new Result<KullaniciVM>(true, ResultConstant.RecordFound, kullanici);
-        //    }
-        //    else
-        //    {
-        //        return new Result<KullaniciVM>(false, ResultConstant.RecordNotFound);
-        //    }
-        //}
-        //#endregion
+        #endregion        
 
         #region KullaniciGuncelle
         public Result<KullaniciVM> KullaniciGuncelle(KullaniciVM model)
@@ -141,6 +125,24 @@ namespace YOGBIS.BusinessEngine.Implementaion
             else
             {
                 return new Result<List<KullaniciVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+        #region KullaniciAdSoyadGetir(string UserId)
+        public Result<string> KullaniciAdSoyadGetir(string UserId)
+        {
+            var data = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.Id == UserId);
+
+            if (data != null)
+            {
+                var kullaniciAdSoyad = data.Ad + " " + data.Soyad;
+
+                return new Result<string>(true, ResultConstant.RecordFound, kullaniciAdSoyad);
+            }
+            else
+            {
+                return new Result<string>(false, ResultConstant.RecordNotFound);
             }
         }
         #endregion

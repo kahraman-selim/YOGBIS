@@ -6,11 +6,13 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
+using YOGBIS.Data.Contracts;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -21,6 +23,7 @@ namespace YOGBIS.UI.Controllers
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IKitalarBE _kitalarBE;
         private readonly IFotoGaleriBE _fotoGaleriBE;
+        private readonly IUnitOfWork _unitOfWork;
         [Obsolete]
         private readonly IHostingEnvironment _hostingEnvironment;
                
@@ -28,12 +31,13 @@ namespace YOGBIS.UI.Controllers
 
         #region Donüştürücüler
         [Obsolete]
-        public UlkelerController(IUlkelerBE ulkelerBE, IKitalarBE kitalarBE, IHostingEnvironment hostingEnvironment, IFotoGaleriBE fotoGaleriBE)
+        public UlkelerController(IUlkelerBE ulkelerBE, IKitalarBE kitalarBE, IHostingEnvironment hostingEnvironment, IFotoGaleriBE fotoGaleriBE, IUnitOfWork unitOfWork)
         {
             _ulkelerBE = ulkelerBE;
             _kitalarBE = kitalarBE;
             _fotoGaleriBE = fotoGaleriBE;
             _hostingEnvironment = hostingEnvironment;
+            _unitOfWork = unitOfWork;
         } 
         #endregion
 
@@ -190,6 +194,27 @@ namespace YOGBIS.UI.Controllers
                 System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/Bayraklar/" + bayrakadi);                
             }
 
+
+            var ulkeid = _unitOfWork.ulkelerRepository.GetFirstOrDefault(u => u.UlkeId == id, includeProperties: "FotoGaleri");
+            if (ulkeid != null)
+            {
+                foreach (var item in ulkeid.FotoGaleri.ToList())
+                {
+                    var foto = _unitOfWork.fotoGaleriRepository.GetFirstOrDefault(u => u.FotoGaleriId == item.FotoGaleriId);
+                    if (foto != null)
+                    {
+                        string fotourls = foto.FotoURL.ToString();
+                        string[] parcalar = fotourls.ToString().Split("/img/Ulkeler/");
+                        var fotoadi = parcalar[1].ToString();
+                        if (fotoadi != null)
+                        {
+                            System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/Ulkeler/" + fotoadi);
+                        }
+                    }
+                }                
+            }
+
+
             //string[] fotourl = _fotoGaleriBE.FotoURLGetirUlkeId((Guid)id).Data;
 
             //if (fotourl != null)
@@ -223,15 +248,19 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            var requestmodel = _ulkelerBE.UlkeGetirUlkeKodu("AZ");
-            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
+            var data = _unitOfWork.ulkelerRepository.GetFirstOrDefault(x => x.UlkeKodu == ulkeKodu);
 
-            if (requestmodel.IsSuccess)
+            if (data != null)
             {
-                return View(requestmodel.Data);
-            }
+                var ulkeid = _ulkelerBE.UlkeIdGetir(ulkeKodu).Data;
 
-            return View(user);
+                return RedirectToAction("UlkeDetayById", new {id=(Guid)ulkeid });
+
+            }
+            
+            var id = Guid.NewGuid();
+            return RedirectToAction("UlkeDetayById", new { id = (Guid)id });
+
         }
         #endregion
 
@@ -241,16 +270,22 @@ namespace YOGBIS.UI.Controllers
         public IActionResult UlkeDetayById(Guid id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            
+            var data = _unitOfWork.ulkelerRepository.GetFirstOrDefault(x => x.UlkeId == id);
 
-            var requestmodel = _ulkelerBE.UlkeGetir(id);
-            ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
-
-            if (requestmodel.IsSuccess)
+            if (data != null)
             {
-                return View(requestmodel.Data);
+                var requestmodel = _ulkelerBE.UlkeGetir(id);                
+
+                if (requestmodel.IsSuccess)
+                {
+                    return View(requestmodel.Data);
+                }
+
+                return View(user);
             }
 
-            return View(user);
+            return View();
         }
         #endregion
 

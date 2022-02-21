@@ -213,6 +213,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             if (ulkeKodu != null)
             {
                 var ulkeId = UlkeIdGetir(ulkeKodu).Data;
+
                 var data = _unitOfWork.ulkelerRepository.GetFirstOrDefault(u => u.UlkeId == ulkeId, includeProperties: "Kitalar,Kullanici,FotoGaleri");
                 if (data != null)
                 {
@@ -468,21 +469,30 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
         #region UlkeIdGetir(ulkeKodu)
         public Result<Guid> UlkeIdGetir(string ulkeKodu)
-        {                       
-                       
-            var data = _unitOfWork.ulkelerRepository.GetAll().Where(x => x.UlkeKodu == ulkeKodu).First();
-            if (data != null)
+        {
+
+            if (ulkeKodu == null)
             {
-
-                var ulkeId = data.UlkeId;          
-                
-
-                return new Result<Guid>(true, ResultConstant.RecordFound, ulkeId);
+                return new Result<Guid>(false, ResultConstant.RecordFound);
             }
             else
             {
-                return new Result<Guid>(false, ResultConstant.RecordNotFound);
+                var data = _unitOfWork.ulkelerRepository.GetFirstOrDefault(x => x.UlkeKodu == ulkeKodu);
+
+                if (data != null)
+                {
+
+                    var ulkeId = data.UlkeId;
+
+
+                    return new Result<Guid>(true, ResultConstant.RecordFound, ulkeId);
+                }
+                else
+                {
+                    return new Result<Guid>(false, ResultConstant.RecordNotFound);
+                }
             }
+
 
         }
         #endregion

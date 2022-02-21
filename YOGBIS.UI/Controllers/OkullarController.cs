@@ -56,6 +56,8 @@ namespace YOGBIS.UI.Controllers
         #region OkulEkleGet
         [Authorize(Roles = "Administrator")]
         [HttpGet]
+
+        [Route("Okullar/OC10002", Name = "OkulEkleRoute")]
         public async Task<IActionResult> OkulEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -72,6 +74,7 @@ namespace YOGBIS.UI.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Obsolete]
+        [Route("Okullar/OC10002", Name = "OkulEkleRoute")]
         public async Task<IActionResult> OkulEkle(OkullarVM model, Guid? OkulId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -125,6 +128,7 @@ namespace YOGBIS.UI.Controllers
 
         #region Guncelle
         [Authorize(Roles = "Administrator")]
+        [Route("Okullar/OC10003", Name = "OkulGuncelle")]
         public async Task<ActionResult> Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -164,6 +168,7 @@ namespace YOGBIS.UI.Controllers
 
         #region OkulDetay
         [Authorize(Roles = "Administrator,Manager")]
+        [Route("Okullar/OC10004", Name = "OkulDetayById")]
         public IActionResult OkulDetay()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -182,9 +187,7 @@ namespace YOGBIS.UI.Controllers
         #region FotoYukle
         [Obsolete]
         private async Task<string> FotoYukle(string dosyaYolu, IFormFile dosya)
-        {
-
-            //fotoadi = dosya.FileName;
+        {            
 
             dosyaYolu += Guid.NewGuid().ToString() + "_" + dosya.FileName;
 
