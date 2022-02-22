@@ -47,10 +47,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulId = (Guid)item.OkulId,
                         OkulKodu = item.OkulKodu,
                         OkulAdi = item.OkulAdi,
-                        OkulUlkeId = item.OkulUlkeId,
-                        OkulDurumu=item.OkulDurumu,
+                        OkulUlkeId = item.OkulUlkeId,                        
                         OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
-                        OkulMudurId=item.OkulMudurId,
+                        OkulDurumu = item.OkulDurumu,
+                        OkulMudurId =item.OkulMudurId,
                         OkulMudurAdiSoyadi=item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
@@ -83,8 +83,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulKodu = item.OkulKodu,
                         OkulAdi = item.OkulAdi,
                         OkulUlkeId = item.OkulUlkeId,
-                        OkulDurumu=item.OkulDurumu,
                         OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
+                        OkulDurumu =item.OkulDurumu,
+                        OkulMudurId = item.OkulMudurId,
+                        OkulMudurAdiSoyadi = item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
@@ -141,11 +143,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okul.OkulKodu = data.OkulKodu;
                     okul.OkulAdi = data.OkulAdi;
                     okul.OkulDurumu = data.OkulDurumu;
-                    okul.OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)data.OkulUlkeId).Data;
                     okul.OkulUlkeId = data.OkulUlkeId;
+                    okul.OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)data.OkulUlkeId).Data;
+                    okul.OkulMudurId = data.OkulMudurId;
+                    okul.OkulMudurAdiSoyadi = data.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(data.OkulMudurId).Data : string.Empty;
                     okul.KaydedenId = data.KaydedenId;
-                    //okul.KullaniciAdi = data.KullaniciId;
-                    //okul.KullaniciAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+                    okul.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
                     return new Result<OkullarVM>(true, ResultConstant.RecordFound, okul);
                 }

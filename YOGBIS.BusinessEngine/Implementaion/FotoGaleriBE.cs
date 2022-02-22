@@ -137,26 +137,27 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region FotoURLGetirUlkeId(Guid id)
-        public Result<string[]> FotoURLGetirUlkeId(Guid ulkeId)
+        public Result<List<string>> FotoURLGetirUlkeId(Guid ulkeId)
         {
             
             var data = _unitOfWork.ulkelerRepository.GetFirstOrDefault(u => u.UlkeId == ulkeId, includeProperties: "FotoGaleri");
             if (data != null)
             {
+                List<string> fotorurls = new List<string>();
 
                 foreach (var item in data.FotoGaleri.ToList())
                 {
                     var foto = _unitOfWork.fotoGaleriRepository.GetFirstOrDefault(u => u.FotoGaleriId == item.FotoGaleriId);
                     if (foto != null)
                     {
-                        string fotourl = foto.FotoURL.ToString();
+                        fotorurls.Add(foto.FotoURL.ToString());                        
                     }
                 }
-                return new Result<string[]>(true, ResultConstant.RecordRemoveSuccessfully);
+                return new Result<List<string>>(true, ResultConstant.RecordFound,fotorurls);
             }
             else
             {
-                return new Result<string[]>(false, ResultConstant.RecordRemoveNotSuccessfully);
+                return new Result<List<string>>(false, ResultConstant.RecordNotFound);
             }
         }
         #endregion

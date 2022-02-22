@@ -13,7 +13,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<FotoGaleriVM> FotoGetir(Guid id);
         Result<string> FotoAdGetir(Guid id);
         Result<string> FotoURLGetir(Guid id);
-        Result<string[]> FotoURLGetirUlkeId(Guid ulkeId);
+        Result<List<string>> FotoURLGetirUlkeId(Guid ulkeId);
         Result<FotoGaleriVM> FotoEkle(FotoGaleriVM model, SessionContext user);
         Result<FotoGaleriVM> FotoGuncelle(FotoGaleriVM model, SessionContext user);
         Result<bool> FotoSil(Guid id);        
