@@ -302,8 +302,14 @@
                                 </a>
                                 <div class="collapse" id="collapseYonetim" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        @*<a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Kullanıcı Ekle</a>*@
-                                        <a class="nav-link" asp-controller="Kullanicilar" asp-action="Index">Kullanıcılar</a>
+                                        @if (User.IsInRole("Administrator"))
+                                        {
+                                            <a class="nav-link" asp-controller="Kullanicilar" asp-action="Index">Kullanıcılar</a>
+                                        }
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                                        {
+                                            <a class="nav-link" asp-controller="Duyurular" asp-action="Index">Duyurular</a>
+                                        }
                                     </nav>
                                 </div>
                             }
@@ -345,7 +351,7 @@
                                 </nav>
                             </div>
                             <!--Takip Modülü-->
-                            @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("SubManager"))
                             {
                                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTakip" aria-expanded="false" aria-controls="collapseTakip">
                                     <div class="sb-nav-link-icon"><i class="fas fa-chalkboard-teacher"></i></div>
@@ -354,12 +360,25 @@
                                 </a>
                                 <div class="collapse" id="collapseTakip" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" asp-controller="Ulkeler" asp-action="Index">Ülkeler</a>
-                                        <a class="nav-link" asp-controller="UlkeGruplari" asp-action="Index">Ülke Grupları</a>
-                                        <a class="nav-link" asp-controller="Temsilcilikler" asp-action="Index">Temsilcilikler</a>
-                                        <a class="nav-link" asp-controller="Okullar" asp-action="Index">Okullar</a>
-                                        <a class="nav-link" asp-controller="Ogretmenler" asp-action="Index">Öğretmenler</a>
-                                        <a class="nav-link" asp-controller="Okutmanlar" asp-action="Index">Okutmanlar</a>
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                                        {
+                                            <a class="nav-link" asp-controller="Ulkeler" asp-action="Index">Ülkeler</a>
+                                            <a class="nav-link" asp-controller="UlkeGruplari" asp-action="Index">Ülke Grupları</a>
+                                        }
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("Representative"))
+                                        {
+                                            <a class="nav-link" asp-controller="Temsilcilikler" asp-action="Index">Temsilcilikler</a>
+                                        }
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("SubManager"))
+                                        {
+                                            <a class="nav-link" asp-controller="Okullar" asp-action="Index">Okullar</a>
+                                        }
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("Follower"))
+                                        {
+                                            <a class="nav-link" asp-controller="Ogretmenler" asp-action="Index">Öğretmenler</a>
+                                            <a class="nav-link" asp-controller="Okutmanlar" asp-action="Index">Okutmanlar</a>
+                                        }
+
                                     </nav>
                                 </div>
                             }

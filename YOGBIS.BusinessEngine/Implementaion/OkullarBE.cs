@@ -100,10 +100,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region OkulGetirKullanıcıId
-        public Result<List<OkullarVM>> OkulGetirKullaniciId(string userId)
+        #region OkulGetirYoneticiId
+        public Result<List<OkullarVM>> OkulGetirYoneticiId(string userId)
         {
-            var data = _unitOfWork.okullarRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Ulkeler,Kullanici").OrderBy(u => u.OkulAdi).ToList();
+            var data = _unitOfWork.okullarRepository.GetAll(u => u.OkulMudurId == userId, includeProperties: "Kullanici,Sehirler,Eyaletler").OrderBy(u => u.OkulAdi).ToList();
             if (data != null)
             {
                 List<OkullarVM> returnData = new List<OkullarVM>();
@@ -112,13 +112,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     returnData.Add(new OkullarVM()
                     {
-                        OkulId = item.OkulId,
+                        OkulId = (Guid)item.OkulId,
                         OkulKodu = item.OkulKodu,
                         OkulAdi = item.OkulAdi,
-                        //UlkeId = item.UlkeId,
-                        //UlkeAdi = item.Ulkeler.UlkeAdi,
+                        OkulUlkeId = item.OkulUlkeId,
+                        OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
+                        OkulDurumu = item.OkulDurumu,
+                        OkulMudurId = item.OkulMudurId,
+                        OkulMudurAdiSoyadi = item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
-                        //KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
                 }
                 return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, returnData);

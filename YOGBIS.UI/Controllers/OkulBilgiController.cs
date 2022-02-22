@@ -24,7 +24,7 @@ namespace YOGBIS.UI.Controllers
             _okullarBE = okullarBE;
         }
         
-        [Authorize(Roles = "Administrator,Manager,Teacher,Follower")]
+        [Authorize(Roles = "Administrator,Manager,SubManager,Follower")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -41,7 +41,7 @@ namespace YOGBIS.UI.Controllers
             return View(user);
         }
 
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
         [HttpGet]
         public IActionResult OkulBilgiEkle()
         {
@@ -51,7 +51,7 @@ namespace YOGBIS.UI.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
         [HttpPost]
         public IActionResult OkulBilgiEkle(OkulBilgiVM model)
         {
@@ -77,7 +77,7 @@ namespace YOGBIS.UI.Controllers
             //}
         }
 
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
         public ActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -96,7 +96,7 @@ namespace YOGBIS.UI.Controllers
 
         }
 
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Guncelle(OkulBilgiVM model)
@@ -125,7 +125,7 @@ namespace YOGBIS.UI.Controllers
 
         }
 
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
         [HttpDelete]
         public IActionResult OkulBilgiSil(Guid id)
         {

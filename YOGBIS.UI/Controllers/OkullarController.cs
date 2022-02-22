@@ -37,19 +37,33 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
-        [Authorize(Roles = "Administrator,Manager")]
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            var requestmodel = _okullarBE.OkullariGetir();
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-
-            if (requestmodel.IsSuccess)
+            if (User.IsInRole(EnumsKullaniciRolleri.Administrator.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Manager.ToString()))
             {
-                return View(requestmodel.Data);
+
+                var requestmodel = _okullarBE.OkullariGetir();
+                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+
+                if (requestmodel.IsSuccess)
+                {
+                    return View(requestmodel.Data);
+                }
+                return View(user);
             }
-            return View(user);
+            else
+            {
+                var requestmodel = _okullarBE.OkulGetirYoneticiId(user.LoginId);                
+
+                if (requestmodel.IsSuccess)
+                {
+                    return View(requestmodel.Data);
+                }
+                return View(user);
+            }
         }
         #endregion
 
