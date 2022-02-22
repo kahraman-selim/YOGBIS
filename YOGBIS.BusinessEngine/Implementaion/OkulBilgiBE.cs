@@ -14,17 +14,25 @@ namespace YOGBIS.BusinessEngine.Implementaion
 {
     public class OkulBilgiBE : IOkulBilgiBE
     {
+        #region Değişkenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUlkelerBE _ulkelerBE;
+        #endregion
 
-        public OkulBilgiBE(IUnitOfWork unitOfWork, IMapper mapper)
+        #region Dönüştürücüler
+        public OkulBilgiBE(IUnitOfWork unitOfWork, IMapper mapper, IUlkelerBE ulkelerBE)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _ulkelerBE = ulkelerBE;
         }
+        #endregion
+
+        #region OkulBilgileriGetir
         public Result<List<OkulBilgiVM>> OkulBilgileriGetir()
         {
-            var data = _unitOfWork.okulBilgiRepository.GetAll(includeProperties: "Okullar,Kullanici").OrderBy(u => u.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi).ToList();
+            var data = _unitOfWork.okulBilgiRepository.GetAll(includeProperties: "Okullar,Kullanici").OrderBy(u => u.Okullar.OkulAdi).ToList();
             //var okulbilgiler = _mapper.Map<List<OkulBilgi>, List<OkulBilgiVM>>(data);
             //return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, okulbilgiler);
             if (data != null)
@@ -52,7 +60,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulId = item.OkulId,
                         OkulAdi = item.Okullar.OkulAdi,
                         UlkeId = item.UlkeId,
-                        UlkeAdi = item.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi,
+                        UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.UlkeId).Data,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciId = item.KullaniciId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
@@ -65,6 +73,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<OkulBilgiVM>>(false, ResultConstant.RecordNotFound);
             }
         }
+        #endregion
+
+        #region OkulBilgiGetirKullaniciId
         public Result<List<OkulBilgiVM>> OkulBilgiGetirKullaniciId(string userId)
         {
             var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici,Okullar").ToList();
@@ -75,29 +86,29 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 foreach (var item in data)
                 {
                     returnData.Add(new OkulBilgiVM()
-                    {                        
-                        OkulBilgiId=item.OkulBilgiId,
-                        OkulTelefon=item.OkulTelefon,
+                    {
+                        OkulBilgiId = item.OkulBilgiId,
+                        OkulTelefon = item.OkulTelefon,
                         OkulAdres = item.OkulAdres,
                         //*************************                        
-                        MudurAdiSoyadi=item.MudurAdiSoyadi,
+                        MudurAdiSoyadi = item.MudurAdiSoyadi,
                         MudurTelefon = item.MudurTelefon,
                         MudurEPosta = item.MudurEPosta,
                         MudurDonusYil = item.MudurDonusYil,
                         //****************************
-                        MdYrdAdiSoyadi=item.MdYrdAdiSoyadi,
-                        MdYrdTelefon=item.MdYrdTelefon,
-                        MdYrdEPosta=item.MdYrdEPosta,
-                        MdYrdDonusYil=item.MdYrdDonusYil,
+                        MdYrdAdiSoyadi = item.MdYrdAdiSoyadi,
+                        MdYrdTelefon = item.MdYrdTelefon,
+                        MdYrdEPosta = item.MdYrdEPosta,
+                        MdYrdDonusYil = item.MdYrdDonusYil,
                         //********************************
-                        OkulId =item.OkulId,
-                        OkulAdi=item.Okullar.OkulAdi,
-                        UlkeId=item.UlkeId,
-                        UlkeAdi=item.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi,
+                        OkulId = item.OkulId,
+                        OkulAdi = item.Okullar.OkulAdi,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.UlkeId).Data,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciId = item.KullaniciId,
-                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty                        
-                        
+                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+
                     });
                 }
                 return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, returnData);
@@ -107,24 +118,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<OkulBilgiVM>>(false, ResultConstant.RecordNotFound);
             }
         }
+        #endregion
+
+        #region OkulBilgiGetir
         public Result<OkulBilgiVM> OkulBilgiGetir(Guid id)
         {
-            //var data = _unitOfWork.okulBilgiRepository.Get(id);
-            //if (data != null)
-            //{
-            //    var okulbilgi = _mapper.Map<OkulBilgi, OkulBilgiVM>(data);
-            //    return new Result<OkulBilgiVM>(true, ResultConstant.RecordFound, okulbilgi);
-            //}
-            //else
-            //{
-            //    return new Result<OkulBilgiVM>(false, ResultConstant.RecordNotFound);
-            //}
-
             if (id != null)
             {
-                var data = _unitOfWork.okulBilgiRepository.GetFirstOrDefault(u => u.OkulBilgiId == id, includeProperties: "Okullar,Ulkeler,Kullanici");
+                var data = _unitOfWork.okulBilgiRepository.GetFirstOrDefault(u => u.OkulBilgiId == id, includeProperties: "Okullar,Kullanici");
 
-                if (data!=null)
+                if (data != null)
                 {
                     OkulBilgiVM okulbilgi = new OkulBilgiVM();
                     okulbilgi.OkulBilgiId = data.OkulBilgiId;
@@ -144,7 +147,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okulbilgi.OkulId = data.OkulId;
                     okulbilgi.OkulAdi = data.Okullar.OkulAdi;
                     okulbilgi.UlkeId = data.UlkeId;
-                    okulbilgi.UlkeAdi = data.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi;
+                    okulbilgi.UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)data.UlkeId).Data;
                     okulbilgi.KullaniciId = data.Kullanici.Id;
                     okulbilgi.KullaniciAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
@@ -160,6 +163,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<OkulBilgiVM>(false, ResultConstant.RecordNotFound);
             }
         }
+        #endregion
+
+        #region OkulBilgiEkle
         public Result<OkulBilgiVM> OkulBilgiEkle(OkulBilgiVM model, SessionContext user)
         {
             if (model != null)
@@ -167,7 +173,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     //var okulbilgi = _mapper.Map<OkulBilgiVM, OkulBilgi>(model);
-                    OkulBilgi okulbilgi= new OkulBilgi();
+                    OkulBilgi okulbilgi = new OkulBilgi();
                     okulbilgi.KullaniciId = user.LoginId;
                     okulbilgi.MdYrdAdiSoyadi = model.MdYrdAdiSoyadi;
                     okulbilgi.MdYrdDonusYil = model.MdYrdDonusYil;
@@ -181,7 +187,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okulbilgi.OkulId = model.OkulId;
                     okulbilgi.OkulTelefon = model.OkulTelefon;
                     okulbilgi.UlkeId = model.UlkeId;
-                                       
+                    okulbilgi.KayitTarihi = model.KayitTarihi;
+
                     _unitOfWork.okulBilgiRepository.Add(okulbilgi);
                     _unitOfWork.Save();
                     return new Result<OkulBilgiVM>(true, ResultConstant.RecordCreateSuccess);
@@ -197,6 +204,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<OkulBilgiVM>(false, "Boş veri olamaz");
             }
         }
+        #endregion
+
+        #region OkulBilgiGuncelle
         public Result<OkulBilgiVM> OkulBilgiGuncelle(OkulBilgiVM model, SessionContext user)
         {
             if (model.OkulBilgiId != null)
@@ -205,7 +215,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     //var okulbilgi = _mapper.Map<OkulBilgiVM, OkulBilgi>(model);
                     var data = _unitOfWork.okulBilgiRepository.Get(model.OkulBilgiId);
-                    if (data!=null)
+                    if (data != null)
                     {
                         data.KullaniciId = user.LoginId;
                         data.MdYrdAdiSoyadi = model.MdYrdAdiSoyadi;
@@ -220,6 +230,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.OkulId = model.OkulId;
                         data.OkulTelefon = model.OkulTelefon;
                         data.UlkeId = model.UlkeId;
+                        data.KayitTarihi = model.KayitTarihi;
 
                         _unitOfWork.okulBilgiRepository.Update(data);
                         _unitOfWork.Save();
@@ -242,6 +253,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<OkulBilgiVM>(false, "Lütfen kayıt seçiniz");
             }
         }
+        #endregion
+
+        #region OkulBilgiSil
         public Result<bool> OkulBilgiSil(Guid id)
         {
             var data = _unitOfWork.okulBilgiRepository.Get(id);
@@ -256,6 +270,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         }
+        #endregion
+
+        #region OkulBilgiGetirUlkeId
         public Result<List<OkulBilgiVM>> OkulBilgiGetirUlkeId(Guid ulkeId)
         {
             var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.UlkeId == ulkeId, includeProperties: "Kullanici,Okullar").ToList();
@@ -284,7 +301,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulId = item.OkulId,
                         OkulAdi = item.Okullar.OkulAdi,
                         UlkeId = item.UlkeId,
-                        UlkeAdi = item.Okullar.Sehirler.Eyaletler.Ulkeler.UlkeAdi,
+                        UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.UlkeId).Data,
                         KayitTarihi = item.KayitTarihi,
                         KullaniciId = item.KullaniciId,
                         KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
@@ -298,9 +315,58 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<OkulBilgiVM>>(false, ResultConstant.RecordNotFound);
             }
         }
+        #endregion
+
+        #region OkulBilgiGetirOkulId
+        public Result<List<OkulBilgiVM>> OkulBilgiGetirOkulId(Guid okulId)
+        {
+            var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.UlkeId == okulId, includeProperties: "Kullanici,Okullar").ToList();
+            if (data != null)
+            {
+                List<OkulBilgiVM> returnData = new List<OkulBilgiVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new OkulBilgiVM()
+                    {
+                        OkulBilgiId = item.OkulBilgiId,
+                        OkulTelefon = item.OkulTelefon,
+                        OkulAdres = item.OkulAdres,
+                        //*************************                        
+                        MudurAdiSoyadi = item.MudurAdiSoyadi,
+                        MudurTelefon = item.MudurTelefon,
+                        MudurEPosta = item.MudurEPosta,
+                        MudurDonusYil = item.MudurDonusYil,
+                        //****************************
+                        MdYrdAdiSoyadi = item.MdYrdAdiSoyadi,
+                        MdYrdTelefon = item.MdYrdTelefon,
+                        MdYrdEPosta = item.MdYrdEPosta,
+                        MdYrdDonusYil = item.MdYrdDonusYil,
+                        //********************************
+                        OkulId = item.OkulId,
+                        OkulAdi = item.Okullar.OkulAdi,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.UlkeId).Data,
+                        KayitTarihi = item.KayitTarihi,
+                        KullaniciId = item.KullaniciId,
+                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+
+                    });
+                }
+                return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<OkulBilgiVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+        #region OkulAdGetirUlkeId
         public Result<List<OkulBilgiVM>> OkulAdGetirUlkeId(Guid ulkeId)
         {
             throw new NotImplementedException();
-        }
+        } 
+        #endregion
     }
 }

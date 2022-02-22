@@ -13,17 +13,22 @@ namespace YOGBIS.UI.Controllers
     [Authorize]
     public class OkulBilgiController : Controller
     {
+        #region Değişkenler
         private readonly IOkulBilgiBE _okulBilgiBE;
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IOkullarBE _okullarBE;
+        #endregion
 
+        #region Dönüştürücüler
         public OkulBilgiController(IOkulBilgiBE okulBilgiBE, IUlkelerBE ulkelerBE, IOkullarBE okullarBE)
         {
             _okulBilgiBE = okulBilgiBE;
             _ulkelerBE = ulkelerBE;
             _okullarBE = okullarBE;
         }
-        
+        #endregion
+
+        #region Index
         [Authorize(Roles = "Administrator,Manager,SubManager,Follower")]
         public IActionResult Index()
         {
@@ -40,9 +45,12 @@ namespace YOGBIS.UI.Controllers
 
             return View(user);
         }
+        #endregion
 
+        #region OkulBilgiEkleGet
         [Authorize(Roles = "Administrator,Manager,SubManager")]
         [HttpGet]
+        [Route("OkulBilgi/OB10002", Name = "OkulBilgiEkleRoute")]
         public IActionResult OkulBilgiEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -50,9 +58,12 @@ namespace YOGBIS.UI.Controllers
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
             return View();
         }
+        #endregion
 
+        #region OkulBilgiEklePost
         [Authorize(Roles = "Administrator,Manager,SubManager")]
         [HttpPost]
+        [Route("OkulBilgi/OB10002", Name = "OkulBilgiEkleRoute")]
         public IActionResult OkulBilgiEkle(OkulBilgiVM model)
         {
 
@@ -76,8 +87,11 @@ namespace YOGBIS.UI.Controllers
             return View(model);
             //}
         }
+        #endregion
 
+        #region GuncelleGet
         [Authorize(Roles = "Administrator,Manager,SubManager")]
+        [Route("OkulBilgi/OB10003", Name = "OkulBilgiGuncelleRoute")]
         public ActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -95,10 +109,13 @@ namespace YOGBIS.UI.Controllers
             }
 
         }
+        #endregion
 
+        #region GuncellePost
         [Authorize(Roles = "Administrator,Manager,SubManager")]
         [ValidateAntiForgeryToken]
         [HttpPost]
+        [Route("OkulBilgi/OB10003", Name = "OkulBilgiGuncelleRoute")]
         public ActionResult Guncelle(OkulBilgiVM model)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -124,7 +141,9 @@ namespace YOGBIS.UI.Controllers
             //}
 
         }
+        #endregion
 
+        #region OkulBilgiSil
         [Authorize(Roles = "Administrator,Manager,SubManager")]
         [HttpDelete]
         public IActionResult OkulBilgiSil(Guid id)
@@ -139,14 +158,17 @@ namespace YOGBIS.UI.Controllers
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
         }
+        #endregion
 
+        #region OkulBilgileriGetir
         [Authorize(Roles = "Administrator,Manager")]
-        public IActionResult OkulBilgileriGetir(Guid ulkeId)
+        [Route("OkulBilgi/OB10004", Name = "OkulBilgiGenelRoute")]
+        public IActionResult OkulBilgileriGetir(Guid? ulkeId)
         {
 
             if (ulkeId != null)
             {
-                var data = _okulBilgiBE.OkulBilgiGetirUlkeId(ulkeId);
+                var data = _okulBilgiBE.OkulBilgiGetirUlkeId((Guid)ulkeId);
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
                 ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
@@ -161,7 +183,43 @@ namespace YOGBIS.UI.Controllers
             {
                 var requestmodel = _okulBilgiBE.OkulBilgileriGetir();
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+
+                if (requestmodel.IsSuccess)
+            {
+                return View(requestmodel.Data);
+            }
+
+            return View();
+        }
+
+    }
+        #endregion
+
+        #region OkulBilgileriGetirOkulId
+        [Authorize(Roles = "Administrator,Manager")]
+        [Route("OkulBilgi/OB10008", Name = "OkulBilgiOkulIdRoute")]
+        public IActionResult OkulBilgileriGetirOkulId(Guid? okulId)
+        {
+
+            if (okulId != null)
+            {
+                var data = _okulBilgiBE.OkulBilgiGetirOkulId((Guid)okulId);
+                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+
+                if (data.IsSuccess)
+                {
+                    return View(data.Data);
+                }
+
+                return View();
+            }
+            else
+            {
+                var requestmodel = _okulBilgiBE.OkulBilgileriGetir();
+                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
                 if (requestmodel.IsSuccess)
                 {
@@ -172,9 +230,12 @@ namespace YOGBIS.UI.Controllers
             }
 
         }
+        #endregion
 
+        #region OkulBilgiGetirUlkeId
         [Authorize(Roles = "Administrator,Manager")]
-        public ActionResult OkulBilgiGetirUlkeId(Guid Id) 
+        [Route("OkulBilgi/OB10005", Name = "OkulBilgiUlkeIdRoute")]
+        public ActionResult OkulBilgileriGetirUlkeId(Guid Id)
         {
             var data = _okulBilgiBE.OkulBilgiGetirUlkeId(Id);
             if (data.IsSuccess)
@@ -184,39 +245,54 @@ namespace YOGBIS.UI.Controllers
             else
             {
                 return RedirectToAction("OkulBilgileriGetir", new { ulkeId = Id });
-            }            
+            }
+
+            //var requestmodel = _okulBilgiBE.OkulBilgiGetirUlkeId(Id);
+            //ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            //ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
+
+            //if (requestmodel.IsSuccess)
+            //{
+            //    return View(requestmodel.Data);
+            //}
+
+            //return View();
         }
+        #endregion
 
+        #region OkulBilgiGetirOkulId
         [Authorize(Roles = "Administrator,Manager")]
-        public ActionResult OkulBilgiYazdir(Guid ulkeId) 
+        [Route("OkulBilgi/OB10006", Name = "OkulBilgiGetirRoute")]
+        public ActionResult OkulBilgiGetirOkulId(Guid OkulId)
         {
-            if (ulkeId != null)
+            var data = _okulBilgiBE.OkulBilgiGetir(OkulId);
+            if (data.IsSuccess)
             {
-                var data = _okulBilgiBE.OkulBilgiGetirUlkeId(ulkeId);
-                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
-
-                if (data.IsSuccess)
-                {
-                    return View(data.Data);
-                }
-
-                return View();
+                return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
             }
             else
             {
-                var requestmodel = _okulBilgiBE.OkulBilgileriGetir();
-                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+                return RedirectToAction("OkulBilgileriGetir", new { ulkeId = OkulId });
+            }
 
-                if (requestmodel.IsSuccess)
-                {
-                    return View(requestmodel.Data);
-                }
+        }
+        #endregion
 
-                return View();
+        #region OkulAdlariGetirUlkeId
+        [Authorize(Roles = "Administrator,Manager")]
+        [Route("OkulBilgi/OB10007", Name = "OkulAdRoute")]
+        public JsonResult OkulAdlariGetirUlkeId(Guid UlkeId)
+        {
+            var data = _okulBilgiBE.OkulAdGetirUlkeId(UlkeId);
+            if (data.IsSuccess)
+            {
+                return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
+            }
+            else
+            {
+                return Json(new { });
             }
         }
-       
+        #endregion
     }
 }

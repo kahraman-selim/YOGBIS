@@ -133,6 +133,39 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region OkulGetirUlkeId
+        public Result<List<OkullarVM>> OkulGetirUlkeId(Guid UlkeId)
+        {
+            var data = _unitOfWork.okullarRepository.GetAll(u => u.OkulUlkeId == UlkeId, includeProperties: "Kullanici,Sehirler,Eyaletler").OrderBy(u => u.OkulAdi).ToList();
+            if (data != null)
+            {
+                List<OkullarVM> returnData = new List<OkullarVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new OkullarVM()
+                    {
+                        OkulId = (Guid)item.OkulId,
+                        OkulKodu = item.OkulKodu,
+                        OkulAdi = item.OkulAdi,
+                        OkulUlkeId = item.OkulUlkeId,
+                        OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
+                        OkulDurumu = item.OkulDurumu,
+                        OkulMudurId = item.OkulMudurId,
+                        OkulMudurAdiSoyadi = item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
+                        KaydedenId = item.KaydedenId,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                    });
+                }
+                return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<OkullarVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
         #region OkulGetir(Guid id)
         public Result<OkullarVM> OkulGetir(Guid id)
         {

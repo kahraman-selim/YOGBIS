@@ -12,9 +12,13 @@
         top: 95px;
     }
 </style>
+
 <ol class="breadcrumb mb-4 mt-2">
     <li class="ml-2 mr-2">
         @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Bulunduğu Ülkeyi Seç", new { @class = "form-control-range form-control py-1 w-100" })
+    </li>
+    <li class="ml-2 mr-2">
+        @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç", new { @class = "form-control-range form-control py-1 w-100" })
     </li>
     <li class="m-2">
         <a asp-controller="OkulBilgi" asp-action="OkulBilgileriGetir"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
@@ -109,41 +113,38 @@
             $("#UlkeListesi").on("change", function () {
 
                 var Id = $("#UlkeListesi").val();
-                
-                $.ajax({
-                    type: "DELETE",
-                    url: "/OkulBilgi/OkulBilgiGetirUlkeId/"+Id,
-                    success: function (data) {
-                        if (data.isSucces) {
-                            window.location.href = "?ulkeId="+Id;                            
-                        } else {                            
-                            alert("Bir hata oluştu!");
-                        }
-                    }
+
+                $.get("/OkulBilgi/OkulAdlariGetirUlkeId", { UlkeId: Id }, function (data) {
+                    $("#OkulListesi").empty();
+                    $.each(data, function (index, row) {
+                        $("#OkulListesi").append("<option value='" + row.OkulId + "'>" + row.OkulAdi + "</option>")
+                    });
                 });
-                
+
+                //$.ajax({
+                //    type: "DELETE",
+                //    url: "/OkulBilgi/OkulBilgileriGetirUlkeId/"+Id,
+                //    success: function (data) {
+                //        if (data.isSucces) {
+                //            window.location.href = "?ulkeId="+Id;
+                //        } else {
+                //            alert("Bir hata oluştu!");
+                //        }
+                //    }
+                //});
+
+                location.href = '@Url.Action("OkulBilgileriGetir", "OkulBilgi")?ulkeId=' + Id;
             });
 
-            //$("#ulkeGetir").on("click", function () {
-            //    var Id = $("#UlkeListesi").val();
-            //    /*alert(Id);*/
-            //    $.ajax({
-            //        type: "DELETE",
-            //        url: "/OkulBilgi/OkulBilgiGetirUlkeId/"+Id,
-            //        success: function (data) {
-            //            if (data.isSucces) {
-            //                window.location.href = "?ulkeId="+Id;
-            //                /*alert("başarılı");*/
-            //            } else {
-            //                /*bootbox.dialog("Birşeyler kötü gitti !");*/
-            //                alert("Birşeyler kötü gitti !");
-            //            }
-            //        }
-            //    });
-            //});
+            $("#OkulListesi").on("change", function () {
+
+                var Id = $("#OkulListesi").val();
+
+                location.href = '@Url.Action("OkulBilgiGetirOkulId", "OkulBilgi")?ulkeId=' + Id;
+            });
         });
 
-        
+
     </script>
 }
 
