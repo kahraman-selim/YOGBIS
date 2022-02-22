@@ -112,11 +112,28 @@
 
             $("#UlkeListesi").on("change", function () {
 
-                var Id = $("#UlkeListesi").val();                
+                var Id = $("#UlkeListesi").val();
+
+                $.get("/OkulBilgi/OkulAdlariGetirUlkeId", { UlkeId: Id }, function (data) {
+                    $("#OkulListesi").empty();
+                    $.each(data, function (index, row) {
+                        $("#OkulListesi").append("<option value='" + row.OkulId + "'>" + row.OkulAdi + "</option>")
+                    });
+                });
+
+                //$.ajax({
+                //    type: "DELETE",
+                //    url: "/OkulBilgi/OkulBilgileriGetirUlkeId/"+Id,
+                //    success: function (data) {
+                //        if (data.isSucces) {
+                //            window.location.href = "?ulkeId="+Id;
+                //        } else {
+                //            alert("Bir hata oluştu!");
+                //        }
+                //    }
+                //});
 
                 location.href = '@Url.Action("OkulBilgileriGetir", "OkulBilgi")?ulkeId=' + Id;
-
-                $("#OkulListesi").empty();
             });
 
             $("#OkulListesi").on("change", function () {

@@ -7,6 +7,7 @@ using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
+using YOGBIS.Data.Contracts;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -17,14 +18,16 @@ namespace YOGBIS.UI.Controllers
         private readonly IOkulBilgiBE _okulBilgiBE;
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IOkullarBE _okullarBE;
+        private readonly IUnitOfWork _unitOfWork;
         #endregion
 
         #region Dönüştürücüler
-        public OkulBilgiController(IOkulBilgiBE okulBilgiBE, IUlkelerBE ulkelerBE, IOkullarBE okullarBE)
+        public OkulBilgiController(IOkulBilgiBE okulBilgiBE, IUlkelerBE ulkelerBE, IOkullarBE okullarBE, IUnitOfWork unitOfWork)
         {
             _okulBilgiBE = okulBilgiBE;
             _ulkelerBE = ulkelerBE;
             _okullarBE = okullarBE;
+            _unitOfWork = unitOfWork;
         }
         #endregion
 
@@ -55,7 +58,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+            ViewBag.OkulAdi = string.Empty; //_okullarBE.OkullariGetirAZ().Data;
             return View();
         }
         #endregion
@@ -69,23 +72,15 @@ namespace YOGBIS.UI.Controllers
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+            ViewBag.OkulAdi = string.Empty; //_okullarBE.OkullariGetirAZ().Data;
 
-            //if (OkulId > 0)
-            //{
-            //    var data = _okulBilgiBE.OkulBilgiGuncelle(model, user);
-
-            //    return RedirectToAction("Index");
-            //}
-            //else
-            //{
             var data = _okulBilgiBE.OkulBilgiEkle(model, user);
             if (data.IsSuccess)
             {
                 return RedirectToAction("Index");
             }
             return View(model);
-            //}
+            
         }
         #endregion
 
@@ -96,7 +91,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+            ViewBag.OkulAdi = string.Empty; //_okullarBE.OkullariGetirAZ().Data;
 
             if (id != null)
             {
@@ -120,10 +115,8 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+            ViewBag.OkulAdi = string.Empty; //_okullarBE.OkullariGetirAZ().Data;
 
-            //if (id > 0)
-            //{
             var data = _okulBilgiBE.OkulBilgiGuncelle(model, user);
             if (data.IsSuccess)
             {
@@ -133,13 +126,6 @@ namespace YOGBIS.UI.Controllers
             {
                 return View();
             }
-
-            //}
-            //else
-            //{
-            //    return View();
-            //}
-
         }
         #endregion
 
@@ -186,19 +172,18 @@ namespace YOGBIS.UI.Controllers
                 ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
                 if (requestmodel.IsSuccess)
-            {
-                return View(requestmodel.Data);
+                {
+                    return View(requestmodel.Data);
+                }
+
+                return View();
             }
-
-            return View();
         }
-
-    }
         #endregion
 
         #region OkulBilgileriGetirOkulId
         [Authorize(Roles = "Administrator,Manager")]
-        [Route("OkulBilgi/OB10008", Name = "OkulBilgiOkulIdRoute")]
+        [Route("OkulBilgi/OB10005", Name = "OkulBilgiOkulIdRoute")]
         public IActionResult OkulBilgileriGetirOkulId(Guid? okulId)
         {
 
@@ -215,84 +200,83 @@ namespace YOGBIS.UI.Controllers
 
                 return View();
             }
-            else
-            {
-                var requestmodel = _okulBilgiBE.OkulBilgileriGetir();
-                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-                if (requestmodel.IsSuccess)
-                {
-                    return View(requestmodel.Data);
-                }
-
-                return View();
-            }
-
+            return View();
         }
         #endregion
 
-        #region OkulBilgiGetirUlkeId
-        [Authorize(Roles = "Administrator,Manager")]
-        [Route("OkulBilgi/OB10005", Name = "OkulBilgiUlkeIdRoute")]
-        public ActionResult OkulBilgileriGetirUlkeId(Guid Id)
+        public JsonResult OkulAdGetir(Guid ulkeId)
         {
-            var data = _okulBilgiBE.OkulBilgiGetirUlkeId(Id);
-            if (data.IsSuccess)
+            if (ulkeId != null)
             {
-                return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
-            }
-            else
-            {
-                return RedirectToAction("OkulBilgileriGetir", new { ulkeId = Id });
+                var data = _unitOfWork.okullarRepository.GetAll(x=>x.OkulUlkeId==ulkeId);   //_okulBilgiBE.OkulBilgiGetirUlkeId((Guid)ulkeId);
+                return Json(data);
             }
 
-            //var requestmodel = _okulBilgiBE.OkulBilgiGetirUlkeId(Id);
-            //ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            //ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
-
-            //if (requestmodel.IsSuccess)
-            //{
-            //    return View(requestmodel.Data);
-            //}
-
-            //return View();
+            return Json(new EmptyResult());
         }
-        #endregion
 
-        #region OkulBilgiGetirOkulId
-        [Authorize(Roles = "Administrator,Manager")]
-        [Route("OkulBilgi/OB10006", Name = "OkulBilgiGetirRoute")]
-        public ActionResult OkulBilgiGetirOkulId(Guid OkulId)
-        {
-            var data = _okulBilgiBE.OkulBilgiGetir(OkulId);
-            if (data.IsSuccess)
-            {
-                return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
-            }
-            else
-            {
-                return RedirectToAction("OkulBilgileriGetir", new { ulkeId = OkulId });
-            }
+        //#region OkulBilgiGetirUlkeId
+        //[Authorize(Roles = "Administrator,Manager")]
+        //[Route("OkulBilgi/OB10005", Name = "OkulBilgiUlkeIdRoute")]
+        //public ActionResult OkulBilgileriGetirUlkeId(Guid Id)
+        //{
+        //    var data = _okulBilgiBE.OkulBilgiGetirUlkeId(Id);
+        //    if (data.IsSuccess)
+        //    {
+        //        return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("OkulBilgileriGetir", new { ulkeId = Id });
+        //    }
 
-        }
-        #endregion
+        //    //var requestmodel = _okulBilgiBE.OkulBilgiGetirUlkeId(Id);
+        //    //ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+        //    //ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
 
-        #region OkulAdlariGetirUlkeId
-        [Authorize(Roles = "Administrator,Manager")]
-        [Route("OkulBilgi/OB10007", Name = "OkulAdRoute")]
-        public JsonResult OkulAdlariGetirUlkeId(Guid UlkeId)
-        {
-            var data = _okulBilgiBE.OkulAdGetirUlkeId(UlkeId);
-            if (data.IsSuccess)
-            {
-                return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
-            }
-            else
-            {
-                return Json(new { });
-            }
-        }
-        #endregion
+        //    //if (requestmodel.IsSuccess)
+        //    //{
+        //    //    return View(requestmodel.Data);
+        //    //}
+
+        //    //return View();
+        //}
+        //#endregion
+
+        //#region OkulBilgiGetirOkulId
+        //[Authorize(Roles = "Administrator,Manager")]
+        //[Route("OkulBilgi/OB10006", Name = "OkulBilgiGetirRoute")]
+        //public ActionResult OkulBilgiGetirOkulId(Guid OkulId)
+        //{
+        //    var data = _okulBilgiBE.OkulBilgiGetir(OkulId);
+        //    if (data.IsSuccess)
+        //    {
+        //        return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("OkulBilgileriGetir", new { ulkeId = OkulId });
+        //    }
+
+        //}
+        //#endregion
+
+        //#region OkulAdlariGetirUlkeId
+        //[Authorize(Roles = "Administrator,Manager")]
+        //[Route("OkulBilgi/OB10007", Name = "OkulAdRoute")]
+        //public JsonResult OkulAdlariGetirUlkeId(Guid UlkeId)
+        //{
+        //    var data = _okulBilgiBE.OkulAdGetirUlkeId(UlkeId);
+        //    if (data.IsSuccess)
+        //    {
+        //        return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
+        //    }
+        //    else
+        //    {
+        //        return Json(new { });
+        //    }
+        //}
+        //#endregion
     }
 }

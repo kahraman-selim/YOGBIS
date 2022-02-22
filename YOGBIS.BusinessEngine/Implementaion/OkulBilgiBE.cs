@@ -320,7 +320,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkulBilgiGetirOkulId
         public Result<List<OkulBilgiVM>> OkulBilgiGetirOkulId(Guid okulId)
         {
-            var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.UlkeId == okulId, includeProperties: "Kullanici,Okullar").ToList();
+            var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.OkulId == okulId, includeProperties: "Kullanici,Okullar").ToList();
             if (data != null)
             {
                 List<OkulBilgiVM> returnData = new List<OkulBilgiVM>();

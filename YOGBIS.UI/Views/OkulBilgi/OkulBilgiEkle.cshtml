@@ -19,8 +19,9 @@
                     <div class="form-row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label asp-for="UlkeAdi" class="small mb-1 font-weight-bold">Ülke</label>
-                                @Html.DropDownListFor(u => u.UlkeId, new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Ülkeyi seçiniz", new { @class = "form-control-range form-control py-2" })
+                                <label asp-for="UlkeId" class="small mb-1 font-weight-bold">Ülke</label>
+                                @Html.DropDownListFor(u=>u.UlkeId, new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"),
+                                    "Ülkeyi seçiniz", new { @id="UlkeListesi", @class = "form-control-range form-control py-2"})
                                 <span class="text-danger" asp-validation-for="UlkeId"></span>
                             </div>
                         </div>
@@ -28,8 +29,9 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="OkulAdi" class="small mb-1 font-weight-bold">Okul Adı</label>
-                                @Html.DropDownListFor(u => u.OkulId, new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okul adını seçiniz", new { @class = "form-control-range form-control py-2" })
+                                <label asp-for="OkulId" class="small mb-1 font-weight-bold">Okul Adı</label>
+                                @Html.DropDownListFor(u => u.OkulId, new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"),
+                                    "Okul adını seçiniz", new { @id = "OkulListesi", @class = "form-control-range form-control py-2"})
                                 <span class="text-danger" asp-validation-for="OkulId"></span>
                             </div>
                         </div>
@@ -148,5 +150,33 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#UlkeListesi").on("change", function () {
+
+                var Id = $("#UlkeListesi").val();  
+
+                /*alert(Id);*/
+
+                $("#OkulListesi").empty();
+
+                $("#OkulListesi").append("<option value=''> Okul adını seçiniz </option>");
+
+                $.get("/OkulBilgi/OkulAdGetir", { ulkeid=Id }, function (data) {
+
+                    $.each(data, function (index, value) {
+
+                        $("#OkulListesi").append("<option value='" + row.OkulId + "'>" + row.OkulAdi + "</option>");
+                    });
+                });
+
+            });
+
+        });        
+
+    </script>
 }
 
