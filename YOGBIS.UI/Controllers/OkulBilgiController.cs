@@ -36,6 +36,7 @@ namespace YOGBIS.UI.Controllers
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
@@ -53,7 +54,7 @@ namespace YOGBIS.UI.Controllers
         #region OkulBilgiEkleGet
         [Authorize(Roles = "Administrator,Manager,SubManager")]
         [HttpGet]
-        [Route("OkulBilgi/OB10002", Name = "OkulBilgiEkleRoute")]
+        [Route("OkulBilgi/OBC10002", Name = "OkulBilgiEkleRoute")]
         public IActionResult OkulBilgiEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -66,7 +67,7 @@ namespace YOGBIS.UI.Controllers
         #region OkulBilgiEklePost
         [Authorize(Roles = "Administrator,Manager,SubManager")]
         [HttpPost]
-        [Route("OkulBilgi/OB10002", Name = "OkulBilgiEkleRoute")]
+        [Route("OkulBilgi/OBC10002", Name = "OkulBilgiEkleRoute")]
         public IActionResult OkulBilgiEkle(OkulBilgiVM model)
         {
 
@@ -86,7 +87,7 @@ namespace YOGBIS.UI.Controllers
 
         #region GuncelleGet
         [Authorize(Roles = "Administrator,Manager,SubManager")]
-        [Route("OkulBilgi/OB10003", Name = "OkulBilgiGuncelleRoute")]
+        [Route("OkulBilgi/OBC10003", Name = "OkulBilgiGuncelleRoute")]
         public ActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -110,7 +111,7 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator,Manager,SubManager")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        [Route("OkulBilgi/OB10003", Name = "OkulBilgiGuncelleRoute")]
+        [Route("OkulBilgi/OBC10003", Name = "OkulBilgiGuncelleRoute")]
         public ActionResult Guncelle(OkulBilgiVM model)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -148,7 +149,7 @@ namespace YOGBIS.UI.Controllers
 
         #region OkulBilgileriGetir
         [Authorize(Roles = "Administrator,Manager")]
-        [Route("OkulBilgi/OB10004", Name = "OkulBilgiGenelRoute")]
+        [Route("OkulBilgi/OBC10004", Name = "OkulBilgiGenelRoute")]
         public IActionResult OkulBilgileriGetir(Guid? ulkeId)
         {
 
@@ -183,7 +184,7 @@ namespace YOGBIS.UI.Controllers
 
         #region OkulBilgileriGetirOkulId
         [Authorize(Roles = "Administrator,Manager")]
-        [Route("OkulBilgi/OB10005", Name = "OkulBilgiOkulIdRoute")]
+        [Route("OkulBilgi/OBC10005", Name = "OkulBilgiOkulIdRoute")]
         public IActionResult OkulBilgileriGetirOkulId(Guid? okulId)
         {
 
@@ -207,9 +208,14 @@ namespace YOGBIS.UI.Controllers
 
         public IActionResult OkulAdGetir(Guid ulkeId)
         {
+            
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
             if (ulkeId != null)
             {
-                var data =  _okullarBE.OkulGetirUlkeId((Guid)ulkeId).Data;  //_unitOfWork.okullarRepository.GetAll(x=>x.OkulUlkeId==ulkeId);   
+                
+
+                var data = _unitOfWork.okullarRepository.GetAll(x => x.OkulUlkeId == ulkeId); //_okullarBE.OkulGetirUlkeId((Guid)ulkeId).Data;  //_unitOfWork.okullarRepository.GetAll(x=>x.OkulUlkeId==ulkeId);   
 
                 return Json(data);
                 

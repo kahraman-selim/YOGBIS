@@ -20,8 +20,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label asp-for="UlkeId" class="small mb-1 font-weight-bold">Ülke</label>
-                                @Html.DropDownListFor(u=>u.UlkeId, new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"),
-                                    "Ülkeyi seçiniz", new { @id="UlkeListesi", @class = "form-control-range form-control py-2"})
+                                @Html.DropDownListFor(u => u.UlkeId, new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"),
+                                    "Ülkeyi seçiniz", new { @id = "UlkeListesi", @class = "form-control-range form-control py-2" })
                                 <span class="text-danger" asp-validation-for="UlkeId"></span>
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                             <div class="form-group">
                                 <label asp-for="OkulId" class="small mb-1 font-weight-bold">Okul Adı</label>
                                 @Html.DropDownListFor(u => u.OkulId, new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"),
-                                    "Okul adını seçiniz", new { @id = "OkulListesi", @class = "form-control-range form-control py-2"})
+                                    "Okul adını seçiniz", new { @id = "OkulListesi", @class = "form-control-range form-control py-2" })
                                 <span class="text-danger" asp-validation-for="OkulId"></span>
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">
-                            @*<a asp-controller="OkulBilgi" asp-action="OkulBilgiEkle" id="yenile" name="yenile" class="btn btn-primary btn-sm mb-1" style="width:100px">Yeni Kayıt</a>*@
+                            <a asp-controller="OkulBilgi" asp-action="OkulBilgiEkle" id="yenile" name="yenile" class="btn btn-primary btn-sm mb-1" style="width:100px">Yeni Kayıt</a>
                             <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" />
                             <a asp-controller="OkulBilgi" asp-action="OkulBilgiEkle" id="yenile" name="degistir" class="btn btn-info btn-sm mb-1 disabled" style="width:100px">Değiştir</a>
                             <a asp-controller="OkulBilgi" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Vazgeç</a>
@@ -151,7 +151,7 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     
-    <script type="text/javascript">
+    <script type="text/javascript" lang="tr">
 
         $(document).ready(function () {
 
@@ -159,66 +159,36 @@
 
                 var ulkeId = $("#UlkeListesi").val();
 
-                alert(ulkeId);
+                /*alert(ulkeId);*/
 
-                var url = "/OkulBilgi/OkulAdGetir/?ulkeId=" + ulkeId;
+                $("#OkulListesi").empty();
+                $("#OkulListesi").append("<option value=''> Okul adını seçiniz </option>");
 
+                var url = '@Url.Action("OkulAdGetir", "OkulBilgi")?ulkeId=' + ulkeId;
 
-                $.ajax({
+                $.getJSON(url, function (data) {
 
-                    type: "GET",
-                    url: url,
-                    success: function (response) {
+                    $.each(data, function (i=0,okulId,okulAdi) {
 
-                        alert("oldu");
+                        /*alert(data);*/
+                        $('#OkulListesi').append($('<option>', {
+                            value: data[i]['okulId'],
+                            text: data[i]['okulAdi']
+                        }));
 
-                        $("#OkulListesi").empty();
-
-                        $("#OkulListesi").append("<option value=''> Okul adını sçinnnnnnn </option>");
-
-                        
-
-                    },
-                    error: function (response) {
-
-                        alert("bir hata oldu");
-                        location.reload();
-                    }
+                    });
                 });
-
-
-                //$.get(url, function (data) {
-
-                //    alert(data);
-
-                //    $("#OkulListesi").empty();
-
-                //    $("#OkulListesi").append("<option value=''> Okul adını seçiniz </option>");
-
-                //    //$.each(data, function (key, val) {
-
-                //    //    $("#OkulListesi").append("<option value='" + val.OkulId + "'>" + val.OkulAdi + "</option>");
-
-                        
-
-                //    //});
-
-                //});
-
-                //$.get("/OkulBilgi/OkulAdGetir", { ulkeid=Id }, function (data) {
-
-                //    $.each(data, function (index, value) {
-
-                //        $("#OkulListesi").append("<option value='" + row.OkulId + "'>" + row.OkulAdi + "</option>");
-                //    });
-                //});
-
-                
-                
 
             });
 
-        });        
+            $("#OkulListesi").on("change", function () {
+
+                var okulId = $("#OkulListesi").val();
+
+                alert(okulId);
+
+            });
+        });
 
     </script>
 }
