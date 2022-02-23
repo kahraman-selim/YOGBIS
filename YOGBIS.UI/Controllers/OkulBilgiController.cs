@@ -205,78 +205,19 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        public JsonResult OkulAdGetir(Guid ulkeId)
+        public IActionResult OkulAdGetir(Guid ulkeId)
         {
             if (ulkeId != null)
             {
-                var data = _unitOfWork.okullarRepository.GetAll(x=>x.OkulUlkeId==ulkeId);   //_okulBilgiBE.OkulBilgiGetirUlkeId((Guid)ulkeId);
+                var data =  _okullarBE.OkulGetirUlkeId((Guid)ulkeId).Data;  //_unitOfWork.okullarRepository.GetAll(x=>x.OkulUlkeId==ulkeId);   
+
                 return Json(data);
+                
+               
             }
 
-            return Json(new EmptyResult());
+            return NotFound();
         }
 
-        //#region OkulBilgiGetirUlkeId
-        //[Authorize(Roles = "Administrator,Manager")]
-        //[Route("OkulBilgi/OB10005", Name = "OkulBilgiUlkeIdRoute")]
-        //public ActionResult OkulBilgileriGetirUlkeId(Guid Id)
-        //{
-        //    var data = _okulBilgiBE.OkulBilgiGetirUlkeId(Id);
-        //    if (data.IsSuccess)
-        //    {
-        //        return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("OkulBilgileriGetir", new { ulkeId = Id });
-        //    }
-
-        //    //var requestmodel = _okulBilgiBE.OkulBilgiGetirUlkeId(Id);
-        //    //ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-        //    //ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
-
-        //    //if (requestmodel.IsSuccess)
-        //    //{
-        //    //    return View(requestmodel.Data);
-        //    //}
-
-        //    //return View();
-        //}
-        //#endregion
-
-        //#region OkulBilgiGetirOkulId
-        //[Authorize(Roles = "Administrator,Manager")]
-        //[Route("OkulBilgi/OB10006", Name = "OkulBilgiGetirRoute")]
-        //public ActionResult OkulBilgiGetirOkulId(Guid OkulId)
-        //{
-        //    var data = _okulBilgiBE.OkulBilgiGetir(OkulId);
-        //    if (data.IsSuccess)
-        //    {
-        //        return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("OkulBilgileriGetir", new { ulkeId = OkulId });
-        //    }
-
-        //}
-        //#endregion
-
-        //#region OkulAdlariGetirUlkeId
-        //[Authorize(Roles = "Administrator,Manager")]
-        //[Route("OkulBilgi/OB10007", Name = "OkulAdRoute")]
-        //public JsonResult OkulAdlariGetirUlkeId(Guid UlkeId)
-        //{
-        //    var data = _okulBilgiBE.OkulAdGetirUlkeId(UlkeId);
-        //    if (data.IsSuccess)
-        //    {
-        //        return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
-        //    }
-        //    else
-        //    {
-        //        return Json(new { });
-        //    }
-        //}
-        //#endregion
     }
 }

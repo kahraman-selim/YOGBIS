@@ -157,21 +157,64 @@
 
             $("#UlkeListesi").on("change", function () {
 
-                var Id = $("#UlkeListesi").val();  
+                var ulkeId = $("#UlkeListesi").val();
 
-                /*alert(Id);*/
+                alert(ulkeId);
 
-                $("#OkulListesi").empty();
+                var url = "/OkulBilgi/OkulAdGetir/?ulkeId=" + ulkeId;
 
-                $("#OkulListesi").append("<option value=''> Okul adını seçiniz </option>");
 
-                $.get("/OkulBilgi/OkulAdGetir", { ulkeid=Id }, function (data) {
+                $.ajax({
 
-                    $.each(data, function (index, value) {
+                    type: "GET",
+                    url: url,
+                    success: function (response) {
 
-                        $("#OkulListesi").append("<option value='" + row.OkulId + "'>" + row.OkulAdi + "</option>");
-                    });
+                        alert("oldu");
+
+                        $("#OkulListesi").empty();
+
+                        $("#OkulListesi").append("<option value=''> Okul adını sçinnnnnnn </option>");
+
+                        
+
+                    },
+                    error: function (response) {
+
+                        alert("bir hata oldu");
+                        location.reload();
+                    }
                 });
+
+
+                //$.get(url, function (data) {
+
+                //    alert(data);
+
+                //    $("#OkulListesi").empty();
+
+                //    $("#OkulListesi").append("<option value=''> Okul adını seçiniz </option>");
+
+                //    //$.each(data, function (key, val) {
+
+                //    //    $("#OkulListesi").append("<option value='" + val.OkulId + "'>" + val.OkulAdi + "</option>");
+
+                        
+
+                //    //});
+
+                //});
+
+                //$.get("/OkulBilgi/OkulAdGetir", { ulkeid=Id }, function (data) {
+
+                //    $.each(data, function (index, value) {
+
+                //        $("#OkulListesi").append("<option value='" + row.OkulId + "'>" + row.OkulAdi + "</option>");
+                //    });
+                //});
+
+                
+                
 
             });
 
