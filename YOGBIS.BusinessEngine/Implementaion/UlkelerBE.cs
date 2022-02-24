@@ -42,7 +42,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         returnData.Add(new UlkelerVM()
                         {
-                            UlkeId = (Guid)item.UlkeId,
+                            UlkeId = item.UlkeId,
                             UlkeAdi = item.UlkeAdi,
                             UlkeBayrakURL = item.UlkeBayrakURL,
                             UlkeBayrakAdi = item.UlkeBayrakAdi,

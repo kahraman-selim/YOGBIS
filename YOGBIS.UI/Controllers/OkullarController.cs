@@ -10,6 +10,7 @@ using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
+using YOGBIS.Data.Contracts;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -21,28 +22,30 @@ namespace YOGBIS.UI.Controllers
         private readonly IOkullarBE _okullarBE;
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IKullaniciBE _kullaniciBE;
+        private readonly IUnitOfWork _unitOfWork;
         [Obsolete]
         private readonly IHostingEnvironment _hostingEnvironment;
         #endregion
 
         #region Dönüştürücüler
         [Obsolete]
-        public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE, IHostingEnvironment hostingEnvironment)
+        public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE, IHostingEnvironment hostingEnvironment, IUnitOfWork unitOfWork)
         {
             _okullarBE = okullarBE;
             _ulkelerBE = ulkelerBE;
             _kullaniciBE = kullaniciBE;
+            _unitOfWork = unitOfWork;
             _hostingEnvironment = hostingEnvironment;
         }
         #endregion
 
         #region Index
-        [Authorize(Roles = "Administrator,Manager,SubManager")]
+        [Authorize(Roles = "Administrator,Manager,Representative,SubManager,Follower")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            if (User.IsInRole(EnumsKullaniciRolleri.Administrator.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Manager.ToString()))
+            if (User.IsInRole(EnumsKullaniciRolleri.Administrator.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Manager.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Follower.ToString()))
             {
 
                 var requestmodel = _okullarBE.OkullariGetir();
@@ -100,23 +103,9 @@ namespace YOGBIS.UI.Controllers
             {
                 model.OkulMudurId = null;
             }
-            //if (model.OkulLogo != null)
-            //{
-            //    string klasorler = "img/Okullar/";
-            //    model.OkulLogoURL = await FotoYukle(klasorler, model.OkulLogo);
-            //}
 
             if (OkulId != null)
             {
-                //if (model.OkulMudurId==user.LoginId)
-                //{
-                //    var datamd = _okullarBE.OkulGuncelle(model, user);
-
-                //    if (datamd.IsSuccess)
-                //    {
-                //        return RedirectToAction("OC10001","Okullar");
-                //    }
-                //}
 
                 var data = _okullarBE.OkulGuncelle(model, user);
 
@@ -181,36 +170,89 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region OkulDetay
-        [Authorize(Roles = "Administrator,Manager")]
+        [Authorize(Roles = "Administrator,Manager,Representative,SubManager")]
         [Route("Okullar/OC10004", Name = "OkulDetayById")]
-        public IActionResult OkulDetay()
+        public IActionResult OkulDetay(Guid id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            var requestmodel = _okullarBE.OkullariGetir();
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            var data = _unitOfWork.okullarRepository.GetFirstOrDefault(x => x.OkulId == id);
 
-            if (requestmodel.IsSuccess)
+            if (data != null)
             {
-                return View(requestmodel.Data);
+                var requestmodel = _okullarBE.OkulGetir(id);               
+
+                if (requestmodel.IsSuccess)
+                {
+                    return View(requestmodel.Data);
+                }
+                return View(user);
             }
-            return View(user);
+
+            return View();
         }
+        #endregion
+
+        #region OkulDetayGuncelleGet
+        [Authorize(Roles = "SubManager")]
+        [HttpGet]
+        [Route("Okullar/OC10005", Name = "OkulDetayGuncelle")]
+        public IActionResult OkulDetayGuncelle(Guid? id)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            
+            if (id != null)
+            {
+                var data = _okullarBE.OkulGetir((Guid)id);
+                return View(data.Data);
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+        #endregion
+
+        #region OkulDetayGuncellePost
+        [Authorize(Roles = "SubManager")]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        [Obsolete]
+        [Route("Okullar/OC10005", Name = "OkulDetayGuncelle")]
+        public IActionResult OkulDetayGuncelle(OkullarVM model, Guid? OkulId)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            if (OkulId != null)
+            {
+
+                var data = _okullarBE.OkulDetayGuncelle(model, user);
+
+                if (data.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return View();
+        } 
         #endregion
 
         #region FotoYukle
         [Obsolete]
-        private async Task<string> FotoYukle(string dosyaYolu, IFormFile dosya)
-        {            
+        private string FotoYukle(string dosyaAdi, IFormFile dosya)
+        {
 
-            dosyaYolu += Guid.NewGuid().ToString() + "_" + dosya.FileName;
+            dosyaAdi += Guid.NewGuid().ToString() + "_" + dosya.FileName;
 
-            string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaYolu);
+            string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaAdi);
 
-            await dosya.CopyToAsync(new FileStream(dosyaKlasor, FileMode.Create));
-
-            return "/" + dosyaYolu;
-        } 
+            using (FileStream fs = new FileStream(dosyaKlasor, FileMode.Create))
+            {
+                dosya.CopyToAsync(fs);
+                return "/" + dosyaAdi;
+            }
+        }
         #endregion
 
     }

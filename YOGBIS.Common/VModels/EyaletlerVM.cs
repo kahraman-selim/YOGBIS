@@ -13,7 +13,8 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage ="Eyalet adını yazınız!")]
         public string EyaletAdi { get; set; }
         public int EyaletVatandas { get; set; }
-        public string EyaletAciklama { get; set; }       
+        public string EyaletAciklama { get; set; }
+        public string TemsilciId { get; set; }
         public Guid UlkeId { get; set; }
         public string UlkeAdi { get; set; }
         public UlkelerVM Ulkeler { get; set; }

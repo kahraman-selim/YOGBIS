@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20220224081343_eyaletduz")]
+    partial class eyaletduz
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2095,7 +2097,7 @@ namespace YOGBIS.Data.Migrations
                         .HasForeignKey("KaydedenId");
 
                     b.HasOne("YOGBIS.Data.DbModels.Okullar", null)
-                        .WithMany("AdayGorevKaydi")
+                        .WithMany("AdayGorevKaydis")
                         .HasForeignKey("OkullarOkulId");
 
                     b.HasOne("YOGBIS.Data.DbModels.Sehirler", null)
@@ -2178,7 +2180,7 @@ namespace YOGBIS.Data.Migrations
                         .HasForeignKey("KaydedenId");
 
                     b.HasOne("YOGBIS.Data.DbModels.Okullar", "Okullar")
-                        .WithMany("Etkinlikler")
+                        .WithMany("Etkinliklers")
                         .HasForeignKey("OkulId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2538,7 +2540,7 @@ namespace YOGBIS.Data.Migrations
                         .HasForeignKey("KaydedenId");
 
                     b.HasOne("YOGBIS.Data.DbModels.Okullar", "Okullar")
-                        .WithMany("Subeler")
+                        .WithMany("Subelers")
                         .HasForeignKey("OkulId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

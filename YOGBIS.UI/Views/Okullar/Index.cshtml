@@ -35,12 +35,34 @@
         <div class="table-responsive">
             <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
                 <thead>
-                    <tr>                        
-                        <th class="text-center">Sıra No</th>
-                        <th class="text-center">Ülke</th>
-                        <th class="text-center">Okul Kodu</th>
-                        <th class="text-center">Okul Adı</th>
-                        <th class="text-center">Okul Müdürü</th>
+                    <tr><th class="text-center" colspan="16">OKULLARIMIZIN @DateTime.Now.ToString("MMMMM") @DateTime.Now.Year TARİHİ İLE ÖĞRENCİ SAYILARI</th></tr>  
+                    <tr>
+                        <th class="text-center" rowspan="3">Sıra No</th>
+                        <th class="text-center" rowspan="3">Okul Sayısı</th>
+                        <th class="text-center" rowspan="3">Ülke</th>
+                        <th class="text-center" rowspan="3">Eyalet/Şehir-Bölge</th>
+                        <th class="text-center" rowspan="3">Okul Kodu</th>
+                        <th class="text-center" rowspan="3">Okul Adı</th>
+                        <th class="text-center" rowspan="3">Okul Müdürü</th>
+                        <th class="text-center" rowspan="3">Okul Açılış Tarihi</th>
+                        <th class="text-center" rowspan="3">Okul Şube Toplamı</th>
+                        <th class="text-center" colspan="9">ÖĞRENCİ SAYILARI</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center" colspan="3">TC</th>
+                        <th class="text-center" colspan="3">DİĞER</th>
+                        <th class="text-center" colspan="3">GENEL TOPLAM</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">ERKEK</th>
+                        <th class="text-center">KIZ</th>
+                        <th class="text-center">TOPLAM</th>
+                        <th class="text-center">ERKEK</th>
+                        <th class="text-center">KIZ</th>
+                        <th class="text-center">TOPLAM</th>
+                        <th class="text-center">ERKEK</th>
+                        <th class="text-center">KIZ</th>
+                        <th class="text-center">TOPLAM</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,13 +72,33 @@
                         @foreach (var item in Model)
                         {
                             sirano++;
-                            <tr>
-                                <td>@sirano</td>
-                                <td><a asp-controller="Ulkeler" asp-action="UlkeDetayById" asp-route-id="@item.OkulUlkeId">@item.OkulUlkeAdi</a></td>
-                                <td>@item.OkulKodu</td>
-                                <td><a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
-                                <td>@item.OkulMudurAdiSoyadi</td>
-                            </tr>
+                    <tr>
+                        <td>@sirano</td>
+                        <td>okulsayısı</td>
+                        <td><a asp-controller="Ulkeler" asp-action="UlkeDetayById" asp-route-id="@item.OkulUlkeId">@item.OkulUlkeAdi</a></td>
+                        <td>şehir</td>
+                        <td>@item.OkulKodu</td>
+                        @if (User.IsInRole("SubManager"))
+                        {
+                            <td><a asp-controller="Okullar" asp-action="OkulDetayGuncelle" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
+                        }
+                        else
+                        {
+                            <td><a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
+                        }
+                        <td>@item.OkulMudurAdiSoyadi</td>
+                        <td>@item.OkulAcilisTarihi</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                         }
                     }
                     else

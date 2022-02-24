@@ -45,8 +45,8 @@ namespace YOGBIS.Common.VModels
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<OkulBinaBolumVM> OkulBinaBolum { get; set; }
-        public List<SubelerVM> Subelers { get; set; }
-        public List<AdayGorevKaydiVM> AdayGorevKaydis { get; set; }
+        public List<SubelerVM> Subeler { get; set; }
+        public List<AdayGorevKaydiVM> AdayGorevKaydi { get; set; }
         public List<EtkinliklerVM> Etkinlikler { get; set; }
         public IFormFileCollection FotoGaleris { get; set; }
         public List<FotoGaleriVM> FotoGaleri { get; set; }
