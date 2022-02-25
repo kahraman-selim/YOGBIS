@@ -44,10 +44,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         EyaletId=item.EyaletId,
                         EyaletAdi=item.EyaletAdi,
-                        EyaletAciklama=item.EyaletAciklama,
-                        //EyaletVatandas=item.EyaletVatandas,
+                        EyaletAciklama=item.EyaletAciklama,                       
                         UlkeId=item.UlkeId,
                         UlkeAdi=item.Ulkeler.UlkeAdi,
+                        TemsilciId = item.TemsilciId != null ? item.TemsilciId : string.Empty,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
@@ -95,16 +95,40 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region EyaletGetir(Guid id)
         public Result<EyaletlerVM> EyaletGetir(Guid id)
         {
-            var data = _unitOfWork.eyaletlerRepository.Get(id);
-            if (data != null)
+            if (id != null)
             {
-                var eyaletler = _mapper.Map<Eyaletler, EyaletlerVM>(data);
-                return new Result<EyaletlerVM>(true, ResultConstant.RecordFound, eyaletler);
+                var data = _unitOfWork.eyaletlerRepository.GetFirstOrDefault(e => e.EyaletId == id, includeProperties:"Ulkeler,Kullanici");
+                if (data != null)
+                {
+                    EyaletlerVM eyalet = new EyaletlerVM();
+                    eyalet.EyaletAdi = data.EyaletAdi;
+                    eyalet.EyaletAciklama = data.EyaletAciklama;
+                    eyalet.UlkeId = data.UlkeId;
+                    eyalet.UlkeAdi = data.Ulkeler.UlkeAdi;
+                    eyalet.KayitTarihi = data.KayitTarihi;
+                    eyalet.TemsilciId = data.TemsilciId != null ? data.TemsilciId : string.Empty;
+                    eyalet.KaydedenId = data.KaydedenId;
+                    eyalet.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+
+                    eyalet.Sehirler = data.Sehirlers.Select(s => new SehirlerVM()
+                    {
+                        SehirId = s.SehirId,
+                        SehirAdi = s.SehirAdi
+                        
+                    }).ToList();
+
+                    return new Result<EyaletlerVM>(true, ResultConstant.RecordFound, eyalet);
+                }
+                else
+                {
+                    return new Result<EyaletlerVM>(false, ResultConstant.RecordNotFound);
+                }
             }
             else
             {
                 return new Result<EyaletlerVM>(false, ResultConstant.RecordNotFound);
             }
+
         }
         #endregion
 
@@ -115,9 +139,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 try
                 {
-                    var eyalet = _mapper.Map<EyaletlerVM, Eyaletler>(model);
-                    eyalet.KaydedenId = user.LoginId;
-                    _unitOfWork.eyaletlerRepository.Add(eyalet);
+                    var eyaletler = new Eyaletler()
+                    {
+                        EyaletAdi = model.EyaletAdi,
+                        KaydedenId = user.LoginId,
+                        EyaletAciklama = model.EyaletAciklama,
+                        KayitTarihi = model.KayitTarihi,
+                        UlkeId = model.UlkeId,
+                        TemsilciId = model.TemsilciId != null ? model.TemsilciId : string.Empty,
+                    };
+
+                    _unitOfWork.eyaletlerRepository.Add(eyaletler);
                     _unitOfWork.Save();
                     return new Result<EyaletlerVM>(true, ResultConstant.RecordCreateSuccess);
                 }
@@ -137,25 +169,30 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region EyaletGuncelle
         public Result<EyaletlerVM> EyaletGuncelle(EyaletlerVM model, SessionContext user)
         {
-            if (model != null)
+            if (model.EyaletId != null)
             {
-                try
+                var data = _unitOfWork.eyaletlerRepository.Get(model.EyaletId);
+                if (data != null)
                 {
-                    var eyalet = _mapper.Map<EyaletlerVM, Eyaletler>(model);
-                    eyalet.KaydedenId = user.LoginId;
-                    _unitOfWork.eyaletlerRepository.Update(eyalet);
+                    data.EyaletAdi = model.EyaletAdi;
+                    data.KaydedenId = user.LoginId;
+                    data.EyaletAciklama = model.EyaletAciklama;
+                    data.UlkeId = model.UlkeId;
+                    data.KayitTarihi = model.KayitTarihi;
+                    data.TemsilciId = model.TemsilciId != null ? model.TemsilciId : string.Empty;
+
+                    _unitOfWork.eyaletlerRepository.Update(data);
                     _unitOfWork.Save();
                     return new Result<EyaletlerVM>(true, ResultConstant.RecordCreateSuccess);
                 }
-                catch (Exception ex)
+                else
                 {
-
-                    return new Result<EyaletlerVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                    return new Result<EyaletlerVM>(false, "Lütfen kayıt seçiniz");
                 }
             }
             else
             {
-                return new Result<EyaletlerVM>(false, "Boş veri olamaz");
+                return new Result<EyaletlerVM>(false, "Lütfen kayıt seçiniz");
             }
         }
         #endregion

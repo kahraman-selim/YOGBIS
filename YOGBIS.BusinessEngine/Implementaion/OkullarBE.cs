@@ -34,7 +34,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkullarıGetir
         public Result<List<OkullarVM>> OkullariGetir()
         {
-            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Sehirler,Eyaletler,Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Subeler,AdayGorevKaydi").OrderBy(o => o.OkulAdi).ToList();
+            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Sehirler,Eyaletler,Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Subeler,AdayGorevKaydi,EpostaAdresleri,Telefonlar").OrderBy(o => o.OkulAdi).ToList();
 
             if (data != null)
             {
@@ -225,7 +225,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulAdi = model.OkulAdi,
                         OkulDurumu = model.OkulDurumu,
                         KayitTarihi = model.KayitTarihi,
-                        KaydedenId = user.LoginId,                                         
+                        KaydedenId = user.LoginId,
+                        OkulMudurId = model.OkulMudurId != null ? model.OkulMudurId : null,
                         EyaletId= null,
                         SehirId= null,
                         
@@ -302,12 +303,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     var data = _unitOfWork.okullarRepository.Get(model.OkulId);
                     if (data != null)
                     {
-                        data.OkulKodu = model.OkulKodu;
-                        data.OkulAdi = model.OkulAdi;
-                        data.OkulUlkeId = (Guid)model.OkulUlkeId;
-                        data.KayitTarihi = model.KayitTarihi;
-                        data.OkulMudurId = model.OkulMudurId;
-                        data.KaydedenId = user.LoginId;
+                        //data.OkulKodu = model.OkulKodu;
+                        //data.OkulAdi = model.OkulAdi;
+                        //data.OkulUlkeId = (Guid)model.OkulUlkeId;
+                        //data.KayitTarihi = model.KayitTarihi;
+                        //data.OkulMudurId = model.OkulMudurId;
+                        //data.KaydedenId = user.LoginId;
                         ///okulmüdürünün ekleyeceği alanlar////////
                         data.OkulLogoURL = model.OkulLogoURL;
                         data.OkulBilgi = model.OkulBilgi;
@@ -316,11 +317,27 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.OkulKapaliAlan = model.OkulKapaliAlan;
                         data.OkulAcikAlan = model.OkulAcikAlan;
                         data.OkulMulkiDurum = model.OkulMulkiDurum;
+                        data.OkulMulkiDurumAciklama = model.OkulMulkiDurumAciklama;
                         data.OkulInternetAdresi = model.OkulInternetAdresi;
                         data.OkulEPostaAdresi = model.OkulEPostaAdresi;
                         data.OkulTelefon = model.OkulTelefon;
-                        data.EyaletId = (Guid)model.EyaletId;
-                        data.SehirId = (Guid)model.SehirId;
+                        data.EyaletId = (Guid)model.EyaletId != null? (Guid)model.EyaletId:Guid.Empty;
+                        data.SehirId = (Guid)model.SehirId != null? (Guid)model.SehirId:Guid.Empty;
+
+                        if (model.FotoGaleri != null)
+                        {
+                            data.FotoGaleri = new List<FotoGaleri>();
+                            foreach (var file in model.FotoGaleri)
+                            {
+                                data.FotoGaleri.Add(new FotoGaleri()
+                                {
+                                    FotoAdi = file.FotoAdi,
+                                    FotoURL = file.FotoURL,
+                                    KaydedenId = user.LoginId,
+                                    KayitTarihi = model.KayitTarihi
+                                });
+                            }
+                        }
 
                         _unitOfWork.okullarRepository.Update(data);
                         _unitOfWork.Save();

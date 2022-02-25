@@ -97,11 +97,25 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SehirGetir(Guid id)
         public Result<SehirlerVM> SehirGetir(Guid id)
         {
-            var data = _unitOfWork.sehirlerRepository.Get(id);
-            if (data != null)
+
+            if (id != null)
             {
-                var sehirler = _mapper.Map<Sehirler, SehirlerVM>(data);
-                return new Result<SehirlerVM>(true, ResultConstant.RecordFound, sehirler);
+                var data = _unitOfWork.sehirlerRepository.GetFirstOrDefault(s => s.SehirId == id, includeProperties: "Eyaletler,Kullanici");
+                if (data != null)
+                {
+                    SehirlerVM sehir = new SehirlerVM();
+                    sehir.KayitTarihi = data.KayitTarihi;
+                    sehir.SehirAciklama = data.SehirAciklama;
+                    sehir.SehirAdi = data.SehirAdi;
+                    sehir.KaydedenId = data.KaydedenId;
+                    sehir.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+
+                    return new Result<SehirlerVM>(true, ResultConstant.RecordFound, sehir);
+                }
+                else
+                {
+                    return new Result<SehirlerVM>(false, ResultConstant.RecordNotFound);
+                }
             }
             else
             {
@@ -117,9 +131,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 try
                 {
-                    var sehir = _mapper.Map<SehirlerVM, Sehirler>(model);
-                    sehir.KaydedenId = user.LoginId;
-                    _unitOfWork.sehirlerRepository.Add(sehir);
+                    var sehirler = new Sehirler()
+                    {
+                        SehirAdi = model.SehirAdi,
+                        EyaletId = model.EyaletId,
+                        KayitTarihi = model.KayitTarihi,
+                        KaydedenId=user.LoginId,
+                        UlkeId=model.UlkeId,
+                        TemsilciId = model.TemsilciId != null ? model.TemsilciId : string.Empty,
+                    };
+
+                    _unitOfWork.sehirlerRepository.Add(sehirler);
                     _unitOfWork.Save();
                     return new Result<SehirlerVM>(true, ResultConstant.RecordCreateSuccess);
                 }
@@ -139,21 +161,28 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SehirGuncelle
         public Result<SehirlerVM> SehirGuncelle(SehirlerVM model, SessionContext user)
         {
-            if (model != null)
+            if (model.SehirId != null)
             {
-                try
+                var data = _unitOfWork.sehirlerRepository.Get(model.SehirId);
+                if (data != null)
                 {
-                    var sehir = _mapper.Map<SehirlerVM, Sehirler>(model);
-                    sehir.KaydedenId = user.LoginId;
-                    _unitOfWork.sehirlerRepository.Update(sehir);
+                    data.SehirAdi = model.SehirAdi;
+                    data.SehirAciklama = model.SehirAciklama;
+                    data.EyaletId= model.EyaletId != null ? model.EyaletId : Guid.Empty;
+                    data.KayitTarihi = model.KayitTarihi;
+                    data.KaydedenId = user.LoginId;
+                    data.TemsilciId= model.TemsilciId != null ? model.TemsilciId : string.Empty;
+                    data.UlkeId = model.UlkeId;
+
+                    _unitOfWork.sehirlerRepository.Update(data);
                     _unitOfWork.Save();
                     return new Result<SehirlerVM>(true, ResultConstant.RecordCreateSuccess);
                 }
-                catch (Exception ex)
+                else
                 {
-
-                    return new Result<SehirlerVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                    return new Result<SehirlerVM>(false, "Lütfen kayıt seçiniz");
                 }
+
             }
             else
             {

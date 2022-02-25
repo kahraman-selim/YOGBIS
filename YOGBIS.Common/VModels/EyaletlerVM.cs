@@ -15,12 +15,13 @@ namespace YOGBIS.Common.VModels
         public int EyaletVatandas { get; set; }
         public string EyaletAciklama { get; set; }
         public string TemsilciId { get; set; }
+        public string TemsilciAdiSoyyadi { get; set; }
         public Guid UlkeId { get; set; }
         public string UlkeAdi { get; set; }
         public UlkelerVM Ulkeler { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
-        public List<SehirlerVM> Sehirlers { get; set; }
+        public List<SehirlerVM> Sehirler { get; set; }
     }
 }

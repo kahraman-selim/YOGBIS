@@ -50,6 +50,7 @@
         <div class="col-md-6">
             <form class="form-group m-0" asp-action="OkulDetayGuncelle" enctype="multipart/form-data">
                 @Html.HiddenFor(x => x.OkulId)
+                <input hidden value="@ulkeId" id="ulkeIdInput" />
                 <div class="form-row">
                     <div class="col-md-12 mb-2">
 
@@ -175,15 +176,18 @@
                                        onblur="this.value=this.value.replace(/^\w/, function($0){return $0.toUpperCase();})"/>
                                 <span class="text-danger">Okulun bulunduğu ülkede eyalet sistemi yok ise boş geçiniz</span>
                             </div>
+                            <input hidden asp-for="EyaletId" id="EyaletIdInput"/>
                         </div>
                         <div class="form-row">
                             <div class="col-md-4">
-                                <p class="font-weight-bold">Şehir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                                <p class="font-weight-bold">Şehir/Bölge&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control py-2" id="SehirInput" placeholder="Şehir/Bölge adını yazınız">
+                                <input type="text" class="form-control py-2" id="SehirInput" placeholder="Şehir/Bölge adını yazınız" 
+                                       onblur="this.value=this.value.replace(/^\w/, function($1){return $1.toUpperCase();})"/>
                                 <span class="text-danger">Okulun bulunduğu Şehir veya Bölgeyi yazınız</span>
                             </div>
+                            <input hidden asp-for="SehirId" id="SehirIdInput" />
                         </div>
                         <hr />
                         <!--Okul Bilgileri-->
@@ -195,7 +199,7 @@
                                         <p class="font-weight-bold">Hizmete Geçiş&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
                                     </div>
                                     <div class="col-md-8">
-                                        <input asp-for="OkulHizmetGecisDonem" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Hizmete geçiş dönemini yazınız">
+                                        <input asp-for="OkulHizmetGecisDonem" type="text" class="form-control py-2" id="hizmetGecisInput" placeholder="Hizmete geçiş dönemini yazınız">
                                         <span class="text-danger" asp-validation-for="OkulHizmetGecisDonem"></span>
                                         <span class="text-danger">Örnek : 2005/2006 Eğitim-Öğretim Dönemi</span>
                                     </div>
@@ -286,7 +290,8 @@
                 <!--Buton grubu-->
                 <div class="form-row">
                     <div class="col-md-12">
-                        <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" />
+                        @*<input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="OkulGuncelle" />*@
+                        <input value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="OkulGuncelle" />
                         <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Geri Dön</a>
                         <a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@Model.OkulId" id="OkulDetay" name="OkulDetay" class="btn btn-info btn-sm text-white mb-1" style="width:100px">Önizle</a>
                     </div>
@@ -381,8 +386,24 @@ else
             format: 'DD/MM/YYYY'
         });
 
-        $("input[type=text]").keyup(function () {
-            $('#EyaletInput').val($(this).val().toLowerCase());
+        $("#EyaletInput").keyup(function (e) {
+            var eyal = e.keyCode || e.which;
+            if (eyal != '9') {
+                $('#EyaletInput').val($(this).val().toLowerCase());
+            }
+            if (eyal == '13') {
+                $("#SehirInput").focus();
+            }
+        });
+
+        $("#SehirInput").keyup(function (s) {
+            var seh = s.keyCode || s.which;
+            if (seh != '9') {
+                $('#SehirInput').val($(this).val().toLowerCase());
+            }
+            if (seh == '13') {
+                $("#hizmetGecisInput").focus();
+            }
         });
 
         $(".closebtn").click(function () {
@@ -402,6 +423,18 @@ else
             });
 
 
+        });
+
+        $("#EyaletInput").focusout(function () {
+
+            var ulkeid = $("#ulkeIdInput").val();
+            var EyaletAdi = $(this).val();
+            if (EyaletAdi != "") {
+                //alert(EyaletAdi + " " + ulkeid);
+            }
+            else {
+                alert("boş");
+            }
         });
 
         function OkulLogoImagesFileSize(input) {

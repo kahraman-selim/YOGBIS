@@ -19,7 +19,9 @@ namespace YOGBIS.Common.VModels
         public string OkulAdi { get; set; }
         public string OkulLogoURL { get; set; }
         public IFormFile OkulLogo { get; set; }
+        [Required(ErrorMessage = "Okul hakkında bilgi yazmalısınız")]
         public string OkulBilgi { get; set; }
+        [Required(ErrorMessage = "Okul açılış tarihi zorunlu bir alandır")]
         public DateTime? OkulAcilisTarihi { get; set; }
         public bool OkulDurumu { get; set; }
         public string OkulMudurId { get; set; }
@@ -49,6 +51,8 @@ namespace YOGBIS.Common.VModels
         public List<SubelerVM> Subeler { get; set; }
         public List<AdayGorevKaydiVM> AdayGorevKaydi { get; set; }
         public List<EtkinliklerVM> Etkinlikler { get; set; }
+        public List<EPostaAdresleriVM> EpostaAdresleri { get; set; }
+        public List<TelefonlarVM> Telefonlar { get; set; }
         public IFormFileCollection FotoGaleris { get; set; }
         public List<FotoGaleriVM> FotoGaleri { get; set; }
     }
