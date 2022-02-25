@@ -35,7 +35,11 @@
         <div class="table-responsive">
             <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
                 <thead>
-                    <tr><th class="text-center" colspan="16">OKULLARIMIZIN @DateTime.Now.ToString("MMMMM") @DateTime.Now.Year TARİHİ İLE ÖĞRENCİ SAYILARI</th></tr>  
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                    {
+                        <tr><th class="text-center" colspan="16">OKULLARIMIZIN @DateTime.Now.ToString("MMMMM") @DateTime.Now.Year TARİHİ İLE ÖĞRENCİ SAYILARI</th></tr>
+
+                    }
                     <tr>
                         <th class="text-center" rowspan="3">Sıra No</th>
                         <th class="text-center" rowspan="3">Okul Sayısı</th>

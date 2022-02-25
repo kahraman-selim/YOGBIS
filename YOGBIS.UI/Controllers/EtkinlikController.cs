@@ -38,7 +38,6 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
-        [Authorize(Roles = "Administrator,Manager,Teacher,Follower")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -57,7 +56,6 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region EtkinlikEkleGet
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpGet]
         [Route("Etkinlikler")]
         public IActionResult EtkinlikEkle()
@@ -70,7 +68,6 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region EtkinlikEklePost
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpPost]
         [Obsolete]
         public async Task<IActionResult> EtkinlikEkle(EtkinliklerVM model)
@@ -84,7 +81,7 @@ namespace YOGBIS.UI.Controllers
                 if (model.EtkinlikKapakResim != null)
                 {
                     string klasorler = "img/EtkinlikKapakFoto";
-                    model.EtkinlikKapakResimUrl = await FotoYukle(klasorler, model.EtkinlikKapakResim);
+                    model.EtkinlikKapakResimUrl = FotoYukle(klasorler, model.EtkinlikKapakResim);
                 }
 
                 if (model.FotoGaleri != null)
@@ -97,7 +94,7 @@ namespace YOGBIS.UI.Controllers
                         var galeri = new FotoGaleriVM()
                         {
                             FotoAdi = file.FileName,
-                            FotoURL = await FotoYukle(fotoklasorler, file),
+                            FotoURL = FotoYukle(fotoklasorler, file),
                             KaydedenId=user.LoginId,
                             KayitTarihi=model.KayitTarihi
 
@@ -125,7 +122,6 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region GuncelleGet
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
         public ActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -146,7 +142,6 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region GuncellePost
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Guncelle(EtkinliklerVM model)
@@ -168,7 +163,6 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region EtkinlikSil
-        [Authorize(Roles = "Administrator,Manager,Teacher")]
         [HttpDelete]
         public IActionResult EtkinlikSil(Guid id)
         {
@@ -181,9 +175,10 @@ namespace YOGBIS.UI.Controllers
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
-        } 
+        }
         #endregion
 
+        #region Etkinlikler
         [Authorize(Roles = "Administrator,Manager")]
         public IActionResult Etkinlikler(Guid OkulId)
         {
@@ -216,6 +211,10 @@ namespace YOGBIS.UI.Controllers
             }
 
         }
+        #endregion
+
+        #region EtkinlikGetirOkulId
+        [Authorize(Roles = "Administrator,Manager")]
         public ActionResult EtkinlikGetirOkulId(Guid Id)
         {
             var data = _etkinliklerBE.EtkinlikGetirOkulId(Id);
@@ -228,7 +227,9 @@ namespace YOGBIS.UI.Controllers
                 return RedirectToAction("EtkinliklerGetirOkulId", new { okulId = Id });
             }
         }
+        #endregion
 
+        #region EtkinlikDetay
         [Authorize(Roles = "Administrator,Manager")]
         public ActionResult Detay(Guid? id)
         {
@@ -247,19 +248,26 @@ namespace YOGBIS.UI.Controllers
             }
 
         }
+        #endregion
 
         #region FotoYukle
         [Obsolete]
-        private async Task<string> FotoYukle(string dosyaYolu, IFormFile dosya)
+        private string FotoYukle(string dosyaAdi, IFormFile dosya)
         {
 
-            dosyaYolu += Guid.NewGuid().ToString() + "_" + dosya.FileName;
+            dosyaAdi += Guid.NewGuid().ToString() + "_" + dosya.FileName;
 
-            string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaYolu);
+            string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaAdi);
 
-            await dosya.CopyToAsync(new FileStream(dosyaKlasor, FileMode.Create));
+            //await dosya.CopyToAsync(new FileStream(dosyaKlasor, FileMode.Create));
 
-            return "/" + dosyaYolu;
+            //return "/" + dosyaAdi;
+
+            using (FileStream fs = new FileStream(dosyaKlasor, FileMode.Create))
+            {
+                dosya.CopyToAsync(fs);
+                return "/" + dosyaAdi;
+            }
         }
         #endregion
     }

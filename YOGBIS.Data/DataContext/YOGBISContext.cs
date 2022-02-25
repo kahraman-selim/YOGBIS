@@ -134,6 +134,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<SSS> SSSs { get; set; }
         public DbSet<SSSCevap> SSSCevaps { get; set; }
         public DbSet<Subeler> Subelers { get; set; }
+        public DbSet<Telefonlar> Telefonlars { get; set; }
         public DbSet<Temsilcilikler> Temsilciliklers { get; set; }
         public DbSet<UlkeGruplari> UlkeGruplaris { get; set; }        
         public DbSet<Ulkeler> Ulkelers { get; set; }

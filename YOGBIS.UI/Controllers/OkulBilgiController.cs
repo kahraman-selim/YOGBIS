@@ -14,6 +14,7 @@ namespace YOGBIS.UI.Controllers
     [Authorize]
     public class OkulBilgiController : Controller
     {
+        
         #region Değişkenler
         private readonly IOkulBilgiBE _okulBilgiBE;
         private readonly IUlkelerBE _ulkelerBE;
@@ -206,24 +207,26 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region OkulAdGetir
         public IActionResult OkulAdGetir(Guid ulkeId)
         {
-            
+
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
             if (ulkeId != null)
             {
-                
+
 
                 var data = _unitOfWork.okullarRepository.GetAll(x => x.OkulUlkeId == ulkeId); //_okullarBE.OkulGetirUlkeId((Guid)ulkeId).Data;  //_unitOfWork.okullarRepository.GetAll(x=>x.OkulUlkeId==ulkeId);   
 
                 return Json(data);
-                
-               
+
+
             }
 
             return NotFound();
-        }
+        } 
+        #endregion
 
     }
 }

@@ -21,6 +21,7 @@ namespace YOGBIS.Data.DbModels
         public string OkulKapaliAlan { get; set; }
         public string OkulAcikAlan { get; set; }
         public bool? OkulMulkiDurum { get; set; }
+        public string OkulMulkiDurumAciklama { get; set; }
         public string OkulInternetAdresi { get; set; }
         public string OkulEPostaAdresi { get; set; }
         public string OkulTelefon { get; set; }
@@ -39,6 +40,8 @@ namespace YOGBIS.Data.DbModels
         public List<Subeler> Subeler { get; set; }
         public List<AdayGorevKaydi> AdayGorevKaydi { get; set; }
         public List<Etkinlikler> Etkinlikler { get; set; }
+        public List<EPostaAdresleri> EpostaAdresleri { get; set; }
+        public List<Telefonlar> Telefonlar { get; set; }
         public ICollection<FotoGaleri> FotoGaleri { get; set; }
     }
 }

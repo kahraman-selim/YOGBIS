@@ -28,6 +28,7 @@ namespace YOGBIS.Common.VModels
         public string OkulKapaliAlan { get; set; }
         public string OkulAcikAlan { get; set; }
         public bool? OkulMulkiDurum { get; set; }
+        public string OkulMulkiDurumAciklama { get; set; }
         public string OkulInternetAdresi { get; set; }
         public string OkulEPostaAdresi { get; set; }
         public string OkulTelefon { get; set; }

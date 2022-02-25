@@ -264,12 +264,16 @@
                                     Okul İletişim
                                 </a>
                             }
-                            else
+                            else if(User.IsInRole("SubManager"))
                             {
                                 <a class="nav-link" asp-controller="OkulBilgi" asp-action="Index">
                                     <div class="sb-nav-link-icon"><i class="fas fa-phone"></i></div>
                                     Okul İletişim
                                 </a>
+                            }
+                            else
+                            {
+
                             }
                             @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                             {
@@ -278,12 +282,16 @@
                                     Etkinlik Bilgileri
                                 </a>
                             }
-                            else
+                            else if(User.IsInRole("SubManager"))
                             {
                                 <a class="nav-link" asp-controller="Etkinlik" asp-action="Index">
                                     <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
                                     Etkinlik Bilgileri
                                 </a>
+                            }
+                            else
+                            {
+
                             }
                             <!--Modüller-->
                             @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))

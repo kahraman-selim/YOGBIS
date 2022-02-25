@@ -52,6 +52,7 @@ namespace YOGBIS.Data.DbModels
         public List<SSS> SSSs { get; set; }
         public List<SSSCevap> SSSCevaps { get; set; }
         public List<Subeler> Subelers { get; set; }
+        public List<Telefonlar> Telefonlar { get; set; }
         public List<Temsilcilikler> Temsilciliklers { get; set; }
         public List<UlkeGruplari> UlkeGruplaris { get; set; }
         public List<Ulkeler> Ulkelers { get; set; }

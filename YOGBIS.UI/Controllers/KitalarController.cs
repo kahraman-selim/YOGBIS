@@ -5,21 +5,28 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class KitalarController : Controller
     {
+        #region Değişkenler
         private readonly IKitalarBE _kitalarBE;
+        #endregion
 
+        #region Dönüştürücüler
         public KitalarController(IKitalarBE kitalarBE)
         {
             _kitalarBE = kitalarBE;
         }
+        #endregion
 
-        [Authorize(Roles = "Administrator")]
+        #region Index
         public IActionResult Index()
         {
             return View();
         }
+        #endregion
 
+        #region IndexPost
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Index(KitalarVM model)
@@ -29,7 +36,8 @@ namespace YOGBIS.UI.Controllers
             {
                 return RedirectToAction("Index");
             }
-            return View(model);        
-        }
+            return View(model);
+        } 
+        #endregion
     }
 }
