@@ -44,6 +44,25 @@
                                         <span class="text-danger" asp-validation-for="OkulAdi"></span>
                                     </div>
                                 </div>
+                            </div>                            
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="OkulTuru" class="small mb-1 font-weight-bold">Okul Türü</label>
+                                        <select asp-for="OkulTuru" class="form-control-range form-control py-2" aria-label="Default select example">
+                                            <option asp-for="OkulTuru" selected class="text-left">Okul türünü seçiniz</option>
+                                            <option asp-for="OkulTuru" value="ilkokul">İlkokul</option>
+                                            <option asp-for="OkulTuru" value="ortaokul">Ortaokul</option>
+                                            <option asp-for="OkulTuru" value="imamhatiportaokulu">İmam Hatip Ortaokulu</option>
+                                            <option asp-for="OkulTuru" value="anadoluimamhatiplisesi">Anadolu İmam Hatip Lisesi</option>
+                                            <option asp-for="OkulTuru" value="anadolulisesi">Anadolu Lisesi</option>
+                                            <option asp-for="OkulTuru" value="cokprogramlıanadolulisesi">Çok Programlı Anadolu Lisesi</option>
+                                            <option asp-for="OkulTuru" value="anadolukizmesleklisesi">Anadolu Kız Meslek Lisesi</option>
+                                            <option asp-for="OkulTuru" value="turkiyeturkcesiogretimmerkezi">Türkiye Türkçesi Öğretim Merkezi</option>
+                                        </select>
+                                        <span class="text-danger" asp-validation-for="OkulTuru"></span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">

@@ -172,19 +172,19 @@
                                 <p class="font-weight-bold">Eyalet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control py-2" id="EyaletInput" placeholder="Eyalet adını yazınız" 
-                                       onblur="this.value=this.value.replace(/^\w/, function($0){return $0.toUpperCase();})"/>
+                                <input type="text" class="form-control py-2" id="EyaletInput" placeholder="Eyalet adını yazınız"
+                                       onblur="this.value=this.value.replace(/^\w/, function($0){return $0.toUpperCase();})" />
                                 <span class="text-danger">Okulun bulunduğu ülkede eyalet sistemi yok ise boş geçiniz</span>
                             </div>
-                            <input hidden asp-for="EyaletId" id="EyaletIdInput"/>
+                            <input asp-for="EyaletId" id="EyaletIdInput" />
                         </div>
                         <div class="form-row">
                             <div class="col-md-4">
                                 <p class="font-weight-bold">Şehir/Bölge&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control py-2" id="SehirInput" placeholder="Şehir/Bölge adını yazınız" 
-                                       onblur="this.value=this.value.replace(/^\w/, function($1){return $1.toUpperCase();})"/>
+                                <input type="text" class="form-control py-2" id="SehirInput" placeholder="Şehir/Bölge adını yazınız"
+                                       onblur="this.value=this.value.replace(/^\w/, function($1){return $1.toUpperCase();})" />
                                 <span class="text-danger">Okulun bulunduğu Şehir veya Bölgeyi yazınız</span>
                             </div>
                             <input hidden asp-for="SehirId" id="SehirIdInput" />
@@ -406,6 +406,91 @@ else
             }
         });
 
+        $("#EyaletInput").focusout(function EyaletKayit() {
+
+            if ($(this).val() != "") {
+
+
+                var ead = $(this).val().replace(/^\w/, function ($1) { return $1.toUpperCase() });
+
+                var url = '@Url.Action("OkulEyaletGetir", "Okullar")?EyaletAdi=' + ead;
+
+                $.getJSON(url, function (data) {
+
+                    $.each(data, function (i = 0, eyaletId, eyaletAdi) {
+
+                        if (i===0) {
+
+                            var eyaletId = data[i]['eyaletId'];
+                            var eyaletAd = data[i]['eyaletAdi'];
+                            alert(eyaletId + " " + eyaletAd);
+                            $("#EyaletIdInput").val(eyaletId);
+                        }
+                    });
+
+                });
+
+                if ($("#EyaletIdInput").val() != null) {
+
+                    alert("eyalet Id=" + $("#EyaletIdInput").val());
+                    
+                }
+                else {
+
+                    //var eyalet = {
+                    //    EyaletAdi: $("#EyaletInput").val(),
+                    //    UlkeId: $("#ulkeIdInput").val()
+                    //}
+
+                    //$.ajax({
+
+                    //    type: 'POST',
+                    //    url: '/Okullar/EyaletEkleJson',
+                    //    data: eyalet,
+
+                    //    success: function (response) {
+
+                    //        if (response === "200") {
+
+                    //            alert("eklendi");
+
+                    //            $.getJSON(url, function (data) {
+
+                    //                $.each(data, function (i = 0, eyaletId, eyaletAdi) {
+
+                    //                    if (i === 0) {
+
+                    //                        var eyaletId = data[i]['eyaletId'];
+                    //                        var eyaletAd = data[i]['eyaletAdi'];
+                    //                        alert(eyaletId);
+                    //                        $("#EyaletIdInput").val(eyaletId);
+
+                    //                    }
+                    //                });
+
+                    //            });
+                    //        }
+                    //        else {
+                    //            alert("olmadı");
+                    //        }
+                    //    },
+                    //    error: function () {
+                    //        alert("işlem gerçekleşmedi");
+                    //    }
+
+                    //});
+
+                    
+
+                }
+
+
+            }
+
+        });
+
+
+
         $(".closebtn").click(function () {
 
             var fotoId = $(this).attr("id");
@@ -423,18 +508,6 @@ else
             });
 
 
-        });
-
-        $("#EyaletInput").focusout(function () {
-
-            var ulkeid = $("#ulkeIdInput").val();
-            var EyaletAdi = $(this).val();
-            if (EyaletAdi != "") {
-                //alert(EyaletAdi + " " + ulkeid);
-            }
-            else {
-                alert("boş");
-            }
         });
 
         function OkulLogoImagesFileSize(input) {

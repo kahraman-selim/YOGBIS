@@ -121,17 +121,6 @@
                     });
                 });
 
-                //$.ajax({
-                //    type: "DELETE",
-                //    url: "/OkulBilgi/OkulBilgileriGetirUlkeId/"+Id,
-                //    success: function (data) {
-                //        if (data.isSucces) {
-                //            window.location.href = "?ulkeId="+Id;
-                //        } else {
-                //            alert("Bir hata oluştu!");
-                //        }
-                //    }
-                //});
 
                 location.href = '@Url.Action("OkulBilgileriGetir", "OkulBilgi")?ulkeId=' + Id;
             });

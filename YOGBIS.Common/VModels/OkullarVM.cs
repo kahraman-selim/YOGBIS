@@ -17,6 +17,9 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Okul adı zorunlu bir alandır")]
         public string OkulAdi { get; set; }
+
+        [Required(ErrorMessage = "Okul türü zorunlu bir alandır")]
+        public string OkulTuru { get; set; }
         public string OkulLogoURL { get; set; }
         public IFormFile OkulLogo { get; set; }
         [Required(ErrorMessage = "Okul hakkında bilgi yazmalısınız")]

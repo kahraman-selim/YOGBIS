@@ -17,11 +17,12 @@ namespace YOGBIS.UI.Controllers
     [Authorize]
     public class OkullarController : Controller
     {
-        
+
         #region Değişkenler
         private readonly IOkullarBE _okullarBE;
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IKullaniciBE _kullaniciBE;
+        private readonly IEyaletlerBE _eyaletlerBE;
         private readonly IUnitOfWork _unitOfWork;
         [Obsolete]
         private readonly IHostingEnvironment _hostingEnvironment;
@@ -29,11 +30,12 @@ namespace YOGBIS.UI.Controllers
 
         #region Dönüştürücüler
         [Obsolete]
-        public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE, IHostingEnvironment hostingEnvironment, IUnitOfWork unitOfWork)
+        public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE, IHostingEnvironment hostingEnvironment, IEyaletlerBE eyaletlerBE, IUnitOfWork unitOfWork)
         {
             _okullarBE = okullarBE;
             _ulkelerBE = ulkelerBE;
             _kullaniciBE = kullaniciBE;
+            _eyaletlerBE = eyaletlerBE;
             _unitOfWork = unitOfWork;
             _hostingEnvironment = hostingEnvironment;
         }
@@ -59,7 +61,7 @@ namespace YOGBIS.UI.Controllers
             }
             else
             {
-                var requestmodel = _okullarBE.OkulGetirYoneticiId(user.LoginId);                
+                var requestmodel = _okullarBE.OkulGetirYoneticiId(user.LoginId);
 
                 if (requestmodel.IsSuccess)
                 {
@@ -180,7 +182,7 @@ namespace YOGBIS.UI.Controllers
 
             if (data != null)
             {
-                var requestmodel = _okullarBE.OkulGetir(id);               
+                var requestmodel = _okullarBE.OkulGetir(id);
 
                 if (requestmodel.IsSuccess)
                 {
@@ -200,7 +202,7 @@ namespace YOGBIS.UI.Controllers
         public IActionResult OkulDetayGuncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            
+
             if (id != null)
             {
                 var data = _okullarBE.OkulGetir((Guid)id);
@@ -235,7 +237,37 @@ namespace YOGBIS.UI.Controllers
                 }
             }
             return View();
-        } 
+        }
+        #endregion
+
+        #region EyaletEkleJson
+        [HttpPost]
+        public JsonResult EyaletEkleJson(EyaletlerVM model)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var data = _eyaletlerBE.EyaletEkle(model, user);
+            if (data.IsSuccess)
+            {
+                return Json("200");
+            }
+            return Json("Eklenecek veri bulunamadı !");
+
+        }
+        #endregion
+
+        #region OkulEyaletGetir
+        public IActionResult OkulEyaletGetir(string EyaletAdi)
+        {
+                        
+            if (EyaletAdi != null)
+            {
+                var data = _unitOfWork.eyaletlerRepository.GetAll(x=>x.EyaletAdi==EyaletAdi); //_eyaletlerBE.EyaletGetirEyaletAdi(EyaletAdi);   
+                return Json(data);
+            }
+
+            return NotFound();
+        }
         #endregion
 
         #region FotoYukle

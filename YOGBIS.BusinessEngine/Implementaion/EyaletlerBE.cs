@@ -110,12 +110,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     eyalet.KaydedenId = data.KaydedenId;
                     eyalet.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
-                    eyalet.Sehirler = data.Sehirlers.Select(s => new SehirlerVM()
+                    if (eyalet.Sehirler != null)
                     {
-                        SehirId = s.SehirId,
-                        SehirAdi = s.SehirAdi
-                        
-                    }).ToList();
+                        eyalet.Sehirler = data.Sehirlers.Select(s => new SehirlerVM()
+                        {
+                            SehirId = s.SehirId,
+                            SehirAdi = s.SehirAdi
+
+                        }).ToList();
+                    }
 
                     return new Result<EyaletlerVM>(true, ResultConstant.RecordFound, eyalet);
                 }
@@ -210,6 +213,78 @@ namespace YOGBIS.BusinessEngine.Implementaion
             else
             {
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+        }
+        #endregion
+
+        #region EyaletIdGetir
+        public Result<Guid> EyaletIdGetir(string eyaletAdi)
+        {
+            if (eyaletAdi == null)
+            {
+                return new Result<Guid>(false, ResultConstant.RecordFound);
+            }
+            else
+            {
+                var data = _unitOfWork.eyaletlerRepository.GetFirstOrDefault(x => x.EyaletAdi == eyaletAdi);
+
+                if (data != null)
+                {
+
+                    var eyaletId = data.EyaletId;
+
+
+                    return new Result<Guid>(true, ResultConstant.RecordFound, eyaletId);
+                }
+                else
+                {
+                    return new Result<Guid>(false, ResultConstant.RecordNotFound);
+                }
+            }
+        }
+        #endregion
+
+        #region EyaletGetirEyaletAdi(string eyaletAdi)
+        public Result<EyaletlerVM> EyaletGetirEyaletAdi(string eyaletAdi)
+        {
+            if (eyaletAdi != null)
+            {
+                var EyaletId = EyaletIdGetir(eyaletAdi).Data;
+
+                var data = _unitOfWork.eyaletlerRepository.GetFirstOrDefault(e => e.EyaletId == EyaletId, includeProperties: "Ulkeler,Kullanici");
+                if (data != null)
+                {
+                    EyaletlerVM eyalet = new EyaletlerVM();
+                    eyalet.EyaletAdi = data.EyaletAdi;
+                    eyalet.EyaletAciklama = data.EyaletAciklama;
+                    eyalet.UlkeId = data.UlkeId;
+                    eyalet.UlkeAdi = data.Ulkeler.UlkeAdi;
+                    eyalet.KayitTarihi = data.KayitTarihi;
+                    eyalet.TemsilciId = data.TemsilciId != null ? data.TemsilciId : string.Empty;
+                    eyalet.KaydedenId = data.KaydedenId;
+                    eyalet.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+
+                    if (eyalet.Sehirler != null)
+                    {
+                        eyalet.Sehirler = data.Sehirlers.Select(s => new SehirlerVM()
+                        {
+                            SehirId = s.SehirId,
+                            SehirAdi = s.SehirAdi
+
+                        }).ToList();
+                    }
+
+
+                    return new Result<EyaletlerVM>(true, ResultConstant.RecordFound, eyalet);
+                }
+                else
+                {
+                    return new Result<EyaletlerVM>(false, ResultConstant.RecordNotFound);
+                }
+            }
+            else
+            {
+                return new Result<EyaletlerVM>(false, ResultConstant.RecordNotFound);
             }
         } 
         #endregion

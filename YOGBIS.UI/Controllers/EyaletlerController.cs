@@ -66,6 +66,22 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region EyaletEkleJson
+        [HttpPost]
+        public JsonResult EyaletEkleJson(EyaletlerVM model)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var data = _eyaletlerBE.EyaletEkle(model, user);
+            if (data.IsSuccess)
+            {
+                return Json("200");
+            }
+            return Json("Eklenecek veri bulunamadı !");
+
+        }
+        #endregion
+
         #region Guncelle
         public IActionResult Guncelle(Guid? id)
         {

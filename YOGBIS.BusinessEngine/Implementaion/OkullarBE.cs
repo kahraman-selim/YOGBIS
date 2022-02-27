@@ -50,6 +50,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulUlkeId = item.OkulUlkeId,                        
                         OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
                         OkulDurumu = item.OkulDurumu,
+                        OkulTuru=item.OkulTuru,
                         OkulMudurId =item.OkulMudurId,
                         OkulMudurAdiSoyadi=item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
@@ -85,6 +86,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulUlkeId = item.OkulUlkeId,
                         OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
                         OkulDurumu =item.OkulDurumu,
+                        OkulTuru=item.OkulTuru,
                         OkulMudurId = item.OkulMudurId,
                         OkulMudurAdiSoyadi = item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
@@ -118,6 +120,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulUlkeId = item.OkulUlkeId,
                         OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
                         OkulDurumu = item.OkulDurumu,
+                        OkulTuru=item.OkulTuru,
                         OkulMudurId = item.OkulMudurId,
                         OkulMudurAdiSoyadi = item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
@@ -151,6 +154,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulUlkeId = item.OkulUlkeId,
                         OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
                         OkulDurumu = item.OkulDurumu,
+                        OkulTuru=item.OkulTuru,
                         OkulMudurId = item.OkulMudurId,
                         OkulMudurAdiSoyadi = item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
@@ -179,6 +183,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okul.OkulKodu = data.OkulKodu;
                     okul.OkulAdi = data.OkulAdi;
                     okul.OkulDurumu = data.OkulDurumu;
+                    okul.OkulTuru = data.OkulTuru;
                     okul.OkulUlkeId = data.OkulUlkeId;
                     okul.OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)data.OkulUlkeId).Data;
                     okul.OkulMudurId = data.OkulMudurId;
@@ -224,6 +229,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulKodu = model.OkulKodu,
                         OkulAdi = model.OkulAdi,
                         OkulDurumu = model.OkulDurumu,
+                        OkulTuru=model.OkulTuru,
                         KayitTarihi = model.KayitTarihi,
                         KaydedenId = user.LoginId,
                         OkulMudurId = model.OkulMudurId != null ? model.OkulMudurId : null,
@@ -264,6 +270,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.OkulAdi = model.OkulAdi;
                         data.OkulUlkeId = (Guid)model.OkulUlkeId;
                         data.OkulDurumu = model.OkulDurumu;
+                        data.OkulTuru = model.OkulTuru;
                         data.KayitTarihi = model.KayitTarihi;
                         data.OkulMudurId = model.OkulMudurId != null ? model.OkulMudurId : null;
                         data.KaydedenId = user.LoginId;

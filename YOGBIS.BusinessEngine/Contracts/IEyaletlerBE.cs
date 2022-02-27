@@ -14,5 +14,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<EyaletlerVM> EyaletGuncelle(EyaletlerVM model, SessionContext user);        
         Result<bool> EyaletSil(Guid id);
         Result<List<EyaletlerVM>> EyaletGetirKullaniciId(string userId);
+        Result<EyaletlerVM> EyaletGetirEyaletAdi(string eyaletAdi);
+        Result<Guid> EyaletIdGetir(string eyaletAdi);
     }
 }

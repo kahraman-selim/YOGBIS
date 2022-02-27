@@ -12,6 +12,7 @@ namespace YOGBIS.Data.DbModels
         public Guid OkulId { get; set; }
         public int OkulKodu { get; set; }
         public string OkulAdi { get; set; }
+        public string OkulTuru { get; set; }
         public string OkulLogoURL { get; set; } 
         public string OkulBilgi { get; set; }
         public DateTime? OkulAcilisTarihi { get; set; }
