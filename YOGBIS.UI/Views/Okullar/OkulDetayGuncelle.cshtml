@@ -5,7 +5,10 @@
 @{
     ViewData["Title"] = "OkulDetay";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var ulkeId = Model.OkulUlkeId;
+    var a = 0;
+    var b = 0;
+    var c = 0;
+    var i = 0;
 }
 @section Styles{
     <link href="~/css/modern-business.css" rel="stylesheet" />
@@ -50,7 +53,7 @@
         <div class="col-md-6">
             <form class="form-group m-0" asp-action="OkulDetayGuncelle" enctype="multipart/form-data">
                 @Html.HiddenFor(x => x.OkulId)
-                <input hidden value="@ulkeId" id="ulkeIdInput" />
+                <input hidden value="@Model.OkulUlkeId" id="ulkeIdInput" asp-for="OkulUlkeId"/>                
                 <div class="form-row">
                     <div class="col-md-12 mb-2">
 
@@ -59,7 +62,7 @@
                             <div class="col-md-9"><h3 class="text-info">@Model.OkulAdi</h3></div>
                             <div class="col-md-3">
                                 @if (Model.OkulLogoURL != null)
-                                {
+                                {                                    
                                     <img id="okulLogoImagesModel" class="rounded d-block shadow img-profile" style="width:150px;height:50px" alt="Okul Logo" src="@Model.OkulLogoURL">
                                 }
                                 else
@@ -85,59 +88,55 @@
                         <!--Okul Foto Galeri-->
                         <div class="form-row">
                             <div class="col-md-12 justify-content-center m-auto">
-                                @if (Model.FotoGaleri.Count > 0)
+                                @if (i > 0)
                                 {
-                                    <div id="demo" class="carousel slide" data-ride="carousel">
-                                        <!-- Indicators -->
-                                        <ul class="carousel-indicators">
-                                            @for (int i = 0; i < Model.FotoGaleri.Count(); i++)
-                                            {
-                                                <li data-target="#demo" data-slide-to="@i" class="@(i==0 ? "active" : "") "></li>
-                                            }
-                                        </ul>
-                                        <!-- The slideshow -->
-                                        <div class="carousel-inner">
-                                            @for (int i = 0; i < Model.FotoGaleri.Count(); i++)
-                                            {
-                                                <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
-                                                    <span class="closebtn text-center" id="@Model.FotoGaleri[i].FotoGaleriId">&times;</span>
-                                                    <img id="@Model.FotoGaleri[i].FotoGaleriId" src="@Model.FotoGaleri[i].FotoURL" alt="@Model.FotoGaleri[i].FotoAdi" style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
-                                                </div>
-                                            }
+                                    @if (Model.FotoGaleri.Count > 0)
+                                    {
+                                        <input hidden value="@Model.FotoGaleri.Count()" id="modelfotogaleriinput" />
+
+                                        <div id="demo" class="carousel slide" data-ride="carousel">
+                                            <!-- Indicators -->
+                                            <ul class="carousel-indicators">
+                                                @for (c = 0; c < Model.FotoGaleri.Count(); c++)
+                                                {
+                                                    <li data-target="#demo" data-slide-to="@c" class="@(c==0 ? "active" : "") "></li>
+                                                }
+                                            </ul>
+                                            <!-- The slideshow -->
+                                            <div class="carousel-inner">
+                                                @for (c = 0; c < Model.FotoGaleri.Count(); c++)
+                                                {
+                                                    <div class="@(c==0 ? "carousel-item active" : "carousel-item") ">
+                                                        <span class="closebtn text-center" id="@Model.FotoGaleri[c].FotoGaleriId">&times;</span>
+                                                        <img id="@Model.FotoGaleri[c].FotoGaleriId" src="@Model.FotoGaleri[c].FotoURL" alt="@Model.FotoGaleri[c].FotoAdi"
+                                                             style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
+                                                    </div>
+                                                }
+                                            </div>
+                                            <!-- Left and right controls -->
+                                            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                                                <span class="carousel-control-prev-icon"></span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#demo" data-slide="next">
+                                                <span class="carousel-control-next-icon"></span>
+                                            </a>
                                         </div>
-                                        <!-- Left and right controls -->
-                                        <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                                            <span class="carousel-control-prev-icon"></span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#demo" data-slide="next">
-                                            <span class="carousel-control-next-icon"></span>
-                                        </a>
-                                    </div>
+                                    }
                                 }
                                 else
                                 {
-                                    @*<img id="okulFotos" class="rounded d-block shadow img-profile okulFotos" style="width:500px;height:300px;margin:auto" alt="Okul Fotoları" src="../../img/FotoGaleri/noimage.png">*@
                                     <div id="demo" class="carousel slide" data-ride="carousel">
                                         <!-- Indicators -->
                                         <ul class="carousel-indicators">
-                                            <li data-target="#demo" data-slide-to="0" class="active"></li>
-                                            <li data-target="#demo" data-slide-to="1"></li>
-                                            <li data-target="#demo" data-slide-to="2"></li>
+                                             <li data-target="#demo" data-slide-to="@i" class="@(i==0 ? "active" : "") "></li>
                                         </ul>
                                         <!-- The slideshow -->
                                         <div class="carousel-inner">
-                                            <div class="carousel-item active">
-                                                <span class="closebtn text-center" id="fotoone">&times;</span>
-                                                <img src="../../img/FotoGaleri/noimage.png" alt="Okul Fotoları" style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <span class="closebtn text-center" id="fotoone">&times;</span>
-                                                <img src="../../img/FotoGaleri/noimage.png" alt="Okul Fotoları" style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <span class="closebtn text-center" id="fotoone">&times;</span>
-                                                <img src="../../img/FotoGaleri/noimage.png" alt="Okul Fotoları" style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
-                                            </div>
+                                                <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
+                                                    <span class="closebtn text-center" id="@i">&times;</span>
+                                                    <img id="@i" src="@(i==0 ? "../../img/FotoGaleri/noimage.png":"")" alt="@i"
+                                                         style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
+                                                </div>
                                         </div>
                                         <!-- Left and right controls -->
                                         <a class="carousel-control-prev" href="#demo" data-slide="prev">
@@ -253,6 +252,16 @@
 
                                 <div class="form-row mb-1">
                                     <div class="col-md-4">
+                                        <p class="font-weight-bold">Okul Telefon&nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input asp-for="OkulTelefon" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="+90(312)4131697">
+                                        <span class="text-danger" asp-validation-for="OkulTelefon"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-row mb-1">
+                                    <div class="col-md-4">
                                         <p class="font-weight-bold">İnternet Adresi&nbsp;&nbsp;&nbsp;&nbsp;:</p>
                                     </div>
                                     <div class="col-md-8">
@@ -266,7 +275,7 @@
                                         <p class="font-weight-bold">E-Posta Adresi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
                                     </div>
                                     <div class="col-md-8">
-                                        <input asp-for="OkulEPostaAdresi" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="okulad@meb.gov.tr">
+                                        <input asp-for="OkulEPostaAdresi" type="email" class="form-control py-2" id="CreateTypeInput" placeholder="okulad@meb.gov.tr">
                                         <span class="text-danger" asp-validation-for="OkulEPostaAdresi"></span>
                                     </div>
                                 </div>
@@ -290,8 +299,8 @@
                 <!--Buton grubu-->
                 <div class="form-row">
                     <div class="col-md-12">
-                        @*<input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="OkulGuncelle" />*@
-                        <input value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="OkulGuncelle" />
+                        <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="OkulGuncelle" />
+                        @*<input value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="OkulGuncelle" />*@
                         <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Geri Dön</a>
                         <a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@Model.OkulId" id="OkulDetay" name="OkulDetay" class="btn btn-info btn-sm text-white mb-1" style="width:100px">Önizle</a>
                     </div>
@@ -382,6 +391,10 @@ else
 
     <script type="text/javascript">
 
+        var eyaletId = "";
+        var eyaletAd = "";
+        var ead = "";
+
         $('#datetimepicker1').datetimepicker({
             format: 'DD/MM/YYYY'
         });
@@ -406,12 +419,14 @@ else
             }
         });
 
-        $("#EyaletInput").focusout(function EyaletKayit() {
+        $("#EyaletInput").focusout(function() {
 
-            if ($(this).val() != "") {
+            $("#EyaletIdInput").val() == "";
+
+            if ($(this).val().trim() != "") {
 
 
-                var ead = $(this).val().replace(/^\w/, function ($1) { return $1.toUpperCase() });
+                window.ead = $(this).val().replace(/^\w/, function ($1) { return $1.toUpperCase() });
 
                 var url = '@Url.Action("OkulEyaletGetir", "Okullar")?EyaletAdi=' + ead;
 
@@ -419,71 +434,68 @@ else
 
                     $.each(data, function (i = 0, eyaletId, eyaletAdi) {
 
-                        if (i===0) {
+                        if (i === 0) {
 
-                            var eyaletId = data[i]['eyaletId'];
-                            var eyaletAd = data[i]['eyaletAdi'];
-                            alert(eyaletId + " " + eyaletAd);
-                            $("#EyaletIdInput").val(eyaletId);
+                            window.eyaletId = data[i]['eyaletId'];
+                            window.eyaletAd = data[i]['eyaletAdi'];
+                            $("#EyaletIdInput").val(window.eyaletId);
+
+                            alert("buldum=" + window.eyaletId + " " + window.eyaletAd + " " + i);
+
+                            //$("#SehirInput").focus();
                         }
+
                     });
 
+                    alert(win.eyaletId);
+
+                    if (window.eyaletId == null || window.eyaletId=="") {
+
+                        var eyalet = {
+                            EyaletAdi: $(this).val().replace(/^\w/, function ($1) { return $1.toUpperCase() }),
+                            UlkeId: $("#ulkeIdInput").val()
+                        }
+
+                        $.ajax({
+
+                            type: 'POST',
+                            url: '/Okullar/EyaletEkleJson',
+                            data: eyalet,
+
+                            success: function (response) {
+
+                                if (response === "200") {
+
+                                    alert("eklendi");
+
+                                    $.getJSON(url, function (data) {
+
+                                        $.each(data, function (i = 0, eyaletId, eyaletAdi) {
+
+                                            if (i === 0) {
+
+                                                window.eyaletId = data[i]['eyaletId'];
+                                                window.eyaletAd = data[i]['eyaletAdi'];
+                                                alert(window.eyaletId);
+                                                $("#EyaletIdInput").val(window.eyaletId);
+
+                                            }
+                                        });
+
+                                    });
+                                }
+                                else {
+                                    alert("olmadı");
+                                }
+                            },
+                            error: function () {
+                                alert("işlem gerçekleşmedi");
+                            }
+
+                        });
+                    }
+
                 });
-
-                if ($("#EyaletIdInput").val() != null) {
-
-                    alert("eyalet Id=" + $("#EyaletIdInput").val());
-                    
-                }
-                else {
-
-                    //var eyalet = {
-                    //    EyaletAdi: $("#EyaletInput").val(),
-                    //    UlkeId: $("#ulkeIdInput").val()
-                    //}
-
-                    //$.ajax({
-
-                    //    type: 'POST',
-                    //    url: '/Okullar/EyaletEkleJson',
-                    //    data: eyalet,
-
-                    //    success: function (response) {
-
-                    //        if (response === "200") {
-
-                    //            alert("eklendi");
-
-                    //            $.getJSON(url, function (data) {
-
-                    //                $.each(data, function (i = 0, eyaletId, eyaletAdi) {
-
-                    //                    if (i === 0) {
-
-                    //                        var eyaletId = data[i]['eyaletId'];
-                    //                        var eyaletAd = data[i]['eyaletAdi'];
-                    //                        alert(eyaletId);
-                    //                        $("#EyaletIdInput").val(eyaletId);
-
-                    //                    }
-                    //                });
-
-                    //            });
-                    //        }
-                    //        else {
-                    //            alert("olmadı");
-                    //        }
-                    //    },
-                    //    error: function () {
-                    //        alert("işlem gerçekleşmedi");
-                    //    }
-
-                    //});
-
-                    
-
-                }
-
 
             }
 
@@ -495,7 +507,7 @@ else
 
             var fotoId = $(this).attr("id");
 
-            bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+            bootbox.confirm(fotoId + " Silmek istediğinize emin misiniz?", function (result) {
                 if (result) {
                     $.ajax({
                         type: "DELETE",
@@ -516,9 +528,9 @@ else
             var fileUpload = document.getElementById("okulLogoInput");
             var fileCount = fileUpload.files.length;
 
-            for (var i = 0; i < fileCount; i++) {
+            for (var b = 0; b < fileCount; b++) {
 
-                if (input.files[i].size > maxFileSize) {
+                if (input.files[b].size > maxFileSize) {
 
                     $(':input[type="submit"]').prop('disabled', true);
                     Swal.fire({
@@ -536,7 +548,7 @@ else
                     $(':input[type="submit"]').prop('disabled', false);
                     document.getElementById("okulLogoInput").className = "";
                     document.getElementById("okulLogoInput").className += "btn btn-outline-success mb-1 btn-sm col-md-12";
-                    document.getElementById('okulLogoImages').src = window.URL.createObjectURL(document.getElementById("okulLogoInput").files[i]);
+                    document.getElementById('okulLogoImages').src = window.URL.createObjectURL(document.getElementById("okulLogoInput").files[b]);
 
                 }
             }
@@ -548,9 +560,9 @@ else
             var fileUpload = document.getElementById("OkulImagesInput");
             var fileCount = fileUpload.files.length;
 
-            for (var i = 0; i < fileCount; i++) {
+            for (a = 0; a < fileCount; a++) {
 
-                if (input.files[i].size > maxFileSize) {
+                if (input.files[a].size > maxFileSize) {
 
                     $(':input[type="submit"]').prop('disabled', true);
                     Swal.fire({
@@ -568,8 +580,11 @@ else
                     $(':input[type="submit"]').prop('disabled', false);
                     document.getElementById("OkulImagesInput").className = "";
                     document.getElementById("OkulImagesInput").className += "btn btn-outline-success mb-1 btn-sm col-md-12";
-                    const collection = document.getElementsByClassName("okulFotos");
-                    collection[0].src = window.URL.createObjectURL(document.getElementById("OkulImagesInput").files[i]);
+                    const collection = document.getElementById(i);
+                    alert(collection);
+                    collection[0].src = window.URL.createObjectURL(document.getElementById("OkulImagesInput").files[a]);
+
+                    i++;
                 }
             }
         }

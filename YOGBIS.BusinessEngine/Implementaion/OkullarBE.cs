@@ -180,16 +180,33 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     OkullarVM okul = new OkullarVM();
                     okul.OkulId = data.OkulId;
+                    okul.KayitTarihi = data.KayitTarihi;
                     okul.OkulKodu = data.OkulKodu;
                     okul.OkulAdi = data.OkulAdi;
+                    okul.OkulLogoURL = data.OkulLogoURL;
+                    okul.OkulBilgi = data.OkulBilgi;
+                    okul.OkulAcilisTarihi = data.OkulAcilisTarihi;
                     okul.OkulDurumu = data.OkulDurumu;
-                    okul.OkulTuru = data.OkulTuru;
-                    okul.OkulUlkeId = data.OkulUlkeId;
-                    okul.OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)data.OkulUlkeId).Data;
                     okul.OkulMudurId = data.OkulMudurId;
                     okul.OkulMudurAdiSoyadi = data.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(data.OkulMudurId).Data : string.Empty;
+                    okul.OkulHizmetGecisDonem = data.OkulHizmetGecisDonem;
+                    okul.OkulKapaliAlan = data.OkulKapaliAlan;
+                    okul.OkulAcikAlan = data.OkulAcikAlan;
+                    okul.OkulMulkiDurum = data.OkulMulkiDurum;
+                    okul.OkulMulkiDurumAciklama = data.OkulMulkiDurumAciklama;
+                    okul.OkulInternetAdresi = data.OkulInternetAdresi;
+                    okul.OkulEPostaAdresi = data.OkulEPostaAdresi;
+                    okul.OkulTelefon = data.OkulTelefon;
+                    okul.OkulUlkeId = data.OkulUlkeId;
+                    okul.OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)data.OkulUlkeId).Data;
+                    okul.EyaletId = data.EyaletId;
+                    //okul.EyaletAdi=
+                    okul.SehirId = data.SehirId;
+                    //okul.SehirAdi=
+                    okul.OkulTuru = data.OkulTuru;
                     okul.KaydedenId = data.KaydedenId;
                     okul.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+
 
                     okul.FotoGaleri = data.FotoGaleri.Select(g => new FotoGaleriVM()
                     {
@@ -323,13 +340,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.OkulHizmetGecisDonem = model.OkulHizmetGecisDonem;
                         data.OkulKapaliAlan = model.OkulKapaliAlan;
                         data.OkulAcikAlan = model.OkulAcikAlan;
-                        data.OkulMulkiDurum = model.OkulMulkiDurum;
+                        //data.OkulMulkiDurum = model.OkulMulkiDurum;
                         data.OkulMulkiDurumAciklama = model.OkulMulkiDurumAciklama;
                         data.OkulInternetAdresi = model.OkulInternetAdresi;
                         data.OkulEPostaAdresi = model.OkulEPostaAdresi;
                         data.OkulTelefon = model.OkulTelefon;
-                        data.EyaletId = (Guid)model.EyaletId != null? (Guid)model.EyaletId:Guid.Empty;
-                        data.SehirId = (Guid)model.SehirId != null? (Guid)model.SehirId:Guid.Empty;
+                        //data.EyaletId = (Guid)model.EyaletId != null ? (Guid)model.EyaletId : Guid.Empty;
+                        //data.SehirId = (Guid)model.SehirId != null ? (Guid)model.SehirId : Guid.Empty;
 
                         if (model.FotoGaleri != null)
                         {

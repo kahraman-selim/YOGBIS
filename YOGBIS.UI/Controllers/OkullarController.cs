@@ -233,7 +233,7 @@ namespace YOGBIS.UI.Controllers
 
                 if (data.IsSuccess)
                 {
-                    return RedirectToAction("Index");
+                    return View(data.Data);
                 }
             }
             return View();
