@@ -330,9 +330,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         //data.OkulKodu = model.OkulKodu;
                         //data.OkulAdi = model.OkulAdi;
                         //data.OkulUlkeId = (Guid)model.OkulUlkeId;
-                        //data.KayitTarihi = model.KayitTarihi;
+                        data.KayitTarihi = model.KayitTarihi;
                         //data.OkulMudurId = model.OkulMudurId;
-                        //data.KaydedenId = user.LoginId;
+                        data.KaydedenId = user.LoginId;
                         ///okulmüdürünün ekleyeceği alanlar////////
                         data.OkulLogoURL = model.OkulLogoURL;
                         data.OkulBilgi = model.OkulBilgi;
@@ -340,13 +340,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.OkulHizmetGecisDonem = model.OkulHizmetGecisDonem;
                         data.OkulKapaliAlan = model.OkulKapaliAlan;
                         data.OkulAcikAlan = model.OkulAcikAlan;
-                        //data.OkulMulkiDurum = model.OkulMulkiDurum;
+                        data.OkulMulkiDurum = true; //model.OkulMulkiDurum;
                         data.OkulMulkiDurumAciklama = model.OkulMulkiDurumAciklama;
                         data.OkulInternetAdresi = model.OkulInternetAdresi;
                         data.OkulEPostaAdresi = model.OkulEPostaAdresi;
                         data.OkulTelefon = model.OkulTelefon;
-                        //data.EyaletId = (Guid)model.EyaletId != null ? (Guid)model.EyaletId : Guid.Empty;
-                        //data.SehirId = (Guid)model.SehirId != null ? (Guid)model.SehirId : Guid.Empty;
+                        data.EyaletId = model.EyaletId; //!= null ? model.EyaletId : Guid.Empty;
+                        data.SehirId = model.SehirId; //!= null ? model.SehirId : Guid.Empty;
 
                         if (model.FotoGaleri != null)
                         {
@@ -400,7 +400,26 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
-        } 
-                #endregion
+        }
+        #endregion
+
+        #region OkulLogoURLGetir(id)
+        public Result<string> OkulLogoURLGetir(Guid id)
+        {
+
+            var data = _unitOfWork.okullarRepository.Get(id);
+            if (data != null)
+            {
+                var okulogoURL = data.OkulLogoURL;
+
+                return new Result<string>(true, ResultConstant.RecordFound, okulogoURL);
+            }
+            else
+            {
+                return new Result<string>(false, ResultConstant.RecordNotFound);
+            }
+
+        }
+        #endregion
     }
 }

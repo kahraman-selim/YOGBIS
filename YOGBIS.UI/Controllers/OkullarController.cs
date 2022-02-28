@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
@@ -201,8 +202,7 @@ namespace YOGBIS.UI.Controllers
         [Route("Okullar/OC10005", Name = "OkulDetayGuncelle")]
         public IActionResult OkulDetayGuncelle(Guid? id)
         {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
+            
             if (id != null)
             {
                 var data = _okullarBE.OkulGetir((Guid)id);
@@ -222,18 +222,65 @@ namespace YOGBIS.UI.Controllers
         [HttpPost]
         [Obsolete]
         [Route("Okullar/OC10005", Name = "OkulDetayGuncelle")]
-        public IActionResult OkulDetayGuncelle(OkullarVM model, Guid? OkulId)
+        public async Task<IActionResult> OkulDetayGuncelle(OkullarVM model, Guid? OkulId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
+            if (model.FotoGaleris != null)
+            {
+                string fotoklasorler = "img/Okullar/";
+                model.FotoGaleri = new List<FotoGaleriVM>();
+
+                foreach (var file in model.FotoGaleris)
+                {
+                    var galeri = new FotoGaleriVM()
+                    {
+
+                        FotoURL = FotoYukle(fotoklasorler, file),
+                        FotoAdi = file.Name,
+                        KaydedenId = user.LoginId,
+                        KayitTarihi = model.KayitTarihi
+                    };
+                    model.FotoGaleri.Add(galeri);
+                }
+
+            }
+
             if (OkulId != null)
             {
+                //var okullogoAdi = "/img/OkulLogo/noimages.jpg";
+                ////önceki yüklenen fotoyu dosyadan sil
+                //var okullogurl = _okullarBE.OkulLogoURLGetir((Guid)OkulId);
+                //if (okullogurl != null)
+                //{
+                //    string[] parcalar = okullogurl.Data.ToString().Split("/img/OkulLogo/");
+                //    okullogoAdi = parcalar[1].ToString();
+                //}
+
+
+                //if (model.OkulLogo != null)
+                //{
+
+                //    if (okullogoAdi != "noimages.jpg")
+                //    {
+                //        System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/OkulLogo/" + okullogoAdi);
+                //    }
+
+                //    string klasorler = "img/OkulLogo/";
+                //    model.OkulLogoURL = FotoYukle(klasorler, model.OkulLogo);
+                //    //string[] parcala = model.OkulLogoURL.ToString().Split("/img/OkulLogo/");                    
+
+                //}
+                //else
+                //{
+                //    model.OkulLogoURL = okullogurl.Data.ToString();                    
+                //}
 
                 var data = _okullarBE.OkulDetayGuncelle(model, user);
 
                 if (data.IsSuccess)
                 {
-                    return View(data.Data);
+                    return RedirectToAction("OkulDetayGuncelle",new { id=(Guid)OkulId });
                 }
             }
             return View();

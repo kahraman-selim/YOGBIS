@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = "OkulDetay";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var a = 0;
+    var a = 1;
     var b = 0;
     var c = 0;
     var i = 0;
@@ -45,15 +45,16 @@
 
     <!-- #endregion -->
 }
-@if (Model != null)
-{
+
+    @if (Model != null)
+    {
 
     <div class="row mt-0">
 
         <div class="col-md-6">
             <form class="form-group m-0" asp-action="OkulDetayGuncelle" enctype="multipart/form-data">
                 @Html.HiddenFor(x => x.OkulId)
-                <input hidden value="@Model.OkulUlkeId" id="ulkeIdInput" asp-for="OkulUlkeId"/>                
+                <input hidden value="@Model.OkulUlkeId" id="ulkeIdInput" asp-for="OkulUlkeId" />
                 <div class="form-row">
                     <div class="col-md-12 mb-2">
 
@@ -62,7 +63,7 @@
                             <div class="col-md-9"><h3 class="text-info">@Model.OkulAdi</h3></div>
                             <div class="col-md-3">
                                 @if (Model.OkulLogoURL != null)
-                                {                                    
+                                {
                                     <img id="okulLogoImagesModel" class="rounded d-block shadow img-profile" style="width:150px;height:50px" alt="Okul Logo" src="@Model.OkulLogoURL">
                                 }
                                 else
@@ -88,7 +89,7 @@
                         <!--Okul Foto Galeri-->
                         <div class="form-row">
                             <div class="col-md-12 justify-content-center m-auto">
-                                @if (i > 0)
+                                @if (a > 0)
                                 {
                                     @if (Model.FotoGaleri.Count > 0)
                                     {
@@ -97,18 +98,18 @@
                                         <div id="demo" class="carousel slide" data-ride="carousel">
                                             <!-- Indicators -->
                                             <ul class="carousel-indicators">
-                                                @for (c = 0; c < Model.FotoGaleri.Count(); c++)
+                                                @for (i = 0; i < Model.FotoGaleri.Count(); i++)
                                                 {
-                                                    <li data-target="#demo" data-slide-to="@c" class="@(c==0 ? "active" : "") "></li>
+                                                    <li data-target="#demo" data-slide-to="@i" class="@(i==0 ? "active" : "") "></li>
                                                 }
                                             </ul>
                                             <!-- The slideshow -->
                                             <div class="carousel-inner">
-                                                @for (c = 0; c < Model.FotoGaleri.Count(); c++)
+                                                @for (i = 0; i < Model.FotoGaleri.Count(); i++)
                                                 {
-                                                    <div class="@(c==0 ? "carousel-item active" : "carousel-item") ">
-                                                        <span class="closebtn text-center" id="@Model.FotoGaleri[c].FotoGaleriId">&times;</span>
-                                                        <img id="@Model.FotoGaleri[c].FotoGaleriId" src="@Model.FotoGaleri[c].FotoURL" alt="@Model.FotoGaleri[c].FotoAdi"
+                                                    <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
+                                                        <span class="closebtn text-center" id="@Model.FotoGaleri[i].FotoGaleriId">&times;</span>
+                                                        <img id="@Model.FotoGaleri[i].FotoGaleriId" src="@Model.FotoGaleri[i].FotoURL" alt="@Model.FotoGaleri[i].FotoAdi"
                                                              style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
                                                     </div>
                                                 }
@@ -128,15 +129,15 @@
                                     <div id="demo" class="carousel slide" data-ride="carousel">
                                         <!-- Indicators -->
                                         <ul class="carousel-indicators">
-                                             <li data-target="#demo" data-slide-to="@i" class="@(i==0 ? "active" : "") "></li>
+                                            <li data-target="#demo" data-slide-to="@i" class="@(i==0 ? "active" : "") "></li>
                                         </ul>
                                         <!-- The slideshow -->
                                         <div class="carousel-inner">
-                                                <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
-                                                    <span class="closebtn text-center" id="@i">&times;</span>
-                                                    <img id="@i" src="@(i==0 ? "../../img/FotoGaleri/noimage.png":"")" alt="@i"
-                                                         style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
-                                                </div>
+                                            <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
+                                                <span class="closebtn text-center" id="@i">&times;</span>
+                                                <img id="@i" src="@(i==0 ? "../../img/FotoGaleri/noimage.png":"")" alt="@i"
+                                                     style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
+                                            </div>
                                         </div>
                                         <!-- Left and right controls -->
                                         <a class="carousel-control-prev" href="#demo" data-slide="prev">
@@ -371,16 +372,16 @@
 
     </div>
 
-}
-else
-{
-    <div class="row justify-content-center">
-        <h4 class="text-danger">Okula ait detay görüntülenemiyor !</h4>
-    </div>
-    <div class="row justify-content-center">
-        <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Geri Dön</a>
-    </div>
-}
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            <h4 class="text-danger">Okula ait detay görüntülenemiyor !</h4>
+        </div>
+        <div class="row justify-content-center">
+            <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Geri Dön</a>
+        </div>
+    }
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
@@ -499,9 +500,7 @@ else
 
             }
 
-        });
-
-
+        });        
 
         $(".closebtn").click(function () {
 
@@ -519,6 +518,18 @@ else
                 }
             });
 
+
+        });
+
+        $("#OkulGuncelle").click(function () {
+
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Kayıt işlemi başarılı !',
+                showConfirmButton: false,
+                timer: 2500
+            })
 
         });
 
