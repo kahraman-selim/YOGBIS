@@ -5,10 +5,6 @@
 @{
     ViewData["Title"] = "OkulDetay";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var a = 1;
-    var b = 0;
-    var c = 0;
-    var i = 0;
 }
 @section Styles{
     <link href="~/css/modern-business.css" rel="stylesheet" />
@@ -46,342 +42,320 @@
     <!-- #endregion -->
 }
 
-    @if (Model != null)
-    {
+@if (Model != null)
+{
 
-    <div class="row mt-0">
+<div class="row mt-0">
+    <!--Okul Bilgi-->
+    <div class="col-md-6">
+        <form class="form-group m-0" asp-action="OkulDetayGuncelle" enctype="multipart/form-data">
+            @Html.HiddenFor(x => x.OkulId)
+            <input hidden value="@Model.OkulUlkeId" id="ulkeIdInput" asp-for="OkulUlkeId" />
+            <div class="form-row">
+                <div class="col-md-12 mb-2">
 
-        <div class="col-md-6">
-            <form class="form-group m-0" asp-action="OkulDetayGuncelle" enctype="multipart/form-data">
-                @Html.HiddenFor(x => x.OkulId)
-                <input hidden value="@Model.OkulUlkeId" id="ulkeIdInput" asp-for="OkulUlkeId" />
-                <div class="form-row">
-                    <div class="col-md-12 mb-2">
-
-                        <!--Okul Ad-Logo-->
-                        <div class="form-row">
-                            <div class="col-md-9"><h3 class="text-info">@Model.OkulAdi</h3></div>
-                            <div class="col-md-3">
-                                @if (Model.OkulLogoURL != null)
-                                {
-                                    <img id="okulLogoImagesModel" class="rounded d-block shadow img-profile" style="width:150px;height:50px" alt="Okul Logo" src="@Model.OkulLogoURL">
-                                }
-                                else
-                                {
-                                    <img id="okulLogoImages" class="rounded d-block shadow img-profile" style="width:150px;height:50px" alt="Okul Logo" src="../../img/OkulLogo/noimage.png">
-                                }
-                            </div>
+                    <!--Okul Ad-Logo-->
+                    <div class="form-row">
+                        <div class="col-md-9"><h3 class="text-info">@Model.OkulAdi</h3></div>
+                        <div class="col-md-3">
+                            @if (Model.OkulLogoURL != null)
+                            {
+                                <img id="okulLogoImages" class="rounded d-block shadow img-profile" style="width:150px;height:50px" alt="Okul Logo" src="@Model.OkulLogoURL">
+                            }
+                            else
+                            {
+                                <img id="okulLogoImages" class="rounded d-block shadow img-profile" style="width:150px;height:50px" alt="Okul Logo" src="../../img/OkulLogo/noimage.png">
+                            }
                         </div>
-                        <!--Okul Logo Input-->
-                        <div class="form-row">
-                            <div class="col-md-12">
-                                <label asp-for="OkulLogo" class="small mb-1 font-weight-bold">Okul Logosunu seçiniz</label>
-                                <input type="file" asp-for="OkulLogo"
-                                       accept=".png,.jpg,.jpeg,.gif,.tif"
-                                       class="@(this != null ? "btn btn-outline-danger mb-1 btn-sm col-md-12" : "btn btn-outline-success mb-1 btn-sm col-md-12")"
-                                       title="Okul Logosu seçiniz" placeholder="Okul Logosu" id="okulLogoInput"
-                                       onchange="OkulLogoImagesFileSize(this);" />
-                                <span asp-validation-for="OkulLogo" class="text-danger"></span>
-                            </div>
+                    </div>
+                    <!--Okul Logo Input-->
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label asp-for="OkulLogo" class="small mb-1 font-weight-bold">Okul Logosunu seçiniz</label>
+                            <input type="file" asp-for="OkulLogo"
+                                   accept=".png,.jpg,.jpeg,.gif,.tif"
+                                   class="@(this != null ? "btn btn-outline-danger mb-1 btn-sm col-md-12" : "btn btn-outline-success mb-1 btn-sm col-md-12")"
+                                   title="Okul Logosu seçiniz" placeholder="Okul Logosu" id="okulLogoInput"
+                                   onchange="OkulLogoImagesFileSize(this);" />
+                            <span asp-validation-for="OkulLogo" class="text-danger"></span>
                         </div>
+                    </div>
 
-                        <hr />
-                        <!--Okul Foto Galeri-->
-                        <div class="form-row">
-                            <div class="col-md-12 justify-content-center m-auto">
-                                @if (a > 0)
-                                {
-                                    @if (Model.FotoGaleri.Count > 0)
-                                    {
-                                        <input hidden value="@Model.FotoGaleri.Count()" id="modelfotogaleriinput" />
+                    <hr />
+                    <!--Okul Foto Galeri-->
+                    <div class="form-row">
+                        <div class="col-md-12 justify-content-center m-auto">
+                            @if (Model.FotoGaleri.Count > 0)
+                            {
+                                <input hidden value="@Model.FotoGaleri.Count()" id="modelfotogaleriinput" />
 
-                                        <div id="demo" class="carousel slide" data-ride="carousel">
-                                            <!-- Indicators -->
-                                            <ul class="carousel-indicators">
-                                                @for (i = 0; i < Model.FotoGaleri.Count(); i++)
-                                                {
-                                                    <li data-target="#demo" data-slide-to="@i" class="@(i==0 ? "active" : "") "></li>
-                                                }
-                                            </ul>
-                                            <!-- The slideshow -->
-                                            <div class="carousel-inner">
-                                                @for (i = 0; i < Model.FotoGaleri.Count(); i++)
-                                                {
-                                                    <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
-                                                        <span class="closebtn text-center" id="@Model.FotoGaleri[i].FotoGaleriId">&times;</span>
-                                                        <img id="@Model.FotoGaleri[i].FotoGaleriId" src="@Model.FotoGaleri[i].FotoURL" alt="@Model.FotoGaleri[i].FotoAdi"
-                                                             style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
-                                                    </div>
-                                                }
-                                            </div>
-                                            <!-- Left and right controls -->
-                                            <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                                                <span class="carousel-control-prev-icon"></span>
-                                            </a>
-                                            <a class="carousel-control-next" href="#demo" data-slide="next">
-                                                <span class="carousel-control-next-icon"></span>
-                                            </a>
-                                        </div>
-                                    }
-                                }
-                                else
-                                {
-                                    <div id="demo" class="carousel slide" data-ride="carousel">
-                                        <!-- Indicators -->
-                                        <ul class="carousel-indicators">
+                                <div id="demo" class="carousel slide" data-ride="carousel">
+                                    <!-- Indicators -->
+                                    <ul class="carousel-indicators">
+                                        @for (int i = 0; i < Model.FotoGaleri.Count(); i++)
+                                        {
                                             <li data-target="#demo" data-slide-to="@i" class="@(i==0 ? "active" : "") "></li>
-                                        </ul>
-                                        <!-- The slideshow -->
-                                        <div class="carousel-inner">
+                                        }
+                                    </ul>
+                                    <!-- The slideshow -->
+                                    <div class="carousel-inner">
+                                        @for (int i = 0; i < Model.FotoGaleri.Count(); i++)
+                                        {
                                             <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
-                                                <span class="closebtn text-center" id="@i">&times;</span>
-                                                <img id="@i" src="@(i==0 ? "../../img/FotoGaleri/noimage.png":"")" alt="@i"
+                                                <span class="closebtn text-center" id="@Model.FotoGaleri[i].FotoGaleriId">&times;</span>
+                                                <img id="@Model.FotoGaleri[i].FotoGaleriId" src="@Model.FotoGaleri[i].FotoURL" alt="@Model.FotoGaleri[i].FotoAdi"
                                                      style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
                                             </div>
+                                        }
+                                    </div>
+                                    <!-- Left and right controls -->
+                                    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                                        <span class="carousel-control-prev-icon"></span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#demo" data-slide="next">
+                                        <span class="carousel-control-next-icon"></span>
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+
+                                <img id="okulImages" src="../../img/Okullar/noimage.png" alt="okulFoto"
+                                     style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile">
+
+                            }
+                        </div>
+                    </div>
+                    <!--Okul Foto Galeri Input-->
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label asp-for="FotoGaleris" class="small mb-1 font-weight-bold">Okulunuzdan Fotoğraflar Ekleyin</label>
+                            <input type="file" id="OkulImagesInput"
+                                   accept=".png,.jpg,.jpeg,.gif,.tif"
+                                   asp-for="FotoGaleris"
+                                   class="@(this != null ? "btn btn-outline-danger mb-1 btn-sm col-md-12" : "btn btn-outline-success mb-1 btn-sm col-md-12")"
+                                   title="Resim seçiniz" placeholder="Okul Fotoğrafları"
+                                   multiple
+                                   onchange="ImagesFileSize(this);" />
+                            <span asp-validation-for="FotoGaleris" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <!--Okul Bölge-->
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <p class="font-weight-bold">Eyalet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control py-2" id="EyaletInput" placeholder="Eyalet adını yazınız" asp-for="EyaletAdi"
+                                   onblur="this.value=this.value.replace(/^\w/, function($0){return $0.toUpperCase();})" />
+                            <span class="text-danger">Okulun bulunduğu ülkede eyalet sistemi yok ise boş geçiniz</span>
+                        </div>
+                        <input asp-for="EyaletId" id="EyaletIdInput" />
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <p class="font-weight-bold">Şehir/Bölge&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control py-2" id="SehirInput" placeholder="Şehir/Bölge adını yazınız" asp-for="SehirAdi"
+                                   onblur="this.value=this.value.replace(/^\w/, function($1){return $1.toUpperCase();})" />
+                            <span class="text-danger">Okulun bulunduğu Şehir veya Bölgeyi yazınız</span>
+                        </div>
+                        <input asp-for="SehirId" id="SehirIdInput" />
+                    </div>
+                    <hr />
+                    <!--Okul Bilgileri-->
+                    <div class="form-row">
+                        <div class="col-md-12">
+
+                            <div class="form-row mb-1">
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold">Hizmete Geçiş&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <input asp-for="OkulHizmetGecisDonem" type="text" class="form-control py-2" id="hizmetGecisInput" placeholder="Hizmete geçiş dönemini yazınız">
+                                    <span class="text-danger" asp-validation-for="OkulHizmetGecisDonem"></span>
+                                    <span class="text-danger">Örnek : 2005/2006 Eğitim-Öğretim Dönemi</span>
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-1">
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold">Okul Açılış Tarihi&nbsp;:</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                        <input id="inputBasTar" asp-for="OkulAcilisTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                                        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
-                                        <!-- Left and right controls -->
-                                        <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                                            <span class="carousel-control-prev-icon"></span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#demo" data-slide="next">
-                                            <span class="carousel-control-next-icon"></span>
-                                        </a>
                                     </div>
-                                }
+                                </div>
                             </div>
+
+                            <div class="form-row mb-1">
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold">Kapalı Alan (m)<sup>2</sup>&nbsp;&nbsp;:</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <input asp-for="OkulKapaliAlan" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Okul kapalı alanını yazınız">
+                                    <span class="text-danger" asp-validation-for="OkulKapaliAlan"></span>
+                                    <span class="text-danger">Örnek : 14.000</span>
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-1">
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold">Açık Alan (m)<sup>2</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <input asp-for="OkulAcikAlan" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Okul açık alanını yazınız">
+                                    <span class="text-danger" asp-validation-for="OkulAcikAlan"></span>
+                                    <span class="text-danger">Örnek : 14.000</span>
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-1">
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold">Mülki Durum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <textarea asp-for="OkulMulkiDurumAciklama" placeholder="Okul mülkiyeti hakkında bilgi yazınız" class="form-control py-2 limited" id="MulkiyetTextArea" rows="3" maxlength="1000"></textarea>
+                                    <span class="text-danger" asp-validation-for="OkulMulkiDurumAciklama"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-1">
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold">Okul Telefon&nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <input asp-for="OkulTelefon" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="+90(312)4131697">
+                                    <span class="text-danger" asp-validation-for="OkulTelefon"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-1">
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold">İnternet Adresi&nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <input asp-for="OkulInternetAdresi" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="https://okulad.meb.k12.tr">
+                                    <span class="text-danger" asp-validation-for="OkulInternetAdresi"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-1">
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold">E-Posta Adresi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <input asp-for="OkulEPostaAdresi" type="email" class="form-control py-2" id="CreateTypeInput" placeholder="okulad@meb.gov.tr">
+                                    <span class="text-danger" asp-validation-for="OkulEPostaAdresi"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-1">
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold">Tarihçesi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <textarea asp-for="OkulBilgi" placeholder="Okul hakkında kısa bilgi yazınız" class="form-control py-2 limited" id="UlkeTextArea" rows="10" maxlength="1000"></textarea>
+                                    <span class="text-danger" asp-validation-for="OkulBilgi"></span>
+                                </div>
+                            </div>
+
                         </div>
-                        <!--Okul Foto Galeri Input-->
-                        <div class="form-row">
-                            <div class="col-md-12">
-                                <label asp-for="FotoGaleris" class="small mb-1 font-weight-bold">Okulunuzdan Fotoğraflar Ekleyin</label>
-                                <input type="file" id="OkulImagesInput"
-                                       accept=".png,.jpg,.jpeg,.gif,.tif"
-                                       asp-for="FotoGaleris"
-                                       class="@(this != null ? "btn btn-outline-danger mb-1 btn-sm col-md-12" : "btn btn-outline-success mb-1 btn-sm col-md-12")"
-                                       title="Resim seçiniz" placeholder="Okul Fotoğrafları"
-                                       multiple
-                                       onchange="ImagesFileSize(this);" />
-                                <span asp-validation-for="FotoGaleris" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <hr />
-                        <!--Okul Bölge-->
-                        <div class="form-row">
-                            <div class="col-md-4">
-                                <p class="font-weight-bold">Eyalet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control py-2" id="EyaletInput" placeholder="Eyalet adını yazınız"
-                                       onblur="this.value=this.value.replace(/^\w/, function($0){return $0.toUpperCase();})" />
-                                <span class="text-danger">Okulun bulunduğu ülkede eyalet sistemi yok ise boş geçiniz</span>
-                            </div>
-                            <input asp-for="EyaletId" id="EyaletIdInput" />
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-4">
-                                <p class="font-weight-bold">Şehir/Bölge&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control py-2" id="SehirInput" placeholder="Şehir/Bölge adını yazınız"
-                                       onblur="this.value=this.value.replace(/^\w/, function($1){return $1.toUpperCase();})" />
-                                <span class="text-danger">Okulun bulunduğu Şehir veya Bölgeyi yazınız</span>
-                            </div>
-                            <input hidden asp-for="SehirId" id="SehirIdInput" />
-                        </div>
-                        <hr />
-                        <!--Okul Bilgileri-->
-                        <div class="form-row">
-                            <div class="col-md-12">
-
-                                <div class="form-row mb-1">
-                                    <div class="col-md-4">
-                                        <p class="font-weight-bold">Hizmete Geçiş&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input asp-for="OkulHizmetGecisDonem" type="text" class="form-control py-2" id="hizmetGecisInput" placeholder="Hizmete geçiş dönemini yazınız">
-                                        <span class="text-danger" asp-validation-for="OkulHizmetGecisDonem"></span>
-                                        <span class="text-danger">Örnek : 2005/2006 Eğitim-Öğretim Dönemi</span>
-                                    </div>
-                                </div>
-
-                                <div class="form-row mb-1">
-                                    <div class="col-md-4">
-                                        <p class="font-weight-bold">Okul Açılış Tarihi&nbsp;:</p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                            <input id="inputBasTar" asp-for="OkulAcilisTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
-                                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-row mb-1">
-                                    <div class="col-md-4">
-                                        <p class="font-weight-bold">Kapalı Alan (m)<sup>2</sup>&nbsp;&nbsp;:</p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input asp-for="OkulKapaliAlan" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Okul kapalı alanını yazınız">
-                                        <span class="text-danger" asp-validation-for="OkulKapaliAlan"></span>
-                                        <span class="text-danger">Örnek : 14.000</span>
-                                    </div>
-                                </div>
-
-                                <div class="form-row mb-1">
-                                    <div class="col-md-4">
-                                        <p class="font-weight-bold">Açık Alan (m)<sup>2</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input asp-for="OkulAcikAlan" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Okul açık alanını yazınız">
-                                        <span class="text-danger" asp-validation-for="OkulAcikAlan"></span>
-                                        <span class="text-danger">Örnek : 14.000</span>
-                                    </div>
-                                </div>
-
-                                <div class="form-row mb-1">
-                                    <div class="col-md-4">
-                                        <p class="font-weight-bold">Mülki Durum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <textarea asp-for="OkulMulkiDurumAciklama" placeholder="Okul mülkiyeti hakkında bilgi yazınız" class="form-control py-2 limited" id="MulkiyetTextArea" rows="3" maxlength="1000"></textarea>
-                                        <span class="text-danger" asp-validation-for="OkulMulkiDurumAciklama"></span>
-                                    </div>
-                                </div>
-
-                                <div class="form-row mb-1">
-                                    <div class="col-md-4">
-                                        <p class="font-weight-bold">Okul Telefon&nbsp;&nbsp;&nbsp;&nbsp;:</p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input asp-for="OkulTelefon" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="+90(312)4131697">
-                                        <span class="text-danger" asp-validation-for="OkulTelefon"></span>
-                                    </div>
-                                </div>
-
-                                <div class="form-row mb-1">
-                                    <div class="col-md-4">
-                                        <p class="font-weight-bold">İnternet Adresi&nbsp;&nbsp;&nbsp;&nbsp;:</p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input asp-for="OkulInternetAdresi" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="https://okulad.meb.k12.tr">
-                                        <span class="text-danger" asp-validation-for="OkulInternetAdresi"></span>
-                                    </div>
-                                </div>
-
-                                <div class="form-row mb-1">
-                                    <div class="col-md-4">
-                                        <p class="font-weight-bold">E-Posta Adresi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input asp-for="OkulEPostaAdresi" type="email" class="form-control py-2" id="CreateTypeInput" placeholder="okulad@meb.gov.tr">
-                                        <span class="text-danger" asp-validation-for="OkulEPostaAdresi"></span>
-                                    </div>
-                                </div>
-
-                                <div class="form-row mb-1">
-                                    <div class="col-md-4">
-                                        <p class="font-weight-bold">Tarihçesi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <textarea asp-for="OkulBilgi" placeholder="Okul hakkında kısa bilgi yazınız" class="form-control py-2 limited" id="UlkeTextArea" rows="10" maxlength="1000"></textarea>
-                                        <span class="text-danger" asp-validation-for="OkulBilgi"></span>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
                     </div>
-                </div>
 
-                <!--Buton grubu-->
-                <div class="form-row">
-                    <div class="col-md-12">
-                        <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="OkulGuncelle" />
-                        @*<input value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="OkulGuncelle" />*@
-                        <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Geri Dön</a>
-                        <a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@Model.OkulId" id="OkulDetay" name="OkulDetay" class="btn btn-info btn-sm text-white mb-1" style="width:100px">Önizle</a>
-                    </div>
                 </div>
-            </form>
-        </div>
+            </div>
 
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-6 pl-4"><h3>FİZİKİ KAPASİTE</h3></div>
-                <div class="col-md-6 pr-2 text-right text-white"><a class="btn btn-primary">Okul Fiziki Bölüm Ekle</a></div>
-            </div>
-            <hr />
-            <div class="row">
-                <div class="col-md-12 pl-5 pr-5">
-                    <p class="font-weight-bold">18 <label class="font-weight-light">Derslik</label></p>
-                    <hr />
-                    <p class="font-weight-bold">3 <label class="font-weight-light">İdari Ofis</label></p>
-                    <hr />
-                    <p class="font-weight-bold">1 <label class="font-weight-light">Çok Amaçlı Salon</label></p>
-                    <hr />
-                    <p class="font-weight-bold">1 <label class="font-weight-light">Öğretmenler Odası</label></p>
-                    <hr />
+            <!--Buton grubu-->
+            <div class="form-row">
+                <div class="col-md-12">
+                    <input value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="OkulGuncelle" />                    
+                    <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Geri Dön</a>
+                    <a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@Model.OkulId" id="OkulDetay" name="OkulDetay" class="btn btn-info btn-sm text-white mb-1" style="width:100px">Önizle</a>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12 pl-4"><h3>OKUL KADROSU</h3></div>
-            </div>
-            <hr />
-            <div class="row">
-                <div class="col-md-12 ml-2">
-                    <div class="table-responsive w-100">
-                        <table class="table table-bordered table-hover table-striped display responsive nowrap" id="Table" style="width:100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">Sıra No</th>
-                                    <th class="text-center">Adı Soyadı</th>
-                                    <th class="text-center">Görevi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Nurullah Feyzi YAZICI</a></td>
-                                    <td><a class="text-dark text-left">Okul Müdürü</a></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Hayri YILDIZ</a></td>
-                                    <td><a class="text-dark text-left">Okul Müdürü Yardımcısı</a></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Fatih GÖK</a></td>
-                                    <td><a class="text-dark text-left">Öğretmen</a></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Alparslan YÜKSEL</a></td>
-                                    <td><a class="text-dark text-left">Öğretmen</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        </form>
     </div>
+    <!--Okul Bölüm-Personel-->
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6 pl-4"><h3>FİZİKİ KAPASİTE</h3></div>
+            <div class="col-md-6 pr-2 text-right text-white"><a class="btn btn-primary">Okul Fiziki Bölüm Ekle</a></div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12 pl-5 pr-5">
+                <p class="font-weight-bold">18 <label class="font-weight-light">Derslik</label></p>
+                <hr />
+                <p class="font-weight-bold">3 <label class="font-weight-light">İdari Ofis</label></p>
+                <hr />
+                <p class="font-weight-bold">1 <label class="font-weight-light">Çok Amaçlı Salon</label></p>
+                <hr />
+                <p class="font-weight-bold">1 <label class="font-weight-light">Öğretmenler Odası</label></p>
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 pl-4"><h3>OKUL KADROSU</h3></div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12 ml-2">
+                <div class="table-responsive w-100">
+                    <table class="table table-bordered table-hover table-striped display responsive nowrap" id="Table" style="width:100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Sıra No</th>
+                                <th class="text-center">Adı Soyadı</th>
+                                <th class="text-center">Görevi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Nurullah Feyzi YAZICI</a></td>
+                                <td><a class="text-dark text-left">Okul Müdürü</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Hayri YILDIZ</a></td>
+                                <td><a class="text-dark text-left">Okul Müdürü Yardımcısı</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Fatih GÖK</a></td>
+                                <td><a class="text-dark text-left">Öğretmen</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Alparslan YÜKSEL</a></td>
+                                <td><a class="text-dark text-left">Öğretmen</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    }
-    else
-    {
-        <div class="row justify-content-center">
-            <h4 class="text-danger">Okula ait detay görüntülenemiyor !</h4>
-        </div>
-        <div class="row justify-content-center">
-            <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Geri Dön</a>
-        </div>
-    }
+}
+else
+{
+    <div class="row justify-content-center">
+        <h4 class="text-danger">Okula ait detay görüntülenemiyor !</h4>
+    </div>
+    <div class="row justify-content-center">
+        <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Geri Dön</a>
+    </div>
+}
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
@@ -392,9 +366,9 @@
 
     <script type="text/javascript">
 
-        var eyaletId = "";
-        var eyaletAd = "";
-        var ead = "";
+        //var eyaletId = "";
+        //var eyaletAd = "";
+        //var ead = "";
 
         $('#datetimepicker1').datetimepicker({
             format: 'DD/MM/YYYY'
@@ -422,91 +396,95 @@
 
         $("#EyaletInput").focusout(function() {
 
-            $("#EyaletIdInput").val() == "";
-
+            
             if ($(this).val().trim() != "") {
 
 
-                window.ead = $(this).val().replace(/^\w/, function ($1) { return $1.toUpperCase() });
+                var ead = $(this).val().replace(/^\w/, function ($1) { return $1.toUpperCase() });
+
+                /*alert("ead =" + ead);*/
 
                 var url = '@Url.Action("OkulEyaletGetir", "Okullar")?EyaletAdi=' + ead;
 
-                $.getJSON(url, function (data) {
+                $.getJSON(url, function (data) {                    
 
                     $.each(data, function (i = 0, eyaletId, eyaletAdi) {
 
-                        if (i === 0) {
+                        if (i == 0 && data.length != 0) {
 
-                            window.eyaletId = data[i]['eyaletId'];
-                            window.eyaletAd = data[i]['eyaletAdi'];
-                            $("#EyaletIdInput").val(window.eyaletId);
+                            var eyaletId = data[i]['eyaletId'];
+                            var eyaletAd = data[i]['eyaletAdi'];
+                            $("#EyaletIdInput").val(eyaletId);
 
-                            alert("buldum=" + window.eyaletId + " " + window.eyaletAd + " " + i);
-
-                            //$("#SehirInput").focus();
+                            alert("buldum=" + eyaletId + " " + eyaletAd + " " + i);
+                            console.log(eyaletId);
+                            return false;
+                        }
+                        else {
+                            alert("kayit yok");
                         }
 
                     });
 
-                    alert(win.eyaletId);
-
-                    if (window.eyaletId == null || window.eyaletId=="") {
-
-                        var eyalet = {
-                            EyaletAdi: $(this).val().replace(/^\w/, function ($1) { return $1.toUpperCase() }),
-                            UlkeId: $("#ulkeIdInput").val()
-                        }
-
-                        $.ajax({
-
-                            type: 'POST',
-                            url: '/Okullar/EyaletEkleJson',
-                            data: eyalet,
-
-                            success: function (response) {
-
-                                if (response === "200") {
-
-                                    alert("eklendi");
-
-                                    $.getJSON(url, function (data) {
-
-                                        $.each(data, function (i = 0, eyaletId, eyaletAdi) {
-
-                                            if (i === 0) {
-
-                                                window.eyaletId = data[i]['eyaletId'];
-                                                window.eyaletAd = data[i]['eyaletAdi'];
-                                                alert(window.eyaletId);
-                                                $("#EyaletIdInput").val(window.eyaletId);
-
-                                            }
-                                        });
-
-                                    });
-                                }
-                                else {
-                                    alert("olmadı");
-                                }
-                            },
-                            error: function () {
-                                alert("işlem gerçekleşmedi");
-                            }
-
-                        });
-                    }
-
                 });
 
+                var deger = document.getElementById("#EyaletIdInput").value;
+                alert(deger);
+
+                if (ead != null && deger == null) {
+
+                    var eyalet = {
+                        EyaletAdi: $(this).val().replace(/^\w/, function ($1) { return $1.toUpperCase() }),
+                        UlkeId: $("#ulkeIdInput").val()
+                    }
+
+                    $.ajax({
+
+                        type: 'POST',
+                        url: '/Okullar/EyaletEkleJson',
+                        data: eyalet,
+
+                        success: function (response) {
+
+                            if (response === "200") {
+
+                                alert("eklendi");
+
+                                $.getJSON(url, function (data) {
+
+                                    $.each(data, function (i = 0, eyaletId, eyaletAdi) {
+
+                                        if (i === 0) {
+
+                                            eyaletId = data[i]['eyaletId'];
+                                            eyaletAd = data[i]['eyaletAdi'];
+                                            alert(eyaletId);
+                                            $("#EyaletIdInput").val(eyaletId);
+
+                                        }
+                                    });
+
+                                });
+                            }
+                            else {
+                                alert("olmadı");
+                            }
+                        },
+                        error: function () {
+                            alert("işlem gerçekleşmedi");
+                        }
+
+                    });
+                }
             }
 
-        });        
+        });
 
         $(".closebtn").click(function () {
 
             var fotoId = $(this).attr("id");
 
-            bootbox.confirm(fotoId + " Silmek istediğinize emin misiniz?", function (result) {
+            bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
                 if (result) {
                     $.ajax({
                         type: "DELETE",
@@ -521,7 +499,25 @@
 
         });
 
-        $("#OkulGuncelle").click(function () {
+        $("#OkulGuncelle").click(function () {            
+
+            var okullogoadi = document.getElementById("okulLogoInput").value;
+
+            if (okullogoadi == "") {
+
+                document.getElementById("okulLogoInput").disabled = true;
+            }
+
+            var deger = document.getElementById("#EyaletIdInput").value;
+
+            if (deger == null || deger == "") {
+                this.type = "text";
+                alert("tip" + this.type);
+            }
+            else {
+                this.type = "submit";
+                alert("tip" + this.type);
+            }
 
             Swal.fire({
                 position: 'top-end',
@@ -539,9 +535,9 @@
             var fileUpload = document.getElementById("okulLogoInput");
             var fileCount = fileUpload.files.length;
 
-            for (var b = 0; b < fileCount; b++) {
+            for (var i = 0; i < fileCount; i++) {
 
-                if (input.files[b].size > maxFileSize) {
+                if (input.files[i].size > maxFileSize) {
 
                     $(':input[type="submit"]').prop('disabled', true);
                     Swal.fire({
@@ -559,8 +555,7 @@
                     $(':input[type="submit"]').prop('disabled', false);
                     document.getElementById("okulLogoInput").className = "";
                     document.getElementById("okulLogoInput").className += "btn btn-outline-success mb-1 btn-sm col-md-12";
-                    document.getElementById('okulLogoImages').src = window.URL.createObjectURL(document.getElementById("okulLogoInput").files[b]);
-
+                    document.getElementById('okulLogoImages').src = window.URL.createObjectURL(document.getElementById("okulLogoInput").files[i]);
                 }
             }
         }
@@ -571,9 +566,9 @@
             var fileUpload = document.getElementById("OkulImagesInput");
             var fileCount = fileUpload.files.length;
 
-            for (a = 0; a < fileCount; a++) {
+            for (var i = 0; i < fileCount; i++) {
 
-                if (input.files[a].size > maxFileSize) {
+                if (input.files[i].size > maxFileSize) {
 
                     $(':input[type="submit"]').prop('disabled', true);
                     Swal.fire({
@@ -591,11 +586,8 @@
                     $(':input[type="submit"]').prop('disabled', false);
                     document.getElementById("OkulImagesInput").className = "";
                     document.getElementById("OkulImagesInput").className += "btn btn-outline-success mb-1 btn-sm col-md-12";
-                    const collection = document.getElementById(i);
-                    alert(collection);
-                    collection[0].src = window.URL.createObjectURL(document.getElementById("OkulImagesInput").files[a]);
-
-                    i++;
+                    const collection = document.getElementById("okulImages");
+                    collection[0].src = window.URL.createObjectURL(document.getElementById("OkulImagesInput").files[i]);                    
                 }
             }
         }

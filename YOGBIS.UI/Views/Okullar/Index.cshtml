@@ -37,7 +37,7 @@
                 <thead>
                     @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                     {
-                        <tr><th class="text-center" colspan="16">OKULLARIMIZIN @DateTime.Now.ToString("MMMMM") @DateTime.Now.Year TARİHİ İLE ÖĞRENCİ SAYILARI</th></tr>
+                        <tr><th class="text-center" colspan="18">OKULLARIMIZIN @DateTime.Now.ToString("MMMMM") @DateTime.Now.Year TARİHİ İLE ÖĞRENCİ SAYILARI</th></tr>
 
                     }
                     <tr>
@@ -58,15 +58,15 @@
                         <th class="text-center" colspan="3">GENEL TOPLAM</th>
                     </tr>
                     <tr>
-                        <th class="text-center">ERKEK</th>
-                        <th class="text-center">KIZ</th>
-                        <th class="text-center">TOPLAM</th>
-                        <th class="text-center">ERKEK</th>
-                        <th class="text-center">KIZ</th>
-                        <th class="text-center">TOPLAM</th>
-                        <th class="text-center">ERKEK</th>
-                        <th class="text-center">KIZ</th>
-                        <th class="text-center">TOPLAM</th>
+                        <th class="text-center">E</th>
+                        <th class="text-center">K</th>
+                        <th class="text-center">T</th>
+                        <th class="text-center">E</th>
+                        <th class="text-center">K</th>
+                        <th class="text-center">T</th>
+                        <th class="text-center">E</th>
+                        <th class="text-center">K</th>
+                        <th class="text-center">T</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,7 +80,7 @@
                         <td>@sirano</td>
                         <td>okulsayısı</td>
                         <td><a asp-controller="Ulkeler" asp-action="UlkeDetayById" asp-route-id="@item.OkulUlkeId">@item.OkulUlkeAdi</a></td>
-                        <td>şehir</td>
+                        <td>@item.EyaletAdi/@item.SehirAdi</td>
                         <td>@item.OkulKodu</td>
                         @if (User.IsInRole("SubManager"))
                         {
@@ -91,7 +91,7 @@
                             <td><a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
                         }
                         <td>@item.OkulMudurAdiSoyadi</td>
-                        <td>@item.OkulAcilisTarihi</td>
+                        <td>@item.OkulAcilisTarihi.ToString("dd/MM/yyyy")</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -112,7 +112,6 @@
                         </tr>
                     }
                 </tbody>
-
             </table>
         </div>
     </div>
@@ -141,8 +140,8 @@
                     }
                 });
             });
-        });
-        
+        });        
+
     </script>
 }
 

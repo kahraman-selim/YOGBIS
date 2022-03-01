@@ -16,5 +16,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<List<EyaletlerVM>> EyaletGetirKullaniciId(string userId);
         Result<EyaletlerVM> EyaletGetirEyaletAdi(string eyaletAdi);
         Result<Guid> EyaletIdGetir(string eyaletAdi);
+        Result<string> EyaletAdGetir(Guid id);
     }
 }

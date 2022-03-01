@@ -15,10 +15,12 @@
 
 <ol class="breadcrumb mb-4 mt-2">
     <li class="ml-2 mr-2">
-        @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Bulunduğu Ülkeyi Seç", new { @class = "form-control-range form-control py-1 w-100" })
+        @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Bulunduğu Ülkeyi Seç", 
+       new { @id = "UlkeListesi", @class = "form-control-range form-control py-1 w-100" })
     </li>
     <li class="ml-2 mr-2">
-        @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç", new { @class = "form-control-range form-control py-1 w-100" })
+        @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç", 
+       new { @id = "OkulListesi", @class = "form-control-range form-control py-1 w-100" })
     </li>
     <li class="m-2">
         <a asp-controller="OkulBilgi" asp-action="OkulBilgileriGetir"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
@@ -112,11 +114,29 @@
 
             $("#UlkeListesi").on("change", function () {
 
-                var Id = $("#UlkeListesi").val();                
-
-                location.href = '@Url.Action("OkulBilgileriGetir", "OkulBilgi")?ulkeId=' + Id;
+                var Id = $("#UlkeListesi").val();
 
                 $("#OkulListesi").empty();
+
+                $("#OkulListesi").append("<option value=''> Okul adını seçiniz </option>");
+
+                var url = '@Url.Action("OkulAdGetir", "OkulBilgi")?ulkeId=' + Id;
+
+                $.getJSON(url, function (data) {
+
+                    $.each(data, function (i=0,okulId,okulAdi) {
+
+                        /*alert(data);*/
+                        $('#OkulListesi').append($('<option>', {
+                            value: data[i]['okulId'],
+                            text: data[i]['okulAdi']
+                        }));
+
+                    });
+                });
+
+                @*location.href = '@Url.Action("OkulBilgileriGetir", "OkulBilgi")?ulkeId=' + Id;*@
+
             });
 
             $("#OkulListesi").on("change", function () {

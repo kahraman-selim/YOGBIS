@@ -91,8 +91,8 @@ namespace YOGBIS.UI.Controllers
                 {
                     var galeri = new FotoGaleriVM(){
                         
-                        FotoURL = FotoYukle(fotoklasorler, file),
-                        FotoAdi = file.Name,
+                        FotoURL = await FotoYukle(fotoklasorler, file),
+                        FotoAdi = file.FileName,
                         KaydedenId = user.LoginId,
                         KayitTarihi = model.KayitTarihi
                     };
@@ -118,7 +118,7 @@ namespace YOGBIS.UI.Controllers
                     }
 
                     string klasorler = "img/Bayraklar/";
-                    model.UlkeBayrakURL = FotoYukle(klasorler, model.UlkeBayrak);
+                    model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
                     string[] parcala = model.UlkeBayrakURL.ToString().Split("/img/Bayraklar/");
                     model.UlkeBayrakAdi = parcala[1].ToString();
 
@@ -138,7 +138,7 @@ namespace YOGBIS.UI.Controllers
             else
             {
                 string klasorler = "img/Bayraklar/";
-                model.UlkeBayrakURL = FotoYukle(klasorler, model.UlkeBayrak);
+                model.UlkeBayrakURL = await FotoYukle(klasorler, model.UlkeBayrak);
                 string[] parcalar = model.UlkeBayrakURL.ToString().Split("img/Bayraklar/");
                 model.UlkeBayrakAdi = parcalar[1].ToString();
 
@@ -315,7 +315,7 @@ namespace YOGBIS.UI.Controllers
 
         #region FotoYukle
         [Obsolete]
-        private string FotoYukle(string dosyaAdi, IFormFile dosya)
+        private async Task<string> FotoYukle(string dosyaAdi, IFormFile dosya)
         {
 
             dosyaAdi += Guid.NewGuid().ToString() + "_" + dosya.FileName;
@@ -326,11 +326,9 @@ namespace YOGBIS.UI.Controllers
 
             //return "/" + dosyaAdi;
 
-            using (FileStream fs = new FileStream(dosyaKlasor, FileMode.Create))
-            {
-                dosya.CopyToAsync(fs);
-                return "/" + dosyaAdi;
-            }
+            using FileStream fs = new FileStream(dosyaKlasor, FileMode.Create);
+            await dosya.CopyToAsync(fs);
+            return "/" + dosyaAdi;
         }
         #endregion
 

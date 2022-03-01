@@ -24,6 +24,8 @@ namespace YOGBIS.UI.Controllers
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IKullaniciBE _kullaniciBE;
         private readonly IEyaletlerBE _eyaletlerBE;
+        private readonly IFotoGaleriBE _fotoGaleriBE;
+        private readonly ISehirlerBE _sehirlerBE;
         private readonly IUnitOfWork _unitOfWork;
         [Obsolete]
         private readonly IHostingEnvironment _hostingEnvironment;
@@ -31,12 +33,15 @@ namespace YOGBIS.UI.Controllers
 
         #region Dönüştürücüler
         [Obsolete]
-        public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE, IHostingEnvironment hostingEnvironment, IEyaletlerBE eyaletlerBE, IUnitOfWork unitOfWork)
+        public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE, IHostingEnvironment hostingEnvironment, 
+            IEyaletlerBE eyaletlerBE, ISehirlerBE sehirlerBE, IFotoGaleriBE fotoGaleriBE, IUnitOfWork unitOfWork)
         {
             _okullarBE = okullarBE;
             _ulkelerBE = ulkelerBE;
             _kullaniciBE = kullaniciBE;
             _eyaletlerBE = eyaletlerBE;
+            _sehirlerBE = sehirlerBE;
+            _fotoGaleriBE = fotoGaleriBE;
             _unitOfWork = unitOfWork;
             _hostingEnvironment = hostingEnvironment;
         }
@@ -236,8 +241,8 @@ namespace YOGBIS.UI.Controllers
                     var galeri = new FotoGaleriVM()
                     {
 
-                        FotoURL = FotoYukle(fotoklasorler, file),
-                        FotoAdi = file.Name,
+                        FotoURL = await FotoYukle(fotoklasorler, file),
+                        FotoAdi = file.FileName,
                         KaydedenId = user.LoginId,
                         KayitTarihi = model.KayitTarihi
                     };
@@ -248,33 +253,33 @@ namespace YOGBIS.UI.Controllers
 
             if (OkulId != null)
             {
-                //var okullogoAdi = "/img/OkulLogo/noimages.jpg";
-                ////önceki yüklenen fotoyu dosyadan sil
-                //var okullogurl = _okullarBE.OkulLogoURLGetir((Guid)OkulId);
-                //if (okullogurl != null)
-                //{
-                //    string[] parcalar = okullogurl.Data.ToString().Split("/img/OkulLogo/");
-                //    okullogoAdi = parcalar[1].ToString();
-                //}
+                var okullogoAdi = "/img/OkulLogo/noimages.jpg";
+                //önceki yüklenen fotoyu dosyadan sil
+                var okullogurl = _okullarBE.OkulLogoURLGetir((Guid)OkulId).Data;
+                if (okullogurl != null)
+                {
+                    string[] parcalar = okullogurl.ToString().Split("/img/OkulLogo/");
+                    okullogoAdi = parcalar[1].ToString();
+                }
 
 
-                //if (model.OkulLogo != null)
-                //{
+                if (model.OkulLogo != null)
+                {
 
-                //    if (okullogoAdi != "noimages.jpg")
-                //    {
-                //        System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/OkulLogo/" + okullogoAdi);
-                //    }
+                    if (okullogoAdi != "/img/OkulLogo/noimages.jpg")
+                    {
+                        System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/OkulLogo/" + okullogoAdi);
+                    }
 
-                //    string klasorler = "img/OkulLogo/";
-                //    model.OkulLogoURL = FotoYukle(klasorler, model.OkulLogo);
-                //    //string[] parcala = model.OkulLogoURL.ToString().Split("/img/OkulLogo/");                    
+                    string klasorler = "img/OkulLogo/";
+                    model.OkulLogoURL = await FotoYukle(klasorler, model.OkulLogo);
+                    //string[] parcala = model.OkulLogoURL.ToString().Split("/img/OkulLogo/");                    
 
-                //}
-                //else
-                //{
-                //    model.OkulLogoURL = okullogurl.Data.ToString();                    
-                //}
+                }
+                else
+                {
+                    model.OkulLogoURL = okullogurl.ToString();
+                }
 
                 var data = _okullarBE.OkulDetayGuncelle(model, user);
 
@@ -317,20 +322,42 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region OkulFotoSil
+        [Obsolete]
+        public IActionResult OkulFotoSil(Guid id)
+        {
+            if (id == null)
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+
+            var okulfotourl = _fotoGaleriBE.FotoURLGetir((Guid)id);
+            string[] parcalar = okulfotourl.Data.ToString().Split("/img/Okullar/");
+            var okulFotoAdi = parcalar[1].ToString();
+
+            if (okulFotoAdi != null)
+            {
+                System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/Okullar/" + okulFotoAdi);
+            }
+
+            var data = _fotoGaleriBE.FotoSil(id);
+            if (data.IsSuccess)
+                return Json(new { success = data.IsSuccess, message = data.Message });
+            else
+                return Json(new { success = data.IsSuccess, message = data.Message });
+        } 
+        #endregion
+
         #region FotoYukle
         [Obsolete]
-        private string FotoYukle(string dosyaAdi, IFormFile dosya)
+        private async Task<string> FotoYukle(string dosyaAdi, IFormFile dosya)
         {
 
             dosyaAdi += Guid.NewGuid().ToString() + "_" + dosya.FileName;
 
             string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaAdi);
 
-            using (FileStream fs = new FileStream(dosyaKlasor, FileMode.Create))
-            {
-                dosya.CopyToAsync(fs);
-                return "/" + dosyaAdi;
-            }
+            using FileStream fs = new FileStream(dosyaKlasor, FileMode.Create);
+            await dosya.CopyToAsync(fs);
+            return "/" + dosyaAdi;
         }
         #endregion
 

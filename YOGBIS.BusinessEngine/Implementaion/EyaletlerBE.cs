@@ -286,7 +286,23 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<EyaletlerVM>(false, ResultConstant.RecordNotFound);
             }
-        } 
+        }
+        #endregion
+
+        #region EyaletAdGetir(Guid id)
+        public Result<string> EyaletAdGetir(Guid id)
+        {
+            var data = _unitOfWork.eyaletlerRepository.Get(id);
+            if (data != null)
+            {
+                var eyaletadi = data.EyaletAdi;
+                return new Result<string>(true, ResultConstant.RecordFound, eyaletadi);
+            }
+            else
+            {
+                return new Result<string>(false, ResultConstant.RecordNotFound);
+            }
+        }
         #endregion
     }
 }

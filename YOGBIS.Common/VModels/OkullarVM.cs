@@ -25,7 +25,7 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Okul hakkında bilgi yazmalısınız")]
         public string OkulBilgi { get; set; }
         [Required(ErrorMessage = "Okul açılış tarihi zorunlu bir alandır")]
-        public DateTime? OkulAcilisTarihi { get; set; }
+        public DateTime OkulAcilisTarihi { get; set; }
         public bool OkulDurumu { get; set; }
         public string OkulMudurId { get; set; }
         public string OkulMudurAdiSoyadi { get; set; }

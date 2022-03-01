@@ -158,7 +158,7 @@ namespace YOGBIS.UI.Controllers
             {
                 var data = _okulBilgiBE.OkulBilgiGetirUlkeId((Guid)ulkeId);
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+                ViewBag.OkulAdi = string.Empty;
 
                 if (data.IsSuccess)
                 {
@@ -171,7 +171,7 @@ namespace YOGBIS.UI.Controllers
             {
                 var requestmodel = _okulBilgiBE.OkulBilgileriGetir();
                 ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+                ViewBag.OkulAdi = string.Empty; //_okullarBE.OkullariGetirAZ().Data;
 
                 if (requestmodel.IsSuccess)
                 {
