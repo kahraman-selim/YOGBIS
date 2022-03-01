@@ -366,9 +366,9 @@ else
 
     <script type="text/javascript">
 
-        //var eyaletId = "";
-        //var eyaletAd = "";
-        //var ead = "";
+        window.eyaletId = "";
+        window.eyaletAd = "";
+        window.ead = "";
 
         $('#datetimepicker1').datetimepicker({
             format: 'DD/MM/YYYY'
@@ -396,48 +396,46 @@ else
 
         $("#EyaletInput").focusout(function() {
 
-            
+
             if ($(this).val().trim() != "") {
 
 
-                var ead = $(this).val().replace(/^\w/, function ($1) { return $1.toUpperCase() });
+                window.ead = $(this).val().replace(/^\w/, function ($1) { return $1.toUpperCase() }).trim();
 
-                /*alert("ead =" + ead);*/
+                alert("ead =" + window.ead);
 
-                var url = '@Url.Action("OkulEyaletGetir", "Okullar")?EyaletAdi=' + ead;
+                var url = '@Url.Action("OkulEyaletGetir", "Okullar")?EyaletAdi=' + window.ead;
 
-                $.getJSON(url, function (data) {                    
+                $.getJSON(url, function (data) {
 
-                    $.each(data, function (i = 0, eyaletId, eyaletAdi) {
+                    if (data.length != 0) {
 
-                        if (i == 0 && data.length != 0) {
+                        $.each(data, function (i = 0, eyaletId, eyaletAdi) {
 
-                            var eyaletId = data[i]['eyaletId'];
-                            var eyaletAd = data[i]['eyaletAdi'];
-                            $("#EyaletIdInput").val(eyaletId);
+                            if (i == 0) {
 
-                            alert("buldum=" + eyaletId + " " + eyaletAd + " " + i);
-                            console.log(eyaletId);
-                            return false;
-                        }
-                        else {
-                            alert("kayit yok");
-                        }
+                                alert("data length=" + data.length);
+                                eyaletId = data[i]['eyaletId'];
+                                eyaletAd = data[i]['eyaletAdi'];
+                                $("#EyaletIdInput").val(window.eyaletId);
 
-                    });
-
+                                alert("buldum 1=" + eyaletId + " " + eyaletAd + " " + i);
+                            }
+                        });
+                    }
+                    else {
+                        $("#EyaletIdInput").val() == "";
+                    }
                 });
 
-                var deger = document.getElementById("#EyaletIdInput").value;
-                alert(deger);
+                if ($("#EyaletIdInput").val() == "" && $("#EyaletInput").val() != "") {
 
-                if (ead != null && deger == null) {
+                    alert("kayityap");
 
                     var eyalet = {
                         EyaletAdi: $(this).val().replace(/^\w/, function ($1) { return $1.toUpperCase() }),
                         UlkeId: $("#ulkeIdInput").val()
                     }
-
                     $.ajax({
 
                         type: 'POST',
@@ -450,21 +448,6 @@ else
 
                                 alert("eklendi");
 
-                                $.getJSON(url, function (data) {
-
-                                    $.each(data, function (i = 0, eyaletId, eyaletAdi) {
-
-                                        if (i === 0) {
-
-                                            eyaletId = data[i]['eyaletId'];
-                                            eyaletAd = data[i]['eyaletAdi'];
-                                            alert(eyaletId);
-                                            $("#EyaletIdInput").val(eyaletId);
-
-                                        }
-                                    });
-
-                                });
                             }
                             else {
                                 alert("olmadı");
@@ -476,9 +459,32 @@ else
 
                     });
                 }
+
+                var url = '@Url.Action("OkulEyaletGetir", "Okullar")?EyaletAdi=' + $("#EyaletInput").val().trim();
+
+                $.getJSON(url, function (data) {
+
+                    if (data.length != 0) {
+
+                        $.each(data, function (i = 0, eyaletId, eyaletAdi) {
+
+                            if (i == 0) {
+                                
+                                var eyaletId = data[i]['eyaletId'];
+                                var eyaletAd = data[i]['eyaletAdi'];
+                                $("#EyaletIdInput").val(eyaletId);
+
+                                alert("buldum 2=" + eyaletId + " " + eyaletAd + " " + i);
+                            }
+                        });
+                    }
+                });
+
             }
 
         });
+
+
 
         $(".closebtn").click(function () {
 
@@ -499,7 +505,7 @@ else
 
         });
 
-        $("#OkulGuncelle").click(function () {            
+        $("#OkulGuncelle").click(function () {
 
             var okullogoadi = document.getElementById("okulLogoInput").value;
 
@@ -587,7 +593,7 @@ else
                     document.getElementById("OkulImagesInput").className = "";
                     document.getElementById("OkulImagesInput").className += "btn btn-outline-success mb-1 btn-sm col-md-12";
                     const collection = document.getElementById("okulImages");
-                    collection[0].src = window.URL.createObjectURL(document.getElementById("OkulImagesInput").files[i]);                    
+                    collection[0].src = window.URL.createObjectURL(document.getElementById("OkulImagesInput").files[i]);
                 }
             }
         }
