@@ -11,9 +11,13 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public Guid OkulBinaBolumId { get; set; }
         public string BolumAdi { get; set; }
+        public int BolumAdedi { get; set; }
         public Guid OkulId { get; set; }
         [ForeignKey("OkulId")]
         public Okullar Okullar { get; set; }
+        public string KaydedenId { get; set; }
+        [ForeignKey("KaydedenId")]
+        public Kullanici Kullanici { get; set; }
         public ICollection<FotoGaleri> FotoGaleri { get; set; }
     }
 }

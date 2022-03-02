@@ -26,6 +26,7 @@ namespace YOGBIS.UI.Controllers
         private readonly IEyaletlerBE _eyaletlerBE;
         private readonly IFotoGaleriBE _fotoGaleriBE;
         private readonly ISehirlerBE _sehirlerBE;
+        private readonly IOkulBinaBolumBE _okulBinaBolumBE;
         private readonly IUnitOfWork _unitOfWork;
         [Obsolete]
         private readonly IHostingEnvironment _hostingEnvironment;
@@ -34,7 +35,7 @@ namespace YOGBIS.UI.Controllers
         #region Dönüştürücüler
         [Obsolete]
         public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE, IHostingEnvironment hostingEnvironment, 
-            IEyaletlerBE eyaletlerBE, ISehirlerBE sehirlerBE, IFotoGaleriBE fotoGaleriBE, IUnitOfWork unitOfWork)
+            IEyaletlerBE eyaletlerBE, ISehirlerBE sehirlerBE, IFotoGaleriBE fotoGaleriBE, IOkulBinaBolumBE okulBinaBolumBE, IUnitOfWork unitOfWork)
         {
             _okullarBE = okullarBE;
             _ulkelerBE = ulkelerBE;
@@ -42,6 +43,7 @@ namespace YOGBIS.UI.Controllers
             _eyaletlerBE = eyaletlerBE;
             _sehirlerBE = sehirlerBE;
             _fotoGaleriBE = fotoGaleriBE;
+            _okulBinaBolumBE = okulBinaBolumBE;
             _unitOfWork = unitOfWork;
             _hostingEnvironment = hostingEnvironment;
         }
@@ -306,6 +308,21 @@ namespace YOGBIS.UI.Controllers
             return Json("Eklenecek veri bulunamadı !");
 
         }
+        #endregion
+
+        #region OkulBolumEkleJson
+        [HttpPost]
+        public JsonResult OkulBolumEkleJson(OkulBinaBolumVM model)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var data = _okulBinaBolumBE.OkulBinaBolumEkle(model, user);
+            if (data.IsSuccess)
+            {
+                return Json("200");
+            }
+            return Json("Eklenecek veri bulunamadı !");
+        } 
         #endregion
 
         #region OkulEyaletGetir

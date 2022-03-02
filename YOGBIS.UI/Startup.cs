@@ -52,6 +52,7 @@ namespace YOGBIS.UI
             services.AddScoped<INotlarBE, NotlarBE>();
             services.AddScoped<IOgrencilerBE, OgrencilerBE>();
             services.AddScoped<IOkulBilgiBE, OkulBilgiBE>();
+            services.AddScoped<IOkulBinaBolumBE, OkulBinaBolumBE>();
             services.AddScoped<IOkullarBE, OkullarBE>();
             services.AddScoped<ISSSBE, SSSBE>();
             services.AddScoped<ISehirlerBE, SehirlerBE>();

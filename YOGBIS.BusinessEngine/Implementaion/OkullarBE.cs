@@ -227,6 +227,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     }).ToList();
 
+                    okul.OkulBinaBolum = data.OkulBinaBolum.GroupBy(o=>o.BolumAdi).Select(o => new OkulBinaBolumVM()
+                    {
+                        BolumAdi = o.First().BolumAdi,
+                        BolumAdedi = o.First().BolumAdedi,
+                        OkulBinaBolumId =o.First().OkulBinaBolumId,
+                        OkulId=o.First().OkulId
+
+                    }).ToList();
+
                     return new Result<OkullarVM>(true, ResultConstant.RecordFound, okul);
                 }
                 else

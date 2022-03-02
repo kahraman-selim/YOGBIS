@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20220302104227_okulbinabolum")]
+    partial class okulbinabolum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1371,9 +1373,6 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("BolumAdi")
                         .HasColumnType("text");
 
-                    b.Property<string>("KaydedenId")
-                        .HasColumnType("varchar(767)");
-
                     b.Property<DateTime>("KayitTarihi")
                         .HasColumnType("datetime");
 
@@ -1382,8 +1381,6 @@ namespace YOGBIS.Data.Migrations
                         .HasColumnType("varbinary(16)");
 
                     b.HasKey("OkulBinaBolumId");
-
-                    b.HasIndex("KaydedenId");
 
                     b.HasIndex("OkulId");
 
@@ -2465,10 +2462,6 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.OkulBinaBolum", b =>
                 {
-                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
-                        .WithMany()
-                        .HasForeignKey("KaydedenId");
-
                     b.HasOne("YOGBIS.Data.DbModels.Okullar", "Okullar")
                         .WithMany("OkulBinaBolum")
                         .HasForeignKey("OkulId")
