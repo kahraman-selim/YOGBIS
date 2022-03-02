@@ -230,9 +230,18 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okul.OkulBinaBolum = data.OkulBinaBolum.GroupBy(o=>o.BolumAdi).Select(o => new OkulBinaBolumVM()
                     {
                         BolumAdi = o.First().BolumAdi,
-                        BolumAdedi = o.First().BolumAdedi,
-                        OkulBinaBolumId =o.First().OkulBinaBolumId,
-                        OkulId=o.First().OkulId
+                        BolumAdedi = o.First().BolumAdedi,                        
+                        OkulBinaBolumId = o.First().OkulBinaBolumId,
+                        OkulId = o.First().OkulId,
+                        BolumAdToplam = o.Sum(c=>c.BolumAdedi)
+
+                    }).ToList();
+
+                    okul.AdayGorevKaydi = data.AdayGorevKaydi.Select(a => new AdayGorevKaydiVM()
+                    {
+                        Gorevi = a.Gorevi,
+                        OkulId = a.OkulId,
+                        GorevliTC = a.GorevliTC
 
                     }).ToList();
 
