@@ -319,8 +319,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.KayitTarihi = model.KayitTarihi;
                         data.OkulMudurId = model.OkulMudurId != null ? model.OkulMudurId : null;
                         data.KaydedenId = user.LoginId;
-                        data.EyaletId = null;
-                        data.SehirId = null;
+                        data.EyaletId = (model.EyaletId == null || model.EyaletId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.EyaletId;
+                        data.SehirId = (model.SehirId == null || model.SehirId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.SehirId;
 
                         _unitOfWork.okullarRepository.Update(data);
                         _unitOfWork.Save();
@@ -373,8 +373,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.OkulInternetAdresi = model.OkulInternetAdresi;
                         data.OkulEPostaAdresi = model.OkulEPostaAdresi;
                         data.OkulTelefon = model.OkulTelefon;
-                        data.EyaletId = model.EyaletId; //!= null ? model.EyaletId : Guid.Empty;
-                        data.SehirId = model.SehirId; //!= null ? model.SehirId : Guid.Empty;
+                        data.EyaletId = (model.EyaletId == null || model.EyaletId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.EyaletId;
+                        data.SehirId = (model.SehirId == null || model.SehirId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.SehirId;
 
                         if (model.FotoGaleri != null)
                         {

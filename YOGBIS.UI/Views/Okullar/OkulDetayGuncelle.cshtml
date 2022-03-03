@@ -151,7 +151,7 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="text" class="form-control py-2" id="EyaletInput" placeholder="Eyalet adını yazınız" asp-for="EyaletAdi"/>
-                                <span class="text-danger">Okulun bulunduğu ülkede eyalet sistemi yok ise boş geçiniz</span>
+                                <span class="text-danger">Okulun bulunduğu ülkede eyalet sistemi yok ise boş bırakınız</span>
                             </div>
                             <div class="col-md-3">
                                 <a id="eyaletEkleBtn" name="eyaletEkleBtn" class="btn btn-success btn-sm text-white mb-2 w-75">Ekle</a>
@@ -163,8 +163,7 @@
                                 <p class="font-weight-bold">Şehir/Bölge</p>
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control py-2" id="SehirInput" placeholder="Şehir/Bölge adını yazınız" asp-for="SehirAdi"
-                                       onblur="this.value=this.value.replace(/^\w/, function($1){return $1.toUpperCase();})" />
+                                <input type="text" class="form-control py-2" id="SehirInput" placeholder="Şehir/Bölge adını yazınız" asp-for="SehirAdi"/>
                                 <span class="text-danger">Okulun bulunduğu Şehir veya Bölgeyi yazınız</span>
                             </div>
                             <div class="col-md-3">
@@ -290,7 +289,7 @@
                 </div>
             </form>
         </div>
-        <!--Okul Bölüm-Personel-->
+        <!--OkulBölüm-Personel-Öğrenci-->
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-6 pl-4"><h3>FİZİKİ KAPASİTE</h3></div>
@@ -483,7 +482,7 @@ else
 
             var eyalet = {
                 EyaletAdi: $("#EyaletInput").val().trim(),
-                UlkeId: $("#ulkeIdInput").val()
+                UlkeId: $("#ulkeIdInput").val().trim()
             }
 
             $.ajax({
@@ -558,14 +557,14 @@ else
                                 var sehirAd = data[i]['sehirAdi'];
                                 $("#SehirIdInput").val(sehirId);
 
-                                alertify.success(ead + ' şehri daha önce kaydedilmiş');
+                                alertify.success(seh + ' şehri daha önce kaydedilmiş');
                                 document.getElementById("sehirEkleBtn").style.display = "none";
                             }
                         });
                     }
                     else {
 
-                        alertify.danger(ead + ' şehri kayıtlı değil !');
+                        alertify.danger(seh + ' şehri kayıtlı değil !');
                         document.getElementById("SehirIdInput").value = "";
                         document.getElementById("sehirEkleBtn").style.display = "block";
                     }
@@ -580,10 +579,10 @@ else
         $("#sehirEkleBtn").click(function () {
 
             var eyalId = document.getElementById("EyaletIdInput").value;
-            alert(eyalId);
-            if (eyalId == "") {
+            
+            if (eyalId === "" || eyalId == null || eyalId.length == 0) {
 
-                eyalId = null;
+                $("#EyaletIdInput").val(null);
             }
             else {
 
@@ -592,8 +591,8 @@ else
 
             var sehir = {
                 SehirAdi: $("#SehirInput").val().trim(),
-                EyaletId: eyalId,
-                UlkeId: $("#ulkeIdInput").val()
+                EyaletId: $("#EyaletIdInput").val().trim(),
+                UlkeId: $("#ulkeIdInput").val().trim()
             }
 
             $.ajax({
@@ -739,15 +738,15 @@ else
                 document.getElementById("okulLogoInput").disabled = true;
             }
 
-            var deger = document.getElementById("#SehirIdInput").value;
+            var deger = document.getElementById("SehirIdInput").value;
 
             if (deger == null || deger == "") {
                 this.type = "text";
-                alert("tip" + this.type);
+               /* alert("tip" + this.type);*/
             }
             else {
                 this.type = "submit";
-                alert("tip" + this.type);
+               /* alert("tip" + this.type);*/
             }
 
             Swal.fire({

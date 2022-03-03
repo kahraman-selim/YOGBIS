@@ -135,7 +135,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     var sehirler = new Sehirler()
                     {
                         SehirAdi = model.SehirAdi.ToLower(),
-                        EyaletId = model.EyaletId != null ? model.EyaletId : Guid.Empty,
+                        EyaletId = (model.EyaletId == null || model.EyaletId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.EyaletId,
                         KayitTarihi = model.KayitTarihi,
                         KaydedenId=user.LoginId,
                         UlkeId=model.UlkeId,
@@ -169,7 +169,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     data.SehirAdi = model.SehirAdi.ToLower();
                     data.SehirAciklama = model.SehirAciklama;
-                    data.EyaletId= model.EyaletId != null ? model.EyaletId : Guid.Empty;
+                    data.EyaletId= (model.EyaletId == null || model.EyaletId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.EyaletId;
                     data.KayitTarihi = model.KayitTarihi;
                     data.KaydedenId = user.LoginId;
                     data.TemsilciId= model.TemsilciId != null ? model.TemsilciId : string.Empty;

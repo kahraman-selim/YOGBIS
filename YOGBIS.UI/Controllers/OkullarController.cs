@@ -280,7 +280,7 @@ namespace YOGBIS.UI.Controllers
                 }
                 else
                 {
-                    model.OkulLogoURL = okullogurl.ToString();
+                    model.OkulLogoURL = okullogurl;
                 }
 
                 var data = _okullarBE.OkulDetayGuncelle(model, user);
