@@ -14,6 +14,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<OkulBinaBolumVM> OkulBinaBolumGuncelle(OkulBinaBolumVM model, SessionContext user);        
         Result<bool> OkulBinaBolumSil(Guid id);
         Result<List<OkulBinaBolumVM>> OkulBinaBolumGetirKullaniciId(string userId);
+        Result<List<OkulBinaBolumVM>> OkulBinaBolumGetirOkulId(Guid OkulId);
         Result<OkulBinaBolumVM> OkulBinaBolumGetirBolumAdi(string okulbinabolumAdi);
         Result<Guid> OkulBinaBolumIdGetir(string okulbinabolumAdi);
         Result<string> OkulBinaBolumAdGetir(Guid id);

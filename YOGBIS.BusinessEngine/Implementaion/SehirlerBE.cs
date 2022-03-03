@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
@@ -43,7 +44,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new SehirlerVM()
                     {
                         SehirId=item.SehirId,
-                        SehirAdi=item.SehirAdi,
+                        SehirAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SehirAdi.ToString()),
                         Baskent=item.Baskent,
                         EyaletId=item.EyaletId,
                         EyaletAdi=item.Eyaletler.EyaletAdi,
@@ -75,7 +76,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new SehirlerVM()
                     {
                         SehirId = item.SehirId,
-                        SehirAdi = item.SehirAdi,
+                        SehirAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SehirAdi.ToString()),
                         Baskent = item.Baskent,
                         EyaletId = item.EyaletId,
                         EyaletAdi = item.Eyaletler.EyaletAdi,
@@ -106,7 +107,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     SehirlerVM sehir = new SehirlerVM();
                     sehir.KayitTarihi = data.KayitTarihi;
                     sehir.SehirAciklama = data.SehirAciklama;
-                    sehir.SehirAdi = data.SehirAdi;
+                    sehir.SehirAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.SehirAdi.ToString());
                     sehir.KaydedenId = data.KaydedenId;
                     sehir.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
@@ -133,8 +134,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var sehirler = new Sehirler()
                     {
-                        SehirAdi = model.SehirAdi,
-                        EyaletId = model.EyaletId,
+                        SehirAdi = model.SehirAdi.ToLower(),
+                        EyaletId = model.EyaletId != null ? model.EyaletId : Guid.Empty,
                         KayitTarihi = model.KayitTarihi,
                         KaydedenId=user.LoginId,
                         UlkeId=model.UlkeId,
@@ -166,7 +167,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 var data = _unitOfWork.sehirlerRepository.Get(model.SehirId);
                 if (data != null)
                 {
-                    data.SehirAdi = model.SehirAdi;
+                    data.SehirAdi = model.SehirAdi.ToLower();
                     data.SehirAciklama = model.SehirAciklama;
                     data.EyaletId= model.EyaletId != null ? model.EyaletId : Guid.Empty;
                     data.KayitTarihi = model.KayitTarihi;

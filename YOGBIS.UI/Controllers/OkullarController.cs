@@ -310,6 +310,21 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region SehirEkleJson
+        [HttpPost]
+        public JsonResult SehirEkleJson(SehirlerVM model)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var data = _sehirlerBE.SehirEkle(model, user);
+            if (data.IsSuccess)
+            {
+                return Json("200");
+            }
+            return Json("Eklenecek veri bulunamadı !");
+        } 
+        #endregion
+
         #region OkulBolumEkleJson
         [HttpPost]
         public JsonResult OkulBolumEkleJson(OkulBinaBolumVM model)
@@ -337,6 +352,19 @@ namespace YOGBIS.UI.Controllers
 
             return NotFound();
         }
+        #endregion
+
+        #region OkulSehirGetir
+        public IActionResult OkulSehirGetir(string SehirAdi)
+        {
+            if (SehirAdi != null)
+            {
+                var data = _unitOfWork.sehirlerRepository.GetAll(x => x.SehirAdi == SehirAdi);
+                return Json(data);
+            }
+
+            return NotFound();
+        } 
         #endregion
 
         #region OkulFotoSil
@@ -375,6 +403,22 @@ namespace YOGBIS.UI.Controllers
             using FileStream fs = new FileStream(dosyaKlasor, FileMode.Create);
             await dosya.CopyToAsync(fs);
             return "/" + dosyaAdi;
+        }
+        #endregion
+
+        #region OkulBinaBolumSil        
+        [HttpDelete]
+        public IActionResult OkulBinaBolumSil(Guid id)
+        {
+            if (id == null)
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+
+            var data = _okulBinaBolumBE.OkulBinaBolumSil(id);
+            if (data.IsSuccess)
+                return Json(new { success = data.IsSuccess, message = data.Message });
+            else
+                return Json(new { success = data.IsSuccess, message = data.Message });
+
         }
         #endregion
 

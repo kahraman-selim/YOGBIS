@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
@@ -43,7 +44,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new EyaletlerVM()
                     {
                         EyaletId=item.EyaletId,
-                        EyaletAdi=item.EyaletAdi,
+                        EyaletAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.EyaletAdi.ToString()),
                         EyaletAciklama=item.EyaletAciklama,                       
                         UlkeId=item.UlkeId,
                         UlkeAdi=item.Ulkeler.UlkeAdi,
@@ -74,7 +75,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new EyaletlerVM()
                     {
                         EyaletId = item.EyaletId,
-                        EyaletAdi = item.EyaletAdi,
+                        EyaletAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.EyaletAdi.ToString()),
                         EyaletAciklama = item.EyaletAciklama,
                         //EyaletVatandas = item.EyaletVatandas,
                         UlkeId = item.UlkeId,
@@ -101,7 +102,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 if (data != null)
                 {
                     EyaletlerVM eyalet = new EyaletlerVM();
-                    eyalet.EyaletAdi = data.EyaletAdi;
+                    eyalet.EyaletAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.EyaletAdi.ToString());
                     eyalet.EyaletAciklama = data.EyaletAciklama;
                     eyalet.UlkeId = data.UlkeId;
                     eyalet.UlkeAdi = data.Ulkeler.UlkeAdi;
@@ -144,7 +145,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var eyaletler = new Eyaletler()
                     {
-                        EyaletAdi = model.EyaletAdi,
+                        EyaletAdi = model.EyaletAdi.ToLower(),
                         KaydedenId = user.LoginId,
                         EyaletAciklama = model.EyaletAciklama,
                         KayitTarihi = model.KayitTarihi,
@@ -177,7 +178,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 var data = _unitOfWork.eyaletlerRepository.Get(model.EyaletId);
                 if (data != null)
                 {
-                    data.EyaletAdi = model.EyaletAdi;
+                    data.EyaletAdi = model.EyaletAdi.ToLower();
                     data.KaydedenId = user.LoginId;
                     data.EyaletAciklama = model.EyaletAciklama;
                     data.UlkeId = model.UlkeId;
@@ -255,7 +256,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 if (data != null)
                 {
                     EyaletlerVM eyalet = new EyaletlerVM();
-                    eyalet.EyaletAdi = data.EyaletAdi;
+                    eyalet.EyaletAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.EyaletAdi.ToString());
                     eyalet.EyaletAciklama = data.EyaletAciklama;
                     eyalet.UlkeId = data.UlkeId;
                     eyalet.UlkeAdi = data.Ulkeler.UlkeAdi;
@@ -295,7 +296,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var data = _unitOfWork.eyaletlerRepository.Get(id);
             if (data != null)
             {
-                var eyaletadi = data.EyaletAdi;
+                var eyaletadi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.EyaletAdi.ToString());
                 return new Result<string>(true, ResultConstant.RecordFound, eyaletadi);
             }
             else

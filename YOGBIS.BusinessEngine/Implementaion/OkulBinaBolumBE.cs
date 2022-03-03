@@ -31,7 +31,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<OkulBinaBolumVM>> OkulBinaBolumleriGetir()
         {
 
-            var data = _unitOfWork.okulBinaBolumRepository.GetAll(includeProperties: "Kullanici,Okullar,Sehirler,Eyaletler,Ulkeler").ToList();
+            var data = _unitOfWork.okulBinaBolumRepository.GetAll(includeProperties: "Kullanici,Okullar").ToList();
             var bolumler = _mapper.Map<List<OkulBinaBolum>, List<OkulBinaBolumVM>>(data);
 
             if (data != null)
@@ -63,7 +63,37 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkulBinaBolumGetirKullaniciId
         public Result<List<OkulBinaBolumVM>> OkulBinaBolumGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.okulBinaBolumRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici,Okullar,Sehirler,Eyaletler,Ulkeler").ToList();
+            var data = _unitOfWork.okulBinaBolumRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici,Okullar").ToList();
+            if (data != null)
+            {
+                List<OkulBinaBolumVM> returnData = new List<OkulBinaBolumVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new OkulBinaBolumVM()
+                    {
+                        OkulBinaBolumId = item.OkulBinaBolumId,
+                        BolumAdedi = item.BolumAdedi,
+                        BolumAdi = item.BolumAdi,
+                        KayitTarihi = item.KayitTarihi,
+                        OkulId = item.OkulId,
+                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+                    });
+                }
+                return new Result<List<OkulBinaBolumVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<OkulBinaBolumVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+        #region OkulBinaBolumGetirOkulId
+        public Result<List<OkulBinaBolumVM>> OkulBinaBolumGetirOkulId(Guid OkulId)
+        {
+            var data = _unitOfWork.okulBinaBolumRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Okullar").ToList();
             if (data != null)
             {
                 List<OkulBinaBolumVM> returnData = new List<OkulBinaBolumVM>();
@@ -95,7 +125,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             if (id != null)
             {
-                var data = _unitOfWork.okulBinaBolumRepository.GetFirstOrDefault(e => e.OkulBinaBolumId == id, includeProperties: "Kullanici,Okullar,Sehirler,Eyaletler,Ulkeler");
+                var data = _unitOfWork.okulBinaBolumRepository.GetFirstOrDefault(e => e.OkulBinaBolumId == id, includeProperties: "Kullanici,Okullar");
                 if (data != null)
                 {
                     OkulBinaBolumVM binabolum = new OkulBinaBolumVM();
@@ -235,7 +265,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 var bolumId = OkulBinaBolumIdGetir(okulbinabolumAdi).Data;
 
-                var data = _unitOfWork.okulBinaBolumRepository.GetFirstOrDefault(e => e.OkulBinaBolumId == bolumId, includeProperties: "Kullanici,Okullar,Sehirler,Eyaletler,Ulkeler");
+                var data = _unitOfWork.okulBinaBolumRepository.GetFirstOrDefault(e => e.OkulBinaBolumId == bolumId,includeProperties: "Kullanici,Okullar");
                 if (data != null)
                 {
                     OkulBinaBolumVM binabolum = new OkulBinaBolumVM();
