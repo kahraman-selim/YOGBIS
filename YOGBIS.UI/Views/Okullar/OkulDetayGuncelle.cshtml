@@ -150,26 +150,25 @@
                                 <p class="font-weight-bold">Eyalet</p>
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control py-2" id="EyaletInput" placeholder="Eyalet adını yazınız" asp-for="EyaletAdi"/>
+                                <input type="text" class="form-control py-2" id="EyaletInput" placeholder="Eyalet adını yazınız" asp-for="EyaletAdi" />
                                 <span class="text-danger">Okulun bulunduğu ülkede eyalet sistemi yok ise boş bırakınız</span>
                             </div>
                             <div class="col-md-3">
                                 <a id="eyaletEkleBtn" name="eyaletEkleBtn" class="btn btn-success btn-sm text-white mb-2 w-75">Ekle</a>
                             </div>
-                            <input type="text" asp-for="EyaletId" id="EyaletIdInput" />
+                            <input hidden type="text" asp-for="EyaletId" id="EyaletIdInput" />
                         </div>
                         <div class="form-row">
                             <div class="col-md-3">
                                 <p class="font-weight-bold">Şehir/Bölge</p>
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control py-2" id="SehirInput" placeholder="Şehir/Bölge adını yazınız" asp-for="SehirAdi"/>
-                                <span class="text-danger">Okulun bulunduğu Şehir veya Bölgeyi yazınız</span>
+                                <input type="text" class="form-control py-2" id="SehirInput" placeholder="Şehir/Bölge adını yazınız" asp-for="SehirAdi" />
                             </div>
                             <div class="col-md-3">
                                 <a id="sehirEkleBtn" name="sehirEkleBtn" class="btn btn-success btn-sm text-white mb-2 w-75">Ekle</a>
                             </div>
-                            <input type="text" asp-for="SehirId" id="SehirIdInput" />
+                            <input hidden type="text" asp-for="SehirId" id="SehirIdInput" />
                         </div>
                         <hr />
                         <!--Okul Bilgileri-->
@@ -289,7 +288,7 @@
                 </div>
             </form>
         </div>
-        <!--OkulBölüm-Personel-Öğrenci-->
+
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-6 pl-4"><h3>FİZİKİ KAPASİTE</h3></div>
@@ -356,6 +355,9 @@ else
     </div>
 }
 
+<!--OkulBölüm Kayıt Modal-->
+<!-- #region Modal -->
+
 <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -403,6 +405,8 @@ else
     </div>
 </div>
 
+<!-- #endregion -->
+
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
@@ -411,6 +415,8 @@ else
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.28/moment-timezone-with-data-10-year-range.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- #region Scripts -->
 
     <script type="text/javascript">
 
@@ -579,7 +585,7 @@ else
         $("#sehirEkleBtn").click(function () {
 
             var eyalId = document.getElementById("EyaletIdInput").value;
-            
+
             if (eyalId === "" || eyalId == null || eyalId.length == 0) {
 
                 $("#EyaletIdInput").val(null);
@@ -742,20 +748,26 @@ else
 
             if (deger == null || deger == "") {
                 this.type = "text";
-               /* alert("tip" + this.type);*/
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Kayıt işlemi yapılamadı !',
+                    showConfirmButton: false,
+                    timer: 2500
+                })
             }
             else {
                 this.type = "submit";
-               /* alert("tip" + this.type);*/
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Kayıt işlemi başarılı',
+                    showConfirmButton: false,
+                    timer: 2500
+                })
             }
 
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Kayıt işlemi başarılı !',
-                showConfirmButton: false,
-                timer: 2500
-            })
+
 
         });
 
@@ -856,4 +868,6 @@ else
         }
 
     </script>
+
+    <!-- #endregion -->
 }

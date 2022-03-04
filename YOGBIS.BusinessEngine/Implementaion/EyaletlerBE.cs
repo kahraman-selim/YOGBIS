@@ -47,8 +47,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         EyaletAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.EyaletAdi.ToString()),
                         EyaletAciklama=item.EyaletAciklama,                       
                         UlkeId=item.UlkeId,
-                        UlkeAdi=item.Ulkeler.UlkeAdi,
-                        TemsilciId = item.TemsilciId != null ? item.TemsilciId : string.Empty,
+                        //UlkeAdi=item.Ulkeler.UlkeAdi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
@@ -79,7 +78,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         EyaletAciklama = item.EyaletAciklama,
                         //EyaletVatandas = item.EyaletVatandas,
                         UlkeId = item.UlkeId,
-                        UlkeAdi = item.Ulkeler.UlkeAdi,
+                        //UlkeAdi = item.Ulkeler.UlkeAdi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
@@ -105,9 +104,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     eyalet.EyaletAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.EyaletAdi.ToString());
                     eyalet.EyaletAciklama = data.EyaletAciklama;
                     eyalet.UlkeId = data.UlkeId;
-                    eyalet.UlkeAdi = data.Ulkeler.UlkeAdi;
+                    //eyalet.UlkeAdi = data.Ulkeler.UlkeAdi;
                     eyalet.KayitTarihi = data.KayitTarihi;
-                    eyalet.TemsilciId = data.TemsilciId != null ? data.TemsilciId : string.Empty;
                     eyalet.KaydedenId = data.KaydedenId;
                     eyalet.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
@@ -150,7 +148,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         EyaletAciklama = model.EyaletAciklama,
                         KayitTarihi = model.KayitTarihi,
                         UlkeId = model.UlkeId,
-                        TemsilciId = model.TemsilciId != null ? model.TemsilciId : string.Empty,
                     };
 
                     _unitOfWork.eyaletlerRepository.Add(eyaletler);
@@ -183,7 +180,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     data.EyaletAciklama = model.EyaletAciklama;
                     data.UlkeId = model.UlkeId;
                     data.KayitTarihi = model.KayitTarihi;
-                    data.TemsilciId = model.TemsilciId != null ? model.TemsilciId : string.Empty;
 
                     _unitOfWork.eyaletlerRepository.Update(data);
                     _unitOfWork.Save();
@@ -259,9 +255,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     eyalet.EyaletAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.EyaletAdi.ToString());
                     eyalet.EyaletAciklama = data.EyaletAciklama;
                     eyalet.UlkeId = data.UlkeId;
-                    eyalet.UlkeAdi = data.Ulkeler.UlkeAdi;
+                    //eyalet.UlkeAdi = data.Ulkeler.UlkeAdi;
                     eyalet.KayitTarihi = data.KayitTarihi;
-                    eyalet.TemsilciId = data.TemsilciId != null ? data.TemsilciId : string.Empty;
                     eyalet.KaydedenId = data.KaydedenId;
                     eyalet.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 

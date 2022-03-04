@@ -41,6 +41,7 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Ülkeyi seçiniz")]
         public Guid? OkulUlkeId { get; set; }
         public string OkulUlkeAdi { get; set; }
+        [Required(ErrorMessage = "Şehir adı zorunlu bir alandır")]
         public Guid? SehirId { get; set; }
         public string SehirAdi { get; set; }
         public SehirlerVM Sehirler { get; set; }

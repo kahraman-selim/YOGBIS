@@ -10,17 +10,14 @@ namespace YOGBIS.Data.DbModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid AdayGorevKaydiId { get; set; }
-        public string GorevliTC { get; set; }
         public Guid DereceId { get; set; }
-        [ForeignKey("DereceId")]
-        public SoruDereceler SoruDereceler { get; set; }
+        public string GorevliTC { get; set; }
+        public string GorevliAdi { get; set; }
+        public string GorevliSoyadi { get; set; }        
         public string Gorevi { get; set; }
-        public Guid BransId { get; set; }
-        [ForeignKey("BransId")]
-        public Branslar Branslar { get; set; }        
+        public Guid BransId { get; set; }      
         public string GorevOnaySayi { get; set; }
-        public DateTime GorevlOnayTarihi { get; set; }
-        public string KararPdfUrl { get; set; }
+        public DateTime GorevOnayTarihi { get; set; }
         public DateTime? GorevlendirilmeTarihi { get; set; }
         public DateTime? GorevBasTarihi { get; set; }
         public DateTime? GorevBitisTarihi { get; set; }
@@ -41,5 +38,6 @@ namespace YOGBIS.Data.DbModels
         public List<Telefonlar> Telefonlar { get; set; }
         public ICollection<GorevKararPdfGaleri> GorevKararPdfGaleri { get; set; }
         public ICollection<FotoGaleri> FotoGaleri { get; set; }
+        public List<Ogrenciler> Ogrencilers { get; set; }
     }
 }

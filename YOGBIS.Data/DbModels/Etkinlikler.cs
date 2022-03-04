@@ -11,12 +11,6 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public Guid EtkinlikId { get; set; }
         public string EtkinlikAdi { get; set; }
-        public Guid OkulId { get; set; }
-        [ForeignKey("OkulId")]
-        public Okullar Okullar { get; set; }
-        public Guid TemsilcilikId { get; set; }
-        [ForeignKey("TemsilcilikId")]
-        public Temsilcilikler Temsilcilikler { get; set; }
         public DateTime BasTarihi { get; set; }
         public DateTime BitTarihi { get; set; }
         public string EtkinlikBilgi { get; set; }

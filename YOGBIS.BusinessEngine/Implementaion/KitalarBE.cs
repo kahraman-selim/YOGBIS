@@ -5,6 +5,7 @@ using System.Linq;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.ResultModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
@@ -52,7 +53,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region KıtaEkle
-        public Result<KitalarVM> KitaEkle(KitalarVM model)
+        public Result<KitalarVM> KitaEkle(KitalarVM model, SessionContext user)
         {
             if (model != null)
             {
@@ -61,6 +62,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     var kitalar = _mapper.Map<KitalarVM, Kitalar>(model);
                     kitalar.KitaAdi = model.KitaAdi;
                     kitalar.KitaAciklama = model.KitaAciklama;
+                    kitalar.KaydedenId = user.LoginId;
 
                     _unitOfWork.kitalarRepository.Add(kitalar);
                     _unitOfWork.Save();

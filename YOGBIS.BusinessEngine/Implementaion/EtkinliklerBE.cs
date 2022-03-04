@@ -24,7 +24,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<EtkinliklerVM>> EtkinlikleriGetir()
         {
-            var data = _unitOfWork.etkinliklerRepository.GetAll(includeProperties: "Okullar,Kullanici").OrderBy(u => u.Okullar.OkulAdi).ToList();
+            var data = _unitOfWork.etkinliklerRepository.GetAll(includeProperties: "Okullar,Kullanici").ToList();
 
             if (data != null)
             {
@@ -41,8 +41,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         BitTarihi = item.BitTarihi,
                         DuzenleyenAdiSoyadi = item.DuzenleyenAdiSoyadi,
                         KatilimciSayisi = item.KatilimciSayisi,
-                        OkulId = item.OkulId,
-                        OkulAdi = item.Okullar.OkulAdi,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
@@ -73,8 +71,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         BitTarihi = item.BitTarihi,
                         DuzenleyenAdiSoyadi = item.DuzenleyenAdiSoyadi,
                         KatilimciSayisi = item.KatilimciSayisi,
-                        OkulId = item.OkulId,
-                        OkulAdi = item.Okullar.OkulAdi,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
@@ -105,8 +101,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     Etkinlik.DuzenleyenAdiSoyadi = data.DuzenleyenAdiSoyadi;
                     Etkinlik.KatilimciSayisi = data.KatilimciSayisi;
                     Etkinlik.KayitTarihi = data.KayitTarihi;
-                    Etkinlik.OkulId = data.OkulId;
-                    Etkinlik.OkulAdi = data.Okullar.OkulAdi;
                     Etkinlik.KaydedenId = data.Kullanici.Id;
                     Etkinlik.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
@@ -137,7 +131,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         DuzenleyenAdiSoyadi = model.DuzenleyenAdiSoyadi,
                         KatilimciSayisi = model.KatilimciSayisi,
                         KayitTarihi = model.KayitTarihi,
-                        OkulId = model.OkulId,
                         KaydedenId = user.LoginId,
 
                         FotoGaleri = new List<FotoGaleri>()
@@ -182,7 +175,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.DuzenleyenAdiSoyadi = model.DuzenleyenAdiSoyadi;
                         data.KatilimciSayisi = model.KatilimciSayisi;
                         data.KayitTarihi = model.KayitTarihi;
-                        data.OkulId = model.OkulId;
                         data.KaydedenId = user.LoginId;
 
                         data.FotoGaleri = new List<FotoGaleri>();
@@ -233,7 +225,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<EtkinliklerVM>> EtkinlikGetirUlkeId(Guid UlkeId)
         {
-            var data = _unitOfWork.etkinliklerRepository.GetAll(u => u.Okullar.Sehirler.Eyaletler.UlkeId == UlkeId, includeProperties: "Kullanici,Okullar").ToList();
+            var data = _unitOfWork.etkinliklerRepository.GetAll(includeProperties: "Kullanici,Okullar").ToList();
             if (data != null)
             {
                 List<EtkinliklerVM> returnData = new List<EtkinliklerVM>();
@@ -249,8 +241,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         BitTarihi = item.BitTarihi,
                         DuzenleyenAdiSoyadi = item.DuzenleyenAdiSoyadi,
                         KatilimciSayisi = item.KatilimciSayisi,
-                        OkulId = item.OkulId,
-                        OkulAdi = item.Okullar.OkulAdi,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
@@ -266,7 +256,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<EtkinliklerVM>> EtkinlikGetirOkulId(Guid okulId)
         {
-            var data = _unitOfWork.etkinliklerRepository.GetAll(u => u.OkulId == okulId, includeProperties: "Kullanici,Okullar").ToList();
+            var data = _unitOfWork.etkinliklerRepository.GetAll(includeProperties: "Kullanici,Okullar").ToList();
             if (data != null)
             {
                 List<EtkinliklerVM> returnData = new List<EtkinliklerVM>();
@@ -282,8 +272,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         BitTarihi = item.BitTarihi,
                         DuzenleyenAdiSoyadi = item.DuzenleyenAdiSoyadi,
                         KatilimciSayisi = item.KatilimciSayisi,
-                        OkulId = item.OkulId,
-                        OkulAdi = item.Okullar.OkulAdi,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty

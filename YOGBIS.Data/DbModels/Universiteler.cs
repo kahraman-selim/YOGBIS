@@ -15,14 +15,15 @@ namespace YOGBIS.Data.DbModels
         public string UniStatu { get; set; }
         public string UniLogo { get; set; }
         public string UniBilgi { get; set; }
-        public Guid SehirId { get; set; }
-        [ForeignKey("SehirId")]
-        public Sehirler Sehirler { get; set; }
-        public Guid EyaletId { get; set; }
+        public Guid? SehirId { get; set; }
+        public Guid? EyaletId { get; set; }
+        public Guid? TemsilciId { get; set; }
+        public Guid UlkeId { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
         public List<AdayGorevKaydi> AdayGorevKaydis { get; set; }
+        public List<Ogrenciler> Ogrenciler { get; set; }
         public ICollection<FotoGaleri> FotoGaleri { get; set; }
     }
 }

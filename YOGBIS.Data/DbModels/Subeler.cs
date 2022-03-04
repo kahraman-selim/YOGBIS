@@ -10,7 +10,7 @@ namespace YOGBIS.Data.DbModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid SubeId { get; set; }
-        public string OkulAdi { get; set; }
+        public string SubeAdi { get; set; }
         public DateTime SubeAcilisTarihi { get; set; }
         public Guid OkulId { get; set; }
         [ForeignKey("OkulId")]
@@ -19,5 +19,6 @@ namespace YOGBIS.Data.DbModels
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
         public List<Siniflar> Siniflars { get; set; }
+        public List<Ogrenciler> Ogrenciler { get; set; }
     }
 }

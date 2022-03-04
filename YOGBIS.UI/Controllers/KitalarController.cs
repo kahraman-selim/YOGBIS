@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using YOGBIS.BusinessEngine.Contracts;
+using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
@@ -31,7 +35,9 @@ namespace YOGBIS.UI.Controllers
         [HttpPost]
         public IActionResult Index(KitalarVM model)
         {
-            var data = _kitalarBE.KitaEkle(model);
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var data = _kitalarBE.KitaEkle(model,user);
             if (data.IsSuccess)
             {
                 return RedirectToAction("Index");

@@ -26,19 +26,19 @@ namespace YOGBIS.Data.DbModels
         public string OkulInternetAdresi { get; set; }
         public string OkulEPostaAdresi { get; set; }
         public string OkulTelefon { get; set; }
-        public Guid? OkulUlkeId { get; set; }
         ///////////////////////////////////////////////        
-        public Guid? SehirId { get; set; }
+        public Guid SehirId { get; set; }
         [ForeignKey("SehirId")]
         public Sehirler Sehirler { get; set; }
         public Guid? EyaletId { get; set; }
-        [ForeignKey("EyaletId")]
-        public Eyaletler Eyaletler { get; set; }      
+        public Guid UlkeId { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
         public List<OkulBinaBolum> OkulBinaBolum { get; set; }
         public List<Subeler> Subeler { get; set; }
+        public List<Siniflar> Siniflar { get; set; }
+        public List<Ogrenciler> Ogrenciler { get; set; }
         public List<AdayGorevKaydi> AdayGorevKaydi { get; set; }
         public List<Etkinlikler> Etkinlikler { get; set; }
         public List<EPostaAdresleri> EpostaAdresleri { get; set; }

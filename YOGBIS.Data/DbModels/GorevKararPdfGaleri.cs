@@ -10,9 +10,8 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public Guid Id { get; set; }
         public string GorevKararPdfUrl { get; set; }
-        public Guid AdayGorevKaydiId { get; set; }
-        [ForeignKey("AdayGorevKaydiId")]
-        public AdayGorevKaydi AdayGorevKaydi { get; set; }
+        public string GorevKararPdfSayi { get; set; }
+        public string GorevKararPdfDosyaAdi { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

@@ -10,6 +10,7 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public Guid Id { get; set; }
         public string TelefonNumarası { get; set; }
+        public string TelefonTuru { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

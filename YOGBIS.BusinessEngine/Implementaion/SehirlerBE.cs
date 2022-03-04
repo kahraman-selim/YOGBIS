@@ -32,7 +32,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<SehirlerVM>> SehirleriGetir()
         {
 
-            var data = _unitOfWork.sehirlerRepository.GetAll(includeProperties: "Kullanici,Eyaletler,Ulkeler").ToList();
+            var data = _unitOfWork.sehirlerRepository.GetAll(includeProperties: "Kullanici,Ulkeler").ToList();
             var sehirler = _mapper.Map<List<Sehirler>, List<SehirlerVM>>(data);
 
             if (data != null)
@@ -47,7 +47,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SehirAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SehirAdi.ToString()),
                         Baskent=item.Baskent,
                         EyaletId=item.EyaletId,
-                        EyaletAdi=item.Eyaletler.EyaletAdi,
+                        //EyaletAdi=item.Eyaletler.EyaletAdi,
                         SehirVatandas=item.SehirVatandas,
                         SehirAciklama=item.SehirAciklama,                        
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
@@ -66,7 +66,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SehirGetirKullaniciId
         public Result<List<SehirlerVM>> SehirGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.sehirlerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici,Eyaletler,Ulkeler").ToList();
+            var data = _unitOfWork.sehirlerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici,Ulkeler").ToList();
             if (data != null)
             {
                 List<SehirlerVM> returnData = new List<SehirlerVM>();
@@ -79,7 +79,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SehirAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SehirAdi.ToString()),
                         Baskent = item.Baskent,
                         EyaletId = item.EyaletId,
-                        EyaletAdi = item.Eyaletler.EyaletAdi,
+                        //EyaletAdi = item.Eyaletler.EyaletAdi,
                         SehirVatandas = item.SehirVatandas,
                         SehirAciklama = item.SehirAciklama,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
@@ -101,7 +101,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
             if (id != null)
             {
-                var data = _unitOfWork.sehirlerRepository.GetFirstOrDefault(s => s.SehirId == id, includeProperties: "Eyaletler,Kullanici");
+                var data = _unitOfWork.sehirlerRepository.GetFirstOrDefault(s => s.SehirId == id, includeProperties: "Kullanici,Ulkeler");
                 if (data != null)
                 {
                     SehirlerVM sehir = new SehirlerVM();
