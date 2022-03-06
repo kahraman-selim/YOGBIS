@@ -31,7 +31,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<UlkelerVM>> UlkeleriGetir()
         {
 
-            var data = _unitOfWork.ulkelerRepository.GetAll(includeProperties: "Kitalar,Kullanici").OrderBy(o => o.UlkeAdi).ToList();
+            var data = _unitOfWork.ulkelerRepository.GetAll(includeProperties: "Kitalar,Kullanici,Eyaletler,Sehirler,Okullar").OrderBy(o => o.UlkeAdi).ToList();
 
             if (data != null)
             {
@@ -56,7 +56,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                             //UlkeGrupId = item.Kitalar.UlkeGruplariKitalars.Where(x=>x.KitaId==item.KitaId),
                             //UlkeGrupAdi = item.UlkeGruplari.UlkeGrupAdi,
                             KaydedenId = item.KaydedenId,
-                            KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                            KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+
+                            OkulSayisi = _unitOfWork.okullarRepository.GetAll(g => g.UlkeId==item.UlkeId).Count()                             
+
                         });
                     }
 
@@ -165,7 +168,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
             if (id != null)
             {
-                var data = _unitOfWork.ulkelerRepository.GetFirstOrDefault(u => u.UlkeId == id, includeProperties: "Kitalar,Kullanici,FotoGaleri");
+                var data = _unitOfWork.ulkelerRepository.GetFirstOrDefault(u => u.UlkeId == id, includeProperties: "Kitalar,Eyaletler,Sehirler,Okullar,Kullanici,FotoGaleri");
                 if (data != null)
                 {
                     UlkelerVM ulke = new UlkelerVM();
@@ -192,6 +195,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     }).ToList();
 
+                    ulke.Okullar = _unitOfWork.okullarRepository.GetAll(u=>u.UlkeId== data.UlkeId).Select(o => new OkullarVM()
+                    {
+                        OkulId=o.OkulId,
+                        OkulAdi=o.OkulAdi,
+                        OkulKodu=o.OkulKodu
+                        
+                    }).ToList();
+                    
                     return new Result<UlkelerVM>(true, ResultConstant.RecordFound, ulke);
                 }
                 else

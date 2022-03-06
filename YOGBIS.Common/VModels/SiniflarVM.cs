@@ -15,6 +15,7 @@ namespace YOGBIS.Common.VModels
         public Guid SubeId { get; set; }     
         public SubelerVM Subeler { get; set; }
         public string KaydedenId { get; set; }
+        public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<OgrencilerVM> Ogrencilers { get; set; }
     }

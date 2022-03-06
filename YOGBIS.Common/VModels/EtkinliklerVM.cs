@@ -23,8 +23,7 @@ namespace YOGBIS.Common.VModels
         public int KatilimciSayisi { get; set; }
         public string DuzenleyenAdiSoyadi { get; set; }
         public IFormFile EtkinlikKapakResim { get; set; }
-        public string EtkinlikKapakResimUrl { get; set; }
-        public IFormFile EtkinlikDosya { get; set; }
+        public string EtkinlikKapakResimUrl { get; set; }        
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }

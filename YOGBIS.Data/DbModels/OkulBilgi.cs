@@ -28,8 +28,8 @@ namespace YOGBIS.Data.DbModels
         [ForeignKey("OkulId")]
         public Okullar Okullar { get; set; }
         public Guid UlkeId { get; set; }
-        public string KullaniciId { get; set; }
-        [ForeignKey("KullaniciId")]
+        public string KaydedenId { get; set; }
+        [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
     }
 }

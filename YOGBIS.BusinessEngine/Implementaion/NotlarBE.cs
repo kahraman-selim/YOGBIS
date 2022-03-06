@@ -76,8 +76,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         NotDetay=item.NotDetay,
                         NotRenk=item.NotRenk,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad,
-                        KaydedenId = item.KaydedenId
+                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
                 }
                 return new Result<List<NotlarVM>>(true, ResultConstant.RecordFound, returnData);

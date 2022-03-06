@@ -79,7 +79,7 @@
                     <tr>
                         <td>@sirano</td>
                         <td>okulsayısı</td>
-                        <td><a asp-controller="Ulkeler" asp-action="UlkeDetayById" asp-route-id="@item.OkulUlkeId">@item.OkulUlkeAdi</a></td>
+                        <td><a asp-controller="Ulkeler" asp-action="UlkeDetayById" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
                         <td>@item.EyaletAdi/@item.SehirAdi</td>
                         <td>@item.OkulKodu</td>
                         @if (User.IsInRole("SubManager"))

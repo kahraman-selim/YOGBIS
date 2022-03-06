@@ -105,24 +105,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <th scope="row">909525</th>
-                                <td><a class="text-dark text-left">Bakü</a></td>
-                                <td><a id="OkulAdi" class="text-dark text-left" asp-controller="Okullar" asp-action="OkulDetay">Bakü Türk İlkokulu</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <th scope="row">749642</th>
-                                <td><a class="text-dark text-left">Bakü</a></td>
-                                <td><a id="OkulAdi" class="text-dark text-left" asp-controller="Okullar" asp-action="OkulDetay">Bakü Türk Ortaokulu</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <th scope="row">909513</th>
-                                <td><a class="text-dark text-left">Bakü</a></td>
-                                <td><a id="OkulAdi" class="text-dark text-left" asp-controller="Okullar" asp-action="OkulDetay">Bakü Türk Anadolu Lisesi</a></td>
-                            </tr>
+                            @for (int i = 0; i < Model.Okullar.Count(); i++)
+                            {
+                                <tr>
+                                    <th scope="row">@(i+1)</th>
+                                    <th scope="row">@Model.Okullar[i].OkulKodu</th>
+                                    <td><a class="text-dark text-left">Eyalet/Şehir</a></td>
+                                    <td><a id="@Model.Okullar[i].OkulAdi" class="text-dark text-left" asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@Model.Okullar[i].OkulId">@Model.Okullar[i].OkulAdi</a></td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>

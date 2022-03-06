@@ -26,7 +26,6 @@ namespace YOGBIS.Common.VModels
         public KullaniciVM Kullanici { get; set; }
         public List<OkullarVM> Okullars { get; set; }
         public List<UniversitelerVM> Universitelers { get; set; }
-        public List<OgretmenlerVM> Ogretmenlers { get; set; }
         public IFormFileCollection FotoGaleris { get; set; }
         public List<FotoGaleriVM> FotoGaleri { get; set; }
     }

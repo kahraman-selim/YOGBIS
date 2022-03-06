@@ -70,75 +70,75 @@ namespace YOGBIS.Data.DataContext
 
             builder.Entity<SoruDerece>()
                 .HasOne<SoruBankasi>(s => s.SoruBankasi)
-                .WithMany(g => g.SoruDereces)
+                .WithMany(g => g.SoruDerece)
                 .HasForeignKey(f => f.SoruId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<SoruDerece>()
                 .HasOne<SoruDereceler>(s => s.SoruDereceler)
-                .WithMany(g => g.SoruDereces)
+                .WithMany(g => g.SoruDerece)
                 .HasForeignKey(f => f.DereceId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<SoruKategori>()
                 .HasOne<SoruBankasi>(s => s.SoruBankasi)
-                .WithMany(g => g.SoruKategoris)
+                .WithMany(g => g.SoruKategori)
                 .HasForeignKey(f => f.SoruId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<SoruKategori>()
                 .HasOne<SoruKategoriler>(s => s.SoruKategoriler)
-                .WithMany(g => g.SoruKategoris)
+                .WithMany(g => g.SoruKategori)
                 .HasForeignKey(f => f.KategoriId)
                 .OnDelete(DeleteBehavior.Cascade);
             #endregion
         }
 
         #region DbSets
-        public DbSet<AdayDDK> AdayDDKs { get; set; }
-        public DbSet<AdayGorevKaydi> AdayGorevKaydis { get; set; }
-        public DbSet<Adaylar> Adaylars { get; set; }
-        public DbSet<AdayNot> AdayNots { get; set; }
-        public DbSet<Branslar> Branslars { get; set; }
-        public DbSet<DosyaGaleri> DosyaGaleris { get; set; }
-        public DbSet<Duyurular> Duyurulars { get; set; }
-        public DbSet<EPostaAdresleri> EPostaAdresleris { get; set; }
-        public DbSet<Etkinlikler> Etkinliklers { get; set; }
-        public DbSet<Eyaletler> Eyaletlers { get; set; }
-        public DbSet<FotoGaleri> FotoGaleris { get; set; }
-        public DbSet<GorevKararPdfGaleri> GorevKararPdfGaleris { get; set; }
-        public DbSet<IkametAdresleri> IkametAdresleris { get; set; }
-        public DbSet<Ilceler> Ilcelers { get; set; }
-        public DbSet<Iller> Illers { get; set; }
-        public DbSet<IllerMdEPosta> IllerMdEPostas { get; set; }
-        public DbSet<Kitalar> Kitalars { get; set; }
-        public DbSet<Komisyonlar> Komisyonlars { get; set; }
-        public DbSet<Kullanici> Kullanicis { get; set; }
-        public DbSet<Mulakatlar> Mulakatlars { get; set; }
-        public DbSet<MulakatSorulari> MulakatSorularis { get; set; }
-        public DbSet<Notlar> Notlars { get; set; }
-        public DbSet<Ogrenciler> Ogrencilers { get; set; }
-        public DbSet<OkulBilgi> OkulBilgis { get; set; }
-        public DbSet<OkulBinaBolum> OkulBinaBolums { get; set; }
-        public DbSet<Okullar> Okullars { get; set; }
-        public DbSet<Personeller> Personellers { get; set; }
-        public DbSet<Sehirler> Sehirlers { get; set; }
-        public DbSet<Siniflar> Siniflars { get; set; }
-        public DbSet<SoruBankasi> SoruBankasis { get; set; }
-        public DbSet<SoruBankasiLog> SoruBankasiLogs { get; set; }
-        public DbSet<SoruDerece> SoruDereces { get; set; }
-        public DbSet<SoruDereceler> SoruDerecelers { get; set; }        
-        public DbSet<SoruKategori> SoruKategoris { get; set; }
-        public DbSet<SoruKategoriler> SoruKategorilers { get; set; }
-        public DbSet<SoruOnay> SoruOnays { get; set; }
-        public DbSet<SSS> SSSs { get; set; }
-        public DbSet<SSSCevap> SSSCevaps { get; set; }
-        public DbSet<Subeler> Subelers { get; set; }
-        public DbSet<Telefonlar> Telefonlars { get; set; }
-        public DbSet<Temsilcilikler> Temsilciliklers { get; set; }
-        public DbSet<UlkeGruplari> UlkeGruplaris { get; set; }        
-        public DbSet<Ulkeler> Ulkelers { get; set; }
-        public DbSet<Universiteler> Universitelers { get; set; }
+        public DbSet<AdayDDK> AdayDDK { get; set; }
+        public DbSet<AdayGorevKaydi> AdayGorevKaydi { get; set; }
+        public DbSet<Adaylar> Adaylar { get; set; }
+        public DbSet<AdayNot> AdayNot { get; set; }
+        public DbSet<Branslar> Branslar { get; set; }
+        public DbSet<DosyaGaleri> DosyaGaleri { get; set; }
+        public DbSet<Duyurular> Duyurular { get; set; }
+        public DbSet<EPostaAdresleri> EPostaAdresleri { get; set; }
+        public DbSet<Etkinlikler> Etkinlikler { get; set; }
+        public DbSet<Eyaletler> Eyaletler { get; set; }
+        public DbSet<FotoGaleri> FotoGaleri { get; set; }
+        public DbSet<GorevKararPdfGaleri> GorevKararPdfGaleri { get; set; }
+        public DbSet<IkametAdresleri> IkametAdresleri { get; set; }
+        public DbSet<Ilceler> Ilceler { get; set; }
+        public DbSet<Iller> Iller { get; set; }
+        public DbSet<IllerMdEPosta> IllerMdEPosta { get; set; }
+        public DbSet<Kitalar> Kitalar { get; set; }
+        public DbSet<Komisyonlar> Komisyonlar { get; set; }
+        public DbSet<Kullanici> Kullanici { get; set; }
+        public DbSet<Mulakatlar> Mulakatlar { get; set; }
+        public DbSet<MulakatSorulari> MulakatSorulari { get; set; }
+        public DbSet<Notlar> Notlar { get; set; }
+        public DbSet<Ogrenciler> Ogrenciler { get; set; }
+        public DbSet<OkulBilgi> OkulBilgi { get; set; }
+        public DbSet<OkulBinaBolum> OkulBinaBolum { get; set; }
+        public DbSet<Okullar> Okullar { get; set; }
+        public DbSet<Personeller> Personeller { get; set; }
+        public DbSet<Sehirler> Sehirler { get; set; }
+        public DbSet<Siniflar> Siniflar { get; set; }
+        public DbSet<SoruBankasi> SoruBankasi { get; set; }
+        public DbSet<SoruBankasiLog> SoruBankasiLog { get; set; }
+        public DbSet<SoruDerece> SoruDerece { get; set; }
+        public DbSet<SoruDereceler> SoruDereceler { get; set; }        
+        public DbSet<SoruKategori> SoruKategori { get; set; }
+        public DbSet<SoruKategoriler> SoruKategoriler { get; set; }
+        public DbSet<SoruOnay> SoruOnay { get; set; }
+        public DbSet<SSS> SSS { get; set; }
+        public DbSet<SSSCevap> SSSCevap { get; set; }
+        public DbSet<Subeler> Subeler { get; set; }
+        public DbSet<Telefonlar> Telefonlar { get; set; }
+        public DbSet<Temsilcilikler> Temsilcilikler { get; set; }
+        public DbSet<UlkeGruplari> UlkeGruplari { get; set; }        
+        public DbSet<Ulkeler> Ulkeler { get; set; }
+        public DbSet<Universiteler> Universiteler { get; set; }
 
         #endregion
     }

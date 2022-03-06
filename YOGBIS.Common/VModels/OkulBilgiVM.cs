@@ -55,8 +55,8 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Bulunduğunuz ülkeyi seçiniz")]
         public string UlkeAdi { get; set; }
         public UlkelerVM Ulkeler { get; set; }
-        public string KullaniciId { get; set; }
-        public string KullaniciAdi { get; set; }
+        public string KaydedenId { get; set; }
+        public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
     }
 }

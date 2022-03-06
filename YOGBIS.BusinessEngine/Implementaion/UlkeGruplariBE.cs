@@ -137,8 +137,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeGrupAdi = item.UlkeGrupAdi,
                         UlkeGrupAciklama = item.UlkeGrupAciklama,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciAdi = item.Kullanici.Ad + " " + item.Kullanici.Soyad,
-                        KaydedenId = item.KaydedenId
+                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
                 }
                 return new Result<List<UlkeGruplariVM>>(true, ResultConstant.RecordFound, returnData);

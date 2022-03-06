@@ -17,7 +17,7 @@ namespace YOGBIS.Common.VModels
         public bool Cinsiyet { get; set; }
         public DateTime OkulKayitTarihi { get; set; }
         public string KaydedenId { get; set; }
-        public string KullaniciAdi { get; set; }
+        public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
     }
 }

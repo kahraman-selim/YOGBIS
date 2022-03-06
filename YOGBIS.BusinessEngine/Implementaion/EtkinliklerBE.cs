@@ -24,7 +24,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<EtkinliklerVM>> EtkinlikleriGetir()
         {
-            var data = _unitOfWork.etkinliklerRepository.GetAll(includeProperties: "Okullar,Kullanici").ToList();
+            var data = _unitOfWork.etkinliklerRepository.GetAll(includeProperties: "Kullanici,DosyaGaleri,FotoGaleri").ToList();
 
             if (data != null)
             {
@@ -55,7 +55,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<EtkinliklerVM>> EtkinlikGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.etkinliklerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici,Okullar").ToList();
+            var data = _unitOfWork.etkinliklerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici").ToList();
             if (data != null)
             {
                 List<EtkinliklerVM> returnData = new List<EtkinliklerVM>();
@@ -88,7 +88,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             if (id != null)
             {
-                var data = _unitOfWork.etkinliklerRepository.GetFirstOrDefault(u => u.EtkinlikId == id, includeProperties: "Okullar,Kullanici");
+                var data = _unitOfWork.etkinliklerRepository.GetFirstOrDefault(u => u.EtkinlikId == id, includeProperties: "Kullanici");
 
                 if (data != null)
                 {
@@ -225,7 +225,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<EtkinliklerVM>> EtkinlikGetirUlkeId(Guid UlkeId)
         {
-            var data = _unitOfWork.etkinliklerRepository.GetAll(includeProperties: "Kullanici,Okullar").ToList();
+            var data = _unitOfWork.etkinliklerRepository.GetAll(includeProperties: "Kullanici").ToList();
             if (data != null)
             {
                 List<EtkinliklerVM> returnData = new List<EtkinliklerVM>();
@@ -256,7 +256,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         public Result<List<EtkinliklerVM>> EtkinlikGetirOkulId(Guid okulId)
         {
-            var data = _unitOfWork.etkinliklerRepository.GetAll(includeProperties: "Kullanici,Okullar").ToList();
+            var data = _unitOfWork.etkinliklerRepository.GetAll(includeProperties: "Kullanici").ToList();
             if (data != null)
             {
                 List<EtkinliklerVM> returnData = new List<EtkinliklerVM>();

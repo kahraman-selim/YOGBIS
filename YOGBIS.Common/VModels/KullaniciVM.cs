@@ -24,34 +24,60 @@ namespace YOGBIS.Common.VModels
 
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
-        public DateTime KayitTarihi { get; set; }
+        public DateTime KayitTarihi { get; set; } = DateTime.UtcNow;
         public int KulaniciAdDegLimiti { get; set; } = 10;
         [MaxLength]
         public byte[] KullaniciResim { get; set; }
         public string KullaniciResimYol { get; set; }
         public IFormFile KullaniciResimIFromFile { get; set; }
         public bool? Aktif { get; set; }
-        public IFormFileCollection FotoGaleris { get; set; }
-        public List<FotoGaleriVM> FotoGaleri { get; set; }
 
         #region BağlıTablolar
-        public List<SoruDerecelerVM> Derecelers { get; set; }
-        public List<SoruKategorilerVM> SoruKategorilers { get; set; }
-        public List<MulakatlarVM> Mulakatlars { get; set; }
+        public List<AdayDDKVM> AdayDDK { get; set; }
+        public List<AdayGorevKaydiVM> AdayGorevKaydi { get; set; }
         public List<AdaylarVM> Adaylars { get; set; }
-        public List<UlkeGruplariVM> UlkeGruplaris { get; set; }
-        public List<UlkelerVM> Ulkelers { get; set; }
-        public List<EyaletlerVM> Eyaletlers { get; set; }
-        public List<SehirlerVM> Sehirlers { get; set; }
-        public List<OkullarVM> Okullars { get; set; }
-        public List<NotlarVM> Notlars { get; set; }
-        public List<OgretmenlerVM> Ogretmenlers { get; set; }
-        public List<OkutmanlarVM> Okutmanlars { get; set; }
-        public List<UniversitelerVM> Universitelers { get; set; }
-        public List<SubelerVM> Subelers { get; set; }
-        public List<SiniflarVM> Siniflars { get; set; }
-        public List<OgrencilerVM> Ogrencilers { get; set; }
-        public List<GorevKaydiVM> GorevKaydis { get; set; }
+        public List<AdayNotVM> AdayNot { get; set; }
+        public List<BranslarVM> Branslar { get; set; }
+        public IFormFileCollection DosyaGaleris { get; set; }
+        public List<DosyaGaleriVM> DosyaGaleri { get; set; }
+        public List<DuyurularVM> Duyurular { get; set; }
+        public List<EPostaAdresleriVM> EPostaAdresleri { get; set; }
+        public List<EtkinliklerVM> Etkinlikler { get; set; }
+        public List<EyaletlerVM> Eyaletler { get; set; }
+        public IFormFileCollection FotoGaleris { get; set; }
+        public List<FotoGaleriVM> FotoGaleri { get; set; }
+        public IFormFileCollection GorevKararPdfGaleris { get; set; }
+        public List<GorevKararPdfGaleriVM> GorevKararPdfGaleri { get; set; }
+        public List<IkametAdresleriVM> IkametAdresleri { get; set; }
+        public List<IlcelerVM> Ilceler { get; set; }
+        public List<IllerMdEPostaVM> IllerMdEPosta { get; set; }
+        public List<IllerVM> Iller { get; set; }
+        public List<KomisyonlarVM> Komisyonlar { get; set; }
+        public List<MulakatlarVM> Mulakatlar { get; set; }
+        public List<MulakatSorulariVM> MulakatSorulari { get; set; }
+        public List<NotlarVM> Notlar { get; set; }
+        public List<OgrencilerVM> Ogrenciler { get; set; }
+        public List<OkulBilgiVM> OkulBilgi { get; set; }
+        public List<OkulBinaBolumVM> OkulBinaBolum { get; set; }
+        public List<OkullarVM> Okullar { get; set; }
+        public List<PersonellerVM> Personeller { get; set; }
+        public List<SehirlerVM> Sehirler { get; set; }
+        public List<SiniflarVM> Siniflar { get; set; }
+        public List<SoruBankasiLogVM> SoruBankasiLog { get; set; }
+        public List<SoruBankasiVM> SoruBankasi { get; set; }
+        public List<SoruDerecelerVM> SoruDereceler { get; set; }
+        public List<SoruKategorilerVM> SoruKategoriler { get; set; }
+        public List<SoruOnayVM> SoruOnay { get; set; }
+        public List<SSSCevapVM> SSSCevap { get; set; }
+        public List<SSSVM> SSS { get; set; }
+        public List<SubelerVM> Subeler { get; set; }
+        public List<TelefonlarVM> Telefonlar { get; set; }
+        public List<TemsilciliklerVM> Temsilcilikler { get; set; }
+        public List<UlkeGruplariVM> UlkeGruplari { get; set; }
+        public List<UlkelerVM> Ulkeler { get; set; }
+        public List<UniversitelerVM> Universiteler { get; set; }      
+        
+               
         #endregion
     }
 }

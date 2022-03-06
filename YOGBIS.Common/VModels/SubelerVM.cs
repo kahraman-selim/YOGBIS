@@ -15,6 +15,7 @@ namespace YOGBIS.Common.VModels
         public Guid OkulId { get; set; }
         public OkullarVM Okullar { get; set; }
         public string KaydedenId { get; set; }
+        public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<SiniflarVM> Siniflars { get; set; }
     }

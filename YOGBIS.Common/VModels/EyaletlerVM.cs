@@ -23,5 +23,6 @@ namespace YOGBIS.Common.VModels
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<SehirlerVM> Sehirler { get; set; }
+        public List<OkullarVM> Okullar { get; set; }
     }
 }

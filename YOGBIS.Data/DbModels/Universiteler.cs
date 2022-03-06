@@ -22,7 +22,7 @@ namespace YOGBIS.Data.DbModels
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
-        public List<AdayGorevKaydi> AdayGorevKaydis { get; set; }
+        public List<AdayGorevKaydi> AdayGorevKaydi { get; set; }
         public List<Ogrenciler> Ogrenciler { get; set; }
         public ICollection<FotoGaleri> FotoGaleri { get; set; }
     }

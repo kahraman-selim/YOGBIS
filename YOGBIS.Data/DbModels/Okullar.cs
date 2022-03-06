@@ -27,11 +27,13 @@ namespace YOGBIS.Data.DbModels
         public string OkulEPostaAdresi { get; set; }
         public string OkulTelefon { get; set; }
         ///////////////////////////////////////////////        
-        public Guid SehirId { get; set; }
-        [ForeignKey("SehirId")]
-        public Sehirler Sehirler { get; set; }
+        public Guid? SehirId { get; set; }
+        //[ForeignKey("SehirId")]
+        //public Sehirler Sehirler { get; set; }
         public Guid? EyaletId { get; set; }
+        //public Eyaletler Eyaletler { get; set; }
         public Guid UlkeId { get; set; }
+        //public Ulkeler Ulkeler { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

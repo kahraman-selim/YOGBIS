@@ -80,9 +80,12 @@ namespace YOGBIS.UI
             services.AddMvc();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(3600);
+                options.Cookie.Name = ".YOGBIS.Session";
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
                 opt=> {
@@ -116,7 +119,7 @@ namespace YOGBIS.UI
                 }
                 else
                 {
-                    app.UseExceptionHandler("/Error");
+                    app.UseExceptionHandler("/Home/Error");
                     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                     app.UseHsts();
                 }

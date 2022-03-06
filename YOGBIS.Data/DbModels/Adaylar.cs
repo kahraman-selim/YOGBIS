@@ -76,7 +76,11 @@ namespace YOGBIS.Data.DbModels
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
         public ICollection<FotoGaleri> FotoGaleri { get; set; }
-        public List<AdayDDK> AdayDDKs { get; set; }
-        public List<AdayNot> AdayNots { get; set; }        
+        public List<AdayDDK> AdayDDK { get; set; }
+        public List<AdayNot> AdayNot { get; set; }
+        public List<AdayGorevKaydi> AdayGorevKaydi { get; set; }
+        public List<EPostaAdresleri> EpostaAdresleri { get; set; }
+        public List<Telefonlar> Telefonlar { get; set; }
+        public List<IkametAdresleri> IkametAdresleri { get; set; }
     }
 }

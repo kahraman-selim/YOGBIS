@@ -62,8 +62,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeId = item.UlkeId,
                         UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.UlkeId).Data,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KullaniciId,
-                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
                 }
                 return new Result<List<OkulBilgiVM>>(true, ResultConstant.RecordFound, returnData);
@@ -78,7 +78,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkulBilgiGetirKullaniciId
         public Result<List<OkulBilgiVM>> OkulBilgiGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.KullaniciId == userId, includeProperties: "Kullanici,Okullar").ToList();
+            var data = _unitOfWork.okulBilgiRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici,Okullar").ToList();
             if (data != null)
             {
                 List<OkulBilgiVM> returnData = new List<OkulBilgiVM>();
@@ -106,8 +106,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeId = item.UlkeId,
                         UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.UlkeId).Data,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KullaniciId,
-                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                        KaydedenId = item.KaydedenId,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
 
                     });
                 }
@@ -148,8 +148,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okulbilgi.OkulAdi = data.Okullar.OkulAdi;
                     okulbilgi.UlkeId = data.UlkeId;
                     okulbilgi.UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)data.UlkeId).Data;
-                    okulbilgi.KullaniciId = data.Kullanici.Id;
-                    okulbilgi.KullaniciAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+                    okulbilgi.KaydedenId = data.Kullanici.Id;
+                    okulbilgi.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
                     return new Result<OkulBilgiVM>(true, ResultConstant.RecordFound, okulbilgi);
                 }
@@ -174,7 +174,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     //var okulbilgi = _mapper.Map<OkulBilgiVM, OkulBilgi>(model);
                     OkulBilgi okulbilgi = new OkulBilgi();
-                    okulbilgi.KullaniciId = user.LoginId;
+                    okulbilgi.KaydedenId = user.LoginId;
                     okulbilgi.MdYrdAdiSoyadi = model.MdYrdAdiSoyadi;
                     okulbilgi.MdYrdDonusYil = model.MdYrdDonusYil;
                     okulbilgi.MdYrdEPosta = model.MdYrdEPosta;
@@ -217,7 +217,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     var data = _unitOfWork.okulBilgiRepository.Get(model.OkulBilgiId);
                     if (data != null)
                     {
-                        data.KullaniciId = user.LoginId;
+                        data.KaydedenId = user.LoginId;
                         data.MdYrdAdiSoyadi = model.MdYrdAdiSoyadi;
                         data.MdYrdDonusYil = model.MdYrdDonusYil;
                         data.MdYrdEPosta = model.MdYrdEPosta;
@@ -303,8 +303,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeId = item.UlkeId,
                         UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.UlkeId).Data,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KullaniciId,
-                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                        KaydedenId = item.KaydedenId,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
 
                     });
                 }
@@ -348,8 +348,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeId = item.UlkeId,
                         UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.UlkeId).Data,
                         KayitTarihi = item.KayitTarihi,
-                        KullaniciId = item.KullaniciId,
-                        KullaniciAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+                        KaydedenId = item.KaydedenId,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
 
                     });
                 }

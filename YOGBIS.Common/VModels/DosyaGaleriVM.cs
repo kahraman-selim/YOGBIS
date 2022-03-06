@@ -12,6 +12,7 @@ namespace YOGBIS.Common.VModels
         public string DosyaAdi { get; set; }
         public string DosyaURL { get; set; }
         public string KaydedenId { get; set; }
+        public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
     }
 }

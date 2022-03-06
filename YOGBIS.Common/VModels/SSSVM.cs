@@ -11,7 +11,7 @@ namespace YOGBIS.Common.VModels
         public Guid SSSId { get; set; }
         public string Soru { get; set; }
         public string KaydedenId { get; set; }
-        [ForeignKey("KaydedenId")]
+        public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
     }
 }

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20220305224851_okulalangun")]
+    partial class okulalangun
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1575,9 +1577,7 @@ namespace YOGBIS.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<byte[]>("SehirId")
-                        .HasColumnType("varbinary(16)");
-
-                    b.Property<byte[]>("SehirlerSehirId")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.Property<byte[]>("UlkeId")
@@ -1593,7 +1593,7 @@ namespace YOGBIS.Data.Migrations
 
                     b.HasIndex("KaydedenId");
 
-                    b.HasIndex("SehirlerSehirId");
+                    b.HasIndex("SehirId");
 
                     b.HasIndex("UlkelerUlkeId");
 
@@ -2705,7 +2705,7 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.Okullar", b =>
                 {
-                    b.HasOne("YOGBIS.Data.DbModels.Eyaletler", null)
+                    b.HasOne("YOGBIS.Data.DbModels.Eyaletler", "Eyaletler")
                         .WithMany("Okullar")
                         .HasForeignKey("EyaletlerEyaletId");
 
@@ -2713,11 +2713,13 @@ namespace YOGBIS.Data.Migrations
                         .WithMany("Okullar")
                         .HasForeignKey("KaydedenId");
 
-                    b.HasOne("YOGBIS.Data.DbModels.Sehirler", null)
+                    b.HasOne("YOGBIS.Data.DbModels.Sehirler", "Sehirler")
                         .WithMany("Okullars")
-                        .HasForeignKey("SehirlerSehirId");
+                        .HasForeignKey("SehirId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("YOGBIS.Data.DbModels.Ulkeler", null)
+                    b.HasOne("YOGBIS.Data.DbModels.Ulkeler", "Ulkeler")
                         .WithMany("Okullar")
                         .HasForeignKey("UlkelerUlkeId");
                 });

@@ -18,45 +18,45 @@ namespace YOGBIS.Data.DbModels
         public bool? Aktif { get; set; }
 
         #region BağlıTablolar
-        public List<AdayDDK> AdayDDKs { get; set; }
-        public List<AdayGorevKaydi> AdayGorevKaydis { get; set; }
-        public List<Adaylar> Adaylars { get; set; }
-        public List<AdayNot> AdayNots { get; set; }
+        public List<AdayDDK> AdayDDK { get; set; }
+        public List<AdayGorevKaydi> AdayGorevKaydi { get; set; }
+        public List<Adaylar> Adaylar { get; set; }
+        public List<AdayNot> AdayNot { get; set; }
         public List<Branslar> Branslar { get; set; }
-        public List<Duyurular> Duyurulars { get; set; }
-        public List<EPostaAdresleri> EPostaAdresleris { get; set; }
-        public List<Etkinlikler> Etkinliklers { get; set; }
-        public List<Eyaletler> Eyaletlers { get; set; }
-        public ICollection<FotoGaleri> FotoGaleri { get; set; }
         public ICollection<DosyaGaleri> DosyaGaleri { get; set; }
-        public ICollection<GorevKararPdfGaleri> GorevKararPdfGaleris { get; set; }
-        public List<IkametAdresleri> IkametAdresleris { get; set; }
-        public List<Ilceler> Ilcelers { get; set; }
-        public List<Iller> Illers { get; set; }
-        public List<IllerMdEPosta> IllerMdEPostas { get; set; }        
-        public List<Komisyonlar> Komisyonlars { get; set; }
-        public List<Mulakatlar> Mulakatlars { get; set; }
-        public List<MulakatSorulari> MulakatSorularis { get; set; }
-        public List<Notlar> Notlars { get; set; }
-        public List<Ogrenciler> Ogrencilers { get; set; }
-        public List<OkulBilgi> OkulBilgis { get; set; }
-        public List<Okullar> Okullars { get; set; }
-        public List<Personeller> Personellers { get; set; }
-        public List<Sehirler> Sehirlers { get; set; }
-        public List<Siniflar> Siniflars { get; set; }
-        public List<SoruBankasi> SoruBankasis { get; set; }
-        public List<SoruBankasiLog> SoruBankasiLogs { get; set; }
-        public List<SoruDereceler> SoruDerecelers { get; set; }
-        public List<SoruKategoriler> SoruKategorilers { get; set; }
-        public List<SoruOnay> SoruOnays { get; set; }
-        public List<SSS> SSSs { get; set; }
-        public List<SSSCevap> SSSCevaps { get; set; }
-        public List<Subeler> Subelers { get; set; }
+        public List<Duyurular> Duyurular { get; set; }
+        public List<EPostaAdresleri> EPostaAdresleri { get; set; }
+        public List<Etkinlikler> Etkinlikler { get; set; }
+        public List<Eyaletler> Eyaletler { get; set; }
+        public ICollection<FotoGaleri> FotoGaleri { get; set; }        
+        public ICollection<GorevKararPdfGaleri> GorevKararPdfGaleri { get; set; }
+        public List<IkametAdresleri> IkametAdresleri { get; set; }
+        public List<Ilceler> Ilceler { get; set; }
+        public List<Iller> Iller { get; set; }
+        public List<IllerMdEPosta> IllerMdEPosta { get; set; }        
+        public List<Komisyonlar> Komisyonlar { get; set; }
+        public List<Mulakatlar> Mulakatlar { get; set; }
+        public List<MulakatSorulari> MulakatSorulari { get; set; }
+        public List<Notlar> Notlar { get; set; }
+        public List<Ogrenciler> Ogrenciler { get; set; }
+        public List<OkulBilgi> OkulBilgi { get; set; }
+        public List<Okullar> Okullar { get; set; }
+        public List<Personeller> Personeller { get; set; }
+        public List<Sehirler> Sehirler { get; set; }
+        public List<Siniflar> Siniflar { get; set; }
+        public List<SoruBankasi> SoruBankasi { get; set; }
+        public List<SoruBankasiLog> SoruBankasiLog { get; set; }
+        public List<SoruDereceler> SoruDereceler { get; set; }
+        public List<SoruKategoriler> SoruKategoriler { get; set; }
+        public List<SoruOnay> SoruOnay { get; set; }
+        public List<SSS> SSS { get; set; }
+        public List<SSSCevap> SSSCevap { get; set; }
+        public List<Subeler> Subeler { get; set; }
         public List<Telefonlar> Telefonlar { get; set; }
-        public List<Temsilcilikler> Temsilciliklers { get; set; }
-        public List<UlkeGruplari> UlkeGruplaris { get; set; }
-        public List<Ulkeler> Ulkelers { get; set; }
-        public List<Universiteler> Universitelers { get; set; }
+        public List<Temsilcilikler> Temsilcilikler { get; set; }
+        public List<UlkeGruplari> UlkeGruplari { get; set; }
+        public List<Ulkeler> Ulkeler { get; set; }
+        public List<Universiteler> Universiteler { get; set; }
         #endregion
     }
 }

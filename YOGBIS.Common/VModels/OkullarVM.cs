@@ -38,16 +38,16 @@ namespace YOGBIS.Common.VModels
         public string OkulEPostaAdresi { get; set; }
         public string OkulTelefon { get; set; }
 
-        [Required(ErrorMessage = "Ülkeyi seçiniz")]
-        public Guid? OkulUlkeId { get; set; }
-        public string OkulUlkeAdi { get; set; }
         [Required(ErrorMessage = "Şehir adı zorunlu bir alandır")]
-        public Guid? SehirId { get; set; }
+        public Guid SehirId { get; set; }
         public string SehirAdi { get; set; }
         public SehirlerVM Sehirler { get; set; }
         public Guid? EyaletId { get; set; }
-        public string EyaletAdi { get; set; }
-        public EyaletlerVM Eyaletler { get; set; }
+        public string EyaletAdi { get; set; }        
+
+        [Required(ErrorMessage = "Ülkeyi seçiniz")]
+        public Guid UlkeId { get; set; }
+        public string UlkeAdi { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }

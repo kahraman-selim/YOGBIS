@@ -17,6 +17,6 @@ namespace YOGBIS.Data.DbModels
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
-        public List<SoruKategori> SoruKategoris { get; set; }
+        public List<SoruKategori> SoruKategori { get; set; }
     }
 }
