@@ -292,7 +292,7 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-6 pl-4"><h3>FİZİKİ KAPASİTE</h3></div>
-                <div class="col-md-6 pr-2 text-right text-white"><button class="btn btn-primary" data-target="saveModal" data-toggle="modal" data-backdrop="static" data-keyboard="false">Okul Bina Bölüm Ekle/Sil</button>
+                <div class="col-md-6 pr-2 text-right text-white"><button class="btn btn-primary" id="okulBolumEkle">Okul Bina Bölüm Ekle/Sil</button>
                 @*<a class="btn btn-primary" id="okulBolumEkle">Okul Bina Bölüm Ekle/Sil</a>*@</div>
             </div>
             <hr />
@@ -688,13 +688,13 @@ else
 
         });
 
-        //$("#okulBolumEkle").click(function () {
+        $("#okulBolumEkle").click(function () {
 
-        //    $('#saveModal').modal();
+            $('#saveModal').modal();
 
-        //});
+        });
 
-        $('#saveModal').modal({ backdrop: 'static', keyboard: false });
+        /*$('#saveModal').modal({ backdrop: 'static', keyboard: false });*/
 
         $("#btnBolumKaydet").click(function () {
 

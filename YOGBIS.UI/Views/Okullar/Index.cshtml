@@ -42,7 +42,7 @@
                     }
                     <tr>
                         <th class="text-center" rowspan="3">Sıra No</th>
-                        <th class="text-center" rowspan="3">Okul Sayısı</th>
+                        @*<th class="text-center" rowspan="3">Okul Sayısı</th>*@
                         <th class="text-center" rowspan="3">Ülke</th>
                         <th class="text-center" rowspan="3">Eyalet/Şehir-Bölge</th>
                         <th class="text-center" rowspan="3">Okul Kodu</th>
@@ -78,7 +78,7 @@
                             sirano++;
                     <tr>
                         <td>@sirano</td>
-                        <td>okulsayısı</td>
+                        @*<td>okulsayısı</td>*@
                         <td><a asp-controller="Ulkeler" asp-action="UlkeDetayById" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
                         <td>@item.EyaletAdi/@item.SehirAdi</td>
                         <td>@item.OkulKodu</td>

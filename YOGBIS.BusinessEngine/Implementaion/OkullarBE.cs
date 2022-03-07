@@ -89,7 +89,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulAdi = item.OkulAdi,
                         //OkulUlkeId = item.OkulUlkeId,
                         //OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
-                        //OkulDurumu =item.OkulDurumu,
+                        OkulDurumu =item.OkulDurumu,
                         //OkulTuru=item.OkulTuru,
                         //EyaletAdi = item.Eyaletler != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Eyaletler.EyaletAdi.ToString()) : string.Empty,
                         //SehirAdi = item.Sehirler != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Sehirler.SehirAdi.ToString()) : string.Empty,
