@@ -19,24 +19,28 @@ namespace YOGBIS.BusinessEngine.Implementaion
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IUlkelerBE _ulkelerBE;
+        private readonly IEyaletlerBE _eyaletlerBE;
+        private readonly ISehirlerBE _sehirlerBE;
         private readonly IKullaniciBE _kullaniciBE;
         #endregion
 
         #region Dönüştürücüler
-        public OkullarBE(IUnitOfWork unitOfWork, IMapper mapper, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE)
+        public OkullarBE(IUnitOfWork unitOfWork, IMapper mapper, IUlkelerBE ulkelerBE, IEyaletlerBE eyaletlerBE, ISehirlerBE sehirlerBE, IKullaniciBE kullaniciBE)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _ulkelerBE = ulkelerBE;
             _kullaniciBE = kullaniciBE;
+            _eyaletlerBE = eyaletlerBE;
+            _sehirlerBE = sehirlerBE;
         }
         #endregion
 
         #region OkullarıGetir
         public Result<List<OkullarVM>> OkullariGetir()
         {
-            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Kullanici,FotoGaleri,Etkinlikler," +
-                "OkulBinaBolum,Subeler,AdayGorevKaydi,EpostaAdresleri,Telefonlar").OrderBy(o => o.OkulAdi).ToList();
+            var data = _unitOfWork.okullarRepository.GetAll(x => x.OkulDurumu == true, includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
+                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList();
 
             if (data != null)
             {
@@ -46,17 +50,20 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     returnData.Add(new OkullarVM()
                     {
-                        OkulId = item.OkulId,
+                        OkulId = (Guid)item.OkulId,
                         OkulKodu = item.OkulKodu,
                         OkulAdi = item.OkulAdi,
-                        UlkeId = item.UlkeId,                        
-                        UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.UlkeId).Data,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = _ulkelerBE.UlkeAdGetir(item.UlkeId).Data.ToString(),
                         OkulDurumu = item.OkulDurumu,
-                        OkulTuru=item.OkulTuru,
-                        //EyaletAdi=item.Eyaletler != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Eyaletler.EyaletAdi.ToString()) : string.Empty,
-                        //SehirAdi=item.Sehirler != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Sehirler.SehirAdi.ToString()) : string.Empty,
-                        OkulMudurId =item.OkulMudurId,
-                        OkulMudurAdiSoyadi=item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
+                        OkulTuru = item.OkulTuru,
+                        OkulAcilisTarihi = item.OkulAcilisTarihi.GetValueOrDefault(),
+                        EyaletId = item.EyaletId.GetValueOrDefault(),
+                        EyaletAdi = item.EyaletId.GetValueOrDefault() == Guid.Empty ? string.Empty : _eyaletlerBE.EyaletAdGetir(item.EyaletId.GetValueOrDefault()).Data.ToString(),
+                        SehirId = item.SehirId.GetValueOrDefault(),
+                        SehirAdi = item.SehirId.GetValueOrDefault() != Guid.Empty ? _sehirlerBE.SehirAdGetir(item.SehirId.GetValueOrDefault()).Data.ToString() : string.Empty,
+                        OkulMudurId = item.OkulMudurId,
+                        OkulMudurAdiSoyadi = item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
                     });
@@ -74,7 +81,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkullarıGetirAZ
         public Result<List<OkullarVM>> OkullariGetirAZ()
         {
-            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler,AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList();
+            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
+                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList();
 
             if (data != null)
             {
@@ -87,12 +95,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulId = (Guid)item.OkulId,
                         OkulKodu = item.OkulKodu,
                         OkulAdi = item.OkulAdi,
-                        //OkulUlkeId = item.OkulUlkeId,
-                        //OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
-                        OkulDurumu =item.OkulDurumu,
-                        //OkulTuru=item.OkulTuru,
-                        //EyaletAdi = item.Eyaletler != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Eyaletler.EyaletAdi.ToString()) : string.Empty,
-                        //SehirAdi = item.Sehirler != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Sehirler.SehirAdi.ToString()) : string.Empty,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = _ulkelerBE.UlkeAdGetir(item.UlkeId).Data.ToString(),
+                        OkulDurumu = item.OkulDurumu,
+                        OkulTuru = item.OkulTuru,
+                        OkulAcilisTarihi = item.OkulAcilisTarihi.GetValueOrDefault(),
+                        EyaletId = item.EyaletId.GetValueOrDefault(), 
+                        EyaletAdi = item.EyaletId.GetValueOrDefault() == Guid.Empty ? string.Empty : _eyaletlerBE.EyaletAdGetir(item.EyaletId.GetValueOrDefault()).Data.ToString(),
+                        SehirId = item.SehirId.GetValueOrDefault(), 
+                        SehirAdi = item.SehirId.GetValueOrDefault() == Guid.Empty ? string.Empty : _sehirlerBE.SehirAdGetir(item.SehirId.GetValueOrDefault()).Data.ToString(),
                         OkulMudurId = item.OkulMudurId,
                         OkulMudurAdiSoyadi = item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
@@ -123,12 +134,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulId = (Guid)item.OkulId,
                         OkulKodu = item.OkulKodu,
                         OkulAdi = item.OkulAdi,
-                        //OkulUlkeId = item.OkulUlkeId,
-                        //OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = _ulkelerBE.UlkeAdGetir(item.UlkeId).Data.ToString(),
                         OkulDurumu = item.OkulDurumu,
-                        OkulTuru=item.OkulTuru,
-                        //EyaletAdi = item.Eyaletler != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Eyaletler.EyaletAdi.ToString()) : string.Empty,
-                        //SehirAdi = item.Sehirler != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Sehirler.SehirAdi.ToString()) : string.Empty,
+                        OkulTuru = item.OkulTuru,
+                        OkulAcilisTarihi = item.OkulAcilisTarihi.GetValueOrDefault(),
+                        EyaletId = item.EyaletId != null ? item.EyaletId : Guid.Empty,
+                        EyaletAdi = item.EyaletId != null ? _eyaletlerBE.EyaletAdGetir((Guid)item.EyaletId).Data.ToString() : string.Empty,
+                        SehirId = item.SehirId != null ? item.SehirId : Guid.Empty,
+                        SehirAdi = item.SehirId != null ? _sehirlerBE.SehirAdGetir((Guid)item.SehirId).Data.ToString() : string.Empty,
                         OkulMudurId = item.OkulMudurId,
                         OkulMudurAdiSoyadi = item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
@@ -159,12 +173,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulId = (Guid)item.OkulId,
                         OkulKodu = item.OkulKodu,
                         OkulAdi = item.OkulAdi,
-                        //OkulUlkeId = item.OkulUlkeId,
-                        //OkulUlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)item.OkulUlkeId).Data,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = _ulkelerBE.UlkeAdGetir(item.UlkeId).Data.ToString(),
                         OkulDurumu = item.OkulDurumu,
-                        OkulTuru=item.OkulTuru,
-                        //EyaletAdi = item.Eyaletler != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Eyaletler.EyaletAdi.ToString()) : string.Empty,
-                        //SehirAdi = item.Sehirler != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Sehirler.SehirAdi.ToString()) : string.Empty,
+                        OkulTuru = item.OkulTuru,
+                        OkulAcilisTarihi = (DateTime)item.OkulAcilisTarihi,
+                        EyaletId = item.EyaletId != null ? item.EyaletId : Guid.Empty,
+                        EyaletAdi = item.EyaletId != null ? _eyaletlerBE.EyaletAdGetir((Guid)item.EyaletId).Data.ToString() : string.Empty,
+                        SehirId = item.SehirId != null ? item.SehirId : Guid.Empty,
+                        SehirAdi = item.SehirId != null ? _sehirlerBE.SehirAdGetir((Guid)item.SehirId).Data.ToString() : string.Empty,
                         OkulMudurId = item.OkulMudurId,
                         OkulMudurAdiSoyadi = item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
@@ -209,10 +226,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okul.OkulTelefon = data.OkulTelefon;
                     okul.UlkeId = data.UlkeId;
                     okul.UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)data.UlkeId).Data;
-                    okul.EyaletId = data.EyaletId;
-                    //okul.EyaletAdi = data.EyaletId != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.Eyaletler.EyaletAdi.ToString()) : string.Empty;
-                    //okul.SehirId = data.SehirId;
-                    //okul.SehirAdi = data.SehirId != null ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.Sehirler.SehirAdi.ToString()) : string.Empty;
+                    okul.EyaletId = data.EyaletId.GetValueOrDefault();
+                    okul.EyaletAdi = data.EyaletId.GetValueOrDefault() != Guid.Empty ? _eyaletlerBE.EyaletAdGetir((Guid)data.EyaletId).Data.ToString() : string.Empty;
+                    okul.SehirId = data.SehirId.GetValueOrDefault();
+                    okul.SehirAdi = data.SehirId.GetValueOrDefault() != Guid.Empty ? _sehirlerBE.SehirAdGetir((Guid)data.SehirId).Data.ToString() : string.Empty;
                     okul.OkulTuru = data.OkulTuru;
                     okul.KaydedenId = data.KaydedenId;
                     okul.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
@@ -373,8 +390,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.OkulInternetAdresi = model.OkulInternetAdresi;
                         data.OkulEPostaAdresi = model.OkulEPostaAdresi;
                         data.OkulTelefon = model.OkulTelefon;
-                        data.EyaletId = (model.EyaletId == null || model.EyaletId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.EyaletId;
-                        //data.SehirId = (model.SehirId == null || model.SehirId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.SehirId;
+                        data.EyaletId = model.EyaletId == null ? null : model.EyaletId;
+                        //((Guid)model.EyaletId == null || model.EyaletId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.EyaletId;
+                        data.SehirId = model.SehirId == null ? null : model.EyaletId; 
+                        //((Guid)model.SehirId == null || model.SehirId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.SehirId;
 
                         if (model.FotoGaleri != null)
                         {

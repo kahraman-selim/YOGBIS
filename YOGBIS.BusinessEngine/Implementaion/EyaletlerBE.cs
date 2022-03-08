@@ -287,16 +287,25 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
         #region EyaletAdGetir(Guid id)
         public Result<string> EyaletAdGetir(Guid id)
-        {
-            var data = _unitOfWork.eyaletlerRepository.Get(id);
-            if (data != null)
+        {            
+
+            if (id==null)
             {
-                var eyaletadi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.EyaletAdi.ToString());
+                var eyaletadi = "";
                 return new Result<string>(true, ResultConstant.RecordFound, eyaletadi);
             }
             else
             {
-                return new Result<string>(false, ResultConstant.RecordNotFound);
+                var data = _unitOfWork.eyaletlerRepository.Get(id);
+                if (data != null)
+                {
+                    var eyaletadi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.EyaletAdi.ToString());
+                    return new Result<string>(true, ResultConstant.RecordFound, eyaletadi);
+                }
+                else
+                {
+                    return new Result<string>(false, ResultConstant.RecordNotFound);
+                }
             }
         }
         #endregion

@@ -25,6 +25,8 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Okul hakkında bilgi yazmalısınız")]
         public string OkulBilgi { get; set; }
         [Required(ErrorMessage = "Okul açılış tarihi zorunlu bir alandır")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime OkulAcilisTarihi { get; set; }
         public bool OkulDurumu { get; set; }
         public string OkulMudurId { get; set; }
@@ -39,9 +41,8 @@ namespace YOGBIS.Common.VModels
         public string OkulTelefon { get; set; }
 
         [Required(ErrorMessage = "Şehir adı zorunlu bir alandır")]
-        public Guid SehirId { get; set; }
+        public Guid? SehirId { get; set; }
         public string SehirAdi { get; set; }
-        public SehirlerVM Sehirler { get; set; }
         public Guid? EyaletId { get; set; }
         public string EyaletAdi { get; set; }        
 

@@ -14,5 +14,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<SehirlerVM> SehirGuncelle(SehirlerVM model, SessionContext user);        
         Result<bool> SehirSil(Guid id);
         Result<List<SehirlerVM>> SehirGetirKullaniciId(string userId);
+        Result<string> SehirAdGetir(Guid id);
     }
 }

@@ -106,7 +106,7 @@
                                                 <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
                                                     <span class="closebtn text-center" id="@Model.FotoGaleri[i].FotoGaleriId">&times;</span>
                                                     <img id="@Model.FotoGaleri[i].FotoGaleriId" src="@Model.FotoGaleri[i].FotoURL" alt="@Model.FotoGaleri[i].FotoAdi"
-                                                         style="width: 100%; height: 500px; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
+                                                         style="width: 100%; height: 100%; align-content: center;" class="rounded d-block shadow img-profile okulFotos">
                                                 </div>
                                             }
                                         </div>
@@ -467,15 +467,19 @@ else
                                 $("#EyaletIdInput").val(eyaletId);
 
                                 alertify.success(ead + ' eyaleti daha önce kaydedilmiş');
-                                document.getElementById("eyaletEkleBtn").style.display = "none";
+                                /*document.getElementById("eyaletEkleBtn").style.display = "none";*/
+                                document.getElementById("eyaletEkleBtn").className += " disabled";
                             }
                         });
                     }
                     else {
 
+                        /*document.getElementById("eyaletEkleBtn").attr.className += " ";*/
                         alertify.danger(ead + ' eyaleti kayıtlı değil !');
                         document.getElementById("EyaletIdInput").value = "";
-                        document.getElementById("eyaletEkleBtn").style.display = "block";
+                        /*document.getElementById("eyaletEkleBtn").style.display = "block";*/
+                        document.getElementById("eyaletEkleBtn").className = "btn btn-success btn-sm text-white mb-2 w-75";
+                        
                     }
                 });
             }
@@ -563,9 +567,9 @@ else
                                 var sehirId = data[i]['sehirId'];
                                 var sehirAd = data[i]['sehirAdi'];
                                 $("#SehirIdInput").val(sehirId);
-
+                                document.getElementById("sehirEkleBtn").className += " disabled";
                                 alertify.success(seh + ' şehri daha önce kaydedilmiş');
-                                document.getElementById("sehirEkleBtn").style.display = "none";
+                                
                             }
                         });
                     }
@@ -573,7 +577,8 @@ else
 
                         alertify.danger(seh + ' şehri kayıtlı değil !');
                         document.getElementById("SehirIdInput").value = "";
-                        document.getElementById("sehirEkleBtn").style.display = "block";
+                        /*document.getElementById("sehirEkleBtn").style.display = "block";*/
+                        document.getElementById("sehirEkleBtn").className = "btn btn-success btn-sm text-white mb-2 w-75";
                     }
                 });
             }
@@ -673,7 +678,7 @@ else
                 },
                 callback: function (result) {
                     if (result) {
-                        var id = btn.data("id");
+                        /*var fotoId = $(this).attr("id");*/
                         $.ajax({
                             type: "DELETE",
                             url: "/Okullar/OkulFotoSil/" + fotoId,

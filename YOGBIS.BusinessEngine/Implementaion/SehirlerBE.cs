@@ -206,7 +206,31 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
-        } 
+        }
+        #endregion
+
+        #region SehirAdGetir(Guid id)
+        public Result<string> SehirAdGetir(Guid id)
+        {
+            if (id==null)
+            {
+                var sehiradi = "";
+                return new Result<string>(true, ResultConstant.RecordFound, sehiradi);
+            }
+            else
+            {
+                var data = _unitOfWork.sehirlerRepository.Get(id);
+                if (data != null)
+                {
+                    var sehiradi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.SehirAdi.ToString());
+                    return new Result<string>(true, ResultConstant.RecordFound, sehiradi);
+                }
+                else
+                {
+                    return new Result<string>(false, ResultConstant.RecordNotFound);
+                }
+            }
+        }
         #endregion
     }
 }
