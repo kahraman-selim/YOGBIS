@@ -92,6 +92,37 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region EyaletleriGetirUlkeId
+        public Result<List<EyaletlerVM>> EyaletleriGetirUlkeId(Guid UlkeId)
+        {
+            var data = _unitOfWork.eyaletlerRepository.GetAll(u => u.UlkeId == UlkeId, includeProperties: "Kullanici").ToList();
+            if (data != null)
+            {
+                List<EyaletlerVM> returnData = new List<EyaletlerVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new EyaletlerVM()
+                    {
+                        EyaletId = item.EyaletId,
+                        EyaletAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.EyaletAdi.ToString()),
+                        EyaletAciklama = item.EyaletAciklama,
+                        //EyaletVatandas = item.EyaletVatandas,
+                        UlkeId = item.UlkeId,
+                        //UlkeAdi = item.Ulkeler.UlkeAdi,
+                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+                    });
+                }
+                return new Result<List<EyaletlerVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<EyaletlerVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
         #region EyaletGetir(Guid id)
         public Result<EyaletlerVM> EyaletGetir(Guid id)
         {

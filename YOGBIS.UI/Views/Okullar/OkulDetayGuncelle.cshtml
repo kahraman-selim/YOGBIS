@@ -145,19 +145,35 @@
 
                         <hr />
                         <!--Okul Bölge-->
-                        <div class="form-row">
-                            <div class="col-md-3">
-                                <p class="font-weight-bold">Eyalet</p>
+                        @if (Model.EyaletId == null)
+                        {
+                            <div class="form-row">
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold">Eyalet</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control py-2" id="EyaletInput" placeholder="Eyalet adını yazınız" asp-for="EyaletAdi" />
+                                    <span class="text-danger">Okulun bulunduğu ülkede eyalet sistemi yok ise boş bırakınız</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <a id="eyaletEkleBtn" name="eyaletEkleBtn" class="btn btn-success btn-sm text-white mb-2 w-75">Ekle</a>
+                                </div>
+                                <input hidden type="text" asp-for="EyaletId" id="EyaletIdInput" />
                             </div>
-                            <div class="col-md-6">
-                                <input type="text" class="form-control py-2" id="EyaletInput" placeholder="Eyalet adını yazınız" asp-for="EyaletAdi" />
-                                <span class="text-danger">Okulun bulunduğu ülkede eyalet sistemi yok ise boş bırakınız</span>
+                        }
+                        else
+                        {
+                            <div class="form-row">
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold">Eyalet</p>
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.DropDownListFor(u => u.EyaletId, new SelectList(ViewBag.Eyaletler, "EyaletId", "EyaletAdi"),
+                                        "Eyaleti seçiniz", new { @class = "form-control-range form-control py-2" })
+                                </div>
+                                <span class="text-danger" asp-validation-for="EyaletId"></span>
                             </div>
-                            <div class="col-md-3">
-                                <a id="eyaletEkleBtn" name="eyaletEkleBtn" class="btn btn-success btn-sm text-white mb-2 w-75">Ekle</a>
-                            </div>
-                            <input hidden type="text" asp-for="EyaletId" id="EyaletIdInput" />
-                        </div>
+                        }
                         <div class="form-row">
                             <div class="col-md-3">
                                 <p class="font-weight-bold">Şehir/Bölge</p>
@@ -292,8 +308,10 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-6 pl-4"><h3>FİZİKİ KAPASİTE</h3></div>
-                <div class="col-md-6 pr-2 text-right text-white"><button class="btn btn-primary" id="okulBolumEkle">Okul Bina Bölüm Ekle/Sil</button>
-                @*<a class="btn btn-primary" id="okulBolumEkle">Okul Bina Bölüm Ekle/Sil</a>*@</div>
+                <div class="col-md-6 pr-2 text-right text-white">
+                    <button class="btn btn-primary" id="okulBolumEkle">Okul Bina Bölüm Ekle/Sil</button>
+                    @*<a class="btn btn-primary" id="okulBolumEkle">Okul Bina Bölüm Ekle/Sil</a>*@
+                </div>
             </div>
             <hr />
             <div class="row">
@@ -479,12 +497,12 @@ else
                         document.getElementById("EyaletIdInput").value = "";
                         /*document.getElementById("eyaletEkleBtn").style.display = "block";*/
                         document.getElementById("eyaletEkleBtn").className = "btn btn-success btn-sm text-white mb-2 w-75";
-                        
+
                     }
                 });
             }
             else {
-                document.getElementById("eyaletEkleBtn").style.display = "none";
+                document.getElementById("eyaletEkleBtn").style.display = "block";
             }
 
         });
@@ -569,7 +587,7 @@ else
                                 $("#SehirIdInput").val(sehirId);
                                 document.getElementById("sehirEkleBtn").className += " disabled";
                                 alertify.success(seh + ' şehri daha önce kaydedilmiş');
-                                
+
                             }
                         });
                     }
@@ -583,7 +601,7 @@ else
                 });
             }
             else {
-                document.getElementById("sehirEkleBtn").style.display = "none";
+                document.getElementById("sehirEkleBtn").style.display = "block";
             }
 
         });

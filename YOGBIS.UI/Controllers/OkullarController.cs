@@ -207,8 +207,9 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "SubManager")]
         [HttpGet]
         [Route("Okullar/OC10005", Name = "OkulDetayGuncelle")]
-        public IActionResult OkulDetayGuncelle(Guid? id)
+        public IActionResult OkulDetayGuncelle(Guid? id, Guid UlkeId)
         {
+            ViewBag.Eyaletler = _eyaletlerBE.EyaletleriGetirUlkeId((Guid) UlkeId).Data;
             
             if (id != null)
             {

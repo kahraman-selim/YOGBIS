@@ -80,11 +80,26 @@
                         <td>@sirano</td>
                         @*<td>okulsayısı</td>*@
                         <td><a asp-controller="Ulkeler" asp-action="UlkeDetayById" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
-                        <td>@item.EyaletAdi @(item.EyaletAdi == "" ? "" : "/") @item.SehirAdi</td>
+                        @if (item.EyaletAdi == "" && item.SehirAdi == "")
+                        {
+                            <td></td>
+                        }
+                        else if (item.EyaletAdi != "" && item.SehirAdi =="")
+                        {
+                            <td>@item.EyaletAdi</td>
+                        }
+                        else if (item.EyaletAdi == "" && item.SehirAdi != "")
+                        {
+                            <td>@item.SehirAdi</td>
+                        }
+                        else
+                        {
+                            <td>@item.EyaletAdi / @item.SehirAdi</td>
+                        }                        
                         <td>@item.OkulKodu</td>
                         @if (User.IsInRole("SubManager"))
                         {
-                            <td><a asp-controller="Okullar" asp-action="OkulDetayGuncelle" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
+                            <td><a asp-controller="Okullar" asp-action="OkulDetayGuncelle" asp-route-id="@item.OkulId" asp-route-ulkeId="@item.UlkeId">@item.OkulAdi</a></td>
                         }
                         else
                         {

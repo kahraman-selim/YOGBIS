@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
@@ -139,10 +138,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OkulDurumu = item.OkulDurumu,
                         OkulTuru = item.OkulTuru,
                         OkulAcilisTarihi = item.OkulAcilisTarihi.GetValueOrDefault(),
-                        EyaletId = item.EyaletId != null ? item.EyaletId : Guid.Empty,
-                        EyaletAdi = item.EyaletId != null ? _eyaletlerBE.EyaletAdGetir((Guid)item.EyaletId).Data.ToString() : string.Empty,
-                        SehirId = item.SehirId != null ? item.SehirId : Guid.Empty,
-                        SehirAdi = item.SehirId != null ? _sehirlerBE.SehirAdGetir((Guid)item.SehirId).Data.ToString() : string.Empty,
+                        EyaletId = item.EyaletId.GetValueOrDefault(),
+                        EyaletAdi = item.EyaletId.GetValueOrDefault() == Guid.Empty ? string.Empty : _eyaletlerBE.EyaletAdGetir(item.EyaletId.GetValueOrDefault()).Data.ToString(),
+                        SehirId = item.SehirId.GetValueOrDefault(),
+                        SehirAdi = item.SehirId.GetValueOrDefault() == Guid.Empty ? string.Empty : _sehirlerBE.SehirAdGetir(item.SehirId.GetValueOrDefault()).Data.ToString(),
                         OkulMudurId = item.OkulMudurId,
                         OkulMudurAdiSoyadi = item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
                         KaydedenId = item.KaydedenId,
@@ -392,7 +391,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.OkulTelefon = model.OkulTelefon;
                         data.EyaletId = model.EyaletId == null ? null : model.EyaletId;
                         //((Guid)model.EyaletId == null || model.EyaletId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.EyaletId;
-                        data.SehirId = model.SehirId == null ? null : model.EyaletId; 
+                        data.SehirId = model.SehirId == null ? null : model.SehirId; 
                         //((Guid)model.SehirId == null || model.SehirId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.SehirId;
 
                         if (model.FotoGaleri != null)
