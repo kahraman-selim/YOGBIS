@@ -32,6 +32,7 @@ namespace YOGBIS.Data.DbModels
         //public Sehirler Sehirler { get; set; }
         public Guid? EyaletId { get; set; }
         //public Eyaletler Eyaletler { get; set; }
+        public Guid? TemsilcilikId { get; set; }
         public Guid UlkeId { get; set; }
         //public Ulkeler Ulkeler { get; set; }
         public string KaydedenId { get; set; }

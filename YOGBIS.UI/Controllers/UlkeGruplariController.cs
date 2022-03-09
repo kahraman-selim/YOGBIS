@@ -10,7 +10,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = "Administrator,Manager")]
+    [Authorize(Roles = "Administrator")]
     public class UlkeGruplariController : Controller
     {
         private readonly IUlkeGruplariBE _ulkeGruplariBE;

@@ -26,7 +26,7 @@
                                 sirano++;
                         <tr>
                             <td>@sirano</td>                            
-                            <td><a asp-controller="Okullar" asp-action="Guncelle" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
+                            <td><a asp-controller="Okullar" asp-action="Guncelle" asp-route-id="@item.OkulId" asp-route-ulkeId="@item.UlkeId">@item.OkulAdi</a></td>
                             <td>@item.OkulMudurAdiSoyadi</td> 
                             
                             @if (item.OkulDurumu == true)

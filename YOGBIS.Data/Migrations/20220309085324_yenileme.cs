@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace YOGBIS.Data.Migrations
 {
-    public partial class yeniyuk : Migration
+    public partial class yenileme : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -1077,11 +1077,14 @@ namespace YOGBIS.Data.Migrations
                     OkulInternetAdresi = table.Column<string>(nullable: true),
                     OkulEPostaAdresi = table.Column<string>(nullable: true),
                     OkulTelefon = table.Column<string>(nullable: true),
-                    SehirId = table.Column<byte[]>(nullable: false),
+                    SehirId = table.Column<byte[]>(nullable: true),
                     EyaletId = table.Column<byte[]>(nullable: true),
+                    TemsilcilikId = table.Column<byte[]>(nullable: false),
                     UlkeId = table.Column<byte[]>(nullable: false),
                     KaydedenId = table.Column<string>(nullable: true),
                     EyaletlerEyaletId = table.Column<byte[]>(nullable: true),
+                    SehirlerSehirId = table.Column<byte[]>(nullable: true),
+                    TemsilciliklerTemsilcilikId = table.Column<byte[]>(nullable: true),
                     UlkelerUlkeId = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
@@ -1100,11 +1103,17 @@ namespace YOGBIS.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Okullar_Sehirler_SehirId",
-                        column: x => x.SehirId,
+                        name: "FK_Okullar_Sehirler_SehirlerSehirId",
+                        column: x => x.SehirlerSehirId,
                         principalTable: "Sehirler",
                         principalColumn: "SehirId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Okullar_Temsilcilikler_TemsilciliklerTemsilcilikId",
+                        column: x => x.TemsilciliklerTemsilcilikId,
+                        principalTable: "Temsilcilikler",
+                        principalColumn: "TemsilcilikId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Okullar_Ulkeler_UlkelerUlkeId",
                         column: x => x.UlkelerUlkeId,
@@ -2159,9 +2168,14 @@ namespace YOGBIS.Data.Migrations
                 column: "KaydedenId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Okullar_SehirId",
+                name: "IX_Okullar_SehirlerSehirId",
                 table: "Okullar",
-                column: "SehirId");
+                column: "SehirlerSehirId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Okullar_TemsilciliklerTemsilcilikId",
+                table: "Okullar",
+                column: "TemsilciliklerTemsilcilikId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Okullar_UlkelerUlkeId",

@@ -39,12 +39,11 @@ namespace YOGBIS.Common.VModels
         public string OkulInternetAdresi { get; set; }
         public string OkulEPostaAdresi { get; set; }
         public string OkulTelefon { get; set; }
-
-        [Required(ErrorMessage = "Şehir adı zorunlu bir alandır")]
         public Guid? SehirId { get; set; }
         public string SehirAdi { get; set; }
         public Guid? EyaletId { get; set; }
-        public string EyaletAdi { get; set; }        
+        public string EyaletAdi { get; set; }
+        public Guid? TemsilcilikId { get; set; }
 
         [Required(ErrorMessage = "Ülkeyi seçiniz")]
         public Guid UlkeId { get; set; }

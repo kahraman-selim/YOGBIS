@@ -44,7 +44,7 @@
                                         <span class="text-danger" asp-validation-for="OkulAdi"></span>
                                     </div>
                                 </div>
-                            </div>                            
+                            </div>
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -72,6 +72,26 @@
                                             <input type="checkbox" asp-for="OkulDurumu" class="form-check-input mb-1" />
                                             <span class="text-danger" asp-validation-for="OkulDurumu"></span>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="EyaletId" class="small mb-1 font-weight-bold">Eyalet</label>
+                                        @Html.DropDownListFor(u => u.EyaletId, new SelectList(ViewBag.Eyaletler, "EyaletId", "EyaletAdi"),
+                                       "Eyaleti seçiniz", new { @id = "EyaletListesi", @class = "form-control-range form-control py-2" })
+                                        <span class="text-danger" asp-validation-for="EyaletId"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="SehirId" class="small mb-1 font-weight-bold">Şehir/Bölge</label>
+                                        @Html.DropDownListFor(u => u.SehirId, new SelectList(ViewBag.Sehirler, "SehirId", "SehirAdi"),
+                                       "Şehir/Bölge seçiniz", new { @id = "SehirListesi", @class = "form-control-range form-control py-2" })
+                                        <span class="text-danger" asp-validation-for="SehirId"></span>
                                     </div>
                                 </div>
                             </div>
@@ -108,23 +128,52 @@
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
 
-        $("#btnSil").on("click", function () {
+        $(document).ready(function () {
 
-            document.getElementById("OkulId").focus();
-            var okulid = $("#OkulId").val();
+            $("#btnSil").on("click", function () {
 
-            bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
-                if (result) {
-                    $.ajax({
-                        type: "DELETE",
-                        url: "/Okullar/OkulSil/" + okulid,
-                        success: function () {
-                            window.location.href = "/Okullar/OC10002";
-                        }
-                    });
-                }
+                document.getElementById("OkulId").focus();
+                var okulid = $("#OkulId").val();
+
+                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/Okullar/OkulSil/" + okulid,
+                            success: function () {
+                                window.location.href = "/Okullar/OC10002";
+                            }
+                        });
+                    }
+                });
+
             });
 
+            @*$("#EyaletListesi").on("change", function () {
+
+                var eyaletId = $("#EyaletListesi").val();
+
+                /*alert(ulkeId);*/
+
+                $("#SehirListesi").empty();
+                $("#SehirListesi").append("<option value=''> Sehir/Bölge seçiniz </option>");
+
+                var url = '@Url.Action("SehirAdGetir", "Okullar")?eyaletId=' + eyaletId;
+
+                $.getJSON(url, function (data) {
+
+                    $.each(data, function (i=0,okulId,okulAdi) {
+
+                        /*alert(data);*/
+                        $('#SehirListesi').append($('<option>', {
+                            value: data[i]['sehirId'],
+                            text: data[i]['sehirAdi']
+                        }));
+
+                    });
+                });
+
+            });*@
         });
 
     </script>

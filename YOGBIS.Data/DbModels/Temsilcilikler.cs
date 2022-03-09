@@ -21,6 +21,7 @@ namespace YOGBIS.Data.DbModels
         public List<Telefonlar> Telefonlar { get; set; }
         public List<Eyaletler> Eyaletler { get; set; }
         public List<Sehirler> Sehirler { get; set; }
+        public List<Okullar> Okullar { get; set; }
         public List<Personeller> Personeller { get; set; }
         public List<AdayGorevKaydi> Gorevliler { get; set; }
         public List<Etkinlikler> Etkinlikler { get; set; }

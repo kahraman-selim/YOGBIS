@@ -63,6 +63,38 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region SehirleriGetirUlkeId
+        public Result<List<SehirlerVM>> SehirleriGetirUlkeId(Guid UlkeId)
+        {
+            var data = _unitOfWork.sehirlerRepository.GetAll(u => u.UlkeId == UlkeId, includeProperties: "Kullanici").ToList();
+            if (data != null)
+            {
+                List<SehirlerVM> returnData = new List<SehirlerVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new SehirlerVM()
+                    {
+                        SehirId=item.SehirId,
+                        SehirAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SehirAdi.ToString()),
+                        Baskent=item.Baskent,
+                        SehirAciklama=item.SehirAciklama,
+                        TemsilciId=item.TemsilciId,
+                        EyaletId = item.EyaletId,
+                        UlkeId = item.UlkeId,
+                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+                    });
+                }
+                return new Result<List<SehirlerVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<SehirlerVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
         #region SehirGetirKullaniciId
         public Result<List<SehirlerVM>> SehirGetirKullaniciId(string userId)
         {

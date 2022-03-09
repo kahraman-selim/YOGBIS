@@ -81,7 +81,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region OkulEkleGet
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Manager")]
         [HttpGet]
 
         [Route("Okullar/OC10002", Name = "OkulEkleRoute")]
@@ -97,7 +97,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region OkulEklePost
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Manager")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Obsolete]
@@ -140,12 +140,14 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Guncelle
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Manager")]
         [Route("Okullar/OC10003", Name = "OkulGuncelle")]
-        public async Task<ActionResult> Guncelle(Guid? id)
+        public async Task<ActionResult> Guncelle(Guid? id, Guid UlkeId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            ViewBag.Eyaletler = _eyaletlerBE.EyaletleriGetirUlkeId((Guid)UlkeId).Data;
+            ViewBag.Sehirler = _sehirlerBE.SehirleriGetirUlkeId((Guid)UlkeId).Data;
             var okulmudur = await _kullaniciBE.OkulMuduruGetir();
             ViewBag.OkulMuduru = okulmudur.Data;
 
@@ -163,7 +165,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region OkulSil
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Manager")]
         [HttpDelete]
         public IActionResult OkulSil(Guid id)
         {
@@ -296,6 +298,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region EyaletEkleJson
+        [Authorize(Roles = "SubManager")]
         [HttpPost]
         public JsonResult EyaletEkleJson(EyaletlerVM model)
         {
@@ -312,6 +315,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region SehirEkleJson
+        [Authorize(Roles = "SubManager")]
         [HttpPost]
         public JsonResult SehirEkleJson(SehirlerVM model)
         {
@@ -323,10 +327,11 @@ namespace YOGBIS.UI.Controllers
                 return Json("200");
             }
             return Json("Eklenecek veri bulunamadı !");
-        } 
+        }
         #endregion
 
         #region OkulBolumEkleJson
+        [Authorize(Roles = "SubManager")]
         [HttpPost]
         public JsonResult OkulBolumEkleJson(OkulBinaBolumVM model)
         {
@@ -338,10 +343,11 @@ namespace YOGBIS.UI.Controllers
                 return Json("200");
             }
             return Json("Eklenecek veri bulunamadı !");
-        } 
+        }
         #endregion
 
         #region OkulEyaletGetir
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
         public IActionResult OkulEyaletGetir(string EyaletAdi)
         {
                         
@@ -356,6 +362,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region OkulSehirGetir
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
         public IActionResult OkulSehirGetir(string SehirAdi)
         {
             if (SehirAdi != null)
@@ -365,10 +372,11 @@ namespace YOGBIS.UI.Controllers
             }
 
             return NotFound();
-        } 
+        }
         #endregion
 
         #region OkulFotoSil
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
         [Obsolete]
         public IActionResult OkulFotoSil(Guid id)
         {
@@ -407,7 +415,8 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region OkulBinaBolumSil        
+        #region OkulBinaBolumSil 
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
         [HttpDelete]
         public IActionResult OkulBinaBolumSil(Guid id)
         {
@@ -423,5 +432,40 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region SehirAdGetir
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
+        public IActionResult SehirAdGetir(Guid eyaletId)
+        {
+
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            if (eyaletId != null)
+            {
+                var data = _unitOfWork.sehirlerRepository.GetAll(x => x.EyaletId == eyaletId);
+
+                return Json(data);
+            }
+
+            return NotFound();
+        }
+        #endregion
+
+        #region SubeSinifOgrenciGet
+        [Authorize(Roles = "SubManager")]
+        [HttpGet]
+        [Route("Okullar/OC10006", Name = "OkulSubeSinifOgrenci")]
+        public IActionResult SubeSinifOgrenci(Guid? id)
+        {
+            if (id != null)
+            {
+                var data = _okullarBE.OkulGetir((Guid)id);
+                return View(data.Data);
+            }
+            else
+            {
+                return View();
+            }
+        } 
+        #endregion
     }
 }

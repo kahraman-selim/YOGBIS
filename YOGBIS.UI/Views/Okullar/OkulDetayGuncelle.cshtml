@@ -4,7 +4,7 @@
 @model YOGBIS.Common.VModels.OkullarVM
 
 @{
-    ViewData["Title"] = "OkulDetay";
+    ViewData["Title"] = "Okul Detay";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles{
@@ -145,44 +145,29 @@
 
                         <hr />
                         <!--Okul Bölge-->
-                        @if (Model.EyaletId == null)
-                        {
-                            <div class="form-row">
-                                <div class="col-md-3">
-                                    <p class="font-weight-bold">Eyalet</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control py-2" id="EyaletInput" placeholder="Eyalet adını yazınız" asp-for="EyaletAdi" />
-                                    <span class="text-danger">Okulun bulunduğu ülkede eyalet sistemi yok ise boş bırakınız</span>
-                                </div>
-                                <div class="col-md-3">
-                                    <a id="eyaletEkleBtn" name="eyaletEkleBtn" class="btn btn-success btn-sm text-white mb-2 w-75">Ekle</a>
-                                </div>
-                                <input hidden type="text" asp-for="EyaletId" id="EyaletIdInput" />
+                        <div class="form-row">
+                            <div class="col-md-3">
+                                <p class="font-weight-bold">Eyalet</p>
                             </div>
-                        }
-                        else
-                        {
-                            <div class="form-row">
-                                <div class="col-md-3">
-                                    <p class="font-weight-bold">Eyalet</p>
-                                </div>
-                                <div class="col-md-6">
-                                    @Html.DropDownListFor(u => u.EyaletId, new SelectList(ViewBag.Eyaletler, "EyaletId", "EyaletAdi"),
-                                        "Eyaleti seçiniz", new { @class = "form-control-range form-control py-2" })
-                                </div>
-                                <span class="text-danger" asp-validation-for="EyaletId"></span>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control py-2" id="EyaletInput" placeholder="Eyalet adını yazınız" asp-for="EyaletAdi" />
+                                <span class="text-danger">Okulun bulunduğu ülkede eyalet sistemi yok ise boş bırakınız</span>
                             </div>
-                        }
+                            <div class="col-md-3">
+                                <a id="eyaletEkleBtn" name="eyaletEkleBtn" class="btn btn-success btn-sm text-white mb-2" style="width:100px">Ekle</a>
+                            </div>
+                            <input hidden type="text" asp-for="EyaletId" id="EyaletIdInput" />
+                        </div>
+
                         <div class="form-row">
                             <div class="col-md-3">
                                 <p class="font-weight-bold">Şehir/Bölge</p>
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control py-2" id="SehirInput" placeholder="Şehir/Bölge adını yazınız" asp-for="SehirAdi" />
+                                <input type="text" class="form-control py-2 mb-2" id="SehirInput" placeholder="Şehir/Bölge adını yazınız" asp-for="SehirAdi" />
                             </div>
                             <div class="col-md-3">
-                                <a id="sehirEkleBtn" name="sehirEkleBtn" class="btn btn-success btn-sm text-white mb-2 w-75">Ekle</a>
+                                <a id="sehirEkleBtn" name="sehirEkleBtn" class="btn btn-success btn-sm text-white mb-2" style="width:100px">Ekle</a>
                             </div>
                             <input hidden type="text" asp-for="SehirId" id="SehirIdInput" />
                         </div>
@@ -309,8 +294,7 @@
             <div class="row">
                 <div class="col-md-6 pl-4"><h3>FİZİKİ KAPASİTE</h3></div>
                 <div class="col-md-6 pr-2 text-right text-white">
-                    <button class="btn btn-primary" id="okulBolumEkle">Okul Bina Bölüm Ekle/Sil</button>
-                    @*<a class="btn btn-primary" id="okulBolumEkle">Okul Bina Bölüm Ekle/Sil</a>*@
+                    <button class="btn btn-primary" id="okulBolumEkle" style="width:220px">Okul Bina Bölüm Ekle/Sil</button>
                 </div>
             </div>
             <hr />
@@ -324,6 +308,18 @@
                             <hr />
                         }
                     }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 pl-4"><h3>ŞUBE-SINIF-ÖĞRENCİ</h3></div>
+                <div class="col-md-6 pr-2 text-right text-white">
+                    <a asp-controller="Okullar" asp-action="SubeSinifOgrenci" asp-route-id="@Model.OkulId" id="okulSinifOgrenciEkle" name="okulSinifOgrenciEkle" class="btn btn-primary" style="width:220px">Şube-Sınıf-Öğrenci Ekle/Sil</a>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-12 pl-5 pr-5">
+
                 </div>
             </div>
             <div class="row">
@@ -375,9 +371,9 @@ else
 }
 
 <!--OkulBölüm Kayıt Modal-->
-<!-- #region Modal -->
+<!-- #region BolumModal -->
 
-<div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="saveModalBolum" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -425,6 +421,55 @@ else
 </div>
 
 <!-- #endregion -->
+
+<!--Şube-Sınıf-Öğrenci Kayıt Modal-->
+<!-- #region SubeSinifOgrenciModal -->
+
+<div class="modal fade" id="saveModalSubeSinifOgrenci" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-pen mr-1"></i>Şube-Sınıf-Öğrenci Ekleme/Güncelleme</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Messages</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Settings</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
+                    <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+                    <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">...</div>
+                    <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">...</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @*<button id="btnBolumKaydet" type="button" class="btn btn-success btn-sm">Kaydet</button>*@
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Kapat&nbsp;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- #endregion -->
+
+
+
+
 
 
 @section Scripts{
@@ -713,11 +758,15 @@ else
 
         $("#okulBolumEkle").click(function () {
 
-            $('#saveModal').modal();
+            $('#saveModalBolum').modal();
 
         });
 
-        /*$('#saveModal').modal({ backdrop: 'static', keyboard: false });*/
+        $("#okulSinifOgrenciEkle").click(function () {
+
+            $('#saveModalSubeSinifOgrenci').modal();
+
+        });
 
         $("#btnBolumKaydet").click(function () {
 
@@ -737,7 +786,7 @@ else
 
                     if (response === "200") {
 
-                        $('#saveModal').modal('hide');
+                        //$('#saveModal').modal('hide');
                         location.reload();
                         alertify.success('Kayıt başarıyla eklendi');
                     }
