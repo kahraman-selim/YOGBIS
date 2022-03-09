@@ -422,50 +422,7 @@ else
 
 <!-- #endregion -->
 
-<!--Şube-Sınıf-Öğrenci Kayıt Modal-->
-<!-- #region SubeSinifOgrenciModal -->
 
-<div class="modal fade" id="saveModalSubeSinifOgrenci" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-pen mr-1"></i>Şube-Sınıf-Öğrenci Ekleme/Güncelleme</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Messages</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Settings</button>
-                    </li>
-                </ul>
-
-                <div class="tab-content">
-                    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
-                    <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-                    <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">...</div>
-                    <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">...</div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                @*<button id="btnBolumKaydet" type="button" class="btn btn-success btn-sm">Kaydet</button>*@
-                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Kapat&nbsp;</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- #endregion -->
 
 
 
@@ -762,12 +719,6 @@ else
 
         });
 
-        $("#okulSinifOgrenciEkle").click(function () {
-
-            $('#saveModalSubeSinifOgrenci').modal();
-
-        });
-
         $("#btnBolumKaydet").click(function () {
 
             var okulbinabolum = {
@@ -787,20 +738,22 @@ else
                     if (response === "200") {
 
                         //$('#saveModal').modal('hide');
-                        location.reload();
+                        /*location.reload();*/
                         alertify.success('Kayıt başarıyla eklendi');
+
+                        $('#okulBolumTable').DataTable().reload();
                     }
                     else {
 
-                        $('#saveModal').modal('hide');
-                        location.reload();
+                        /*$('#saveModal').modal('hide');*/
+                        /*location.reload();*/
                         alertify.warning('Kayıt eklenemedi !');
                     }
                 },
                 error: function () {
 
-                    $('#saveModal').modal('hide');
-                    location.reload();
+                    $('#saveModalBolum').modal('hide');
+                    /*location.reload();*/
                     alertify.warning('Kayıt eklenemedi !');
                 }
 
@@ -869,7 +822,7 @@ else
                             url: "/Okullar/OkulBinaBolumSil/" + id,
                             success: function () {
                                 btn.parent().parent().remove();
-                                location.reload();
+                                /*location.reload();*/
                                 alertify.success('Kayıt silindi');
                             }
                         });
@@ -877,6 +830,11 @@ else
                 }
             });
 
+        });
+
+        $("#saveModalBolum").on('hidden.bs.modal', function () {
+
+            location.reload();
         });
 
         function OkulLogoImagesFileSize(input) {

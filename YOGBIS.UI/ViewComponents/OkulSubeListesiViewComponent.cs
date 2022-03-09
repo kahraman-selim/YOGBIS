@@ -5,17 +5,17 @@ using YOGBIS.BusinessEngine.Contracts;
 
 namespace YOGBIS.UI.ViewComponents
 {
-    public class OkulSubeListesiViewComponent : ViewComponent
+    public class OkulBinaBolumListeViewComponent : ViewComponent
     {
-        private readonly ISubelerBE _subelerBE;
-        public OkulSubeListesiViewComponent(ISubelerBE subelerBE)
+        private readonly IOkulBinaBolumBE _okulbinabolumBE;
+        public OkulBinaBolumListeViewComponent(IOkulBinaBolumBE okulbinabolumBE)
         {
-            _subelerBE = subelerBE;
+            _okulbinabolumBE = okulbinabolumBE;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(Guid OkulId)
         {
-            var requestmodel = _subelerBE.SubeleriGetirOkulId(OkulId);
+            var requestmodel = _okulbinabolumBE.OkulBinaBolumGetirOkulId(OkulId);
             if (requestmodel.IsSuccess)
             {
                 return View(requestmodel.Data);

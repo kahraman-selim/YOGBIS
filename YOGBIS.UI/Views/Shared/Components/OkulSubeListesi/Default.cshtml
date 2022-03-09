@@ -1,0 +1,53 @@
+﻿
+@model IEnumerable<YOGBIS.Common.VModels.SubelerVM>
+
+
+
+<div class="table-responsive">
+    <table class="table table-bordered table-sm table-hover table-striped display responsive nowrap" id="okulSubeTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Sıra No</th>
+                <th>Şube Adı</th>
+                <th>Açılış Tarihi</th>
+                <th class="text-center">Değiştir</th>
+                <th class="text-center">Sil</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ var sirano = 0;}
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    sirano++;
+            <tr>
+                <td>@sirano</td>
+                <td>@item.SubeAdi</td>
+                <td>@item.SubeAcilisTarihi.ToString("dd/MM/yyyy")</td>
+                <td class="text-center">
+                    <a class="btn btn-sm btn-danger" title="degistir" id="btnDegistir" asp-controller="Okullar" asp-action="SubeSinifOgrenci" asp-route-id="@item.SubeId">
+                        <i class="fas fa-edit text-white"></i>
+                    </a>
+                </td>
+                <td class="text-center">
+                    <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.SubeId">
+                        <i class="fas fa-trash text-white"></i>
+                    </a>
+                </td>
+            </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td>Kayıt bulunamadı!</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
