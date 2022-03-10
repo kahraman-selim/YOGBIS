@@ -28,6 +28,7 @@ namespace YOGBIS.UI.Controllers
         private readonly ISehirlerBE _sehirlerBE;
         private readonly IOkulBinaBolumBE _okulBinaBolumBE;
         private readonly ISubelerBE _subelerBE;
+        private readonly ISiniflarBE _siniflarBE;
         private readonly IOgrencilerBE _ogrencilerBE;
         private readonly IUnitOfWork _unitOfWork;
         [Obsolete]
@@ -37,7 +38,8 @@ namespace YOGBIS.UI.Controllers
         #region Dönüştürücüler
         [Obsolete]
         public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE, IHostingEnvironment hostingEnvironment, 
-            IEyaletlerBE eyaletlerBE, ISehirlerBE sehirlerBE, IFotoGaleriBE fotoGaleriBE, IOkulBinaBolumBE okulBinaBolumBE, ISubelerBE subelerBE, IOgrencilerBE ogrencilerBE, IUnitOfWork unitOfWork)
+            IEyaletlerBE eyaletlerBE, ISehirlerBE sehirlerBE, IFotoGaleriBE fotoGaleriBE, IOkulBinaBolumBE okulBinaBolumBE, ISubelerBE subelerBE,
+            ISiniflarBE siniflarBE, IOgrencilerBE ogrencilerBE, IUnitOfWork unitOfWork)
         {
             _okullarBE = okullarBE;
             _ulkelerBE = ulkelerBE;
@@ -47,6 +49,7 @@ namespace YOGBIS.UI.Controllers
             _fotoGaleriBE = fotoGaleriBE;
             _okulBinaBolumBE = okulBinaBolumBE;
             _subelerBE = subelerBE;
+            _siniflarBE = siniflarBE;
             _ogrencilerBE = ogrencilerBE;
             _unitOfWork = unitOfWork;
             _hostingEnvironment = hostingEnvironment;
@@ -536,6 +539,55 @@ namespace YOGBIS.UI.Controllers
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
+        }
+        #endregion
+
+        #region SinifEkleJson
+        [Authorize(Roles = "SubManager")]
+        [HttpPost]
+        public JsonResult SinifEkleJson(SiniflarVM model)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var data = _siniflarBE.SinifEkle(model, user);
+            if (data.IsSuccess)
+            {
+                return Json("200");
+            }
+            return Json("Eklenecek veri bulunamadı !");
+
+        }
+        #endregion
+
+        #region SinifGuncelleJson
+        [Authorize(Roles = "SubManager")]
+        [HttpPost]
+        public JsonResult SinifGuncelleJson(SiniflarVM model)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var data = _siniflarBE.SinifGuncelle(model, user);
+            if (data.IsSuccess)
+            {
+                return Json("200");
+            }
+            return Json("Eklenecek veri bulunamadı !");
+
+        }
+        #endregion
+
+        #region OkulSinifGetir
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
+        public IActionResult OkulSinifGetir(Guid SinifId)
+        {
+
+            if (SinifId != null)
+            {
+                var data = _unitOfWork.siniflarRepository.GetAll(x => x.SinifId == SinifId);
+                return Json(data);
+            }
+
+            return NotFound();
         }
         #endregion
     }

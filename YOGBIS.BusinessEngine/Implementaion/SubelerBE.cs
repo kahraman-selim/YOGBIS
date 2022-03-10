@@ -64,7 +64,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SubeleriGetirOkulId
         public Result<List<SubelerVM>> SubeleriGetirOkulId(Guid OkulId)
         {
-            var data = _unitOfWork.subelerRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Okullar,Siniflar,Ogrenciler").ToList();
+            var data = _unitOfWork.subelerRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Okullar,Siniflar,Ogrenciler").OrderBy(s=>s.SubeAdi).ToList();
             if (data != null)
             {
                 List<SubelerVM> returnData = new List<SubelerVM>();

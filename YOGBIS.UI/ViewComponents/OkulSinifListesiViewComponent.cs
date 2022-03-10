@@ -6,17 +6,17 @@ using YOGBIS.BusinessEngine.Contracts;
 namespace YOGBIS.UI.ViewComponents
 {   
 
-    public class OkulSubeListesiViewComponent : ViewComponent
+    public class OkulSinifListesiViewComponent : ViewComponent
     {
-        private readonly ISubelerBE _subelerBE;
-        public OkulSubeListesiViewComponent(ISubelerBE subelerBE)
+        private readonly ISiniflarBE _siniflarBE;
+        public OkulSinifListesiViewComponent(ISiniflarBE siniflarBE)
         {
-            _subelerBE = subelerBE;
+            _siniflarBE = siniflarBE;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(Guid OkulId)
         {
-            var requestmodel = _subelerBE.SubeleriGetirOkulId(OkulId);
+            var requestmodel = _siniflarBE.SiniflariGetirOkulId(OkulId);
             if (requestmodel.IsSuccess)
             {
                 return View(requestmodel.Data);

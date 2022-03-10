@@ -12,7 +12,9 @@ namespace YOGBIS.Common.VModels
         public Guid SinifId { get; set; }
         public string SinifAdi { get; set; }
         public DateTime SinifAcilisTarihi { get; set; }
-        public Guid SubeId { get; set; }     
+        public Guid OkulId { get; set; }
+        public Guid SubeId { get; set; }
+        public string SubeAdi { get; set; }
         public SubelerVM Subeler { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
