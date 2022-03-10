@@ -25,13 +25,13 @@
                 <td>@sirano</td>
                 <td>@item.SubeAdi</td>
                 <td>@item.SubeAcilisTarihi.ToString("dd/MM/yyyy")</td>
-                <td class="text-center">
-                    <a class="btn btn-sm btn-danger" title="degistir" id="btnDegistir" asp-controller="Okullar" asp-action="SubeSinifOgrenci" asp-route-id="@item.SubeId">
+                <td class="text-center">                    
+                    <a class="btn btn-sm btn-info btnSubeDegistir" title="degistir" id="@item.SubeId" data-id="@item.SubeId">
                         <i class="fas fa-edit text-white"></i>
                     </a>
                 </td>
                 <td class="text-center">
-                    <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.SubeId">
+                    <a class="btn btn-sm btn-danger btnSubeSil" title="Sil" id="@item.SubeId" data-id="@item.SubeId">
                         <i class="fas fa-trash text-white"></i>
                     </a>
                 </td>

@@ -27,6 +27,8 @@ namespace YOGBIS.UI.Controllers
         private readonly IFotoGaleriBE _fotoGaleriBE;
         private readonly ISehirlerBE _sehirlerBE;
         private readonly IOkulBinaBolumBE _okulBinaBolumBE;
+        private readonly ISubelerBE _subelerBE;
+        private readonly IOgrencilerBE _ogrencilerBE;
         private readonly IUnitOfWork _unitOfWork;
         [Obsolete]
         private readonly IHostingEnvironment _hostingEnvironment;
@@ -35,7 +37,7 @@ namespace YOGBIS.UI.Controllers
         #region Dönüştürücüler
         [Obsolete]
         public OkullarController(IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IKullaniciBE kullaniciBE, IHostingEnvironment hostingEnvironment, 
-            IEyaletlerBE eyaletlerBE, ISehirlerBE sehirlerBE, IFotoGaleriBE fotoGaleriBE, IOkulBinaBolumBE okulBinaBolumBE, IUnitOfWork unitOfWork)
+            IEyaletlerBE eyaletlerBE, ISehirlerBE sehirlerBE, IFotoGaleriBE fotoGaleriBE, IOkulBinaBolumBE okulBinaBolumBE, ISubelerBE subelerBE, IOgrencilerBE ogrencilerBE, IUnitOfWork unitOfWork)
         {
             _okullarBE = okullarBE;
             _ulkelerBE = ulkelerBE;
@@ -44,6 +46,8 @@ namespace YOGBIS.UI.Controllers
             _sehirlerBE = sehirlerBE;
             _fotoGaleriBE = fotoGaleriBE;
             _okulBinaBolumBE = okulBinaBolumBE;
+            _subelerBE = subelerBE;
+            _ogrencilerBE = ogrencilerBE;
             _unitOfWork = unitOfWork;
             _hostingEnvironment = hostingEnvironment;
         }
@@ -459,13 +463,80 @@ namespace YOGBIS.UI.Controllers
             if (id != null)
             {
                 var data = _okullarBE.OkulGetir((Guid)id);
+                ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)id).Data;
                 return View(data.Data);
             }
             else
             {
                 return View();
             }
-        } 
+        }
+        #endregion
+
+        #region SubeEkleJson
+        [Authorize(Roles = "SubManager")]
+        [HttpPost]
+        public JsonResult SubeEkleJson(SubelerVM model)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var data = _subelerBE.SubeEkle(model, user);
+            if (data.IsSuccess)
+            {
+                return Json("200");
+            }
+            return Json("Eklenecek veri bulunamadı !");
+
+        }
+        #endregion
+
+        #region SubeGuncelleJson
+        [Authorize(Roles = "SubManager")]
+        [HttpPost]
+        public JsonResult SubeGuncelleJson(SubelerVM model)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var data = _subelerBE.SubeGuncelle(model, user);
+            if (data.IsSuccess)
+            {
+                return Json("200");
+            }
+            return Json("Eklenecek veri bulunamadı !");
+
+        }
+        #endregion
+
+        #region OkulSubeGetir
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
+        public IActionResult OkulSubeGetir(Guid SubeId)
+        {
+
+            if (SubeId != null)
+            {
+                var data = _unitOfWork.subelerRepository.GetAll(x => x.SubeId == SubeId);
+                return Json(data);
+            }
+
+            return NotFound();
+        }
+        #endregion
+
+        #region OkulSubeSil
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
+        [HttpDelete]
+        public IActionResult OkulSubeSil(Guid id)
+        {
+            if (id == null)
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+
+            var data = _subelerBE.SubeSil(id);
+            if (data.IsSuccess)
+                return Json(new { success = data.IsSuccess, message = data.Message });
+            else
+                return Json(new { success = data.IsSuccess, message = data.Message });
+
+        }
         #endregion
     }
 }

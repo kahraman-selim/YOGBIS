@@ -32,7 +32,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<SubelerVM>> SubeleriGetir()
         {
 
-            var data = _unitOfWork.subelerRepository.GetAll(includeProperties: "Kullanici,Okullar").ToList();
+            var data = _unitOfWork.subelerRepository.GetAll(includeProperties: "Kullanici,Okullar,Siniflar,Ogrenciler").ToList();
             //var subeler = _mapper.Map<List<Subeler>, List<SubelerVM>>(data);
 
             if (data != null)
@@ -64,7 +64,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SubeleriGetirOkulId
         public Result<List<SubelerVM>> SubeleriGetirOkulId(Guid OkulId)
         {
-            var data = _unitOfWork.subelerRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Okullar").ToList();
+            var data = _unitOfWork.subelerRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Okullar,Siniflar,Ogrenciler").ToList();
             if (data != null)
             {
                 List<SubelerVM> returnData = new List<SubelerVM>();
@@ -127,7 +127,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
             if (id != null)
             {
-                var data = _unitOfWork.subelerRepository.GetFirstOrDefault(s => s.SubeId == id, includeProperties: "Kullanici,Okullar");
+                var data = _unitOfWork.subelerRepository.GetFirstOrDefault(s => s.SubeId == id, includeProperties: "Kullanici,Okullar,Siniflar,Ogrenciler");
                 if (data != null)
                 {
                     SubelerVM sube = new SubelerVM();
@@ -220,11 +220,31 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SubeSil
         public Result<bool> SubeSil(Guid id)
         {
-            var data = _unitOfWork.subelerRepository.Get(id);
+            var data = _unitOfWork.subelerRepository.GetFirstOrDefault(s=>s.SubeId == id, includeProperties: "Kullanici,Okullar,Siniflar,Ogrenciler");
             if (data != null)
             {
                 _unitOfWork.subelerRepository.Remove(data);
                 _unitOfWork.Save();
+
+                foreach (var item in data.Siniflar.ToList())
+                {
+                    var siniflar = _unitOfWork.siniflarRepository.GetFirstOrDefault(c => c.SinifId == item.SinifId);
+                    if (data != null)
+                    {
+                        _unitOfWork.siniflarRepository.Remove(siniflar);
+                        _unitOfWork.Save();
+                    }
+                }
+
+                foreach (var item in data.Ogrenciler.ToList())
+                {
+                    var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId );
+                    if (data != null)
+                    {
+                        _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
+                        _unitOfWork.Save();
+                    }
+                }
                 return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
             }
             else

@@ -10,12 +10,20 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 }
 
-@if (Model != null)
-{
+    @if (Model != null)
+    {
     <div class="row mt-0">
+        <input hidden type="text" value="@Model.OkulId" id="inputOkulId" />
+        <input hidden type="text" value="" id="inputSubeId" />
         <div class="col-md-12">
-            <!--Şubeler-->
+            <!--Okul Ad Bilgi-->
             <div class="row">
+                <div class="col-md-12">
+                    <a asp-controller="Okullar" asp-action="OkulDetayGuncelle" asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId"><h4 class="text-center text-info">@Model.OkulAdi</h4></a>                    
+                </div>
+            </div>
+            <!--Şubeler-->
+            <div class="row mb-2">
                 <div class="col-md-6">
                     <div class="card shadow-lg rounded-lg mt-0 h-100">
                         <div class="card-header">
@@ -23,7 +31,30 @@
                             <b>Şube Ekleme/Güncelleme</b>
                         </div>
                         <div class="card-body">
-
+                            <div class="row mb-1">
+                                <div class="col-md-6">
+                                    <label class="small mb-1 font-weight-bold">Şube Adı</label>
+                                    <input type="text" class="form-control py-2 mb-1" id="subeAdiInput" placeholder="Şube adını yazınız">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1 font-weight-bold">Şube Açılış Tarihi</label>
+                                    <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                        <input id="inputSubeAcTar" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                                        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <button class="btn btn-primary btn-sm text-white mb-1" style="width:100px" id="yeniSubeBtn">Yeni Kayıt</button>
+                                    <button class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="subeEkleBtn">Kaydet</button>
+                                    <button class="btn btn-info btn-sm text-white mb-1 disabled" style="width:100px" id="subeDegistirBtn">Değiştir</button>
+                                    <a class="btn btn-danger btn-sm text-white mb-1" style="width:100px" asp-controller="Okullar" asp-action="OkulDetayGuncelle" 
+                                       asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Vazgeç</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -34,14 +65,65 @@
                             <b>Şubeler</b>
                         </div>
                         <div class="card-body">
-
+                            @await Component.InvokeAsync("OkulSubeListesi", Model.OkulId)
                         </div>
                     </div>
                 </div>
             </div>
             <!--Sınıflar-->
-            <div class="row">
-
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <div class="card shadow-lg rounded-lg mt-0 h-100">
+                        <div class="card-header">
+                            <i class="fas fa-pen mr-1"></i>
+                            <b>Sınıf Ekleme/Güncelleme</b>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-1">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="small mb-1 font-weight-bold">Şube Seçimi</label>
+                                        @Html.DropDownListFor(u => u.Subeler, new SelectList(ViewBag.SubeAdi, "SubeId", "SubeAdi"),
+                                       "Şubeyi seçiniz", new { @class = "form-control-range form-control py-2" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="small mb-1 font-weight-bold">Sınıf Adı</label>
+                                    <input type="text" class="form-control py-2 mb-1" id="sinifAdiInput" placeholder="Sınıf adını yazınız">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="small mb-1 font-weight-bold">Sınıf Açılış Tarihi</label>
+                                    <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                        <input id="inputSinifAcTar" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
+                                        <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <button class="btn btn-primary btn-sm text-white mb-1" style="width:100px" id="yeniSinifBtn">Yeni Kayıt</button>
+                                    <button class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="sinifEkleBtn">Kaydet</button>
+                                    <button class="btn btn-info btn-sm text-white mb-1 disabled" style="width:100px" id="sinifDegistirBtn">Değiştir</button>
+                                    <a class="btn btn-danger btn-sm text-white mb-1" style="width:100px" asp-controller="Okullar" asp-action="OkulDetayGuncelle"
+                                       asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Vazgeç</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-lg rounded-lg mt-0 h-100">
+                        <div class="card-header">
+                            <i class="fas fa-table mr-1"></i>
+                            <b>Sınıflar</b>
+                        </div>
+                        <div class="card-body">
+                            @*@await Component.InvokeAsync("OkulSubeListesi", Model.OkulId)*@
+                        </div>
+                    </div>
+                </div>
             </div>
             <!--Öğrenciler-->
             <div class="row">
@@ -49,16 +131,16 @@
             </div>
         </div>
     </div>
-}
-else
-{
-    <div class="row justify-content-center">
-        <h4 class="text-danger">Okula ait detay görüntülenemiyor !</h4>
-    </div>
-    <div class="row justify-content-center">
-        <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Geri Dön</a>
-    </div>
-}
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            <h4 class="text-danger">Okula ait detay görüntülenemiyor !</h4>
+        </div>
+        <div class="row justify-content-center">
+            <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Geri Dön</a>
+        </div>
+    }
 
 
 
@@ -74,6 +156,196 @@ else
 
         $('#datetimepicker1').datetimepicker({
             format: 'DD/MM/YYYY'
+        });
+
+        $("#subeEkleBtn").click(function () {
+
+            if ($("#subeAdiInput").val() == "") {
+
+                bootbox.alert({
+                    message: "Şube Adını ve Açılış Tarihini yazmalısınız !",
+                    buttons: {
+                        ok: {
+                            label: "Tamam",
+                            className : "btn-danger"
+                        }
+                    }
+                });
+
+                document.getElementById("subeAdiInput").focus();
+            }
+            else {
+
+                var sube = {
+                    SubeAdi: $("#subeAdiInput").val().trim(),
+                    SubeAcilisTarihi: $("#inputSubeAcTar").val().trim(),
+                    OkulId: $("#inputOkulId").val().trim()
+                }
+
+                $.ajax({
+
+                    type: 'POST',
+                    url: '/Okullar/SubeEkleJson',
+                    data: sube,
+
+                    success: function (response) {
+
+                        if (response === "200") {
+
+                            alertify.success('Kayıt başarıyla eklendi');
+                            location.reload();
+                        }
+                        else {
+
+                            alertify.danger('Kayıt eklenemedi !');
+                        }
+                    },
+                    error: function () {
+
+                        alertify.danger('Kayıt eklenemedi !');
+                    }
+
+                });
+            }
+
+        });
+
+        $(".btnSubeDegistir").click(function () {
+
+            var subeid = $(this).data("id");
+            var url = '@Url.Action("OkulSubeGetir", "Okullar")?SubeId=' + subeid;
+            $("#inputSubeId").val(subeid);
+
+            $.getJSON(url, function (data) {
+
+                    if (data.length != 0) {
+
+                        $.each(data, function (i = 0, subeId, subeAdi, subeAcilisTarihi) {
+
+                            if (i == 0) {
+
+                                $("#subeAdiInput").val(data[i]['subeAdi']);
+                                var date = new Date(data[i]['subeAcilisTarihi']);
+                                $("#inputSubeAcTar").val(date.toLocaleString().toString("dd/MM/yyyy"));
+                            }
+                        });
+
+                        document.getElementById("subeEkleBtn").className += " disabled";
+                        document.getElementById("subeDegistirBtn").className = "";
+                        document.getElementById("subeDegistirBtn").className = "btn btn-info btn-sm text-white mb-1";
+                    }
+                    else {
+
+                        alertify.danger('bu şube kayıtlı değil !');
+
+                    }
+                });
+
+        });
+
+        $("#subeDegistirBtn").click(function () {
+
+            if ($("#subeAdiInput").val() == "") {
+
+                bootbox.alert({
+                    message: "Şube Adını ve Açılış Tarihini yazmalısınız !",
+                    buttons: {
+                        ok: {
+                            label: "Tamam",
+                            className: "btn-danger"
+                        }
+                    }
+                });
+
+                document.getElementById("subeAdiInput").focus();
+            }
+            else {
+
+                var sube = {
+
+                    SubeId: $("#inputSubeId").val(),
+                    SubeAdi: $("#subeAdiInput").val().trim(),
+                    SubeAcilisTarihi: $("#inputSubeAcTar").val().trim(),
+                    OkulId: $("#inputOkulId").val().trim()
+                }
+
+                $.ajax({
+
+                    type: 'POST',
+                    url: '/Okullar/SubeGuncelleJson',
+                    data: sube,
+
+                    success: function (response) {
+
+                        if (response === "200") {
+
+                            alertify.success('Kayıt başarıyla güncellendi');
+                            location.reload();
+                        }
+                        else {
+
+                            alertify.danger('Kayıt güncellenemedi !');
+                        }
+                    },
+                    error: function () {
+
+                        alertify.danger('Kayıt güncellenemedi !');
+                    }
+
+                });
+            }
+
+        });
+
+        $(".btnSubeSil").click(function () {
+
+             var subeid = $(this).data("id");
+
+             if (subeid != null) {
+
+                 bootbox.confirm({
+                     message: "Eğer bu şubeyi silerseniz, bağlı olan sınıf ve öğrencilerde silinecektir. Yine de Silmek istediğinize emin misiniz?",
+                     buttons: {
+                         confirm: {
+                             label: 'Evet',
+                             className: 'btn-success'
+                         },
+                         cancel: {
+                             label: 'Hayır',
+                             className: 'btn-danger'
+                         }
+                     },
+                     callback: function (result) {
+                         if (result) {
+                             
+                             $.ajax({
+                                 type: "DELETE",
+                                 url: "/Okullar/OkulSubeSil/" + subeid,
+                                 success: function () {
+                                     
+                                     location.reload();
+                                 }
+                             });
+                         }
+                     }
+                 });
+            }
+             else {
+                 alert("şube id okunamıyor");
+             }
+
+        });
+
+        $("#yeniSubeBtn").click(function () {
+
+            document.getElementById("subeAdiInput").focus();
+            document.getElementById("subeAdiInput").value = "";
+            document.getElementById("inputSubeAcTar").focus();
+            document.getElementById("inputSubeAcTar").value="";
+            document.getElementById("subeEkleBtn").className = "";
+            document.getElementById("subeEkleBtn").className = "btn btn-success btn-sm text-white mb-1";
+            document.getElementById("subeDegistirBtn").className += " disabled";
+            document.getElementById("subeAdiInput").focus();
         });
 
     </script>
