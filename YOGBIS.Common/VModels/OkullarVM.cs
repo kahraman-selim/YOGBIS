@@ -55,6 +55,8 @@ namespace YOGBIS.Common.VModels
         public KullaniciVM Kullanici { get; set; }
         public List<OkulBinaBolumVM> OkulBinaBolum { get; set; }
         public List<SubelerVM> Subeler { get; set; }
+        public List<SiniflarVM> Siniflar { get; set; }
+        public List<OgrencilerVM> Ogrenciler { get; set; }
         public List<AdayGorevKaydiVM> AdayGorevKaydi { get; set; }
         public List<EtkinliklerVM> Etkinlikler { get; set; }
         public List<EPostaAdresleriVM> EpostaAdresleri { get; set; }

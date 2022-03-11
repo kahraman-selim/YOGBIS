@@ -11,11 +11,12 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public Guid SinifId { get; set; }
         public string SinifAdi { get; set; }
-        public DateTime SinifAcilisTarihi { get; set; }
-        public Guid OkulId { get; set; }
+        public DateTime SinifAcilisTarihi { get; set; }        
+        public string SubeAdi { get; set; }
         public Guid SubeId { get; set; }
         [ForeignKey("SubeId")]
         public Subeler Subeler { get; set; }
+        public Guid OkulId { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

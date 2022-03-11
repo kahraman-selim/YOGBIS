@@ -590,5 +590,22 @@ namespace YOGBIS.UI.Controllers
             return NotFound();
         }
         #endregion
+
+        #region OkulSinifSil
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
+        [HttpDelete]
+        public IActionResult OkulSinifSil(Guid id)
+        {
+            if (id == null)
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+
+            var data = _siniflarBE.SinifSil(id);
+            if (data.IsSuccess)
+                return Json(new { success = data.IsSuccess, message = data.Message });
+            else
+                return Json(new { success = data.IsSuccess, message = data.Message });
+
+        }
+        #endregion
     }
 }

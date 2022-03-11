@@ -48,7 +48,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SinifAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SinifAdi.ToString()),
                         SinifAcilisTarihi=item.SinifAcilisTarihi,
                         SubeId = item.SubeId,
-                        //SubeAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_subelerBE.SubeAdGetir(item.SubeId).Data.ToString()),
+                        SubeAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SubeAdi.ToString()),
                         OkulId =item.OkulId,
                         KayitTarihi=item.KayitTarihi,                                                
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
@@ -76,12 +76,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     returnData.Add(new SiniflarVM()
                     {
-                        SinifId = item.SinifId,                        
+                        SinifId = item.SinifId,
                         SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SinifAdi.ToString()),
                         SinifAcilisTarihi = item.SinifAcilisTarihi,
                         SubeId = item.SubeId,
-                        SubeAdi=item.Subeler.SubeAdi,
-                        OkulId =item.OkulId,
+                        SubeAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SubeAdi.ToString()),
+                        OkulId = item.OkulId,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
@@ -108,11 +108,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     returnData.Add(new SiniflarVM()
                     {
-                        SubeId = item.SubeId,
+                        SinifId = item.SinifId,
                         SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SinifAdi.ToString()),
                         SinifAcilisTarihi = item.SinifAcilisTarihi,
-                        SinifId = item.SinifId,
-                        OkulId=item.OkulId,
+                        SubeId = item.SubeId,
+                        SubeAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SubeAdi.ToString()),
+                        OkulId = item.OkulId,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
@@ -139,6 +140,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     SiniflarVM sinif = new SiniflarVM();
                     sinif.SinifId = data.SinifId;
                     sinif.SubeId = data.SubeId;
+                    sinif.SubeAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.SubeAdi.ToString());
                     sinif.OkulId = data.OkulId;
                     sinif.KayitTarihi = data.KayitTarihi;
                     sinif.SinifAcilisTarihi = data.SinifAcilisTarihi;
@@ -172,6 +174,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SinifAdi=model.SinifAdi.ToLower(),
                         SinifAcilisTarihi=model.SinifAcilisTarihi,
                         SubeId=model.SubeId,
+                        SubeAdi=model.SubeAdi,
                         OkulId=model.OkulId,
                         KayitTarihi = model.KayitTarihi,
                         KaydedenId=user.LoginId                       
@@ -206,6 +209,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     data.SinifAcilisTarihi = model.SinifAcilisTarihi;
                     data.OkulId = model.OkulId;
                     data.SubeId = model.SubeId;
+                    data.SubeAdi = model.SubeAdi;
                     data.KayitTarihi = model.KayitTarihi;
                     data.KaydedenId = user.LoginId;
 

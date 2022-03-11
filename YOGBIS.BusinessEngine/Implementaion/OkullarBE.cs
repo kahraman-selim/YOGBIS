@@ -242,6 +242,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okul.KaydedenId = data.KaydedenId;
                     okul.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
+                    okul.SinifSayisi = _unitOfWork.siniflarRepository.GetAll(g => g.OkulId == data.OkulId).Count();
 
                     okul.FotoGaleri = data.FotoGaleri.Select(g => new FotoGaleriVM()
                     {
@@ -262,6 +263,19 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         BolumAdToplam = o.Sum(c=>c.BolumAdedi)
 
                     }).ToList();
+
+                    okul.Subeler = data.Subeler.Select(s => new SubelerVM()
+                    {
+                        SubeAdi=s.SubeAdi,
+                        SubeId=s.SubeId,
+                        SinifAdi=s.Siniflar.Select(c=> new SiniflarVM()
+                        {
+                            SinifAdi=c.SinifAdi.ToString()
+
+                        }).ToString()
+                        
+                    }).ToList();
+
 
                     okul.AdayGorevKaydi = data.AdayGorevKaydi.Select(a => new AdayGorevKaydiVM()
                     {
@@ -476,6 +490,45 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<string>(false, ResultConstant.RecordNotFound);
             }
 
+        }
+        #endregion
+
+        #region SubeSinifOgrenciGetirOkulId(id)
+        public Result<OkullarVM> SubeSinifOgrenciGetirOkulId(Guid id)
+        {
+            if (id != null)
+            {
+                var data = _unitOfWork.okullarRepository.GetFirstOrDefault(u => u.OkulId == id, includeProperties: "Kullanici,Subeler,Siniflar,Ogrenciler");
+                if (data != null)
+                {
+                    OkullarVM okul = new OkullarVM();
+                    okul.OkulId = data.OkulId;
+
+                    //okul.Subeler = data.Subeler.Select(s => new SubelerVM()
+                    //{
+                    //    SubeAdi = s.SubeAdi,
+                    //    SubeId=s.SubeId,
+
+                    //}).ToList();
+
+                    //okul.Siniflar = data.Siniflar.Select(i => new SiniflarVM()
+                    //{
+                    //    SinifAdi=i.SinifAdi,
+                    //    SinifId=i.SinifId
+
+                    //}).ToList();
+
+                    return new Result<OkullarVM>(true, ResultConstant.RecordFound, okul);
+                }
+                else
+                {
+                    return new Result<OkullarVM>(false, ResultConstant.RecordNotFound);
+                }
+            }
+            else
+            {
+                return new Result<OkullarVM>(false, ResultConstant.RecordNotFound);
+            }
         }
         #endregion
     }

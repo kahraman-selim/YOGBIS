@@ -1,0 +1,43 @@
+﻿
+@model IEnumerable<YOGBIS.Common.VModels.OkullarVM>
+
+
+
+<div class="table-responsive">
+    <table class="table table-bordered table-sm table-hover table-striped display responsive nowrap" id="okulSubeSinifOgrenciTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Sıra No</th>
+                <th>Şube Adı</th>
+                <th>Sınıf Adı</th>
+                <th>Öğrenci Sayısı</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ var sirano = 0;}
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    sirano++;
+                    <tr>
+                        <td>@sirano</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td>Kayıt bulunamadı!</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+

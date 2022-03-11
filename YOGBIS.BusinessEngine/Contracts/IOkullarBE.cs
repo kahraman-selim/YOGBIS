@@ -18,5 +18,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<List<OkullarVM>> OkulGetirYoneticiId(string userId);
         Result<List<OkullarVM>> OkulGetirUlkeId(Guid UlkeId);
         Result<string> OkulLogoURLGetir(Guid id);
+        Result<OkullarVM> SubeSinifOgrenciGetirOkulId(Guid id);
     }
 }
