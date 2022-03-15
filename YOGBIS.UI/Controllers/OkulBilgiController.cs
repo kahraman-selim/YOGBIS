@@ -60,9 +60,8 @@ namespace YOGBIS.UI.Controllers
         public IActionResult OkulBilgiEkle(Guid UlkeId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            //ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeGetir(UlkeId).Data;
-            ViewBag.OkulAdi = string.Empty; //_okullarBE.OkullariGetirAZ().Data;
+            ViewBag.UlkeAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            ViewBag.OkulAdi = string.Empty;
             return View();
         }
         #endregion
@@ -75,7 +74,7 @@ namespace YOGBIS.UI.Controllers
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            ViewBag.UlkeAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
             ViewBag.OkulAdi = string.Empty; //_okullarBE.OkullariGetirAZ().Data;
 
             var data = _okulBilgiBE.OkulBilgiEkle(model, user);
@@ -94,8 +93,8 @@ namespace YOGBIS.UI.Controllers
         public ActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = string.Empty; //_okullarBE.OkullariGetirAZ().Data;
+            ViewBag.UlkeAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
 
             if (id != null)
             {
@@ -118,8 +117,8 @@ namespace YOGBIS.UI.Controllers
         public ActionResult Guncelle(OkulBilgiVM model)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = string.Empty; //_okullarBE.OkullariGetirAZ().Data;
+            ViewBag.UlkeAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            ViewBag.OkulAdi = string.Empty;
 
             var data = _okulBilgiBE.OkulBilgiGuncelle(model, user);
             if (data.IsSuccess)

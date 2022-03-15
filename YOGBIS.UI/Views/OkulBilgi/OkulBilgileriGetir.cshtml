@@ -95,23 +95,6 @@
 
         $(document).ready(function () {
 
-            $("#myTable").on("click", ".btnSil", function () {
-                var btn = $(this);
-                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
-                    if (result) {
-                        var id = btn.data("id");
-                        $.ajax({
-                            type: "DELETE",
-                            url: "/OkulBilgi/OkulBilgiSil/" + id,
-                            success: function () {
-                                btn.parent().parent().remove();
-                                location.reload();
-                            }
-                        });
-                    }
-                });
-            });
-
             $("#UlkeListesi").on("change", function () {
 
                 var Id = $("#UlkeListesi").val();
@@ -119,6 +102,8 @@
                 $("#OkulListesi").empty();
 
                 $("#OkulListesi").append("<option value=''> Okul adını seçiniz </option>");
+
+                $("#OkulListesi").append("<option value='0'> Hepsini seç </option>");
 
                 var url = '@Url.Action("OkulAdGetir", "OkulBilgi")?ulkeId=' + Id;
 
@@ -141,12 +126,18 @@
 
             $("#OkulListesi").on("change", function () {
 
+                var ulkeId = $("#UlkeListesi").val();
                 var OkulId = $("#OkulListesi").val();
 
-                location.href = '@Url.Action("OkulBilgileriGetirOkulId", "OkulBilgi")?okulId=' + OkulId;
+                if (OkulId == 0) {
+                    location.href = '@Url.Action("OkulBilgileriGetir", "OkulBilgi")?ulkeId=' + ulkeId;
+                }
+                else {
+                    location.href = '@Url.Action("OkulBilgileriGetirOkulId", "OkulBilgi")?okulId=' + OkulId;
+                }
+
             });
         });
-
 
     </script>
 }

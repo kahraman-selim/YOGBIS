@@ -18,14 +18,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IUlkelerBE _ulkelerBE;
+        private readonly IOkullarBE _okullarBE;
         #endregion
 
         #region Dönüştürücüler
-        public OkulBilgiBE(IUnitOfWork unitOfWork, IMapper mapper, IUlkelerBE ulkelerBE)
+        public OkulBilgiBE(IUnitOfWork unitOfWork, IMapper mapper, IUlkelerBE ulkelerBE, IOkullarBE okullarBE)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _ulkelerBE = ulkelerBE;
+            _okullarBE = okullarBE;
         }
         #endregion
 
@@ -120,7 +122,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region OkulBilgiGetir
+        #region OkulBilgiGetir(Guid id)
         public Result<OkulBilgiVM> OkulBilgiGetir(Guid id)
         {
             if (id != null)
@@ -145,7 +147,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okulbilgi.MdYrdDonusYil = data.MdYrdDonusYil;
                     //******************************************
                     okulbilgi.OkulId = data.OkulId;
-                    okulbilgi.OkulAdi = data.Okullar.OkulAdi;
+                    okulbilgi.OkulAdi = data.Okullar.OkulAdi;//_unitOfWork.okullarRepository.GetFirstOrDefault(o=>o.OkulId==data.OkulId).OkulAdi.ToString();
                     okulbilgi.UlkeId = data.UlkeId;
                     okulbilgi.UlkeAdi = _ulkelerBE.UlkeAdGetir((Guid)data.UlkeId).Data;
                     okulbilgi.KaydedenId = data.Kullanici.Id;
