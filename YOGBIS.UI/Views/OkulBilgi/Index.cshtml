@@ -14,7 +14,7 @@
 
 <ol class="breadcrumb mb-4 mt-2">
     <li>
-        <a asp-controller="OkulBilgi" asp-action="OkulBilgiEkle" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
+        <a asp-controller="OkulBilgi" asp-action="OkulBilgiEkle" asp-route-ulkeId="@Model.GroupBy(o=>o.UlkeId).ToString()" class="btn btn-success btn-circle btn-sm w-100" title="Yeni Kayıt">
             Yeni Kayıt <i class="fas fa-plus-circle"></i>
         </a>
     </li>
@@ -52,7 +52,7 @@
                     {
                         @foreach (var item in Model)
                         {
-                            sirano++;
+                            sirano++;                            
                             <tr>
                                 <td>@sirano</td>
                                 <td>@item.UlkeAdi</td>

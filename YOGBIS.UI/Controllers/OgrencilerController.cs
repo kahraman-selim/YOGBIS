@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -9,213 +10,131 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+
     public class OgrencilerController : Controller
     {
+        
+        #region Değişkenler
         private readonly IOgrencilerBE _ogrencilerBE;
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IOkullarBE _okullarBE;
+        #endregion
 
+        #region Dönüştürücüler
         public OgrencilerController(IOgrencilerBE ogrencilerBE, IUlkelerBE ulkelerBE, IOkullarBE okullarBE)
         {
             _ogrencilerBE = ogrencilerBE;
             _ulkelerBE = ulkelerBE;
             _okullarBE = okullarBE;
         }
-        
-        //[Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
-        //public IActionResult Index()
-        //{
-        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-        //    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-        //    ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
-        //    //ViewBag.Aylar = EnumExtension<EnumAylar>.GetDisplayValue(EnumAylar.Agustos);
-           
-        //    var requestmodel = _ogrencilerBE.OgrenciGetirKullaniciId(user.LoginId);
+        #endregion
 
-        //    if (requestmodel.IsSuccess)
-        //    {
-        //        return View(requestmodel.Data);
-        //    }
+        #region Index
+        [Authorize(Roles = "Administrator,Manager,Follower,SubManager")]
+        public IActionResult Index()
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+            //ViewBag.Aylar = EnumExtension<EnumAylar>.GetDisplayValue(EnumAylar.Agustos);
 
-        //    return View(user);
-        //}
+            var requestmodel = _ogrencilerBE.OgrenciGetirKullaniciId(user.LoginId);
 
-        //[Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
-        //[HttpGet]
-        //public IActionResult OgrenciEkle()
-        //{
-        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-        //    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-        //    ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
-        //    return View();
-        //}
+            if (requestmodel.IsSuccess)
+            {
+                return View(requestmodel.Data);
+            }
 
-        //[Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
-        //[HttpPost]
-        //public IActionResult OgrenciEkle(OgrencilerVM model)
-        //{
+            return View(user);
+        }
+        #endregion
 
-        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-        //    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-        //    ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+        #region OgrenciEkleGet
+        [Authorize(Roles = "Administrator,SubManager")]
+        [HttpGet]
+        [Route("Ogrenciler/OGC10002", Name = "OgrenciEkleRoute")]
+        public IActionResult OgrenciEkle(Guid UlkeId)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            var ulkeid = _ulkelerBE.UlkeIdGetir(UlkeId).Data;
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeGetir(UlkeId).Data;
+            ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            return View();
+        }
+        #endregion
 
-        //    var data = _ogrencilerBE.OgrenciEkle(model, user);
-        //    if (data.IsSuccess)
-        //    {
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(model);
-        //}
+        #region OgrenciEklePost
+        [Authorize(Roles = "Administrator,SubManager")]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        [Route("Ogrenciler/OGC10002", Name = "OgrenciEkleRoute")]
+        public IActionResult OgrenciEkle(OgrencilerVM model, Guid? OkulId)
+        {
 
-        //[Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
-        //public ActionResult Guncelle(int? id)
-        //{
-        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-        //    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-        //    ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-        //    if (id > 0)
-        //    {
-        //        var data = _ogrencilerBE.OgrenciGetir((int)id);
-        //        return View(data.Data);
-        //    }
-        //    else
-        //    {
-        //        return View();
-        //    }
+            if (OkulId != null)
+            {
+                var data = _ogrencilerBE.OgrenciGuncelle(model, user);
+                if (data.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                var data = _ogrencilerBE.OgrenciEkle(model, user);
+                if (data.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+                return View(model);
+            }
 
-        //}
+            return View();
+        }
+        #endregion
 
-        //[Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
-        //[ValidateAntiForgeryToken]
-        //[HttpPost]
-        //public ActionResult Guncelle(OgrencilerVM model)
-        //{
-        //    var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-        //    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-        //    ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+        #region Guncelle
+        [Authorize(Roles = "Administrator,SubManager")]
+        [Route("Ogrenciler/OGC10003", Name = "OgrenciGuncelle")]
+        public ActionResult Guncelle(Guid? id, Guid UlkeId)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
-        //    var data = _ogrencilerBE.OgrenciGuncelle(model, user);
-        //    if (data.IsSuccess)
-        //    {
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        return View();
-        //    }
-        //}
+            if (id != null)
+            {
+                var data = _ogrencilerBE.OgrenciGetir((Guid)id);
+                return View(data.Data);
+            }
+            else
+            {
+                return View();
+            }
 
-        //[Authorize(Roles = "Administrator,Manager,Follower,Teacher")]
-        //[HttpDelete]
-        //public IActionResult OgrenciSil(int id)
-        //{
-        //    if (id < 0)
-        //        return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+        }
+        #endregion
 
-        //    var data = _ogrencilerBE.OgrenciSil(id);
-        //    if (data.IsSuccess)
-        //        return Json(new { success = data.IsSuccess, message = data.Message });
-        //    else
-        //        return Json(new { success = data.IsSuccess, message = data.Message });
+        #region OgrenciSil
+        [Authorize(Roles = "Administrator,SubManager")]
+        [HttpDelete]
+        public IActionResult OgrenciSil(Guid id)
+        {
+            if (id == null)
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
-        //}
+            var data = _ogrencilerBE.OgrenciSil(id);
+            if (data.IsSuccess)
+                return Json(new { success = data.IsSuccess, message = data.Message });
+            else
+                return Json(new { success = data.IsSuccess, message = data.Message });
 
-        //[Authorize(Roles = "Administrator,Follower,Manager")]
-        //public IActionResult OgrenciGetir(int? ulkeId)
-        //{            
-            
-        //    if (ulkeId > 0)
-        //    {
-        //        var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
-        //        ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-        //        ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;                
-
-        //        if (data.IsSuccess)
-        //        {
-        //            return View(data.Data);
-        //        }
-
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        var requestmodel = _ogrencilerBE.OgrencileriGetir();
-        //        ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-        //        ViewBag.OkulAdi = _okullarBE.OkullariGetir().Data;
-
-        //        if (requestmodel.IsSuccess)
-        //        {
-        //            return View(requestmodel.Data);
-        //        }
-
-        //        return View();
-        //    }
-
-        //}
-
-        //[Authorize(Roles = "Administrator,Follower,Manager")]
-        //public ActionResult OgrencileriGetirUlkeId(int? ulkeId) 
-        //{
-        //    var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
-        //    if (data.IsSuccess)
-        //    {
-        //        return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("OgrenciGetir", new { ulkeId = ulkeId});
-        //    }            
-        //}
-        
-        //[Authorize(Roles = "Administrator,Follower,Manager")]
-        //public ActionResult OgrencileriGetirOkulId(int? OkulId)
-        //{
-        //    var data = _ogrencilerBE.OgrenciGetirOkulId(OkulId);
-        //    if (data.IsSuccess)
-        //    {
-        //        return Json(new { isSucces = data.IsSuccess, message = data.Message, data = data.Data });
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("OgrenciGetir", new { okulKodu = OkulId });
-        //    }
-        //}
-
-        //[Authorize(Roles = "Administrator,Follower,Manager")]
-        //public IActionResult OgrencileriGetir(int? ulkeId)
-        //{
-
-        //    if (ulkeId > 0)
-        //    {
-        //        var data = _ogrencilerBE.OgrenciGetirUlkeId(ulkeId);
-        //        ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-        //        ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
-        //        //ViewBag.Aylar = EnumExtension<EnumAylar>.GetDisplayValues((EnumAylar)int.Parse(EnumAylar).ToString()); //GetDisplayValue(EnumAylar).ToList();
-
-        //        if (data.IsSuccess)
-        //        {
-        //            return View(data.Data);
-        //        }
-
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        var requestmodel = _ogrencilerBE.OgrencileriGetir();
-        //        ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-        //        ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;                
-
-        //        if (requestmodel.IsSuccess)
-        //        {
-        //            return View(requestmodel.Data);
-        //        }
-
-        //        return View();
-        //    }
-
-        //}
+        } 
+        #endregion
 
     }
 }

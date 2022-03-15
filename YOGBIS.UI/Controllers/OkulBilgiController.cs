@@ -40,6 +40,7 @@ namespace YOGBIS.UI.Controllers
             
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+            
 
             var requestmodel = _okulBilgiBE.OkulBilgiGetirKullaniciId(user.LoginId);
 
@@ -56,10 +57,11 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator,Manager,SubManager")]
         [HttpGet]
         [Route("OkulBilgi/OBC10002", Name = "OkulBilgiEkleRoute")]
-        public IActionResult OkulBilgiEkle()
+        public IActionResult OkulBilgiEkle(Guid UlkeId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            //ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeGetir(UlkeId).Data;
             ViewBag.OkulAdi = string.Empty; //_okullarBE.OkullariGetirAZ().Data;
             return View();
         }

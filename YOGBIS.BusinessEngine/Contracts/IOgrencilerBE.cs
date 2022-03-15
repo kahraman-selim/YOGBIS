@@ -8,13 +8,13 @@ namespace YOGBIS.BusinessEngine.Contracts
 {
     public interface IOgrencilerBE
     {
-        //Result<List<OgrencilerVM>> OgrencileriGetir();
-        //Result<OgrencilerVM> OgrenciGetir(Guid id);
-        //Result<OgrencilerVM> OgrenciEkle(OgrencilerVM model, SessionContext user);
-        //Result<OgrencilerVM> OgrenciGuncelle(OgrencilerVM model, SessionContext user);        
-        //Result<bool> OgrenciSil(Guid id);
-        //Result<List<OgrencilerVM>> OgrenciGetirKullaniciId(string userId);
-        //Result<List<OgrencilerVM>> OgrenciGetirUlkeId(Guid ulkeId);
-        //Result<List<OgrencilerVM>> OgrenciGetirOkulId(Guid okulId);
+        Result<List<OgrencilerVM>> OgrencileriGetir();
+        Result<OgrencilerVM> OgrenciGetir(Guid id);
+        Result<OgrencilerVM> OgrenciEkle(OgrencilerVM model, SessionContext user);
+        Result<OgrencilerVM> OgrenciGuncelle(OgrencilerVM model, SessionContext user);
+        Result<bool> OgrenciSil(Guid id);
+        Result<List<OgrencilerVM>> OgrenciGetirKullaniciId(string userId);
+        Result<List<OgrencilerVM>> OgrenciGetirUlkeId(Guid ulkeId);
+        Result<List<OgrencilerVM>> OgrenciGetirOkulId(Guid okulId);
     }
 }

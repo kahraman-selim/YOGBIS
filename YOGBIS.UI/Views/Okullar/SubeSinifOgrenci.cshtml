@@ -114,6 +114,8 @@
                                         <button class="btn btn-primary btn-sm text-white mb-1" style="width:100px" id="yeniSinifBtn">Yeni Kayıt</button>
                                         <button class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="sinifEkleBtn">Kaydet</button>
                                         <button class="btn btn-info btn-sm text-white mb-1" style="width:100px" id="sinifDegistirBtn">Değiştir</button>
+                                        <a class="btn btn-secondary btn-sm text-white mb-1" style="width:100px" id="ogrenciEkleBtn" asp-controller="Ogrenciler" asp-action="OgrenciEkle"  
+                                           asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Öğrenci Ekle</a>
                                         <a class="btn btn-danger btn-sm text-white mb-1" style="width:100px" asp-controller="Okullar" asp-action="OkulDetayGuncelle"
                                            asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Vazgeç</a>
                                     </div>
@@ -163,6 +165,7 @@ else
         document.body.onload = function () {
             document.getElementById("subeDegistirBtn").disabled = true;
             document.getElementById("sinifDegistirBtn").disabled = true;
+            document.getElementById("ogrenciEkleBtn").className += " disabled";
         };
 
         $('#datetimepicker1, #datetimepicker2').datetimepicker({
@@ -453,6 +456,7 @@ else
 
                         document.getElementById("sinifEkleBtn").disabled = true;
                         document.getElementById("sinifDegistirBtn").disabled = false;
+                        document.getElementById("ogrenciEkleBtn").className = "btn btn-secondary btn-sm text-white mb-1";
                         document.getElementById("sinifDegistirBtn").className = "";
                         document.getElementById("sinifDegistirBtn").className = "btn btn-info btn-sm text-white mb-1";
                     }
@@ -568,6 +572,7 @@ else
             document.getElementById("sinifEkleBtn").className = "";
             document.getElementById("sinifEkleBtn").className = "btn btn-success btn-sm text-white mb-1";
             document.getElementById("sinifDegistirBtn").disabled = true;
+            document.getElementById("ogrenciEkleBtn").disabled = true;
             document.getElementById("sinifAdiInput").focus();
         });
     </script>

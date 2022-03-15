@@ -90,7 +90,6 @@ namespace YOGBIS.UI.Controllers
         #region OkulEkleGet
         [Authorize(Roles = "Administrator,Manager")]
         [HttpGet]
-
         [Route("Okullar/OC10002", Name = "OkulEkleRoute")]
         public async Task<IActionResult> OkulEkle()
         {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -268,12 +269,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SubeAdi=s.SubeAdi,
                         SubeId=s.SubeId,
-                        SinifAdi=s.Siniflar.Select(c=> new SiniflarVM()
-                        {
-                            SinifAdi=c.SinifAdi.ToString()
 
-                        }).ToString()
-                        
+                        //Siniflar = s.Siniflar.Select(c => new SiniflarVM()
+                        //{
+                        //    SinifAdi = c.SinifAdi
+
+                        //}).ToList()
+
                     }).ToList();
 
 

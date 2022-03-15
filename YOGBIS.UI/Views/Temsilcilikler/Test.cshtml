@@ -67,7 +67,41 @@
         <span class="text-danger"></span>
     </div>
 </div>
-
+<div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="small mb-1 font-weight-bold">Dönem Yıl</label>
+            <select class="form-control-range form-control py-2" aria-label="Default select example">
+                <option asp-for="Yil" selected class="text-center"></option>
+                <option asp-for="Yil" value="2020">2020</option>
+                <option asp-for="Yil" value="2021">2021</option>
+            </select>
+            <span class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="small mb-1 font-weight-bold">Dönem Ay</label>
+            @Html.DropDownList("AyListesi", new SelectList(Enum.GetValues(typeof(EnumAylar))), "Ay Seç", new { @class = "form-control-range form-control py-1 w-100" })
+            <select class="form-control-range form-control py-2" aria-label="Default select example">
+                <option asp-for="Ay" selected class="text-center"></option>
+                <option asp-for="Ay" value="Ocak">Ocak</option>
+                <option asp-for="Ay" value="Şubat">Şubat</option>
+                <option asp-for="Ay" value="Mart">Mart</option>
+                <option asp-for="Ay" value="Nisan">Nisan</option>
+                <option asp-for="Ay" value="Mayıs">Mayıs</option>
+                <option asp-for="Ay" value="Haziran">Haziran</option>
+                <option asp-for="Ay" value="Temmuz">Temmuz</option>
+                <option asp-for="Ay" value="Ağustos">Ağustos</option>
+                <option asp-for="Ay" value="Eylül">Eylül</option>
+                <option asp-for="Ay" value="Ekim">Ekim</option>
+                <option asp-for="Ay" value="Kasım">Kasım</option>
+                <option asp-for="Ay" value="Aralık">Aralık</option>
+            </select>
+            <span class="text-danger"></span>
+        </div>
+    </div>
+</div>
 
 
 @section Scripts{
