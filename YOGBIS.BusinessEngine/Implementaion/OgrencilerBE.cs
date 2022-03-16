@@ -14,18 +14,24 @@ namespace YOGBIS.BusinessEngine.Implementaion
 {
     public class OgrencilerBE : IOgrencilerBE
     {
+        #region Değişkenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        #endregion
 
+        #region Dönüştürücüler
         public OgrencilerBE(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+        #endregion
+
+        #region OgrencileriGetir
         public Result<List<OgrencilerVM>> OgrencileriGetir()
         {
             var data = _unitOfWork.ogrencilerRepository.GetAll(includeProperties: "Kullanici,Ulkeler").OrderBy(u => u.Ulkeler.UlkeAdi).ToList();
-                //.ThenBy(o => o.s).ToList(); //GetAll(includeProperties: "Okullar,Ulkeler,Kullanici")
+            //.ThenBy(o => o.s).ToList(); //GetAll(includeProperties: "Okullar,Ulkeler,Kullanici")
 
             if (data != null)
             {
@@ -36,22 +42,22 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new OgrencilerVM()
                     {
                         OgrencilerId = item.OgrencilerId,
-                        Cinsiyet=item.Cinsiyet,
-                        AyrilmaNedeni=item.AyrilmaNedeni,
-                        AyrilmaTarihi=item.AyrilmaTarihi,
-                        BaslamaKayitTarihi=item.BaslamaKayitTarihi,
-                        EgitimciId=item.EgitimciId,
-                        EyaletId=item.EyaletId,
-                        KayitNedeni=item.KayitNedeni,
-                        OgrenciTuru=item.OgrenciTuru,
-                        OkulId=item.OkulId,
-                        SehirId=item.SehirId,
-                        SinifId=item.SinifId,
-                        SubeId=item.SubeId,
-                        TemsilcilikId=item.TemsilcilikId,
-                        UlkeId=item.UlkeId,
-                        UlkeAdi=item.Ulkeler != null ? item.Ulkeler.UlkeAdi : string.Empty,
-                        Uyruk=item.Uyruk,
+                        Cinsiyet = item.Cinsiyet,
+                        AyrilmaNedeni = item.AyrilmaNedeni,
+                        AyrilmaTarihi = item.AyrilmaTarihi,
+                        BaslamaKayitTarihi = item.BaslamaKayitTarihi,
+                        EgitimciId = item.EgitimciId,
+                        EyaletId = item.EyaletId,
+                        KayitNedeni = item.KayitNedeni,
+                        OgrenciTuru = item.OgrenciTuru,
+                        OkulId = item.OkulId,
+                        SehirId = item.SehirId,
+                        SinifId = item.SinifId,
+                        SubeId = item.SubeId,
+                        TemsilcilikId = item.TemsilcilikId,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = item.Ulkeler != null ? item.Ulkeler.UlkeAdi : string.Empty,
+                        Uyruk = item.Uyruk,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
@@ -64,6 +70,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<OgrencilerVM>>(false, ResultConstant.RecordNotFound);
             }
         }
+        #endregion
+
+        #region OgrenciGetirKullaniciId
         public Result<List<OgrencilerVM>> OgrenciGetirKullaniciId(string userId)
         {
             var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici,Ulkeler").ToList();
@@ -105,6 +114,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<OgrencilerVM>>(false, ResultConstant.RecordNotFound);
             }
         }
+        #endregion
+
+        #region OgrenciEkle
         public Result<OgrencilerVM> OgrenciEkle(OgrencilerVM model, SessionContext user)
         {
             if (model != null)
@@ -147,6 +159,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<OgrencilerVM>(false, "Boş veri olamaz");
             }
         }
+        #endregion
+
+        #region OgrenciGuncelle
         public Result<OgrencilerVM> OgrenciGuncelle(OgrencilerVM model, SessionContext user)
         {
             if (model.OgrencilerId != null)
@@ -197,6 +212,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
 
         }
+        #endregion
+
+        #region OgrenciSil
         public Result<bool> OgrenciSil(Guid id)
         {
             var data = _unitOfWork.ogrencilerRepository.Get(id);
@@ -211,6 +229,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         }
+        #endregion
+
+        #region OgrenciGetirUlkeId
         public Result<List<OgrencilerVM>> OgrenciGetirUlkeId(Guid ulkeId)
         {
             var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.UlkeId == ulkeId, includeProperties: "Kullanici,Ulkeler").ToList();
@@ -252,6 +273,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<OgrencilerVM>>(false, ResultConstant.RecordNotFound);
             }
         }
+        #endregion
+
+        #region OgrenciGetir(Guid id)
         public Result<OgrencilerVM> OgrenciGetir(Guid id)
         {
             if (id != null)
@@ -296,6 +320,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
 
         }
+        #endregion
+
+        #region OgrenciGetirOkulId(Guid okulId)
         public Result<List<OgrencilerVM>> OgrenciGetirOkulId(Guid okulId)
         {
             var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.OkulId == okulId, includeProperties: "Kullanici,Ulkeler").ToList();
@@ -336,6 +363,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<List<OgrencilerVM>>(false, ResultConstant.RecordNotFound);
             }
-        }
+        } 
+        #endregion
     }
 }

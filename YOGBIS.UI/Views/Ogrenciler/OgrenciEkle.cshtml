@@ -1,12 +1,19 @@
 ﻿@model YOGBIS.Common.VModels.OgrencilerVM
 @{
-    ViewData["Title"] = "Öğrenci Bilgileri";
+    ViewData["Title"] = "Öğrenci Kayıt";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var okulid = TempData["OkulId"];
+}
+@section Styles{
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 }
 
-
 <div class="row">
-    <div class="col-md-12">
+    <!--Kayıt Form-->
+    <div class="col-md-7">
         <div class="card shadow-lg rounded-lg mt-0 h-auto">
             <div class="card-header">
                 <i class="fas fa-pen mr-1"></i>
@@ -16,105 +23,161 @@
                 <form class="form-group m-0" asp-action="OgrenciEkle">
                     @Html.HiddenFor(x => x.UlkeId)
                     @Html.HiddenFor(x => x.OgrencilerId)
+                    @Html.HiddenFor(x=>x.OkulId)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label asp-for="OkulId" class="small mb-1 font-weight-bold">Okul Adı</label>
-                                @Html.DropDownListFor(u => u.OkulId, new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okul adını seçiniz", 
+                                @Html.DropDownListFor(u => u.OkulId, new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okul adını seçiniz",
                                     new { @id = "OkulListesi", @class = "form-control-range form-control py-2" })
                                 <span class="text-danger" asp-validation-for="OkulId"></span>
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
-
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-1">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">TC Erkek</label>
-                                <input type="number" min="0" max="9999" class="form-control py-2 ogrsay" id="TCErkek" placeholder="">
-                                <span class="text-danger"></span>
+                                <label class="small mb-1 font-weight-bold">Şube Seçimi</label>
+                                @Html.DropDownListFor(u => u.SubeId, new SelectList(ViewBag.SubeAdi, "SubeId", "SubeAdi"),
+                               "Şubeyi seçiniz", new { @id = "SubeListesi", @class = "form-control-range form-control py-2" })
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">TC Kız</label>
-                                <input type="number" min="0" max="9999" class="form-control py-2 ogrsay" id="TCKiz" placeholder="">
-                                <span class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">Toplam</label>
-                                <input type="number" min="0" max="9999" class="form-control py-2" id="TCToplam" placeholder="" disabled>
-                                <span class="text-danger"></span>
+                                <label class="small mb-1 font-weight-bold">Sınıf Seçimi</label>
+                                @Html.DropDownListFor(u => u.SinifId, new SelectList(ViewBag.SinifAdi, "SinifId", "SinifAdi"),
+                               "Sınıfı seçiniz", new { @id = "SinifListesi", @class = "form-control-range form-control py-2" })
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-md-1">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">Diğer Erkek</label>
-                                <input type="number" min="0" max="9999" class="form-control py-2 ogrsay" id="DigerErkek" placeholder="">
-                                <span class="text-danger"></span>
+                                <label class="small mb-1 font-weight-bold">Öğrenci Türü</label>
+                                <select class="form-control-range form-control py-2" aria-label="Default select example">
+                                    <option asp-for="Ay" selected class="text-center">Öğrenci türünü seçiniz</option>
+                                    <option asp-for="Ay" value="1">MEB-Okul Öğrenci</option>
+                                    <option asp-for="Ay" value="2">TTK Mahallinden Öğrenci</option>
+                                    <option asp-for="Ay" value="3">TTK Öğrenci</option>
+                                    <option asp-for="Ay" value="4">Türkçe Kursları</option>
+                                    <option asp-for="Ay" value="5">Okutman Öğrenci</option>
+                                </select>
+                                <span class="text-danger" asp-validation-for="OgrenciTuru"></span>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">Diğer Kız</label>
-                                <input type="number" min="0" max="9999" class="form-control py-2 ogrsay" id="DigerKiz" placeholder="">
-                                <span class="text-danger"></span>
+                                <label class="small mb-1 font-weight-bold">Uyruğu</label>
+                                <select class="form-control-range form-control py-2" aria-label="Default select example">
+                                    <option asp-for="Ay" selected class="text-center">Öğrenci uyruğunu seçiniz</option>
+                                    <option asp-for="Ay" value="1">T.C.</option>
+                                    <option asp-for="Ay" value="2">Diğer</option>
+                                </select>
+                                <span class="text-danger" asp-validation-for="Uyruk"></span>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">Toplam</label>
-                                <input type="number" min="0" max="9999" class="form-control py-2" id="DigerToplam" placeholder="" disabled>
-                                <span class="text-danger"></span>
+                                <label class="small mb-1 font-weight-bold">Cinsiyeti</label>
+                                <select class="form-control-range form-control py-2" aria-label="Default select example">
+                                    <option asp-for="Ay" selected class="text-center">Öğrenci cinsiyetini seçiniz</option>
+                                    <option asp-for="Ay" value="1">Kız</option>
+                                    <option asp-for="Ay" value="2">Erkek</option>
+                                </select>
+                                <span class="text-danger" asp-validation-for="Uyruk"></span>
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">Erkek Toplam</label>
-                                <input type="number" min="0" max="9999" class="form-control py-2" id="ToplamErkek" placeholder="" disabled>
-                                <span class="text-danger"></span>
+                        <div class="col-md-6">
+                            <label class="small mb-1 font-weight-bold">Kayıt Tarihi</label>
+                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                <input id="inputOgrKayitTar" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">Kız Toplam</label>
-                                <input type="number" min="0" max="9999" class="form-control py-2" id="ToplamKiz" placeholder="" disabled>
-                                <span class="text-danger"></span>
+                                <label class="small mb-1 font-weight-bold">Kayıt Nedeni</label>
+                                <select class="form-control-range form-control py-2" aria-label="Default select example">
+                                    <option asp-for="KayitNedeni" selected class="text-center">Kayıt nedenini seçiniz</option>
+                                    <option asp-for="AyKayitNedeni" value="1">Yeni kayıt</option>
+                                    <option asp-for="KayitNedeni" value="2">Nakil</option>
+                                </select>
+                                <span class="text-danger" asp-validation-for="KayitNedeni"></span>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">Genel Toplam</label>
-                                <input type="number" min="0" max="9999" class="form-control py-2" id="GenelToplam" placeholder="" disabled>
-                                <span class="text-danger"></span>
+                                <label class="small mb-1 font-weight-bold">Kayit Sayisi</label>
+                                <input type="number" min="0" max="9999" class="form-control py-2 ogrsay" id="OgrenSayiInput" placeholder="">
+                                <span class="text-danger" asp-validation-for="KayitSayisi"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label class="small mb-1 font-weight-bold">Kayıt Silme Tarihi</label>
+                            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                <input id="inputOgrKayitSilTar" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
+                                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="small mb-1 font-weight-bold">Kayıt Silme Nedeni</label>
+                                <select class="form-control-range form-control py-2" aria-label="Default select example">
+                                    <option asp-for="AyrilmaNedeni" selected class="text-center">Kayıt silme nedenini seçiniz</option>
+                                    <option asp-for="AyrilmaNedeni" value="1">Mezun</option>
+                                    <option asp-for="AyrilmaNedeni" value="2">Nakil Giden</option>
+                                    <option asp-for="AyrilmaNedeni" value="3">Diğer</option>
+                                </select>
+                                <span class="text-danger" asp-validation-for="AyrilmaNedeni"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="small mb-1 font-weight-bold">Silinen Kayit Sayisi</label>
+                                <input type="number" min="0" max="9999" class="form-control py-2 ogrsay" id="SilinenOgrenSayiInput" placeholder="">
+                                <span class="text-danger" asp-validation-for="AyrilanSayisi"></span>
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">
-                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" />
-                            <a asp-controller="Ogrenciler" asp-action="OgrenciEkle" id="degistir" name="degistir" class="btn btn-info btn-sm mb-1 disabled" style="width:100px">Değiştir</a>
-                            <a asp-controller="Ogrenciler" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Vazgeç</a>
+                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" />                            
+                            <a asp-controller="Okullar" asp-action="SubeSinifOgrenci" asp-route-id="@okulid" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Vazgeç</a>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    <!--Öğrenci Liste-->
+    <div class="col-md-5">
+
+    </div>
 </div>
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.28/moment-timezone-with-data-10-year-range.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    
     <script type="text/javascript">
+
+        $('#datetimepicker1, #datetimepicker2').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
         $(".ogrsay").on("input", function () {
 
             var tcerkek = $("#TCErkek").val();
@@ -135,6 +198,8 @@
 
 
         });
+
+
     </script>
 }
 

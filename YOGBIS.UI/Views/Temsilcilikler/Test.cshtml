@@ -17,7 +17,7 @@
 
         .myPopUp label:hover {
             background-color: #1e90ff;
-            color:white;
+            color: white;
             display: block;
             width: 100%;
         }
@@ -59,7 +59,7 @@
             @foreach (var item in ViewBag.Kategoriler)
             {
                 <label class="label-sm pl-2" for="@item.SoruKategorilerId" id="labelKategori" style="width:100%;">
-                    <input type="checkbox" class="checkbox" id="@item.SoruKategorilerId" value="@item.SoruKategorilerId" onclick="soruKategoriChecked()"/> @item.SoruKategorilerAdi
+                    <input type="checkbox" class="checkbox" id="@item.SoruKategorilerId" value="@item.SoruKategorilerId" onclick="soruKategoriChecked()" /> @item.SoruKategorilerAdi
                 </label>
             }
 
@@ -102,7 +102,76 @@
         </div>
     </div>
 </div>
+<div class="form-row">
 
+    <div class="col-md-1">
+        <div class="form-group">
+            <label class="small mb-1 font-weight-bold">TC Kız</label>
+            <input type="number" min="0" max="9999" class="form-control py-2 ogrsay" id="TCKiz" placeholder="">
+            <span class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group">
+            <label class="small mb-1 font-weight-bold">Toplam</label>
+            <input type="number" min="0" max="9999" class="form-control py-2" id="TCToplam" placeholder="" disabled>
+            <span class="text-danger"></span>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-md-1">
+        <div class="form-group">
+            <label class="small mb-1 font-weight-bold">Diğer Erkek</label>
+            <input type="number" min="0" max="9999" class="form-control py-2 ogrsay" id="DigerErkek" placeholder="">
+            <span class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group">
+            <label class="small mb-1 font-weight-bold">Diğer Kız</label>
+            <input type="number" min="0" max="9999" class="form-control py-2 ogrsay" id="DigerKiz" placeholder="">
+            <span class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group">
+            <label class="small mb-1 font-weight-bold">Toplam</label>
+            <input type="number" min="0" max="9999" class="form-control py-2" id="DigerToplam" placeholder="" disabled>
+            <span class="text-danger"></span>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-md-2">
+        <div class="form-group">
+            <label class="small mb-1 font-weight-bold">Erkek Toplam</label>
+            <input type="number" min="0" max="9999" class="form-control py-2" id="ToplamErkek" placeholder="" disabled>
+            <span class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label class="small mb-1 font-weight-bold">Kız Toplam</label>
+            <input type="number" min="0" max="9999" class="form-control py-2" id="ToplamKiz" placeholder="" disabled>
+            <span class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label class="small mb-1 font-weight-bold">Genel Toplam</label>
+            <input type="number" min="0" max="9999" class="form-control py-2" id="GenelToplam" placeholder="" disabled>
+            <span class="text-danger"></span>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-md-12">
+        <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" />
+        <a asp-controller="Ogrenciler" asp-action="OgrenciEkle" id="degistir" name="degistir" class="btn btn-info btn-sm mb-1 disabled" style="width:100px">Değiştir</a>
+        <a asp-controller="Ogrenciler" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Vazgeç</a>
+    </div>
+</div>
 
 @section Scripts{
     <script type="text/javascript">
@@ -144,8 +213,8 @@
 
         $(function () {
             $("#myPopUpDerece").on("click", ".checkbox", function () {
-              
-                
+
+
                 var checkbox = $(this);
 
                 if (this.checked == true) {
@@ -158,11 +227,11 @@
                         type: "GET",
                         url: "/Temsilcilikler/SoruKategoriGetir/" + dereceId,
                     });
-                    document.getElementById("soruDereceLabel").innerHTML += dereceId+" ";
-                    document.getElementById("soruDereceInput").value += dereceId+" ";
+                    document.getElementById("soruDereceLabel").innerHTML += dereceId + " ";
+                    document.getElementById("soruDereceInput").value += dereceId + " ";
                 }
                 else {
-                    
+
                     $("#myPopUpDerece").hide();
                     document.getElementById("soruDereceLabel").innerHTML = "";
                     document.getElementById("soruDereceInput").value = "";

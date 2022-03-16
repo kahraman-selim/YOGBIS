@@ -18,19 +18,23 @@ namespace YOGBIS.UI.Controllers
         private readonly IOgrencilerBE _ogrencilerBE;
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IOkullarBE _okullarBE;
+        private readonly ISubelerBE _subelerBE;
+        private readonly ISiniflarBE _siniflarBE;
         #endregion
 
         #region Dönüştürücüler
-        public OgrencilerController(IOgrencilerBE ogrencilerBE, IUlkelerBE ulkelerBE, IOkullarBE okullarBE)
+        public OgrencilerController(IOgrencilerBE ogrencilerBE, IUlkelerBE ulkelerBE, IOkullarBE okullarBE, ISubelerBE subelerBE, ISiniflarBE siniflarBE)
         {
             _ogrencilerBE = ogrencilerBE;
             _ulkelerBE = ulkelerBE;
             _okullarBE = okullarBE;
+            _subelerBE = subelerBE;
+            _siniflarBE = siniflarBE;
         }
         #endregion
 
         #region Index
-        [Authorize(Roles = "Administrator,Manager,Follower,SubManager")]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -53,12 +57,15 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator,SubManager")]
         [HttpGet]
         [Route("Ogrenciler/OGC10002", Name = "OgrenciEkleRoute")]
-        public IActionResult OgrenciEkle(Guid UlkeId)
+        public IActionResult OgrenciEkle(Guid OkulId, Guid UlkeId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             var ulkeid = _ulkelerBE.UlkeIdGetir(UlkeId).Data;
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeGetir(UlkeId).Data;
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeGetir(ulkeid).Data;
             ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)OkulId).Data;
+            ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)OkulId).Data;
+
             return View();
         }
         #endregion
@@ -68,12 +75,12 @@ namespace YOGBIS.UI.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Route("Ogrenciler/OGC10002", Name = "OgrenciEkleRoute")]
-        public IActionResult OgrenciEkle(OgrencilerVM model, Guid? OkulId)
+        public IActionResult OgrenciEkle(OgrencilerVM model, Guid OkulId)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+
+
 
             if (OkulId != null)
             {
