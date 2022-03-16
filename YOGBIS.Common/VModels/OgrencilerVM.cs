@@ -16,14 +16,14 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Öğrenci uyruğunu seçiniz !")]
         public string Uyruk { get; set; }
 
-        [Required(ErrorMessage = "Öğrenci cinsiyetini seçiniz !")]
+        [Required(ErrorMessage = "Cinsiyetini seçiniz !")]
         public bool Cinsiyet { get; set; }
         public DateTime BaslamaKayitTarihi { get; set; }
         public string KayitNedeni { get; set; }        
-        public string KayitSayisi { get; set; }
+        public int KayitSayisi { get; set; }
         public DateTime? AyrilmaTarihi { get; set; }
         public string AyrilmaNedeni { get; set; }
-        public string AyrilanSayisi { get; set; }
+        public int AyrilanSayisi { get; set; }
         public Guid? EgitimciId { get; set; }
         public Guid? SinifId { get; set; }
         public Guid? SubeId { get; set; }
@@ -35,6 +35,7 @@ namespace YOGBIS.Common.VModels
         public Guid UlkeId { get; set; }
         public string UlkeAdi { get; set; }
         public UlkelerVM Ulkeler { get; set; }
+        public string StatusMessage { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }

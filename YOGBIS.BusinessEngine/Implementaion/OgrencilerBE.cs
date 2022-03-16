@@ -126,21 +126,24 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     Ogrenciler ogrenciler = new Ogrenciler();
                     ogrenciler.KaydedenId = user.LoginId;
-                    ogrenciler.OkulId = model.OkulId;
-                    ogrenciler.AyrilmaNedeni = model.AyrilmaNedeni;
-                    ogrenciler.AyrilmaTarihi = model.AyrilmaTarihi;
                     ogrenciler.UlkeId = model.UlkeId;
-                    ogrenciler.BaslamaKayitTarihi = model.BaslamaKayitTarihi;
-                    ogrenciler.Cinsiyet = model.Cinsiyet;
-                    ogrenciler.EgitimciId = model.EgitimciId;
-                    ogrenciler.EyaletId = model.EyaletId;
-                    ogrenciler.KayitNedeni = model.KayitNedeni;
-                    ogrenciler.OgrenciTuru = model.OgrenciTuru;
-                    ogrenciler.SehirId = model.SehirId;
-                    ogrenciler.SinifId = model.SinifId;
-                    ogrenciler.SubeId = model.SubeId;
                     ogrenciler.TemsilcilikId = model.TemsilcilikId;
+                    ogrenciler.EyaletId = model.EyaletId;
+                    ogrenciler.SehirId = model.SehirId;
+                    ogrenciler.OkulId = model.OkulId;
+                    ogrenciler.UniversiteId = model.UniversiteId;
+                    ogrenciler.SubeId = model.SubeId;
+                    ogrenciler.SinifId = model.SinifId;
+                    ogrenciler.EgitimciId = model.EgitimciId;
+                    ogrenciler.OgrenciTuru = model.OgrenciTuru;
                     ogrenciler.Uyruk = model.Uyruk;
+                    ogrenciler.Cinsiyet = model.Cinsiyet;
+                    ogrenciler.BaslamaKayitTarihi = model.BaslamaKayitTarihi;
+                    ogrenciler.KayitNedeni = model.KayitNedeni;
+                    ogrenciler.KayitSayisi = model.KayitSayisi;
+                    ogrenciler.AyrilmaTarihi = model.AyrilmaTarihi;
+                    ogrenciler.AyrilmaNedeni = model.AyrilmaNedeni;
+                    ogrenciler.AyrilanSayisi = -model.AyrilanSayisi;                    
                     ogrenciler.KayitTarihi = model.KayitTarihi;
 
 

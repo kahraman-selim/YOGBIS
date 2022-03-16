@@ -116,7 +116,7 @@
                                         <button class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="sinifEkleBtn">Kaydet</button>
                                         <button class="btn btn-info btn-sm text-white mb-1" style="width:100px" id="sinifDegistirBtn">Değiştir</button>
                                         <a class="btn btn-secondary btn-sm text-white mb-1" style="width:100px" id="ogrenciEkleBtn" asp-controller="Ogrenciler" asp-action="OgrenciEkle"  
-                                           asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Öğrenci Ekle</a>
+                                           asp-route-okulid="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Öğrenci Ekle</a>
                                         <a class="btn btn-danger btn-sm text-white mb-1" style="width:100px" asp-controller="Okullar" asp-action="OkulDetayGuncelle"
                                            asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Vazgeç</a>
                                     </div>

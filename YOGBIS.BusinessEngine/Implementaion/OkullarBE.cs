@@ -533,5 +533,43 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        #region OkulEyaletIdGetir(id)
+        public Result<Guid> OkulEyaletIdGetir(Guid id)
+        {
+
+            var data = _unitOfWork.okullarRepository.Get(id);
+            if (data != null)
+            {
+                var eyaletId = (Guid)data.EyaletId;
+
+                return new Result<Guid>(true, ResultConstant.RecordFound, eyaletId);
+            }
+            else
+            {
+                return new Result<Guid>(false, ResultConstant.RecordNotFound);
+            }
+
+        }
+        #endregion
+
+        #region OkulSehirIdGetir(id)
+        public Result<Guid> OkulSehirIdGetir(Guid id)
+        {
+
+            var data = _unitOfWork.okullarRepository.Get(id);
+            if (data != null)
+            {
+                var sehirId = (Guid)data.SehirId;
+
+                return new Result<Guid>(true, ResultConstant.RecordFound, sehirId);
+            }
+            else
+            {
+                return new Result<Guid>(false, ResultConstant.RecordNotFound);
+            }
+
+        }
+        #endregion
     }
 }

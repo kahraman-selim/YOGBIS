@@ -7,6 +7,7 @@ using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
+using YOGBIS.Data.Contracts;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -17,19 +18,28 @@ namespace YOGBIS.UI.Controllers
         #region Değişkenler
         private readonly IOgrencilerBE _ogrencilerBE;
         private readonly IUlkelerBE _ulkelerBE;
+        private readonly IEyaletlerBE _eyaletlerBE;
+        private readonly ISehirlerBE _sehirlerBE;
         private readonly IOkullarBE _okullarBE;
         private readonly ISubelerBE _subelerBE;
         private readonly ISiniflarBE _siniflarBE;
+        private readonly IUnitOfWork _unitOfWork;
+        [TempData]
+        public string StatusMessage { get; set; }
         #endregion
 
         #region Dönüştürücüler
-        public OgrencilerController(IOgrencilerBE ogrencilerBE, IUlkelerBE ulkelerBE, IOkullarBE okullarBE, ISubelerBE subelerBE, ISiniflarBE siniflarBE)
+        public OgrencilerController(IOgrencilerBE ogrencilerBE, IUlkelerBE ulkelerBE, IEyaletlerBE eyaletlerBE, ISehirlerBE sehirlerBE, 
+            IOkullarBE okullarBE, ISubelerBE subelerBE, ISiniflarBE siniflarBE, IUnitOfWork unitOfWork)
         {
             _ogrencilerBE = ogrencilerBE;
             _ulkelerBE = ulkelerBE;
+            _eyaletlerBE = eyaletlerBE;
+            _sehirlerBE = sehirlerBE;
             _okullarBE = okullarBE;
             _subelerBE = subelerBE;
             _siniflarBE = siniflarBE;
+            _unitOfWork = unitOfWork;
         }
         #endregion
 
@@ -65,6 +75,7 @@ namespace YOGBIS.UI.Controllers
             ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
             ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)OkulId).Data;
             ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)OkulId).Data;
+            StatusMessage = null;
 
             return View();
         }
@@ -80,9 +91,13 @@ namespace YOGBIS.UI.Controllers
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
+            ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)OkulId).Data;
+            ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)OkulId).Data;
+            TempData["EyaletId"] = _okullarBE.OkulEyaletIdGetir((Guid)OkulId).Data;
+            TempData["SehirId"] = _okullarBE.OkulSehirIdGetir((Guid)OkulId).Data;
 
-
-            if (OkulId != null)
+            if (OkulId == null)
             {
                 var data = _ogrencilerBE.OgrenciGuncelle(model, user);
                 if (data.IsSuccess)
@@ -95,7 +110,8 @@ namespace YOGBIS.UI.Controllers
                 var data = _ogrencilerBE.OgrenciEkle(model, user);
                 if (data.IsSuccess)
                 {
-                    return RedirectToAction("Index");
+                    StatusMessage = "Öğrenci kaydı başarılı bir şekilde tamamlandı !";
+                    return View();//return RedirectToAction("SubeSinifOgrenci","Okullar");
                 }
                 return View(model);
             }
