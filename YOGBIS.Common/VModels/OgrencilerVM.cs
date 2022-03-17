@@ -25,7 +25,9 @@ namespace YOGBIS.Common.VModels
         public string AyrilmaNedeni { get; set; }
         public int AyrilanSayisi { get; set; }
         public Guid? EgitimciId { get; set; }
+        public string SinifAdi { get; set; }
         public Guid? SinifId { get; set; }
+        public string SubeAdi { get; set; }
         public Guid? SubeId { get; set; }
         public Guid? OkulId { get; set; }
         public Guid? UniversiteId { get; set; }
@@ -35,7 +37,7 @@ namespace YOGBIS.Common.VModels
         public Guid UlkeId { get; set; }
         public string UlkeAdi { get; set; }
         public UlkelerVM Ulkeler { get; set; }
-        public string StatusMessage { get; set; }
+        public string StatusMessage { get; set; } = "";
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }

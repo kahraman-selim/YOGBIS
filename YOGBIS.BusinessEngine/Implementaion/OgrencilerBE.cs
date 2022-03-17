@@ -44,13 +44,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OgrencilerId = item.OgrencilerId,
                         Cinsiyet = item.Cinsiyet,
                         AyrilmaNedeni = item.AyrilmaNedeni,
-                        AyrilmaTarihi = item.AyrilmaTarihi,
+                        AyrilmaTarihi = (DateTime)item.AyrilmaTarihi,
                         BaslamaKayitTarihi = item.BaslamaKayitTarihi,
                         EgitimciId = item.EgitimciId,
                         EyaletId = item.EyaletId,
                         KayitNedeni = item.KayitNedeni,
                         OgrenciTuru = item.OgrenciTuru,
-                        OkulId = item.OkulId,
+                        OkulId = item.OkulId.Value,
                         SehirId = item.SehirId,
                         SinifId = item.SinifId,
                         SubeId = item.SubeId,
@@ -87,13 +87,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OgrencilerId = item.OgrencilerId,
                         Cinsiyet = item.Cinsiyet,
                         AyrilmaNedeni = item.AyrilmaNedeni,
-                        AyrilmaTarihi = item.AyrilmaTarihi,
+                        AyrilmaTarihi = (DateTime)item.AyrilmaTarihi,
                         BaslamaKayitTarihi = item.BaslamaKayitTarihi,
                         EgitimciId = item.EgitimciId,
                         EyaletId = item.EyaletId,
                         KayitNedeni = item.KayitNedeni,
                         OgrenciTuru = item.OgrenciTuru,
-                        OkulId = item.OkulId,
+                        OkulId = item.OkulId.Value,
                         SehirId = item.SehirId,
                         SinifId = item.SinifId,
                         SubeId = item.SubeId,
@@ -142,7 +142,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ogrenciler.KayitNedeni = model.KayitNedeni;
                     ogrenciler.KayitSayisi = model.KayitSayisi;
                     ogrenciler.AyrilmaTarihi = model.AyrilmaTarihi;
-                    ogrenciler.AyrilmaNedeni = model.AyrilmaNedeni;
+                    ogrenciler.AyrilmaNedeni = model.AyrilmaNedeni== "Kayıt silme nedenini seçiniz" ? model.AyrilmaNedeni=null:model.AyrilmaNedeni;
                     ogrenciler.AyrilanSayisi = -model.AyrilanSayisi;                    
                     ogrenciler.KayitTarihi = model.KayitTarihi;
 
@@ -249,13 +249,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         OgrencilerId = item.OgrencilerId,
                         Cinsiyet = item.Cinsiyet,
                         AyrilmaNedeni = item.AyrilmaNedeni,
-                        AyrilmaTarihi = item.AyrilmaTarihi,
+                        AyrilmaTarihi = (DateTime)item.AyrilmaTarihi,
                         BaslamaKayitTarihi = item.BaslamaKayitTarihi,
                         EgitimciId = item.EgitimciId,
                         EyaletId = item.EyaletId,
                         KayitNedeni = item.KayitNedeni,
                         OgrenciTuru = item.OgrenciTuru,
-                        OkulId = item.OkulId,
+                        OkulId = item.OkulId.Value,
                         SehirId = item.SehirId,
                         SinifId = item.SinifId,
                         SubeId = item.SubeId,
@@ -289,9 +289,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     OgrencilerVM ogrenciler = new OgrencilerVM();
 
-                    ogrenciler.OkulId = data.OkulId;
+                    ogrenciler.OkulId = (Guid)data.OkulId;
                     ogrenciler.AyrilmaNedeni = data.AyrilmaNedeni;
-                    ogrenciler.AyrilmaTarihi = data.AyrilmaTarihi;
+                    ogrenciler.AyrilmaTarihi = (DateTime)data.AyrilmaTarihi;
                     ogrenciler.UlkeId = data.UlkeId;
                     ogrenciler.BaslamaKayitTarihi = data.BaslamaKayitTarihi;
                     ogrenciler.Cinsiyet = data.Cinsiyet;
@@ -339,22 +339,26 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         OgrencilerId = item.OgrencilerId,
                         Cinsiyet = item.Cinsiyet,
-                        AyrilmaNedeni = item.AyrilmaNedeni,
-                        AyrilmaTarihi = item.AyrilmaTarihi,
                         BaslamaKayitTarihi = item.BaslamaKayitTarihi,
-                        EgitimciId = item.EgitimciId,
-                        EyaletId = item.EyaletId,
                         KayitNedeni = item.KayitNedeni,
+                        KayitSayisi=item.KayitSayisi,
                         OgrenciTuru = item.OgrenciTuru,
-                        OkulId = item.OkulId,
-                        SehirId = item.SehirId,
-                        SinifId = item.SinifId,
-                        SubeId = item.SubeId,
-                        TemsilcilikId = item.TemsilcilikId,
-                        UlkeId = item.UlkeId,
-                        UlkeAdi = item.Ulkeler != null ? item.Ulkeler.UlkeAdi : string.Empty,
                         Uyruk = item.Uyruk,
                         KayitTarihi = item.KayitTarihi,
+                        AyrilmaNedeni = item.AyrilmaNedeni,
+                        AyrilmaTarihi = item.AyrilmaTarihi.GetValueOrDefault(),
+                        EgitimciId = item.EgitimciId.GetValueOrDefault(),
+                        SinifId = item.SinifId.GetValueOrDefault(),
+                        SinifAdi=item.SinifId.GetValueOrDefault() != null ? _unitOfWork.siniflarRepository.GetFirstOrDefault(x=>x.SinifId==item.SinifId).SinifAdi.ToString():"",
+                        SubeId = item.SubeId.GetValueOrDefault(),
+                        SubeAdi=item.SubeId.GetValueOrDefault() != null ? _unitOfWork.subelerRepository.GetFirstOrDefault(x=>x.SubeId==item.SubeId).SubeAdi.ToString():"",
+                        UniversiteId= item.UniversiteId.GetValueOrDefault(),
+                        OkulId = item.OkulId.GetValueOrDefault(),
+                        SehirId = item.SehirId.GetValueOrDefault(),                        
+                        EyaletId = item.EyaletId.GetValueOrDefault(),
+                        TemsilcilikId = item.TemsilcilikId.GetValueOrDefault(),
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = item.Ulkeler != null ? item.Ulkeler.UlkeAdi : string.Empty,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
 

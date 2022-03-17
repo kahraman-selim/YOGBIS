@@ -75,7 +75,10 @@ namespace YOGBIS.UI.Controllers
             ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
             ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)OkulId).Data;
             ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)OkulId).Data;
-            StatusMessage = null;
+            ViewData["EyaletId"] = _okullarBE.OkulEyaletIdGetir((Guid)OkulId).Data;
+            ViewData["SehirId"] = _okullarBE.OkulSehirIdGetir((Guid)OkulId).Data;
+          
+            StatusMessage = "";
 
             return View();
         }
@@ -86,16 +89,19 @@ namespace YOGBIS.UI.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Route("Ogrenciler/OGC10002", Name = "OgrenciEkleRoute")]
-        public IActionResult OgrenciEkle(OgrencilerVM model, Guid OkulId)
+        public IActionResult OgrenciEkle(OgrencilerVM model, Guid OkulId, Guid UlkeId)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
+            var ulkeid = _ulkelerBE.UlkeIdGetir(UlkeId).Data;
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeGetir(ulkeid).Data;
             ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
             ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)OkulId).Data;
             ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)OkulId).Data;
-            TempData["EyaletId"] = _okullarBE.OkulEyaletIdGetir((Guid)OkulId).Data;
-            TempData["SehirId"] = _okullarBE.OkulSehirIdGetir((Guid)OkulId).Data;
+            ViewData["EyaletId"] = _okullarBE.OkulEyaletIdGetir((Guid)OkulId).Data;
+            ViewData["SehirId"] = _okullarBE.OkulSehirIdGetir((Guid)OkulId).Data;
+           
+            StatusMessage = "";
 
             if (OkulId == null)
             {
@@ -115,7 +121,7 @@ namespace YOGBIS.UI.Controllers
                 }
                 return View(model);
             }
-
+            StatusMessage = "Bilinmeyen bir hata oluştu. Kayıt yapılamadı !";
             return View();
         }
         #endregion

@@ -2,9 +2,9 @@
 @{
     ViewData["Title"] = "Öğrenci Kayıt";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var okulid = TempData["OkulId"];
-    var eyaletid = TempData["EyaletId"];
-    var sehirid = TempData["SehirId"];
+    var okulid = ViewData["OkulId"];
+    var eyaletid = ViewData["EyaletId"];
+    var sehirid = ViewData["SehirId"];
 }
 @section Styles{
 
@@ -13,11 +13,11 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 }
 
-<partial name="_StatusMessage" model="@Model.StatusMessage"/>
+@*<partial name="_StatusMessage" model="@Model.StatusMessage"/>*@
 
 <div class="row">
     <!--Kayıt Form-->
-    <div class="col-md-7">
+    <div class="col-md-6">
         <div class="card shadow-lg rounded-lg mt-0 h-auto">
             <div class="card-header">
                 <i class="fas fa-pen mr-1"></i>
@@ -63,7 +63,7 @@
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Öğrenci Türü</label>
                                 <select asp-for="OgrenciTuru" class="form-control-range form-control py-2" aria-label="Default select example">
-                                    <option selected class="text-center">Öğrenci türünü seçiniz</option>
+                                    <option selected class="text-left">Öğrenci türünü seçiniz</option>
                                     <option value="1">MEB-Okul Öğrenci</option>
                                     <option value="2">TTK Mahallinden Öğrenci</option>
                                     <option value="3">TTK Öğrenci</option>
@@ -77,7 +77,7 @@
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Uyruğu</label>
                                 <select asp-for="Uyruk" class="form-control-range form-control py-2" aria-label="Default select example">
-                                    <option selected class="text-center">Öğrenci uyruğunu seçiniz</option>
+                                    <option selected class="text-left">Öğrenci uyruğunu seçiniz</option>
                                     <option value="1">T.C.</option>
                                     <option value="2">Diğer</option>
                                 </select>
@@ -88,7 +88,7 @@
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Cinsiyeti</label>
                                 <select asp-for="Cinsiyet" class="form-control-range form-control py-2" aria-label="Default select example">
-                                    <option selected class="text-center">Öğrenci cinsiyetini seçiniz</option>
+                                    <option selected class="text-left">Öğrenci cinsiyetini seçiniz</option>
                                     <option value="true">Kız</option>
                                     <option value="false">Erkek</option>
                                 </select>
@@ -110,7 +110,7 @@
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Kayıt Nedeni</label>
                                 <select asp-for="KayitNedeni" class="form-control-range form-control py-2" aria-label="Default select example">
-                                    <option selected class="text-center">Kayıt nedenini seçiniz</option>
+                                    <option selected class="text-left">Kayıt nedenini seçiniz</option>
                                     <option value="1">Yeni kayıt</option>
                                     <option value="2">Nakil</option>
                                 </select>
@@ -139,7 +139,7 @@
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Kayıt Silme Nedeni</label>
                                 <select asp-for="AyrilmaNedeni" class="form-control-range form-control py-2" aria-label="Default select example">
-                                    <option selected class="text-center">Kayıt silme nedenini seçiniz</option>
+                                    <option selected class="text-left">Kayıt silme nedenini seçiniz</option>
                                     <option value="1">Mezun</option>
                                     <option value="2">Nakil Giden</option>
                                     <option value="3">Diğer</option>
@@ -166,8 +166,8 @@
         </div>
     </div>
     <!--Öğrenci Liste-->
-    <div class="col-md-5">
-
+    <div class="col-md-6">
+        @await Component.InvokeAsync("OkulOgrenciListesi", okulid)
     </div>
 </div>
 
