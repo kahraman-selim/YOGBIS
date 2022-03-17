@@ -1,7 +1,7 @@
 ﻿@model YOGBIS.Common.VModels.OkullarVM
 @{
     ViewData["Title"] = "Şube-Sınıf-Öğrenci";
-    //ViewData["OkulId"] = Model.OkulId;
+    ViewData["OkulId"] = Model.OkulId;
 }
 
 @section Styles{
@@ -594,12 +594,14 @@ else
             var sehirId = $("#inputSehirId").val();
             var ulkeId = $("#inputUlkeId").val();
 
-            alert("sinif id=" + sinifId + " sinif adı =" + sinifAdi);
-            alert("şube id =" + subeId + " şube adı =" + subeAdi);
-            alert("okul id=" + okulId);
-            alert("şehir id =" + sehirId);
-            alert("eyalet id =" + eyaletId);
-            alert("ulke id =" + ulkeId);
+            //alert("sinif id=" + sinifId + " sinif adı =" + sinifAdi);
+            //alert("şube id =" + subeId + " şube adı =" + subeAdi);
+            //alert("okul id=" + okulId);
+            //alert("şehir id =" + sehirId);
+            //alert("eyalet id =" + eyaletId);
+            //alert("ulke id =" + ulkeId);
+
+            location.href = '@Url.Action("OgrenciEkle", "Ogrenciler")?ulkeId=' + ulkeId + '&eyaletId=' + eyaletId + '&sehirId=' + sehirId + '&okulId=' + okulId + '&subeId=' + subeId + '&sinifId=' + sinifId;
 
         });
     </script>

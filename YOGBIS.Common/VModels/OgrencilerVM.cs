@@ -18,7 +18,7 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Cinsiyetini seçiniz !")]
         public bool Cinsiyet { get; set; }
-        public DateTime BaslamaKayitTarihi { get; set; }
+        public DateTime? BaslamaKayitTarihi { get; set; }
         public string KayitNedeni { get; set; }        
         public int KayitSayisi { get; set; }
         public DateTime? AyrilmaTarihi { get; set; }

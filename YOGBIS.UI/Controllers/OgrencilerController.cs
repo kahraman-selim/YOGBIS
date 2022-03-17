@@ -67,17 +67,19 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator,SubManager")]
         [HttpGet]
         [Route("Ogrenciler/OGC10002", Name = "OgrenciEkleRoute")]
-        public IActionResult OgrenciEkle(Guid OkulId, Guid UlkeId)
+        public IActionResult OgrenciEkle(Guid ulkeId, Guid eyaletId, Guid sehirId, Guid okulId, Guid subeId, Guid sinifId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            var ulkeid = _ulkelerBE.UlkeIdGetir(UlkeId).Data;
+            var ulkeid = _ulkelerBE.UlkeIdGetir(ulkeId).Data;
             ViewBag.UlkeAdi = _ulkelerBE.UlkeGetir(ulkeid).Data;
             ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
-            ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)OkulId).Data;
-            ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)OkulId).Data;
-            ViewData["EyaletId"] = _okullarBE.OkulEyaletIdGetir((Guid)OkulId).Data;
-            ViewData["SehirId"] = _okullarBE.OkulSehirIdGetir((Guid)OkulId).Data;
-          
+            ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)okulId).Data;
+            ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)okulId).Data;
+            ViewData["EyaletId"] = eyaletId;//_okullarBE.OkulEyaletIdGetir((Guid)OkulId).Data;
+            ViewData["SehirId"] = sehirId;//_okullarBE.OkulSehirIdGetir((Guid)OkulId).Data;
+            ViewData["OkulId"] = okulId;
+
+
             StatusMessage = "";
 
             return View();
@@ -89,21 +91,22 @@ namespace YOGBIS.UI.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Route("Ogrenciler/OGC10002", Name = "OgrenciEkleRoute")]
-        public IActionResult OgrenciEkle(OgrencilerVM model, Guid OkulId, Guid UlkeId)
+        public IActionResult OgrenciEkle(OgrencilerVM model, Guid ulkeId, Guid eyaletId, Guid sehirId, Guid okulId, Guid subeId, Guid sinifId)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            var ulkeid = _ulkelerBE.UlkeIdGetir(UlkeId).Data;
+            var ulkeid = _ulkelerBE.UlkeIdGetir(ulkeId).Data;
             ViewBag.UlkeAdi = _ulkelerBE.UlkeGetir(ulkeid).Data;
             ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
-            ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)OkulId).Data;
-            ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)OkulId).Data;
-            ViewData["EyaletId"] = _okullarBE.OkulEyaletIdGetir((Guid)OkulId).Data;
-            ViewData["SehirId"] = _okullarBE.OkulSehirIdGetir((Guid)OkulId).Data;
-           
+            ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)okulId).Data;
+            ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)okulId).Data;
+            ViewData["EyaletId"] = eyaletId;//_okullarBE.OkulEyaletIdGetir((Guid)okulId).Data;
+            ViewData["SehirId"] = sehirId; //_okullarBE.OkulSehirIdGetir((Guid)okulId).Data;
+            ViewData["OkulId"] = okulId;
+
             StatusMessage = "";
 
-            if (OkulId == null)
+            if (okulId == null)
             {
                 var data = _ogrencilerBE.OgrenciGuncelle(model, user);
                 if (data.IsSuccess)

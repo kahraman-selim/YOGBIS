@@ -31,13 +31,18 @@
                     <tr>
                         <td>@sirano</td>
                         <td>@item.SubeAdi</td>
-                        <td>@item.SinifAdi</td>
-                        @if (item.BaslamaKayitTarihi != null)
+                        <td>@item.SinifAdi</td>                        
+                        @if (item.KayitSayisi > 0)
                         {
-                            <td>@item.BaslamaKayitTarihi.ToString("dd/MM/yyyy")</td>
+                            <td>@item.BaslamaKayitTarihi.GetValueOrDefault().ToString("dd/MM/yyyy")</td>
                             <td>@item.KayitSayisi</td>
                         }
-                        @if (item.AyrilmaTarihi.GetValueOrDefault() != null)
+                        else
+                        {
+                            <td></td>
+                            <td></td>
+                        }
+                        @if (item.AyrilanSayisi > 0)
                         {
                             <td>@item.AyrilmaTarihi.GetValueOrDefault().ToString("dd/MM/yyyy")</td>
                             <td>@item.AyrilanSayisi</td>
@@ -45,7 +50,7 @@
                         else
                         {
                             <td></td>
-                            <td>0</td>
+                            <td></td>
                         }
                         <td class="text-center">
                             <a class="btn btn-sm btn-info btnOgrenciDegistir" title="degistir"

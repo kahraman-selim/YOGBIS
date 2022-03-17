@@ -139,11 +139,11 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ogrenciler.Uyruk = model.Uyruk;
                     ogrenciler.Cinsiyet = model.Cinsiyet;
                     ogrenciler.BaslamaKayitTarihi = model.BaslamaKayitTarihi;
-                    ogrenciler.KayitNedeni = model.KayitNedeni;
+                    ogrenciler.KayitNedeni = model.KayitNedeni == "Kayıt nedenini seçiniz" ? model.KayitNedeni=null:model.KayitNedeni;
                     ogrenciler.KayitSayisi = model.KayitSayisi;
                     ogrenciler.AyrilmaTarihi = model.AyrilmaTarihi;
                     ogrenciler.AyrilmaNedeni = model.AyrilmaNedeni== "Kayıt silme nedenini seçiniz" ? model.AyrilmaNedeni=null:model.AyrilmaNedeni;
-                    ogrenciler.AyrilanSayisi = -model.AyrilanSayisi;                    
+                    ogrenciler.AyrilanSayisi = model.AyrilanSayisi;                    
                     ogrenciler.KayitTarihi = model.KayitTarihi;
 
 
@@ -180,7 +180,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.AyrilmaNedeni = model.AyrilmaNedeni;
                         data.AyrilmaTarihi = model.AyrilmaTarihi;
                         data.UlkeId = model.UlkeId;
-                        data.BaslamaKayitTarihi = model.BaslamaKayitTarihi;
+                        data.BaslamaKayitTarihi = (DateTime)model.BaslamaKayitTarihi;
                         data.Cinsiyet = model.Cinsiyet;
                         data.EgitimciId = model.EgitimciId;
                         data.EyaletId = model.EyaletId;
