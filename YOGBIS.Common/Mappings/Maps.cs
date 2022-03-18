@@ -36,7 +36,7 @@ namespace YOGBIS.Common.Mappings
             CreateMap<Okullar, OkullarVM>().ReverseMap();
             CreateMap<Personeller, PersonellerVM>().ReverseMap();
             CreateMap<Sehirler, SehirlerVM>().ReverseMap();
-            CreateMap<Siniflar, SiniflarVM>().ReverseMap();
+            CreateMap<Subeler, SubelerVM>().ReverseMap();
             CreateMap<SoruBankasi, SoruBankasiVM>().ReverseMap();
             CreateMap<SoruBankasiLog, SoruBankasiLogVM>().ReverseMap();
             CreateMap<SoruDereceler, SoruDerecelerVM>().ReverseMap();
@@ -46,7 +46,7 @@ namespace YOGBIS.Common.Mappings
             CreateMap<SoruOnay, SoruOnayVM>().ReverseMap();
             CreateMap<SSS, SSSVM>().ReverseMap();
             CreateMap<SSSCevap, SSSCevapVM>().ReverseMap();
-            CreateMap<Subeler, SubelerVM>().ReverseMap();
+            CreateMap<Siniflar, SiniflarVM>().ReverseMap();
             CreateMap<Telefonlar, TelefonlarVM>().ReverseMap();
             CreateMap<Temsilcilikler, TemsilciliklerVM>().ReverseMap();
             CreateMap<UlkeGruplari, UlkeGruplariVM>().ReverseMap();

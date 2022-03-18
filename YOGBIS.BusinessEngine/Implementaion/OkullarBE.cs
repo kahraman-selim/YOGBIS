@@ -265,10 +265,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     }).ToList();
 
-                    okul.Subeler = data.Subeler.Select(s => new SubelerVM()
+                    okul.Siniflar = data.Siniflar.Select(s => new SiniflarVM()
                     {
-                        SubeAdi=s.SubeAdi,
-                        SubeId=s.SubeId,
+                        SinifAdi=s.SinifAdi,
+                        SinifId=s.SinifId,
 
                         //Siniflar = s.Siniflar.Select(c => new SiniflarVM()
                         //{

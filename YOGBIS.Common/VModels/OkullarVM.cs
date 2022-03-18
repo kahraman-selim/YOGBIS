@@ -20,6 +20,7 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Okul türü zorunlu bir alandır")]
         public string OkulTuru { get; set; }
+        public string OgretimTuru { get; set; }
         public string OkulLogoURL { get; set; }
         public IFormFile OkulLogo { get; set; }
         [Required(ErrorMessage = "Okul hakkında bilgi yazmalısınız")]
@@ -54,8 +55,8 @@ namespace YOGBIS.Common.VModels
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<OkulBinaBolumVM> OkulBinaBolum { get; set; }
-        public List<SubelerVM> Subeler { get; set; }
         public List<SiniflarVM> Siniflar { get; set; }
+        public List<SubelerVM> Subeler { get; set; }
         public List<OgrencilerVM> Ogrenciler { get; set; }
         public List<AdayGorevKaydiVM> AdayGorevKaydi { get; set; }
         public List<EtkinliklerVM> Etkinlikler { get; set; }

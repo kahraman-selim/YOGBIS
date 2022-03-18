@@ -465,7 +465,7 @@ namespace YOGBIS.UI.Controllers
             if (id != null)
             {
                 var data = _okullarBE.OkulGetir((Guid)id);
-                ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)id).Data;
+                ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)id).Data;
                 return View(data.Data);
             }
             else

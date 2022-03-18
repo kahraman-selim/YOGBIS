@@ -8,8 +8,10 @@
         <thead>
             <tr>
                 <th>Sıra No</th>
+                <th>Sınıf Adı</th>
                 <th>Şube Adı</th>
                 <th>Açılış Tarihi</th>
+                <th>Şube Durumu</th>
                 <th class="text-center">Değiştir</th>
                 <th class="text-center">Sil</th>
             </tr>
@@ -21,21 +23,23 @@
                 @foreach (var item in Model)
                 {
                     sirano++;
-            <tr>
-                <td>@sirano</td>
-                <td>@item.SubeAdi</td>
-                <td>@item.SubeAcilisTarihi.ToString("dd/MM/yyyy")</td>
-                <td class="text-center">                    
-                    <a class="btn btn-sm btn-info btnSubeDegistir" title="degistir" id="@item.SubeId" data-id="@item.SubeId">
-                        <i class="fas fa-edit text-white"></i>
-                    </a>
-                </td>
-                <td class="text-center">
-                    <a class="btn btn-sm btn-danger btnSubeSil" title="Sil" id="@item.SubeId" data-id="@item.SubeId">
-                        <i class="fas fa-trash text-white"></i>
-                    </a>
-                </td>
-            </tr>
+                    <tr>
+                        <td>@sirano</td>
+                        <td>@item.SinifAdi</td>
+                        <td>@item.SubeAdi</td>
+                        <td>@item.SubeAcilisTarihi.ToString("dd/MM/yyyy")</td>
+                        <td>@item.SubeDurumu</td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-info btnSubeDegistir" title="degistir" id="@item.SubeId" data-id="@item.SubeId">
+                                <i class="fas fa-edit text-white"></i>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-danger btnSubeSil" title="Sil" id="@item.SubeId" data-id="@item.SubeId">
+                                <i class="fas fa-trash text-white"></i>
+                            </a>
+                        </td>
+                    </tr>
                 }
             }
             else

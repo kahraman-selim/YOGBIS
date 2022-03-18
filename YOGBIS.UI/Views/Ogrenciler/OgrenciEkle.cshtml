@@ -158,7 +158,7 @@
                     <div class="form-row">
                         <div class="col-md-12">
                             <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" />
-                            <a asp-controller="Okullar" asp-action="SubeSinifOgrenci" asp-route-id="@okulid" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Vazgeç</a>
+                            <a asp-controller="Okullar" asp-action="SubeSinifOgrenci" asp-route-id="@okulid" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Geri Dön</a>
                         </div>
                     </div>
                 </form>
@@ -185,26 +185,26 @@
             format: 'DD/MM/YYYY'
         });
 
-        $(".ogrsay").on("input", function () {
+        //$(".ogrsay").on("input", function () {
 
-            var tcerkek = $("#TCErkek").val();
-            var tcerk = parseInt(tcerkek);
-            var tckiz = $("#TCKiz").val();
-            var tckz = parseInt(tckiz);
+        //    var tcerkek = $("#TCErkek").val();
+        //    var tcerk = parseInt(tcerkek);
+        //    var tckiz = $("#TCKiz").val();
+        //    var tckz = parseInt(tckiz);
 
-            var dgerkek = $("#DigerErkek").val();
-            var dgerk = parseInt(dgerkek);
-            var dgkiz = $("#DigerKiz").val();
-            var dgkz = parseInt(dgkiz);
+        //    var dgerkek = $("#DigerErkek").val();
+        //    var dgerk = parseInt(dgerkek);
+        //    var dgkiz = $("#DigerKiz").val();
+        //    var dgkz = parseInt(dgkiz);
 
-            document.getElementById("TCToplam").value = tcerk + tckz;
-            document.getElementById("DigerToplam").value = dgerk + dgkz;
-            document.getElementById("ToplamErkek").value = tcerk + dgerk;
-            document.getElementById("ToplamKiz").value = tckz + dgkz;
-            document.getElementById("GenelToplam").value = tcerk + tckz + dgerk + dgkz;
+        //    document.getElementById("TCToplam").value = tcerk + tckz;
+        //    document.getElementById("DigerToplam").value = dgerk + dgkz;
+        //    document.getElementById("ToplamErkek").value = tcerk + dgerk;
+        //    document.getElementById("ToplamKiz").value = tckz + dgkz;
+        //    document.getElementById("GenelToplam").value = tcerk + tckz + dgerk + dgkz;
 
 
-        });
+        //});
 
 
     </script>

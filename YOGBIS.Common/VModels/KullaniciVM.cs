@@ -62,7 +62,7 @@ namespace YOGBIS.Common.VModels
         public List<OkullarVM> Okullar { get; set; }
         public List<PersonellerVM> Personeller { get; set; }
         public List<SehirlerVM> Sehirler { get; set; }
-        public List<SiniflarVM> Siniflar { get; set; }
+        public List<SubelerVM> Siniflar { get; set; }
         public List<SoruBankasiLogVM> SoruBankasiLog { get; set; }
         public List<SoruBankasiVM> SoruBankasi { get; set; }
         public List<SoruDerecelerVM> SoruDereceler { get; set; }
@@ -70,7 +70,7 @@ namespace YOGBIS.Common.VModels
         public List<SoruOnayVM> SoruOnay { get; set; }
         public List<SSSCevapVM> SSSCevap { get; set; }
         public List<SSSVM> SSS { get; set; }
-        public List<SubelerVM> Subeler { get; set; }
+        public List<SiniflarVM> Subeler { get; set; }
         public List<TelefonlarVM> Telefonlar { get; set; }
         public List<TemsilciliklerVM> Temsilcilikler { get; set; }
         public List<UlkeGruplariVM> UlkeGruplari { get; set; }

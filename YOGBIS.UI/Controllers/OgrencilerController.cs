@@ -91,7 +91,7 @@ namespace YOGBIS.UI.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Route("Ogrenciler/OGC10002", Name = "OgrenciEkleRoute")]
-        public IActionResult OgrenciEkle(OgrencilerVM model, Guid ulkeId, Guid eyaletId, Guid sehirId, Guid okulId, Guid subeId, Guid sinifId)
+        public IActionResult OgrenciEkle(OgrencilerVM model, Guid ulkeId, Guid eyaletId, Guid sehirId, Guid okulId, Guid subeId, Guid sinifId, Guid? ogrenciId)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -106,7 +106,7 @@ namespace YOGBIS.UI.Controllers
 
             StatusMessage = "";
 
-            if (okulId == null)
+            if (ogrenciId != null)
             {
                 var data = _ogrencilerBE.OgrenciGuncelle(model, user);
                 if (data.IsSuccess)

@@ -28,58 +28,6 @@
                 <a asp-controller="Okullar" asp-action="OkulDetayGuncelle" asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId"><h4 class="text-center text-info">@Model.OkulAdi</h4></a>
             </div>
         </div>
-        <!--Şubeler-->
-        <div class="row mb-2">
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card shadow-lg rounded-lg mt-0 h-100">
-                            <div class="card-header">
-                                <i class="fas fa-pen mr-1"></i>
-                                <b>Şube Ekleme/Güncelleme</b>
-                            </div>
-                            <div class="card-body">
-                                <div class="row mb-1">
-                                    <div class="col-md-6">
-                                        <label class="small mb-1 font-weight-bold">Şube Adı</label>
-                                        <input type="text" class="form-control py-2 mb-1" id="subeAdiInput" placeholder="Şube adını yazınız">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="small mb-1 font-weight-bold">Şube Açılış Tarihi</label>
-                                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                            <input id="inputSubeAcTar" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
-                                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-md-12">
-                                        <button class="btn btn-primary btn-sm text-white mb-1" style="width:100px" id="yeniSubeBtn">Yeni Kayıt</button>
-                                        <button class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="subeEkleBtn">Kaydet</button>
-                                        <button class="btn btn-info btn-sm text-white mb-1" style="width:100px" id="subeDegistirBtn">Değiştir</button>
-                                        <a class="btn btn-danger btn-sm text-white mb-1" style="width:100px" asp-controller="Okullar" asp-action="OkulDetayGuncelle"
-                                           asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Vazgeç</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card shadow-lg rounded-lg mt-0 h-100">
-                    <div class="card-header">
-                        <i class="fas fa-table mr-1"></i>
-                        <b>Şubeler</b>
-                    </div>
-                    <div class="card-body">
-                        @await Component.InvokeAsync("OkulSubeListesi", Model.OkulId)
-                    </div>
-                </div>
-            </div>
-        </div>
         <!--Sınıflar-->
         <div class="row mb-2">
             <div class="col-md-6">
@@ -93,21 +41,25 @@
                             <div class="card-body">
                                 <div class="row mb-1">
                                     <div class="col-md-4">
+                                        <label class="small mb-1 font-weight-bold">Sınıf Adı</label>
+                                        <input type="text" class="form-control py-2 mb-1" id="sinifAdiInput" placeholder="Sınıf adını yazınız">
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="small mb-1 font-weight-bold">Şube Seçimi</label>
-                                            @Html.DropDownListFor(u => u.Subeler, new SelectList(ViewBag.SubeAdi, "SubeId", "SubeAdi"),
-                                           "Şubeyi seçiniz", new { @id = "SubeListesi", @class = "form-control-range form-control py-2" })
+                                            <label class="small mb-1 font-weight-bold">Sınıf Grubu</label>
+                                            <select asp-for="Siniflar" class="form-control-range form-control py-2" aria-label="Default select example">
+                                                <option selected class="text-left">Sınıf seçiniz</option>
+                                                <option value="1">Sabah Grubu</option>
+                                                <option value="2">Öğlen Grubu</option>
+                                            </select>
+                                            <span class="text-danger" asp-validation-for="Siniflar"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="small mb-1 font-weight-bold">Sınıf Adı</label>
-                                        <input type="text" class="form-control py-2 mb-1" id="inputSinifAdi" placeholder="Sınıf adını yazınız">
-                                    </div>
-                                    <div class="col-md-4">
                                         <label class="small mb-1 font-weight-bold">Sınıf Açılış Tarihi</label>
-                                        <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                                            <input id="inputSinifAcTar" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
-                                            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                            <input id="inputSinifAcTar" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div>
                                         </div>
@@ -118,11 +70,8 @@
                                         <button class="btn btn-primary btn-sm text-white mb-1" style="width:100px" id="yeniSinifBtn">Yeni Kayıt</button>
                                         <button class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="sinifEkleBtn">Kaydet</button>
                                         <button class="btn btn-info btn-sm text-white mb-1" style="width:100px" id="sinifDegistirBtn">Değiştir</button>
-                                        <button class="btn btn-secondary btn-sm text-white mb-1" style="width:100px" id="ogrenciEkleBtn">Öğrenci Ekle</button>
-                                        @*<a class="btn btn-secondary btn-sm text-white mb-1" style="width:100px" id="ogrenciEkleBtn" asp-controller="Ogrenciler" asp-action="OgrenciEkle"
-                                            asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Öğrenci Ekle</a>*@
                                         <a class="btn btn-danger btn-sm text-white mb-1" style="width:100px" asp-controller="Okullar" asp-action="OkulDetayGuncelle"
-                                           asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Vazgeç</a>
+                                           asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Geri Dön</a>
                                     </div>
                                 </div>
                             </div>
@@ -138,6 +87,89 @@
                     </div>
                     <div class="card-body">
                         @await Component.InvokeAsync("OkulSinifListesi", Model.OkulId)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Şubeler-->
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card shadow-lg rounded-lg mt-0 h-100">
+                            <div class="card-header">
+                                <i class="fas fa-pen mr-1"></i>
+                                <b>Şube Ekleme/Güncelleme</b>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-1">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="small mb-1 font-weight-bold">Sınıf Seçimi</label>
+                                            @Html.DropDownListFor(u => u.Siniflar, new SelectList(ViewBag.SinifAdi, "SinifId", "SinifAdi"),
+                                           "Sınıfı seçiniz", new { @id = "SinifListesi", @class = "form-control-range form-control py-2" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="small mb-1 font-weight-bold">Şube Adı</label>
+                                        <input type="text" class="form-control py-2 mb-1" id="inputSubeAdi" placeholder="Şube adını yazınız">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="small mb-1 font-weight-bold">Şube Açılış Tarihi</label>
+                                        <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                            <input id="inputSubeAcTar" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
+                                            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-1">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label mb-1 mr-1 small font-weight-bold">Şube Durumu</label>
+                                                <input type="checkbox" required class="form-check-input mb-1" />
+                                                <span class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label class="small mb-1 font-weight-bold">Şube Öğretmeni</label>
+                                            <select class="form-control-range form-control py-2" aria-label="Default select example">
+                                                <option selected class="text-left">Öğretmen seçiniz</option>
+                                                <option value="1">Öğretmen Adı Soyadı</option>
+                                            </select>
+                                            <span class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-primary btn-sm text-white mb-1" style="width:100px" id="yeniSubeBtn">Yeni Kayıt</button>
+                                        <button class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="subeEkleBtn">Kaydet</button>
+                                        <button class="btn btn-info btn-sm text-white mb-1" style="width:100px" id="subeDegistirBtn">Değiştir</button>
+                                        <button class="btn btn-secondary btn-sm text-white mb-1" style="width:100px" id="ogrenciEkleBtn">Öğrenci Ekle</button>
+                                        @*<a class="btn btn-secondary btn-sm text-white mb-1" style="width:100px" id="ogrenciEkleBtn" asp-controller="Ogrenciler" asp-action="OgrenciEkle"
+                                            asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Öğrenci Ekle</a>*@
+                                        <a class="btn btn-danger btn-sm text-white mb-1" style="width:100px" asp-controller="Okullar" asp-action="OkulDetayGuncelle"
+                                           asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Geri Dön</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-lg rounded-lg mt-0 h-100">
+                    <div class="card-header">
+                        <i class="fas fa-table mr-1"></i>
+                        <b>Şubeler</b>
+                    </div>
+                    <div class="card-body">
+                        @await Component.InvokeAsync("OkulSubeListesi", Model.OkulId)
                     </div>
                 </div>
             </div>
@@ -177,208 +209,6 @@ else
             format: 'DD/MM/YYYY'
         });
 
-        $("#subeEkleBtn").click(function () {
-
-            if ($("#subeAdiInput").val() == "") {
-
-                bootbox.alert({
-                    message: "Şube Adını ve Açılış Tarihini yazmalısınız !",
-                    buttons: {
-                        ok: {
-                            label: "Tamam",
-                            className : "btn-danger"
-                        }
-                    }
-                });
-
-                document.getElementById("subeAdiInput").focus();
-            }
-            else {
-
-                var sube = {
-                    SubeAdi: $("#subeAdiInput").val().trim(),
-                    SubeAcilisTarihi: $("#inputSubeAcTar").val().trim(),
-                    OkulId: $("#inputOkulId").val().trim()
-                }
-
-                $.ajax({
-
-                    type: 'POST',
-                    url: '/Okullar/SubeEkleJson',
-                    data: sube,
-
-                    success: function (response) {
-
-                        if (response === "200") {
-
-                            alertify.success('Kayıt başarıyla eklendi');
-                            location.reload();
-                        }
-                        else {
-
-                            alertify.danger('Kayıt eklenemedi !');
-                        }
-                    },
-                    error: function () {
-
-                        alertify.danger('Kayıt eklenemedi !');
-                    }
-
-                });
-            }
-
-        });
-
-        $(".btnSubeDegistir").click(function () {
-
-            var subeid = $(this).data("id");
-            var url = '@Url.Action("OkulSubeGetir", "Okullar")?SubeId=' + subeid;
-            $("#inputSubeId").val(subeid);
-
-            $.getJSON(url, function (data) {
-
-                    if (data.length != 0) {
-
-                        $.each(data, function (i = 0, subeId, subeAdi, subeAcilisTarihi) {
-
-                            if (i == 0) {
-
-                                $("#subeAdiInput").val(data[i]['subeAdi']);
-                                var date = new Date(data[i]['subeAcilisTarihi']);
-                                $("#inputSubeAcTar").val(date.toLocaleString().toString("dd/MM/yyyy"));
-                            }
-                        });
-
-                        document.getElementById("subeEkleBtn").disabled = true;
-                        document.getElementById("subeDegistirBtn").disabled = false;
-                        document.getElementById("subeDegistirBtn").className = "";
-                        document.getElementById("subeDegistirBtn").className = "btn btn-info btn-sm text-white mb-1";
-                    }
-                    else {
-
-                        alertify.danger('bu şube kayıtlı değil !');
-
-                    }
-                });
-
-        });
-
-        $("#subeDegistirBtn").click(function () {
-
-            if ($("#subeAdiInput").val() == "") {
-
-                bootbox.alert({
-                    message: "Şube Adını ve Açılış Tarihini yazmalısınız !",
-                    buttons: {
-                        ok: {
-                            label: "Tamam",
-                            className: "btn-danger"
-                        }
-                    }
-                });
-
-                document.getElementById("subeAdiInput").focus();
-            }
-            else {
-
-                var sube = {
-
-                    SubeId: $("#inputSubeId").val(),
-                    SubeAdi: $("#subeAdiInput").val().trim(),
-                    SubeAcilisTarihi: $("#inputSubeAcTar").val().trim(),
-                    OkulId: $("#inputOkulId").val().trim()
-                }
-
-                $.ajax({
-
-                    type: 'POST',
-                    url: '/Okullar/SubeGuncelleJson',
-                    data: sube,
-
-                    success: function (response) {
-
-                        if (response === "200") {
-
-                            alertify.success('Kayıt başarıyla güncellendi');
-                            location.reload();
-                        }
-                        else {
-
-                            alertify.danger('Kayıt güncellenemedi !');
-                        }
-                    },
-                    error: function () {
-
-                        alertify.danger('Kayıt güncellenemedi !');
-                    }
-
-                });
-            }
-
-        });
-
-        $(".btnSubeSil").click(function () {
-
-             var subeid = $(this).data("id");
-
-             if (subeid != null) {
-
-                 bootbox.confirm({
-                     message: "Eğer bu şubeyi silerseniz, bağlı olan sınıf ve öğrencilerde silinecektir. Yine de Silmek istediğinize emin misiniz?",
-                     buttons: {
-                         confirm: {
-                             label: 'Evet',
-                             className: 'btn-success'
-                         },
-                         cancel: {
-                             label: 'Hayır',
-                             className: 'btn-danger'
-                         }
-                     },
-                     callback: function (result) {
-                         if (result) {
-
-                             $.ajax({
-                                 type: "DELETE",
-                                 url: "/Okullar/OkulSubeSil/" + subeid,
-                                 success: function () {
-
-                                     location.reload();
-                                 }
-                             });
-                         }
-                     }
-                 });
-            }
-             else {
-                 alert("şube id okunamıyor");
-             }
-
-        });
-
-        $("#yeniSubeBtn").click(function () {
-
-            document.getElementById("subeAdiInput").focus();
-            document.getElementById("subeAdiInput").value = "";
-            document.getElementById("inputSubeAcTar").focus();
-            document.getElementById("inputSubeAcTar").value="";
-            document.getElementById("subeEkleBtn").className = "";
-            document.getElementById("subeEkleBtn").className = "btn btn-success btn-sm text-white mb-1";
-            document.getElementById("subeDegistirBtn").disabled = true;
-            document.getElementById("subeAdiInput").focus();
-        });
-
-        ///////////////////////////
-
-        $("#SubeListesi").on("change", function () {
-            var subeId = $("#SubeListesi").val();
-            var subead = $("#SubeListesi option:selected").text();
-            $("#inputSubeId").val(subeId);
-            $("#inputSubeAdi").val(subead);
-        });
-
-        //////////////////////////
-
         $("#sinifEkleBtn").click(function () {
 
             if ($("#sinifAdiInput").val() == "") {
@@ -388,7 +218,7 @@ else
                     buttons: {
                         ok: {
                             label: "Tamam",
-                            className: "btn-danger"
+                            className : "btn-danger"
                         }
                     }
                 });
@@ -400,9 +230,7 @@ else
                 var sinif = {
                     SinifAdi: $("#sinifAdiInput").val().trim(),
                     SinifAcilisTarihi: $("#inputSinifAcTar").val().trim(),
-                    OkulId: $("#inputOkulId").val().trim(),
-                    SubeId: $("#inputSubeId").val().trim(),
-                    SubeAdi: $("#inputSubeAdi").val().trim()
+                    OkulId: $("#inputOkulId").val().trim()
                 }
 
                 $.ajax({
@@ -437,23 +265,17 @@ else
 
             var sinifid = $(this).data("id");
             var url = '@Url.Action("OkulSinifGetir", "Okullar")?SinifId=' + sinifid;
+            $("#inputSinifId").val(sinifid);
 
             $.getJSON(url, function (data) {
 
                     if (data.length != 0) {
 
-                        $.each(data, function (i = 0, sinifId, sinifAdi, sinifAcilisTarihi, okulId, subeId, subeAdi) {
+                        $.each(data, function (i = 0, sinifId, sinifAdi, sinifAcilisTarihi) {
 
                             if (i == 0) {
 
-                                $("#inputSinifAdi").val(data[i]['sinifAdi']);
-                                $("#inputSubeId").val(data[i]['subeId']);
-                                $("#inputSubeAdi").val(data[i]['subeAdi']);
-                                $("#inputOkulId").val(data[i]['okulId']);
-                                $("#inputSinifId").val(data[i]['sinifId']);
-
-                                /*$("#SubeListesi option:selected").text() = data[i]['subeAdi'];*/
-
+                                $("#sinifAdiInput").val(data[i]['sinifAdi']);
                                 var date = new Date(data[i]['sinifAcilisTarihi']);
                                 $("#inputSinifAcTar").val(date.toLocaleString().toString("dd/MM/yyyy"));
                             }
@@ -461,13 +283,12 @@ else
 
                         document.getElementById("sinifEkleBtn").disabled = true;
                         document.getElementById("sinifDegistirBtn").disabled = false;
-                        document.getElementById("ogrenciEkleBtn").className = "btn btn-secondary btn-sm text-white mb-1";
                         document.getElementById("sinifDegistirBtn").className = "";
                         document.getElementById("sinifDegistirBtn").className = "btn btn-info btn-sm text-white mb-1";
                     }
                     else {
 
-                        alertify.danger('bu sınıf kayıtlı değil !');
+                        alertify.danger('bu şube kayıtlı değil !');
 
                     }
                 });
@@ -493,19 +314,18 @@ else
             else {
 
                 var sinif = {
-                    SinifId: $("#inputSinifId").val().trim(),
+
+                    SinifId: $("#inputSinifId").val(),
                     SinifAdi: $("#sinifAdiInput").val().trim(),
                     SinifAcilisTarihi: $("#inputSinifAcTar").val().trim(),
-                    OkulId: $("#inputOkulId").val().trim(),
-                    SubeId: $("#inputSubeId").val().trim(),
-                    SubeAdi: $("#inputSubeAdi").val().trim()
+                    OkulId: $("#inputOkulId").val().trim()
                 }
 
                 $.ajax({
 
                     type: 'POST',
                     url: '/Okullar/SinifGuncelleJson',
-                    data: sinif,
+                    data: sube,
 
                     success: function (response) {
 
@@ -531,12 +351,224 @@ else
 
         $(".btnSinifSil").click(function () {
 
-            var sinifid = $(this).data("id");
+             var sinifid = $(this).data("id");
 
-            if (sinifid != null) {
+             if (sinifid != null) {
+
+                 bootbox.confirm({
+                     message: "Eğer bu sınıfı silerseniz, bağlı olan Şube ve Öğrencilerde silinecektir. Yine de Silmek istediğinize emin misiniz?",
+                     buttons: {
+                         confirm: {
+                             label: 'Evet',
+                             className: 'btn-success'
+                         },
+                         cancel: {
+                             label: 'Hayır',
+                             className: 'btn-danger'
+                         }
+                     },
+                     callback: function (result) {
+                         if (result) {
+
+                             $.ajax({
+                                 type: "DELETE",
+                                 url: "/Okullar/OkulSinifSil/" + sinifid,
+                                 success: function () {
+
+                                     location.reload();
+                                 }
+                             });
+                         }
+                     }
+                 });
+            }
+             else {
+                 alert("Sınıf bulunamadı !");
+             }
+
+        });
+
+        $("#yeniSinifBtn").click(function () {
+
+            document.getElementById("sinifAdiInput").focus();
+            document.getElementById("sinifAdiInput").value = "";
+            document.getElementById("inputSinifAcTar").focus();
+            document.getElementById("inputSinifAcTar").value="";
+            document.getElementById("sinifEkleBtn").className = "";
+            document.getElementById("sinifEkleBtn").className = "btn btn-success btn-sm text-white mb-1";
+            document.getElementById("sinifDegistirBtn").disabled = true;
+            document.getElementById("sinifAdiInput").focus();
+        });
+
+        ///////////////////////////
+
+        $("#SinifListesi").on("change", function () {
+            var sinifId = $("#SinifListesi").val();
+            var sinifad = $("#SinifListesi option:selected").text();
+            $("#inputSinifId").val(subeId);
+            $("#inputSinifAdi").val(subead);
+        });
+
+        //////////////////////////
+
+        $("#subeEkleBtn").click(function () {
+
+            if ($("#subeAdiInput").val() == "") {
+
+                bootbox.alert({
+                    message: "Şube Adını ve Açılış Tarihini yazmalısınız !",
+                    buttons: {
+                        ok: {
+                            label: "Tamam",
+                            className: "btn-danger"
+                        }
+                    }
+                });
+
+                document.getElementById("subeAdiInput").focus();
+            }
+            else {
+
+                var sube = {
+                    SubefAdi: $("#subeAdiInput").val().trim(),
+                    SubeAcilisTarihi: $("#inputSubeAcTar").val().trim(),
+                    OkulId: $("#inputOkulId").val().trim(),
+                    SinifId: $("#inputSinifId").val().trim(),
+                    SinifAdi: $("#inputSinifAdi").val().trim()
+                }
+
+                $.ajax({
+
+                    type: 'POST',
+                    url: '/Okullar/SubeEkleJson',
+                    data: sube,
+
+                    success: function (response) {
+
+                        if (response === "200") {
+
+                            alertify.success('Kayıt başarıyla eklendi');
+                            location.reload();
+                        }
+                        else {
+
+                            alertify.danger('Kayıt eklenemedi !');
+                        }
+                    },
+                    error: function () {
+
+                        alertify.danger('Kayıt eklenemedi !');
+                    }
+
+                });
+            }
+
+        });
+
+        $(".btnSubeDegistir").click(function () {
+
+            var subeid = $(this).data("id");
+            var url = '@Url.Action("OkulSubeGetir", "Okullar")?SubeId=' + subeid;
+
+            $.getJSON(url, function (data) {
+
+                    if (data.length != 0) {
+
+                        $.each(data, function (i = 0, subeId, subeAdi, subeAcilisTarihi, okulId, sinifId, sinifAdi) {
+
+                            if (i == 0) {
+
+                                $("#inputSubeAdi").val(data[i]['subeAdi']);
+                                $("#inputSinifId").val(data[i]['sinifId']);
+                                $("#inputSinifAdi").val(data[i]['sinifAdi']);
+                                $("#inputOkulId").val(data[i]['okulId']);
+                                $("#inputSubeId").val(data[i]['subeId']);
+
+                                /*$("#SubeListesi option:selected").text() = data[i]['subeAdi'];*/
+
+                                var date = new Date(data[i]['subeAcilisTarihi']);
+                                $("#inputSubeAcTar").val(date.toLocaleString().toString("dd/MM/yyyy"));
+                            }
+                        });
+
+                        document.getElementById("subeEkleBtn").disabled = true;
+                        document.getElementById("subeDegistirBtn").disabled = false;
+                        document.getElementById("ogrenciEkleBtn").className = "btn btn-secondary btn-sm text-white mb-1";
+                        document.getElementById("subeDegistirBtn").className = "";
+                        document.getElementById("subeDegistirBtn").className = "btn btn-info btn-sm text-white mb-1";
+                    }
+                    else {
+
+                        alertify.danger('Bu sınıf kayıtlı değil !');
+
+                    }
+                });
+
+        });
+
+        $("#subeDegistirBtn").click(function () {
+
+            if ($("#subeAdiInput").val() == "") {
+
+                bootbox.alert({
+                    message: "Şube Adını ve Açılış Tarihini yazmalısınız !",
+                    buttons: {
+                        ok: {
+                            label: "Tamam",
+                            className: "btn-danger"
+                        }
+                    }
+                });
+
+                document.getElementById("subeAdiInput").focus();
+            }
+            else {
+
+                var sube = {
+                    SubeId: $("#inputSubeId").val().trim(),
+                    SubeAdi: $("#subeAdiInput").val().trim(),
+                    SubeAcilisTarihi: $("#inputSubeAcTar").val().trim(),
+                    OkulId: $("#inputOkulId").val().trim(),
+                    SinifId: $("#inputSinifId").val().trim(),
+                    SinifAdi: $("#inputSinifAdi").val().trim()
+                }
+
+                $.ajax({
+
+                    type: 'POST',
+                    url: '/Okullar/SubeGuncelleJson',
+                    data: sube,
+
+                    success: function (response) {
+
+                        if (response === "200") {
+
+                            alertify.success('Kayıt başarıyla güncellendi');
+                            location.reload();
+                        }
+                        else {
+
+                            alertify.danger('Kayıt güncellenemedi !');
+                        }
+                    },
+                    error: function () {
+
+                        alertify.danger('Kayıt güncellenemedi !');
+                    }
+
+                });
+            }
+
+        });
+
+        $(".btnSubeSil").click(function () {
+
+            var subeid = $(this).data("id");
+
+            if (subeid != null) {
 
                 bootbox.confirm({
-                    message: "Eğer bu sınıfı silerseniz, bu sınıfa kayıtlı öğrencilerde silinecektir. Yine de Silmek istediğinize emin misiniz?",
+                    message: "Eğer bu Şubeyi silerseniz, bu Şubeye kayıtlı Öğrencilerde silinecektir. Yine de Silmek istediğinize emin misiniz?",
                     buttons: {
                         confirm: {
                             label: 'Evet',
@@ -552,7 +584,7 @@ else
 
                             $.ajax({
                                 type: "DELETE",
-                                url: "/Okullar/OkulSinifSil/" + sinifid,
+                                url: "/Okullar/OkulSubeSil/" + subeid,
                                 success: function () {
 
                                     location.reload();
@@ -563,32 +595,32 @@ else
                 });
             }
             else {
-                alert("Sınıf id okunamıyor");
+                alert("Şube bulunamıyor !");
             }
 
         });
 
-        $("#yeniSinifBtn").click(function () {
+        $("#yeniSubeBtn").click(function () {
 
-            document.getElementById("sinifAdiInput").focus();
-            document.getElementById("sinifAdiInput").value = "";
-            document.getElementById("inputSinifAcTar").focus();
-            document.getElementById("inputSinifAcTar").value = "";
-            document.getElementById("sinifEkleBtn").className = "";
-            document.getElementById("sinifEkleBtn").className = "btn btn-success btn-sm text-white mb-1";
-            document.getElementById("sinifDegistirBtn").disabled = true;
+            document.getElementById("subeAdiInput").focus();
+            document.getElementById("subeAdiInput").value = "";
+            document.getElementById("inputSubeAcTar").focus();
+            document.getElementById("inputSubeAcTar").value = "";
+            document.getElementById("subeEkleBtn").className = "";
+            document.getElementById("subeEkleBtn").className = "btn btn-success btn-sm text-white mb-1";
+            document.getElementById("subeDegistirBtn").disabled = true;
             document.getElementById("ogrenciEkleBtn").disabled = true;
-            document.getElementById("sinifAdiInput").focus();
+            document.getElementById("subeAdiInput").focus();
         });
 
         //////////////////////////
 
         $("#ogrenciEkleBtn").click(function () {
 
-            var sinifAdi = $("#inputSinifAdi").val();
-            var sinifId = $("#inputSinifId").val();
             var subeAdi = $("#inputSubeAdi").val();
             var subeId = $("#inputSubeId").val();
+            var sinifAdi = $("#inputSinifAdi").val();
+            var sinifId = $("#inputSinifId").val();
             var okulId = $("#inputOkulId").val();
             var eyaletId = $("#inputEyaletId").val();
             var sehirId = $("#inputSehirId").val();
@@ -601,7 +633,7 @@ else
             //alert("eyalet id =" + eyaletId);
             //alert("ulke id =" + ulkeId);
 
-            location.href = '@Url.Action("OgrenciEkle", "Ogrenciler")?ulkeId=' + ulkeId + '&eyaletId=' + eyaletId + '&sehirId=' + sehirId + '&okulId=' + okulId + '&subeId=' + subeId + '&sinifId=' + sinifId;
+            location.href = '@Url.Action("OgrenciEkle", "Ogrenciler")?ulkeId=' + ulkeId + '&eyaletId=' + eyaletId + '&sehirId=' + sehirId + '&okulId=' + okulId + '&sinifId=' + sinifId + '&subeId=' + subeId;
 
         });
     </script>

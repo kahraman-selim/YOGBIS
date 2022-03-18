@@ -45,9 +45,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SubeId=item.SubeId,
                         SubeAdi=CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SubeAdi.ToString()),
-                        KayitTarihi=item.KayitTarihi,
-                        SubeAcilisTarihi=item.SubeAcilisTarihi,
-                        OkulId=item.OkulId,                        
+                        SubeAcilisTarihi = item.SubeAcilisTarihi,
+                        SubeDurumu=item.SubeDurumu,
+                        EgitimciId=item.EgitimciId,
+                        KayitTarihi =item.KayitTarihi,                        
+                        OkulId=item.OkulId,
+                        SinifId=item.SinifId,
+                        SinifAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Siniflar.SinifAdi.ToString()),
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
@@ -75,9 +79,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SubeId = item.SubeId,
                         SubeAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SubeAdi.ToString()),
-                        KayitTarihi = item.KayitTarihi,
                         SubeAcilisTarihi = item.SubeAcilisTarihi,
+                        SubeDurumu = item.SubeDurumu,
+                        EgitimciId = item.EgitimciId,
+                        KayitTarihi = item.KayitTarihi,
                         OkulId = item.OkulId,
+                        SinifId = item.SinifId,
+                        SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Siniflar.SinifAdi.ToString()),
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
@@ -94,7 +102,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SubeGetirKullaniciId
         public Result<List<SubelerVM>> SubeGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.subelerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici,Okullar").ToList();
+            var data = _unitOfWork.subelerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici,Okullar,Siniflar,Ogrenciler").ToList();
             if (data != null)
             {
                 List<SubelerVM> returnData = new List<SubelerVM>();
@@ -105,9 +113,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SubeId = item.SubeId,
                         SubeAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SubeAdi.ToString()),
-                        KayitTarihi = item.KayitTarihi,
                         SubeAcilisTarihi = item.SubeAcilisTarihi,
+                        SubeDurumu = item.SubeDurumu,
+                        EgitimciId = item.EgitimciId,
+                        KayitTarihi = item.KayitTarihi,
                         OkulId = item.OkulId,
+                        SinifId = item.SinifId,
+                        SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Siniflar.SinifAdi.ToString()),
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
@@ -133,9 +145,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     SubelerVM sube = new SubelerVM();
                     sube.SubeId = data.SubeId;
                     sube.SubeAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.SubeAdi.ToString());
-                    sube.KayitTarihi = data.KayitTarihi;
                     sube.SubeAcilisTarihi = data.SubeAcilisTarihi;
-                    sube.OkulId = data.OkulId; 
+                    sube.SubeDurumu = data.SubeDurumu;
+                    sube.EgitimciId = data.EgitimciId;
+                    sube.KayitTarihi = data.KayitTarihi;                    
+                    sube.OkulId = data.OkulId;
+                    sube.SinifId = data.SinifId;
+                    sube.SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.Siniflar.SinifAdi.ToString());
                     sube.KaydedenId = data.KaydedenId;
                     sube.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
@@ -164,6 +180,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SubeAdi=model.SubeAdi.ToLower(),
                         SubeAcilisTarihi=model.SubeAcilisTarihi,
+                        SubeDurumu=model.SubeDurumu,
+                        EgitimciId=model.EgitimciId,
+                        SinifId=model.SinifId,
                         OkulId=model.OkulId,
                         KayitTarihi = model.KayitTarihi,
                         KaydedenId=user.LoginId                       
@@ -196,6 +215,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     data.SubeAdi = model.SubeAdi.ToLower();
                     data.SubeAcilisTarihi = model.SubeAcilisTarihi;
+                    data.SubeDurumu = model.SubeDurumu;
+                    data.EgitimciId = model.EgitimciId;
                     data.OkulId = model.OkulId;
                     data.KayitTarihi = model.KayitTarihi;
                     data.KaydedenId = user.LoginId;
@@ -226,15 +247,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 _unitOfWork.subelerRepository.Remove(data);
                 _unitOfWork.Save();
 
-                foreach (var item in data.Siniflar.ToList())
-                {
-                    var siniflar = _unitOfWork.siniflarRepository.GetFirstOrDefault(c => c.SinifId == item.SinifId);
-                    if (data != null)
-                    {
-                        _unitOfWork.siniflarRepository.Remove(siniflar);
-                        _unitOfWork.Save();
-                    }
-                }
 
                 foreach (var item in data.Ogrenciler.ToList())
                 {

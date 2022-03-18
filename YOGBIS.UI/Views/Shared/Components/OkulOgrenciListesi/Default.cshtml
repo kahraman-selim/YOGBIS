@@ -11,6 +11,7 @@
                 <thead>
                     <tr>
                         <th>Sıra No</th>
+                        <th hidden>İşlem Tarihi</th>
                         <th>Şube Adı</th>
                         <th>Sınıf Adı</th>
                         <th>Kayıt Tarihi</th>
@@ -25,45 +26,46 @@
                     @{ var sirano = 0;}
                     @if (Model != null)
                     {
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.OrderBy(x=>x.KayitTarihi))
                         {
                             sirano++;
-                    <tr>
-                        <td>@sirano</td>
-                        <td>@item.SubeAdi</td>
-                        <td>@item.SinifAdi</td>                        
-                        @if (item.KayitSayisi > 0)
-                        {
-                            <td>@item.BaslamaKayitTarihi.GetValueOrDefault().ToString("dd/MM/yyyy")</td>
-                            <td>@item.KayitSayisi</td>
-                        }
-                        else
-                        {
-                            <td></td>
-                            <td></td>
-                        }
-                        @if (item.AyrilanSayisi > 0)
-                        {
-                            <td>@item.AyrilmaTarihi.GetValueOrDefault().ToString("dd/MM/yyyy")</td>
-                            <td>@item.AyrilanSayisi</td>
-                        }
-                        else
-                        {
-                            <td></td>
-                            <td></td>
-                        }
-                        <td class="text-center">
-                            <a class="btn btn-sm btn-info btnOgrenciDegistir" title="degistir"
-                               asp-controller="Ogrenciler" asp-action="OgrenciEkle" asp-route-id="@item.OgrencilerId">
-                                <i class="fas fa-edit text-white"></i>
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            <a class="btn btn-sm btn-danger btnOgrenciSil" title="Sil" id="@item.OgrencilerId" data-id="@item.OgrencilerId">
-                                <i class="fas fa-trash text-white"></i>
-                            </a>
-                        </td>
-                    </tr>
+                            <tr>
+                                <td>@sirano</td>
+                                <td hidden>@item.KayitTarihi</td>
+                                <td class="text-capitalize">@item.SubeAdi</td>
+                                <td class="text-capitalize">@item.SinifAdi</td>
+                                @if (item.KayitSayisi > 0)
+                                {
+                                    <td>@item.BaslamaKayitTarihi.GetValueOrDefault().ToString("dd/MM/yyyy")</td>
+                                    <td class="text-center">@item.KayitSayisi</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+                                @if (item.AyrilanSayisi > 0)
+                                {
+                                    <td>@item.AyrilmaTarihi.GetValueOrDefault().ToString("dd/MM/yyyy")</td>
+                                    <td class="text-center">@item.AyrilanSayisi</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+                                <td class="text-center">
+                                    <a class="btn btn-sm btn-info btnOgrenciDegistir" title="degistir"
+                                       asp-controller="Ogrenciler" asp-action="OgrenciEkle" asp-route-id="@item.OgrencilerId">
+                                        <i class="fas fa-edit text-white"></i>
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn-sm btn-danger btnOgrenciSil" title="Sil" id="@item.OgrencilerId" data-id="@item.OgrencilerId">
+                                        <i class="fas fa-trash text-white"></i>
+                                    </a>
+                                </td>
+                            </tr>
                         }
                     }
                     else

@@ -18,15 +18,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region Degiskenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly ISubelerBE _subelerBE;
+        private readonly ISiniflarBE _siniflarBE;
         #endregion
 
         #region Donusturuculer
-        public SiniflarBE(IUnitOfWork unitOfWork, IMapper mapper, ISubelerBE subelerBE)
+        public SiniflarBE(IUnitOfWork unitOfWork, IMapper mapper, ISiniflarBE siniflarBE)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _subelerBE = subelerBE;
+            _siniflarBE = siniflarBE;
         }
         #endregion
 
@@ -47,8 +47,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SinifId = item.SinifId,                        
                         SinifAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SinifAdi.ToString()),
                         SinifAcilisTarihi=item.SinifAcilisTarihi,
-                        SubeId = item.SubeId,
-                        SubeAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SubeAdi.ToString()),
+                        SinifGrubu=item.SinifGrubu,
                         OkulId =item.OkulId,
                         KayitTarihi=item.KayitTarihi,                                                
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
@@ -78,9 +77,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SinifId = item.SinifId,
                         SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SinifAdi.ToString()),
-                        SinifAcilisTarihi = item.SinifAcilisTarihi,
-                        SubeId = item.SubeId,
-                        SubeAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SubeAdi.ToString()),
+                        SinifGrubu=item.SinifGrubu,
+                        SinifAcilisTarihi = item.SinifAcilisTarihi,                        
                         OkulId = item.OkulId,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
@@ -110,9 +108,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SinifId = item.SinifId,
                         SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SinifAdi.ToString()),
-                        SinifAcilisTarihi = item.SinifAcilisTarihi,
-                        SubeId = item.SubeId,
-                        SubeAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SubeAdi.ToString()),
+                        SinifGrubu=item.SinifGrubu,
+                        SinifAcilisTarihi = item.SinifAcilisTarihi,                        
                         OkulId = item.OkulId,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
@@ -139,12 +136,11 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     SiniflarVM sinif = new SiniflarVM();
                     sinif.SinifId = data.SinifId;
-                    sinif.SubeId = data.SubeId;
-                    sinif.SubeAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.SubeAdi.ToString());
+                    sinif.SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.SinifAdi.ToString());
+                    sinif.SinifGrubu = data.SinifGrubu;
                     sinif.OkulId = data.OkulId;
                     sinif.KayitTarihi = data.KayitTarihi;
-                    sinif.SinifAcilisTarihi = data.SinifAcilisTarihi;
-                    sinif.SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.SinifAdi.ToString());
+                    sinif.SinifAcilisTarihi = data.SinifAcilisTarihi;                    
                     sinif.KaydedenId = data.KaydedenId;
                     sinif.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
@@ -173,8 +169,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SinifAdi=model.SinifAdi.ToLower(),
                         SinifAcilisTarihi=model.SinifAcilisTarihi,
-                        SubeId=model.SubeId,
-                        SubeAdi=model.SubeAdi,
+                        SinifGrubu=model.SinifGrubu,
                         OkulId=model.OkulId,
                         KayitTarihi = model.KayitTarihi,
                         KaydedenId=user.LoginId                       
@@ -207,9 +202,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     data.SinifAdi = model.SinifAdi.ToLower();
                     data.SinifAcilisTarihi = model.SinifAcilisTarihi;
+                    data.SinifGrubu = model.SinifGrubu;
                     data.OkulId = model.OkulId;
-                    data.SubeId = model.SubeId;
-                    data.SubeAdi = model.SubeAdi;
                     data.KayitTarihi = model.KayitTarihi;
                     data.KaydedenId = user.LoginId;
 
@@ -238,6 +232,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 _unitOfWork.siniflarRepository.Remove(data);
                 _unitOfWork.Save();
+
+                foreach (var item in data.Subeler.ToList())
+                {
+                    var subeler = _unitOfWork.subelerRepository.GetFirstOrDefault(c => c.SubeId == item.SubeId);
+                    if (data != null)
+                    {
+                        _unitOfWork.subelerRepository.Remove(subeler);
+                        _unitOfWork.Save();
+                    }
+                }
 
                 foreach (var item in data.Ogrenciler.ToList())
                 {

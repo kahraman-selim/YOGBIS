@@ -43,7 +43,7 @@ namespace YOGBIS.Data.DbModels
         public List<Okullar> Okullar { get; set; }
         public List<Personeller> Personeller { get; set; }
         public List<Sehirler> Sehirler { get; set; }
-        public List<Siniflar> Siniflar { get; set; }
+        public List<Subeler> Siniflar { get; set; }
         public List<SoruBankasi> SoruBankasi { get; set; }
         public List<SoruBankasiLog> SoruBankasiLog { get; set; }
         public List<SoruDereceler> SoruDereceler { get; set; }
@@ -51,7 +51,7 @@ namespace YOGBIS.Data.DbModels
         public List<SoruOnay> SoruOnay { get; set; }
         public List<SSS> SSS { get; set; }
         public List<SSSCevap> SSSCevap { get; set; }
-        public List<Subeler> Subeler { get; set; }
+        public List<Siniflar> Subeler { get; set; }
         public List<Telefonlar> Telefonlar { get; set; }
         public List<Temsilcilikler> Temsilcilikler { get; set; }
         public List<UlkeGruplari> UlkeGruplari { get; set; }

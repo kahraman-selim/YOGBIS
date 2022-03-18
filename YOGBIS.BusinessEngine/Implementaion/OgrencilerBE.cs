@@ -328,7 +328,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OgrenciGetirOkulId(Guid okulId)
         public Result<List<OgrencilerVM>> OgrenciGetirOkulId(Guid okulId)
         {
-            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.OkulId == okulId, includeProperties: "Kullanici,Ulkeler").ToList();
+            var data = _unitOfWork.ogrencilerRepository.GetAll(u => u.OkulId == okulId, includeProperties: "Kullanici,Ulkeler").OrderBy(x=>x.KayitTarihi).ToList();
             if (data != null)
             {
                 List<OgrencilerVM> returnData = new List<OgrencilerVM>();
@@ -346,7 +346,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         Uyruk = item.Uyruk,
                         KayitTarihi = item.KayitTarihi,
                         AyrilmaNedeni = item.AyrilmaNedeni,
-                        AyrilmaTarihi = item.AyrilmaTarihi.GetValueOrDefault(),
+                        AyrilmaTarihi = item.AyrilmaTarihi,
+                        AyrilanSayisi=item.AyrilanSayisi,
                         EgitimciId = item.EgitimciId.GetValueOrDefault(),
                         SinifId = item.SinifId.GetValueOrDefault(),
                         SinifAdi=item.SinifId.GetValueOrDefault() != null ? _unitOfWork.siniflarRepository.GetFirstOrDefault(x=>x.SinifId==item.SinifId).SinifAdi.ToString():"",

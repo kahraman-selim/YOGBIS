@@ -11,14 +11,14 @@ namespace YOGBIS.Common.VModels
         [Key]
         public Guid SinifId { get; set; }
         public string SinifAdi { get; set; }
+        public string SinifGrubu { get; set; }
         public DateTime SinifAcilisTarihi { get; set; }
-        public string SubeAdi { get; set; }
-        public Guid SubeId { get; set; }        
-        public SubelerVM Subeler { get; set; }
         public Guid OkulId { get; set; }
-        public string KaydedenId { get; set; }
+        public OkullarVM Okullar { get; set; }
         public string KaydedenAdi { get; set; }
+        public string KaydedenId { get; set; }        
         public KullaniciVM Kullanici { get; set; }
-        public List<OgrencilerVM> Ogrencilers { get; set; }
+        public List<SubelerVM> Subeler { get; set; }
+        public List<OgrencilerVM> Ogrenciler { get; set; }
     }
 }

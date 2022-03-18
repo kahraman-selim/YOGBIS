@@ -13,6 +13,7 @@ namespace YOGBIS.Data.DbModels
         public int OkulKodu { get; set; }
         public string OkulAdi { get; set; }
         public string OkulTuru { get; set; }
+        public string OgretimTuru { get; set; }
         public string OkulLogoURL { get; set; } 
         public string OkulBilgi { get; set; }
         public DateTime? OkulAcilisTarihi { get; set; }
@@ -39,8 +40,8 @@ namespace YOGBIS.Data.DbModels
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
         public List<OkulBinaBolum> OkulBinaBolum { get; set; }
-        public List<Subeler> Subeler { get; set; }
         public List<Siniflar> Siniflar { get; set; }
+        public List<Subeler> Subeler { get; set; }
         public List<Ogrenciler> Ogrenciler { get; set; }
         public List<AdayGorevKaydi> AdayGorevKaydi { get; set; }
         public List<Etkinlikler> Etkinlikler { get; set; }
