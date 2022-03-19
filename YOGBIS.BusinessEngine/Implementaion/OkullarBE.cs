@@ -57,6 +57,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeAdi = _ulkelerBE.UlkeAdGetir(item.UlkeId).Data.ToString(),
                         OkulDurumu = item.OkulDurumu,
                         OkulTuru = item.OkulTuru,
+                        OgretimTuru=item.OgretimTuru,
                         OkulAcilisTarihi = item.OkulAcilisTarihi.GetValueOrDefault(),
                         TemsilcilikId = item.TemsilcilikId.GetValueOrDefault(),
                         EyaletId = item.EyaletId.GetValueOrDefault(),
@@ -101,6 +102,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeId = item.UlkeId,
                         UlkeAdi = _ulkelerBE.UlkeAdGetir(item.UlkeId).Data.ToString(),
                         OkulDurumu = item.OkulDurumu,
+                        OgretimTuru=item.OgretimTuru,
                         OkulTuru = item.OkulTuru,
                         OkulAcilisTarihi = item.OkulAcilisTarihi.GetValueOrDefault(),
                         TemsilcilikId=item.TemsilcilikId.GetValueOrDefault(),
@@ -142,6 +144,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeAdi = _ulkelerBE.UlkeAdGetir(item.UlkeId).Data.ToString(),
                         OkulDurumu = item.OkulDurumu,
                         OkulTuru = item.OkulTuru,
+                        OgretimTuru=item.OgretimTuru,
                         OkulAcilisTarihi = item.OkulAcilisTarihi.GetValueOrDefault(),
                         TemsilcilikId = item.TemsilcilikId.GetValueOrDefault(),
                         EyaletId = item.EyaletId.GetValueOrDefault(),
@@ -184,6 +187,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeAdi = _ulkelerBE.UlkeAdGetir(item.UlkeId).Data.ToString(),
                         OkulDurumu = item.OkulDurumu,
                         OkulTuru = item.OkulTuru,
+                        OgretimTuru=item.OgretimTuru,
                         OkulAcilisTarihi = item.OkulAcilisTarihi.GetValueOrDefault(),
                         TemsilcilikId = item.TemsilcilikId.GetValueOrDefault(),
                         EyaletId = item.EyaletId.GetValueOrDefault(),
@@ -210,7 +214,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             if (id != null)
             {
-                var data = _unitOfWork.okullarRepository.GetFirstOrDefault(u => u.OkulId == id, includeProperties: "Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Subeler,AdayGorevKaydi");
+                var data = _unitOfWork.okullarRepository.GetFirstOrDefault(u => u.OkulId == id, includeProperties: "Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Siniflar,Subeler,AdayGorevKaydi");
                 if (data != null)
                 {
                     OkullarVM okul = new OkullarVM();
@@ -222,6 +226,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okul.OkulBilgi = data.OkulBilgi;
                     okul.OkulAcilisTarihi = data.OkulAcilisTarihi.GetValueOrDefault();
                     okul.OkulDurumu = data.OkulDurumu;
+                    okul.OgretimTuru = data.OgretimTuru;
                     okul.OkulMudurId = data.OkulMudurId;
                     okul.OkulMudurAdiSoyadi = data.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(data.OkulMudurId).Data : string.Empty;
                     okul.OkulHizmetGecisDonem = data.OkulHizmetGecisDonem;
@@ -243,7 +248,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     okul.KaydedenId = data.KaydedenId;
                     okul.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
-                    okul.SinifSayisi = _unitOfWork.siniflarRepository.GetAll(g => g.OkulId == data.OkulId).Count();
+                    okul.SinifSayisi = _unitOfWork.subelerRepository.GetAll(g => g.OkulId == data.OkulId).Count();
 
                     okul.FotoGaleri = data.FotoGaleri.Select(g => new FotoGaleriVM()
                     {
@@ -407,6 +412,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         ///okulmüdürünün ekleyeceği alanlar////////
                         data.OkulLogoURL = model.OkulLogoURL;
                         data.OkulBilgi = model.OkulBilgi;
+                        data.OgretimTuru = model.OgretimTuru;
                         data.OkulAcilisTarihi = model.OkulAcilisTarihi;
                         data.OkulHizmetGecisDonem = model.OkulHizmetGecisDonem;
                         data.OkulKapaliAlan = model.OkulKapaliAlan;

@@ -12,7 +12,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<SiniflarVM> SinifEkle(SiniflarVM model, SessionContext user);
         Result<SiniflarVM> SinifGetir(Guid id);
         Result<List<SiniflarVM>> SiniflariGetirOkulId(Guid OkulId);
-        Result<SiniflarVM> SinifGuncelle(SiniflarVM model, SessionContext user);        
+        Result<SiniflarVM> SinifGuncelle(SiniflarVM model, SessionContext user);
         Result<bool> SinifSil(Guid id);
         Result<List<SiniflarVM>> SinifGetirKullaniciId(string userId);
         Result<string> SinifAdGetir(Guid id);

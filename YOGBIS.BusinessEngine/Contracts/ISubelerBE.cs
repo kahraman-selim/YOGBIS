@@ -12,7 +12,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<SubelerVM> SubeEkle(SubelerVM model, SessionContext user);
         Result<SubelerVM> SubeGetir(Guid id);
         Result<List<SubelerVM>> SubeleriGetirOkulId(Guid OkulId);
-        Result<SubelerVM> SubeGuncelle(SubelerVM model, SessionContext user);        
+        Result<SubelerVM> SubeGuncelle(SubelerVM model, SessionContext user);
         Result<bool> SubeSil(Guid id);
         Result<List<SubelerVM>> SubeGetirKullaniciId(string userId);
         Result<string> SubeAdGetir(Guid id);

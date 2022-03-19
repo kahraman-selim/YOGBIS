@@ -20,6 +20,8 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Okul türü zorunlu bir alandır")]
         public string OkulTuru { get; set; }
+
+        [Required(ErrorMessage = "Öğretim türü zorunlu bir alandır")]
         public string OgretimTuru { get; set; }
         public string OkulLogoURL { get; set; }
         public IFormFile OkulLogo { get; set; }

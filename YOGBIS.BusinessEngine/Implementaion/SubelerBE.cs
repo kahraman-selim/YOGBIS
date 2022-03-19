@@ -17,7 +17,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
     {
         #region Degiskenler
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper; 
+        private readonly IMapper _mapper;
         #endregion
 
         #region Donusturuculer
@@ -43,15 +43,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     returnData.Add(new SubelerVM()
                     {
-                        SubeId=item.SubeId,
-                        SubeAdi=CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SubeAdi.ToString()),
+                        SubeId = item.SubeId,
+                        SubeAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SubeAdi.ToString()),
                         SubeAcilisTarihi = item.SubeAcilisTarihi,
-                        SubeDurumu=item.SubeDurumu,
-                        EgitimciId=item.EgitimciId,
-                        KayitTarihi =item.KayitTarihi,                        
-                        OkulId=item.OkulId,
-                        SinifId=item.SinifId,
-                        SinifAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Siniflar.SinifAdi.ToString()),
+                        SubeDurumu = item.SubeDurumu,
+                        EgitimciId = item.EgitimciId,
+                        KayitTarihi = item.KayitTarihi,
+                        OkulId = item.OkulId,
+                        SinifId = item.SinifId,
+                        SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Siniflar.SinifAdi.ToString()),
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
@@ -68,7 +68,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SubeleriGetirOkulId
         public Result<List<SubelerVM>> SubeleriGetirOkulId(Guid OkulId)
         {
-            var data = _unitOfWork.subelerRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Okullar,Siniflar,Ogrenciler").OrderBy(s=>s.SubeAdi).ToList();
+            var data = _unitOfWork.subelerRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Siniflar,Ogrenciler").OrderBy(s => s.SubeAdi).ToList();
             if (data != null)
             {
                 List<SubelerVM> returnData = new List<SubelerVM>();
@@ -144,11 +144,11 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     SubelerVM sube = new SubelerVM();
                     sube.SubeId = data.SubeId;
-                    sube.SubeAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.SubeAdi.ToString());
+                    sube.SubeAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.SubeAdi.ToString());
                     sube.SubeAcilisTarihi = data.SubeAcilisTarihi;
                     sube.SubeDurumu = data.SubeDurumu;
                     sube.EgitimciId = data.EgitimciId;
-                    sube.KayitTarihi = data.KayitTarihi;                    
+                    sube.KayitTarihi = data.KayitTarihi;
                     sube.OkulId = data.OkulId;
                     sube.SinifId = data.SinifId;
                     sube.SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.Siniflar.SinifAdi.ToString());
@@ -178,14 +178,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var subeler = new Subeler()
                     {
-                        SubeAdi=model.SubeAdi.ToLower(),
-                        SubeAcilisTarihi=model.SubeAcilisTarihi,
-                        SubeDurumu=model.SubeDurumu,
-                        EgitimciId=model.EgitimciId,
-                        SinifId=model.SinifId,
-                        OkulId=model.OkulId,
+                        SubeAdi = model.SubeAdi.ToLower(),
+                        SubeAcilisTarihi = model.SubeAcilisTarihi,
+                        SubeDurumu = model.SubeDurumu,
+                        EgitimciId = model.EgitimciId,
+                        SinifId = model.SinifId,
+                        OkulId = model.OkulId,
                         KayitTarihi = model.KayitTarihi,
-                        KaydedenId=user.LoginId                       
+                        KaydedenId = user.LoginId
                     };
 
                     _unitOfWork.subelerRepository.Add(subeler);
@@ -241,7 +241,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SubeSil
         public Result<bool> SubeSil(Guid id)
         {
-            var data = _unitOfWork.subelerRepository.GetFirstOrDefault(s=>s.SubeId == id, includeProperties: "Kullanici,Okullar,Siniflar,Ogrenciler");
+            var data = _unitOfWork.subelerRepository.GetFirstOrDefault(s => s.SubeId == id, includeProperties: "Kullanici,Okullar,Siniflar,Ogrenciler");
             if (data != null)
             {
                 _unitOfWork.subelerRepository.Remove(data);
@@ -250,7 +250,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                 foreach (var item in data.Ogrenciler.ToList())
                 {
-                    var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId );
+                    var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId);
                     if (data != null)
                     {
                         _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
@@ -269,7 +269,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SubeAdGetir(Guid id)
         public Result<string> SubeAdGetir(Guid id)
         {
-            if (id==null)
+            if (id == null)
             {
                 var subeadi = "";
                 return new Result<string>(true, ResultConstant.RecordFound, subeadi);

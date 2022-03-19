@@ -18,23 +18,20 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region Degiskenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly ISiniflarBE _siniflarBE;
         #endregion
 
-        #region Donusturuculer
-        public SiniflarBE(IUnitOfWork unitOfWork, IMapper mapper, ISiniflarBE siniflarBE)
+        #region Dönüştürücüler
+        public SiniflarBE(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _siniflarBE = siniflarBE;
         }
         #endregion
 
         #region SiniflariGetir
         public Result<List<SiniflarVM>> SiniflariGetir()
         {
-
-            var data = _unitOfWork.siniflarRepository.GetAll(includeProperties: "Kullanici,Subeler,Ogrenciler").OrderBy(c=>c.SinifAdi).ToList();
+            var data = _unitOfWork.siniflarRepository.GetAll(includeProperties: "Kullanici,Subeler,Ogrenciler").OrderBy(c => c.SinifAdi).ToList();
 
             if (data != null)
             {
@@ -44,12 +41,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     returnData.Add(new SiniflarVM()
                     {
-                        SinifId = item.SinifId,                        
-                        SinifAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SinifAdi.ToString()),
-                        SinifAcilisTarihi=item.SinifAcilisTarihi,
-                        SinifGrubu=item.SinifGrubu,
-                        OkulId =item.OkulId,
-                        KayitTarihi=item.KayitTarihi,                                                
+                        SinifId = item.SinifId,
+                        SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SinifAdi.ToString()),
+                        SinifAcilisTarihi = item.SinifAcilisTarihi,
+                        SinifGrubu = item.SinifGrubu,
+                        OkulId = item.OkulId,
+                        KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
@@ -63,10 +60,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region SiniflariGetirOkullId
+        #region SiniflariGetirOkulId
         public Result<List<SiniflarVM>> SiniflariGetirOkulId(Guid OkulId)
         {
-            var data = _unitOfWork.siniflarRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Subeler,Ogrenciler").OrderBy(s=>s.SinifAdi).ToList();
+            var data = _unitOfWork.siniflarRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Subeler,Ogrenciler").OrderBy(s => s.SinifAdi).ToList();
             if (data != null)
             {
                 List<SiniflarVM> returnData = new List<SiniflarVM>();
@@ -77,8 +74,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SinifId = item.SinifId,
                         SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SinifAdi.ToString()),
-                        SinifGrubu=item.SinifGrubu,
-                        SinifAcilisTarihi = item.SinifAcilisTarihi,                        
+                        SinifGrubu = item.SinifGrubu,
+                        SinifAcilisTarihi = item.SinifAcilisTarihi,
                         OkulId = item.OkulId,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
@@ -108,8 +105,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SinifId = item.SinifId,
                         SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SinifAdi.ToString()),
-                        SinifGrubu=item.SinifGrubu,
-                        SinifAcilisTarihi = item.SinifAcilisTarihi,                        
+                        SinifGrubu = item.SinifGrubu,
+                        SinifAcilisTarihi = item.SinifAcilisTarihi,
                         OkulId = item.OkulId,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
@@ -128,7 +125,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SinifGetir(Guid id)
         public Result<SiniflarVM> SinifGetir(Guid id)
         {
-
             if (id != null)
             {
                 var data = _unitOfWork.siniflarRepository.GetFirstOrDefault(s => s.SinifId == id, includeProperties: "Kullanici,Subeler,Ogrenciler");
@@ -140,7 +136,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     sinif.SinifGrubu = data.SinifGrubu;
                     sinif.OkulId = data.OkulId;
                     sinif.KayitTarihi = data.KayitTarihi;
-                    sinif.SinifAcilisTarihi = data.SinifAcilisTarihi;                    
+                    sinif.SinifAcilisTarihi = data.SinifAcilisTarihi;
                     sinif.KaydedenId = data.KaydedenId;
                     sinif.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
@@ -167,12 +163,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var siniflar = new Siniflar()
                     {
-                        SinifAdi=model.SinifAdi.ToLower(),
-                        SinifAcilisTarihi=model.SinifAcilisTarihi,
-                        SinifGrubu=model.SinifGrubu,
-                        OkulId=model.OkulId,
+                        SinifAdi = model.SinifAdi.ToLower(),
+                        SinifAcilisTarihi = model.SinifAcilisTarihi,
+                        SinifGrubu = model.SinifGrubu,
+                        OkulId = model.OkulId,
                         KayitTarihi = model.KayitTarihi,
-                        KaydedenId=user.LoginId                       
+                        KaydedenId = user.LoginId
                     };
 
                     _unitOfWork.siniflarRepository.Add(siniflar);
@@ -227,7 +223,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SinifSil
         public Result<bool> SinifSil(Guid id)
         {
-            var data = _unitOfWork.siniflarRepository.GetFirstOrDefault(s=>s.SinifId == id, includeProperties: "Kullanici,Subeler,Ogrenciler");
+            var data = _unitOfWork.siniflarRepository.GetFirstOrDefault(s => s.SinifId == id, includeProperties: "Kullanici,Subeler,Ogrenciler");
             if (data != null)
             {
                 _unitOfWork.siniflarRepository.Remove(data);
@@ -245,7 +241,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                 foreach (var item in data.Ogrenciler.ToList())
                 {
-                    var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId );
+                    var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId);
                     if (data != null)
                     {
                         _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
@@ -264,7 +260,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SinifAdGetir(Guid id)
         public Result<string> SinifAdGetir(Guid id)
         {
-            if (id==null)
+            if (id == null)
             {
                 var sinifadi = "";
                 return new Result<string>(true, ResultConstant.RecordFound, sinifadi);
@@ -282,7 +278,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     return new Result<string>(false, ResultConstant.RecordNotFound);
                 }
             }
-        }
+        } 
         #endregion
+
     }
 }

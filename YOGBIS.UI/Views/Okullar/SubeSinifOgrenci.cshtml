@@ -18,9 +18,9 @@
     <input hidden type="text" value="@Model.EyaletId" id="inputEyaletId" />
     <input hidden type="text" value="@Model.SehirId" id="inputSehirId" />
     <input hidden type="text" value="@Model.OkulId" id="inputOkulId" />
-    <input hidden type="text" value="" id="inputSubeId" />
-    <input hidden type="text" value="" id="inputSubeAdi" />
     <input hidden type="text" value="" id="inputSinifId" />
+    <input hidden type="text" value="" id="inputSinifAdi" />
+    <input hidden type="text" value="" id="inputSubeId" />
     <div class="col-md-12">
         <!--Okul Ad Bilgi-->
         <div class="row">
@@ -47,13 +47,13 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label class="small mb-1 font-weight-bold">Sınıf Grubu</label>
-                                            <select asp-for="Siniflar" class="form-control-range form-control py-2" aria-label="Default select example">
-                                                <option selected class="text-left">Sınıf seçiniz</option>
+                                            <select class="form-control-range form-control py-2" id="sinifGrupSelect" aria-label="Default select example">
+                                                <option selected class="text-left">Sınıf Grbunu seçiniz</option>
                                                 <option value="1">Sabah Grubu</option>
                                                 <option value="2">Öğlen Grubu</option>
                                             </select>
-                                            <span class="text-danger" asp-validation-for="Siniflar"></span>
-                                        </div>
+                                            <span class="text-danger"></span>
+                                        </div>                                        
                                     </div>
                                     <div class="col-md-4">
                                         <label class="small mb-1 font-weight-bold">Sınıf Açılış Tarihi</label>
@@ -127,11 +127,12 @@
                                 <div class="row mb-1">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <div class="form-check-inline">
-                                                <label class="form-check-label mb-1 mr-1 small font-weight-bold">Şube Durumu</label>
-                                                <input type="checkbox" required class="form-check-input mb-1" />
-                                                <span class="text-danger"></span>
-                                            </div>
+                                            <label class="small mb-1 font-weight-bold">Şube Durumu</label>
+                                            <select class="form-control-range form-control py-2" id="subeDurumSelect" aria-label="Default select example">
+                                                <option value="0">Açık</option>
+                                                <option value="1">Kapalı</option>
+                                            </select>
+                                            <span class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-9">
@@ -151,10 +152,6 @@
                                         <button class="btn btn-success btn-sm text-white mb-1" style="width:100px" id="subeEkleBtn">Kaydet</button>
                                         <button class="btn btn-info btn-sm text-white mb-1" style="width:100px" id="subeDegistirBtn">Değiştir</button>
                                         <button class="btn btn-secondary btn-sm text-white mb-1" style="width:100px" id="ogrenciEkleBtn">Öğrenci Ekle</button>
-                                        @*<a class="btn btn-secondary btn-sm text-white mb-1" style="width:100px" id="ogrenciEkleBtn" asp-controller="Ogrenciler" asp-action="OgrenciEkle"
-                                            asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Öğrenci Ekle</a>*@
-                                        <a class="btn btn-danger btn-sm text-white mb-1" style="width:100px" asp-controller="Okullar" asp-action="OkulDetayGuncelle"
-                                           asp-route-id="@Model.OkulId" asp-route-ulkeId="@Model.UlkeId">Geri Dön</a>
                                     </div>
                                 </div>
                             </div>
@@ -201,8 +198,9 @@ else
 
         document.body.onload = function () {
             document.getElementById("subeDegistirBtn").disabled = true;
-            document.getElementById("sinifDegistirBtn").disabled = true;
+            document.getElementById("sinifDegistirBtn").disabled = true;            
             document.getElementById("ogrenciEkleBtn").className += " disabled";
+            document.getElementById("inputSubeAdi").style.pointerEvents = "none";
         };
 
         $('#datetimepicker1, #datetimepicker2').datetimepicker({
@@ -211,10 +209,10 @@ else
 
         $("#sinifEkleBtn").click(function () {
 
-            if ($("#sinifAdiInput").val() == "") {
+            if ($("#sinifAdiInput").val() == "" && $("#sinifGrupSelect").text() == "Sınıf Grbunu seçiniz") {
 
                 bootbox.alert({
-                    message: "Sınıf Adını ve Açılış Tarihini yazmalısınız !",
+                    message: "Sınıf Adı, Grubu ve Açılış Tarihi boş bırakılmamalıdır !",
                     buttons: {
                         ok: {
                             label: "Tamam",
@@ -229,6 +227,7 @@ else
 
                 var sinif = {
                     SinifAdi: $("#sinifAdiInput").val().trim(),
+                    SinifGrubu: $("#sinifGrupSelect option:selected").text().trim(),
                     SinifAcilisTarihi: $("#inputSinifAcTar").val().trim(),
                     OkulId: $("#inputOkulId").val().trim()
                 }
@@ -271,11 +270,12 @@ else
 
                     if (data.length != 0) {
 
-                        $.each(data, function (i = 0, sinifId, sinifAdi, sinifAcilisTarihi) {
+                        $.each(data, function (i = 0, sinifId, sinifAdi, sinifGrubu, sinifAcilisTarihi) {
 
                             if (i == 0) {
 
                                 $("#sinifAdiInput").val(data[i]['sinifAdi']);
+                                $("#sinifGrupSelect option:selected").text(data[i]['sinifGrubu']);
                                 var date = new Date(data[i]['sinifAcilisTarihi']);
                                 $("#inputSinifAcTar").val(date.toLocaleString().toString("dd/MM/yyyy"));
                             }
@@ -288,7 +288,7 @@ else
                     }
                     else {
 
-                        alertify.danger('bu şube kayıtlı değil !');
+                        alertify.danger('Bu şube kayıtlı değil !');
 
                     }
                 });
@@ -297,10 +297,10 @@ else
 
         $("#sinifDegistirBtn").click(function () {
 
-            if ($("#sinifAdiInput").val() == "") {
+            if ($("#sinifAdiInput").val() == "" && $("#sinifGrupSelect option:selected").text() == "Sınıf Grbunu seçiniz") {
 
                 bootbox.alert({
-                    message: "Sınıf Adını ve Açılış Tarihini yazmalısınız !",
+                    message: "Sınıf Adı, Grubu ve Açılış Tarihi boş bırakılmamalıdır !",
                     buttons: {
                         ok: {
                             label: "Tamam",
@@ -317,6 +317,7 @@ else
 
                     SinifId: $("#inputSinifId").val(),
                     SinifAdi: $("#sinifAdiInput").val().trim(),
+                    SinifGrubu: $("#sinifGrupSelect option:selected").text().trim(),
                     SinifAcilisTarihi: $("#inputSinifAcTar").val().trim(),
                     OkulId: $("#inputOkulId").val().trim()
                 }
@@ -325,7 +326,7 @@ else
 
                     type: 'POST',
                     url: '/Okullar/SinifGuncelleJson',
-                    data: sube,
+                    data: sinif,
 
                     success: function (response) {
 
@@ -356,7 +357,7 @@ else
              if (sinifid != null) {
 
                  bootbox.confirm({
-                     message: "Eğer bu sınıfı silerseniz, bağlı olan Şube ve Öğrencilerde silinecektir. Yine de Silmek istediğinize emin misiniz?",
+                     message: "Eğer bu Sınıfı silerseniz, bağlı olan Şube ve Öğrencilerde silinecektir. Yine de Silmek istediğinize emin misiniz?",
                      buttons: {
                          confirm: {
                              label: 'Evet',
@@ -392,6 +393,8 @@ else
 
             document.getElementById("sinifAdiInput").focus();
             document.getElementById("sinifAdiInput").value = "";
+            document.getElementById("sinifGrupSelect").focus();
+            document.getElementById("sinifGrupSelect option:selected").text = "Sınıf Grbunu seçiniz";
             document.getElementById("inputSinifAcTar").focus();
             document.getElementById("inputSinifAcTar").value="";
             document.getElementById("sinifEkleBtn").className = "";
@@ -403,17 +406,21 @@ else
         ///////////////////////////
 
         $("#SinifListesi").on("change", function () {
+
+            document.getElementById("inputSubeAdi").style.pointerEvents = "all";
+
             var sinifId = $("#SinifListesi").val();
             var sinifad = $("#SinifListesi option:selected").text();
-            $("#inputSinifId").val(subeId);
-            $("#inputSinifAdi").val(subead);
+            $("#inputSinifId").val(sinifId);
+            $("#inputSinifAdi").val(sinifad);
+            
         });
 
         //////////////////////////
 
         $("#subeEkleBtn").click(function () {
-
-            if ($("#subeAdiInput").val() == "") {
+            
+            if ($("#inputSubeAdi").val() == "") {
 
                 bootbox.alert({
                     message: "Şube Adını ve Açılış Tarihini yazmalısınız !",
@@ -425,13 +432,14 @@ else
                     }
                 });
 
-                document.getElementById("subeAdiInput").focus();
+                document.getElementById("inputSubeAdi").focus();
             }
             else {
-
+                
                 var sube = {
                     SubefAdi: $("#subeAdiInput").val().trim(),
                     SubeAcilisTarihi: $("#inputSubeAcTar").val().trim(),
+                    SubeDurumu: $("#subeDurumSelect option: selected").val(),
                     OkulId: $("#inputOkulId").val().trim(),
                     SinifId: $("#inputSinifId").val().trim(),
                     SinifAdi: $("#inputSinifAdi").val().trim()

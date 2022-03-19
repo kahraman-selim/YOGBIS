@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace YOGBIS.Data.Migrations
 {
-    public partial class yenileme : Migration
+    public partial class yeni : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -1064,6 +1064,7 @@ namespace YOGBIS.Data.Migrations
                     OkulKodu = table.Column<int>(nullable: false),
                     OkulAdi = table.Column<string>(nullable: true),
                     OkulTuru = table.Column<string>(nullable: true),
+                    OgretimTuru = table.Column<string>(nullable: true),
                     OkulLogoURL = table.Column<string>(nullable: true),
                     OkulBilgi = table.Column<string>(nullable: true),
                     OkulAcilisTarihi = table.Column<DateTime>(nullable: true),
@@ -1079,7 +1080,7 @@ namespace YOGBIS.Data.Migrations
                     OkulTelefon = table.Column<string>(nullable: true),
                     SehirId = table.Column<byte[]>(nullable: true),
                     EyaletId = table.Column<byte[]>(nullable: true),
-                    TemsilcilikId = table.Column<byte[]>(nullable: false),
+                    TemsilcilikId = table.Column<byte[]>(nullable: true),
                     UlkeId = table.Column<byte[]>(nullable: false),
                     KaydedenId = table.Column<string>(nullable: true),
                     EyaletlerEyaletId = table.Column<byte[]>(nullable: true),
@@ -1318,27 +1319,28 @@ namespace YOGBIS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Subeler",
+                name: "Siniflar",
                 columns: table => new
                 {
-                    SubeId = table.Column<byte[]>(nullable: false),
+                    SinifId = table.Column<byte[]>(nullable: false),
                     KayitTarihi = table.Column<DateTime>(nullable: false),
-                    SubeAdi = table.Column<string>(nullable: true),
-                    SubeAcilisTarihi = table.Column<DateTime>(nullable: false),
+                    SinifAdi = table.Column<string>(nullable: true),
+                    SinifGrubu = table.Column<string>(nullable: true),
+                    SinifAcilisTarihi = table.Column<DateTime>(nullable: false),
                     OkulId = table.Column<byte[]>(nullable: false),
                     KaydedenId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subeler", x => x.SubeId);
+                    table.PrimaryKey("PK_Siniflar", x => x.SinifId);
                     table.ForeignKey(
-                        name: "FK_Subeler_AspNetUsers_KaydedenId",
+                        name: "FK_Siniflar_AspNetUsers_KaydedenId",
                         column: x => x.KaydedenId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Subeler_Okullar_OkulId",
+                        name: "FK_Siniflar_Okullar_OkulId",
                         column: x => x.OkulId,
                         principalTable: "Okullar",
                         principalColumn: "OkulId",
@@ -1509,38 +1511,41 @@ namespace YOGBIS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Siniflar",
+                name: "Subeler",
                 columns: table => new
                 {
-                    SinifId = table.Column<byte[]>(nullable: false),
-                    KayitTarihi = table.Column<DateTime>(nullable: false),
-                    SinifAdi = table.Column<string>(nullable: true),
-                    SinifAcilisTarihi = table.Column<DateTime>(nullable: false),
-                    OkulId = table.Column<byte[]>(nullable: false),
                     SubeId = table.Column<byte[]>(nullable: false),
+                    KayitTarihi = table.Column<DateTime>(nullable: false),
+                    SubeAdi = table.Column<string>(nullable: true),
+                    SubeAcilisTarihi = table.Column<DateTime>(nullable: false),
+                    SubeDurumu = table.Column<bool>(nullable: false),
+                    SinifAdi = table.Column<string>(nullable: true),
+                    EgitimciId = table.Column<byte[]>(nullable: false),
+                    OkulId = table.Column<byte[]>(nullable: false),
+                    SinifId = table.Column<byte[]>(nullable: false),
                     KaydedenId = table.Column<string>(nullable: true),
                     OkullarOkulId = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Siniflar", x => x.SinifId);
+                    table.PrimaryKey("PK_Subeler", x => x.SubeId);
                     table.ForeignKey(
-                        name: "FK_Siniflar_AspNetUsers_KaydedenId",
+                        name: "FK_Subeler_AspNetUsers_KaydedenId",
                         column: x => x.KaydedenId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Siniflar_Okullar_OkullarOkulId",
+                        name: "FK_Subeler_Okullar_OkullarOkulId",
                         column: x => x.OkullarOkulId,
                         principalTable: "Okullar",
                         principalColumn: "OkulId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Siniflar_Subeler_SubeId",
-                        column: x => x.SubeId,
-                        principalTable: "Subeler",
-                        principalColumn: "SubeId",
+                        name: "FK_Subeler_Siniflar_SinifId",
+                        column: x => x.SinifId,
+                        principalTable: "Siniflar",
+                        principalColumn: "SinifId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -1589,7 +1594,7 @@ namespace YOGBIS.Data.Migrations
                     OkulBinaBolumId = table.Column<byte[]>(nullable: true),
                     OkullarOkulId = table.Column<byte[]>(nullable: true),
                     SehirlerSehirId = table.Column<byte[]>(nullable: true),
-                    SiniflarSinifId = table.Column<byte[]>(nullable: true),
+                    SubelerSubeId = table.Column<byte[]>(nullable: true),
                     UlkelerUlkeId = table.Column<byte[]>(nullable: true),
                     UniversitelerUniId = table.Column<byte[]>(nullable: true)
                 },
@@ -1645,10 +1650,10 @@ namespace YOGBIS.Data.Migrations
                         principalColumn: "SehirId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FotoGaleri_Siniflar_SiniflarSinifId",
-                        column: x => x.SiniflarSinifId,
-                        principalTable: "Siniflar",
-                        principalColumn: "SinifId",
+                        name: "FK_FotoGaleri_Subeler_SubelerSubeId",
+                        column: x => x.SubelerSubeId,
+                        principalTable: "Subeler",
+                        principalColumn: "SubeId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_FotoGaleri_Ulkeler_UlkelerUlkeId",
@@ -1673,14 +1678,17 @@ namespace YOGBIS.Data.Migrations
                     OgrenciTuru = table.Column<string>(nullable: true),
                     Uyruk = table.Column<string>(nullable: true),
                     Cinsiyet = table.Column<bool>(nullable: false),
-                    BaslamaKayitTarihi = table.Column<DateTime>(nullable: false),
+                    BaslamaKayitTarihi = table.Column<DateTime>(nullable: true),
                     KayitNedeni = table.Column<string>(nullable: true),
+                    KayitSayisi = table.Column<int>(nullable: false),
                     AyrilmaTarihi = table.Column<DateTime>(nullable: true),
                     AyrilmaNedeni = table.Column<string>(nullable: true),
+                    AyrilanSayisi = table.Column<int>(nullable: false),
                     EgitimciId = table.Column<byte[]>(nullable: true),
                     SinifId = table.Column<byte[]>(nullable: true),
                     SubeId = table.Column<byte[]>(nullable: true),
                     OkulId = table.Column<byte[]>(nullable: true),
+                    UniversiteId = table.Column<byte[]>(nullable: true),
                     SehirId = table.Column<byte[]>(nullable: true),
                     EyaletId = table.Column<byte[]>(nullable: true),
                     TemsilcilikId = table.Column<byte[]>(nullable: true),
@@ -1983,9 +1991,9 @@ namespace YOGBIS.Data.Migrations
                 column: "SehirlerSehirId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FotoGaleri_SiniflarSinifId",
+                name: "IX_FotoGaleri_SubelerSubeId",
                 table: "FotoGaleri",
-                column: "SiniflarSinifId");
+                column: "SubelerSubeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FotoGaleri_UlkelerUlkeId",
@@ -2218,14 +2226,9 @@ namespace YOGBIS.Data.Migrations
                 column: "KaydedenId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Siniflar_OkullarOkulId",
+                name: "IX_Siniflar_OkulId",
                 table: "Siniflar",
-                column: "OkullarOkulId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Siniflar_SubeId",
-                table: "Siniflar",
-                column: "SubeId");
+                column: "OkulId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SoruBankasi_KaydedenId",
@@ -2293,9 +2296,14 @@ namespace YOGBIS.Data.Migrations
                 column: "KaydedenId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subeler_OkulId",
+                name: "IX_Subeler_OkullarOkulId",
                 table: "Subeler",
-                column: "OkulId");
+                column: "OkullarOkulId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subeler_SinifId",
+                table: "Subeler",
+                column: "SinifId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Telefonlar_AdaylarAdayId",
@@ -2465,7 +2473,7 @@ namespace YOGBIS.Data.Migrations
                 name: "AdayGorevKaydi");
 
             migrationBuilder.DropTable(
-                name: "Siniflar");
+                name: "Subeler");
 
             migrationBuilder.DropTable(
                 name: "SoruKategoriler");
@@ -2486,7 +2494,7 @@ namespace YOGBIS.Data.Migrations
                 name: "Universiteler");
 
             migrationBuilder.DropTable(
-                name: "Subeler");
+                name: "Siniflar");
 
             migrationBuilder.DropTable(
                 name: "Mulakatlar");

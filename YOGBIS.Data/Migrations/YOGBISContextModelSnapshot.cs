@@ -888,7 +888,7 @@ namespace YOGBIS.Data.Migrations
                     b.Property<byte[]>("SehirlerSehirId")
                         .HasColumnType("varbinary(16)");
 
-                    b.Property<byte[]>("SiniflarSinifId")
+                    b.Property<byte[]>("SubelerSubeId")
                         .HasColumnType("varbinary(16)");
 
                     b.Property<byte[]>("UlkelerUlkeId")
@@ -915,7 +915,7 @@ namespace YOGBIS.Data.Migrations
 
                     b.HasIndex("SehirlerSehirId");
 
-                    b.HasIndex("SiniflarSinifId");
+                    b.HasIndex("SubelerSubeId");
 
                     b.HasIndex("UlkelerUlkeId");
 
@@ -1535,6 +1535,9 @@ namespace YOGBIS.Data.Migrations
                     b.Property<DateTime>("KayitTarihi")
                         .HasColumnType("datetime");
 
+                    b.Property<string>("OgretimTuru")
+                        .HasColumnType("text");
+
                     b.Property<string>("OkulAcikAlan")
                         .HasColumnType("text");
 
@@ -1787,29 +1790,20 @@ namespace YOGBIS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(16)");
 
-                    b.Property<byte[]>("OkullarOkulId")
-                        .HasColumnType("varbinary(16)");
-
                     b.Property<DateTime>("SinifAcilisTarihi")
                         .HasColumnType("datetime");
 
                     b.Property<string>("SinifAdi")
                         .HasColumnType("text");
 
-                    b.Property<string>("SubeAdi")
+                    b.Property<string>("SinifGrubu")
                         .HasColumnType("text");
-
-                    b.Property<byte[]>("SubeId")
-                        .IsRequired()
-                        .HasColumnType("varbinary(16)");
 
                     b.HasKey("SinifId");
 
                     b.HasIndex("KaydedenId");
 
-                    b.HasIndex("OkullarOkulId");
-
-                    b.HasIndex("SubeId");
+                    b.HasIndex("OkulId");
 
                     b.ToTable("Siniflar");
                 });
@@ -2014,6 +2008,10 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("varbinary(16)");
 
+                    b.Property<byte[]>("EgitimciId")
+                        .IsRequired()
+                        .HasColumnType("varbinary(16)");
+
                     b.Property<string>("KaydedenId")
                         .HasColumnType("varchar(767)");
 
@@ -2024,17 +2022,32 @@ namespace YOGBIS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(16)");
 
+                    b.Property<byte[]>("OkullarOkulId")
+                        .HasColumnType("varbinary(16)");
+
+                    b.Property<string>("SinifAdi")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("SinifId")
+                        .IsRequired()
+                        .HasColumnType("varbinary(16)");
+
                     b.Property<DateTime>("SubeAcilisTarihi")
                         .HasColumnType("datetime");
 
                     b.Property<string>("SubeAdi")
                         .HasColumnType("text");
 
+                    b.Property<bool>("SubeDurumu")
+                        .HasColumnType("tinyint(1)");
+
                     b.HasKey("SubeId");
 
                     b.HasIndex("KaydedenId");
 
-                    b.HasIndex("OkulId");
+                    b.HasIndex("OkullarOkulId");
+
+                    b.HasIndex("SinifId");
 
                     b.ToTable("Subeler");
                 });
@@ -2525,9 +2538,9 @@ namespace YOGBIS.Data.Migrations
                         .WithMany("FotoGaleri")
                         .HasForeignKey("SehirlerSehirId");
 
-                    b.HasOne("YOGBIS.Data.DbModels.Siniflar", null)
+                    b.HasOne("YOGBIS.Data.DbModels.Subeler", null)
                         .WithMany("FotoGaleri")
-                        .HasForeignKey("SiniflarSinifId");
+                        .HasForeignKey("SubelerSubeId");
 
                     b.HasOne("YOGBIS.Data.DbModels.Ulkeler", null)
                         .WithMany("FotoGaleri")
@@ -2799,16 +2812,12 @@ namespace YOGBIS.Data.Migrations
             modelBuilder.Entity("YOGBIS.Data.DbModels.Siniflar", b =>
                 {
                     b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
-                        .WithMany("Siniflar")
+                        .WithMany("Subeler")
                         .HasForeignKey("KaydedenId");
 
-                    b.HasOne("YOGBIS.Data.DbModels.Okullar", null)
+                    b.HasOne("YOGBIS.Data.DbModels.Okullar", "Okullar")
                         .WithMany("Siniflar")
-                        .HasForeignKey("OkullarOkulId");
-
-                    b.HasOne("YOGBIS.Data.DbModels.Subeler", "Subeler")
-                        .WithMany("Siniflar")
-                        .HasForeignKey("SubeId")
+                        .HasForeignKey("OkulId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -2893,12 +2902,16 @@ namespace YOGBIS.Data.Migrations
             modelBuilder.Entity("YOGBIS.Data.DbModels.Subeler", b =>
                 {
                     b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
-                        .WithMany("Subeler")
+                        .WithMany("Siniflar")
                         .HasForeignKey("KaydedenId");
 
-                    b.HasOne("YOGBIS.Data.DbModels.Okullar", "Okullar")
+                    b.HasOne("YOGBIS.Data.DbModels.Okullar", null)
                         .WithMany("Subeler")
-                        .HasForeignKey("OkulId")
+                        .HasForeignKey("OkullarOkulId");
+
+                    b.HasOne("YOGBIS.Data.DbModels.Siniflar", "Siniflar")
+                        .WithMany("Subeler")
+                        .HasForeignKey("SinifId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
