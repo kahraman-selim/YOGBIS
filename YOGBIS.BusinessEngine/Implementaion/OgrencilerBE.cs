@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.ResultModels;
@@ -371,7 +372,35 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<List<OgrencilerVM>>(false, ResultConstant.RecordNotFound);
             }
-        } 
+        }
         #endregion
+
+        public Result<int> OgrenciSayiGetir(Guid subeid)
+        {
+
+            var data = _unitOfWork.ogrencilerRepository.GetAll(x => x.SubeId == subeid && x.BaslamaKayitTarihi != null).Sum(x=>x.KayitSayisi);
+                
+
+            //var kayitsay = data.GroupBy(x => x.BaslamaKayitTarihi != null);
+            var toplamkayit = 0;
+            
+            if (data == 0)
+            {
+
+                toplamkayit = data;
+                
+                //foreach (var item in data)
+                //{
+                //    toplamkayit += item.KayitSayisi; //(x => x.KayitSayisi);
+                //}
+                
+                return new Result<int>(true, ResultConstant.RecordFound, toplamkayit);
+            }
+            else
+            {
+                return new Result<int>(false, ResultConstant.RecordNotFound);
+            }
+
+        }
     }
 }

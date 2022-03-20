@@ -43,20 +43,20 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1 font-weight-bold">Şube Seçimi</label>
-                                @Html.DropDownListFor(u => u.SubeId, new SelectList(ViewBag.SubeAdi, "SubeId", "SubeAdi"),
-                               "Şubeyi seçiniz", new { @id = "SubeListesi", @class = "form-control-range form-control py-2" })
-                            </div>
-                            <span class="text-danger" asp-validation-for="SubeId"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Sınıf Seçimi</label>
                                 @Html.DropDownListFor(u => u.SinifId, new SelectList(ViewBag.SinifAdi, "SinifId", "SinifAdi"),
                                "Sınıfı seçiniz", new { @id = "SinifListesi", @class = "form-control-range form-control py-2" })
                             </div>
                             <span class="text-danger" asp-validation-for="SinifId"></span>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="small mb-1 font-weight-bold">Şube Seçimi</label>
+                                @Html.DropDownListFor(u => u.SubeId, new SelectList(ViewBag.SubeAdi, "SubeId", "SubeAdi"),
+                               "Şubeyi seçiniz", new { @id = "SubeListesi", @class = "form-control-range form-control py-2" })
+                            </div>
+                            <span class="text-danger" asp-validation-for="SubeId"></span>
+                        </div>                        
                     </div>
                     <div class="form-row">
                         <div class="col-md-4">

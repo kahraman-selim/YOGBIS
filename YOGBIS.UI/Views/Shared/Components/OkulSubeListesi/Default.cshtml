@@ -28,7 +28,14 @@
                         <td>@item.SinifAdi</td>
                         <td>@item.SubeAdi</td>
                         <td>@item.SubeAcilisTarihi.ToString("dd/MM/yyyy")</td>
-                        <td>@item.SubeDurumu</td>
+                        @if (item.SubeDurumu == true)
+                        {
+                            <td class="text-success">Açık</td>
+                        }
+                        else
+                        {
+                            <td class="text-danger">Kapalı</td>
+                        }
                         <td class="text-center">
                             <a class="btn btn-sm btn-info btnSubeDegistir" title="degistir" id="@item.SubeId" data-id="@item.SubeId">
                                 <i class="fas fa-edit text-white"></i>

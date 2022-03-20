@@ -44,6 +44,7 @@ namespace YOGBIS.Common.VModels
         public string OkulTelefon { get; set; }
         public int SubeSayisi { get; set; }
         public int SinifSayisi { get; set; }
+        public int OgrenciSayisi { get; set; }
         public Guid? SehirId { get; set; }
         public string SehirAdi { get; set; }
         public Guid? EyaletId { get; set; }

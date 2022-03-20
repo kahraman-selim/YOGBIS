@@ -21,6 +21,7 @@ namespace YOGBIS.Common.VModels
         public DateTime? BaslamaKayitTarihi { get; set; }
         public string KayitNedeni { get; set; }        
         public int KayitSayisi { get; set; }
+        public int ToplamKayit { get; set; }
         public DateTime? AyrilmaTarihi { get; set; }
         public string AyrilmaNedeni { get; set; }
         public int AyrilanSayisi { get; set; }

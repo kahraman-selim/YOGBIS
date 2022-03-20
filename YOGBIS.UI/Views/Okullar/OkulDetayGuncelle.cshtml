@@ -353,21 +353,30 @@
                                         <th class="text-center">Öğrenci Sayısı</th>
                                     </tr>
                                 </thead>
+                                @{ var sirano = 0;}
                                 @for (int i = 0; i < Model.Siniflar.Count(); i++)
                                 {
                                     <tbody>
-                                        <tr>
-                                            <td>@(i+1)</td>
-                                            <td class="text-capitalize">@Model.Siniflar[i].SinifAdi</td>
-                                            @*<td class="text-capitalize">@Model.Subeler[i].Siniflar.Count()</td>*@
-                                            <td></td>
-                                        </tr>
+
+                                        @for (int j = 0; j < Model.Siniflar[i].Subeler.Count(); j++)
+                                        {
+
+                                            sirano++;
+                                            <tr>
+                                                <td>@sirano</td>
+                                                <td class="text-capitalize">@Model.Siniflar[i].SinifAdi</td>
+                                                <td class="text-capitalize">@Model.Siniflar[i].Subeler[j].SubeAdi</td>
+                                                <td class="text-center">@Model.Siniflar[i].Subeler[j].OgrenciSayisi</td>
+
+                                            </tr>
+                                        }
+
                                     </tbody>
                                 }
                             </table>
                         </div>
                     }
-                    
+
                 </div>
             </div>
             <div class="row">

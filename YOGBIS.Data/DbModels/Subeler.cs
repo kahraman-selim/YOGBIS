@@ -14,7 +14,7 @@ namespace YOGBIS.Data.DbModels
         public DateTime SubeAcilisTarihi { get; set; }
         public bool SubeDurumu { get; set; }
         public string SinifAdi { get; set; }
-        public Guid EgitimciId { get; set; }
+        public Guid? EgitimciId { get; set; }
         public Guid OkulId { get; set; }
         public Guid SinifId { get; set; }
         [ForeignKey("SinifId")]

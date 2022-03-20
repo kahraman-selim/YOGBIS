@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,17 +20,20 @@ namespace YOGBIS.BusinessEngine.Implementaion
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IEyaletlerBE _eyaletlerBE;
         private readonly ISehirlerBE _sehirlerBE;
+        private readonly IOgrencilerBE _ogrencilerBE;
         private readonly IKullaniciBE _kullaniciBE;
         #endregion
 
         #region Dönüştürücüler
-        public OkullarBE(IUnitOfWork unitOfWork, IMapper mapper, IUlkelerBE ulkelerBE, IEyaletlerBE eyaletlerBE, ISehirlerBE sehirlerBE, IKullaniciBE kullaniciBE)
+        public OkullarBE(IUnitOfWork unitOfWork, IMapper mapper, IUlkelerBE ulkelerBE, IEyaletlerBE eyaletlerBE, 
+            ISehirlerBE sehirlerBE, IOgrencilerBE ogrencilerBE, IKullaniciBE kullaniciBE)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _ulkelerBE = ulkelerBE;
             _kullaniciBE = kullaniciBE;
             _eyaletlerBE = eyaletlerBE;
+            _ogrencilerBE = ogrencilerBE;
             _sehirlerBE = sehirlerBE;
         }
         #endregion
@@ -214,7 +216,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             if (id != null)
             {
-                var data = _unitOfWork.okullarRepository.GetFirstOrDefault(u => u.OkulId == id, includeProperties: "Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Siniflar,Subeler,AdayGorevKaydi");
+                var data = _unitOfWork.okullarRepository.GetFirstOrDefault(u => u.OkulId == id, includeProperties: "Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Siniflar,Subeler,Ogrenciler,AdayGorevKaydi");
                 if (data != null)
                 {
                     OkullarVM okul = new OkullarVM();
@@ -274,15 +276,19 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SinifAdi=s.SinifAdi,
                         SinifId=s.SinifId,
+                        Subeler = _unitOfWork.subelerRepository.GetAll(c=>c.SinifId==s.SinifId).Select(c=> new SubelerVM()
+                        {
+                            SubeAdi = c.SubeAdi,
+                            
+                            //Ogrenciler = _unitOfWork.ogrencilerRepository.GetAll(o => o.SubeId == c.SubeId).Select(o=> new OgrencilerVM() 
+                            //{
+                            //    KayitSayisi = o.KayitSayisi
+                            //}).ToList()
 
-                        //Siniflar = s.Siniflar.Select(c => new SiniflarVM()
-                        //{
-                        //    SinifAdi = c.SinifAdi
+                        }).ToList()                        
 
-                        //}).ToList()
-
-                    }).ToList();
-
+                    }).ToList();                   
+                    
 
                     okul.AdayGorevKaydi = data.AdayGorevKaydi.Select(a => new AdayGorevKaydiVM()
                     {

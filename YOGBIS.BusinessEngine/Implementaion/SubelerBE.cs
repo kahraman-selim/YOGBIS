@@ -183,6 +183,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SubeDurumu = model.SubeDurumu,
                         EgitimciId = model.EgitimciId,
                         SinifId = model.SinifId,
+                        SinifAdi=model.SinifAdi,
                         OkulId = model.OkulId,
                         KayitTarihi = model.KayitTarihi,
                         KaydedenId = user.LoginId
@@ -217,6 +218,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     data.SubeAcilisTarihi = model.SubeAcilisTarihi;
                     data.SubeDurumu = model.SubeDurumu;
                     data.EgitimciId = model.EgitimciId;
+                    data.SinifId = model.SinifId;
+                    data.SinifAdi = model.SinifAdi;
                     data.OkulId = model.OkulId;
                     data.KayitTarihi = model.KayitTarihi;
                     data.KaydedenId = user.LoginId;
@@ -241,7 +244,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SubeSil
         public Result<bool> SubeSil(Guid id)
         {
-            var data = _unitOfWork.subelerRepository.GetFirstOrDefault(s => s.SubeId == id, includeProperties: "Kullanici,Okullar,Siniflar,Ogrenciler");
+            var data = _unitOfWork.subelerRepository.GetFirstOrDefault(s => s.SubeId == id, includeProperties: "Kullanici,Okullar,Ogrenciler");
             if (data != null)
             {
                 _unitOfWork.subelerRepository.Remove(data);
@@ -257,6 +260,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         _unitOfWork.Save();
                     }
                 }
+
+                foreach (var item in data.Ogrenciler.ToList())
+                {
+                    var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId);
+                    if (data != null)
+                    {
+                        _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
+                        _unitOfWork.Save();
+                    }
+                }
+
                 return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
             }
             else
