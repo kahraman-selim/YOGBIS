@@ -129,14 +129,16 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region Guncelle
+        #region GuncelleGet
         [Authorize(Roles = "Administrator,SubManager")]
         [Route("Ogrenciler/OGC10003", Name = "OgrenciGuncelle")]
-        public ActionResult Guncelle(Guid? id, Guid UlkeId)
+        public ActionResult Guncelle(Guid? id, Guid okulId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
             ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+            ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)okulId).Data;
+            ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)okulId).Data;
 
             if (id != null)
             {

@@ -12,8 +12,8 @@
                     <tr>
                         <th>Sıra No</th>
                         <th hidden>İşlem Tarihi</th>
-                        <th>Şube Adı</th>
                         <th>Sınıf Adı</th>
+                        <th>Şube Adı</th>                        
                         <th>Kayıt Tarihi</th>
                         <th>Kayıt Sayısı</th>
                         <th>Ayrılma Tarihi</th>
@@ -32,8 +32,8 @@
                             <tr>
                                 <td>@sirano</td>
                                 <td hidden>@item.KayitTarihi</td>
-                                <td class="text-capitalize">@item.SubeAdi</td>
                                 <td class="text-capitalize">@item.SinifAdi</td>
+                                <td class="text-capitalize">@item.SubeAdi</td>                                
                                 @if (item.KayitSayisi > 0)
                                 {
                                     <td>@item.BaslamaKayitTarihi.GetValueOrDefault().ToString("dd/MM/yyyy")</td>
@@ -56,7 +56,7 @@
                                 }
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-info btnOgrenciDegistir" title="degistir"
-                                       asp-controller="Ogrenciler" asp-action="OgrenciEkle" asp-route-id="@item.OgrencilerId">
+                                       asp-controller="Ogrenciler" asp-action="Guncelle" asp-route-id="@item.OgrencilerId" asp-route-okulId="@item.OkulId">
                                         <i class="fas fa-edit text-white"></i>
                                     </a>
                                 </td>

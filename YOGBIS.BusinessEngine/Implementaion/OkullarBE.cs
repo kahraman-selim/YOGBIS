@@ -279,10 +279,11 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         Subeler = _unitOfWork.subelerRepository.GetAll(c=>c.SinifId==s.SinifId).Select(c=> new SubelerVM()
                         {
                             SubeAdi = c.SubeAdi,
-                            
-                            //Ogrenciler = _unitOfWork.ogrencilerRepository.GetAll(o => o.SubeId == c.SubeId).Select(o=> new OgrencilerVM() 
+
+                            //Ogrenciler = _unitOfWork.ogrencilerRepository.GetAll(o => o.SubeId == c.SubeId).Select(o => new OgrencilerVM()
                             //{
                             //    KayitSayisi = o.KayitSayisi
+
                             //}).ToList()
 
                         }).ToList()                        

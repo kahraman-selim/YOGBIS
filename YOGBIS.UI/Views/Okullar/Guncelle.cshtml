@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="col-md-12">
+                                <div class="col-md-8">
                                     <div class="form-group">
                                         <label asp-for="OkulAdi" class="small mb-1 font-weight-bold">Okul Adı</label>
                                         <input asp-for="OkulAdi" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Okul adını yazınız">
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="col-md-12">
+                                <div class="col-md-8">
                                     <div class="form-group">
                                         <label asp-for="OkulTuru" class="small mb-1 font-weight-bold">Okul Türü</label>
                                         <select asp-for="OkulTuru" class="form-control-range form-control py-2" aria-label="Default select example">
@@ -110,7 +110,7 @@
                                     <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px" asp-controller="Okullar" asp-action="OkulEkle">Yeni Kayıt</a>
                                     <input type="submit" value="Güncelle" class="btn btn-info btn-sm text-white mb-1" style="width:100px" id="btnguncelle" />
                                     <a class="btn btn-danger btn-sm text-white mb-1" id="btnSil" style="width:100px">Sil</a>
-                                    <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Vazgeç</a>
+                                    <a asp-controller="Okullar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm text-white mb-1" style="width:100px">Geri Dön</a>
                                 </div>
                             </div>
                         </div>

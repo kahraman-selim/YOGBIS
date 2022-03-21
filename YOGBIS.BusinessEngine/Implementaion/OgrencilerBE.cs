@@ -290,24 +290,27 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     OgrencilerVM ogrenciler = new OgrencilerVM();
 
-                    ogrenciler.OkulId = (Guid)data.OkulId;
-                    ogrenciler.AyrilmaNedeni = data.AyrilmaNedeni;
-                    ogrenciler.AyrilmaTarihi = (DateTime)data.AyrilmaTarihi;
-                    ogrenciler.UlkeId = data.UlkeId;
-                    ogrenciler.BaslamaKayitTarihi = data.BaslamaKayitTarihi;
-                    ogrenciler.Cinsiyet = data.Cinsiyet;
-                    ogrenciler.EgitimciId = data.EgitimciId;
-                    ogrenciler.EyaletId = data.EyaletId;
-                    ogrenciler.KayitNedeni = data.KayitNedeni;
+                    ogrenciler.OgrencilerId = data.OgrencilerId;
                     ogrenciler.OgrenciTuru = data.OgrenciTuru;
-                    ogrenciler.SehirId = data.SehirId;
-                    ogrenciler.SinifId = data.SinifId;
-                    ogrenciler.SubeId = data.SubeId;
-                    ogrenciler.TemsilcilikId = data.TemsilcilikId;
                     ogrenciler.Uyruk = data.Uyruk;
-                    ogrenciler.KayitTarihi = data.KayitTarihi;
+                    ogrenciler.Cinsiyet = data.Cinsiyet;
+                    ogrenciler.BaslamaKayitTarihi = data.BaslamaKayitTarihi.GetValueOrDefault();
+                    ogrenciler.KayitNedeni = data.KayitNedeni;
+                    ogrenciler.KayitSayisi = data.KayitSayisi;
+                    ogrenciler.AyrilmaTarihi = (DateTime)data.AyrilmaTarihi.GetValueOrDefault();
+                    ogrenciler.AyrilmaNedeni = data.AyrilmaNedeni;
+                    ogrenciler.AyrilanSayisi = data.AyrilanSayisi;
                     ogrenciler.UlkeId = data.UlkeId;
                     ogrenciler.UlkeAdi = data.Ulkeler.UlkeAdi;
+                    ogrenciler.EyaletId = data.EyaletId.GetValueOrDefault();
+                    ogrenciler.SehirId = data.SehirId.GetValueOrDefault();
+                    ogrenciler.OkulId = data.OkulId.GetValueOrDefault();
+                    ogrenciler.SinifId = data.SinifId.GetValueOrDefault();
+                    ogrenciler.SinifAdi = data.SinifId.GetValueOrDefault() != null ? _unitOfWork.siniflarRepository.GetFirstOrDefault(x => x.SinifId == data.SinifId).SinifAdi.ToString() : "";
+                    ogrenciler.SubeId = data.SubeId.GetValueOrDefault();
+                    ogrenciler.EgitimciId = data.EgitimciId.GetValueOrDefault();
+                    ogrenciler.TemsilcilikId = data.TemsilcilikId.GetValueOrDefault();
+                    ogrenciler.KayitTarihi = data.KayitTarihi;                    
                     ogrenciler.KaydedenId = data.Kullanici.Id;
                     ogrenciler.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
