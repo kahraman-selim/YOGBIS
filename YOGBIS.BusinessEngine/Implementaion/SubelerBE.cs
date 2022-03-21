@@ -18,13 +18,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region Degiskenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IOgrencilerBE _ogrencilerBE;
         #endregion
 
         #region Donusturuculer
-        public SubelerBE(IUnitOfWork unitOfWork, IMapper mapper)
+        public SubelerBE(IUnitOfWork unitOfWork, IMapper mapper, IOgrencilerBE ogrencilerBE)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _ogrencilerBE = ogrencilerBE;
         }
         #endregion
 
@@ -147,6 +149,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     sube.SubeAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.SubeAdi.ToString());
                     sube.SubeAcilisTarihi = data.SubeAcilisTarihi;
                     sube.SubeDurumu = data.SubeDurumu;
+                    //sube.OgrenciSayisi = _ogrencilerBE.OgrenciSayiGetir((Guid)data.SubeId).Data;
                     sube.EgitimciId = data.EgitimciId;
                     sube.KayitTarihi = data.KayitTarihi;
                     sube.OkulId = data.OkulId;

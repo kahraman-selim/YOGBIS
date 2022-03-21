@@ -20,19 +20,23 @@ namespace YOGBIS.BusinessEngine.Implementaion
         private readonly IUlkelerBE _ulkelerBE;
         private readonly IEyaletlerBE _eyaletlerBE;
         private readonly ISehirlerBE _sehirlerBE;
+        private readonly ISiniflarBE _siniflarBE;
+        private readonly ISubelerBE _subelerBE;
         private readonly IOgrencilerBE _ogrencilerBE;
         private readonly IKullaniciBE _kullaniciBE;
         #endregion
 
         #region Dönüştürücüler
         public OkullarBE(IUnitOfWork unitOfWork, IMapper mapper, IUlkelerBE ulkelerBE, IEyaletlerBE eyaletlerBE, 
-            ISehirlerBE sehirlerBE, IOgrencilerBE ogrencilerBE, IKullaniciBE kullaniciBE)
+            ISehirlerBE sehirlerBE, ISiniflarBE siniflarBE, ISubelerBE subelerBE, IOgrencilerBE ogrencilerBE, IKullaniciBE kullaniciBE)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _ulkelerBE = ulkelerBE;
             _kullaniciBE = kullaniciBE;
             _eyaletlerBE = eyaletlerBE;
+            _siniflarBE = siniflarBE;
+            _subelerBE = subelerBE;
             _ogrencilerBE = ogrencilerBE;
             _sehirlerBE = sehirlerBE;
         }
@@ -276,10 +280,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SinifAdi=s.SinifAdi,
                         SinifId=s.SinifId,
-                        Subeler = _unitOfWork.subelerRepository.GetAll(c=>c.SinifId==s.SinifId).Select(c=> new SubelerVM()
+                        Subeler = _unitOfWork.subelerRepository.GetAll(c=>c.SinifId==s.SinifId).OrderBy(a => a.SinifAdi)
+                        .ThenBy(b=>b.SubeAdi)
+                        .Select(c=> new SubelerVM()
                         {
                             SubeAdi = c.SubeAdi,
-
+                            
+                            //OgrenciSayisi = _unitOfWork.ogrencilerRepository.GetAll(o => o.SubeId == c.SubeId && o.BaslamaKayitTarihi != null).Sum(x => x.KayitSayisi) //_ogrencilerBE.OgrenciSayiGetir((Guid)c.SubeId).Data
                             //Ogrenciler = _unitOfWork.ogrencilerRepository.GetAll(o => o.SubeId == c.SubeId).Select(o => new OgrencilerVM()
                             //{
                             //    KayitSayisi = o.KayitSayisi
