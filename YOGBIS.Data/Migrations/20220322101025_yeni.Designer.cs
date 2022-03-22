@@ -9,8 +9,8 @@ using YOGBIS.Data.DataContext;
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    [Migration("20220319182211_subealan")]
-    partial class subealan
+    [Migration("20220322101025_yeni")]
+    partial class yeni
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

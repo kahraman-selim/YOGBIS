@@ -2,6 +2,10 @@
 @{
     ViewData["Title"] = "Öğrenci Kayıt";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var ulkeid = ViewData["UlkeId"];
+    var eyaletid = ViewData["EyaletId"];
+    var sehirid = ViewData["SehirId"];
+    var okulid = ViewData["OkulId"];
 }
 @section Styles{
 
@@ -22,10 +26,10 @@
             </div>
             <div class="card-body">
                 <form class="form-group m-0" asp-action="Guncelle">
-                    @Html.HiddenFor(x => x.UlkeId)
                     @Html.HiddenFor(x => x.OgrencilerId)
-                    <input hidden type="text" value="@Model.EyaletId" id="inputEyaletId" asp-for="EyaletId" />
-                    <input hidden type="text" value="@Model.SehirId" id="inputSehirId" asp-for="SehirId" />
+                    <input hidden type="text" value="@eyaletid" id="inputEyaletId" asp-for="EyaletId" />
+                    <input hidden type="text" value="@sehirid" id="inputSehirId" asp-for="SehirId" />
+                    <input hidden type="text" value="@ulkeid" id="inputUlkeId" asp-for="UlkeId" />
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-row">
                         <div class="col-md-12">
@@ -154,8 +158,9 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">
+                            <a name="yeni" class="btn btn-primary btn-sm mb-1 text-white" style="width:100px" id="ogrenciYeniBtn">Yeni Kayıt</a>
                             <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" />
-                            <a asp-controller="Okullar" asp-action="SubeSinifOgrenci" asp-route-id="@Model.OkulId" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Geri Dön</a>
+                            <a asp-controller="Okullar" asp-action="SubeSinifOgrenci" asp-route-id="@okulid" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Geri Dön</a>
                         </div>
                     </div>
                 </form>
@@ -164,7 +169,7 @@
     </div>
     <!--Öğrenci Liste-->
     <div class="col-md-7">
-        @await Component.InvokeAsync("OkulOgrenciListesi", Model.OkulId)
+        @await Component.InvokeAsync("OkulOgrenciListesi", okulid)
     </div>
 </div>
 
@@ -180,6 +185,77 @@
 
         $('#datetimepicker1, #datetimepicker2').datetimepicker({
             format: 'DD/MM/YYYY'
+        });
+
+        $("#ogrenciYeniBtn").click(function () {
+
+            var subeId = $("#SubeListesi").val();
+            var sinifId = $("#SinifListesi").val();
+            var okulId = $("#OkulListesi").val();
+            var eyaletId = $("#inputEyaletId").val();
+            var sehirId = $("#inputSehirId").val();
+            var ulkeId = $("#inputUlkeId").val();
+
+            location.href = '@Url.Action("OgrenciEkle", "Ogrenciler")?ulkeId=' + ulkeId + '&eyaletId=' + eyaletId + '&sehirId=' + sehirId + '&okulId=' + okulId + '&sinifId=' + sinifId + '&subeId=' + subeId;
+
+        });
+
+        $(function () {
+            $("#myTable").on("click", ".btnSil", function () {
+                var btn = $(this);
+                bootbox.confirm({
+                    message: "Silmek istediğinize emin misiniz?",
+                    buttons: {
+                        confirm: {
+                            label: 'Evet',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Hayır',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+
+                        if (result) {
+                            var id = btn.data("id");
+                            $.ajax({
+                                type: "DELETE",
+                                url: "/Ogrenciler/OgrenciSil/" + id,
+                                success: function () {
+                                    btn.parent().parent().remove();
+                                    location.reload();
+                                }
+                            });
+                        }
+                    }
+
+                });
+            });
+        });
+
+        $("#SinifListesi").on("change", function () {
+
+                var sinifId = $("#SinifListesi").val();
+
+                $("#SubeListesi").empty();
+                $("#SubeListesi").append("<option value=''> Şubeyi seçiniz </option>");
+
+                var url = '@Url.Action("SubeAdGetir", "Ogrenciler")?sinifId=' + sinifId;
+
+                $.getJSON(url, function (data) {
+
+                    $.each(data, function (i=0,sinifId,sinifAdi) {
+
+                        /*alert(data);*/
+                        $('#SubeListesi').append($('<option>', {
+                            value: data[i]['subeId'],
+                            text: data[i]['subeAdi']
+                        }));
+
+                    });
+                });
+
         });
 
     </script>

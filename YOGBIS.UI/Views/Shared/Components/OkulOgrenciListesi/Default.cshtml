@@ -56,12 +56,12 @@
                                 }
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-info btnOgrenciDegistir" title="degistir"
-                                       asp-controller="Ogrenciler" asp-action="Guncelle" asp-route-id="@item.OgrencilerId" asp-route-okulId="@item.OkulId">
+                                       asp-controller="Ogrenciler" asp-action="Guncelle" asp-route-id="@item.OgrencilerId" asp-route-okulId="@item.OkulId" asp-route-ulkeId="@item.UlkeId">
                                         <i class="fas fa-edit text-white"></i>
                                     </a>
                                 </td>
                                 <td class="text-center">
-                                    <a class="btn btn-sm btn-danger btnOgrenciSil" title="Sil" id="@item.OgrencilerId" data-id="@item.OgrencilerId">
+                                    <a class="btn btn-sm btn-danger btnSil" title="Sil" id="@item.OgrencilerId" data-id="@item.OgrencilerId">
                                         <i class="fas fa-trash text-white"></i>
                                     </a>
                                 </td>

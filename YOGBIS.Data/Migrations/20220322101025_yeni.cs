@@ -1520,7 +1520,7 @@ namespace YOGBIS.Data.Migrations
                     SubeAcilisTarihi = table.Column<DateTime>(nullable: false),
                     SubeDurumu = table.Column<bool>(nullable: false),
                     SinifAdi = table.Column<string>(nullable: true),
-                    EgitimciId = table.Column<byte[]>(nullable: false),
+                    EgitimciId = table.Column<byte[]>(nullable: true),
                     OkulId = table.Column<byte[]>(nullable: false),
                     SinifId = table.Column<byte[]>(nullable: false),
                     KaydedenId = table.Column<string>(nullable: true),

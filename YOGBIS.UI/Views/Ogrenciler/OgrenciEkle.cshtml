@@ -225,6 +225,64 @@
 
         });
 
+        $(function () {
+            $("#myTable").on("click", ".btnSil", function () {
+                var btn = $(this);
+                bootbox.confirm({
+                    message: "Silmek istediğinize emin misiniz?",
+                    buttons: {
+                        confirm: {
+                            label: 'Evet',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Hayır',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+
+                        if (result) {
+                            var id = btn.data("id");
+                            $.ajax({
+                                type: "DELETE",
+                                url: "/Ogrenciler/OgrenciSil/" + id,
+                                success: function () {
+                                    btn.parent().parent().remove();
+                                    location.reload();
+                                }
+                            });
+                        }
+                    }
+
+                });
+            });
+        });
+
+        $("#SinifListesi").on("change", function () {
+
+                var sinifId = $("#SinifListesi").val();
+
+                $("#SubeListesi").empty();
+                $("#SubeListesi").append("<option value=''> Şubeyi seçiniz </option>");
+
+                var url = '@Url.Action("SubeAdGetir", "Ogrenciler")?sinifId=' + sinifId;
+
+                $.getJSON(url, function (data) {
+
+                    $.each(data, function (i=0,sinifId,sinifAdi) {
+
+                        /*alert(data);*/
+                        $('#SubeListesi').append($('<option>', {
+                            value: data[i]['subeId'],
+                            text: data[i]['subeAdi']
+                        }));
+
+                    });
+                });
+
+        });
+
     </script>
 }
 

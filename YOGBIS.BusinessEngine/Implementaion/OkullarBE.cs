@@ -174,6 +174,49 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region OkulGetirOkulId(id)
+        public Result<List<OkullarVM>> OkulGetirOkulId(Guid id)
+        {
+            var data = _unitOfWork.okullarRepository.GetAll(u => u.OkulId == id, includeProperties: "Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Subeler,AdayGorevKaydi").OrderBy(u => u.OkulAdi).ToList();
+            if (data != null)
+            {
+                List<OkullarVM> returnData = new List<OkullarVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new OkullarVM()
+                    {
+                        OkulId = (Guid)item.OkulId,
+                        OkulKodu = item.OkulKodu,
+                        OkulAdi = item.OkulAdi,
+                        UlkeId = item.UlkeId,
+                        UlkeAdi = _ulkelerBE.UlkeAdGetir(item.UlkeId).Data.ToString(),
+                        OkulDurumu = item.OkulDurumu,
+                        OkulTuru = item.OkulTuru,
+                        OgretimTuru = item.OgretimTuru,
+                        OkulAcilisTarihi = item.OkulAcilisTarihi.GetValueOrDefault(),
+                        TemsilcilikId = item.TemsilcilikId.GetValueOrDefault(),
+                        EyaletId = item.EyaletId.GetValueOrDefault(),
+                        EyaletAdi = item.EyaletId.GetValueOrDefault() == Guid.Empty ? string.Empty : _eyaletlerBE.EyaletAdGetir(item.EyaletId.GetValueOrDefault()).Data.ToString(),
+                        SehirId = item.SehirId.GetValueOrDefault(),
+                        SehirAdi = item.SehirId.GetValueOrDefault() == Guid.Empty ? string.Empty : _sehirlerBE.SehirAdGetir(item.SehirId.GetValueOrDefault()).Data.ToString(),
+                        OkulMudurId = item.OkulMudurId,
+                        OkulMudurAdiSoyadi = item.OkulMudurId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.OkulMudurId).Data : string.Empty,
+                        KaydedenId = item.KaydedenId,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+
+                        SubeSayisi = _unitOfWork.subelerRepository.GetAll(g => g.OkulId == item.OkulId).Count()
+                    });
+                }
+                return new Result<List<OkullarVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<OkullarVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
         #region OkulGetirUlkeId
         public Result<List<OkullarVM>> OkulGetirUlkeId(Guid UlkeId)
         {
@@ -561,7 +604,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var data = _unitOfWork.okullarRepository.Get(id);
             if (data != null)
             {
-                var eyaletId = (Guid)data.EyaletId;
+                var eyaletId = (Guid)data.EyaletId.GetValueOrDefault();
 
                 return new Result<Guid>(true, ResultConstant.RecordFound, eyaletId);
             }
@@ -580,7 +623,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var data = _unitOfWork.okullarRepository.Get(id);
             if (data != null)
             {
-                var sehirId = (Guid)data.SehirId;
+                var sehirId = (Guid)data.SehirId.GetValueOrDefault();
 
                 return new Result<Guid>(true, ResultConstant.RecordFound, sehirId);
             }

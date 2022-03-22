@@ -133,8 +133,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     ogrenciler.SehirId = model.SehirId;
                     ogrenciler.OkulId = model.OkulId;
                     ogrenciler.UniversiteId = model.UniversiteId;
-                    ogrenciler.SubeId = model.SubeId;
                     ogrenciler.SinifId = model.SinifId;
+                    ogrenciler.SubeId = model.SubeId;                    
                     ogrenciler.EgitimciId = model.EgitimciId;
                     ogrenciler.OgrenciTuru = model.OgrenciTuru;
                     ogrenciler.Uyruk = model.Uyruk;
@@ -173,25 +173,28 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var data = _mapper.Map<OgrencilerVM, Ogrenciler>(model);
-                    //var data = _unitOfWork.ogrencilerRepository.Get(model.OgrencilerId);
                     if (data != null)
                     {
+
                         data.KaydedenId = user.LoginId;
-                        data.OkulId = model.OkulId;
-                        data.AyrilmaNedeni = model.AyrilmaNedeni;
-                        data.AyrilmaTarihi = model.AyrilmaTarihi;
                         data.UlkeId = model.UlkeId;
-                        data.BaslamaKayitTarihi = (DateTime)model.BaslamaKayitTarihi;
-                        data.Cinsiyet = model.Cinsiyet;
-                        data.EgitimciId = model.EgitimciId;
+                        data.TemsilcilikId = model.TemsilcilikId;
                         data.EyaletId = model.EyaletId;
-                        data.KayitNedeni = model.KayitNedeni;
-                        data.OgrenciTuru = model.OgrenciTuru;
                         data.SehirId = model.SehirId;
+                        data.OkulId = model.OkulId;
+                        data.UniversiteId = model.UniversiteId;
                         data.SinifId = model.SinifId;
                         data.SubeId = model.SubeId;
-                        data.TemsilcilikId = model.TemsilcilikId;
+                        data.EgitimciId = model.EgitimciId;
+                        data.OgrenciTuru = model.OgrenciTuru;
                         data.Uyruk = model.Uyruk;
+                        data.Cinsiyet = model.Cinsiyet;
+                        data.BaslamaKayitTarihi = model.BaslamaKayitTarihi;
+                        data.KayitNedeni = model.KayitNedeni == "Kayıt nedenini seçiniz" ? model.KayitNedeni = null : model.KayitNedeni;
+                        data.KayitSayisi = model.KayitSayisi;
+                        data.AyrilmaTarihi = model.AyrilmaTarihi;
+                        data.AyrilmaNedeni = model.AyrilmaNedeni == "Kayıt silme nedenini seçiniz" ? model.AyrilmaNedeni = null : model.AyrilmaNedeni;
+                        data.AyrilanSayisi = model.AyrilanSayisi;
                         data.KayitTarihi = model.KayitTarihi;
 
                         _unitOfWork.ogrencilerRepository.Update(data);

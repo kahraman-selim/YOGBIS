@@ -70,9 +70,9 @@ namespace YOGBIS.UI.Controllers
         public IActionResult OgrenciEkle(Guid ulkeId, Guid eyaletId, Guid sehirId, Guid okulId, Guid subeId, Guid sinifId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            var ulkeid = _ulkelerBE.UlkeIdGetir(ulkeId).Data;
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeGetir(ulkeid).Data;
-            ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            var ulkeid = _ulkelerBE.UlkeIdGetir((Guid)ulkeId).Data;
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeGetir((Guid)ulkeid).Data;
+            ViewBag.OkulAdi = _okullarBE.OkulGetirOkulId((Guid)okulId).Data;
             ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)okulId).Data;
             ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)okulId).Data;
             ViewData["EyaletId"] = eyaletId;//_okullarBE.OkulEyaletIdGetir((Guid)OkulId).Data;
@@ -97,7 +97,7 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             var ulkeid = _ulkelerBE.UlkeIdGetir(ulkeId).Data;
             ViewBag.UlkeAdi = _ulkelerBE.UlkeGetir(ulkeid).Data;
-            ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            ViewBag.OkulAdi = _okullarBE.OkulGetirOkulId(okulId).Data;
             ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)okulId).Data;
             ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)okulId).Data;
             ViewData["EyaletId"] = eyaletId;//_okullarBE.OkulEyaletIdGetir((Guid)okulId).Data;
@@ -106,39 +106,40 @@ namespace YOGBIS.UI.Controllers
 
             StatusMessage = "";
 
-            if (ogrenciId != null)
-            {
-                var data = _ogrencilerBE.OgrenciGuncelle(model, user);
-                if (data.IsSuccess)
-                {
-                    return RedirectToAction("Index");
-                }
-            }
-            else
+            if (model !=null)
             {
                 var data = _ogrencilerBE.OgrenciEkle(model, user);
                 if (data.IsSuccess)
                 {
                     StatusMessage = "Öğrenci kaydı başarılı bir şekilde tamamlandı !";
-                    return View();//return RedirectToAction("SubeSinifOgrenci","Okullar");
+                    return RedirectToAction("SubeSinifOgrenci", "Okullar", new { id = (Guid)okulId });
                 }
-                return View(model);
+                return View();
             }
-            StatusMessage = "Bilinmeyen bir hata oluştu. Kayıt yapılamadı !";
-            return View();
+            else
+            {
+                StatusMessage = "Bilinmeyen bir hata oluştu. Kayıt yapılamadı !";
+                return View();
+            }            
+            
         }
         #endregion
 
         #region GuncelleGet
         [Authorize(Roles = "Administrator,SubManager")]
+        [HttpGet]
         [Route("Ogrenciler/OGC10003", Name = "OgrenciGuncelle")]
-        public ActionResult Guncelle(Guid? id, Guid okulId)
+        public ActionResult Guncelle(Guid? id, Guid ulkeid, Guid okulId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+            ViewBag.OkulAdi = _okullarBE.OkulGetirOkulId(okulId).Data;
             ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)okulId).Data;
             ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)okulId).Data;
+            ViewData["EyaletId"] = _okullarBE.OkulEyaletIdGetir((Guid)okulId).Data;
+            ViewData["SehirId"] = _okullarBE.OkulSehirIdGetir((Guid)okulId).Data;
+            ViewData["UlkeId"] = _ulkelerBE.UlkeIdGetir(ulkeid).Data;
+            ViewData["OkulId"] = okulId;
 
             if (id != null)
             {
@@ -150,6 +151,34 @@ namespace YOGBIS.UI.Controllers
                 return View();
             }
 
+        }
+        #endregion
+
+        #region GuncellePost
+        [Authorize(Roles = "Administrator,SubManager")]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        [Route("Ogrenciler/OGC10003", Name = "OgrenciGuncelle")]
+        public ActionResult Guncelle(OgrencilerVM model, Guid ulkeid, Guid okulId)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            ViewBag.OkulAdi = _okullarBE.OkulGetirOkulId(okulId).Data;
+            ViewBag.SubeAdi = _subelerBE.SubeleriGetirOkulId((Guid)okulId).Data;
+            ViewBag.SinifAdi = _siniflarBE.SiniflariGetirOkulId((Guid)okulId).Data;
+            ViewData["EyaletId"] = _okullarBE.OkulEyaletIdGetir((Guid)okulId).Data;
+            ViewData["SehirId"] = _okullarBE.OkulSehirIdGetir((Guid)okulId).Data;
+            ViewData["UlkeId"] = _ulkelerBE.UlkeIdGetir(ulkeid).Data;
+            ViewData["OkulId"] = okulId;
+
+            var data = _ogrencilerBE.OgrenciGuncelle(model, user);
+            if (data.IsSuccess)
+            {
+                StatusMessage = "Kayıt başarılı bir şekilde güncellendi !";
+                return View();
+            }
+            StatusMessage = "Bilinmeyen bir hata oluştu. Kayıt yapılamadı !";
+            return View(model);
         }
         #endregion
 
@@ -167,7 +196,24 @@ namespace YOGBIS.UI.Controllers
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
-        } 
+        }
+        #endregion
+
+        #region SubeAdGetir
+        public IActionResult SubeAdGetir(Guid sinifId)
+        {
+
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            if (sinifId != null)
+            {
+                var data = _unitOfWork.subelerRepository.GetAll(x => x.SinifId == sinifId);
+
+                return Json(data);
+            }
+
+            return NotFound();
+        }
         #endregion
 
     }
