@@ -185,6 +185,11 @@
             format: 'DD/MM/YYYY'
         });
 
+        document.body.onload = function () {
+
+            document.getElementById("SubeListesi").style.pointerEvents = "none";
+        };
+
         //$(".ogrsay").on("input", function () {
 
         //    var tcerkek = $("#TCErkek").val();
@@ -260,6 +265,8 @@
         });
 
         $("#SinifListesi").on("change", function () {
+
+                document.getElementById("SubeListesi").style.pointerEvents = "all";
 
                 var sinifId = $("#SinifListesi").val();
 

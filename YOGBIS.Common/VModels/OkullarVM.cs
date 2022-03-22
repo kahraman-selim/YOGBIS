@@ -60,6 +60,15 @@ namespace YOGBIS.Common.VModels
         public List<OkulBinaBolumVM> OkulBinaBolum { get; set; }
         public List<SiniflarVM> Siniflar { get; set; }
         public List<SubelerVM> Subeler { get; set; }
+        public int TCEOgr { get; set; }
+        public int TCKOgr { get; set; }
+        public int TCTopOgr { get; set; }
+        public int DigEOgr { get; set; }
+        public int DigKOgr { get; set; }
+        public int DigTopOgr { get; set; }
+        public int GenEOgr { get; set; }
+        public int GenKOgr { get; set; }
+        public int GenTopOgr { get; set; }
         public List<OgrencilerVM> Ogrenciler { get; set; }
         public List<AdayGorevKaydiVM> AdayGorevKaydi { get; set; }
         public List<EtkinliklerVM> Etkinlikler { get; set; }

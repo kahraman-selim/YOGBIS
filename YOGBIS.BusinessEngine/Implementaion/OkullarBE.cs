@@ -75,6 +75,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
 
+                        TCEOgr=_unitOfWork.ogrencilerRepository.GetAll(o=>o.OkulId==item.OkulId && o.BaslamaKayitTarihi != null)
+                        .GroupBy(o=>o.BaslamaKayitTarihi != null && o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "1")
+                        .Sum(o=>o.First().KayitSayisi),
+
                         SubeSayisi = _unitOfWork.subelerRepository.GetAll(g => g.OkulId == item.OkulId).Count()
                     });
                 }

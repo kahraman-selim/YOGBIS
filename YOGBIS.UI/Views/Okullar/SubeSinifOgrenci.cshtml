@@ -199,7 +199,7 @@ else
         document.body.onload = function () {
             document.getElementById("subeDegistirBtn").disabled = true;
             document.getElementById("sinifDegistirBtn").disabled = true;
-            document.getElementById("ogrenciEkleBtn").className += " disabled";
+            document.getElementById("ogrenciEkleBtn").disabled = true;
             document.getElementById("inputSubeAdi").style.pointerEvents = "none";
         };
 
@@ -527,8 +527,9 @@ else
 
                         document.getElementById("subeEkleBtn").disabled = true;
                         document.getElementById("subeDegistirBtn").disabled = false;
-                        document.getElementById("ogrenciEkleBtn").className = "btn btn-secondary btn-sm text-white mb-1";
+                        document.getElementById("ogrenciEkleBtn").disabled = false;
                         document.getElementById("subeDegistirBtn").className = "";
+                        document.getElementById("inputSubeAdi").style.pointerEvents = "all";
                         document.getElementById("subeDegistirBtn").className = "btn btn-info btn-sm text-white mb-1";
                     }
                     else {
