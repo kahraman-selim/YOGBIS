@@ -524,6 +524,21 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region OkulSubeleriGetir
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
+        public IActionResult OkulSubeleriGetir(Guid SinifId)
+        {
+
+            if (SinifId != null)
+            {
+                var data = _unitOfWork.subelerRepository.GetAll(x => x.SinifId == SinifId);
+                return Json(data);
+            }
+
+            return NotFound();
+        }
+        #endregion
+
         #region OkulSubeSil
         [Authorize(Roles = "Administrator,Manager,SubManager")]
         [HttpDelete]
@@ -578,6 +593,21 @@ namespace YOGBIS.UI.Controllers
         #region OkulSinifGetir
         [Authorize(Roles = "Administrator,Manager,SubManager")]
         public IActionResult OkulSinifGetir(Guid SinifId)
+        {
+
+            if (SinifId != null)
+            {
+                var data = _unitOfWork.siniflarRepository.GetAll(x => x.SinifId == SinifId);
+                return Json(data);
+            }
+
+            return NotFound();
+        }
+        #endregion
+
+        #region OkulSiniflariGetir
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
+        public IActionResult OkulSiniflariGetir(Guid SinifId)
         {
 
             if (SinifId != null)

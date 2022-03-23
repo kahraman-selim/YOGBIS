@@ -302,7 +302,7 @@ else
                     }
                     else {
 
-                        alertify.danger('Bu şube kayıtlı değil !');
+                        alertify.danger('Bu sınıf kayıtlı değil !');
 
                     }
                 });
@@ -453,7 +453,7 @@ else
                 document.getElementById("inputSubeAdi").focus();
             }
             else {
-                
+
                 var sube = {
                     SubeAdi: $("#inputSubeAdi").val().trim(),
                     SubeAcilisTarihi: $("#inputSubeAcTar").val().trim(),
@@ -493,24 +493,36 @@ else
 
         $(".btnSubeDegistir").click(function () {
 
-            var subeid = $(this).data("id");
-            var url = '@Url.Action("OkulSubeGetir", "Okullar")?SubeId=' + subeid;
+            var sinifid = $(this).data("id");
 
-            $.getJSON(url, function (data) {
+            @*var urlsinif = '@Url.Action("OkulSiniflariGetir", "Okullar")?SinifId=' + sinifid;
+
+            $.getJSON(urlsinif, function (data) {
+
+                    /*$("#SinifListesi").empty();*/
+
+                    $.each(data, function (i = 0, sinifId, sinifAdi, sinifGrubu, sinifAcilisTarihi) {
+
+
+                        /*$("#SinifListesi").append("<option value='" + data[i]['sinifId'] + "'> " + data[i]['sinifAdi'] + "</option>");*/
+
+                        $("#SinifListesi option:selected").text(data[i]['sinifAdi']);
+
+                        $('#SinifListesi').append($('<option>', {
+                            value: data[i]['sinifId'],
+                            text: data[i]['sinifAdi']
+                        }));
+                    });
+
+            });*@
+
+            var urlsube = '@Url.Action("OkulSubeleriGetir", "Okullar")?SinifId=' + sinifid;
+
+            $.getJSON(urlsube, function (data) {
 
                     if (data.length != 0) {
 
                         $.each(data, function (i = 0, subeId, subeAdi, subeAcilisTarihi, subeDurumu, okulId, sinifId, sinifAdi) {
-
-                            /*$("#SinifListesi").append("<option value='" + data[i]['sinifId'] + "'> " + data[i]['sinifAdi'] + "</option>");*/
-                            /*$("#SinifListesi").empty();*/
-
-                            //$('#SinifListesi').append($('<option>', {
-                            //    value: data[i]['sinifId'],
-                            //    text: data[i]['sinifAdi']
-                            //}));
-
-                            $("#SinifListesi option:selected").text(data[i]['sinifAdi']);
 
                             if (i == 0) {
 
@@ -520,7 +532,7 @@ else
                                 $("#inputSubeAcTar").val(date.toLocaleString().toString("dd/MM/yyyy"));
 
                                 if (data[i]['subeDurumu'] == true) {
-                                    
+
                                     $("#subeDurumSelect option:selected").text("Açık");
                                     $('#subeDurumSelect').empty();
                                     $('#subeDurumSelect').append($('<option>', {
@@ -562,7 +574,7 @@ else
                     }
                     else {
 
-                        alertify.danger('Bu sınıf kayıtlı değil !');
+                        alertify.danger('Bu sşube kayıtlı değil !');
 
                     }
                 });
@@ -700,5 +712,6 @@ else
             location.href = '@Url.Action("OgrenciEkle", "Ogrenciler")?ulkeId=' + ulkeId + '&eyaletId=' + eyaletId + '&sehirId=' + sehirId + '&okulId=' + okulId + '&sinifId=' + sinifId + '&subeId=' + subeId;
 
         });
+
     </script>
 }

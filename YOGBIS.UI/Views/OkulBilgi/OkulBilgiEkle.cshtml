@@ -157,9 +157,7 @@
 
             $("#UlkeListesi").on("change", function () {
 
-                var ulkeId = $("#UlkeListesi").val();
-
-                /*alert(ulkeId);*/
+                var ulkeId = $("#UlkeListesi").val();                
 
                 $("#OkulListesi").empty();
                 $("#OkulListesi").append("<option value=''> Okul adını seçiniz </option>");
@@ -170,7 +168,7 @@
 
                     $.each(data, function (i=0,okulId,okulAdi) {
 
-                        /*alert(data);*/
+                        
                         $('#OkulListesi').append($('<option>', {
                             value: data[i]['okulId'],
                             text: data[i]['okulAdi']

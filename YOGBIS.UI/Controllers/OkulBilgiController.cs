@@ -218,7 +218,7 @@ namespace YOGBIS.UI.Controllers
             {
 
 
-                var data = _unitOfWork.okullarRepository.GetAll(x => x.UlkeId == ulkeId); //_okullarBE.OkulGetirUlkeId((Guid)ulkeId).Data;  //_unitOfWork.okullarRepository.GetAll(x=>x.OkulUlkeId==ulkeId);   
+                var data = _unitOfWork.okullarRepository.GetAll(x => x.UlkeId == ulkeId && x.OkulMudurId == user.LoginId); //_okullarBE.OkulGetirUlkeId((Guid)ulkeId).Data;  //_unitOfWork.okullarRepository.GetAll(x=>x.OkulUlkeId==ulkeId);   
 
                 return Json(data);
 

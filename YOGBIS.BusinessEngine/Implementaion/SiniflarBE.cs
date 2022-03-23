@@ -223,31 +223,47 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SinifSil
         public Result<bool> SinifSil(Guid id)
         {
-            var data = _unitOfWork.siniflarRepository.GetFirstOrDefault(s => s.SinifId == id, includeProperties: "Kullanici,Subeler,Ogrenciler");
+            var data = _unitOfWork.siniflarRepository.GetFirstOrDefault(s => s.SinifId == id, includeProperties: "Kullanici");
             if (data != null)
             {
                 _unitOfWork.siniflarRepository.Remove(data);
                 _unitOfWork.Save();
 
-                foreach (var item in data.Subeler.ToList())
+                if (data.Subeler != null)
                 {
-                    var subeler = _unitOfWork.subelerRepository.GetFirstOrDefault(c => c.SubeId == item.SubeId);
-                    if (data != null)
+                    foreach (var item in data.Subeler.ToList())
                     {
-                        _unitOfWork.subelerRepository.Remove(subeler);
-                        _unitOfWork.Save();
+                        var subeler = _unitOfWork.subelerRepository.GetFirstOrDefault(c => c.SubeId == item.SubeId);
+
+                        if (subeler != null)
+                        {
+                            _unitOfWork.subelerRepository.Remove(subeler);
+                            _unitOfWork.Save();
+
+                            if (subeler.Ogrenciler != null)
+                            {
+                                var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == subeler.Ogrenciler.First().OgrencilerId);
+
+                                if (data != null)
+                                {
+                                    _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
+                                    _unitOfWork.Save();
+                                }
+                            }
+
+                        }
                     }
                 }
 
-                foreach (var item in data.Ogrenciler.ToList())
-                {
-                    var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId);
-                    if (data != null)
-                    {
-                        _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
-                        _unitOfWork.Save();
-                    }
-                }
+                //foreach (var item in data.Ogrenciler.ToList())
+                //{
+                //    var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId);
+                //    if (data != null)
+                //    {
+                //        _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
+                //        _unitOfWork.Save();
+                //    }
+                //}
                 return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
             }
             else

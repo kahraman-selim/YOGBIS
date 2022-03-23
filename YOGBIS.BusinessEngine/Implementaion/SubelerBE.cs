@@ -253,30 +253,23 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SubeSil
         public Result<bool> SubeSil(Guid id)
         {
-            var data = _unitOfWork.subelerRepository.GetFirstOrDefault(s => s.SubeId == id, includeProperties: "Kullanici,Okullar,Ogrenciler");
+            var data = _unitOfWork.subelerRepository.GetFirstOrDefault(s => s.SubeId == id, includeProperties: "Kullanici,Ogrenciler");
             if (data != null)
             {
                 _unitOfWork.subelerRepository.Remove(data);
                 _unitOfWork.Save();
 
 
-                foreach (var item in data.Ogrenciler.ToList())
+                if (data.Ogrenciler != null)
                 {
-                    var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId);
-                    if (data != null)
+                    foreach (var item in data.Ogrenciler.ToList())
                     {
-                        _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
-                        _unitOfWork.Save();
-                    }
-                }
-
-                foreach (var item in data.Ogrenciler.ToList())
-                {
-                    var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId);
-                    if (data != null)
-                    {
-                        _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
-                        _unitOfWork.Save();
+                        var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId);
+                        if (data != null)
+                        {
+                            _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
+                            _unitOfWork.Save();
+                        }
                     }
                 }
 
