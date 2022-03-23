@@ -341,42 +341,42 @@
             <hr />
             <div class="row">
                 <div class="col-md-12 pl-5 pr-5">
-                    @if (Model.Siniflar.Count() > 0)
+                    @*@if (Model.Siniflar.Count() > 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm table-hover table-striped display responsive nowrap" id="okulSubeSinifOgrenciTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sıra No</th>
+                            <th class="text-center">Sınıflar</th>
+                            <th class="text-center">Şubeler</th>
+                            <th class="text-center">Öğrenci Sayısı</th>
+                        </tr>
+                    </thead>
+                    @{ var sirano = 0;}
+                    @for (int i = 0; i < Model.Siniflar.Count(); i++)
                     {
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-sm table-hover table-striped display responsive nowrap" id="okulSubeSinifOgrenciTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">Sıra No</th>
-                                        <th class="text-center">Sınıflar</th>
-                                        <th class="text-center">Şubeler</th>
-                                        <th class="text-center">Öğrenci Sayısı</th>
-                                    </tr>
-                                </thead>
-                                @{ var sirano = 0;}
-                                @for (int i = 0; i < Model.Siniflar.Count(); i++)
-                                {
-                                    <tbody>
+                        <tbody>
 
-                                        @for (int j = 0; j < Model.Siniflar[i].Subeler.Count(); j++)
-                                        {
+                            @for (int j = 0; j < Model.Siniflar[i].Subeler.Count(); j++)
+                            {
 
-                                            sirano++;
-                                            <tr>
-                                                <td>@sirano</td>
-                                                <td class="text-capitalize">@Model.Siniflar[i].SinifAdi</td>
-                                                <td class="text-capitalize">@Model.Siniflar[i].Subeler[j].SubeAdi</td>
-                                                <td class="text-center">@Model.Siniflar[i].Subeler[j].OgrenciSayisi</td>
+                                sirano++;
+                                <tr>
+                                    <td>@sirano</td>
+                                    <td class="text-capitalize">@Model.Siniflar[i].SinifAdi</td>
+                                    <td class="text-capitalize">@Model.Siniflar[i].Subeler[j].SubeAdi</td>
+                                    <td class="text-center">@Model.Siniflar[i].Subeler[j].OgrenciSayisi</td>
 
-                                            </tr>
-                                        }
+                                </tr>
+                            }
 
-                                    </tbody>
-                                }
-                            </table>
-                        </div>
+                        </tbody>
                     }
-
+                </table>
+            </div>
+        }*@
+                    @await Component.InvokeAsync("OkulSinifSubeOgrenciListesi", Model.OkulId)
                 </div>
             </div>
             <div class="row">

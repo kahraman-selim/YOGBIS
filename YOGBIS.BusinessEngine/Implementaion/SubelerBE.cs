@@ -70,7 +70,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SubeleriGetirOkulId
         public Result<List<SubelerVM>> SubeleriGetirOkulId(Guid OkulId)
         {
-            var data = _unitOfWork.subelerRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Siniflar,Ogrenciler").OrderBy(s => s.SubeAdi).ToList();
+            var data = _unitOfWork.subelerRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Siniflar,Ogrenciler").OrderBy(s => s.SinifAdi).ThenBy(c=>c.SubeAdi).ToList();
             if (data != null)
             {
                 List<SubelerVM> returnData = new List<SubelerVM>();
@@ -90,6 +90,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SinifAdi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.Siniflar.SinifAdi.ToString()),
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+
+                        OgrenciSayisi = _unitOfWork.ogrencilerRepository.GetAll(c => c.SubeId == item.SubeId && c.BaslamaKayitTarihi != null && c.OgrenciTuru == "1").ToList().Select(x=>x.KayitSayisi).Sum() - 
+                        _unitOfWork.ogrencilerRepository.GetAll(c => c.SubeId == item.SubeId && c.AyrilmaTarihi != null && c.OgrenciTuru == "1").ToList().Select(x=>x.AyrilanSayisi).Sum()
+                        
+                        //.GroupBy(c => c.OgrenciTuru == "1" && c.SubeId == item.SubeId && c.BaslamaKayitTarihi == null).Select(x => x.First().AyrilanSayisi).Sum()
+                        //                        .GroupBy(c=>c.OgrenciTuru=="1" && c.SubeId == item.SubeId && c.AyrilmaTarihi == null) Sum() 
                     });
                 }
                 return new Result<List<SubelerVM>>(true, ResultConstant.RecordFound, returnData);

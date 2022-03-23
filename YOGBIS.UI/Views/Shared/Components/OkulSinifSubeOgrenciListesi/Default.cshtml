@@ -1,0 +1,44 @@
+﻿
+@model IEnumerable<YOGBIS.Common.VModels.SubelerVM>
+
+
+
+<div class="table-responsive">
+    <table class="table table-bordered table-sm table-hover table-striped display responsive nowrap" id="okulSubeSinifOgrenciTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th class="text-center">Sıra No</th>
+                <th class="text-center">Sınıflar</th>
+                <th class="text-center">Şubeler</th>
+                <th class="text-center">Öğrenci Sayısı</th>
+            </tr>
+        </thead>
+        @{ var sirano = 0;}
+
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                sirano++;
+
+                <tbody>
+
+
+                    <tr>
+                        <td>@sirano</td>
+                        <td class="text-capitalize">@item.SinifAdi</td>
+                        <td class="text-capitalize">@item.SubeAdi</td>
+                        <td class="text-center">@item.OgrenciSayisi</td>
+
+                    </tr>
+
+
+                </tbody>
+            }
+        }
+    </table>
+</div>
+
+
+
+

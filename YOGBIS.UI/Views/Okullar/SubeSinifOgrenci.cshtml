@@ -200,7 +200,12 @@ else
             document.getElementById("subeDegistirBtn").disabled = true;
             document.getElementById("sinifDegistirBtn").disabled = true;
             document.getElementById("ogrenciEkleBtn").disabled = true;
+            document.getElementById("yeniSinifBtn").disabled = true;
+            document.getElementById("yeniSubeBtn").disabled = true;
+            document.getElementById("subeEkleBtn").disabled = true;
             document.getElementById("inputSubeAdi").style.pointerEvents = "none";
+            document.getElementById("sinifAdiInput").focus();
+
         };
 
         $('#datetimepicker1, #datetimepicker2').datetimepicker({
@@ -275,12 +280,21 @@ else
                             if (i == 0) {
 
                                 $("#sinifAdiInput").val(data[i]['sinifAdi']);
-                                $("#sinifGrupSelect option:selected").text(data[i]['sinifGrubu']);
+                                $("#sinifGrupSelect").empty();
+                                $("#sinifGrupSelect").append("<option value='1'> " + data[i]['sinifGrubu'] + "</option>");
+                                if (data[i]['sinifGrubu'] == "Sabah Grubu") {
+                                    $("#sinifGrupSelect").append("<option value='2'> Öğlen Grubu </option>");
+                                }
+                                else {
+                                    $("#sinifGrupSelect").append("<option value='1'> Sabah Grubu </option>");
+                                }
+                                /*$("#sinifGrupSelect option:selected").text(data[i]['sinifGrubu']);*/
                                 var date = new Date(data[i]['sinifAcilisTarihi']);
                                 $("#inputSinifAcTar").val(date.toLocaleString().toString("dd/MM/yyyy"));
                             }
                         });
 
+                        document.getElementById("yeniSinifBtn").disabled = false;
                         document.getElementById("sinifEkleBtn").disabled = true;
                         document.getElementById("sinifDegistirBtn").disabled = false;
                         document.getElementById("sinifDegistirBtn").className = "";
@@ -394,9 +408,13 @@ else
             document.getElementById("sinifAdiInput").focus();
             document.getElementById("sinifAdiInput").value = "";
             document.getElementById("sinifGrupSelect").focus();
-            document.getElementById("sinifGrupSelect option:selected").text = "Sınıf Grbunu seçiniz";
+            $("#sinifGrupSelect").empty();
+            $("#sinifGrupSelect").append("<option value=''> Sınıf Grubunu seçiniz </option>");
+            $("#sinifGrupSelect").append("<option value='1'> Sabah Grubu </option>");
+            $("#sinifGrupSelect").append("<option value='2'> Öğlen Grubu </option>");
             document.getElementById("inputSinifAcTar").focus();
-            document.getElementById("inputSinifAcTar").value="";
+            document.getElementById("inputSinifAcTar").value = "";
+            document.getElementById("sinifEkleBtn").disabled = false;
             document.getElementById("sinifEkleBtn").className = "";
             document.getElementById("sinifEkleBtn").className = "btn btn-success btn-sm text-white mb-1";
             document.getElementById("sinifDegistirBtn").disabled = true;
@@ -413,7 +431,7 @@ else
             var sinifad = $("#SinifListesi option:selected").text();
             $("#inputSinifId").val(sinifId);
             $("#inputSinifAdi").val(sinifad);
-
+            document.getElementById("subeEkleBtn").disabled = false;
         });
 
         //////////////////////////
@@ -484,6 +502,16 @@ else
 
                         $.each(data, function (i = 0, subeId, subeAdi, subeAcilisTarihi, subeDurumu, okulId, sinifId, sinifAdi) {
 
+                            /*$("#SinifListesi").append("<option value='" + data[i]['sinifId'] + "'> " + data[i]['sinifAdi'] + "</option>");*/
+                            /*$("#SinifListesi").empty();*/
+
+                            //$('#SinifListesi').append($('<option>', {
+                            //    value: data[i]['sinifId'],
+                            //    text: data[i]['sinifAdi']
+                            //}));
+
+                            $("#SinifListesi option:selected").text(data[i]['sinifAdi']);
+
                             if (i == 0) {
 
                                 $("#inputSubeId").val(data[i]['subeId']);
@@ -516,13 +544,13 @@ else
                                         text: "Kapalı"
                                     }));
                                 }
+
                                 $("#inputOkulId").val(data[i]['okulId']);
                                 $("#inputSinifId").val(data[i]['sinifId']);
                                 $("#inputSinifAdi").val(data[i]['sinifAdi']);
-                                $("#SinifListesi option:selected").text(data[i]['sinifAdi']);
-                                /*$("#sinifGrupSelect option:selected").text(data[i]['sinifGrubu']);*/
-
+                                document.getElementById("yeniSubeBtn").disabled = false;
                             }
+
                         });
 
                         document.getElementById("subeEkleBtn").disabled = true;
