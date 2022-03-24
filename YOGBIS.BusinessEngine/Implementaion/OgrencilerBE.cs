@@ -172,7 +172,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 try
                 {
-                    var data = _mapper.Map<OgrencilerVM, Ogrenciler>(model);
+                    var data = _unitOfWork.ogrencilerRepository.Get((Guid)model.OgrencilerId);
                     if (data != null)
                     {
 
@@ -194,8 +194,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.KayitSayisi = model.KayitSayisi;
                         data.AyrilmaTarihi = model.AyrilmaTarihi;
                         data.AyrilmaNedeni = model.AyrilmaNedeni == "Kayıt silme nedenini seçiniz" ? model.AyrilmaNedeni = null : model.AyrilmaNedeni;
-                        data.AyrilanSayisi = model.AyrilanSayisi;
-                        data.KayitTarihi = model.KayitTarihi;
+                        data.AyrilanSayisi = model.AyrilanSayisi;                        
 
                         _unitOfWork.ogrencilerRepository.Update(data);
                         _unitOfWork.Save();

@@ -39,6 +39,7 @@ namespace YOGBIS.Common.VModels
         public List<EyaletlerVM> Eyaletler { get; set; }
         public List<SehirlerVM> Sehirler { get; set; }
         public int OkulSayisi { get; set; }
+        public int OgrenciOkulSayisi { get; set; }
         public List<OkullarVM> Okullar { get; set; }
         public IFormFileCollection FotoGaleris { get; set; }
         public List<FotoGaleriVM> FotoGaleri { get; set; }

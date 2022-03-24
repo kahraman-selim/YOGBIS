@@ -24,7 +24,7 @@
                 <b>Öğrenci Ekleme/Güncelleme</b>
             </div>
             <div class="card-body">
-                <form class="form-group m-0" asp-action="OgrenciEkle">
+                <form class="form-group m-0" asp-action="OgrenciEkle" name="ogrenciekleform">
                     @Html.HiddenFor(x => x.UlkeId)
                     @Html.HiddenFor(x => x.OgrencilerId)
                     <input hidden type="text" value="@eyaletid" id="inputEyaletId" asp-for="EyaletId" />
@@ -62,7 +62,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Öğrenci Türü</label>
-                                <select asp-for="OgrenciTuru" class="form-control-range form-control py-2" aria-label="Default select example">
+                                <select asp-for="OgrenciTuru" class="form-control-range form-control py-2" id="ogrencituruselect" aria-label="Default select example">
                                     <option selected class="text-left">Öğrenci türünü seçiniz</option>
                                     <option value="1">MEB-Okul Öğrenci</option>
                                     <option value="2">TTK Mahallinden Öğrenci</option>
@@ -70,7 +70,7 @@
                                     <option value="4">Türkçe Kursları</option>
                                     <option value="5">Okutman Öğrenci</option>
                                 </select>
-                                <span class="text-danger" asp-validation-for="OgrenciTuru"></span>
+                                <span class="text-danger" asp-validation-for="OgrenciTuru">Öğrenci türünü seçmelisiniz !</span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -81,7 +81,7 @@
                                     <option value="1">T.C.</option>
                                     <option value="2">Diğer</option>
                                 </select>
-                                <span class="text-danger" asp-validation-for="Uyruk"></span>
+                                <span class="text-danger" asp-validation-for="Uyruk">Öğrenci Uyruğunu seçmelisiniz !</span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -92,7 +92,7 @@
                                     <option value="true">Kız</option>
                                     <option value="false">Erkek</option>
                                 </select>
-                                <span class="text-danger" asp-validation-for="Cinsiyet"></span>
+                                <span class="text-danger" asp-validation-for="Cinsiyet">Öğrenci Cinsiyetini seçmelisiniz !</span>
                             </div>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">
-                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" />
+                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px"/>
                             <a asp-controller="Okullar" asp-action="SubeSinifOgrenci" asp-route-id="@okulid" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Geri Dön</a>
                         </div>
                     </div>
@@ -207,9 +207,19 @@
         //    document.getElementById("ToplamErkek").value = tcerk + dgerk;
         //    document.getElementById("ToplamKiz").value = tckz + dgkz;
         //    document.getElementById("GenelToplam").value = tcerk + tckz + dgerk + dgkz;
-
-
         //});
+        //function validateForm() {
+            
+        //    var tur = $("#ogrencituruselect option:selected").text();
+        //    //let x = document.forms["ogrenciekleform"]["ogrencituruselect option:selected"].text;
+        //    if (tur == "Öğrenci türünü seçiniz") {
+        //        alert(tur);
+        //        $("ogrencituruval").val("Öğrenci türünü seçmelisiniz !");
+        //    }
+        //    else {
+        //        this.type = "submit";
+        //    }
+        //}
         $("#btnOgrenciDegistir").click(function () {
 
             var subeId = $("#inputSubeId").val();

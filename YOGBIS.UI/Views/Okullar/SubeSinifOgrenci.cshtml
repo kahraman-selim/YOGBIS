@@ -493,30 +493,31 @@ else
 
         $(".btnSubeDegistir").click(function () {
 
-            var sinifid = $(this).data("id");
+            var subeId = $(this).data("id");
+            var okulId = $("#inputhiddenokulid").val();
 
-            @*var urlsinif = '@Url.Action("OkulSiniflariGetir", "Okullar")?SinifId=' + sinifid;
+            var urlsinif = '@Url.Action("OkulSiniflariGetir", "Okullar")?OkulId=' + okulId;
 
-            $.getJSON(urlsinif, function (data) {
+            /*$("#SinifListesi").empty();*/
 
-                    /*$("#SinifListesi").empty();*/
+            $.getJSON(urlsinif, function (data) {                    
 
                     $.each(data, function (i = 0, sinifId, sinifAdi, sinifGrubu, sinifAcilisTarihi) {
-
-
-                        /*$("#SinifListesi").append("<option value='" + data[i]['sinifId'] + "'> " + data[i]['sinifAdi'] + "</option>");*/
-
-                        $("#SinifListesi option:selected").text(data[i]['sinifAdi']);
 
                         $('#SinifListesi').append($('<option>', {
                             value: data[i]['sinifId'],
                             text: data[i]['sinifAdi']
                         }));
+
+                        /*$("#SinifListesi").append("<option value='" + data[i]['sinifId'] + "'> " + data[i]['sinifAdi'] + "</option>");*/
+
+                        $("#SinifListesi option:selected").text(data[i]['sinifAdi']);
+
                     });
 
-            });*@
+            });
 
-            var urlsube = '@Url.Action("OkulSubeleriGetir", "Okullar")?SinifId=' + sinifid;
+            var urlsube = '@Url.Action("OkulSubeGetir", "Okullar")?SubeId=' + subeId;
 
             $.getJSON(urlsube, function (data) {
 

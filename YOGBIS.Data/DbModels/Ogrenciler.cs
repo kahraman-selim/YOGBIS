@@ -4,11 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class Ogrenciler:Base
+    public class Ogrenciler
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid OgrencilerId { get; set; }
+        public DateTime KayitTarihi { get; set; }
         public string OgrenciTuru { get; set; }
         public string Uyruk { get; set; }
         public bool Cinsiyet { get; set; }

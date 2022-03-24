@@ -256,22 +256,24 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var data = _unitOfWork.subelerRepository.GetFirstOrDefault(s => s.SubeId == id, includeProperties: "Kullanici,Ogrenciler");
             if (data != null)
             {
-                _unitOfWork.subelerRepository.Remove(data);
-                _unitOfWork.Save();
 
+                var ogrenciler = _unitOfWork.ogrencilerRepository.GetAll(o => o.SubeId == data.SubeId).ToList();
 
-                if (data.Ogrenciler != null)
+                if (ogrenciler.Count() > 0)
                 {
-                    foreach (var item in data.Ogrenciler.ToList())
+                    foreach (var item in ogrenciler)
                     {
-                        var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId);
+                        var ogrenci = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId);
                         if (data != null)
                         {
-                            _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
+                            _unitOfWork.ogrencilerRepository.Remove(ogrenci);
                             _unitOfWork.Save();
                         }
                     }
                 }
+
+                _unitOfWork.subelerRepository.Remove(data);
+                _unitOfWork.Save();
 
                 return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
             }

@@ -313,6 +313,37 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region UlkeIdGetir
+        [Authorize(Roles = "Administrator,Manager")]
+        public IActionResult UlkeIdGetir(string ulkeKodu)
+        {
+
+            if (ulkeKodu != null)
+            {
+                var data = _unitOfWork.ulkelerRepository.GetAll(x => x.UlkeKodu == ulkeKodu);
+                return Json(data);
+            }
+
+            return NotFound();
+        }
+        #endregion
+
+        #region UlkeDetayGetir
+        [Authorize(Roles = "Administrator,Manager")]
+        public IActionResult UlkeDetayGetir(Guid ulkeId)
+        {
+
+            if (ulkeId != null)
+            {
+                //var data = _ulkelerBE.UlkeGetir(ulkeId).Data;
+                var data = _unitOfWork.ulkelerRepository.GetAll(x => x.UlkeId == ulkeId);
+                return Json(data);
+            }
+
+            return NotFound();
+        }
+        #endregion
+
         #region FotoYukle
         [Obsolete]
         private async Task<string> FotoYukle(string dosyaAdi, IFormFile dosya)

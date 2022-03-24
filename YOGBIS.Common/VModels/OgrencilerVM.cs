@@ -4,11 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
-    public class OgrencilerVM:BaseVM
+    public class OgrencilerVM
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid OgrencilerId { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
+        public DateTime KayitTarihi { get; set; } = DateTime.Now;
 
         [Required(ErrorMessage = "Öğrenci türünü seçiniz !")]
         public string OgrenciTuru { get; set; }

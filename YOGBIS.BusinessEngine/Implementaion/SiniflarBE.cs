@@ -226,8 +226,21 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var data = _unitOfWork.siniflarRepository.GetFirstOrDefault(s => s.SinifId == id, includeProperties: "Kullanici");
             if (data != null)
             {
-                _unitOfWork.siniflarRepository.Remove(data);
-                _unitOfWork.Save();
+
+                var ogrenciler = _unitOfWork.ogrencilerRepository.GetAll(o => o.SinifId == data.SinifId).ToList();
+
+                if (ogrenciler.Count() > 0)
+                {
+                    foreach (var item in ogrenciler)
+                    {
+                        var ogrenci = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId);
+                        if (data != null)
+                        {
+                            _unitOfWork.ogrencilerRepository.Remove(ogrenci);
+                            _unitOfWork.Save();
+                        }
+                    }
+                }
 
                 if (data.Subeler != null)
                 {
@@ -240,30 +253,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                             _unitOfWork.subelerRepository.Remove(subeler);
                             _unitOfWork.Save();
 
-                            if (subeler.Ogrenciler != null)
-                            {
-                                var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == subeler.Ogrenciler.First().OgrencilerId);
-
-                                if (data != null)
-                                {
-                                    _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
-                                    _unitOfWork.Save();
-                                }
-                            }
-
                         }
                     }
                 }
 
-                //foreach (var item in data.Ogrenciler.ToList())
-                //{
-                //    var ogrenciler = _unitOfWork.ogrencilerRepository.GetFirstOrDefault(o => o.OgrencilerId == item.OgrencilerId);
-                //    if (data != null)
-                //    {
-                //        _unitOfWork.ogrencilerRepository.Remove(ogrenciler);
-                //        _unitOfWork.Save();
-                //    }
-                //}
+                _unitOfWork.siniflarRepository.Remove(data);
+                _unitOfWork.Save();
+
                 return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
             }
             else

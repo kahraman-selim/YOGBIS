@@ -175,10 +175,10 @@ namespace YOGBIS.UI.Controllers
             if (data.IsSuccess)
             {
                 StatusMessage = "Kayıt başarılı bir şekilde güncellendi !";
-                return View();
+                return RedirectToAction("SubeSinifOgrenci", "Okullar", new { id = (Guid)okulId });
             }
             StatusMessage = "Bilinmeyen bir hata oluştu. Kayıt yapılamadı !";
-            return View(model);
+            return View();
         }
         #endregion
 

@@ -1839,6 +1839,8 @@
         window.okutmanclick = true;
         window.okutmanhover = true;
         window.bodyhover = true;
+        //window.ulkeKodu = "";
+        //window.ulkeId = "";
 
         $("#btnOkul").hover(function okulhover() {
 
@@ -1964,16 +1966,61 @@
 
         $(".country").hover(function () {
 
-            var ulkeId = $(this).children("path").attr("id");
+            window.ulkeKodu = $(this).children("path").attr("id");
 
-            $(this).attr("data-content",
-                "Ülke Kodu = " + ulkeId + "<br>" +
-                "Okul      = 3" + "<br>" +
-                "Öğretmen  = 12" + "<br>" +
-                "Okutman   = 3" + "<br>" +
-                "Öğrenci   = 35"+"<br>");
+            var urlulkekod = '@Url.Action("UlkeIdGetir", "Ulkeler")?ulkeKodu=' + window.ulkeKodu;
 
+            $.getJSON(urlulkekod, function (data) {
 
+                if (data.length != 0) {
+
+                    $.each(data, function (i = 0, ulkeId, ulkeKodu, ulkeAdi) {
+
+                        if (i==0) {
+
+                            window.ulkeId = data[i]['ulkeId'];
+                        }
+
+                    });
+                }
+                else {
+
+                    $(".country").attr("data-content",
+                        "Ülke Kodu = " + window.ulkeKodu + "<br>" +
+                        "Ülkeye ait bilgi bulunamadı !" + "<br>");
+                }
+            });
+
+            var urlulkedetay = '@Url.Action("UlkeDetayGetir", "Ulkeler")?ulkeId=' + window.ulkeId;
+
+            $.getJSON(urlulkedetay, function (data) {
+
+                if (data.length != 0) {
+
+                    $.each(data, function (j = 0, ulkeId, ulkeKodu, okulSayisi, ogrenciOkulSayisi) {
+
+                        /*alert(window.ulkeKodu);*/
+
+                        if (window.ulkeKodu == data[j]['ulkeKodu']) {
+
+                            $(".country").attr("data-content",
+                                "Ülke Kodu = " + data[j]['ulkeKodu'] + "<br>" +
+                                "Okul      = " + data[j]['okulSayisi'] + "<br>" +
+                                "Öğretmen  = " + "<br>" +
+                                "Okutman   = " + "<br>" +
+                                "Öğrenci(Okul) = " + data[j]['ogrenciOkulSayisi'] + "<br>");
+                        }
+                        else {
+                            $(".country").attr("data-content",
+                                "Ülkeye ait bilgi bulunamadı !" + "<br>");
+                        }
+
+                    });
+                }
+                else {
+
+                }
+             });
         });
 
         $(".country").click(function (ulkekod) {
