@@ -61,22 +61,22 @@ namespace YOGBIS.UI.Controllers
             ViewBag.UserName = user.UserName;
 
             var model = new List<KullaniciYekiYonetimVM>();
-            foreach (var role in _roleManager.Roles)
+            foreach (var role in _roleManager.Roles.ToList())
             {
                 var userRolesViewModel = new KullaniciYekiYonetimVM()
                 {
-                    RoleId = role.Id,
+                    RoleId = role.Id,                    
                     RoleName = role.Name
                 };
 
-                //if (await _userManager.IsInRoleAsync(user, role.Name))
-                //{
-                //    userRolesViewModel.Selected = true;
-                //}
-                //else
-                //{
-                //    userRolesViewModel.Selected = false;
-                //}
+                if (await _userManager.IsInRoleAsync(user, role.Name))
+                {
+                    userRolesViewModel.Selected = true;
+                }
+                else
+                {
+                    userRolesViewModel.Selected = false;
+                }
 
                 model.Add(userRolesViewModel);
             }

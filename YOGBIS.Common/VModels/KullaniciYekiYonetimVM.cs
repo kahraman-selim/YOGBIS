@@ -1,4 +1,7 @@
-﻿namespace YOGBIS.Common.VModels
+﻿using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.Extentsion;
+
+namespace YOGBIS.Common.VModels
 {
     public class KullaniciYekiYonetimVM
     {

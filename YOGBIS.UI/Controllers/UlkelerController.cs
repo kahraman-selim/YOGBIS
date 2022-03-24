@@ -328,15 +328,32 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        //#region UlkeDetayGetir
+        //[Authorize(Roles = "Administrator,Manager")]
+        //public IActionResult UlkeDetayGetir(Guid ulkeId)
+        //{
+
+        //    if (ulkeId != null)
+        //    {
+        //        //var data = _ulkelerBE.UlkeGetir(ulkeId).Data;
+        //        var data = _unitOfWork.ulkelerRepository.GetAll(x => x.UlkeId == ulkeId);
+        //        return Json(data);
+        //    }
+
+        //    return NotFound();
+        //}
+        //#endregion
+
         #region UlkeDetayGetir
         [Authorize(Roles = "Administrator,Manager")]
-        public IActionResult UlkeDetayGetir(Guid ulkeId)
+        public IActionResult UlkeDetayGetir(string ulkeKodu)
         {
 
-            if (ulkeId != null)
+            if (ulkeKodu != null)
             {
-                //var data = _ulkelerBE.UlkeGetir(ulkeId).Data;
-                var data = _unitOfWork.ulkelerRepository.GetAll(x => x.UlkeId == ulkeId);
+                //var data = _ulkelerBE.UlkeGetirUlkeKodu(ulkeKodu);
+                var data = _unitOfWork.ulkelerRepository.GetAll(x => x.UlkeKodu == ulkeKodu);
+                
                 return Json(data);
             }
 
