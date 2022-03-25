@@ -206,8 +206,10 @@ namespace YOGBIS.Data.Migrations
                     DuyurularId = table.Column<byte[]>(nullable: false),
                     KayitTarihi = table.Column<DateTime>(nullable: false),
                     DuyuruBaslık = table.Column<string>(nullable: true),
+                    DuyuruAltBaslık = table.Column<string>(nullable: true),
                     DuyuruDetay = table.Column<string>(nullable: true),
                     DuyuruLink = table.Column<string>(nullable: true),
+                    DuyuruKapakResimUrl = table.Column<string>(nullable: true),
                     KaydedenId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -1223,9 +1225,14 @@ namespace YOGBIS.Data.Migrations
                     BasTarihi = table.Column<DateTime>(nullable: false),
                     BitTarihi = table.Column<DateTime>(nullable: false),
                     EtkinlikBilgi = table.Column<string>(nullable: true),
+                    HedefKitle = table.Column<string>(nullable: true),
                     KatilimciSayisi = table.Column<int>(nullable: false),
+                    Sonuc = table.Column<string>(nullable: true),
                     DuzenleyenAdiSoyadi = table.Column<string>(nullable: true),
                     EtkinlikKapakResimUrl = table.Column<string>(nullable: true),
+                    OkulId = table.Column<byte[]>(nullable: true),
+                    TemsilcilikId = table.Column<byte[]>(nullable: true),
+                    UlkeId = table.Column<byte[]>(nullable: true),
                     KaydedenId = table.Column<string>(nullable: true),
                     OkullarOkulId = table.Column<byte[]>(nullable: true),
                     TemsilciliklerTemsilcilikId = table.Column<byte[]>(nullable: true)

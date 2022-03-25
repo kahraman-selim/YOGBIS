@@ -78,8 +78,7 @@ namespace YOGBIS.UI.Controllers
 
         #region UlkeEkleGet
         [Authorize(Roles = "Administrator")]
-        [HttpGet]
-        
+        [HttpGet]        
         [Route("Ulkeler/UC10002", Name = "UlkeEkleRoute")]
         public IActionResult UlkeEkle()
         {

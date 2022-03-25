@@ -11,6 +11,7 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public Guid DuyurularId { get; set; }
         public string DuyuruBaslık { get; set; }
+        public string DuyuruAltBaslık { get; set; }
         public string DuyuruDetay { get; set; }
         public string DuyuruLink { get; set; }
         public string DuyuruKapakResimUrl { get; set; }

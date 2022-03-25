@@ -16,5 +16,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<List<EtkinliklerVM>> EtkinlikGetirKullaniciId(string userId);
         Result<List<EtkinliklerVM>> EtkinlikGetirUlkeId(Guid ulkeId);
         Result<List<EtkinliklerVM>> EtkinlikGetirOkulId(Guid okulId);
+        Result<string> EtkinlikKapakURLGetir(Guid id);
     }
 }

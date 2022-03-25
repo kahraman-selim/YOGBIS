@@ -490,6 +490,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         _unitOfWork.Save();
                     }
                 }
+
                 return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
             }
             else
@@ -522,7 +523,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KitaAdi = item.Kitalar.KitaAdi,
                         KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
-                    }); ;
+                    }); 
                 }
                 return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, returnData);
             }

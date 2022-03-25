@@ -22,5 +22,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<OkullarVM> SubeSinifOgrenciGetirOkulId(Guid id);
         Result<Guid> OkulEyaletIdGetir(Guid id);
         Result<Guid> OkulSehirIdGetir(Guid id);
+        Result<string> OkulAdGetir(Guid id);
     }
 }

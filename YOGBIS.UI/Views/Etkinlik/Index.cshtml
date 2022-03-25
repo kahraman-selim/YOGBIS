@@ -6,14 +6,6 @@
     ViewData["Title"] = "Etkinlikler";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
-    .block {
-        position: fixed;
-        z-index: 2;
-        right: 15px;
-        top: 95px;
-    }
-</style>
 
 <ol class="breadcrumb mb-4 mt-2">
     <li>
@@ -33,15 +25,29 @@
                 <thead>
                     <tr>
                         <th>Sıra No</th>
-                        @*<th>Okul Adı</th>*@
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                        {
+                            <th>Ülke</th>
+                            <th>Temsilcilik</th>
+                        }
+                        <th>Okul Adı</th>
                         <th>Etkinlik Adı</th>
                         <th>Başlama Tarihi</th>
                         <th>Bitiş Tarihi</th>
-                        <th>Sorumlu Öğretmen</th>
+                        <th>Sorumlu</th>
+                        <th>Hedef Kitle</th>
                         <th>Katılımcı Sayısı</th>
                         <th>Etkinlik Hakkında</th>
-                        <th class="text-center">Düzenle</th>
-                        <th class="text-center">Sil</th>
+                        <th>Çıktı ve Sonuç</th>
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                        {
+                            <th class="text-center">Detay</th>
+                        }
+                        else
+                        {
+                            <th class="text-center">Düzenle</th>
+                            <th class="text-center">Sil</th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -51,37 +57,44 @@
                         @foreach (var item in Model)
                         {
                             sirano++;
-                    <tr>
-                        <td>@sirano</td>
-                        <td>@item.OkulAdi</td>
-                        <td>@item.EtkinlikAdi</td>
-                        <td>@item.BasTarihi.ToString("dd/MM/yyyy")</td>
-                        <td>@item.BitTarihi.ToString("dd/MM/yyyy")</td>
-                        <td>@item.DuzenleyenAdiSoyadi</td>
-                        <td>@item.KatilimciSayisi</td>
-                        <td>@item.EtkinlikBilgi</td>
-                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
-                        {
-                            <td class="text-center">
-                                <a class="btn btn-sm btn-info" title="Detay" asp-controller="Etkinlik" asp-action="Detay" asp-route-id="@item.EtkinlikId">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            </td>
-                        }
-                        else
-                        {
-                            <td class="text-center">
-                                <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Etkinlik" asp-action="Guncelle" asp-route-id="@item.EtkinlikId">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            </td>
-                            <td class="text-center">
-                                <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.EtkinlikId">
-                                    <i class="fas fa-trash text-white"></i>
-                                </a>
-                            </td>
-                        }
-                    </tr>
+                            <tr>
+                                <td>@sirano</td>
+                                @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                                {
+                                    <td>@item.UlkeAdi</td>
+                                    <td>@item.TemsilcilikAdi</td>                                    
+                                }
+                                <td>@item.OkulAdi</td>
+                                <td>@item.EtkinlikAdi</td>
+                                <td>@item.BasTarihi.ToString("dd/MM/yyyy")</td>
+                                <td>@item.BitTarihi.ToString("dd/MM/yyyy")</td>
+                                <td>@item.DuzenleyenAdiSoyadi</td>
+                                <td>@item.HedefKitle</td>
+                                <td>@item.KatilimciSayisi</td>
+                                <td>@item.EtkinlikBilgi</td>
+                                <td>@item.Sonuc</td>
+                                @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                                {
+                                    <td class="text-center">
+                                        <a class="btn btn-sm btn-info" title="Detay" asp-controller="Etkinlik" asp-action="Detay" asp-route-id="@item.EtkinlikId">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">
+                                        <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="Etkinlik" asp-action="Guncelle" asp-route-id="@item.EtkinlikId">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.EtkinlikId">
+                                            <i class="fas fa-trash text-white"></i>
+                                        </a>
+                                    </td>
+                                }
+                            </tr>
                         }
                     }
                     else
@@ -105,17 +118,30 @@
         $(function () {
             $("#myTable").on("click", ".btnSil", function () {
                 var btn = $(this);
-                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
-                    if (result) {
-                        var id = btn.data("id");
-                        $.ajax({
-                            type: "DELETE",
-                            url: "/Etkinlik/EtkinlikSil/" + id,
-                            success: function () {
-                                btn.parent().parent().remove();
-                                location.reload();
-                            }
-                        });
+                bootbox.confirm({
+                    message: "Seçilen etkinliği silmek istiyor musunuz?",
+                    buttons: {
+                        confirm: {
+                            label: 'Evet',
+                            className:'btn-success'
+                        },
+                        cancel: {
+                            label: 'Hayır',
+                            className:'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            var id = btn.data("id");
+                            $.ajax({
+                                type: "DELETE",
+                                url: "/Etkinlik/EtkinlikSil/" + id,
+                                success: function () {
+                                    btn.parent().parent().remove();
+                                    location.reload();
+                                }
+                            });
+                        }
                     }
                 });
             });

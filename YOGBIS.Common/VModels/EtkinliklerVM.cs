@@ -21,9 +21,12 @@ namespace YOGBIS.Common.VModels
         public string DuzenleyenAdiSoyadi { get; set; }
         public IFormFile EtkinlikKapakResim { get; set; }
         public string EtkinlikKapakResimUrl { get; set; }
+        public string EtkinlikKapakAdi { get; set; }
         public string OkulAdi { get; set; }
         public Guid? OkulId { get; set; }
+        public string TemsilcilikAdi { get; set; }
         public Guid? TemsilcilikId { get; set; }
+        public string UlkeAdi { get; set; }
         public Guid? UlkeId { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }

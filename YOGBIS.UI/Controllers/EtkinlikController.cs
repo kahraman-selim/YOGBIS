@@ -22,22 +22,27 @@ namespace YOGBIS.UI.Controllers
         private readonly IEtkinliklerBE _etkinliklerBE;
         private readonly IOkullarBE _okullarBE;
         private readonly IUlkelerBE _ulkelerBE;
+        private readonly IFotoGaleriBE _fotoGaleriBE;
+        private readonly IDosyaGaleriBE _dosyaGaleriBE;
         [Obsolete]
         private readonly IWebHostEnvironment _hostingEnvironment;
         #endregion
 
         #region Dönüştürücüler
         [Obsolete]
-        public EtkinlikController(IEtkinliklerBE etkinliklerBE, IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IWebHostEnvironment hostingEnvironment)
+        public EtkinlikController(IEtkinliklerBE etkinliklerBE, IOkullarBE okullarBE, IUlkelerBE ulkelerBE, IFotoGaleriBE fotoGaleriBE, IDosyaGaleriBE dosyaGaleriBE, IWebHostEnvironment hostingEnvironment)
         {
             _etkinliklerBE = etkinliklerBE;
             _okullarBE = okullarBE;
             _ulkelerBE = ulkelerBE;
+            _fotoGaleriBE = fotoGaleriBE;
+            _dosyaGaleriBE = dosyaGaleriBE;
             _hostingEnvironment = hostingEnvironment;
         }
         #endregion
 
         #region Index
+        [Authorize(Roles = "Administrator,Manager,Representative,SubManager,Follower")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -56,58 +61,110 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region EtkinlikEkleGet
+        [Authorize(Roles = "Administrator,Manager,Representative,SubManager,Follower")]
         [HttpGet]
-        [Route("Etkinlikler")]
+        [Route("Etkinlik/EC10002", Name = "EtkinlikEkleRoute")]
         public IActionResult EtkinlikEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            ViewBag.UlkeAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            ViewBag.OkulAdi = string.Empty;
             return View();
         }
         #endregion
 
         #region EtkinlikEklePost
+        [Authorize(Roles = "Administrator,Manager,Representative,SubManager,Follower")]
+        [ValidateAntiForgeryToken]
         [HttpPost]
+        [Route("Etkinlik/EC10002", Name = "EtkinlikEkleRoute")]
         [Obsolete]
-        public async Task<IActionResult> EtkinlikEkle(EtkinliklerVM model)
+        public async Task<IActionResult> EtkinlikEkle(EtkinliklerVM model, Guid? EtkinlikId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+            ViewBag.UlkeAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
             ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
 
-            if (ModelState.IsValid)
+            if (model.FotoGaleris != null)
             {
+                string fotoklasorler = "img/EtkinlikFoto/";
+                model.FotoGaleri = new List<FotoGaleriVM>();
+
+                foreach (var file in model.FotoGaleris)
+                {
+                    var galeri = new FotoGaleriVM()
+                    {
+
+                        FotoURL = await FotoYukle(fotoklasorler, file),
+                        FotoAdi = file.FileName,
+                        KaydedenId = user.LoginId,
+                        KayitTarihi = model.KayitTarihi
+                    };
+                    model.FotoGaleri.Add(galeri);
+                }
+
+            }
+
+            if (model.DosyaGaleris != null)
+            {
+                string dosyaklasorler = "img/EtkinlikDosyalar/";
+                model.DosyaGaleri = new List<DosyaGaleriVM>();
+
+                foreach (var file in model.DosyaGaleris)
+                {
+                    var dosyagaleri = new DosyaGaleriVM()
+                    {
+
+                        DosyaURL = await DosyaYukle(dosyaklasorler, file),
+                        DosyaAdi=file.FileName,
+                        KaydedenId = user.LoginId,
+                        KayitTarihi = model.KayitTarihi
+                    };
+                    model.DosyaGaleri.Add(dosyagaleri);
+                }
+
+            }
+
+            if (EtkinlikId != null)
+            {
+
+                //önceki yüklenen fotoyu dosyadan sil
+                var etkinlikkapakurl = _etkinliklerBE.EtkinlikKapakURLGetir((Guid)EtkinlikId);
+                string[] parcalar = etkinlikkapakurl.Data.ToString().Split("/img/EtkinlikKapakFoto/");
+                var etkinlikKapakAdi = parcalar[1].ToString();
+
                 if (model.EtkinlikKapakResim != null)
                 {
-                    string klasorler = "img/EtkinlikKapakFoto";
-                    model.EtkinlikKapakResimUrl = FotoYukle(klasorler, model.EtkinlikKapakResim);
-                }
 
-                if (model.FotoGaleri != null)
-                {
-                    string fotoklasorler = "img/EtkinlikFoto";
-                    model.FotoGaleri = new List<FotoGaleriVM>();
-
-                    foreach (var file in model.FotoGaleris)
+                    if (etkinlikKapakAdi != null)
                     {
-                        var galeri = new FotoGaleriVM()
-                        {
-                            FotoAdi = file.FileName,
-                            FotoURL = FotoYukle(fotoklasorler, file),
-                            KaydedenId=user.LoginId,
-                            KayitTarihi=model.KayitTarihi
-
-                        };
-                        model.FotoGaleri.Add(galeri);
+                        System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/EtkinlikKapakFoto/" + etkinlikKapakAdi);
                     }
+
+                    string klasorler = "img/EtkinlikKapakFoto/";
+                    model.EtkinlikKapakResimUrl = await FotoYukle(klasorler, model.EtkinlikKapakResim);
+                    string[] parcala = model.EtkinlikKapakResimUrl.ToString().Split("/img/EtkinlikKapakFoto/");
+                    model.EtkinlikKapakAdi = parcala[1].ToString();
+
+                }
+                else
+                {
+                    model.EtkinlikKapakResimUrl = etkinlikkapakurl.Data.ToString();
+                    model.EtkinlikKapakAdi = etkinlikKapakAdi.ToString();
                 }
 
-                //if (model.EtkinlikDosya != null)
-                //{
-                //    string dosyalar = "img/EtkinlikDosyalar";
-                //    model.EtkinlikDosyaUrl = await DosyaYukle(dosyalar, model.EtkinlikDosya);
-                //}
+                var data = _etkinliklerBE.EtkinlikGuncelle(model, user);
+                if (data.IsSuccess)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                string klasorler = "img/EtkinlikKapakFoto/";
+                model.EtkinlikKapakResimUrl = await FotoYukle(klasorler, model.EtkinlikKapakResim);
+                string[] parcalar = model.EtkinlikKapakResimUrl.ToString().Split("img/EtkinlikKapakFoto/");
+                model.EtkinlikKapakAdi = parcalar[1].ToString();
 
                 var data = _etkinliklerBE.EtkinlikEkle(model, user);
                 if (data.IsSuccess)
@@ -121,12 +178,14 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region GuncelleGet
-        public ActionResult Guncelle(Guid? id)
+        #region Guncelle
+        [Authorize(Roles = "Administrator,Manager,Representative,SubManager,Follower")]
+        [Route("Etkinlik/EC10003", Name = "EtkinlikGuncelleRoute")]
+        public async Task<ActionResult> Guncelle(Guid? id)
         {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));    
+            ViewBag.UlkeAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            ViewBag.OkulAdi = string.Empty;
 
             if (id != null)
             {
@@ -141,33 +200,55 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region GuncellePost
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public ActionResult Guncelle(EtkinliklerVM model)
-        {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-            ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
-
-            var data = _etkinliklerBE.EtkinlikGuncelle(model, user);
-            if (data.IsSuccess)
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return View();
-            }
-        }
-        #endregion
-
         #region EtkinlikSil
+        [Authorize(Roles = "Administrator,Manager,Representative,SubManager,Follower")]
         [HttpDelete]
+        [Obsolete]
         public IActionResult EtkinlikSil(Guid id)
         {
             if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+
+            var etkinlikkapakurl = _etkinliklerBE.EtkinlikKapakURLGetir((Guid)id);
+            string[] parcala = etkinlikkapakurl.Data.ToString().Split("/img/EtkinlikKapakFoto/");
+            var kapakadi = parcala[1].ToString();
+
+            if (kapakadi != null)
+            {
+                System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/EtkinlikKapakFoto/" + kapakadi);
+            }
+
+            var fotourls = _fotoGaleriBE.FotoURLGetirUlkeId((Guid)id).Data;
+
+            if (fotourls != null)
+            {
+                foreach (var item in fotourls)
+                {
+                    string[] parcalar = item.ToString().Split("/img/EtkinlikFoto/");
+                    var fotoadi = parcalar[1].ToString();
+
+                    if (fotoadi != null)
+                    {
+                        System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/EtkinlikFoto/" + fotoadi);
+                    }
+                }
+            }
+
+            var dosyaurls = _dosyaGaleriBE.DosyaURLGetirEtkinlikId((Guid)id).Data;
+
+            if (dosyaurls != null)
+            {
+                foreach (var item in dosyaurls)
+                {
+                    string[] parcalar = item.ToString().Split("/img/EtkinlikDosyalar/");
+                    var dosyaadi = parcalar[1].ToString();
+
+                    if (dosyaadi != null)
+                    {
+                        System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/EtkinlikDosyalar/" + dosyaadi);
+                    }
+                }
+            }
 
             var data = _etkinliklerBE.EtkinlikSil(id);
             if (data.IsSuccess)
@@ -179,7 +260,8 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Etkinlikler
-        [Authorize(Roles = "Administrator,Manager")]
+        [Authorize(Roles = "Administrator,Manager,Representative,SubManager,Follower")]
+        [Route("Etkinlik/EC10004", Name = "EtkinliklerRoute")]
         public IActionResult Etkinlikler(Guid OkulId)
         {
 
@@ -214,7 +296,8 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region EtkinlikGetirOkulId
-        [Authorize(Roles = "Administrator,Manager")]
+        [Authorize(Roles = "Administrator,Manager,Representative,SubManager,Follower")]
+        [Route("Etkinlik/EC10005", Name = "EtkinliklerOkulIdRoute")]
         public ActionResult EtkinlikGetirOkulId(Guid Id)
         {
             var data = _etkinliklerBE.EtkinlikGetirOkulId(Id);
@@ -230,7 +313,8 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region EtkinlikDetay
-        [Authorize(Roles = "Administrator,Manager")]
+        [Authorize(Roles = "Administrator,Manager,Representative,SubManager,Follower")]
+        [Route("Etkinlik/EC10006", Name = "EtkinlikDetayRoute")]
         public ActionResult Detay(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -252,22 +336,31 @@ namespace YOGBIS.UI.Controllers
 
         #region FotoYukle
         [Obsolete]
-        private string FotoYukle(string dosyaAdi, IFormFile dosya)
+        private async Task<string> FotoYukle(string dosyaAdi, IFormFile dosya)
         {
 
             dosyaAdi += Guid.NewGuid().ToString() + "_" + dosya.FileName;
 
             string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaAdi);
 
-            //await dosya.CopyToAsync(new FileStream(dosyaKlasor, FileMode.Create));
+            using FileStream fs = new FileStream(dosyaKlasor, FileMode.Create);
+            await dosya.CopyToAsync(fs);
+            return "/" + dosyaAdi;
+        }
+        #endregion
 
-            //return "/" + dosyaAdi;
+        #region DosyaYukle
+        [Obsolete]
+        private async Task<string> DosyaYukle(string dosyaAdi, IFormFile dosya)
+        {
 
-            using (FileStream fs = new FileStream(dosyaKlasor, FileMode.Create))
-            {
-                dosya.CopyToAsync(fs);
-                return "/" + dosyaAdi;
-            }
+            dosyaAdi += Guid.NewGuid().ToString() + "_" + dosya.FileName;
+
+            string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaAdi);
+
+            using FileStream fs = new FileStream(dosyaKlasor, FileMode.Create);
+            await dosya.CopyToAsync(fs);
+            return "/" + dosyaAdi;
         }
         #endregion
     }

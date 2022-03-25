@@ -698,10 +698,16 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("varbinary(16)");
 
+                    b.Property<string>("DuyuruAltBaslık")
+                        .HasColumnType("text");
+
                     b.Property<string>("DuyuruBaslık")
                         .HasColumnType("text");
 
                     b.Property<string>("DuyuruDetay")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DuyuruKapakResimUrl")
                         .HasColumnType("text");
 
                     b.Property<string>("DuyuruLink")
@@ -781,6 +787,9 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("EtkinlikKapakResimUrl")
                         .HasColumnType("text");
 
+                    b.Property<string>("HedefKitle")
+                        .HasColumnType("text");
+
                     b.Property<int>("KatilimciSayisi")
                         .HasColumnType("int");
 
@@ -790,10 +799,22 @@ namespace YOGBIS.Data.Migrations
                     b.Property<DateTime>("KayitTarihi")
                         .HasColumnType("datetime");
 
+                    b.Property<byte[]>("OkulId")
+                        .HasColumnType("varbinary(16)");
+
                     b.Property<byte[]>("OkullarOkulId")
                         .HasColumnType("varbinary(16)");
 
+                    b.Property<string>("Sonuc")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("TemsilcilikId")
+                        .HasColumnType("varbinary(16)");
+
                     b.Property<byte[]>("TemsilciliklerTemsilcilikId")
+                        .HasColumnType("varbinary(16)");
+
+                    b.Property<byte[]>("UlkeId")
                         .HasColumnType("varbinary(16)");
 
                     b.HasKey("EtkinlikId");

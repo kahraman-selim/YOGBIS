@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
@@ -878,6 +879,31 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<Guid>(false, ResultConstant.RecordNotFound);
             }
 
+        }
+        #endregion
+
+        #region OkulAdGetir(Guid id)
+        public Result<string> OkulAdGetir(Guid id)
+        {
+
+            if (id == null)
+            {
+                var okuladi = "";
+                return new Result<string>(true, ResultConstant.RecordFound, okuladi);
+            }
+            else
+            {
+                var data = _unitOfWork.okullarRepository.Get(id);
+                if (data != null)
+                {
+                    var okuladi = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(data.OkulAdi.ToString());
+                    return new Result<string>(true, ResultConstant.RecordFound, okuladi);
+                }
+                else
+                {
+                    return new Result<string>(false, ResultConstant.RecordNotFound);
+                }
+            }
         }
         #endregion
     }

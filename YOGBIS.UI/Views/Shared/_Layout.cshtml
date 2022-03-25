@@ -275,23 +275,12 @@
                             {
 
                             }
-                            @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
-                            {
-                                <a class="nav-link" asp-controller="Etkinlik" asp-action="Etkinlikler">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
-                                    Etkinlik Bilgileri
-                                </a>
-                            }
-                            else if(User.IsInRole("SubManager"))
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("SubManager") || User.IsInRole("Representative"))
                             {
                                 <a class="nav-link" asp-controller="Etkinlik" asp-action="Index">
                                     <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
                                     Etkinlik Bilgileri
                                 </a>
-                            }
-                            else
-                            {
-
                             }
                             <!--Modüller-->
                             @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))

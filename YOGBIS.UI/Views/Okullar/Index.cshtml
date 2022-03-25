@@ -7,15 +7,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .block {
-        position: fixed;
-        z-index: 2;
-        right: 15px;
-        top: 95px;
-    }
-</style>
-
 @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
 {
     <ol class="breadcrumb mb-4 mt-2">

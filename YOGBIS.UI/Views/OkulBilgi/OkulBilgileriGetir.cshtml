@@ -4,15 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .block {
-        position: fixed;
-        z-index: 2;
-        right: 15px;
-        top: 95px;
-    }
-</style>
-
 <ol class="breadcrumb mb-4 mt-2">
     <li class="ml-2 mr-2">
         @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Ülkeyi Seç", 
