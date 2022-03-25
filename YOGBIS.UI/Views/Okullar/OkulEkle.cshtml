@@ -5,7 +5,7 @@
 }
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="card shadow-lg rounded-lg mt-0 h-100">
             <div class="card-header">
                 <i class="fas fa-pen mr-1"></i>
@@ -18,7 +18,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="UlkeId" class="small mb-1 font-weight-bold">Bulunduğu Ülke</label>
                                         @Html.DropDownListFor(u => u.UlkeId, new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"),
@@ -28,7 +28,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="OkulKodu" class="small mb-1 font-weight-bold">Okul Kodu</label>
                                         <input asp-for="OkulKodu" type="number" min="0" class="form-control py-2" id="CreateTypeInput" placeholder="Okul Kodunu yazınız">
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="OkulAdi" class="small mb-1 font-weight-bold">Okul Adı</label>
                                         <input asp-for="OkulAdi" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Okul adını yazınız">
@@ -46,7 +46,7 @@
                                 </div>
                             </div>                            
                             <div class="form-row">
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="OkulTuru" class="small mb-1 font-weight-bold">Okul Türü</label>
                                         <select asp-for="OkulTuru" class="form-control-range form-control py-2" aria-label="Default select example">
@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label asp-for="OkulMudurId" class="small mb-1 font-weight-bold">Okul Müdürü</label>
                                         @Html.DropDownListFor(u => u.OkulMudurId, new SelectList(ViewBag.OkulMuduru, "Id", "AdSoyad"),
@@ -97,7 +97,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-8">
         @await Component.InvokeAsync("OkulListesi")
     </div>
 </div>

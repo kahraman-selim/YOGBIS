@@ -15,7 +15,7 @@
 
 <ol class="breadcrumb mb-4 mt-2">
     <li class="ml-2 mr-2">
-        @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Bulunduğu Ülkeyi Seç", new { @class = "form-control-range form-control py-1 w-100" })
+        @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Ülkeyi Seç", new { @class = "form-control-range form-control py-1 w-100" })
     </li>
     <li class="ml-2 mr-2">
         @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç", new { @class = "form-control-range form-control py-1 w-100" })
@@ -114,22 +114,43 @@
 
                 var Id = $("#UlkeListesi").val();
 
-                $.get("/OkulBilgi/OkulAdlariGetirUlkeId", { UlkeId: Id }, function (data) {
-                    $("#OkulListesi").empty();
-                    $.each(data, function (index, row) {
-                        $("#OkulListesi").append("<option value='" + row.OkulId + "'>" + row.OkulAdi + "</option>")
+                $("#OkulListesi").empty();
+
+                $("#OkulListesi").append("<option value=''> Okul adını seçiniz </option>");
+
+                $("#OkulListesi").append("<option value='0'> Tümünü seç </option>");
+
+                var url = '@Url.Action("OkulAdGetirUlkeId", "OkulBilgi")?ulkeId=' + Id;
+
+                $.getJSON(url, function (data) {
+
+                    $.each(data, function (i=0,okulId,okulAdi) {
+
+                        /*alert(data);*/
+                        $('#OkulListesi').append($('<option>', {
+                            value: data[i]['okulId'],
+                            text: data[i]['okulAdi']
+                        }));
+
                     });
                 });
 
+                @*location.href = '@Url.Action("OkulBilgileriGetir", "OkulBilgi")?ulkeId=' + Id;*@
 
-                location.href = '@Url.Action("OkulBilgileriGetir", "OkulBilgi")?ulkeId=' + Id;
             });
 
             $("#OkulListesi").on("change", function () {
 
+                var ulkeId = $("#UlkeListesi").val();
                 var OkulId = $("#OkulListesi").val();
 
-                location.href = '@Url.Action("OkulBilgileriGetirOkulId", "OkulBilgi")?okulId=' + OkulId;
+                if (OkulId == 0) {
+                    location.href = '@Url.Action("OkulBilgileriGetir", "OkulBilgi")?ulkeId=' + ulkeId;
+                }
+                else {
+                    location.href = '@Url.Action("OkulBilgileriGetirOkulId", "OkulBilgi")?okulId=' + OkulId;
+                }
+
             });
         });
 

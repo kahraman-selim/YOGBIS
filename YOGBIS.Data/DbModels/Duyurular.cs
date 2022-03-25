@@ -13,6 +13,7 @@ namespace YOGBIS.Data.DbModels
         public string DuyuruBaslık { get; set; }
         public string DuyuruDetay { get; set; }
         public string DuyuruLink { get; set; }
+        public string DuyuruKapakResimUrl { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

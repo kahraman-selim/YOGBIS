@@ -301,7 +301,7 @@
                                 </div>
                             }
                             <!--Yönetim Modülü-->
-                            @if (User.IsInRole("Administrator"))
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                             {
                                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseYonetim" aria-expanded="false" aria-controls="collapseYonetim">
                                     <div class="sb-nav-link-icon"><i class="fas fa-user-cog"></i></div>
@@ -316,7 +316,7 @@
                                         }
                                         @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                                         {
-                                            <a class="nav-link" asp-controller="Duyurular" asp-action="Index">Duyurular</a>
+                                            <a class="nav-link" asp-controller="Duyurular" asp-action="DuyuruEkle">Duyurular</a>
                                         }
                                     </nav>
                                 </div>

@@ -42,19 +42,37 @@ namespace YOGBIS.UI.Controllers
 
         #region Index
         [Authorize(Roles = "Administrator,Manager")]
-        public IActionResult Index()
+        public IActionResult Index(Guid? ulkeId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
-            var requestmodel = _ulkelerBE.UlkeleriGetir();  
             ViewBag.KitaAdi = _kitalarBE.KitalariGetir().Data;
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
 
-            if (requestmodel.IsSuccess)
+            if (ulkeId != null)
             {
-                return View(requestmodel.Data);
+                var requestmodel = _ulkelerBE.UlkeleriGetirUlkeId((Guid) ulkeId);
+
+
+                if (requestmodel.IsSuccess)
+                {
+                    return View(requestmodel.Data);
+                }
+
+                return View(user);
+            }
+            else
+            {
+                var requestmodel = _ulkelerBE.UlkeleriGetir();
+
+
+                if (requestmodel.IsSuccess)
+                {
+                    return View(requestmodel.Data);
+                }
+
+                return View(user);
             }
 
-            return View(user);
         }
         #endregion
 
@@ -351,7 +369,7 @@ namespace YOGBIS.UI.Controllers
 
             if (ulkeKodu != null)
             {
-                //var data = _ulkelerBE.UlkeGetirUlkeKodu(ulkeKodu);
+                //var data = JsonConvert.SerializeObject(_ulkelerBE.UlkeGetirUlkeKodu(ulkeKodu).Data);
                 var data = _unitOfWork.ulkelerRepository.GetAll(x => x.UlkeKodu == ulkeKodu);
                 
                 return Json(data);

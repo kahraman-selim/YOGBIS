@@ -12,18 +12,19 @@ namespace YOGBIS.Common.VModels
         [Key]
         public Guid EtkinlikId { get; set; }
         public string EtkinlikAdi { get; set; }
-        public string OkulAdi { get; set; }
-        public Guid OkulId { get; set; }
-        public OkullarVM Okullar { get; set; }
-        public Guid TemsilcilikId { get; set; }
-        public TemsilciliklerVM Temsilcilikler { get; set; }
         public DateTime BasTarihi { get; set; }
         public DateTime BitTarihi { get; set; }
         public string EtkinlikBilgi { get; set; }
+        public string HedefKitle { get; set; }
         public int KatilimciSayisi { get; set; }
+        public string Sonuc { get; set; }
         public string DuzenleyenAdiSoyadi { get; set; }
         public IFormFile EtkinlikKapakResim { get; set; }
-        public string EtkinlikKapakResimUrl { get; set; }        
+        public string EtkinlikKapakResimUrl { get; set; }
+        public string OkulAdi { get; set; }
+        public Guid? OkulId { get; set; }
+        public Guid? TemsilcilikId { get; set; }
+        public Guid? UlkeId { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }

@@ -14,9 +14,14 @@ namespace YOGBIS.Data.DbModels
         public DateTime BasTarihi { get; set; }
         public DateTime BitTarihi { get; set; }
         public string EtkinlikBilgi { get; set; }
+        public string HedefKitle { get; set; }
         public int KatilimciSayisi { get; set; }
+        public string Sonuc { get; set; }
         public string DuzenleyenAdiSoyadi { get; set; }
-        public string EtkinlikKapakResimUrl { get; set; }           
+        public string EtkinlikKapakResimUrl { get; set; }
+        public Guid? OkulId { get; set; }
+        public Guid? TemsilcilikId { get; set; }
+        public Guid? UlkeId { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

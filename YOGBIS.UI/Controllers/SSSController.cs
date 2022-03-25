@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = "Administrator,Manager")]
+    [Authorize(Roles = "Administrator")]
     public class SSSController : Controller
     {
         public IActionResult Index()

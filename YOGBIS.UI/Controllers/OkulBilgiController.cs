@@ -226,8 +226,28 @@ namespace YOGBIS.UI.Controllers
             }
 
             return NotFound();
-        } 
+        }
         #endregion
 
+        #region OkulAdGetirUlkeId
+        public IActionResult OkulAdGetirUlkeId(Guid ulkeId)
+        {
+
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            if (ulkeId != null)
+            {
+
+
+                var data = _unitOfWork.okullarRepository.GetAll(x => x.UlkeId == ulkeId); //_okullarBE.OkulGetirUlkeId((Guid)ulkeId).Data;  //_unitOfWork.okullarRepository.GetAll(x=>x.OkulUlkeId==ulkeId);   
+
+                return Json(data);
+
+
+            }
+
+            return NotFound();
+        }
+        #endregion
     }
 }

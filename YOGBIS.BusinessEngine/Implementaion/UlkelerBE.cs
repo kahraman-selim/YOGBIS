@@ -91,6 +91,70 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region UlkeleriGetirUlkeId
+        public Result<List<UlkelerVM>> UlkeleriGetirUlkeId(Guid ulkeId)
+        {
+
+            var data = _unitOfWork.ulkelerRepository.GetAll(u => u.UlkeId == ulkeId, includeProperties: "Kitalar,Kullanici,Eyaletler,Sehirler,Okullar").OrderBy(o => o.UlkeAdi).ToList();
+
+            if (data != null)
+            {
+                List<UlkelerVM> returnData = new List<UlkelerVM>();
+                foreach (var item in data)
+                {
+                    if (item.Aktif == true)
+                    {
+                        returnData.Add(new UlkelerVM()
+                        {
+                            UlkeId = item.UlkeId,
+                            UlkeAdi = item.UlkeAdi,
+                            UlkeBayrakURL = item.UlkeBayrakURL,
+                            UlkeBayrakAdi = item.UlkeBayrakAdi,
+                            UlkeAciklama = item.UlkeAciklama,
+                            KayitTarihi = item.KayitTarihi,
+                            KitaId = item.KitaId,
+                            KitaAdi = item.Kitalar.KitaAdi,
+                            Aktif = item.Aktif,
+                            UlkeKodu = item.UlkeKodu,
+                            //VatandasSayisi=item.VatandasSayisi,
+                            //UlkeGrupId = item.Kitalar.UlkeGruplariKitalars.Where(x=>x.KitaId==item.KitaId),
+                            //UlkeGrupAdi = item.UlkeGruplari.UlkeGrupAdi,
+                            KaydedenId = item.KaydedenId,
+                            KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+
+                            OkulSayisi = _unitOfWork.okullarRepository.GetAll(g => g.UlkeId == item.UlkeId).Count(),
+
+                            OgrenciOkulSayisi = ((_unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == item.UlkeId && o.BaslamaKayitTarihi != null && o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "1").ToList()
+                            .GroupBy(o => o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "1")
+                            .Select(x => x.First().KayitSayisi).Sum() - _unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == item.UlkeId && o.AyrilmaTarihi != null && o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "1").ToList()
+                            .GroupBy(o => o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "1")
+                            .Select(x => x.First().AyrilanSayisi).Sum()) + (_unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == item.UlkeId && o.BaslamaKayitTarihi != null && o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "2").ToList()
+                            .GroupBy(o => o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "2")
+                            .Select(x => x.First().KayitSayisi).Sum() - _unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == item.UlkeId && o.AyrilmaTarihi != null && o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "2").ToList()
+                            .GroupBy(o => o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "2")
+                            .Select(x => x.First().AyrilanSayisi).Sum())) + ((_unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == item.UlkeId && o.BaslamaKayitTarihi != null && o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "1").ToList()
+                            .GroupBy(o => o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "1")
+                            .Select(x => x.First().KayitSayisi).Sum() - _unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == item.UlkeId && o.AyrilmaTarihi != null && o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "1").ToList()
+                            .GroupBy(o => o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "1")
+                            .Select(x => x.First().AyrilanSayisi).Sum()) + (_unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == item.UlkeId && o.BaslamaKayitTarihi != null && o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "2").ToList()
+                            .GroupBy(o => o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "2")
+                            .Select(x => x.First().KayitSayisi).Sum() - _unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == item.UlkeId && o.AyrilmaTarihi != null && o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "2").ToList()
+                            .GroupBy(o => o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "2")
+                            .Select(x => x.First().AyrilanSayisi).Sum()))
+
+                        });
+                    }
+
+                }
+                return new Result<List<UlkelerVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<UlkelerVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
         #region UlkeleriGetirUlkeleriGetirViewComponent
         public Result<List<UlkelerVM>> UlkeleriGetirViewComponent()
         {
@@ -289,6 +353,34 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KaydedenId = g.KaydedenId
 
                     }).ToList();
+
+                    ulke.Okullar = _unitOfWork.okullarRepository.GetAll(u => u.UlkeId == data.UlkeId).Select(o => new OkullarVM()
+                    {
+                        OkulId = o.OkulId,
+                        OkulAdi = o.OkulAdi,
+                        OkulKodu = o.OkulKodu
+
+                    }).ToList();
+
+                    ulke.OkulSayisi = _unitOfWork.okullarRepository.GetAll(g => g.UlkeId == data.UlkeId).Count();
+
+                    ulke.OgrenciOkulSayisi = ((_unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == data.UlkeId && o.BaslamaKayitTarihi != null && o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "1").ToList()
+                    .GroupBy(o => o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "1")
+                    .Select(x => x.First().KayitSayisi).Sum() - _unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == data.UlkeId && o.AyrilmaTarihi != null && o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "1").ToList()
+                    .GroupBy(o => o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "1")
+                    .Select(x => x.First().AyrilanSayisi).Sum()) + (_unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == data.UlkeId && o.BaslamaKayitTarihi != null && o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "2").ToList()
+                    .GroupBy(o => o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "2")
+                    .Select(x => x.First().KayitSayisi).Sum() - _unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == data.UlkeId && o.AyrilmaTarihi != null && o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "2").ToList()
+                    .GroupBy(o => o.Cinsiyet == false && o.OgrenciTuru == "1" && o.Uyruk == "2")
+                    .Select(x => x.First().AyrilanSayisi).Sum())) + ((_unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == data.UlkeId && o.BaslamaKayitTarihi != null && o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "1").ToList()
+                    .GroupBy(o => o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "1")
+                    .Select(x => x.First().KayitSayisi).Sum() - _unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == data.UlkeId && o.AyrilmaTarihi != null && o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "1").ToList()
+                    .GroupBy(o => o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "1")
+                    .Select(x => x.First().AyrilanSayisi).Sum()) + (_unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == data.UlkeId && o.BaslamaKayitTarihi != null && o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "2").ToList()
+                    .GroupBy(o => o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "2")
+                    .Select(x => x.First().KayitSayisi).Sum() - _unitOfWork.ogrencilerRepository.GetAll(o => o.UlkeId == data.UlkeId && o.AyrilmaTarihi != null && o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "2").ToList()
+                    .GroupBy(o => o.Cinsiyet == true && o.OgrenciTuru == "1" && o.Uyruk == "2")
+                    .Select(x => x.First().AyrilanSayisi).Sum()));
 
                     return new Result<UlkelerVM>(true, ResultConstant.RecordFound, ulke);
                 }

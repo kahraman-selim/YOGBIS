@@ -58,25 +58,41 @@ namespace YOGBIS.UI.Controllers
 
         #region Index
         [Authorize(Roles = "Administrator,Manager,Representative,SubManager,Follower")]
-        public IActionResult Index()
+        public IActionResult Index(Guid? okulId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            if (User.IsInRole(EnumsKullaniciRolleri.Administrator.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Manager.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Follower.ToString()))
+            if (okulId == null)
             {
-
-                var requestmodel = _okullarBE.OkullariGetir();
-                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-
-                if (requestmodel.IsSuccess)
+                if (User.IsInRole(EnumsKullaniciRolleri.Administrator.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Manager.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Follower.ToString()))
                 {
-                    return View(requestmodel.Data);
+
+                    var requestmodel = _okullarBE.OkullariGetir();
+                    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+                    ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+
+                    if (requestmodel.IsSuccess)
+                    {
+                        return View(requestmodel.Data);
+                    }
+                    return View(user);
                 }
-                return View(user);
+                else
+                {
+                    var requestmodel = _okullarBE.OkulGetirYoneticiId(user.LoginId);
+
+                    if (requestmodel.IsSuccess)
+                    {
+                        return View(requestmodel.Data);
+                    }
+                    return View(user);
+                }
             }
             else
             {
-                var requestmodel = _okullarBE.OkulGetirYoneticiId(user.LoginId);
+                var requestmodel = _okullarBE.OkulGetirOkulId((Guid) okulId);
+                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
 
                 if (requestmodel.IsSuccess)
                 {

@@ -15,7 +15,7 @@
 
 <ol class="breadcrumb mb-4 mt-2">
     <li class="ml-2 mr-2">
-        @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Bulunduğu Ülkeyi Seç", 
+        @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Ülkeyi Seç", 
        new { @id = "UlkeListesi", @class = "form-control-range form-control py-1 w-100" })
     </li>
     <li class="ml-2 mr-2">
@@ -103,9 +103,9 @@
 
                 $("#OkulListesi").append("<option value=''> Okul adını seçiniz </option>");
 
-                $("#OkulListesi").append("<option value='0'> Hepsini seç </option>");
+                $("#OkulListesi").append("<option value='0'> Tümünü seç </option>");
 
-                var url = '@Url.Action("OkulAdGetir", "OkulBilgi")?ulkeId=' + Id;
+                var url = '@Url.Action("OkulAdGetirUlkeId", "OkulBilgi")?ulkeId=' + Id;
 
                 $.getJSON(url, function (data) {
 

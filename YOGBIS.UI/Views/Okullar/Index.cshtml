@@ -19,10 +19,33 @@
 @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
 {
     <ol class="breadcrumb mb-4 mt-2">
-        <li>
+        <li class="m-2">
             <a asp-controller="Okullar" asp-action="OkulEkle" class="btn btn-success btn-circle btn-sm w-100" title="Okul Kayıt">
                 Okul Kayıt <i class="fas fa-plus-circle"></i>
             </a>
+        </li>
+        <li class="m-1">
+            <select class="form-control-range form-control py-2" aria-label="Default select example" id="okulayselect">
+                <option selected class="text-left">Ay seçimi</option>
+                <option value="1">Ocak</option>
+                <option value="2">Şubat</option>
+                <option value="3">Mart</option>
+                <option value="4">Nisan</option>
+                <option value="5">Mayıs</option>
+                <option value="6">Haziran</option>
+                <option value="7">Temmuz</option>
+                <option value="8">Ağustos</option>
+                <option value="9">Eylül</option>
+                <option value="10">Ekim</option>
+                <option value="11">Kasım</option>
+                <option value="12">Aralık</option>
+            </select>
+        </li>
+        <li class="m-1">
+            @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç", new { @id = "OkulListesi", @class = "form-control-range form-control py-1 w-100" })
+        </li>
+        <li class="m-2">
+            <a asp-controller="Okullar" asp-action="Index"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
         </li>
     </ol>
 }
@@ -32,13 +55,13 @@
         <b>Okullar</b>
     </div>
     <div class="card-body">
+        <input hidden id="ayinput" />
         <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTablee" style="width:100%" cellspacing="0">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
                 <thead>
                     @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                     {
-                        <tr><th class="text-center" colspan="18">OKULLARIMIZIN @DateTime.Now.ToString("MMMMM") @DateTime.Now.Year TARİHİ İLE ÖĞRENCİ SAYILARI</th></tr>
-
+                        <tr><th class="text-center" colspan="18">OKULLARIMIZIN @DateTime.Now.ToString("MMMMM") @DateTime.Now.Year TARİHİ İTİBARİYLE ÖĞRENCİ SAYILARI</th></tr>
                     }
                     <tr>
                         <th class="text-center" rowspan="3">Sıra No</th>
@@ -76,48 +99,48 @@
                         @foreach (var item in Model)
                         {
                             sirano++;
-                    <tr>
-                        <td>@sirano</td>
-                        @*<td>okulsayısı</td>*@
-                        <td><a asp-controller="Ulkeler" asp-action="UlkeDetayById" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
-                        @if (item.EyaletAdi == "" && item.SehirAdi == "")
-                        {
-                            <td></td>
-                        }
-                        else if (item.EyaletAdi != "" && item.SehirAdi =="")
-                        {
-                            <td>@item.EyaletAdi</td>
-                        }
-                        else if (item.EyaletAdi == "" && item.SehirAdi != "")
-                        {
-                            <td>@item.SehirAdi</td>
-                        }
-                        else
-                        {
-                            <td>@item.EyaletAdi / @item.SehirAdi</td>
-                        }                        
-                        <td>@item.OkulKodu</td>
-                        @if (User.IsInRole("SubManager"))
-                        {
-                            <td><a asp-controller="Okullar" asp-action="OkulDetayGuncelle" asp-route-id="@item.OkulId" asp-route-ulkeId="@item.UlkeId">@item.OkulAdi</a></td>
-                        }
-                        else
-                        {
-                            <td><a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
-                        }
-                        <td>@item.OkulMudurAdiSoyadi</td>
-                        <td class="text-center">@item.OkulAcilisTarihi.ToString("dd/MM/yyyy")</td>
-                        <td class="text-center">@item.SubeSayisi</td>
-                        <td class="text-center">@item.TCEOgr</td>
-                        <td class="text-center">@item.TCKOgr</td>
-                        <td class="text-center">@item.TCTopOgr</td>
-                        <td class="text-center">@item.DigEOgr</td>
-                        <td class="text-center">@item.DigKOgr</td>
-                        <td class="text-center">@item.DigTopOgr</td>
-                        <td class="text-center">@item.GenEOgr</td>
-                        <td class="text-center">@item.GenKOgr</td>
-                        <td class="text-center">@item.GenTopOgr</td>
-                    </tr>
+                            <tr>
+                                <td>@sirano</td>
+                                @*<td>okulsayısı</td>*@
+                                <td><a asp-controller="Ulkeler" asp-action="UlkeDetayById" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
+                                @if (item.EyaletAdi == "" && item.SehirAdi == "")
+                                {
+                                    <td></td>
+                                }
+                                else if (item.EyaletAdi != "" && item.SehirAdi == "")
+                                {
+                                    <td>@item.EyaletAdi</td>
+                                }
+                                else if (item.EyaletAdi == "" && item.SehirAdi != "")
+                                {
+                                    <td>@item.SehirAdi</td>
+                                }
+                                else
+                                {
+                                    <td>@item.EyaletAdi / @item.SehirAdi</td>
+                                }
+                                <td>@item.OkulKodu</td>
+                                @if (User.IsInRole("SubManager"))
+                                {
+                                    <td><a asp-controller="Okullar" asp-action="OkulDetayGuncelle" asp-route-id="@item.OkulId" asp-route-ulkeId="@item.UlkeId">@item.OkulAdi</a></td>
+                                }
+                                else
+                                {
+                                    <td><a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
+                                }
+                                <td>@item.OkulMudurAdiSoyadi</td>
+                                <td class="text-center">@item.OkulAcilisTarihi.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">@item.SubeSayisi</td>
+                                <td class="text-center">@item.TCEOgr</td>
+                                <td class="text-center">@item.TCKOgr</td>
+                                <td class="text-center">@item.TCTopOgr</td>
+                                <td class="text-center">@item.DigEOgr</td>
+                                <td class="text-center">@item.DigKOgr</td>
+                                <td class="text-center">@item.DigTopOgr</td>
+                                <td class="text-center">@item.GenEOgr</td>
+                                <td class="text-center">@item.GenKOgr</td>
+                                <td class="text-center">@item.GenTopOgr</td>
+                            </tr>
                         }
                     }
                     else
@@ -155,7 +178,20 @@
                     }
                 });
             });
-        });        
+        });
+
+        $("#okulayselect").on("change", function () {
+
+            var ay = $("#okulayselect").val();
+
+        });
+
+        $("#OkulListesi").on("change", function () {
+
+            var OkulId = $("#OkulListesi").val();
+            location.href = '@Url.Action("Index", "Okullar")?okulId=' + OkulId;
+
+        });
 
     </script>
 }
