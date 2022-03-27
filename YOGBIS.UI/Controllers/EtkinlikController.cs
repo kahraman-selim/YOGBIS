@@ -68,7 +68,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
-            ViewBag.OkulAdi = string.Empty;
+            ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
             return View();
         }
         #endregion
@@ -94,7 +94,6 @@ namespace YOGBIS.UI.Controllers
                 {
                     var galeri = new FotoGaleriVM()
                     {
-
                         FotoURL = await FotoYukle(fotoklasorler, file),
                         FotoAdi = file.FileName,
                         KaydedenId = user.LoginId,
@@ -129,9 +128,14 @@ namespace YOGBIS.UI.Controllers
             {
 
                 //önceki yüklenen fotoyu dosyadan sil
+                var etkinlikKapakAdi = "";
                 var etkinlikkapakurl = _etkinliklerBE.EtkinlikKapakURLGetir((Guid)EtkinlikId);
-                string[] parcalar = etkinlikkapakurl.Data.ToString().Split("/img/EtkinlikKapakFoto/");
-                var etkinlikKapakAdi = parcalar[1].ToString();
+                if (etkinlikkapakurl != null)
+                {
+                    string[] parcalar = etkinlikkapakurl.Data.ToString().Split("/img/EtkinlikKapakFoto/");
+                    etkinlikKapakAdi = parcalar[1].ToString();
+                }
+
 
                 if (model.EtkinlikKapakResim != null)
                 {
@@ -161,15 +165,19 @@ namespace YOGBIS.UI.Controllers
             }
             else
             {
-                string klasorler = "img/EtkinlikKapakFoto/";
-                model.EtkinlikKapakResimUrl = await FotoYukle(klasorler, model.EtkinlikKapakResim);
-                string[] parcalar = model.EtkinlikKapakResimUrl.ToString().Split("img/EtkinlikKapakFoto/");
-                model.EtkinlikKapakAdi = parcalar[1].ToString();
+                if (model.EtkinlikKapakResim != null)
+                {
+                    string klasorler = "img/EtkinlikKapakFoto/";
+                    model.EtkinlikKapakResimUrl = await FotoYukle(klasorler, model.EtkinlikKapakResim);
+                    string[] parcalar = model.EtkinlikKapakResimUrl.ToString().Split("img/EtkinlikKapakFoto/");
+                    model.EtkinlikKapakAdi = parcalar[1].ToString();
+                }
 
                 var data = _etkinliklerBE.EtkinlikEkle(model, user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
+                    //return RedirectToAction("Guncelle", new { id = (Guid)EtkinlikId });
                 }
                 return View(model);
             }
@@ -181,11 +189,11 @@ namespace YOGBIS.UI.Controllers
         #region Guncelle
         [Authorize(Roles = "Administrator,Manager,Representative,SubManager,Follower")]
         [Route("Etkinlik/EC10003", Name = "EtkinlikGuncelleRoute")]
-        public async Task<ActionResult> Guncelle(Guid? id)
+        public ActionResult Guncelle(Guid? id)
         {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));    
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.UlkeAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
-            ViewBag.OkulAdi = string.Empty;
+            ViewBag.OkulAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
 
             if (id != null)
             {
@@ -208,17 +216,20 @@ namespace YOGBIS.UI.Controllers
         {
             if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+            var kapakadi = "";
+            var etkinlikkapakurl = _etkinliklerBE.EtkinlikKapakURLGetir((Guid)id).Data;
+            if (etkinlikkapakurl != null)
+            {
+                string[] parcala = etkinlikkapakurl.ToString().Split("/img/EtkinlikKapakFoto/");
+                kapakadi = parcala[1].ToString();
+            }
 
-            var etkinlikkapakurl = _etkinliklerBE.EtkinlikKapakURLGetir((Guid)id);
-            string[] parcala = etkinlikkapakurl.Data.ToString().Split("/img/EtkinlikKapakFoto/");
-            var kapakadi = parcala[1].ToString();
-
-            if (kapakadi != null)
+            if (kapakadi != null || kapakadi != "")
             {
                 System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/EtkinlikKapakFoto/" + kapakadi);
             }
 
-            var fotourls = _fotoGaleriBE.FotoURLGetirUlkeId((Guid)id).Data;
+            var fotourls = _fotoGaleriBE.FotoURLGetirEtkinlikId((Guid)id).Data;
 
             if (fotourls != null)
             {
@@ -334,18 +345,43 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region EtkinlikFotoSil
+        [Authorize(Roles = "Administrator,Manager,SubManager")]
+        [Obsolete]
+        public IActionResult EtkinlikFotoSil(Guid id)
+        {
+            if (id == null)
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+
+            var etkinlikfotourl = _fotoGaleriBE.FotoURLGetir((Guid)id);
+            string[] parcalar = etkinlikfotourl.Data.ToString().Split("/img/EtkinlikFoto/");
+            var etkinlikFotoAdi = parcalar[1].ToString();
+
+            if (etkinlikFotoAdi != null)
+            {
+                System.IO.File.Delete(_hostingEnvironment.WebRootPath + "/img/EtkinlikFoto/" + etkinlikFotoAdi);
+            }
+
+            var data = _fotoGaleriBE.FotoSil(id);
+            if (data.IsSuccess)
+                return Json(new { success = data.IsSuccess, message = data.Message });
+            else
+                return Json(new { success = data.IsSuccess, message = data.Message });
+        }
+        #endregion
+
         #region FotoYukle
         [Obsolete]
-        private async Task<string> FotoYukle(string dosyaAdi, IFormFile dosya)
+        private async Task<string> FotoYukle(string fotoAdi, IFormFile foto)
         {
 
-            dosyaAdi += Guid.NewGuid().ToString() + "_" + dosya.FileName;
+            fotoAdi += Guid.NewGuid().ToString() + "_" + foto.FileName;
 
-            string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaAdi);
+            string fotoKlasor = Path.Combine(_hostingEnvironment.WebRootPath, fotoAdi);
 
-            using FileStream fs = new FileStream(dosyaKlasor, FileMode.Create);
-            await dosya.CopyToAsync(fs);
-            return "/" + dosyaAdi;
+            using FileStream fs = new FileStream(fotoKlasor, FileMode.Create);
+            await foto.CopyToAsync(fs);
+            return "/" + fotoAdi;
         }
         #endregion
 
@@ -358,8 +394,8 @@ namespace YOGBIS.UI.Controllers
 
             string dosyaKlasor = Path.Combine(_hostingEnvironment.WebRootPath, dosyaAdi);
 
-            using FileStream fs = new FileStream(dosyaKlasor, FileMode.Create);
-            await dosya.CopyToAsync(fs);
+            using FileStream ds = new FileStream(dosyaKlasor, FileMode.Create);
+            await dosya.CopyToAsync(ds);
             return "/" + dosyaAdi;
         }
         #endregion

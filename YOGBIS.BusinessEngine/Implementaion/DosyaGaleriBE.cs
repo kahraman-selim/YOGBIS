@@ -143,17 +143,26 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var data = _unitOfWork.etkinliklerRepository.GetFirstOrDefault(u => u.EtkinlikId == etkinlikId, includeProperties: "DosyaGaleri");
             if (data != null)
             {
-                List<string> Dosyarurls = new List<string>();
+                List<string> dosyarurls = new List<string>();
 
-                foreach (var item in data.DosyaGaleri.ToList())
+                if (data.DosyaGaleri != null)
                 {
-                    var Dosya = _unitOfWork.dosyaGaleriRepository.GetFirstOrDefault(u => u.DosyaGaleriId == item.DosyaGaleriId);
-                    if (Dosya != null)
+                    foreach (var item in data.DosyaGaleri.ToList())
                     {
-                        Dosyarurls.Add(Dosya.DosyaURL.ToString());                        
+                        var dosya = _unitOfWork.dosyaGaleriRepository.GetFirstOrDefault(u => u.DosyaGaleriId == item.DosyaGaleriId);
+                        if (dosya != null)
+                        {
+                            dosyarurls.Add(dosya.DosyaURL.ToString());
+                        }
                     }
+
+                    return new Result<List<string>>(true, ResultConstant.RecordFound, dosyarurls);
                 }
-                return new Result<List<string>>(true, ResultConstant.RecordFound,Dosyarurls);
+                else
+                {
+                    return new Result<List<string>>(false, ResultConstant.RecordNotFound);
+                }
+                
             }
             else
             {

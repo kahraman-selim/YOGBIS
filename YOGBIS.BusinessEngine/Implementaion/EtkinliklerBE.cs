@@ -157,11 +157,11 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     Etkinlik.DosyaGaleri = data.DosyaGaleri.Select(d => new DosyaGaleriVM()
                     {
-                        DosyaGaleriId=d.DosyaGaleriId,
-                        DosyaAdi=d.DosyaAdi,
-                        DosyaURL=d.DosyaURL,
-                        KayitTarihi=d.KayitTarihi,
-                        KaydedenId=d.KaydedenId
+                        DosyaGaleriId = d.DosyaGaleriId,
+                        DosyaAdi = d.DosyaAdi,
+                        DosyaURL = d.DosyaURL,
+                        KayitTarihi = d.KayitTarihi,
+                        KaydedenId = d.KaydedenId
 
                     }).ToList();
 
@@ -186,7 +186,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 try
                 {
-                    Etkinlikler Etkinlik = new Etkinlikler
+                    var Etkinlik = new Etkinlikler()
                     {
                         EtkinlikAdi = model.EtkinlikAdi,
                         BasTarihi = model.BasTarihi,
@@ -208,7 +208,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     Etkinlik.FotoGaleri = new List<FotoGaleri>();
                     if (model.FotoGaleri != null)
                     {
-                        foreach (var file in Etkinlik.FotoGaleri)
+                        foreach (var file in model.FotoGaleri)
                         {
                             Etkinlik.FotoGaleri.Add(new FotoGaleri()
                             {
@@ -223,7 +223,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     Etkinlik.DosyaGaleri = new List<DosyaGaleri>();
                     if (model.DosyaGaleri != null)
                     {
-                        foreach (var file in Etkinlik.DosyaGaleri)
+                        foreach (var file in model.DosyaGaleri)
                         {
                             Etkinlik.DosyaGaleri.Add(new DosyaGaleri()
                             {
@@ -282,7 +282,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         if (model.FotoGaleri != null)
                         {
                             data.FotoGaleri = new List<FotoGaleri>();
-                            foreach (var file in data.FotoGaleri)
+                            foreach (var file in model.FotoGaleri)
                             {
                                 data.FotoGaleri.Add(new FotoGaleri()
                                 {
@@ -298,7 +298,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         if (model.DosyaGaleri != null)
                         {
                             data.DosyaGaleri = new List<DosyaGaleri>();
-                            foreach (var file in data.DosyaGaleri)
+                            foreach (var file in model.DosyaGaleri)
                             {
                                 data.DosyaGaleri.Add(new DosyaGaleri()
                                 {
@@ -337,7 +337,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region EtkinlikSil
         public Result<bool> EtkinlikSil(Guid id)
         {
-            var data = _unitOfWork.etkinliklerRepository.Get(id);
+            var data = _unitOfWork.etkinliklerRepository.GetFirstOrDefault(e=>e.EtkinlikId==id, includeProperties:"FotoGaleri,DosyaGaleri");
             if (data != null)
             {
                 _unitOfWork.etkinliklerRepository.Remove(data);
@@ -375,7 +375,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region EtkinlikGetirUlkeId(Guid UlkeId)
         public Result<List<EtkinliklerVM>> EtkinlikGetirUlkeId(Guid UlkeId)
         {
-            var data = _unitOfWork.etkinliklerRepository.GetAll(includeProperties: "Kullanici").ToList();
+            var data = _unitOfWork.etkinliklerRepository.GetAll(e=>e.UlkeId==UlkeId, includeProperties: "Kullanici").ToList();
             if (data != null)
             {
                 List<EtkinliklerVM> returnData = new List<EtkinliklerVM>();
@@ -417,7 +417,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region EtkinlikGetirOkulId(Guid okulId)
         public Result<List<EtkinliklerVM>> EtkinlikGetirOkulId(Guid okulId)
         {
-            var data = _unitOfWork.etkinliklerRepository.GetAll(includeProperties: "Kullanici").ToList();
+            var data = _unitOfWork.etkinliklerRepository.GetAll(e=>e.OkulId==okulId, includeProperties: "Kullanici").ToList();
             if (data != null)
             {
                 List<EtkinliklerVM> returnData = new List<EtkinliklerVM>();

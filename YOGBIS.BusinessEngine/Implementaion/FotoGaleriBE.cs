@@ -162,6 +162,41 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region FotoURLGetirEtkinlikId(Guid id)
+        public Result<List<string>> FotoURLGetirEtkinlikId(Guid etkinlikId)
+        {
+
+            var data = _unitOfWork.etkinliklerRepository.GetFirstOrDefault(u => u.EtkinlikId == etkinlikId, includeProperties: "FotoGaleri");
+            if (data != null)
+            {
+                List<string> fotorurls = new List<string>();
+
+                if (data.FotoGaleri != null)
+                {
+                    foreach (var item in data.FotoGaleri.ToList())
+                    {
+                        var foto = _unitOfWork.fotoGaleriRepository.GetFirstOrDefault(u => u.FotoGaleriId == item.FotoGaleriId);
+                        if (foto != null)
+                        {
+                            fotorurls.Add(foto.FotoURL.ToString());
+                        }
+                    }
+
+                    return new Result<List<string>>(true, ResultConstant.RecordFound, fotorurls);
+                }
+                else
+                {
+                    return new Result<List<string>>(false, ResultConstant.RecordNotFound);
+                }
+                
+            }
+            else
+            {
+                return new Result<List<string>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
         #region FotoEkle
         public Result<FotoGaleriVM> FotoEkle(FotoGaleriVM model, SessionContext user)
         {
