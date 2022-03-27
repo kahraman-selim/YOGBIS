@@ -23,5 +23,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<Guid> OkulEyaletIdGetir(Guid id);
         Result<Guid> OkulSehirIdGetir(Guid id);
         Result<string> OkulAdGetir(Guid id);
+        Result<Guid> UlkeIdGetirYoneticiId(string id);
     }
 }

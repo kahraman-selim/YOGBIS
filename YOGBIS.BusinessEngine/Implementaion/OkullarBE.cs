@@ -906,5 +906,24 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        #region UlkeIdGetirYoneticiId(id)
+        public Result<Guid> UlkeIdGetirYoneticiId(string id)
+        {
+
+            var data = _unitOfWork.okullarRepository.GetFirstOrDefault(x=>x.OkulMudurId==id);
+            if (data != null)
+            {
+                var ulkeId = data.UlkeId;
+
+                return new Result<Guid>(true, ResultConstant.RecordFound, ulkeId);
+            }
+            else
+            {
+                return new Result<Guid>(false, ResultConstant.RecordNotFound);
+            }
+
+        }
+        #endregion
     }
 }

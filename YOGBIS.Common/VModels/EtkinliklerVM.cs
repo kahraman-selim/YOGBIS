@@ -11,13 +11,29 @@ namespace YOGBIS.Common.VModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid EtkinlikId { get; set; }
+
+        [Required(ErrorMessage = "Etkinlik için bir ad yazmalısınız !")]
         public string EtkinlikAdi { get; set; }
+
+        [Required(ErrorMessage = "Başlama tarihini belirtmelisiniz !")]
         public DateTime BasTarihi { get; set; }
+
+        [Required(ErrorMessage = "Bitiş tarihini belirtmelisiniz !")]
         public DateTime BitTarihi { get; set; }
+
+        [Required(ErrorMessage = "Etkinlik için bilgi yazmalısınız !")]
         public string EtkinlikBilgi { get; set; }
+
+        [Required(ErrorMessage = "Hedef kitleyi belirtin !")]
         public string HedefKitle { get; set; }
+
+        [Required(ErrorMessage = "Katılımcı sayısı zorunludur !")]
         public int KatilimciSayisi { get; set; }
+
+        [Required(ErrorMessage = "Sonuç hakkında bilgi yazmalısınız !")]
         public string Sonuc { get; set; }
+
+        [Required(ErrorMessage = "Etkinlik sorumlusunu belirtiniz !")]
         public string DuzenleyenAdiSoyadi { get; set; }
         public IFormFile EtkinlikKapakResim { get; set; }
         public string EtkinlikKapakResimUrl { get; set; }

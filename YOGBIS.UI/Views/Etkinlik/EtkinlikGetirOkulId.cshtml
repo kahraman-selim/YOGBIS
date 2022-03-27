@@ -16,7 +16,7 @@
             </a>
         </li>
     }
-    else if(User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("Follower"))
+    else if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("Follower"))
     {
         <li class="ml-2 mr-2">
             @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Ülkeyi Seç",
@@ -83,7 +83,8 @@
                                 @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                                 {
                                     <td>@item.UlkeAdi</td>
-                                    <td>@item.TemsilcilikAdi</td>                                    
+                                    <td>@item.TemsilcilikAdi</td>
+
                                 }
                                 <td>@item.OkulAdi</td>
                                 <td>@item.EtkinlikAdi</td>
@@ -173,7 +174,7 @@
             $("#UlkeListesi").on("change", function () {
 
                 var Id = $("#UlkeListesi").val();
-          
+                
                 $("#OkulListesi").empty();
 
                 $("#OkulListesi").append("<option value=''> Okul adını seçiniz </option>");

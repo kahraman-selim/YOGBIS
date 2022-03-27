@@ -39,7 +39,7 @@
                                     <div class="form-group">
                                         <label asp-for="OkulAdi" class="small mb-1 font-weight-bold">Okul Adı</label>
                                         @Html.DropDownListFor(u => u.OkulId, new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okul adını seçiniz",
-                                                                new { @class = "form-control-range form-control py-2" })
+                                                                new { @id="OkulListesi", @class = "form-control-range form-control py-2" })
                                         <span class="text-danger" asp-validation-for="OkulId"></span>
                                     </div>
                                 </div>
@@ -136,14 +136,14 @@
                                     <div class="form-group">
                                         <label asp-for="DosyaGaleris" class="small mb-1 font-weight-bold">Etkinlik Hakkında Dosya :</label>
                                         <input type="file" 
-                                               accept=".pdf,.doc,.docx,.xls,.xlsx" 
+                                               accept="audio/*,video/*,image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
                                                asp-for="DosyaGaleris" 
                                                id="etkinlikDosyaInput" multiple 
                                                title="Etkinlik Dosyaları" class="btn btn-outline-danger mb-1 btn-sm col-md-12" 
                                                onchange="EtkinlikDosyaFileSize(this);">
                                         <span class="text-danger" asp-validation-for="DosyaGaleris"></span><br />
                                     </div>
-                                    <span class="text-danger">Etkinliğe ilişkin belge (Word,Excel,Powerpoit,Pdf vb.)</span>
+                                    <span class="text-danger">Etkinlik dosyaları (Word,Excel,Powerpoit,Pdf,Video,Fotoğraf,Ses dosyaları vb.)</span>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -161,7 +161,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
-                                    <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" />                                    
+                                    <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" id="etkinlikKaydetBtn"/>                                    
                                     <a asp-controller="Etkinlik" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Vazgeç</a>
                                 </div>
                             </div>
@@ -187,9 +187,6 @@
 </div>
 
 
-
-
-
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -202,6 +199,15 @@
 
         $('#datetimepicker1, #datetimepicker2').datetimepicker({
             format: 'DD/MM/YYYY'
+        });
+
+        document.body.onload = function () {
+            document.getElementById("etkinlikKaydetBtn").disabled = true;
+        };
+
+        $("#OkulListesi").on("change", function () {
+
+            document.getElementById("etkinlikKaydetBtn").disabled = false;
         });
 
         function EtkinlikKapakFotoImageFileSize(input) {
