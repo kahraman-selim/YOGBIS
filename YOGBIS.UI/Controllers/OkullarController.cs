@@ -58,7 +58,7 @@ namespace YOGBIS.UI.Controllers
 
         #region Index
         [Authorize(Roles = "Administrator,Manager,Representative,SubManager,Follower")]
-        public IActionResult Index(Guid? okulId)
+        public IActionResult Index(Guid? okulId, int ay)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
@@ -69,7 +69,7 @@ namespace YOGBIS.UI.Controllers
 
                     var requestmodel = _okullarBE.OkullariGetir();
                     ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                    ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
+                    ViewBag.OkulAdi = string.Empty;
 
                     if (requestmodel.IsSuccess)
                     {
@@ -90,15 +90,31 @@ namespace YOGBIS.UI.Controllers
             }
             else
             {
-                var requestmodel = _okullarBE.OkulGetirOkulId((Guid) okulId);
-                ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
-                ViewBag.OkulAdi = _okullarBE.OkullariGetirAZ().Data;
-
-                if (requestmodel.IsSuccess)
+                if (ay > 0)
                 {
-                    return View(requestmodel.Data);
+                    var requestmodel = _okullarBE.OkulGetirOkulIdSecilenAy((Guid)okulId,ay);
+                    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+                    ViewBag.OkulAdi = string.Empty;
+
+                    if (requestmodel.IsSuccess)
+                    {
+                        return View(requestmodel.Data);
+                    }
+                    return View(user);
                 }
-                return View(user);
+                else
+                {
+                    var requestmodel = _okullarBE.OkulGetirOkulId((Guid)okulId);
+                    ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetir().Data;
+                    ViewBag.OkulAdi = string.Empty;
+
+                    if (requestmodel.IsSuccess)
+                    {
+                        return View(requestmodel.Data);
+                    }
+                    return View(user);
+                }
+
             }
         }
         #endregion

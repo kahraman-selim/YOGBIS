@@ -189,11 +189,14 @@ namespace YOGBIS.UI.Controllers
                 else
                 {
                     var etkinlikkapakurl = _etkinliklerBE.EtkinlikKapakURLGetir((Guid)EtkinlikId).Data;
-                    string[] parcalar = etkinlikkapakurl.ToString().Split("/img/EtkinlikKapakFoto/");
-                    string etkinlikKapakAdi = parcalar[1].ToString();
+                    if (etkinlikkapakurl != null)
+                    {
+                        string[] parcalar = etkinlikkapakurl.ToString().Split("/img/EtkinlikKapakFoto/");
+                        string etkinlikKapakAdi = parcalar[1].ToString();
 
-                    model.EtkinlikKapakResimUrl = etkinlikkapakurl.ToString();
-                    model.EtkinlikKapakAdi = etkinlikKapakAdi.ToString();
+                        model.EtkinlikKapakResimUrl = etkinlikkapakurl.ToString();
+                        model.EtkinlikKapakAdi = etkinlikKapakAdi.ToString();
+                    }
                 }
 
                 var data = _etkinliklerBE.EtkinlikGuncelle(model, user);

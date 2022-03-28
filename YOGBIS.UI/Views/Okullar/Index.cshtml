@@ -7,13 +7,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
-{
+    @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+    {
     <ol class="breadcrumb mb-4 mt-2">
         <li class="m-2">
             <a asp-controller="Okullar" asp-action="OkulEkle" class="btn btn-success btn-circle btn-sm w-100" title="Okul Kayıt">
                 Okul Kayıt <i class="fas fa-plus-circle"></i>
             </a>
+        </li>
+        <li class="m-1">
+            @Html.DropDownList("UlkeListesi", new SelectList(ViewBag.UlkeAdi, "UlkeId", "UlkeAdi"), "Ülkeyi Seç",
+            new { @id = "UlkeListesi", @class = "form-control-range form-control py-1 w-100" })
+        </li>
+        <li class="m-1">
+            @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç", 
+           new { @id = "OkulListesi", @class = "form-control-range form-control py-1 w-100" })
         </li>
         <li class="m-1">
             <select class="form-control-range form-control py-2" aria-label="Default select example" id="okulayselect">
@@ -32,15 +40,12 @@
                 <option value="12">Aralık</option>
             </select>
         </li>
-        <li class="m-1">
-            @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç", new { @id = "OkulListesi", @class = "form-control-range form-control py-1 w-100" })
-        </li>
         <li class="m-2">
             <a asp-controller="Okullar" asp-action="Index"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
         </li>
     </ol>
-}
-<div class="card mb-3">
+    }
+    <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
         <b>Okullar</b>
@@ -152,6 +157,9 @@
 
     <script type="text/javascript">
 
+        window.OkulId = "";
+        window.ulkeId = "";
+
         $(function () {
             $("#myTable").on("click", ".btnSil", function () {
                 var btn = $(this);
@@ -171,17 +179,43 @@
             });
         });
 
-        $("#okulayselect").on("change", function () {
+        $("#UlkeListesi").on("change", function () {
 
-            var ay = $("#okulayselect").val();
+            window.ulkeId = $("#UlkeListesi").val();
+
+            $("#OkulListesi").empty();
+
+            $("#OkulListesi").append("<option value=''> Okul adını seçiniz </option>");
+
+            $("#OkulListesi").append("<option value='0'> Tümünü seç </option>");
+
+            var url = '@Url.Action("OkulAdGetirUlkeId", "OkulBilgi")?ulkeId=' + window.ulkeId;
+
+            $.getJSON(url, function (data) {
+
+                $.each(data, function (i=0,okulId,okulAdi) {
+
+                    /*alert(data);*/
+                    $('#OkulListesi').append($('<option>', {
+                        value: data[i]['okulId'],
+                        text: data[i]['okulAdi']
+                    }));
+
+                });
+            });
 
         });
 
         $("#OkulListesi").on("change", function () {
 
-            var OkulId = $("#OkulListesi").val();
-            location.href = '@Url.Action("Index", "Okullar")?okulId=' + OkulId;
+            window.OkulId = $("#OkulListesi").val();
 
+        });
+
+        $("#okulayselect").on("change", function () {
+
+            var ay = $("#okulayselect").val();
+            location.href = '@Url.Action("Index", "Okullar")?okulId=' + window.OkulId + '&ay=' + ay;;
         });
 
     </script>
