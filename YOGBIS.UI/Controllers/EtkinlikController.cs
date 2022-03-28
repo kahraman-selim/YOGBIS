@@ -488,5 +488,31 @@ namespace YOGBIS.UI.Controllers
             return "/" + dosyaAdi;
         }
         #endregion
+
+        #region DosyaIndir
+        [Obsolete]
+        [HttpGet("DosyaIndir")]
+        public IActionResult DosyaIndir(Guid dosyaGaleriId)
+        {
+
+            var data = _dosyaGaleriBE.DosyaGetir(dosyaGaleriId);
+
+            var dosyaurl = data.Data.DosyaURL.ToString();
+            if (dosyaurl != null)
+            {
+                string[] parcala = dosyaurl.ToString().Split("/img/EtkinlikDosyalar/");
+                string dosyaadi = parcala[1].ToString();
+                string[] dosya = dosyaadi.ToString().Split("_");
+                string ds = dosya[1].ToString();
+
+                byte[] dosyaBytes = System.IO.File.ReadAllBytes(_hostingEnvironment.WebRootPath + dosyaurl);
+
+                System.IO.File.WriteAllBytes(_hostingEnvironment.WebRootPath + dosyaurl, dosyaBytes);
+                MemoryStream ms = new MemoryStream(dosyaBytes);
+                return File(dosyaBytes, System.Net.Mime.MediaTypeNames.Application.Octet, ds);
+            }
+            return NotFound();
+        } 
+        #endregion
     }
 }

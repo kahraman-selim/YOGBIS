@@ -23,9 +23,10 @@
             @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç", 
            new { @id = "OkulListesi", @class = "form-control-range form-control py-1 w-100" })
         </li>
-        <li class="m-1">
+        @*<li class="m-1">
             <select class="form-control-range form-control py-2" aria-label="Default select example" id="okulayselect">
                 <option selected class="text-left">Ay seçimi</option>
+                <option value="0">Tümünü Seç</option>
                 <option value="1">Ocak</option>
                 <option value="2">Şubat</option>
                 <option value="3">Mart</option>
@@ -39,7 +40,7 @@
                 <option value="11">Kasım</option>
                 <option value="12">Aralık</option>
             </select>
-        </li>
+        </li>*@
         <li class="m-2">
             <a asp-controller="Okullar" asp-action="Index"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
         </li>
@@ -51,7 +52,7 @@
         <b>Okullar</b>
     </div>
     <div class="card-body">
-        <input hidden id="ayinput" />
+        <input hidden id="ayinput"/>
         <div class="table-responsive">
             <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
                 <thead>
@@ -209,13 +210,19 @@
         $("#OkulListesi").on("change", function () {
 
             window.OkulId = $("#OkulListesi").val();
+            if (window.OkulId == 0) {
+                location.href = '@Url.Action("Index", "Okullar")?ulkeId=' + window.ulkeId;
+            }
+            else {
+                location.href = '@Url.Action("Index", "Okullar")?okulId=' + window.OkulId;
+            }
 
         });
 
         $("#okulayselect").on("change", function () {
 
             var ay = $("#okulayselect").val();
-            location.href = '@Url.Action("Index", "Okullar")?okulId=' + window.OkulId + '&ay=' + ay;;
+            location.href = '@Url.Action("Index", "Okullar")?okulId=' + window.OkulId + '&ay=' + ay;
         });
 
     </script>

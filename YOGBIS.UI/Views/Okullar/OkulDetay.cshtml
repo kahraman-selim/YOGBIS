@@ -209,14 +209,19 @@
         <hr />
         <div class="row">
             <div class="col-md-12 pl-5 pr-5">
-                <p class="font-weight-bold">18 <label class="font-weight-light">Derslik</label></p>
-                <hr />
-                <p class="font-weight-bold">3 <label class="font-weight-light">İdari Ofis</label></p>
-                <hr />
-                <p class="font-weight-bold">1 <label class="font-weight-light">Çok Amaçlı Salon</label></p>
-                <hr />
-                <p class="font-weight-bold">1 <label class="font-weight-light">Öğretmenler Odası</label></p>
-                <hr />
+                @if (Model.SinifSayisi > 0)
+                {
+                    <p class="font-weight-bold">@Model.SinifSayisi <label class="font-weight-light">Derslik</label></p>
+                    <hr />
+                }
+                @if (Model.OkulBinaBolum.Count() > 0)
+                {
+                    @for (int i = 0; i < Model.OkulBinaBolum.Count(); i++)
+                    {
+                        <p class="font-weight-bold">@Model.OkulBinaBolum[i].BolumAdToplam <label class="font-weight-light">@Model.OkulBinaBolum[i].BolumAdi</label></p>
+                        <hr />
+                    }
+                }
             </div>
         </div>
         <div class="row">
@@ -235,26 +240,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Nurullah Feyzi YAZICI</a></td>
-                                <td><a class="text-dark text-left">Okul Müdürü</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Hayri YILDIZ</a></td>
-                                <td><a class="text-dark text-left">Okul Müdürü Yardımcısı</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Fatih GÖK</a></td>
-                                <td><a class="text-dark text-left">Öğretmen</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">Alparslan YÜKSEL</a></td>
-                                <td><a class="text-dark text-left">Öğretmen</a></td>
-                            </tr>
+                            @{ var sno = 0;}
+                            @if (Model.AdayGorevKaydi.Count() > 0)
+                            {
+                                @for (int i = 0; i < Model.AdayGorevKaydi.Count(); i++)
+                                {
+                                    sno++;
+                                    <tr>
+                                        <th scope="row">@sno</th>
+                                        <td><a class="text-dark text-left" asp-controller="Ogretmenler" asp-action="OgretmenDetay">@Model.AdayGorevKaydi[i].GorevliTC</a></td>
+                                        <td><a class="text-dark text-left">@Model.AdayGorevKaydi[i].Gorevi</a></td>
+                                    </tr>
+                                }
+                            }
                         </tbody>
                     </table>
                 </div>

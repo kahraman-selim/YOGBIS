@@ -90,11 +90,25 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region DosyaGetir(Guid id)
         public Result<DosyaGaleriVM> DosyaGetir(Guid id)
         {
-            var data = _unitOfWork.dosyaGaleriRepository.Get(id);
-            if (data != null)
+            if (id != null)
             {
-                var dereceler = _mapper.Map<DosyaGaleri, DosyaGaleriVM>(data);
-                return new Result<DosyaGaleriVM>(true, ResultConstant.RecordFound, dereceler);
+                var data = _unitOfWork.dosyaGaleriRepository.GetFirstOrDefault(d => d.DosyaGaleriId == id, includeProperties: "Kullanici");
+
+                if (data != null)
+                {
+                    DosyaGaleriVM dosyagaleri = new DosyaGaleriVM();
+                    dosyagaleri.DosyaGaleriId = data.DosyaGaleriId;
+                    dosyagaleri.DosyaAdi = data.DosyaAdi;
+                    dosyagaleri.DosyaURL = data.DosyaURL;
+                    dosyagaleri.KaydedenId = data.KaydedenId;
+                    dosyagaleri.KayitTarihi = data.KayitTarihi;
+
+                    return new Result<DosyaGaleriVM>(true, ResultConstant.RecordFound, dosyagaleri);
+                }
+                else
+                {
+                    return new Result<DosyaGaleriVM>(false, ResultConstant.RecordNotFound);
+                }
             }
             else
             {
