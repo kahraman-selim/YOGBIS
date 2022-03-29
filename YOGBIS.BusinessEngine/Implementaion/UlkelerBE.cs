@@ -17,13 +17,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region Değişkenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IEyaletlerBE _eyaletlerBE;
+        private readonly ISehirlerBE _sehirlerBE;
         #endregion
 
         #region Dönüştürücüler
-        public UlkelerBE(IUnitOfWork unitOfWork, IMapper mapper)
+        public UlkelerBE(IUnitOfWork unitOfWork, IMapper mapper, IEyaletlerBE eyaletlerBE, ISehirlerBE sehirlerBE)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _eyaletlerBE = eyaletlerBE;
+            _sehirlerBE = sehirlerBE;
         }
         #endregion
 
@@ -276,12 +280,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KaydedenId = g.KaydedenId
 
                     }).ToList();
-
-                    ulke.Okullar = _unitOfWork.okullarRepository.GetAll(u=>u.UlkeId== data.UlkeId).Select(o => new OkullarVM()
+                  
+                    ulke.Okullar = _unitOfWork.okullarRepository.GetAll(u=>u.UlkeId== data.UlkeId).ToList().Select(o => new OkullarVM()
                     {
                         OkulId=o.OkulId,
                         OkulAdi=o.OkulAdi,
-                        OkulKodu=o.OkulKodu
+                        OkulKodu=o.OkulKodu,
+                        EyaletId=o.EyaletId.GetValueOrDefault(),
+                        EyaletAdi=o.EyaletId != null ? _eyaletlerBE.EyaletAdGetir(o.EyaletId.GetValueOrDefault()).Data.ToString() : string.Empty,
+                        SehirId=o.SehirId,
+                        SehirAdi=o.SehirId !=null ? _sehirlerBE.SehirAdGetir(o.SehirId.GetValueOrDefault()).Data.ToString() : string.Empty
                         
                     }).ToList();
 

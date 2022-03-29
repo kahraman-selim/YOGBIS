@@ -110,7 +110,7 @@
                                 <tr>
                                     <th scope="row">@(i+1)</th>
                                     <th scope="row">@Model.Okullar[i].OkulKodu</th>
-                                    <td><a class="text-dark text-left">Eyalet/Şehir</a></td>
+                                    <td><a class="text-dark text-left">@Model.Okullar[i].EyaletAdi / @Model.Okullar[i].SehirAdi</a></td>
                                     <td><a id="@Model.Okullar[i].OkulAdi" class="text-dark text-left" asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@Model.Okullar[i].OkulId">@Model.Okullar[i].OkulAdi</a></td>
                                 </tr>
                             }

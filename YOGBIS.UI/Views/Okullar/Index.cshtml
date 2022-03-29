@@ -60,18 +60,21 @@
                     {
                         <tr><th class="text-center" colspan="18">OKULLARIMIZIN @DateTime.Now.ToString("MMMMM") @DateTime.Now.Year TARİHİ İTİBARİYLE ÖĞRENCİ SAYILARI</th></tr>
                     }
-                    <tr>
-                        <th class="text-center" rowspan="3">Sıra No</th>
-                        @*<th class="text-center" rowspan="3">Okul Sayısı</th>*@
-                        <th class="text-center" rowspan="3">Ülke</th>
-                        <th class="text-center" rowspan="3">Eyalet/Şehir-Bölge</th>
-                        <th class="text-center" rowspan="3">Okul Kodu</th>
-                        <th class="text-center" rowspan="3">Okul Adı</th>
+                <tr>
+                    <th class="text-center" rowspan="3">Sıra No</th>
+                    @*<th class="text-center" rowspan="3">Okul Sayısı</th>*@
+                    <th class="text-center" rowspan="3">Ülke</th>
+                    <th class="text-center" rowspan="3">Eyalet/Şehir-Bölge</th>
+                    <th class="text-center" rowspan="3">Okul Kodu</th>
+                    <th class="text-center" rowspan="3">Okul Adı</th>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                    {
                         <th class="text-center" rowspan="3">Okul Müdürü</th>
-                        <th class="text-center" rowspan="3">Okul Açılış Tarihi</th>
-                        <th class="text-center" rowspan="3">Okul Derslik Toplamı</th>
-                        <th class="text-center" colspan="9">ÖĞRENCİ SAYILARI</th>
-                    </tr>
+                    }
+                    <th class="text-center" rowspan="3">Okul Açılış Tarihi</th>
+                    <th class="text-center" rowspan="3">Okul Derslik Toplamı</th>
+                    <th class="text-center" colspan="9">ÖĞRENCİ SAYILARI</th>
+                </tr>
                     <tr>
                         <th class="text-center" colspan="3">TC</th>
                         <th class="text-center" colspan="3">DİĞER</th>
@@ -125,7 +128,10 @@
                                 {
                                     <td><a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
                                 }
-                                <td>@item.OkulMudurAdiSoyadi</td>
+                                @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                                {
+                                    <td>@item.OkulMudurAdiSoyadi</td>
+                                }                                
                                 <td class="text-center">@item.OkulAcilisTarihi.ToString("dd/MM/yyyy")</td>
                                 <td class="text-center">@item.SubeSayisi</td>
                                 <td class="text-center">@item.TCEOgr</td>
