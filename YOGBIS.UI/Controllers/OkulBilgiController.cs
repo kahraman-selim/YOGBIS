@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -57,10 +58,11 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator,Manager,SubManager")]
         [HttpGet]
         [Route("OkulBilgi/OBC10002", Name = "OkulBilgiEkleRoute")]
-        public IActionResult OkulBilgiEkle(Guid UlkeId)
+        public IActionResult OkulBilgiEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            var ulkeidyoneticiId = _unitOfWork.okullarRepository.GetFirstOrDefault(x => x.OkulMudurId == user.LoginId).UlkeId;
+            ViewBag.UlkeAdi = _ulkelerBE.UlkeleriGetirUlkeId((Guid)ulkeidyoneticiId).Data;
             ViewBag.OkulAdi = string.Empty;
             return View();
         }
@@ -74,7 +76,7 @@ namespace YOGBIS.UI.Controllers
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.UlkeAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
+            //ViewBag.UlkeAdi = _okullarBE.OkulGetirYoneticiId(user.LoginId).Data;
             ViewBag.OkulAdi = string.Empty; //_okullarBE.OkullariGetirAZ().Data;
 
             var data = _okulBilgiBE.OkulBilgiEkle(model, user);

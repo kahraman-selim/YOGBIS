@@ -60,21 +60,16 @@
                     {
                         <tr><th class="text-center" colspan="18">OKULLARIMIZIN @DateTime.Now.ToString("MMMMM") @DateTime.Now.Year TARİHİ İTİBARİYLE ÖĞRENCİ SAYILARI</th></tr>
                     }
-                <tr>
-                    <th class="text-center" rowspan="3">Sıra No</th>
-                    @*<th class="text-center" rowspan="3">Okul Sayısı</th>*@
-                    <th class="text-center" rowspan="3">Ülke</th>
-                    <th class="text-center" rowspan="3">Eyalet/Şehir-Bölge</th>
-                    <th class="text-center" rowspan="3">Okul Kodu</th>
-                    <th class="text-center" rowspan="3">Okul Adı</th>
-                    @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
-                    {
-                        <th class="text-center" rowspan="3">Okul Müdürü</th>
-                    }
-                    <th class="text-center" rowspan="3">Okul Açılış Tarihi</th>
-                    <th class="text-center" rowspan="3">Okul Derslik Toplamı</th>
-                    <th class="text-center" colspan="9">ÖĞRENCİ SAYILARI</th>
-                </tr>
+                    <tr>
+                        <th class="text-center" rowspan="3">Sıra No</th>                        
+                        <th class="text-center" rowspan="3">Ülke</th>
+                        <th class="text-center" rowspan="3">Eyalet/Şehir-Bölge</th>
+                        <th class="text-center" rowspan="3">Okul Kodu</th>
+                        <th class="text-center" rowspan="3">Okul Adı</th>
+                        <th class="text-center" rowspan="3">Okul Açılış Tarihi</th>
+                        <th class="text-center" rowspan="3">Okul Derslik Toplamı</th>
+                        <th class="text-center" colspan="9">ÖĞRENCİ SAYILARI</th>
+                    </tr>
                     <tr>
                         <th class="text-center" colspan="3">TC</th>
                         <th class="text-center" colspan="3">DİĞER</th>
@@ -100,8 +95,7 @@
                         {
                             sirano++;
                             <tr>
-                                <td>@sirano</td>
-                                @*<td>okulsayısı</td>*@
+                                <td>@sirano</td>                                
                                 <td><a asp-controller="Ulkeler" asp-action="UlkeDetayById" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
                                 @if (item.EyaletAdi == "" && item.SehirAdi == "")
                                 {
@@ -127,11 +121,7 @@
                                 else
                                 {
                                     <td><a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
-                                }
-                                @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
-                                {
-                                    <td>@item.OkulMudurAdiSoyadi</td>
-                                }                                
+                                }                               
                                 <td class="text-center">@item.OkulAcilisTarihi.ToString("dd/MM/yyyy")</td>
                                 <td class="text-center">@item.SubeSayisi</td>
                                 <td class="text-center">@item.TCEOgr</td>
@@ -220,7 +210,7 @@
                 location.href = '@Url.Action("Index", "Okullar")?ulkeId=' + window.ulkeId;
             }
             else {
-                location.href = '@Url.Action("Index", "Okullar")?okulId=' + window.OkulId;
+                location.href = '@Url.Action("Index", "Okullar")?ulkeId=' + window.ulkeId + '&okulId=' + window.OkulId;
             }
 
         });
@@ -231,6 +221,162 @@
             location.href = '@Url.Action("Index", "Okullar")?okulId=' + window.OkulId + '&ay=' + ay;
         });
 
+        $("#myTable").dataTable().fnDestroy();
+        var selected = [];
+        var table = $('#myTable').DataTable({
+
+            destroy: true,
+            order: [[1, 'asc']],
+            rowGroup: {
+                startRender: null,
+                endRender: function (rows, group) {
+
+                    var TCErkek = rows
+                        .data()
+                        .pluck(7)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                    var TCKiz = rows
+                        .data()
+                        .pluck(8)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                    var TCToplam = rows
+                        .data()
+                        .pluck(9)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                    var DErkek = rows
+                        .data()
+                        .pluck(10)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                    var DKiz = rows
+                        .data()
+                        .pluck(11)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                    var DToplam = rows
+                        .data()
+                        .pluck(12)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                    var ToplamErkek = rows
+                        .data()
+                        .pluck(13)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                    var ToplamKiz = rows
+                        .data()
+                        .pluck(14)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                    var GToplam = rows
+                        .data()
+                        .pluck(15)
+                        .reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+                    return $('<tr/>')
+                        .append('<td colspan="7">Toplam ' + group + '</td>')
+                        .append('<td class="text-center">' + TCErkek.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + TCKiz.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + TCToplam.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + DErkek.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + DKiz.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + DToplam.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + ToplamErkek.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + ToplamKiz.toFixed(0) + '</td>')
+                        .append('<td class="text-center">' + GToplam.toFixed(0) + '</td>');
+                },
+                dataSrc: 1
+            },
+            fixedHeader: {
+                header: true,
+                headerOffset: $('#navbar').height()
+            },
+            stateSave: true,
+            responsive: true,
+            dom: '<"html5buttons"B>lTfgitp',
+            "paging": true,
+            "language": {
+                "emptyTable": "Gösterilecek veri yok.",
+                "processing": "Veriler yükleniyor",
+                "sDecimal": ".",
+                "sInfo": "_TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
+                "sInfoFiltered": "(_MAX_ kayıt içerisinden bulunan)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Sayfada _MENU_ kayıt göster",
+                "sLoadingRecords": "Yükleniyor...",
+                "sSearch": "Ara:",
+                "sZeroRecords": "Eşleşen kayıt bulunamadı",
+                "oPaginate": {
+                    "sFirst": "İlk",
+                    "sLast": "Son",
+                    "sNext": "Sonraki",
+                    "sPrevious": "Önceki"
+                },
+                "oAria": {
+                    "sSortAscending": ": artan sütun sıralamasını aktifleştir",
+                    "sSortDescending": ": azalan sütun sıralamasını aktifleştir"
+                },
+                "select": {
+                    "rows": {
+                        "_": "%d kayıt seçildi",
+                        "0": "",
+                        "1": "1 kayıt seçildi"
+                    }
+                }
+            },
+            buttons: [
+                {
+                    text: 'Excel',
+                    extend: 'excel',
+                    className: 'btn btn-success btn-sm mt-1 mb-2 ml-1 rounded w-25 h-25'
+                },
+                {
+                    text: 'Pdf',
+                    extend: 'pdf',
+                    className: 'btn btn-danger btn-sm mt-1 mb-2 ml-1 rounded w-25 h-25',
+                    download: 'open'
+                },
+                {
+                    text: 'Pdf-y',
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL',
+                    className: 'btn btn-danger btn-sm mt-1 mb-2 ml-1 rounded w-50 h-25',
+                    download: 'open'
+                },
+                {
+                    text: 'Yazdır',
+                    extend: 'print',
+                    className: 'btn btn-warning btn-sm mt-1 mb-2 ml-1 rounded w-25 h-25',
+                    exportOptions: {
+                        columns: ':visible',
+                    }
+                },
+                {
+                    text: 'Kolonlar',
+                    extend: 'colvis',
+                    className: 'btn btn-info btn-sm mt-1 mb-2 ml-1 rounded'
+                },
+            ],
+            columnDefs: [{
+                visible: false
+            }],
+            select: true
+
+        });
     </script>
 }
 

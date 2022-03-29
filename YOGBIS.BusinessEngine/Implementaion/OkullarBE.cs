@@ -174,7 +174,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkullarıGetirAZ
         public Result<List<OkullarVM>> OkullariGetirAZ()
         {
-            var data = _unitOfWork.okullarRepository.GetAll(includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
+            var data = _unitOfWork.okullarRepository.GetAll(o=>o.OkulDurumu == true, includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
                 "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList();
 
             if (data != null)
@@ -217,7 +217,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkulGetirYoneticiId
         public Result<List<OkullarVM>> OkulGetirYoneticiId(string userId)
         {
-            var data = _unitOfWork.okullarRepository.GetAll(u => u.OkulMudurId == userId, includeProperties: "Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Subeler,AdayGorevKaydi").OrderBy(u => u.OkulAdi).ToList();
+            var data = _unitOfWork.okullarRepository.GetAll(u => u.OkulMudurId == userId && u.OkulDurumu == true, includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
+                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList();
             if (data != null)
             {
                 List<OkullarVM> returnData = new List<OkullarVM>();
@@ -233,7 +234,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         UlkeAdi = _ulkelerBE.UlkeAdGetir(item.UlkeId).Data.ToString(),
                         OkulDurumu = item.OkulDurumu,
                         OkulTuru = item.OkulTuru,
-                        OgretimTuru=item.OgretimTuru,
+                        OgretimTuru = item.OgretimTuru,
                         OkulAcilisTarihi = item.OkulAcilisTarihi.GetValueOrDefault(),
                         TemsilcilikId = item.TemsilcilikId.GetValueOrDefault(),
                         EyaletId = item.EyaletId.GetValueOrDefault(),
@@ -342,7 +343,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkulGetirOkulId(id)
         public Result<List<OkullarVM>> OkulGetirOkulId(Guid id)
         {
-            var data = _unitOfWork.okullarRepository.GetAll(u => u.OkulId == id, includeProperties: "Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Subeler,AdayGorevKaydi").OrderBy(u => u.OkulAdi).ToList();
+            var data = _unitOfWork.okullarRepository.GetAll(u => u.OkulId == id, includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
+                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList();
             if (data != null)
             {
                 List<OkullarVM> returnData = new List<OkullarVM>();
@@ -592,7 +594,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkulGetirUlkeId
         public Result<List<OkullarVM>> OkulGetirUlkeId(Guid UlkeId)
         {
-            var data = _unitOfWork.okullarRepository.GetAll(u => u.UlkeId == UlkeId, includeProperties: "Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Subeler,AdayGorevKaydi").OrderBy(u => u.OkulAdi).ToList();
+            var data = _unitOfWork.okullarRepository.GetAll(u => u.UlkeId == UlkeId && u.OkulDurumu == true, includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
+                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList();
             if (data != null)
             {
                 List<OkullarVM> returnData = new List<OkullarVM>();
@@ -719,7 +722,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             if (id != null)
             {
-                var data = _unitOfWork.okullarRepository.GetFirstOrDefault(u => u.OkulId == id, includeProperties: "Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Siniflar,Subeler,Ogrenciler,AdayGorevKaydi");
+                var data = _unitOfWork.okullarRepository.GetFirstOrDefault(u => u.OkulId == id, includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
+                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri");
                 if (data != null)
                 {
                     OkullarVM okul = new OkullarVM();

@@ -201,7 +201,7 @@ else
             document.getElementById("sinifDegistirBtn").disabled = true;
             document.getElementById("ogrenciEkleBtn").disabled = true;
             document.getElementById("yeniSinifBtn").disabled = true;
-            document.getElementById("yeniSubeBtn").disabled = true;
+            //document.getElementById("yeniSubeBtn").disabled = true;
             document.getElementById("subeEkleBtn").disabled = true;
             document.getElementById("inputSubeAdi").style.pointerEvents = "none";
             document.getElementById("sinifAdiInput").focus();
@@ -500,7 +500,7 @@ else
 
             /*$("#SinifListesi").empty();*/
 
-            $.getJSON(urlsinif, function (data) {                    
+            $.getJSON(urlsinif, function (data) {
 
                     $.each(data, function (i = 0, sinifId, sinifAdi, sinifGrubu, sinifAcilisTarihi) {
 
@@ -561,7 +561,7 @@ else
                                 $("#inputOkulId").val(data[i]['okulId']);
                                 $("#inputSinifId").val(data[i]['sinifId']);
                                 $("#inputSinifAdi").val(data[i]['sinifAdi']);
-                                document.getElementById("yeniSubeBtn").disabled = false;
+                                //document.getElementById("yeniSubeBtn").disabled = false;
                             }
 
                         });
@@ -690,8 +690,8 @@ else
             document.getElementById("subeAdiInput").focus();
         });
 
-        //////////////////////////
-
+        //////////////////////////        
+        
         $("#ogrenciEkleBtn").click(function () {
 
             var subeAdi = $("#inputSubeAdi").val();
@@ -702,13 +702,6 @@ else
             var eyaletId = $("#inputEyaletId").val();
             var sehirId = $("#inputSehirId").val();
             var ulkeId = $("#inputUlkeId").val();
-
-            //alert("sinif id=" + sinifId + " sinif adı =" + sinifAdi);
-            //alert("şube id =" + subeId + " şube adı =" + subeAdi);
-            //alert("okul id=" + okulId);
-            //alert("şehir id =" + sehirId);
-            //alert("eyalet id =" + eyaletId);
-            //alert("ulke id =" + ulkeId);
 
             location.href = '@Url.Action("OgrenciEkle", "Ogrenciler")?ulkeId=' + ulkeId + '&eyaletId=' + eyaletId + '&sehirId=' + sehirId + '&okulId=' + okulId + '&sinifId=' + sinifId + '&subeId=' + subeId;
 

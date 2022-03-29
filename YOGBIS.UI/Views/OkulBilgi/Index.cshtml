@@ -101,17 +101,30 @@
             $(function () {
                 $("#myTable").on("click", ".btnSil", function () {
                     var btn = $(this);
-                    bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
-                        if (result) {
-                            var id = btn.data("id");
-                            $.ajax({
-                                type: "DELETE",
-                                url: "/OkulBilgi/OkulBilgiSil/" + id,
-                                success: function () {
-                                    btn.parent().parent().remove();
-                                    location.reload();
-                                }
-                            });
+                    bootbox.confirm({
+                        message: "Seçtiğiniz kaydı silmek istediğinize emin misiniz?",
+                        buttons: {
+                            confirm: {
+                                label: 'Evet',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'Hayır',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function (result) {
+                            if (result) {
+                                var id = btn.data("id");
+                                $.ajax({
+                                    type: "DELETE",
+                                    url: "/OkulBilgi/OkulBilgiSil/" + id,
+                                    success: function () {
+                                        btn.parent().parent().remove();
+                                        location.reload();
+                                    }
+                                });
+                            }
                         }
                     });
                 });
