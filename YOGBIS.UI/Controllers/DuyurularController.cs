@@ -10,11 +10,12 @@ namespace YOGBIS.UI.Controllers
     [Authorize]
     public class DuyurularController : Controller
     {
-        
+        #region Değişkenler
         public DuyurularController()
         {
 
-        }
+        } 
+        #endregion
 
         #region Index
         public IActionResult Index()

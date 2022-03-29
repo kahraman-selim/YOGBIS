@@ -39,7 +39,7 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        //#region KullaniciGuncelleGet
+        #region KullaniciGuncelleGet
         //[HttpGet]
         //public ActionResult KullaniciGuncelle(string id)
         //{
@@ -50,7 +50,7 @@ namespace YOGBIS.UI.Controllers
         //        return View(data.Data);
         //    return View();
         //}
-        //#endregion
+        #endregion
 
         #region KullaniciGuncellePost
         [ValidateAntiForgeryToken]

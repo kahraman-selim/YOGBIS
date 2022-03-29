@@ -13,12 +13,18 @@ namespace YOGBIS.UI.Controllers
     [Authorize(Roles ="Administrator")]
     public class DerecelerController : Controller
     {
+        #region Değişkenler
         private readonly IDerecelerBE _derecelerBE;
+        #endregion
 
+        #region Dönüştürücüler
         public DerecelerController(IDerecelerBE derecelerBE)
         {
             _derecelerBE = derecelerBE;
         }
+        #endregion
+
+        #region Index
         public IActionResult Index(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -37,17 +43,21 @@ namespace YOGBIS.UI.Controllers
                 return View();
             }
         }
+        #endregion
 
+        #region DereceEkle(Get)
         [HttpGet]
-        public IActionResult DereceEkle() 
+        public IActionResult DereceEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             return View();
         }
+        #endregion
 
+        #region DereceEkle(Post)
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult DereceEkle(SoruDerecelerVM model, Guid? DereceId) 
+        public IActionResult DereceEkle(SoruDerecelerVM model, Guid? DereceId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
@@ -67,7 +77,9 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
+        #endregion
 
+        #region Guncelle
         public ActionResult Guncelle(Guid? id)
         {
 
@@ -82,19 +94,22 @@ namespace YOGBIS.UI.Controllers
             }
 
         }
+        #endregion
 
+        #region DereceSil
         [HttpDelete]
         public IActionResult DereceSil(Guid id)
         {
             if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
-            var data = _derecelerBE.DereceSil(id); 
+            var data = _derecelerBE.DereceSil(id);
             if (data.IsSuccess)
                 return Json(new { success = data.IsSuccess, message = data.Message });
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
-        }
+        } 
+        #endregion
     }
 }

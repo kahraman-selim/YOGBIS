@@ -15,7 +15,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<bool> OgrenciSil(Guid id);
         Result<List<OgrencilerVM>> OgrenciGetirKullaniciId(string userId);
         Result<List<OgrencilerVM>> OgrenciGetirUlkeId(Guid ulkeId);
-        Result<List<OgrencilerVM>> OgrenciGetirOkulId(Guid okulId);
-        Result<int> OgrenciSayiGetir(Guid subeid);
+        Result<List<OgrencilerVM>> OgrenciGetirOkulId(Guid okulId);        
     }
 }

@@ -345,7 +345,7 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        //#region UlkeDetayGetir
+        #region UlkeDetayGetir
         //[Authorize(Roles = "Administrator,Manager")]
         //public IActionResult UlkeDetayGetir(Guid ulkeId)
         //{
@@ -359,7 +359,7 @@ namespace YOGBIS.UI.Controllers
 
         //    return NotFound();
         //}
-        //#endregion
+        #endregion
 
         #region UlkeDetayGetir
         [Authorize(Roles = "Administrator,Manager")]
