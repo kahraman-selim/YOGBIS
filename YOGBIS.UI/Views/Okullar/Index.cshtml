@@ -6,9 +6,18 @@
     ViewData["Title"] = "Okullar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Styles{
 
-    @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
-    {
+    <link href="~/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/responsive.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/select.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+}
+@if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+{
     <ol class="breadcrumb mb-4 mt-2">
         <li class="m-2">
             <a asp-controller="Okullar" asp-action="OkulEkle" class="btn btn-success btn-circle btn-sm w-100" title="Okul Kayıt">
@@ -20,48 +29,48 @@
             new { @id = "UlkeListesi", @class = "form-control-range form-control py-1 w-100" })
         </li>
         <li class="m-1">
-            @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç", 
+            @Html.DropDownList("OkulListesi", new SelectList(ViewBag.OkulAdi, "OkulId", "OkulAdi"), "Okulu Seç",
            new { @id = "OkulListesi", @class = "form-control-range form-control py-1 w-100" })
         </li>
         @*<li class="m-1">
-            <select class="form-control-range form-control py-2" aria-label="Default select example" id="okulayselect">
-                <option selected class="text-left">Ay seçimi</option>
-                <option value="0">Tümünü Seç</option>
-                <option value="1">Ocak</option>
-                <option value="2">Şubat</option>
-                <option value="3">Mart</option>
-                <option value="4">Nisan</option>
-                <option value="5">Mayıs</option>
-                <option value="6">Haziran</option>
-                <option value="7">Temmuz</option>
-                <option value="8">Ağustos</option>
-                <option value="9">Eylül</option>
-                <option value="10">Ekim</option>
-                <option value="11">Kasım</option>
-                <option value="12">Aralık</option>
-            </select>
-        </li>*@
+                <select class="form-control-range form-control py-2" aria-label="Default select example" id="okulayselect">
+                    <option selected class="text-left">Ay seçimi</option>
+                    <option value="0">Tümünü Seç</option>
+                    <option value="1">Ocak</option>
+                    <option value="2">Şubat</option>
+                    <option value="3">Mart</option>
+                    <option value="4">Nisan</option>
+                    <option value="5">Mayıs</option>
+                    <option value="6">Haziran</option>
+                    <option value="7">Temmuz</option>
+                    <option value="8">Ağustos</option>
+                    <option value="9">Eylül</option>
+                    <option value="10">Ekim</option>
+                    <option value="11">Kasım</option>
+                    <option value="12">Aralık</option>
+                </select>
+            </li>*@
         <li class="m-2">
             <a asp-controller="Okullar" asp-action="Index"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
         </li>
     </ol>
-    }
-    <div class="card mb-3">
+}
+<div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
         <b>Okullar</b>
     </div>
     <div class="card-body">
-        <input hidden id="ayinput"/>
+        <input hidden id="ayinput" />
         <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" style="width:100%" cellspacing="0">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTablee" style="width:100%" cellspacing="0">
                 <thead>
                     @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                     {
                         <tr><th class="text-center" colspan="18">OKULLARIMIZIN @DateTime.Now.ToString("MMMMM") @DateTime.Now.Year TARİHİ İTİBARİYLE ÖĞRENCİ SAYILARI</th></tr>
                     }
                     <tr>
-                        <th class="text-center" rowspan="3">Sıra No</th>                        
+                        <th class="text-center" rowspan="3">Sıra No</th>
                         <th class="text-center" rowspan="3">Ülke</th>
                         <th class="text-center" rowspan="3">Eyalet/Şehir-Bölge</th>
                         <th class="text-center" rowspan="3">Okul Kodu</th>
@@ -95,7 +104,7 @@
                         {
                             sirano++;
                             <tr>
-                                <td>@sirano</td>                                
+                                <td>@sirano</td>
                                 <td><a asp-controller="Ulkeler" asp-action="UlkeDetayById" asp-route-id="@item.UlkeId">@item.UlkeAdi</a></td>
                                 @if (item.EyaletAdi == "" && item.SehirAdi == "")
                                 {
@@ -121,7 +130,7 @@
                                 else
                                 {
                                     <td><a asp-controller="Okullar" asp-action="OkulDetay" asp-route-id="@item.OkulId">@item.OkulAdi</a></td>
-                                }                               
+                                }
                                 <td class="text-center">@item.OkulAcilisTarihi.ToString("dd/MM/yyyy")</td>
                                 <td class="text-center">@item.SubeSayisi</td>
                                 <td class="text-center">@item.TCEOgr</td>
@@ -152,7 +161,25 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
 
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.2.0/js/dataTables.fixedHeader.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/rowgroup/1.1.4/js/dataTables.rowGroup.min.js"></script>
+
     <script type="text/javascript">
+
 
         window.OkulId = "";
         window.ulkeId = "";
@@ -221,11 +248,11 @@
             location.href = '@Url.Action("Index", "Okullar")?okulId=' + window.OkulId + '&ay=' + ay;
         });
 
-        $("#myTable").dataTable().fnDestroy();
+        //$("#myTable").dataTable().fnDestroy();
         var selected = [];
-        var table = $('#myTable').DataTable({
+        var table = $('#myTablee').DataTable({
 
-            destroy: true,
+            //destroy: true,
             order: [[1, 'asc']],
             rowGroup: {
                 startRender: null,

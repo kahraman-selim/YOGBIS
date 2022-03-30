@@ -16,7 +16,7 @@
     }
 </style>
 
-    @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+@if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
     {
         <ol class="breadcrumb mb-4 mt-2">
         @if (User.IsInRole("Administrator"))

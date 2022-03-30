@@ -1,7 +1,161 @@
-﻿
+﻿@model YOGBIS.Common.VModels.DuyurularVM
 @{
-    ViewData["Title"] = "DuyuruEkle";
+    ViewData["Title"] = "Duyurular";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+
 }
 
-<h1>DuyuruEkle</h1>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-lg rounded-lg mt-0 h-auto">
+            <div class="card-header">
+                <i class="fas fa-pen mr-1"></i>
+                <b>Duyuru Ekleme/Güncelleme</b>
+            </div>
+            <div class="card-body">
+                <form class="form-group m-0" asp-action="DuyuruEkle" enctype="multipart/form-data">
+                    @Html.HiddenFor(x => x.DuyurularId)
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="small mb-1 font-weight-bold">Duyuru Başlığı</label>
+                                <input type="text" asp-for="DuyuruBaslık" class="form-control py-2" id="CreateTypeInput" maxlength="100" placeholder="Duyuru adını yazınız...">
+                                <span class="text-danger" asp-validation-for="DuyuruBaslık"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="small mb-1 font-weight-bold">Duyuru Alt Başlığı</label>
+                                <input type="text" asp-for="DuyuruAltBaslık" class="form-control py-2" id="CreateTypeInput" maxlength="250" placeholder="Duyuru alt başlığını yazınız...">
+                                <span class="text-danger" asp-validation-for="DuyuruAltBaslık"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="DuyuruDetay" class="small mb-1 font-weight-bold">Duyuru Detay Açıklama</label>
+                                <textarea asp-for="DuyuruDetay" placeholder="Duyuru detaylarını yazınız..." class="form-control" id="HedefKitleTextArea" rows="3"></textarea>
+                                <span class="text-danger" asp-validation-for="DuyuruDetay"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="small mb-1 font-weight-bold">Duyuru Bağlantı Linki</label>
+                                <input type="text" asp-for="DuyuruLink" class="form-control py-2" id="CreateTypeInput" maxlength="14" placeholder="Duyuru bağlantı linkini yazınız...">
+                                <span class="text-danger" asp-validation-for="DuyuruLink"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="DuyuruKapakResim" class="small mb-1 font-weight-bold">Duyuru Kapak Resmi Seç :</label>
+                                <input type="file"
+                                       accept="image/*" asp-for="DuyuruKapakResim"
+                                       id="duyuruImagesInput" class="btn btn-outline-danger mb-2 btn-sm col-md-12"
+                                       title="Duyuru Kapak Fotoğrafı" placeholder="Duyuru Kapak Fotoğrafı"
+                                       onchange="DuyuruKapakFotoImageFileSize(this);">
+                                <span class="text-danger" asp-validation-for="DuyuruKapakResim"></span>
+                                <span class="text-danger">Görüntü kalitesi için seçilen resimlerin 500 px X 300 px boyutlarında ve yatay olması önemlidir.</span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="FotoGaleris" class="small mb-1 font-weight-bold">Duyuruya ait Resimler :</label>
+                                <input type="file"
+                                       accept="image/*" asp-for="FotoGaleris" multiple
+                                       id="duyuruImagesInput" class="btn btn-outline-danger mb-2 btn-sm col-md-12"
+                                       title="Duyuru Kapak Fotoğrafı" placeholder="Duyuru Kapak Fotoğrafı"
+                                       onchange="DuyuruFotoImagesFileSize(this);">
+                                <span class="text-danger" asp-validation-for="FotoGaleris"></span>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <a asp-controller="Duyurular" asp-action="DuyuruEkle" id="yeniduyuru" name="yeniduyuru" class="btn btn-primary btn-sm mb-1" style="width:100px">Yeni Kayıt</a>
+                                    <input type="submit" value="Kaydet" class="btn btn-success btn-sm mb-1" style="width:100px" id="duyuruKaydetBtn" />
+                                    <a asp-controller="Duyurular" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm mb-1" style="width:100px">Vazgeç</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            @await Component.InvokeAsync("DuyuruListesi")
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <img id="duyuruKapakImage" src="~/img/FotoGaleri/noimage.png" alt="KapakFoto" class="img-thumbnail" style="width: 100%; height: 500px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <script type="text/javascript">
+
+        function DuyuruKapakFotoImageFileSize(input) {
+
+            var maxFileSize = 1194304;
+            var fileUpload = document.getElementById("duyuruImagesInput");
+            var fileCount = fileUpload.files.length;
+
+            for (var i = 0; i < fileCount; i++) {
+
+                if (input.files[i].size > maxFileSize) {
+
+                    $(':input[type="submit"]').prop('disabled', true);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata',
+                        text: 'Yüklemek istediğiniz dosya boyutu 1 MB dan fazla !',
+                    })
+                    document.getElementById("duyuruImagesInput").className = "";
+                    document.getElementById("duyuruImagesInput").className += "btn btn-outline-danger mb-1 btn-sm col-md-12";
+                    document.getElementById("duyuruImagesInput").value = null;
+                    return false;
+                }
+                else {
+
+                    $(':input[type="submit"]').prop('disabled', false);
+                    document.getElementById("duyuruImagesInput").className = "";
+                    document.getElementById("duyuruImagesInput").className += "btn btn-outline-success mb-1 btn-sm col-md-12";
+                    document.getElementById('duyuruKapakImage').src = window.URL.createObjectURL(document.getElementById("duyuruImagesInput").files[i]);
+                }
+            }
+        }
+
+        $(function () {
+            $("#myTable").on("click", ".btnSil", function () {
+                var btn = $(this);
+                bootbox.confirm({
+                    message: "Seçilen duyuruyu silmek istiyor musunuz?",
+                    buttons: {
+                        confirm: {
+                            label: 'Evet',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Hayır',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            var id = btn.data("id");
+                            $.ajax({
+                                type: "DELETE",
+                                url: "/Duyurular/DuyuruSil/" + id,
+                                success: function () {
+                                    btn.parent().parent().remove();
+                                    location.reload();
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
+
+}

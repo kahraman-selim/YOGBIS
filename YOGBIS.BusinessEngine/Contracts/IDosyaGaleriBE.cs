@@ -14,6 +14,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<string> DosyaAdGetir(Guid id);
         Result<string> DosyaURLGetir(Guid id);
         Result<List<string>> DosyaURLGetirEtkinlikId(Guid etkinlikId);
+        Result<List<string>> DosyaURLGetirDuyuruId(Guid duyuruId);
         Result<DosyaGaleriVM> DosyaEkle(DosyaGaleriVM model, SessionContext user);
         Result<DosyaGaleriVM> DosyaGuncelle(DosyaGaleriVM model, SessionContext user);
         Result<bool> DosyaSil(Guid id);        

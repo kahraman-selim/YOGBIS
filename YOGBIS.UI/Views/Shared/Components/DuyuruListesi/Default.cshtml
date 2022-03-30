@@ -1,0 +1,53 @@
+﻿
+@model IEnumerable<YOGBIS.Common.VModels.DuyurularVM>
+
+
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        <b>Kaydettiğim Duyurular</b>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sıra No</th>
+                        <th>Duyuru Başlığı</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ var sirano = 0;}
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            sirano++;
+                            <tr>
+                                <td>@sirano</td>
+                                <td><a asp-controller="Duyurular" asp-action="Guncelle" asp-route-id="@item.DuyurularId" id="DuyuruAdi">@item.DuyuruBaslık</a></td>
+                                <td class="text-center">
+                                    <a class="btn btn-sm btn-danger btnSil" title="Sil" id="@item.DuyurularId" data-id="@item.DuyurularId">
+                                        <i class="fas fa-trash text-white"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>Kayıt bulunamadı!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+

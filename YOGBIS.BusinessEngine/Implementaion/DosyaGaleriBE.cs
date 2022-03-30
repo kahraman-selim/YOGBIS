@@ -185,6 +185,41 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region DosyaURLGetirDuyuruId(Guid id)
+        public Result<List<string>> DosyaURLGetirDuyuruId(Guid duyuruId)
+        {
+
+            var data = _unitOfWork.duyurularRepository.GetFirstOrDefault(u => u.DuyurularId == duyuruId, includeProperties: "DosyaGaleri");
+            if (data != null)
+            {
+                List<string> dosyarurls = new List<string>();
+
+                if (data.DosyaGaleri != null)
+                {
+                    foreach (var item in data.DosyaGaleri.ToList())
+                    {
+                        var dosya = _unitOfWork.dosyaGaleriRepository.GetFirstOrDefault(u => u.DosyaGaleriId == item.DosyaGaleriId);
+                        if (dosya != null)
+                        {
+                            dosyarurls.Add(dosya.DosyaURL.ToString());
+                        }
+                    }
+
+                    return new Result<List<string>>(true, ResultConstant.RecordFound, dosyarurls);
+                }
+                else
+                {
+                    return new Result<List<string>>(false, ResultConstant.RecordNotFound);
+                }
+
+            }
+            else
+            {
+                return new Result<List<string>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
         #region DosyaEkle
         public Result<DosyaGaleriVM> DosyaEkle(DosyaGaleriVM model, SessionContext user)
         {
