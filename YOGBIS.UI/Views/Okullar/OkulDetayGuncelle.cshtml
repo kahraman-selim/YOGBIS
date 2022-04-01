@@ -755,23 +755,19 @@ else
 
                     if (response === "200") {
 
-                        //$('#saveModal').modal('hide');
-                        /*location.reload();*/
+                        //$('#okulBolumTable').DataTable().reload();
                         alertify.success('Kayıt başarıyla eklendi');
-
-                        $('#okulBolumTable').DataTable().reload();
+                        $('#saveModalBolum').hide();
+                        location.reload();
                     }
                     else {
 
-                        /*$('#saveModal').modal('hide');*/
-                        /*location.reload();*/
                         alertify.warning('Kayıt eklenemedi !');
                     }
                 },
                 error: function () {
 
                     $('#saveModalBolum').modal('hide');
-                    /*location.reload();*/
                     alertify.warning('Kayıt eklenemedi !');
                 }
 

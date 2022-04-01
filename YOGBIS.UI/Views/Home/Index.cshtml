@@ -1966,12 +1966,9 @@
 
         $(".country").hover(function () {
 
-            //var ulkekodu = "";
-            //var url = "";
-
-            window.ulkekodu = $(this).children("path").attr("id");
-
-            url = '@Url.Action("UlkeDetayGetir", "Ulkeler")?ulkeKodu=' + window.ulkekodu;
+            //window.ulkekodu = $(this).children("path").attr("id");
+            var uk = $(this).children("path").attr("id");
+            url = '@Url.Action("UlkeDetayGetir", "Ulkeler")?ulkeKodu=' + uk;
 
             /*alert("ülke kodu =" + window.ulkekodu);*/
 
@@ -1985,20 +1982,20 @@
                         /*alert("1 " + window.ulkekodu);*/
                         if (i == 0) {
                             /*alert("2 " + window.ulkekodu);*/
-                            if (window.ulkekodu == data[i]['ulkeKodu']) {
+                            if (uk == data[i]['ulkeKodu']) {
                                 /*alert("3 " + window.ulkekodu);*/
 
                                 $(".country").attr("data-content",
-                                    "Ülke Kodu = " + data[i]['ulkeKodu'] + "<br>" +
-                                    "Okul      = " + data[i]['okulSayisi'] + "<br>" +
-                                    "Öğretmen  = " + "<br>" +
-                                    "Okutman   = " + "<br>" +
+                                    "Ülke Kodu&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= " + data[i]['ulkeKodu'] + "<br>" +
+                                    "Okul&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= " + data[i]['okulSayisi'] + "<br>" +
+                                    "Öğretmen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= " + "<br>" +
+                                    "Okutman&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= " + "<br>" +
                                     "Öğrenci(Okul) = " + data[i]['ogrenciOkulSayisi'] + "<br>");
                             }
                             else {
 
                                 $(".country").attr("data-content",
-                                    "Ülke Kodu = " + window.ulkekodu + "<br>" +
+                                    "Ülke Kodu = " + uk+ "<br>" +
                                     "Ülkeye ait bilgi bulunamadı !" + "<br>");
                             }
                         }
@@ -2007,7 +2004,7 @@
                 else {
 
                     $(".country").attr("data-content",
-                        "Ülke Kodu = " + window.ulkekodu + "<br>" +
+                        "Ülke Kodu = " + uk + "<br>" +
                         "Ülkeye ait bilgi bulunamadı !" + "<br>");
                 }
 
