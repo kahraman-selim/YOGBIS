@@ -97,9 +97,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             var data = _unitOfWork.eyaletlerRepository.GetAll(u => u.UlkeId == UlkeId, includeProperties: "Kullanici").ToList();
             if (data != null)
-            {
-                List<EyaletlerVM> returnData = new List<EyaletlerVM>();
+            {                
 
+                List<EyaletlerVM> returnData = new List<EyaletlerVM>();
+                
                 foreach (var item in data)
                 {
                     returnData.Add(new EyaletlerVM()
