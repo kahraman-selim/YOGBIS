@@ -105,9 +105,18 @@
                     <div class="col-md-3">
                         <p class="font-weight-bold">Eyalet / Şehir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
                     </div>
-                    <div class="col-md-9">
-                        <label class="text-dark text-muted font-weight-light">@Model.EyaletAdi / @Model.SehirAdi</label>
-                    </div>
+                    @if (Model.EyaletAdi.Count()>0)
+                    {
+                        <div class="col-md-9">
+                            <label class="text-dark text-muted font-weight-light">@Model.EyaletAdi / @Model.SehirAdi</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-9">
+                            <label class="text-dark text-muted font-weight-light">@Model.SehirAdi</label>
+                        </div>
+                    }
                 </div>
 
                 <hr />
@@ -192,7 +201,7 @@
                                 <p class="font-weight-bold">Özet Bilgi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</p>
                             </div>
                             <div class="col-md-9">
-                                <label class="text-dark text-muted font-weight-light">@Model.OkulBilgi</label>
+                                <label class="text-dark text-muted text-justify font-weight-light">@Model.OkulBilgi</label>
                             </div>
                         </div>
 

@@ -281,15 +281,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     }).ToList();
                   
-                    ulke.Okullar = _unitOfWork.okullarRepository.GetAll(u=>u.UlkeId== data.UlkeId).ToList().Select(o => new OkullarVM()
+                    ulke.Okullar = _unitOfWork.okullarRepository.GetAll(u=>u.UlkeId== data.UlkeId).ToList().OrderBy(o=>o.OkulAdi).Select(o => new OkullarVM()
                     {
                         OkulId=o.OkulId,
                         OkulAdi=o.OkulAdi,
                         OkulKodu=o.OkulKodu,
                         EyaletId=o.EyaletId.GetValueOrDefault(),
-                        EyaletAdi=o.EyaletId != null ? _eyaletlerBE.EyaletAdGetir(o.EyaletId.GetValueOrDefault()).Data.ToString() : string.Empty,
-                        SehirId=o.SehirId,
-                        SehirAdi=o.SehirId !=null ? _sehirlerBE.SehirAdGetir(o.SehirId.GetValueOrDefault()).Data.ToString() : string.Empty
+                        EyaletAdi=o.EyaletId.GetValueOrDefault() != Guid.Empty ? _eyaletlerBE.EyaletAdGetir(o.EyaletId.GetValueOrDefault()).Data.ToString() : string.Empty,
+                        SehirId=o.SehirId.GetValueOrDefault(),
+                        SehirAdi=o.SehirId.GetValueOrDefault() != Guid.Empty ? _sehirlerBE.SehirAdGetir(o.SehirId.GetValueOrDefault()).Data.ToString() : string.Empty
                         
                     }).ToList();
 
