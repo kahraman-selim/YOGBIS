@@ -63,7 +63,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SiniflariGetirOkulId
         public Result<List<SiniflarVM>> SiniflariGetirOkulId(Guid OkulId)
         {
-            var data = _unitOfWork.siniflarRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Subeler,Ogrenciler").OrderBy(s => s.SinifAdi).ToList();
+            var data = _unitOfWork.siniflarRepository.GetAll(u => u.OkulId == OkulId, includeProperties: "Kullanici,Subeler,Ogrenciler").OrderByDescending(s => s.SinifAdi).ToList();
             if (data != null)
             {
                 List<SiniflarVM> returnData = new List<SiniflarVM>();

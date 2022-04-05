@@ -668,7 +668,7 @@ namespace YOGBIS.UI.Controllers
 
             if (OkulId != null)
             {
-                var data = _unitOfWork.siniflarRepository.GetAll(x => x.OkulId == OkulId);
+                var data = _unitOfWork.siniflarRepository.GetAll(x => x.OkulId == OkulId);               
                 return Json(data);
             }
 

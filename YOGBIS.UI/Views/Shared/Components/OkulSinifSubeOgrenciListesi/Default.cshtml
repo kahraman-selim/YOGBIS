@@ -7,34 +7,45 @@
     <table class="table table-bordered table-sm table-hover table-striped display responsive nowrap" id="okulSubeSinifOgrenciTable" width="100%" cellspacing="0">
         <thead>
             <tr>
-                <th class="text-center">Sıra No</th>
-                <th class="text-center">Sınıflar</th>
-                <th class="text-center">Şubeler</th>
-                <th class="text-center">Öğrenci Sayısı</th>
+                <th rowspan="2" class="text-center">Sıra No</th>
+                <th rowspan="2" class="text-center">Sınıflar</th>
+                <th rowspan="2" class="text-center">Şubeler</th>
+                <th colspan="2" class="text-center">Öğrenci Sayısı</th>
+                <th rowspan="2" class="text-center">Toplam</th>
+            </tr>
+            <tr>
+                <th class="text-center">Kız</th>
+                <th class="text-center">Erkek</th>
             </tr>
         </thead>
-        @{ var sirano = 0;}
+        @{ var sirano = 0; var ogkiz = 0; var ogerkek = 0; var toplam = 0;}
 
         @if (Model != null)
         {
-            @foreach (var item in Model)
-            {
-                sirano++;
-
-                <tbody>
-
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sirano++;
 
                     <tr>
                         <td>@sirano</td>
                         <td class="text-capitalize">@item.SinifAdi</td>
                         <td class="text-capitalize">@item.SubeAdi</td>
-                        <td class="text-center">@item.OgrenciSayisi</td>
-
+                        <td class="text-center">@item.OgrenciSayisiKiz</td>
+                        <td class="text-center">@item.OgrenciSayisiErkek</td>
+                        <td class="text-center">@item.OgrenciSayisiToplam</td>
                     </tr>
-
-
-                </tbody>
-            }
+                    ogkiz += item.OgrenciSayisiKiz;
+                    ogerkek += item.OgrenciSayisiErkek;
+                    toplam += item.OgrenciSayisiToplam;
+                }
+                <tr>
+                    <td colspan="3" class="text-right font-weight-bold">Toplamlar</td>
+                    <td class="text-center font-weight-bold">@ogkiz</td>
+                    <td class="text-center font-weight-bold">@ogerkek</td>
+                    <td class="text-center font-weight-bold">@toplam</td>
+                </tr>
+            </tbody>
         }
     </table>
 </div>

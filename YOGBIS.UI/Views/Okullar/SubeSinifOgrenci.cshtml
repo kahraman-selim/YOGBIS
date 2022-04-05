@@ -49,6 +49,7 @@
                                                 <label class="small mb-1 font-weight-bold">Sınıf Grubu</label>
                                                 <select class="form-control-range form-control py-2" id="sinifGrupSelect" aria-label="Default select example">
                                                     <option selected class="text-left">Sınıf Grubunu seçiniz</option>
+                                                    <option value="0">Tam Gün</option>
                                                     <option value="1">Sabah Grubu</option>
                                                     <option value="2">Öğlen Grubu</option>
                                                 </select>
@@ -494,11 +495,12 @@ else
         $(".btnSubeDegistir").click(function () {
 
             var subeId = $(this).data("id");
+
             var okulId = $("#inputhiddenokulid").val();
 
             var urlsinif = '@Url.Action("OkulSiniflariGetir", "Okullar")?OkulId=' + okulId;
 
-            /*$("#SinifListesi").empty();*/
+            $("#SinifListesi").empty();
 
             $.getJSON(urlsinif, function (data) {
 
@@ -511,7 +513,7 @@ else
 
                         /*$("#SinifListesi").append("<option value='" + data[i]['sinifId'] + "'> " + data[i]['sinifAdi'] + "</option>");*/
 
-                        $("#SinifListesi option:selected").text(data[i]['sinifAdi']);
+                        //$("#SinifListesi option:selected").text(data[i]['sinifAdi']);
 
                     });
 
@@ -561,7 +563,7 @@ else
                                 $("#inputOkulId").val(data[i]['okulId']);
                                 $("#inputSinifId").val(data[i]['sinifId']);
                                 $("#inputSinifAdi").val(data[i]['sinifAdi']);
-                                //document.getElementById("yeniSubeBtn").disabled = false;
+                                $("#SinifListesi option:selected").text(data[i]['sinifAdi']);                                
                             }
 
                         });
@@ -575,7 +577,7 @@ else
                     }
                     else {
 
-                        alertify.danger('Bu sşube kayıtlı değil !');
+                        alertify.danger('Bu şube kayıtlı değil !');
 
                     }
                 });
@@ -690,8 +692,8 @@ else
             document.getElementById("subeAdiInput").focus();
         });
 
-        //////////////////////////        
-        
+        //////////////////////////
+
         $("#ogrenciEkleBtn").click(function () {
 
             var subeAdi = $("#inputSubeAdi").val();

@@ -16,7 +16,9 @@ namespace YOGBIS.Common.VModels
         public Guid? EgitimciId { get; set; }
         public Guid OkulId { get; set; }
         public string SinifAdi { get; set; }        
-        public int OgrenciSayisi { get; set; }
+        public int OgrenciSayisiKiz { get; set; }
+        public int OgrenciSayisiErkek { get; set; }
+        public int OgrenciSayisiToplam { get; set; }
         public Guid SinifId { get; set; }        
         public SiniflarVM Siniflar { get; set; }        
         public string KaydedenId { get; set; }
