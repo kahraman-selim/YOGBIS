@@ -1,7 +1,7 @@
 ﻿@*@model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>*@
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style type="text/css">
     #soruBlok {
@@ -20,12 +20,28 @@
 <div class="row mt-4">
     <div class="col-lg-2">
         <div class="card shadow-lg mb-1" style="height:100px">
-            <h4 class="card-header text-center text-danger small">GEÇEN SÜRE</h4>
+            <h4 class="card-header text-center text-danger small">ADAY LİSTESİ - 15.04.2024</h4>
             <div class="card-body">
                 <p class="card-text text-center text-danger font-weight-bold">
                     <span id="dakika">00</span>
                     <span id="sayac">:</span>
                     <span id="saniye">00</span>
+                </p>
+            </div>
+        </div>
+        <div class="card shadow-lg mb-1" style="height:auto">
+            <div class="card-body">
+                <p class="card-text text-center text-danger font-weight-bold">
+                    <h6>Ahmet GÜZELLER</h6>
+                </p>
+                <p class="card-text text-center text-danger font-weight-bold">
+                    <h6>Ali KAPLAN</h6>
+                </p>
+                <p class="card-text text-center text-danger font-weight-bold">
+                    <h6>Bayram TOK</h6>
+                </p>
+                <p class="card-text text-center text-danger font-weight-bold">
+                    <h6>...</h6>
                 </p>
             </div>
         </div>
@@ -59,14 +75,10 @@
         <div class="row col-lg-12 mb-2" id="soruBlok">
             <div class="row">
                 <!--////////////////////////////////////////////////////-->
-                <div class="col-lg-4">
-                    <div class="card shadow-lg mb-1" style="height: 125px">
-                        <h6 class="card-header text-center text-info">KATEGORİ</h6>
-                        <div class="card-body p-1">
-                            <p class="card-text small font-weight-bold text-justify">Türkçe ( Türk Dili ve Edebiyatı,  Dil Bilgisi ve Anlam Bilgisi)</p>
-                        </div>
-                    </div>
-                    <div class="card shadow-lg mb-1" style="height: 350px">
+                <div class="col-lg-3">
+                    <h6 class="card-header text-center text-info">KATEGORİ-1</h6>
+                    <br />
+                    <div class="card shadow-lg mb-1" style="height: 300px">
                         <h6 class="card-header text-center text-danger">SORU</h6>
                         <div class="card-body">
                             <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
@@ -80,54 +92,53 @@
                     </div>
                 </div>
                 <!--////////////////////////////////////////////////////-->
-                <div class="col-lg-4">
-                    <div class="card shadow-lg mb-1" style="height: 125px">
-                        <h6 class="card-header text-center text-info">KATEGORİ</h6>
-                        <div class="card-body p-1">
-                            <p class="card-text small font-weight-bold text-justify">T.C. İnkılap Tarihi ve Atatürkçülük, Türk Tarihi, Türk Kültür ve Medeniyeti, Türkiye Coğrafyası, Vatandaşlık Bilgisi</p>
-                        </div>
-                    </div>
-                    <div class="card shadow-lg mb-1" style="height: 350px">
+                <div class="col-lg-3">
+                    <h6 class="card-header text-center text-info">KATEGORİ-2</h6>
+                    <br />
+                    <div class="card shadow-lg mb-1" style="height: 300px">
                         <h6 class="card-header text-center text-danger">SORU</h6>
                         <div class="card-body">
-                            <p class="card-text">Egemenlik kaynaklarına göre kaç tür devlet yapısı vardır ?</p>
+                            <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
                         </div>
                     </div>
                     <div class="card shadow-lg mb-1" style="height:200px">
                         <h6 class="card-header text-center text-primary">CEVAP</h6>
                         <div class="card-body">
-                            <p class="card-text">
-                                4 tür devlet vardır:<br />
-                                1. Monarşikbr <br />
-                                2. Oligarşik <br />
-                                3. Teokratik <br />
-                                4. Demokratik <br />
-                            </p>
+                            <p class="card-text">Ziya Osman Saba</p>
                         </div>
                     </div>
                 </div>
                 <!--////////////////////////////////////////////////////-->
-                <div class="col-lg-4">
-                    <div class="card shadow-lg mb-1" style="height: 125px">
-                        <h6 class="card-header text-center text-info">KATEGORİ</h6>
-                        <div class="card-body p-1">
-                            <p class="card-text small font-weight-bold text-justify">Genel Kültür, Millî Eğitim Bakanlığı Mevzuatı</p>
-                        </div>
-                    </div>
-                    <div class="card shadow-lg mb-1" style="height:350px">
+                <div class="col-lg-3">
+                    <h6 class="card-header text-center text-info">KATEGORİ-3</h6>
+                    <br />
+                    <div class="card shadow-lg mb-1" style="height: 300px">
                         <h6 class="card-header text-center text-danger">SORU</h6>
                         <div class="card-body">
-                            <p class="card-text text-justify">
-                                222 Sayılı İlköğretim ve Eğitim kanununa göre; muhtarların ,
-                                okul müdürüyle iş birliği yaparak hazırladıkları,  köy ve mahallelerindeki mecburi öğrenim çağında
-                                bulunan çocukların künyelerini gösterir 3 nüsha, her yıl derslere başlamadan kaç gün önce ilgili makamlara teslim edilir?
-                            </p>
+                            <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
                         </div>
                     </div>
                     <div class="card shadow-lg mb-1" style="height:200px">
                         <h6 class="card-header text-center text-primary">CEVAP</h6>
                         <div class="card-body">
-                            <p class="card-text">15 gün</p>
+                            <p class="card-text">Ziya Osman Saba</p>
+                        </div>
+                    </div>
+                </div>
+                <!--////////////////////////////////////////////////////-->
+                <div class="col-lg-3">
+                    <h6 class="card-header text-center text-info">KATEGORİ-4</h6>
+                    <br />
+                    <div class="card shadow-lg mb-1" style="height: 300px">
+                        <h6 class="card-header text-center text-danger">SORU</h6>
+                        <div class="card-body">
+                            <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
+                        </div>
+                    </div>
+                    <div class="card shadow-lg mb-1" style="height:200px">
+                        <h6 class="card-header text-center text-primary">CEVAP</h6>
+                        <div class="card-body">
+                            <p class="card-text">Ziya Osman Saba</p>
                         </div>
                     </div>
                 </div>
@@ -135,7 +146,7 @@
             <!-- Not Blok-->
             <div class="row">
                 <!--//////////////////////////////////////////////////////-->
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="card shadow-lg mb-1" style="height: 125px">
                         <h6 class="card-header text-center text-success">PUAN</h6>
                         <div class="card-body p-3">
@@ -154,7 +165,7 @@
 
                 </div>
                 <!--//////////////////////////////////////////////////////-->
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="card shadow-lg mb-1" style="height: 125px">
                         <h6 class="card-header text-center text-success">PUAN</h6>
                         <div class="card-body p-3">
@@ -173,7 +184,26 @@
 
                 </div>
                 <!--//////////////////////////////////////////////////////-->
-                <div class="col-lg-4">
+                <div class="col-lg-3">
+                    <div class="card shadow-lg mb-1" style="height: 125px">
+                        <h6 class="card-header text-center text-success">PUAN</h6>
+                        <div class="card-body p-3">
+                            <form action="/" method="post">
+                                <div class="form-row form-group">
+                                    <div class="col-md-6">
+                                        <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px">Kaydet</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <!--//////////////////////////////////////////////////////-->
+                <div class="col-lg-3">
                     <div class="card shadow-lg mb-1" style="height: 125px">
                         <h6 class="card-header text-center text-success">PUAN</h6>
                         <div class="card-body p-3">
@@ -240,7 +270,7 @@
     </div>
 </div>
 <!-- uyarı Not-->
-<div class="modal fade" id="ModalNot" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal" id="ModalNot" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -256,19 +286,23 @@
                             <div class="form-row mb-1">
                                 <div class="col-md-3 text-center">
                                     <span class="text-center font-weight-bold">Kategori-1</span>
-                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" disabled placeholder="20" />
+                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="20" min="0" placeholder="20" />
                                 </div>
                                 <div class="col-md-3 text-center">
                                     <span class="text-center font-weight-bold">Kategori-2</span>
-                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" disabled placeholder="15" />
+                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="20" min="0" placeholder="20" />
                                 </div>
                                 <div class="col-md-3 text-center">
                                     <span class="text-center font-weight-bold">Kategori-3</span>
-                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" disabled placeholder="15" />
+                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="20" min="0" placeholder="20" />
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <span class="text-center font-weight-bold">Kategori-4</span>
+                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="20" min="0" placeholder="20" />
                                 </div>
                                 <div class="col-md-3 text-center">
                                     <span class="text-center font-weight-bold">Kanaat Puanı</span>
-                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" id="inputKanaat"/>
+                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="20" min="0" placeholder="20" id="inputKanaat" />
                                 </div>
                             </div>
                             <div class="form-row mb-1 justify-content-center">
