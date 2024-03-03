@@ -4,7 +4,7 @@ using YOGBIS.BusinessEngine.Contracts;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,CommissionerHead")]
     public class MulakatController : Controller
     {
 

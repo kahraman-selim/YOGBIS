@@ -34,7 +34,7 @@ namespace YOGBIS.UI.Controllers
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            if (User.IsInRole(EnumsKullaniciRolleri.Administrator.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Manager.ToString()) || User.IsInRole(EnumsKullaniciRolleri.Follower.ToString()))
+            if (User.IsInRole(EnumsKullaniciRolleri.Administrator.ToString()))
             {
 
                 var requestmodel = _ulkelerBE.UlkeleriGetir();
