@@ -12,7 +12,7 @@ using YOGBIS.Data.Contracts;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     public class OkulBilgiController : Controller
     {
         

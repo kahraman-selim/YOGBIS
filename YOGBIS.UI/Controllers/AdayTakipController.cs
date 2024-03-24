@@ -10,32 +10,32 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = "Administrator")]
-    public class MulakatlarController : Controller
+    [Authorize(Roles ="Administrator,Follower")]
+    public class AdayTakipController : Controller
     {
         #region Değişkenler
-        private readonly IMulakatOlusturBE _mulakatOlusturBE;
         private readonly IDerecelerBE _derecelerBE;
-        private readonly IKullaniciBE _kullaniciBE;
         #endregion
 
-        #region Dönüştücüler
-        public MulakatlarController(IMulakatOlusturBE mulakatOlusturBE, IDerecelerBE derecelerBE, IKullaniciBE kullaniciBE)
+        #region Dönüştürücüler
+        public AdayTakipController(IDerecelerBE derecelerBE)
         {
-            _mulakatOlusturBE = mulakatOlusturBE;
             _derecelerBE = derecelerBE;
-            _kullaniciBE = kullaniciBE;
-        } 
+        }
         #endregion
-        
+
+        #region Index
         public IActionResult Index(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-
+            //var requestmodel= _derecelerBE.DereceleriGetir(); 
+            //if (requestmodel.IsSuccess)
+            //{
+            //    return View(requestmodel.Data);
+            //}
             if (id != null)
             {
-                var data = _mulakatOlusturBE.MulakatGetir((Guid)id);
+                var data = _derecelerBE.DereceGetir((Guid)id);
                 return View(data.Data);
             }
             else
@@ -43,32 +43,33 @@ namespace YOGBIS.UI.Controllers
                 return View();
             }
         }
+        #endregion
 
+        #region DereceEkle(Get)
         [HttpGet]
-        public IActionResult MulakatEkle()
+        public IActionResult DereceEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-
             return View();
         }
+        #endregion
 
+        #region DereceEkle(Post)
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult MulakatEkle(MulakatlarVM model, Guid? MulakatId)
+        public IActionResult DereceEkle(SoruDerecelerVM model, Guid? DereceId)
         {
-
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
-            if (MulakatId != null)
+            if (DereceId != null)
             {
-                var data = _mulakatOlusturBE.MulakatGuncelle(model, user);
+                var data = _derecelerBE.DereceGuncelle(model, user);
+
                 return RedirectToAction("Index");
             }
             else
             {
-                var data = _mulakatOlusturBE.MulakatEkle(model, user);
+                var data = _derecelerBE.DereceEkle(model, user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
@@ -76,35 +77,39 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
+        #endregion
 
-        public IActionResult Guncelle(Guid? id)
+        #region Guncelle
+        public ActionResult Guncelle(Guid? id)
         {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
             if (id != null)
             {
-                var data = _mulakatOlusturBE.MulakatGetir((Guid)id);
+                var data = _derecelerBE.DereceGetir((Guid)id);
                 return View(data.Data);
             }
             else
             {
                 return View();
             }
-        }
 
+        }
+        #endregion
+
+        #region DereceSil
         [HttpDelete]
-        public IActionResult MulakatSil(Guid id)
+        public IActionResult DereceSil(Guid id)
         {
             if (id == null)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
-            var data = _mulakatOlusturBE.MulakatSil(id);
+            var data = _derecelerBE.DereceSil(id);
             if (data.IsSuccess)
                 return Json(new { success = data.IsSuccess, message = data.Message });
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
-        }
+        } 
+        #endregion
     }
 }

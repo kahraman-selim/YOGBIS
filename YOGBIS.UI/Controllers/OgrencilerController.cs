@@ -11,7 +11,7 @@ using YOGBIS.Data.Contracts;
 
 namespace YOGBIS.UI.Controllers
 {
-
+    [Authorize(Roles = "Administrator")]
     public class OgrencilerController : Controller
     {
         

@@ -15,7 +15,7 @@ using YOGBIS.Data.Contracts;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     public class UlkelerController : Controller
     {
         #region Değişkenler

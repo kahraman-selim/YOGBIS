@@ -17,10 +17,10 @@
     }
 </style>
 <!-- Soru Blok-->
-<div class="row mt-4">
+<div class="row p-0">
     <div class="col-lg-2">
-        <div class="card shadow-lg mb-1" style="height:100px">
-            <h4 class="card-header text-center text-danger small">ADAY LİSTESİ - 15.04.2024</h4>
+        <div class="card shadow-lg" style="height:100px">
+            <h4 class="card-header text-center text-danger small">ADAY LİSTESİ - @DateTime.Now.ToShortDateString() </h4>
             <div class="card-body">
                 <p class="card-text text-center text-danger font-weight-bold">
                     <span id="dakika">00</span>
@@ -29,7 +29,7 @@
                 </p>
             </div>
         </div>
-        <div class="card shadow-lg mb-1" style="height:auto">
+        <div class="card shadow-lg" style="height:auto">
             <div class="card-body">
                 <div class="table-responsive">   
                     <table class="table table-bordered table-hover table-striped display responsive nowrap" id="AdayTable" style="width:100%" cellspacing="0">
@@ -114,16 +114,16 @@
                 <option value="2" id="okutman" title="Okutman">Okutman</option>
             </select>
         </div>
-        <div class="row input-group mb-2 col-lg-12">
+        <div class="row input-group col-lg-12 mb-2">
             <input type="number" class="form-control font-weight-bold text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
                    placeholder="Soru Numarasını Giriniz" id="soruno">
         </div>
-        <div class="row col-lg-12 mb-2">
+        <div class="row col-lg-12">
             <input type="submit" value="Mülakatı Başlat" class="btn btn-primary col-lg-12" id="btnBaslat" />
             <input type="submit" value="Mülakatı Bitir" class="btn btn-danger col-lg-12" id="btnBitir" />
         </div>
         <!-- Soru Blok-->
-        <div class="row col-lg-12 mb-2" id="soruBlok">
+        <div class="row col-lg-12" id="soruBlok">
             <div class="row">
                 <!--////////////////////////////////////////////////////-->
                 <div class="col-lg-3">

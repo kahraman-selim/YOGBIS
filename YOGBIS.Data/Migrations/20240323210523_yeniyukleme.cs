@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace YOGBIS.Data.Migrations
 {
-    public partial class ilkyukleme : Migration
+    public partial class yeniyukleme : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

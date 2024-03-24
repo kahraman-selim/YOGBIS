@@ -8,12 +8,12 @@
 }
 
 
-@if (DateTime.Now.Date < DateTime.Parse("01/03/2024").Date)
+@if (DateTime.Now.Date > DateTime.Parse("01/03/2024").Date)
  {
      <header>
             <h1 class="text-danger text-center">Hata</h1>
             <p class="text-danger text-center">Bu sayfaya erişim yetkiniz yok.</p>
-        </header>
+     </header>
  }
  else
  {

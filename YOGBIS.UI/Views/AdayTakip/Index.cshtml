@@ -1,0 +1,118 @@
+﻿@model YOGBIS.Common.VModels.SoruDerecelerVM
+@{
+    ViewData["Title"] = "Aday Takip";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css" >
+
+    #blink {
+        font-size: 14px;
+        font-weight: bold;   
+    }
+</style>
+
+<ol class="breadcrumb m-o">
+    <li class="m-0">
+        <a asp-controller="AdayTakip" asp-action="Index"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
+    </li>
+    <li class="ml-3 mt-1 mr-1 pull-right">
+        <h4 class="pull-right text-danger small">ADAY LİSTESİ - @DateTime.Now.ToShortDateString()</h4>
+    </li>
+</ol>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card shadow-lg" style="height:auto">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped display responsive nowrap" id="AdayTable" style="width:100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="width:auto;font-size:13px" class="text-center">Sn</th>
+                                <th style="width:auto;font-size:13px" class="text-center">Ad Soyad</th>
+                                <th style="width:auto;font-size:13px" class="text-center">Komisyon</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="width:auto;font-size:12px;font-weight:bold;" class="text-center">1</td>
+                                <td style="width:auto"><a href="" style="font-size:12px,font-weight:bold;">Ahmet GÜZELLER</a></td>
+                                <td id="blink">
+                                    <p class="text-left m-0">
+                                        <span class="badge text-light text-center w-100 h-100" style="background-color: darkorange;font-weight:bold;font-size:14px">
+                                            <a class="text-center">Komisyon-12</a>
+                                        </span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:auto;font-size:12px" class="text-center">2</td>
+                                <td style="width:auto"><a href="" style="font-size:12px">Bayram HANCI</a></td>
+                                <td id="blink">
+                                    <p class="text-left m-0">
+                                        <span class="badge text-light text-center w-100" style="background-color: darkorange;">
+                                            <a class="text-center">Komisyon-5</a>
+                                        </span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><h6>3</h6></td>
+                                <td><h6>Ahmet YAŞAR</h6></td>
+                                <td><span class="badge text-warning">Çağrıldı</span></td>
+                            </tr>
+                            <tr>
+                                <td><h6>4</h6></td>
+                                <td><h6>Bayram DURSUN</h6></td>
+                                <td><span class="badge text-secondary">Bekliyor</span></td>
+                            </tr>
+                            <tr>
+                                <td><h6>5</h6></td>
+                                <td><h6>Bayram DURSUN</h6></td>
+                                <td><span class="badge text-secondary">Bekliyor</span></td>
+                            </tr>
+                            <tr>
+                                <td><h6>6</h6></td>
+                                <td><h6>Bayram DURSUN</h6></td>
+                                <td><span class="badge text-secondary">Bekliyor</span></td>
+                            </tr>
+                            <tr>
+                                <td><h6>7</h6></td>
+                                <td><h6>Bayram DURSUN</h6></td>
+                                <td><span class="badge text-secondary">Bekliyor</span></td>
+                            </tr>
+                            <tr>
+                                <td><h6>8</h6></td>
+                                <td><h6>Bayram DURSUN</h6></td>
+                                <td><span class="badge text-secondary">Bekliyor</span></td>
+                            </tr>
+                            <tr>
+                                <td><h6>9</h6></td>
+                                <td><h6>Bayram DURSUN</h6></td>
+                                <td><span class="badge text-secondary">Bekliyor</span></td>
+                            </tr>
+                            <tr>
+                                <td><h6>10</h6></td>
+                                <td><h6>Bayram DURSUN</h6></td>
+                                <td><span class="badge text-secondary">Bekliyor</span></td>
+                            </tr>
+                        </tbody>                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        var blink =
+            document.getElementById('blink');
+
+        setInterval(function () {
+            blink.style.opacity =
+                (blink.style.opacity == 0 ? 1 : 0);
+        }, 1000);
+    </script>
+}
+

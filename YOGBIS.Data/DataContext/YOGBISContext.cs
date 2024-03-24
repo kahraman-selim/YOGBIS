@@ -44,22 +44,22 @@ namespace YOGBIS.Data.DataContext
             });
             #endregion
 
-            //#region Kıtalar
-            //builder.Entity<Kitalar>().HasData(
-            //new Kitalar()
-            //{ KitaId = Guid.NewGuid(), KitaAdi = "Afrika", KitaAciklama = "Afrika Kıtası"},
-            //new Kitalar()
-            //{ KitaId = Guid.NewGuid(), KitaAdi = "Asya", KitaAciklama = "Asya Kıtası"},
-            //new Kitalar()
-            //{ KitaId = Guid.NewGuid(), KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası"},
-            //new Kitalar()
-            //{ KitaId = Guid.NewGuid(), KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası"},
-            //new Kitalar()
-            //{ KitaId = Guid.NewGuid(), KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası"},
-            //new Kitalar()
-            //{ KitaId = Guid.NewGuid(), KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası"}
-            //);
-            //#endregion
+            /*#region Kıtalar
+                builder.Entity<Kitalar>().HasData(
+                new Kitalar()
+                { KitaId = Guid.NewGuid(), KitaAdi = "Afrika", KitaAciklama = "Afrika Kıtası"},
+                new Kitalar()
+                { KitaId = Guid.NewGuid(), KitaAdi = "Asya", KitaAciklama = "Asya Kıtası"},
+                new Kitalar()
+                { KitaId = Guid.NewGuid(), KitaAdi = "Avrupa", KitaAciklama = "Avrupa Kıtası"},
+                new Kitalar()
+                { KitaId = Guid.NewGuid(), KitaAdi = "Avustralya", KitaAciklama = "Avustralya Kıtası"},
+                new Kitalar()
+                { KitaId = Guid.NewGuid(), KitaAdi = "Güney Amerika", KitaAciklama = "Güney Amerika Kıtası"},
+                new Kitalar()
+                { KitaId = Guid.NewGuid(), KitaAdi = "Kuzey Amerika", KitaAciklama = "Kuzey Amerika Kıtası"}
+                );
+            #endregion*/
 
             #region FP
             builder.Entity<SoruKategori>()
