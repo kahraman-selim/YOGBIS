@@ -22,7 +22,7 @@ namespace YOGBIS.Common.ConstantsModels
             var defaultUser = new Kullanici
             {
                 UserName = "Administrator",
-                Email = "yogbis@meb.gov.tr", //yogbis@yogbis.com.tr
+                Email = "yogbis@yogbis.com.tr", //bu alanı yükleme öncesi değiştir
                 Ad = "YOGBİS",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
