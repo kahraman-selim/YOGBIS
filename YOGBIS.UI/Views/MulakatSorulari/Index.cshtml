@@ -41,10 +41,10 @@
                         <th>Soru Sıra No</th>
                         <th>Soru No</th>
                         <th>Derecesi</th>
-                        <th>Kategori No</th>
-                        <th>Kategori</th>
+                        <th>Kategori Adı</th>                    
                         <th>Soru</th>
                         <th>Cevap</th>
+                        <th>Sınav Adı</th>
                         <th class="text-center">Düzenle</th>
                         <th class="text-center">Sil</th>
                     </tr>
@@ -59,12 +59,12 @@
                             <tr>
                                 <td>@sirano</td>
                                 <td>@item.SoruSiraNo</td>
-                                <td>@item.SoruId</td>
-                                <td>@item.DereceAdi</td>
-                                <td>@item.SoruKategoriId</td>
-                                <td>@item.SoruKategoriAdi</td>
+                                <td>@item.SoruNo</td>
+                                <td>@item.SoruDereceAdi</td>
+                                <td>@item.KategoriAdi</td>                                
                                 <td>@item.Soru</td>
                                 <td>@item.Cevap</td>
+                                <td>@item.SinavKategoriAdi</td>
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-info" title="Düzenle" asp-controller="MulakatSorulari" asp-action="MulakatSorusuGuncelle" asp-route-id="@item.MulakatSorulariId">
                                         <i class="fas fa-edit"></i>

@@ -63,9 +63,9 @@ namespace YOGBIS.Common.VModels
         public string MYSSonuc { get; set; }
         public string MulakatDurum { get; set; }
         public string IlMemGorus { get; set; }
-        public string MulakatAdi { get; set; }
-        public Guid MulakatId { get; set; }
-        public MulakatlarVM Mulakatlar { get; set; }
+        //public string MulakatAdi { get; set; }
+        //public Guid MulakatId { get; set; }
+        //public MulakatlarVM Mulakatlar { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }

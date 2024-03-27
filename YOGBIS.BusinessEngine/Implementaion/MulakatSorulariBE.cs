@@ -14,14 +14,20 @@ namespace YOGBIS.BusinessEngine.Implementaion
 {
     public class MulakatSorulariBE : IMulakatSorulariBE
     {
+        #region Değişkenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        #endregion
+
+        #region Donustucuruler
         public MulakatSorulariBE(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+        #endregion
 
+        #region MulakatSorulariGetir
         public Result<List<MulakatSorulariVM>> MulakatSorulariGetir()
         {
             //1. Yöntem
@@ -63,12 +69,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
             //    return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
             //}
             //#endregion
-        }
+        } 
+        #endregion
 
-        public Result<MulakatSorulariVM> MulakatSorulariGetir(Guid id)
+        #region MulakatSorulariGetir
+        public Result<MulakatSorulariVM> MulakatSorulariGetir(int SoruSiraNo)
         {
-            var data = _unitOfWork.mulakatSorulariRepository.Get(id);
-            if (data!=null)
+            var data = _unitOfWork.mulakatSorulariRepository.GetFirstOrDefault(s=> s.SoruSiraNo == SoruSiraNo);
+            if (data != null)
             {
                 var mulakatSoru = _mapper.Map<MulakatSorulari, MulakatSorulariVM>(data);
                 return new Result<MulakatSorulariVM>(true, ResultConstant.RecordFound, mulakatSoru);
@@ -77,11 +85,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<MulakatSorulariVM>(false, ResultConstant.RecordNotFound);
             }
-        }
+        } 
+        #endregion
 
+        #region MulakatSorusuEkle
         public Result<MulakatSorulariVM> MulakatSorusuEkle(MulakatSorulariVM model, SessionContext user)
         {
-            if (model!=null)
+            if (model != null)
             {
                 try
                 {
@@ -94,15 +104,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 catch (Exception ex)
                 {
 
-                    return new Result<MulakatSorulariVM>(false, ResultConstant.RecordCreateNotSuccess +" "+ ex.Message.ToString());
+                    return new Result<MulakatSorulariVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
                 }
             }
             else
             {
                 return new Result<MulakatSorulariVM>(false, "Boş veri olamaz");
             }
-        }
+        } 
+        #endregion
 
+        #region MulakatSorusuGuncelle
         public Result<MulakatSorulariVM> MulakatSorusuGuncelle(MulakatSorulariVM model, SessionContext user)
         {
             if (model != null)
@@ -125,12 +137,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<MulakatSorulariVM>(false, "Boş veri olamaz");
             }
-        }
+        } 
+        #endregion
 
+        #region MulakatSorusuSil
         public Result<bool> MulakatSorusuSil(Guid id)
         {
             var data = _unitOfWork.mulakatSorulariRepository.Get(id);
-            if (data!=null)
+            if (data != null)
             {
                 _unitOfWork.mulakatSorulariRepository.Remove(data);
                 _unitOfWork.Save();
@@ -140,8 +154,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
-        }
-       
+        } 
+        #endregion
+
+        #region KullanilmayanYontem
         //public Result<List<MulakatSorulariVM>> MulakatSorulariGetir(Guid id, string derece)
         //{
         //    var data = _unitOfWork.mulakatSorulariRepository.GetAll(k => k.SoruSiraNo == id).ToList(); //&& k.Dereceler.DereceAdi == derece (parantez içi eklenecek)
@@ -168,6 +184,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         //    {
         //        return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
         //    }
-        //}
+        //} 
+        #endregion
     }
 }

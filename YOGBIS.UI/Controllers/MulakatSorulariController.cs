@@ -80,18 +80,18 @@ namespace YOGBIS.UI.Controllers
             }
         }
         
-        [HttpGet]
-        public IActionResult MulakatSoruGuncelle(Guid id)
+        /*[HttpGet]
+        public IActionResult MulakatSoruGuncelle(int SoruSiraNo)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
             if (id == null)
                 return View();
-            var data = _mulakatSorulariBE.MulakatSorulariGetir(id);
+            var data = _mulakatSorulariBE.MulakatSorulariGetir(int SoruSiraNo);
             if (data.IsSuccess)
                 return View(data.Data);
             return View();
-        }
+        }*/
         
         [ValidateAntiForgeryToken]
         [HttpPost]

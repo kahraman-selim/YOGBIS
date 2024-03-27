@@ -69,18 +69,18 @@ namespace YOGBIS.Data.DbModels
         public string AritmetikOrtalama { get; set; }
         public string SonucDurumu { get; set; }
         public int? GorevDurumu { get; set; }        
-        public Guid MulakatId { get; set; }
-        [ForeignKey("MulakatId")]
-        public Mulakatlar Mulakatlar { get; set; }
+        //public Guid MulakatId { get; set; }
+        //[ForeignKey("MulakatId")]
+        //public Mulakatlar Mulakatlar { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
         public ICollection<FotoGaleri> FotoGaleri { get; set; }
-        public List<AdayDDK> AdayDDK { get; set; }
+        //public List<AdayDDK> AdayDDK { get; set; }
         public List<AdayNot> AdayNot { get; set; }
-        public List<AdayGorevKaydi> AdayGorevKaydi { get; set; }
-        public List<EPostaAdresleri> EpostaAdresleri { get; set; }
-        public List<Telefonlar> Telefonlar { get; set; }
-        public List<IkametAdresleri> IkametAdresleri { get; set; }
+        //public List<AdayGorevKaydi> AdayGorevKaydi { get; set; }
+        //public List<EPostaAdresleri> EpostaAdresleri { get; set; }
+        //public List<Telefonlar> Telefonlar { get; set; }
+        //public List<IkametAdresleri> IkametAdresleri { get; set; }
     }
 }

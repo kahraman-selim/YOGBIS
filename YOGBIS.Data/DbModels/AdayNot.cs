@@ -17,7 +17,7 @@ namespace YOGBIS.Data.DbModels
         public int KomisyonUyeSiraId { get; set; }
         public Guid NotKategoriId { get; set; }
         public int Not { get; set; }
-        public Guid MulakatId { get; set; }
+        //public Guid MulakatId { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

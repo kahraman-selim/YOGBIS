@@ -33,7 +33,7 @@ namespace YOGBIS.Common.VModels
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
-        public List<MulakatSorulariVM> MulakatSorularis { get; set; }
-        public List<AdaylarVM> Adaylars { get; set; }
+        //public List<MulakatSorulariVM> MulakatSorularis { get; set; }
+        //public List<AdaylarVM> Adaylars { get; set; }
     }
 }
