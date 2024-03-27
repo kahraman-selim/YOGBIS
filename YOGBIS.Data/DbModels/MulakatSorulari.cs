@@ -6,9 +6,9 @@ namespace YOGBIS.Data.DbModels
 {
     public class MulakatSorulari:Base
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public Guid MulakatSorulariId { get; set; } //accessden kimlik ile birleştir
+        public int MulakatSorulariId { get; set; } //accessden kimlik ile birleştir
         public int SoruSiraNo { get; set; }
         //public Guid SoruId { get; set; }
         public int SoruNo { get; set; }
@@ -21,7 +21,7 @@ namespace YOGBIS.Data.DbModels
         public string Cevap { get; set; }
         public int SinavKategoriID { get; set; }
         public string SinavKategoriAdi { get; set; }
-        public Guid MulakatId { get; set; }
+        public string MulakatId { get; set; }
 
         //[ForeignKey("MulakatId")]
         //public Mulakatlar Mulakatlar { get; set; }

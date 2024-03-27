@@ -140,10 +140,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
         } 
         #endregion
 
-        #region MulakatSorusuSil
-        public Result<bool> MulakatSorusuSil(Guid id)
+        /*#region MulakatSorusuSil
+        public Result<bool> MulakatSorusuSil(int id)
         {
-            var data = _unitOfWork.mulakatSorulariRepository.Get(id);
+            var data = _unitOfWork.mulakatSorulariRepository.Get(int id);
             if (data != null)
             {
                 _unitOfWork.mulakatSorulariRepository.Remove(data);
@@ -155,7 +155,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         } 
-        #endregion
+        #endregion*/
 
         #region KullanilmayanYontem
         //public Result<List<MulakatSorulariVM>> MulakatSorulariGetir(Guid id, string derece)

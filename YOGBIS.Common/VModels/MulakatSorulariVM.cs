@@ -6,9 +6,9 @@ namespace YOGBIS.Common.VModels
 {
     public class MulakatSorulariVM:BaseVM
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public Guid MulakatSorulariId { get; set; }
+        public int MulakatSorulariId { get; set; }
                 
         //[Required(ErrorMessage = "Soru Sıra Numarası yazınız...")]
         public int SoruSiraNo { get; set; }
@@ -35,7 +35,7 @@ namespace YOGBIS.Common.VModels
         public string Cevap { get; set; }
         public int SinavKategoriID { get; set; }
         public string SinavKategoriAdi { get; set; }
-        public Guid MulakatId { get; set; }
+        public string MulakatId { get; set; }
         //public string MulakatAdi { get; set; }
         //public MulakatlarVM Mulakatlar { get; set; }
         public string KaydedenId { get; set; }

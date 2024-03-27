@@ -13,13 +13,19 @@ namespace YOGBIS.UI.Controllers
     [Authorize(Roles = "Administrator")]
     public class MulakatSorulariController : Controller
     {
-       
+
+        #region Değişkenler
         private readonly IMulakatSorulariBE _mulakatSorulariBE;
+        #endregion
+
+        #region Dönüştürücüler
         public MulakatSorulariController(IMulakatSorulariBE mulakatSorulariBE)
         {
             _mulakatSorulariBE = mulakatSorulariBE;
-        }        
-        
+        } 
+        #endregion
+
+        #region Index
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -32,12 +38,17 @@ namespace YOGBIS.UI.Controllers
             }
             return View();
         }
+        #endregion
+
+        #region MulakatSoruEkle
         public IActionResult MulakatSoruEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             return View();
-        }        
-        
+        }
+        #endregion
+
+        #region MulakatSoruEklePost
         [HttpPost]
         public IActionResult MulakatSoruEkle(MulakatSorulariVM model)
         {
@@ -67,7 +78,7 @@ namespace YOGBIS.UI.Controllers
 
             if (ModelState.IsValid)
             {
-                var data = _mulakatSorulariBE.MulakatSorusuEkle(model,user);
+                var data = _mulakatSorulariBE.MulakatSorusuEkle(model, user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
@@ -79,7 +90,8 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
-        
+        #endregion
+
         /*[HttpGet]
         public IActionResult MulakatSoruGuncelle(int SoruSiraNo)
         {
@@ -92,7 +104,9 @@ namespace YOGBIS.UI.Controllers
                 return View(data.Data);
             return View();
         }*/
-        
+
+        #region MulakatSoruGuncelle
+
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult MulakatSoruGuncelle(MulakatSorulariVM model)
@@ -101,7 +115,7 @@ namespace YOGBIS.UI.Controllers
 
             if (ModelState.IsValid)
             {
-                var data = _mulakatSorulariBE.MulakatSorusuGuncelle(model,user);
+                var data = _mulakatSorulariBE.MulakatSorusuGuncelle(model, user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
@@ -112,22 +126,25 @@ namespace YOGBIS.UI.Controllers
             {
                 return View(model);
             }
-        }
+        } 
+        #endregion
 
-        
-        [HttpDelete]
-        public IActionResult MulakatSoruSil(Guid id)
+
+        #region MulakatSoruSil
+        /*[HttpDelete]
+        public IActionResult MulakatSoruSil(int SoruSiraNo)
         {
             if (id == null)
                 return Json(new {success = false, message = "Silmek için Kayıt Seçiniz" });
 
-            var data = _mulakatSorulariBE.MulakatSorusuSil(id);
+            var data = _mulakatSorulariBE.MulakatSorusuSil(SoruSiraNo);
             if (data.IsSuccess)
                 return Json(new { success = data.IsSuccess, message = data.Message });
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
-        }
-  
+        }*/
+        #endregion
+
     }
 }
