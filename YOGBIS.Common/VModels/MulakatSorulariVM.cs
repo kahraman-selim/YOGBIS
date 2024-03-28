@@ -8,7 +8,7 @@ namespace YOGBIS.Common.VModels
     {
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int MulakatSorulariId { get; set; }
+        public Guid MulakatSorulariId { get; set; }
                 
         //[Required(ErrorMessage = "Soru Sıra Numarası yazınız...")]
         public int SoruSiraNo { get; set; }

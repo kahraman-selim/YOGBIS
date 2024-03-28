@@ -92,18 +92,18 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        /*[HttpGet]
-        public IActionResult MulakatSoruGuncelle(int SoruSiraNo)
+        [HttpGet]
+        public IActionResult MulakatSoruGuncelle(Guid id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
             if (id == null)
                 return View();
-            var data = _mulakatSorulariBE.MulakatSorulariGetir(int SoruSiraNo);
+            var data = _mulakatSorulariBE.MulakatSorulariGetir(id);
             if (data.IsSuccess)
                 return View(data.Data);
             return View();
-        }*/
+        }
 
         #region MulakatSoruGuncelle
 

@@ -10,7 +10,7 @@ namespace YOGBIS.BusinessEngine.Contracts
     {
         Result<List<MulakatSorulariVM>> MulakatSorulariGetir();
         Result<MulakatSorulariVM> MulakatSorusuEkle(MulakatSorulariVM model, SessionContext user); 
-        Result<MulakatSorulariVM> MulakatSorulariGetir(int SoruSiraNo);
+        Result<MulakatSorulariVM> MulakatSorulariGetir(Guid id);
         Result<MulakatSorulariVM> MulakatSorusuGuncelle(MulakatSorulariVM model, SessionContext user);        
         //Result<bool> MulakatSorusuSil(int id);
 

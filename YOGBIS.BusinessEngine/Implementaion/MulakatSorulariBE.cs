@@ -73,9 +73,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region MulakatSorulariGetir
-        public Result<MulakatSorulariVM> MulakatSorulariGetir(int SoruSiraNo)
+        public Result<MulakatSorulariVM> MulakatSorulariGetir(Guid id)
         {
-            var data = _unitOfWork.mulakatSorulariRepository.GetFirstOrDefault(s=> s.SoruSiraNo == SoruSiraNo);
+            var data = _unitOfWork.mulakatSorulariRepository.Get(id);
             if (data != null)
             {
                 var mulakatSoru = _mapper.Map<MulakatSorulari, MulakatSorulariVM>(data);

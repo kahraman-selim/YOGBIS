@@ -8,7 +8,7 @@ namespace YOGBIS.Data.DbModels
     {
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int MulakatSorulariId { get; set; } //accessden kimlik ile birleştir
+        public Guid MulakatSorulariId { get; set; } //accessden kimlik ile birleştir
         public int SoruSiraNo { get; set; }
         //public Guid SoruId { get; set; }
         public int SoruNo { get; set; }

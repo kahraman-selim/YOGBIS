@@ -1156,9 +1156,9 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.MulakatSorulari", b =>
                 {
-                    b.Property<int>("MulakatSorulariId")
+                    b.Property<byte[]>("MulakatSorulariId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("varbinary(16)");
 
                     b.Property<string>("Cevap")
                         .HasColumnType("text");
