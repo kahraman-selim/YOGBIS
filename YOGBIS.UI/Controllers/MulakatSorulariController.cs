@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using YOGBIS.BusinessEngine.Contracts;
+using YOGBIS.BusinessEngine.Implementaion;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
@@ -26,21 +27,24 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
-        public IActionResult Index()
+        public IActionResult Index(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            var data = _mulakatSorulariBE.MulakatSorulariGetir();
-            if (data.IsSuccess)
+            if (id != null)
             {
-                var result = data.Data;
-                return View(result);
+                var data = _mulakatSorulariBE.MulakatSoruGetir((Guid)id);
+                return View(data.Data);
             }
-            return View();
+            else
+            {
+                return View();
+            }
+            
         }
         #endregion
 
-        #region MulakatSoruEkle
+        #region MulakatSoruEkle(Get)
         public IActionResult MulakatSoruEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -48,102 +52,63 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region MulakatSoruEklePost
-        [HttpPost]
-        public IActionResult MulakatSoruEkle(MulakatSorulariVM model)
-        {
-            #region Ekleme ve Güncelleme Örneği
-            //if (model.MulakatSorulariId>0)
-            //{
-            //    var data = _mulakatSorulariBE.MulakatSorusuGuncelle(model);
-            //}
-            //else
-            //{
-            //    if (ModelState.IsValid)
-            //    {
-            //        var data = _mulakatSorulariBE.MulakatSorusuEkle(model);
-            //        if (data.IsSuccess)
-            //        {
-            //            return RedirectToAction("Index");
-            //        }
-            //        return View(model);
-            //    }
-            //    else
-            //    {
-            //        return View(model);
-            //    }
-            //} 
-            #endregion
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
-            if (ModelState.IsValid)
-            {
-                var data = _mulakatSorulariBE.MulakatSorusuEkle(model, user);
-                if (data.IsSuccess)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View(model);
-            }
-            else
-            {
-                return View(model);
-            }
-        }
-        #endregion
-
-        [HttpGet]
-        public IActionResult MulakatSoruGuncelle(Guid id)
-        {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
-            if (id == null)
-                return View();
-            var data = _mulakatSorulariBE.MulakatSorulariGetir(id);
-            if (data.IsSuccess)
-                return View(data.Data);
-            return View();
-        }
-
-        #region MulakatSoruGuncelle
-
+        #region MulakatSoruEkle(Post)
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult MulakatSoruGuncelle(MulakatSorulariVM model)
+        public IActionResult MulakatSoruEkle(MulakatSorulariVM model, Guid? MulakatSorulariId)
         {
+
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            if (ModelState.IsValid)
+            if (MulakatSorulariId != null)
             {
-                var data = _mulakatSorulariBE.MulakatSorusuGuncelle(model, user);
+                var data = _mulakatSorulariBE.MulakatSoruGuncelle(model, user);
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var data = _mulakatSorulariBE.MulakatSoruEkle(model, user);
                 if (data.IsSuccess)
                 {
                     return RedirectToAction("Index");
                 }
                 return View(model);
             }
-            else
-            {
-                return View(model);
-            }
-        } 
+        }
         #endregion
 
+        #region Guncelle
+        public ActionResult Guncelle(Guid? id)
+        {
+
+            if (id != null)
+            {
+                var data = _mulakatSorulariBE.MulakatSoruGetir((Guid)id);
+                return View(data.Data);
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+        #endregion
 
         #region MulakatSoruSil
-        /*[HttpDelete]
-        public IActionResult MulakatSoruSil(int SoruSiraNo)
+        [HttpDelete]
+        public IActionResult MulakatSoruSil(Guid id)
         {
             if (id == null)
                 return Json(new {success = false, message = "Silmek için Kayıt Seçiniz" });
 
-            var data = _mulakatSorulariBE.MulakatSorusuSil(SoruSiraNo);
+            var data = _mulakatSorulariBE.MulakatSorusuSil(id);
             if (data.IsSuccess)
                 return Json(new { success = data.IsSuccess, message = data.Message });
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
-        }*/
+        }
         #endregion
 
     }

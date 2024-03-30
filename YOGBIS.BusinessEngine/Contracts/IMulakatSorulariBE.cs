@@ -9,11 +9,11 @@ namespace YOGBIS.BusinessEngine.Contracts
     public interface IMulakatSorulariBE
     {
         Result<List<MulakatSorulariVM>> MulakatSorulariGetir();
-        Result<MulakatSorulariVM> MulakatSorusuEkle(MulakatSorulariVM model, SessionContext user); 
-        Result<MulakatSorulariVM> MulakatSorulariGetir(Guid id);
-        Result<MulakatSorulariVM> MulakatSorusuGuncelle(MulakatSorulariVM model, SessionContext user);        
-        //Result<bool> MulakatSorusuSil(int id);
-
-        //Result<List<MulakatSorulariVM>> MulakatSorulariGetir(Guid id, string derece);
+        Result<MulakatSorulariVM> MulakatSoruGetir(Guid id);
+        Result<int> MulakatSoruGetirSoruSiraNo(Guid id);
+        Result<MulakatSorulariVM> MulakatSoruEkle(MulakatSorulariVM model, SessionContext user);        
+        Result<MulakatSorulariVM> MulakatSoruGuncelle(MulakatSorulariVM model, SessionContext user);        
+        Result<bool> MulakatSorusuSil(Guid id);
+        Result<List<MulakatSorulariVM>> MulakatSoruGetirKullaniciId(string userId);
     }
 }

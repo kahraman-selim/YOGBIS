@@ -31,65 +31,113 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<MulakatSorulariVM>> MulakatSorulariGetir()
         {
             //1. Yöntem
-            var data = _unitOfWork.mulakatSorulariRepository.GetAll().ToList();
+            var data = _unitOfWork.mulakatSorulariRepository.GetAll(includeProperties: "Kullanici").ToList();
             var mulakatSorulari = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
-            return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, mulakatSorulari);
 
-            //#region 2.Yöntem
-            //var data = _unitOfWork.mulakatSorulariRepository.GetAll(includeProperties: "SoruBankasi,SoruKategoriler,Dereceler,Mulakatlar,Kullanici").ToList();
-            //var soruBankasi = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
+            if (data != null)
+            {
+                List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
 
-            //if (data != null)
-            //{
-            //    List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
+                foreach (var item in data)
+                {
+                    returnData.Add(new MulakatSorulariVM()
+                    {
+                        MulakatSorulariId=item.MulakatSorulariId,
+                        Cevap=item.Cevap,
+                        KayitTarihi=item.KayitTarihi,
+                        MulakatId=item.MulakatId,
+                        SinavKategoriAdi=item.SinavKategoriAdi,
+                        SinavKategoriID=item.SinavKategoriID,
+                        Soru=item.Soru,
+                        SoruDereceAdi=item.SoruDereceAdi,
+                        SoruDereceId=item.SoruDereceId,
+                        SoruNo=item.SoruNo,
+                        SoruSiraNo=item.SoruSiraNo,
+                        KategoriAdi=item.KategoriAdi,
+                        KategoriID=item.KategoriID,
+                        KaydedenId= item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+                    });
+                }
 
-            //    foreach (var item in data)
-            //    {
-            //        returnData.Add(new MulakatSorulariVM()
-            //        {
-            //            MulakatSorulariId=item.MulakatSorulariId,
-            //            SoruSiraNo=item.SoruSiraNo,
-            //            //SoruId=item.SoruBankasi.SoruBankasiId,
-            //            //SoruKategoriId=item.SoruKategoriler.SoruKategorilerId,
-            //            //SoruKategoriAdi=item.SoruKategoriler.SoruKategorilerAdi,
-            //            //DereceId=item.Dereceler.DereceId,
-            //            //DereceAdi=item.Dereceler.DereceAdi,
-            //            Soru=item.Soru,
-            //            Cevap=item.Cevap,
-            //            MulakatId=item.Mulakatlar.MulakatId,
-            //            MulakatAdi=item.Mulakatlar.MulakatAdi,
-            //            KaydedenId =item.Kullanici.Id,
-            //            //KullaniciAdi=item.Kullanici.Ad+" "+item.Kullanici.Soyad
-            //        });
-            //    }
-            //    return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
-            //}
-            //else
-            //{
-            //    return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
-            //}
-            //#endregion
-        } 
+                return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else 
+            {
+                return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
+            }
+
+            #region 2.Yöntem
+            /*var data = _unitOfWork.mulakatSorulariRepository.GetAll(includeProperties: "SoruBankasi,SoruKategoriler,Dereceler,Mulakatlar,Kullanici").ToList();
+            var soruBankasi = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
+
+            if (data != null)
+            {
+                List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new MulakatSorulariVM()
+                    {
+                        MulakatSorulariId=item.MulakatSorulariId,
+                        SoruSiraNo=item.SoruSiraNo,
+                        //SoruId=item.SoruBankasi.SoruBankasiId,
+                        //SoruKategoriId=item.SoruKategoriler.SoruKategorilerId,
+                        //SoruKategoriAdi=item.SoruKategoriler.SoruKategorilerAdi,
+                        //DereceId=item.Dereceler.DereceId,
+                        //DereceAdi=item.Dereceler.DereceAdi,
+                         Soru=item.Soru,
+                        Cevap=item.Cevap,
+                        MulakatId=item.Mulakatlar.MulakatId,
+                        MulakatAdi=item.Mulakatlar.MulakatAdi,
+                        KaydedenId =item.Kullanici.Id,
+                        //KullaniciAdi=item.Kullanici.Ad+" "+item.Kullanici.Soyad
+                    });
+                }
+                return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
+            }*/
+            #endregion
+        }
         #endregion
 
-        #region MulakatSorulariGetir
-        public Result<MulakatSorulariVM> MulakatSorulariGetir(Guid id)
+        #region MulakatSoruGetir(Guid id)
+        public Result<MulakatSorulariVM> MulakatSoruGetir(Guid id)
         {
             var data = _unitOfWork.mulakatSorulariRepository.Get(id);
             if (data != null)
             {
-                var mulakatSoru = _mapper.Map<MulakatSorulari, MulakatSorulariVM>(data);
-                return new Result<MulakatSorulariVM>(true, ResultConstant.RecordFound, mulakatSoru);
+                var mulakatsorulari = _mapper.Map<MulakatSorulari, MulakatSorulariVM>(data);
+                return new Result<MulakatSorulariVM>(true, ResultConstant.RecordFound, mulakatsorulari);
             }
             else
             {
                 return new Result<MulakatSorulariVM>(false, ResultConstant.RecordNotFound);
             }
-        } 
+        }
         #endregion
 
-        #region MulakatSorusuEkle
-        public Result<MulakatSorulariVM> MulakatSorusuEkle(MulakatSorulariVM model, SessionContext user)
+        #region MulakatSoruGetirSoruSiraNo(Guid id)
+        public Result<int> MulakatSoruGetirSoruSiraNo(Guid id)
+        {
+            var data = _unitOfWork.mulakatSorulariRepository.Get(id);
+            if (data != null)
+            {
+                var sorusirano = data.SoruSiraNo;
+                return new Result<int>(true, ResultConstant.RecordFound, sorusirano);
+            }
+            else
+            {
+                return new Result<int>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+        #region MulakatSoruEkle
+        public Result<MulakatSorulariVM> MulakatSoruEkle(MulakatSorulariVM model, SessionContext user)
         {
             if (model != null)
             {
@@ -111,11 +159,11 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<MulakatSorulariVM>(false, "Boş veri olamaz");
             }
-        } 
+        }
         #endregion
 
-        #region MulakatSorusuGuncelle
-        public Result<MulakatSorulariVM> MulakatSorusuGuncelle(MulakatSorulariVM model, SessionContext user)
+        #region MulakatSoruGuncelle
+        public Result<MulakatSorulariVM> MulakatSoruGuncelle(MulakatSorulariVM model, SessionContext user)
         {
             if (model != null)
             {
@@ -137,13 +185,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<MulakatSorulariVM>(false, "Boş veri olamaz");
             }
-        } 
+        }
         #endregion
 
-        /*#region MulakatSorusuSil
-        public Result<bool> MulakatSorusuSil(int id)
+        #region MulakatSorusuSil
+        public Result<bool> MulakatSorusuSil(Guid id)
         {
-            var data = _unitOfWork.mulakatSorulariRepository.Get(int id);
+            var data = _unitOfWork.mulakatSorulariRepository.Get(id);
             if (data != null)
             {
                 _unitOfWork.mulakatSorulariRepository.Remove(data);
@@ -154,8 +202,48 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
-        } 
-        #endregion*/
+        }
+        #endregion
+
+        #region MulakatSoruGetirKullaniciId
+        public Result<List<MulakatSorulariVM>> MulakatSoruGetirKullaniciId(string userId)
+        {
+            var data = _unitOfWork.mulakatSorulariRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici").ToList();
+            if (data != null)
+            {
+                List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new MulakatSorulariVM()
+                    {
+                        MulakatSorulariId = item.MulakatSorulariId,
+                        Cevap = item.Cevap,
+                        KayitTarihi = item.KayitTarihi,
+                        MulakatId = item.MulakatId,
+                        SinavKategoriAdi = item.SinavKategoriAdi,
+                        SinavKategoriID = item.SinavKategoriID,
+                        Soru = item.Soru,
+                        SoruDereceAdi = item.SoruDereceAdi,
+                        SoruDereceId = item.SoruDereceId,
+                        SoruNo = item.SoruNo,
+                        SoruSiraNo = item.SoruSiraNo,
+                        KategoriAdi = item.KategoriAdi,
+                        KategoriID = item.KategoriID,
+                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+                    });
+                }
+                return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+              
 
         #region KullanilmayanYontem
         //public Result<List<MulakatSorulariVM>> MulakatSorulariGetir(Guid id, string derece)

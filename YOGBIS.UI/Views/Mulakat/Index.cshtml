@@ -1,7 +1,7 @@
 ﻿@*@model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>*@
 @{
     ViewData["Title"] = "Index";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style type="text/css">
     #soruBlok {
@@ -16,292 +16,122 @@
         display: none;
     }
 </style>
-<!-- Soru Blok-->
-<div class="row p-0">
-    <div class="col-lg-2">
-        <div class="card shadow-lg" style="height:100px">
-            <h4 class="card-header text-center text-danger small">ADAY LİSTESİ - @DateTime.Now.ToShortDateString() </h4>
+
+<!-- Aday Blok -->
+<div class="row m-0">
+    <div class="col-lg-12">
+        <div class="card shadow-lg" style="height:auto">
+            <h4 class="card-header text-center text-danger small">ADAY BİLGİLERİ - @DateTime.Now.ToShortDateString() </h4>
             <div class="card-body">
                 <p class="card-text text-center text-danger font-weight-bold">
-                    <span id="dakika">00</span>
-                    <span id="sayac">:</span>
-                    <span id="saniye">00</span>
+                    <span id="adsoyad">Aday Adı Soyadı</span>
+                    <span>-</span>
+                    <span id="derece">Öğretmen</span>
+                    <span>-</span>
+                    <span id="ulke">Ülke Grubu</span>
                 </p>
             </div>
         </div>
         <div class="card shadow-lg" style="height:auto">
             <div class="card-body">
-                <div class="table-responsive">   
-                    <table class="table table-bordered table-hover table-striped display responsive nowrap" id="AdayTable" style="width:100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>SN</th>
-                                <th>Ad Soyad</th>
-                                <th>Durumu</th>
-                            </tr>
-                            <tbody>
-                                <tr>
-                                    <td><h6>1</h6></td>
-                                    <td style="width:300px"><h6><a href="">Ahmet GÜZELLER</a></h6></td>
-                                    <td><p class="text-left m-1"><span class="badge text-light text-left w-100" style="background-color: #28a745;"><a id="btnOkutman" class="cursor-pointer" title="...">Bitti</a></span></p></td>
-                                </tr>
-                            <tr>
-                                <td><h6>2</h6></td>
-                                <td><h6>Ahmet HANCI</h6></td>
-                                <td><span class="badge text-primary">Sınavda</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>3</h6></td>
-                                <td><h6>Ahmet YAŞAR</h6></td>
-                                <td><span class="badge text-warning">Çağrıldı</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>4</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>5</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>6</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>7</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>8</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>9</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>10</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                        </tbody>
-                        </thead>
-                    </table>
-                </div>
+                <p class="card-text text-center text-danger font-weight-bold">
+                    <input value="Bilgi Formu" class="btn btn-primary btn-sm ml-1" id="btnBilgi" />
+                    <input value="Adli Sicil" class="btn btn-secondary btn-sm ml-1" id="btnSicil" />
+                    <input value="Sınav İptal" class="btn btn-danger btn-sm ml-1" id="btnIptal" />
+                </p>
             </div>
         </div>
-        <div role="alert" aria-live="assertive" aria-atomic="true" class="toast text-center" data-autohide="false" data-delay="10000">
-            <div class="toast-header bg-white text-center text-danger">
-                <strong class="mr-auto text-center">UYARI</strong>
-            </div>
-            <div class="toast-body bg-white text-danger">
-                Mülakat için ayrılan süreyi geçtiniz !
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-10">
-        @*<form class="form-group" asp-action="MulakatSoruGetir">*@
-        <div class="row col-lg-12 mb-2">
-            <select class="form-control-range form-control font-weight-bold" id="derece" aria-label="Default select example">
-                <option value="0" selected class="font-weight-bold text-center" id="secim" title="Seçim yapınız">Seçim yapınız</option>
-                <option value="1" id="ogretmen" title="Öğretmen">Öğretmen</option>
-                <option value="2" id="okutman" title="Okutman">Okutman</option>
-            </select>
-        </div>
-        <div class="row input-group col-lg-12 mb-2">
-            <input type="number" class="form-control font-weight-bold text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
-                   placeholder="Soru Numarasını Giriniz" id="soruno">
-        </div>
-        <div class="row col-lg-12">
-            <input type="submit" value="Mülakatı Başlat" class="btn btn-primary col-lg-12" id="btnBaslat" />
-            <input type="submit" value="Mülakatı Bitir" class="btn btn-danger col-lg-12" id="btnBitir" />
-        </div>
-        <!-- Soru Blok-->
-        <div class="row col-lg-12" id="soruBlok">
-            <div class="row">
-                <!--////////////////////////////////////////////////////-->
-                <div class="col-lg-3">
-                    <h6 class="card-header text-center text-info">KATEGORİ-1</h6>
-                    <br />
-                    <div class="card shadow-lg mb-1" style="height: 300px">
-                        <h6 class="card-header text-center text-danger">SORU</h6>
-                        <div class="card-body">
-                            <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
-                        </div>
-                    </div>
-                    <div class="card shadow-lg mb-1" style="height:200px">
-                        <h6 class="card-header text-center text-primary">CEVAP</h6>
-                        <div class="card-body">
-                            <p class="card-text">Ziya Osman Saba</p>
-                        </div>
-                    </div>
-                </div>
-                <!--////////////////////////////////////////////////////-->
-                <div class="col-lg-3">
-                    <h6 class="card-header text-center text-info">KATEGORİ-2</h6>
-                    <br />
-                    <div class="card shadow-lg mb-1" style="height: 300px">
-                        <h6 class="card-header text-center text-danger">SORU</h6>
-                        <div class="card-body">
-                            <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
-                        </div>
-                    </div>
-                    <div class="card shadow-lg mb-1" style="height:200px">
-                        <h6 class="card-header text-center text-primary">CEVAP</h6>
-                        <div class="card-body">
-                            <p class="card-text">Ziya Osman Saba</p>
-                        </div>
-                    </div>
-                </div>
-                <!--////////////////////////////////////////////////////-->
-                <div class="col-lg-3">
-                    <h6 class="card-header text-center text-info">KATEGORİ-3</h6>
-                    <br />
-                    <div class="card shadow-lg mb-1" style="height: 300px">
-                        <h6 class="card-header text-center text-danger">SORU</h6>
-                        <div class="card-body">
-                            <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
-                        </div>
-                    </div>
-                    <div class="card shadow-lg mb-1" style="height:200px">
-                        <h6 class="card-header text-center text-primary">CEVAP</h6>
-                        <div class="card-body">
-                            <p class="card-text">Ziya Osman Saba</p>
-                        </div>
-                    </div>
-                </div>
-                <!--////////////////////////////////////////////////////-->
-                <div class="col-lg-3">
-                    <h6 class="card-header text-center text-info">KATEGORİ-4</h6>
-                    <br />
-                    <div class="card shadow-lg mb-1" style="height: 300px">
-                        <h6 class="card-header text-center text-danger">SORU</h6>
-                        <div class="card-body">
-                            <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
-                        </div>
-                    </div>
-                    <div class="card shadow-lg mb-1" style="height:200px">
-                        <h6 class="card-header text-center text-primary">CEVAP</h6>
-                        <div class="card-body">
-                            <p class="card-text">Ziya Osman Saba</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Not Blok-->
-            <div class="row">
-                <!--//////////////////////////////////////////////////////-->
-                <div class="col-lg-3">
-                    <div class="card shadow-lg mb-1" style="height: 125px">
-                        <h6 class="card-header text-center text-success">PUAN</h6>
-                        <div class="card-body p-3">
-                            <form action="/" method="post">
-                                <div class="form-row form-group">
-                                    <div class="col-md-6">
-                                        <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" />
-                                    </div>
-                                    <div class="col-md-6">
-                                        <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px">Kaydet</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
-                <!--//////////////////////////////////////////////////////-->
-                <div class="col-lg-3">
-                    <div class="card shadow-lg mb-1" style="height: 125px">
-                        <h6 class="card-header text-center text-success">PUAN</h6>
-                        <div class="card-body p-3">
-                            <form action="/" method="post">
-                                <div class="form-row form-group">
-                                    <div class="col-md-6">
-                                        <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" />
-                                    </div>
-                                    <div class="col-md-6">
-                                        <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px">Kaydet</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
-                <!--//////////////////////////////////////////////////////-->
-                <div class="col-lg-3">
-                    <div class="card shadow-lg mb-1" style="height: 125px">
-                        <h6 class="card-header text-center text-success">PUAN</h6>
-                        <div class="card-body p-3">
-                            <form action="/" method="post">
-                                <div class="form-row form-group">
-                                    <div class="col-md-6">
-                                        <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" />
-                                    </div>
-                                    <div class="col-md-6">
-                                        <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px">Kaydet</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
-                <!--//////////////////////////////////////////////////////-->
-                <div class="col-lg-3">
-                    <div class="card shadow-lg mb-1" style="height: 125px">
-                        <h6 class="card-header text-center text-success">PUAN</h6>
-                        <div class="card-body p-3">
-                            <form action="/" method="post">
-                                <div class="form-row form-group">
-                                    <div class="col-md-6">
-                                        <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" />
-                                    </div>
-                                    <div class="col-md-6">
-                                        <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px">Kaydet</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            @*@foreach (var item in Model)
-                {
-                    <div class="col-lg-4">
-                        <div class="card shadow-lg mb-1" style="height:160px">
-                            <h4 class="card-header text-center text-info">Kategori</h4>
-                            <div class="card-body">
-                                <p class="card-text">@item.SoruKategoriAdi</p>
-                            </div>
-                        </div>
-                        <div class="card shadow-lg mb-1" style="height:300px">
-                            <h4 class="card-header text-center text-danger">Soru</h4>
-                            <div class="card-body">
-                                <p class="card-text">@item.Soru</p>
-                            </div>
-                        </div>
-                        <div class="card shadow-lg mb-1" style="height:300px">
-                            <h4 class="card-header text-center text-primary">Cevap</h4>
-                            <div class="card-body">
-                                <p class="card-text">@item.Cevap</p>
-                            </div>
-                        </div>
-                    </div>
-                }*@
-
-
-        </div>
-        @*</form>*@
     </div>
 </div>
+
+<!-- Buton Blok -->
+<div class="row m-0 mt-1">
+    <div class="col-lg-12">
+        <input type="number" class="form-control font-weight-bold text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Soru Numarasını Giriniz" id="soruno">
+        <input type="submit" value="Mülakatı Başlat" class="btn btn-primary w-100 mt-1" id="btnBaslat" />
+        <input type="submit" value="Mülakatı Bitir" class="btn btn-danger w-100 mt-1" id="btnBitir" />
+    </div>
+</div>
+
+<!-- Soru Blok -->
+<div class="row col-xl-12 m-0 mt-2" id="soruBlok">
+    <div class="row">
+        <!--////////////////////////////////////////////////////-->
+        <div class="col-xl-3">
+            <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-1</h6>
+            <div class="card shadow-lg" style="height: 300px">
+                <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
+                <div class="card-body">
+                    <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
+                </div>
+            </div>
+            <div class="card shadow-lg mb-1" style="height:150px">
+                <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
+                <div class="card-body">
+                    <p class="card-text">Ziya Osman Saba</p>
+                </div>
+            </div>
+        </div>
+        <!--////////////////////////////////////////////////////-->
+        <div class="col-xl-3">
+            <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-1</h6>
+            <div class="card shadow-lg" style="height: 300px">
+                <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
+                <div class="card-body">
+                    <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
+                </div>
+            </div>
+            <div class="card shadow-lg mb-1" style="height:150px">
+                <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
+                <div class="card-body">
+                    <p class="card-text">Ziya Osman Saba</p>
+                </div>
+            </div>
+        </div>
+        <!--////////////////////////////////////////////////////-->
+        <div class="col-xl-3">
+            <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-1</h6>
+            <div class="card shadow-lg" style="height: 300px">
+                <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
+                <div class="card-body">
+                    <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
+                </div>
+            </div>
+            <div class="card shadow-lg mb-1" style="height:150px">
+                <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
+                <div class="card-body">
+                    <p class="card-text">Ziya Osman Saba</p>
+                </div>
+            </div>
+        </div>
+        <!--////////////////////////////////////////////////////-->
+        <div class="col-xl-3">
+            <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-1</h6>
+            <div class="card shadow-lg" style="height: 300px">
+                <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
+                <div class="card-body">
+                    <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
+                </div>
+            </div>
+            <div class="card shadow-lg mb-1" style="height:150px">
+                <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
+                <div class="card-body">
+                    <p class="card-text">Ziya Osman Saba</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Not Blok-->
+<div class="row">
+</div>
+
+<!-- Aday Listesi -->
+<div class="row">
+</div>
+
+
 
 <!-- uyarı Modal-->
 <div class="modal fade modal-xl" id="ModalUyari" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -320,6 +150,7 @@
         </div>
     </div>
 </div>
+
 <!-- uyarı Not-->
 <div class="modal" id="ModalNot" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -373,7 +204,7 @@
     </div>
 </div>
 
-@section Scripts{
+@section Scripts {
 
     <partial name="_ValidationScriptsPartial" />
 
@@ -452,67 +283,67 @@
 
         $('.toast').toast('hide')
 
-                                        //if (sayac > 0) {
+        //if (sayac > 0) {
 
-                                        //function myTimer() {
+        //function myTimer() {
 
-                                        //       // clearInterval(myVar);
-                                        //        var saniye = 0;
-                                        //        var dakika = 0;
-                                        //        var sayac = 0;
-                                        //    }
-                                        //}
-                                       // else {
-                                            //function myTimer() {
+        //       // clearInterval(myVar);
+        //        var saniye = 0;
+        //        var dakika = 0;
+        //        var sayac = 0;
+        //    }
+        //}
+        // else {
+        //function myTimer() {
 
-                                            //    saniye = saniye + 1;
-                                            //    sayac = sayac + 1;
+        //    saniye = saniye + 1;
+        //    sayac = sayac + 1;
 
 
-                                            //    if (saniye < 10) {
-                                            //        document.getElementById("saniye").innerHTML = "0" + saniye;
-                                            //        document.getElementById("dakika").innerHTML = "00";
-                                            //    }
-                                            //    else {
-                                            //        document.getElementById("saniye").innerHTML = saniye;
-                                            //    }
-                                            //    if (saniye > 59) {
-                                            //        dakika = dakika + 1;
-                                            //        document.getElementById("dakika").innerHTML = "0" + dakika;
-                                            //        saniye = 0;
-                                            //        document.getElementById("saniye").innerHTML = "00";
-                                            //    }
-                                            //    if (dakika > 0) {
-                                            //        document.getElementById("dakika").innerHTML = "0" + dakika;
-                                            //    }
-                                            //    if (saniye > 5) {
-                                            //        $('.toast').toast('show')
-                                            //    }
+        //    if (saniye < 10) {
+        //        document.getElementById("saniye").innerHTML = "0" + saniye;
+        //        document.getElementById("dakika").innerHTML = "00";
+        //    }
+        //    else {
+        //        document.getElementById("saniye").innerHTML = saniye;
+        //    }
+        //    if (saniye > 59) {
+        //        dakika = dakika + 1;
+        //        document.getElementById("dakika").innerHTML = "0" + dakika;
+        //        saniye = 0;
+        //        document.getElementById("saniye").innerHTML = "00";
+        //    }
+        //    if (dakika > 0) {
+        //        document.getElementById("dakika").innerHTML = "0" + dakika;
+        //    }
+        //    if (saniye > 5) {
+        //        $('.toast').toast('show')
+        //    }
 
-                                            //    //if (document.getElementById("sayac").hidden = false) {
-                                            //    //    document.getElementById("sayac").hidden = true;
-                                            //    //}
-                                            //    //else {
-                                            //    //    document.getElementById("sayac").hidden = false;
-                                            //    //}
+        //    //if (document.getElementById("sayac").hidden = false) {
+        //    //    document.getElementById("sayac").hidden = true;
+        //    //}
+        //    //else {
+        //    //    document.getElementById("sayac").hidden = false;
+        //    //}
 
-                                            //}
-                                       // }
-                            //        }
-                            //    }
-                            //});
+        //}
+        // }
+        //        }
+        //    }
+        //});
 
-                            //function kapat() {
-                            //    $('#ModalUyari').modal('hide');
+        //function kapat() {
+        //    $('#ModalUyari').modal('hide');
 
-                            //    var deger = $("#modaltext").find("option:selected").text();
-                            //    if (deger = "Derece seçiniz !") {
-                            //        document.getElementById("derece").focus();
-                            //    }
-                            //    //var deger1 = $("#modaltext").find("option:selected").text();
-                            //    //if (deger1 = "Soru numarası yazınız !") {
-                            //    //    document.getElementById("soruno").focus();
-                            //    //}
-                            //};
+        //    var deger = $("#modaltext").find("option:selected").text();
+        //    if (deger = "Derece seçiniz !") {
+        //        document.getElementById("derece").focus();
+        //    }
+        //    //var deger1 = $("#modaltext").find("option:selected").text();
+        //    //if (deger1 = "Soru numarası yazınız !") {
+        //    //    document.getElementById("soruno").focus();
+        //    //}
+        //};
     </script>
 }
