@@ -1,13 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+#pragma warning disable IDE0005 // Using directive is unnecessary.
 using Microsoft.AspNetCore.Http;
+#pragma warning restore IDE0005 // Using directive is unnecessary.
 using Microsoft.AspNetCore.Mvc;
+#pragma warning disable IDE0005 // Using directive is unnecessary.
 using Newtonsoft.Json;
 using System;
+#pragma warning restore IDE0005 // Using directive is unnecessary.
 using YOGBIS.BusinessEngine.Contracts;
+#pragma warning disable IDE0005 // Using directive is unnecessary.
 using YOGBIS.BusinessEngine.Implementaion;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
+#pragma warning restore IDE0005 // Using directive is unnecessary.
 
 namespace YOGBIS.UI.Controllers
 {
@@ -16,6 +22,7 @@ namespace YOGBIS.UI.Controllers
     {
 
         private readonly IMulakatSorulariBE _mulakatSorulariBE;
+        
         public MulakatController(IMulakatSorulariBE mulakatSorulariBE)
         {
             _mulakatSorulariBE = mulakatSorulariBE;

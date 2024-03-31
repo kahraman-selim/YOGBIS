@@ -28,6 +28,8 @@
                     <span>-</span>
                     <span id="derece">Öğretmen</span>
                     <span>-</span>
+                    <span id="brans">Branş</span>
+                    <span>-</span>
                     <span id="ulke">Ülke Grubu</span>
                 </p>
             </div>
@@ -124,11 +126,13 @@
 </div>
 
 <!-- Not Blok-->
-<div class="row">
+<div class="row" id="notBlok">
+
 </div>
 
 <!-- Aday Listesi -->
 <div class="row">
+
 </div>
 
 
@@ -151,50 +155,27 @@
     </div>
 </div>
 
-<!-- uyarı Not-->
-<div class="modal" id="ModalNot" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal Sınav İptal-->
+<div class="modal" id="ModalSinavIptal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Mülakat Puan Değerlendirme</h5>
+                <h5 class="modal-title text-center" id="exampleModalLabel">Aday Sınav İptali Açıklama</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close" onclick="kapat()">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body" id="modalNotBody">
+            <div class="modal-body" id="modalSinavIptalBody">
                 <div class="row">
                     <div class="col-md-12">
                         <form action="/" method="post">
                             <div class="form-row mb-1">
-                                <div class="col-md-3 text-center">
-                                    <span class="text-center font-weight-bold">Kategori-1</span>
-                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="20" min="0" placeholder="20" />
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <span class="text-center font-weight-bold">Kategori-2</span>
-                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="20" min="0" placeholder="20" />
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <span class="text-center font-weight-bold">Kategori-3</span>
-                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="20" min="0" placeholder="20" />
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <span class="text-center font-weight-bold">Kategori-4</span>
-                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="20" min="0" placeholder="20" />
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <span class="text-center font-weight-bold">Kanaat Puanı</span>
-                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="20" min="0" placeholder="20" id="inputKanaat" />
-                                </div>
+                                <div class="form-group col-md-12">
+                                    <textarea placeholder="Sınav iptaline ilişkin açıklamaları buraya yazınız..." class="form-control" id="AciklamaTextArea" rows="10"></textarea>
+                                 </div>
                             </div>
                             <div class="form-row mb-1 justify-content-center">
-                                <div class="col-md-6 text-center">
-                                    <span class="text-center font-weight-bold">TOPLAM</span>
-                                    <input type="number" class="form-control form-control-sm font-weight-bold text-center" max="25" min="0" disabled id="inputToplam" />
-                                </div>
-                            </div>
-                            <div class="form-row mb-1 justify-content-center">
-                                <button class="btn btn-primary col-md-12" type="submit" data-dismiss="modal" id="btnOk" onclick="kapat()">Değerlendirmeyi Tamamla</button>
+                                <button class="btn btn-primary col-md-12" type="submit" data-dismiss="modal" id="btnOk" onclick="kapat()">Kaydet</button>
                             </div>
                         </form>
                     </div>
@@ -209,6 +190,8 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script type="text/javascript">
+
+        document.getElementById("soruno").focus;
 
         ////$("#derece").change(function () {
 
@@ -271,9 +254,9 @@
             //});
 
         });
-        $('#btnBitir').click(function () {
+        $('#btnIptal').click(function () {
 
-            $('#ModalNot').modal('show');
+            $('#ModalSinavIptal').modal('show');
         });
         //            //////////////////////sayaç için başlangıç//////////////
 
