@@ -42,17 +42,23 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         MulakatId=item.MulakatId,
                         OnaySayisi=item.OnaySayisi,
+                        OnayTarihi=item.OnayTarihi,
+                        KararSayisi=item.KararSayisi,
+                        KararTarihi=item.KararTarihi,
+                        YazılıSinavTarihi=item.YazılıSinavTarihi,
+                        MulakatKategoriId=item.MulakatKategoriId,
                         MulakatAdi=item.MulakatAdi,
-                        AdaySayisi=item.AdaySayisi,
+                        MulakatDonemi=item.MulakatDonemi,
+                        DereceId = item.Dereceler.DereceId,
+                        DereceAdi = item.Dereceler.DereceAdi,
                         BaslamaTarihi=item.BaslamaTarihi,
                         BitisTarihi=item.BitisTarihi,
-                        DereceId=item.Dereceler.DereceId,
-                        DereceAdi=item.Dereceler.DereceAdi,
-                        Durumu=item.Durumu,
+                        AdaySayisi = item.AdaySayisi,
+                        SorulanSoruSayisi = (int)item.SorulanSoruSayisi,
+                        Durumu =item.Durumu,
                         MulakatAciklama=item.MulakatAciklama,
                         KaydedenId = item.KaydedenId != null ? item.KaydedenId : string.Empty,
-                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
-                        SorulanSoruSayisi =(int)item.SorulanSoruSayisi,                        
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,                                              
                         KayitTarihi = item.KayitTarihi
                     });
                 }
@@ -90,7 +96,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var mulakatlar = _mapper.Map<MulakatlarVM, Mulakatlar>(model);
                     mulakatlar.KaydedenId = user.LoginId;
-                    mulakatlar.MulakatAdi = model.BaslamaTarihi.Day.ToString()+"/"+model.BaslamaTarihi.Month.ToString()+"-"+model.BitisTarihi.Day.ToString()+"/"+model.BitisTarihi.Month.ToString()+"-"+model.BitisTarihi.Year.ToString()+" Dönemi";
+                    mulakatlar.MulakatDonemi = model.BaslamaTarihi.Day.ToString()+"/"+model.BaslamaTarihi.Month.ToString()+"-"+model.BitisTarihi.Day.ToString()+"/"+model.BitisTarihi.Month.ToString()+"-"+model.BitisTarihi.Year.ToString()+" Dönemi";
                     _unitOfWork.mulakatlarRepository.Add(mulakatlar);
                     _unitOfWork.Save();
                     return new Result<MulakatlarVM>(true, ResultConstant.RecordCreateSuccess);
@@ -116,7 +122,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var mulakatlar = _mapper.Map<MulakatlarVM, Mulakatlar>(model);
-                    mulakatlar.MulakatAdi = model.BaslamaTarihi.Day.ToString() + "/" + model.BaslamaTarihi.Month.ToString() + "-" + model.BitisTarihi.Day.ToString() + "/" + model.BitisTarihi.Month.ToString() + "-" + model.BitisTarihi.Year.ToString() + " Dönemi";
+                    mulakatlar.MulakatDonemi = model.BaslamaTarihi.Day.ToString() + "/" + model.BaslamaTarihi.Month.ToString() + "-" + model.BitisTarihi.Day.ToString() + "/" + model.BitisTarihi.Month.ToString() + "-" + model.BitisTarihi.Year.ToString() + " Dönemi";
                     mulakatlar.KaydedenId = user.LoginId;
                     _unitOfWork.mulakatlarRepository.Update(mulakatlar);
                     _unitOfWork.Save();

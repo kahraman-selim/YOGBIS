@@ -25,9 +25,10 @@ namespace YOGBIS.UI.Controllers
             _mulakatOlusturBE = mulakatOlusturBE;
             _derecelerBE = derecelerBE;
             _kullaniciBE = kullaniciBE;
-        } 
+        }
         #endregion
-        
+
+        #region Index
         public IActionResult Index(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -43,7 +44,9 @@ namespace YOGBIS.UI.Controllers
                 return View();
             }
         }
+        #endregion
 
+        #region MulakatEkleGet
         [HttpGet]
         public IActionResult MulakatEkle()
         {
@@ -52,7 +55,9 @@ namespace YOGBIS.UI.Controllers
 
             return View();
         }
+        #endregion
 
+        #region MulakatEklePost
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult MulakatEkle(MulakatlarVM model, Guid? MulakatId)
@@ -76,7 +81,9 @@ namespace YOGBIS.UI.Controllers
                 return View(model);
             }
         }
+        #endregion
 
+        #region Guncelle
         public IActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -92,7 +99,9 @@ namespace YOGBIS.UI.Controllers
                 return View();
             }
         }
+        #endregion
 
+        #region MulakatSil
         [HttpDelete]
         public IActionResult MulakatSil(Guid id)
         {
@@ -105,6 +114,7 @@ namespace YOGBIS.UI.Controllers
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
-        }
+        } 
+        #endregion
     }
 }

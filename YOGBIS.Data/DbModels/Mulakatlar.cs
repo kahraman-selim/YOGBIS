@@ -14,6 +14,8 @@ namespace YOGBIS.Data.DbModels
         public DateTime OnayTarihi { get; set; }
         public string KararSayisi { get; set; }
         public DateTime KararTarihi { get; set; }
+        public DateTime YazılıSinavTarihi { get; set; }
+        public int MulakatKategoriId { get; set; }
         public string MulakatAdi { get; set; }
         public string MulakatDonemi { get; set; }
         public Guid DereceId { get; set; }
@@ -28,8 +30,8 @@ namespace YOGBIS.Data.DbModels
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
-        //public List<MulakatSorulari> MulakatSorulari { get; set; }
-        //public List<Adaylar> Adaylar { get; set; }
-        //public List<Komisyonlar> Komisyonlar { get; set; }
+        public List<MulakatSorulari> MulakatSorulari { get; set; }
+        public List<Adaylar> Adaylar { get; set; }
+        public List<Komisyonlar> Komisyonlar { get; set; }
     }
 }

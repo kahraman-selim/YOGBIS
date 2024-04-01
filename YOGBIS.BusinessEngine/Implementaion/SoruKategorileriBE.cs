@@ -53,6 +53,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruKategorilerPuan = item.SoruKategorilerPuan,
                         DereceId = item.DereceId,
                         DereceAdi = _derecelerBE.DereceAdGetir(item.DereceId).Data,
+                        SinavKateogoriTurId = item.SinavKateogoriTurId,
+                        SinavKategoriAdi = item.SinavKategoriAdi,
+                        SinavKategoriTakmaAdi = item.SinavKategoriTakmaAdi,
+                        SinavKategoriTamAdi=item.SinavKategoriTamAdi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
@@ -82,9 +86,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruKategorilerAdi = item.SoruKategorilerAdi,
                         SoruKategorilerKullanimi = item.SoruKategorilerKullanimi,
                         SoruKategorilerPuan = item.SoruKategorilerPuan,
+                        DereceId = item.DereceId,
+                        SinavKateogoriTurId = item.SinavKateogoriTurId,
+                        SinavKategoriAdi = item.SinavKategoriAdi,
+                        SinavKategoriTakmaAdi = item.SinavKategoriTakmaAdi,
+                        SinavKategoriTamAdi = item.SinavKategoriTamAdi,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.KaydedenId,
-                        DereceId = item.DereceId,
+                        
                     });
                 }
                 return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, returnData);
@@ -112,9 +121,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SoruKategorilerAdi = item.SoruKategorilerAdi,
                         SoruKategorilerKullanimi = item.SoruKategorilerKullanimi,
                         SoruKategorilerPuan = item.SoruKategorilerPuan,
+                        DereceId = item.DereceId,
+                        SinavKateogoriTurId = item.SinavKateogoriTurId,
+                        SinavKategoriAdi = item.SinavKategoriAdi,
+                        SinavKategoriTakmaAdi = item.SinavKategoriTakmaAdi,
+                        SinavKategoriTamAdi = item.SinavKategoriTamAdi,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.KaydedenId,
-                        DereceId = item.DereceId,
                     });
                 }
                 return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, returnData);

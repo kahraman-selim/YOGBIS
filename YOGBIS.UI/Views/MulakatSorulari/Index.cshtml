@@ -32,25 +32,26 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="SoruDereceAdi" class="small mb-1 font-weight-bold">Derece</label>
-                                <input asp-for="SoruDereceAdi" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Soru Derece Adını Giriniz">
-                                <span class="text-danger" asp-validation-for="SoruDereceAdi"></span>
-                            </div>@*<--!Derecesi-->*@
+                                <label asp-for="DereceId" class="small mb-1 font-weight-bold">Derece</label>
+                                @Html.DropDownListFor(u => u.DereceId, new SelectList(ViewBag.Dereceler,
+                                         "DereceId", "DereceAdi"), "Dereceyi seçiniz", new { @class = "form-control-range form-control py-2" })
+                                <span class="text-danger" asp-validation-for="DereceId"></span>
+                            </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="KategoriAdi" class="small mb-1 font-weight-bold">Kategori No</label>
-                                <input asp-for="KategoriAdi" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Kategori Adını Giriniz">
-                                <span class="text-danger" asp-validation-for="KategoriAdi"></span>
+                                <label asp-for="SoruKategoriAdi" class="small mb-1 font-weight-bold">Kategori No</label>
+                                <input asp-for="SoruKategoriAdi" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Kategori Adını Giriniz">
+                                <span class="text-danger" asp-validation-for="SoruKategoriAdi"></span>
                             </div>@*<--!KategoriId-->*@
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="KategoriID" class="small mb-1 font-weight-bold">Kategori No</label>
-                                <input asp-for="KategoriID" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Kategori No Giriniz">
-                                <span class="text-danger" asp-validation-for="KategoriID"></span>
+                                <label asp-for="SoruKategoriId" class="small mb-1 font-weight-bold">Kategori No</label>
+                                <input asp-for="SoruKategoriId" type="text" class="form-control py-2" id="CreateTypeInput" placeholder="Kategori No Giriniz">
+                                <span class="text-danger" asp-validation-for="SoruKategoriId"></span>
                             </div>@*<--!KategoriID-->*@
                         </div>
                         <div class="col-md-3">
