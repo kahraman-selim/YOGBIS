@@ -13,8 +13,8 @@
                 <thead>
                     <tr>
                         <th>Sıra No</th>
-                        <th>Kategori No</th>
                         <th>Kategori Adı</th>
+                        <th>Sınav Kategori Adı</th>
                         <th>Derece</th>
                         <th>Kategori Kullanımı</th>
                         <th>Puan</th>
@@ -28,10 +28,10 @@
                         {
                             sirano++;
                             <tr>
-                                <td>@sirano</td>
-                                <td class="text-center">
+                                <td>@item.SoruKategorilerSiraNo</td>
+                                <td class="text-left">
                                     <a class="font-weight-bold" asp-controller="SoruKategorileri" asp-route-id="@item.SoruKategorilerId" id="SoruKategoriler" title="Değişiklik yapmak için seçiniz">
-                                        @item.SoruKategorilerId
+                                        @item.SoruKategorilerAdi
                                     </a>
                                 </td>
                                 <td>@item.SoruKategorilerAdi</td>

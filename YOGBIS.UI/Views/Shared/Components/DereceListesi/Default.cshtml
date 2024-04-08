@@ -15,6 +15,7 @@
                     <tr>
                         <th>Sıra No</th>
                         <th>Derece</th>
+                        <th class="text-center">Sil</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,6 +28,11 @@
                             <tr>
                                 <td>@sirano</td>
                                 <td><a asp-controller="Dereceler" asp-route-id="@item.DereceId" id="DereceAdi">@item.DereceAdi</a></td>
+                                <td class="text-center">
+                                    <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.DereceId">
+                                        <i class="fas fa-trash text-white"></i>
+                                    </a>
+                                </td>
                             </tr>
                         }
                     }

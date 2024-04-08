@@ -36,7 +36,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             //var soruKategoriler = _mapper.Map<List<SoruKategoriler>, List<SoruKategorilerVM>>(data);
             //return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, soruKategoriler);
 
-            var data = _unitOfWork.sorukategorilerRepository.GetAll(includeProperties: "Kullanici").ToList();
+            var data = _unitOfWork.sorukategorilerRepository.GetAll(includeProperties: "Kullanici").OrderBy(s=>s.SoruKategorilerSiraNo).ToList();
             var kategoriler = _mapper.Map<List<SoruKategoriler>, List<SoruKategorilerVM>>(data);
 
             if (data != null)
@@ -49,14 +49,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SoruKategorilerId = item.SoruKategorilerId,
                         SoruKategorilerAdi = item.SoruKategorilerAdi,
+                        SoruKategorilerSiraNo = item.SoruKategorilerSiraNo,
                         SoruKategorilerKullanimi = item.SoruKategorilerKullanimi,
                         SoruKategorilerPuan = item.SoruKategorilerPuan,
                         DereceId = item.DereceId,
                         DereceAdi = _derecelerBE.DereceAdGetir(item.DereceId).Data,
                         SinavKateogoriTurId = item.SinavKateogoriTurId,
-                        SinavKategoriAdi = item.SinavKategoriAdi,
-                        SinavKategoriTakmaAdi = item.SinavKategoriTakmaAdi,
-                        SinavKategoriTamAdi=item.SinavKategoriTamAdi,
+                        SinavKategoriTurAdi = item.SinavKategoriTurAdi,
+                        SoruKategorilerTakmaAdi = item.SoruKategorilerTakmaAdi,
+                        SoruKategorilerTamAdi=item.SoruKategorilerTamAdi,
+                        KayitTarihi=item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
@@ -73,7 +75,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region SoruKategorileriGetirDereceId
         public Result<List<SoruKategorilerVM>> SoruKategorileriGetirDereceId(Guid dereceId)
         {
-            var data = _unitOfWork.sorukategorilerRepository.GetAll(u => u.DereceId == dereceId, includeProperties: "Kullanici").ToList();
+            var data = _unitOfWork.sorukategorilerRepository.GetAll(u => u.DereceId == dereceId, includeProperties: "Kullanici").OrderBy(s => s.SoruKategorilerSiraNo).ToList();
             if (data != null)
             {
                 List<SoruKategorilerVM> returnData = new List<SoruKategorilerVM>();
@@ -84,16 +86,19 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SoruKategorilerId = item.SoruKategorilerId,
                         SoruKategorilerAdi = item.SoruKategorilerAdi,
+                        SoruKategorilerSiraNo = item.SoruKategorilerSiraNo,
                         SoruKategorilerKullanimi = item.SoruKategorilerKullanimi,
                         SoruKategorilerPuan = item.SoruKategorilerPuan,
                         DereceId = item.DereceId,
+                        DereceAdi = _derecelerBE.DereceAdGetir(item.DereceId).Data,
                         SinavKateogoriTurId = item.SinavKateogoriTurId,
-                        SinavKategoriAdi = item.SinavKategoriAdi,
-                        SinavKategoriTakmaAdi = item.SinavKategoriTakmaAdi,
-                        SinavKategoriTamAdi = item.SinavKategoriTamAdi,
+                        SinavKategoriTurAdi = item.SinavKategoriTurAdi,
+                        SoruKategorilerTakmaAdi = item.SoruKategorilerTakmaAdi,
+                        SoruKategorilerTamAdi = item.SoruKategorilerTamAdi,
                         KayitTarihi = item.KayitTarihi,
-                        KaydedenId = item.KaydedenId,
-                        
+                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+
                     });
                 }
                 return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, returnData);
@@ -119,15 +124,18 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         SoruKategorilerId = item.SoruKategorilerId,
                         SoruKategorilerAdi = item.SoruKategorilerAdi,
+                        SoruKategorilerSiraNo = item.SoruKategorilerSiraNo,
                         SoruKategorilerKullanimi = item.SoruKategorilerKullanimi,
                         SoruKategorilerPuan = item.SoruKategorilerPuan,
                         DereceId = item.DereceId,
+                        DereceAdi = _derecelerBE.DereceAdGetir(item.DereceId).Data,
                         SinavKateogoriTurId = item.SinavKateogoriTurId,
-                        SinavKategoriAdi = item.SinavKategoriAdi,
-                        SinavKategoriTakmaAdi = item.SinavKategoriTakmaAdi,
-                        SinavKategoriTamAdi = item.SinavKategoriTamAdi,
+                        SinavKategoriTurAdi = item.SinavKategoriTurAdi,
+                        SoruKategorilerTakmaAdi = item.SoruKategorilerTakmaAdi,
+                        SoruKategorilerTamAdi = item.SoruKategorilerTamAdi,
                         KayitTarihi = item.KayitTarihi,
-                        KaydedenId = item.KaydedenId,
+                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
                 }
                 return new Result<List<SoruKategorilerVM>>(true, ResultConstant.RecordFound, returnData);
@@ -139,10 +147,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region SoruKategoriGetir(int id)
-        public Result<SoruKategorilerVM> SoruKategoriGetir(Guid id)
+        #region SoruKategoriGetir(Guid id)
+        public Result<SoruKategorilerVM> SoruKategoriGetir(Guid SoruKategorilerId)
         {
-            var data = _unitOfWork.sorukategorilerRepository.Get(id);
+            var data = _unitOfWork.sorukategorilerRepository.Get(SoruKategorilerId);
             if (data != null)
             {
                 var soruKategoriler = _mapper.Map<SoruKategoriler, SoruKategorilerVM>(data);
@@ -221,7 +229,23 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
-        } 
+        }
+        #endregion
+
+        #region SoruKategorilerTakmaAdGetir(Guid id)
+        public Result<string> SoruKategoriTakmaAdGetir(Guid id)
+        {
+            var data = _unitOfWork.sorukategorilerRepository.Get(id);
+            if (data != null)
+            {
+                var soruTakmaAdi = data.SoruKategorilerTakmaAdi;
+                return new Result<string>(true, ResultConstant.RecordFound, soruTakmaAdi);
+            }
+            else
+            {
+                return new Result<string>(false, ResultConstant.RecordNotFound);
+            }
+        }
         #endregion
     }
 }

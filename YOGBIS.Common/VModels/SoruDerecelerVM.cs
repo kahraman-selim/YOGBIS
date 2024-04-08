@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
 {
@@ -15,6 +16,8 @@ namespace YOGBIS.Common.VModels
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
-        public List<SoruDereceVM> SoruDereces { get; set; }        
+        public List<SoruDereceVM> SoruDereces { get; set; }
+        public List<SoruKategorilerVM> SoruKategoriler { get; set; }
+        public List<MulakatlarVM> Mulakatlars { get; set; }
     }
 }

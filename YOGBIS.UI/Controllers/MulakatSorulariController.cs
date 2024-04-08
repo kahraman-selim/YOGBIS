@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.BusinessEngine.Implementaion;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
+using YOGBIS.Data.Contracts;
+using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -17,19 +20,31 @@ namespace YOGBIS.UI.Controllers
 
         #region Değişkenler
         private readonly IMulakatSorulariBE _mulakatSorulariBE;
+        private readonly IDerecelerBE _derecelerBE;
+        private readonly ISoruKategorileriBE _soruKategorileriBE;
+        private readonly IMulakatOlusturBE _mulakatOlusturBE;
+        private readonly IUnitOfWork _unitOfWork;
         #endregion
 
         #region Dönüştürücüler
-        public MulakatSorulariController(IMulakatSorulariBE mulakatSorulariBE)
+        public MulakatSorulariController(IMulakatSorulariBE mulakatSorulariBE, IDerecelerBE derecelerBE, ISoruKategorileriBE soruKategorileriBE, IMulakatOlusturBE mulakatOlusturBE, IUnitOfWork unitOfWork)
         {
             _mulakatSorulariBE = mulakatSorulariBE;
+            _derecelerBE = derecelerBE;
+            _soruKategorileriBE = soruKategorileriBE;
+            _mulakatOlusturBE = mulakatOlusturBE;
+            _unitOfWork = unitOfWork;
         } 
         #endregion
 
         #region Index
-        public IActionResult Index(Guid? id)
+        public IActionResult Index(Guid? id, Guid? DereceId, Guid? SoruKategorilerId, Guid? MulakatId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
+            ViewBag.SoruKategorileri = _soruKategorileriBE.SoruKategorileriGetir().Data;
+            ViewBag.Mulakatlar=_mulakatOlusturBE.MulakatlariGetir().Data;
 
             if (id != null)
             {
@@ -48,6 +63,7 @@ namespace YOGBIS.UI.Controllers
         public IActionResult MulakatSoruEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             return View();
         }
         #endregion
@@ -59,6 +75,7 @@ namespace YOGBIS.UI.Controllers
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
             if (MulakatSorulariId != null)
             {
@@ -79,8 +96,13 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Guncelle
-        public ActionResult Guncelle(Guid? id)
+        public ActionResult Guncelle(Guid? id, Guid? DereceId, Guid? SoruKategorilerId, Guid? MulakatId)
         {
+
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
+            ViewBag.SoruKategorileri = string.Empty;
+             // ViewBag.SoruKategorileri = _soruKategorileriBE.SoruKategoriGetir((Guid)SoruKategorilerId).Data;
+             ViewBag.Mulakatlar = string.Empty;
 
             if (id != null)
             {
@@ -111,5 +133,52 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region MulakatAdGetir(Guid dereceId) 
+        public IActionResult MulakatAdGetir(Guid dereceId)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            if (dereceId != null)
+            {
+                var data = _unitOfWork.mulakatlarRepository.GetAll(x => x.DereceId == dereceId);
+
+                return Json(data);
+            }
+
+            return NotFound();
+        }
+        #endregion
+
+        #region KategoriAdGetir(Guid dereceId) 
+        public IActionResult KategoriAdGetir(Guid dereceId)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            if (dereceId != null)
+            {
+                var data = _unitOfWork.sorukategorilerRepository.GetAll(x => x.DereceId == dereceId).OrderBy(x=>x.SoruKategorilerSiraNo);
+
+                return Json(data);
+            }
+
+            return NotFound();
+        }
+        #endregion
+
+        #region KategoriDetayGetir(Guid soruKategorilerId) 
+        public IActionResult KategoriDetayGetir(Guid soruKategorilerId)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            if (soruKategorilerId != null)
+            {
+                var data = _unitOfWork.sorukategorilerRepository.GetAll(x => x.SoruKategorilerId == soruKategorilerId).OrderBy(x => x.SoruKategorilerSiraNo);
+
+                return Json(data);
+            }
+
+            return NotFound();
+        } 
+        #endregion
     }
 }

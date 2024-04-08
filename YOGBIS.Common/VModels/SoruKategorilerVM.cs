@@ -10,6 +10,8 @@ namespace YOGBIS.Common.VModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid SoruKategorilerId { get; set; }
+        [Required(ErrorMessage = "Kategori sıra numarasını yazınız...")]
+        public int SoruKategorilerSiraNo { get; set; }
         [Required(ErrorMessage = "Kategori adını yazınız...")]
         public string SoruKategorilerAdi { get; set; }
         [Required(ErrorMessage = "Kategori kullanımını seçiniz...")]
@@ -17,14 +19,14 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Kategori puanını yazınız...")]
         [Range(0, 20, ErrorMessage = "Girdiğiniz sayı 20 den büyük olamaz !")]
         public int SoruKategorilerPuan { get; set; }
+        public string SoruKategorilerTakmaAdi { get; set; }
+        public string SoruKategorilerTamAdi { get; set; }
+        public int SinavKateogoriTurId { get; set; }
+        public string SinavKategoriTurAdi { get; set; }
         [Required(ErrorMessage = "Kategori derecesini seçiniz...")]
         public Guid DereceId { get; set; }
         public string DereceAdi { get; set; }
         public SoruDerecelerVM SoruDereceler { get; set; }
-        public int SinavKateogoriTurId { get; set; }
-        public string SinavKategoriAdi { get; set; }
-        public string SinavKategoriTakmaAdi { get; set; }
-        public string SinavKategoriTamAdi { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }

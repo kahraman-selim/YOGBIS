@@ -10,14 +10,17 @@ namespace YOGBIS.Data.DbModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid SoruKategorilerId { get; set; }
+        public int SoruKategorilerSiraNo { get; set; }
         public string SoruKategorilerAdi { get; set; }
         public string SoruKategorilerKullanimi { get; set; }
         public int SoruKategorilerPuan { get; set; }
-        public Guid DereceId { get; set; }
+        public string SoruKategorilerTakmaAdi { get; set; }
+        public string SoruKategorilerTamAdi { get; set; }
         public int SinavKateogoriTurId { get; set; }
-        public string SinavKategoriAdi { get; set; }
-        public string SinavKategoriTakmaAdi { get; set; }
-        public string SinavKategoriTamAdi { get; set; }
+        public string SinavKategoriTurAdi { get; set; }
+        public Guid DereceId { get; set; }
+        [ForeignKey("DereceId")]
+        public SoruDereceler SoruDereceler { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

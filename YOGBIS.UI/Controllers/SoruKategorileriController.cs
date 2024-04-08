@@ -34,11 +34,6 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
-            //var requestModel = _soruKategorileriBE.SoruKategoriKullaniciId(user.LoginId); //SoruKategoriGetir();
-            //if (requestModel.IsSuccess)
-            //    return View(requestModel.Data);
-
-            //return View(user);
             if (id != null)
             {
                 var data = _soruKategorileriBE.SoruKategoriGetir((Guid)id);

@@ -1,7 +1,17 @@
-﻿@model YOGBIS.Common.VModels.SoruDerecelerVM
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
+@inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
+@model YOGBIS.Common.VModels.SoruDerecelerVM
 @{
     ViewData["Title"] = "Dereceler";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 }
 
 <div class="row">
@@ -28,7 +38,7 @@
                         <div class="col-md-12">
                             <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px">Yeni Kayıt</a>                            
                             <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px"/>
-                            <a class="btn btn-danger btn-sm text-white mb-1" id="btnSil" style="width:100px">Sil</a>
+                            <a class="btn btn-danger btn-sm text-white mb-1 btnSil" id="btnSil" style="width:100px">Sil</a>
                         </div>
                     </div>
                 </form>
@@ -42,23 +52,66 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    
     <script type="text/javascript">
-        $(document).ready(function () {         
 
-            $("#btnSil").on("click", function () {
+        $("#myTable").on("click", ".btnSil", function () {
 
-                document.getElementById("DereceId").focus();
-                var dereceno = $("#DereceId").val();
-                var id = parseInt(dereceno);
-                /*alert(id);*/
-
-                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+            var btn = $(this);
+            bootbox.confirm({
+                message: "Silmek istediğinize emin misiniz?",
+                buttons: {
+                    confirm: {
+                        label: 'Evet',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Hayır',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
                     if (result) {
+                        var id = btn.data("id");
                         $.ajax({
                             type: "DELETE",
                             url: "/Dereceler/DereceSil/" + id,
                             success: function () {
+                                btn.parent().parent().remove();
                                 location.reload();
+                                alertify.success('Kayıt silindi');
+                            }
+                        });
+                    }
+                }
+            });
+
+        });
+        
+        $(document).ready(function () {           
+            
+            
+            $("#btnSil").on("click", function () {
+
+                document.getElementById("DereceId").focus();
+                var id = $("#DereceId").val();
+                //var id = dereceno;
+                //alert(id);
+                //var btn = $(this);
+
+                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
+                    if (result) {
+                        //var id = btn.data("id");
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/Dereceler/DereceSil/" + id,
+                            success: function () {
+                                
+                                location.reload();
+                                //btn.parent().parent().remove();
+                                //alertify.success("Kaydı Sildik iyimi ?");
                             }
                         });
                     }
@@ -67,14 +120,16 @@
             });
 
             $("#btnYeni").on("click", function () {
-                document.getElementById("DereceId").focus();
+               /*document.getElementById("DereceId").focus();
                 document.getElementById("DereceId").value = "";
                 document.getElementById("btnSil").className += " disabled";
                 document.getElementById("DereceAdi").focus();
-                document.getElementById("DereceAdi").value = "";
-                
+                document.getElementById("DereceAdi").value = "";*/
+                location.reload();
             });
+
         });
+    
     </script>
 }
 

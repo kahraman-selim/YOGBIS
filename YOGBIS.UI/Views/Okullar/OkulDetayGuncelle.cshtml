@@ -8,7 +8,7 @@
     ViewData["Title"] = "Okul Detay";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Styles{
+@section Styles {
     <link href="~/css/modern-business.css" rel="stylesheet" />
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
@@ -25,7 +25,7 @@
         .closebtn {
             position: absolute;
             /*            background: rgb(0, 0, 0);
-            background: rgba(0, 0, 0, 0.5);*/
+                    background: rgba(0, 0, 0, 0.5);*/
             top: 10px;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -360,7 +360,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @{ var sno = 0;}
+                                @{
+                                    var sno = 0;
+                                }
                                 @if (Model.AdayGorevKaydi.Count() > 0)
                                 {
                                     @for (int i = 0; i < Model.AdayGorevKaydi.Count(); i++)
@@ -394,7 +396,6 @@ else
 
 <!--OkulBölüm Kayıt Modal-->
 <!-- #region BolumModal -->
-
 @if (Model != null)
 {
     <div class="modal fade" id="saveModalBolum" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -447,9 +448,7 @@ else
 }
 
 <!-- #endregion -->
-
-
-@section Scripts{
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
@@ -485,7 +484,7 @@ else
         //    }
         //});
 
-        $("#EyaletInput").focusout(function() {
+        $("#EyaletInput").focusout(function () {
 
 
             if ($(this).val().trim() != "") {
@@ -554,23 +553,23 @@ else
 
                         $.getJSON(url, function (data) {
 
-                                if (data.length != 0) {
+                            if (data.length != 0) {
 
-                                    $.each(data, function (i = 0, eyaletId, eyaletAdi) {
+                                $.each(data, function (i = 0, eyaletId, eyaletAdi) {
 
-                                        if (i == 0) {
+                                    if (i == 0) {
 
-                                            var eyaletId = data[i]['eyaletId'];
-                                            var eyaletAd = data[i]['eyaletAdi'];
-                                            $("#EyaletIdInput").val(eyaletId);
+                                        var eyaletId = data[i]['eyaletId'];
+                                        var eyaletAd = data[i]['eyaletAdi'];
+                                        $("#EyaletIdInput").val(eyaletId);
 
-                                        }
-                                    });
-                                }
-                                else {
+                                    }
+                                });
+                            }
+                            else {
 
-                                    alertify.danger('Bilinmeyen bir hata oluştu !');
-                                }
+                                alertify.danger('Bilinmeyen bir hata oluştu !');
+                            }
                         });
                     }
                     else {
@@ -587,7 +586,7 @@ else
 
         });
 
-        $("#SehirInput").focusout(function() {
+        $("#SehirInput").focusout(function () {
 
 
             if ($(this).val().trim() != "") {
@@ -665,25 +664,25 @@ else
 
                         $.getJSON(url, function (data) {
 
-                                if (data.length != 0) {
+                            if (data.length != 0) {
 
-                                    $.each(data, function (i = 0, sehirId, sehirAdi) {
+                                $.each(data, function (i = 0, sehirId, sehirAdi) {
 
-                                        if (i == 0) {
+                                    if (i == 0) {
 
-                                            var sehirId = data[i]['sehirId'];
-                                            var sehirAd = data[i]['sehirAdi'];
-                                            $("#SehirIdInput").val(sehirId);
+                                        var sehirId = data[i]['sehirId'];
+                                        var sehirAd = data[i]['sehirAdi'];
+                                        $("#SehirIdInput").val(sehirId);
 
-                                            alertify.success(ead + ' şehri daha önce kaydedilmiş');
-                                            document.getElementById("sehirEkleBtn").style.display = "none";
-                                        }
-                                    });
-                                }
-                                else {
+                                        alertify.success(ead + ' şehri daha önce kaydedilmiş');
+                                        document.getElementById("sehirEkleBtn").style.display = "none";
+                                    }
+                                });
+                            }
+                            else {
 
-                                    alertify.danger('Bilinmeyen bir hata oluştu !');
-                                }
+                                alertify.danger('Bilinmeyen bir hata oluştu !');
+                            }
                         });
                     }
                     else {

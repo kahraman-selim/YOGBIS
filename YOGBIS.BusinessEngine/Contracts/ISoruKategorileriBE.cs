@@ -12,8 +12,9 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<SoruKategorilerVM> SoruKategoriEkle(SoruKategorilerVM model, SessionContext user);
         Result<List<SoruKategorilerVM>> SoruKategoriKullaniciId(string userId);
         Result<List<SoruKategorilerVM>> SoruKategorileriGetirDereceId(Guid dereceId);
-        Result<SoruKategorilerVM> SoruKategoriGetir(Guid id);
+        Result<SoruKategorilerVM> SoruKategoriGetir(Guid SoruKategorilerId);
         Result<SoruKategorilerVM> SoruKategoriGuncelle(SoruKategorilerVM model, SessionContext user);        
-        Result<bool> SoruKategoriSil(Guid id);        
+        Result<bool> SoruKategoriSil(Guid id);
+        Result<string> SoruKategoriTakmaAdGetir(Guid id);
     }
 }
