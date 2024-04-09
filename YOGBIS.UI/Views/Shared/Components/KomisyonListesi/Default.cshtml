@@ -1,0 +1,73 @@
+﻿@model IEnumerable<YOGBIS.Common.VModels.KomisyonlarVM>
+
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        <b>Komisyonlar</b>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th class="text-center">Sıra No</th>
+                        <th class="text-center">Komisyon Sıra No</th>
+                        <th class="text-center">Komisyon Adı</th>
+                        <th class="text-center">Komisyon Üye Sıra No</th>
+                        <th class="text-center">Komisyon Görevi</th>
+                        <th class="text-center">Komisyon Üye Ad Soyad</th>
+                        <th class="text-center">Durumu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var sirano = 0;
+                    }
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model.OrderBy(x => x.KomisyonUyeSiraNo))
+                        {
+                            sirano++;
+                            <tr>
+                                <td>@sirano</td>
+                                <td>@item.KomisyonSiraNo</td>
+                                <td class="text-center">
+                                    <a asp-controller="Komisyonlar" asp-action="Guncelle" asp-route-id="@item.KomisyonId" id="KomisyonId">
+                                        @item.KomisyonAdi
+                                    </a>
+                                </td>
+                                <td>@item.KomisyonUyeSiraNo</td>
+                                <td>@item.KomisyonUyeGorevi</td>
+                                <td>@item.KomisyonUyeAdiSoyadi</td>
+
+                                @if (@item.KomisyonUyeDurum == true)
+                                {
+                                    <td style="color:green" class="font-weight-bold">Asıl</td>
+                                }
+                                else
+                                {
+                                    <td style="color:red" class="font-weight-bold">Yedek</td>
+                                }
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>Kayıt bulunamadı!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

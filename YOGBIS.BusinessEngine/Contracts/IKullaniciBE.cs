@@ -12,5 +12,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<KullaniciVM> KullaniciGuncelle(KullaniciVM model);
         Task<Result<List<KullaniciVM>>> OnayKullaniciGetir();
         Task<Result<List<KullaniciVM>>> OkulMuduruGetir();
+        Task<Result<List<KullaniciVM>>> KomisyonGetir();
     }
 }

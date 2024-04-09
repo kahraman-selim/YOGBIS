@@ -9,8 +9,8 @@ using YOGBIS.Data.DataContext;
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    [Migration("20240407212057_yuklemeyap")]
-    partial class yuklemeyap
+    [Migration("20240408232617_yuklee")]
+    partial class yuklee
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -546,6 +546,10 @@ namespace YOGBIS.Data.Migrations
                     b.Property<DateTime>("KayitTarihi")
                         .HasColumnType("datetime");
 
+                    b.Property<byte[]>("KomisyonId")
+                        .IsRequired()
+                        .HasColumnType("varbinary(16)");
+
                     b.Property<string>("KurumAdi")
                         .HasColumnType("text");
 
@@ -682,6 +686,8 @@ namespace YOGBIS.Data.Migrations
                     b.HasKey("AdayId");
 
                     b.HasIndex("KaydedenId");
+
+                    b.HasIndex("KomisyonId");
 
                     b.HasIndex("MulakatId");
 
@@ -1205,11 +1211,20 @@ namespace YOGBIS.Data.Migrations
                     b.Property<DateTime>("KomisyonGorevBitisTarihi")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("KomisyonGorevi")
+                    b.Property<string>("KomisyonKullaniciId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("KomisyonSiraNo")
                         .HasColumnType("int");
+
+                    b.Property<string>("KomisyonUlkeGrubu")
+                        .HasColumnType("text");
 
                     b.Property<string>("KomisyonUyeAdiSoyadi")
                         .HasColumnType("text");
+
+                    b.Property<bool>("KomisyonUyeDurum")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("KomisyonUyeEPosta")
                         .HasColumnType("text");
@@ -1217,18 +1232,20 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("KomisyonUyeGorevYeri")
                         .HasColumnType("text");
 
-                    b.Property<int>("KomisyonUyeSiraId")
+                    b.Property<string>("KomisyonUyeGorevi")
+                        .HasColumnType("text");
+
+                    b.Property<int>("KomisyonUyeSiraNo")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("MulakatId")
-                        .IsRequired()
+                    b.Property<byte[]>("MulakatlarMulakatId")
                         .HasColumnType("varbinary(16)");
 
                     b.HasKey("KomisyonId");
 
                     b.HasIndex("KaydedenId");
 
-                    b.HasIndex("MulakatId");
+                    b.HasIndex("MulakatlarMulakatId");
 
                     b.ToTable("Komisyonlar");
                 });
@@ -2519,6 +2536,12 @@ namespace YOGBIS.Data.Migrations
                         .WithMany("Adaylar")
                         .HasForeignKey("KaydedenId");
 
+                    b.HasOne("YOGBIS.Data.DbModels.Komisyonlar", "Komisyonlar")
+                        .WithMany("Adaylar")
+                        .HasForeignKey("KomisyonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("YOGBIS.Data.DbModels.Mulakatlar", "Mulakatlar")
                         .WithMany("Adaylar")
                         .HasForeignKey("MulakatId")
@@ -2721,11 +2744,9 @@ namespace YOGBIS.Data.Migrations
                         .WithMany("Komisyonlar")
                         .HasForeignKey("KaydedenId");
 
-                    b.HasOne("YOGBIS.Data.DbModels.Mulakatlar", "Mulakatlar")
+                    b.HasOne("YOGBIS.Data.DbModels.Mulakatlar", null)
                         .WithMany("Komisyonlar")
-                        .HasForeignKey("MulakatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MulakatlarMulakatId");
                 });
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.MulakatSorulari", b =>

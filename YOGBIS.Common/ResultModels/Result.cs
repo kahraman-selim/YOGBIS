@@ -8,7 +8,7 @@
         public T Data { get; set; }
         public int TotalCount { get; set; }
 
-        public Result(bool isSuccess, string message) : this(isSuccess,message, default(T))
+        public Result(bool isSuccess, string message, string komisyonId) : this(isSuccess,message, default(T))
         {
 
         }
@@ -22,6 +22,10 @@
             Message = message;
             Data = data;
             TotalCount = totalCount;
+        }
+
+        public Result(bool v, string recordRemoveSuccessfully)
+        {
         }
     }
 }

@@ -161,6 +161,10 @@
                                     }
                                     @if (User.IsInRole("Administrator"))
                                     {
+                                        <a class="nav-link" asp-controller="Komisyonlar" asp-action="Index">Komisyonlar</a>
+                                    }
+                                    @if (User.IsInRole("Administrator"))
+                                    {
                                         <a class="nav-link" asp-controller="MulakatSorulari" asp-action="Index">Mülakat Soruları</a>
                                     }
                                     @if (User.IsInRole("Administrator") || User.IsInRole("CommissionerHead"))

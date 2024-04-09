@@ -110,7 +110,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var data = _unitOfWork.soruDerecelerRepository.Get(id);
             if (data != null)
             {
-                var dereceadi = data.DereceAdi;
+                var dereceadi = data.DereceAdi.ToString();
                 return new Result<string>(true, ResultConstant.RecordFound, dereceadi);
             }
             else

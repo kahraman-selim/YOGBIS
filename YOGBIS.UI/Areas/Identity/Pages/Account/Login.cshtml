@@ -41,7 +41,7 @@
                 </div>
                 <div class="card-footer text-center">
                     <div asp-validation-summary="All" class="text-danger"></div>
-                    @if (DateTime.Now.Date > DateTime.Parse("01/03/2023").Date)
+                    @if (DateTime.Now.Date < DateTime.Parse("01/03/2023").Date)
                     {
                         
                     }

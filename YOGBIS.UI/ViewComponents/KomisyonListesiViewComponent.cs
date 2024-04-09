@@ -4,18 +4,18 @@ using YOGBIS.BusinessEngine.Contracts;
 
 namespace YOGBIS.UI.ViewComponents
 {
-    public class DereceListesiViewComponent : ViewComponent
+    public class KomisyonListesiViewComponent : ViewComponent
     {
-        private readonly IDerecelerBE _derecelerBE;
+        private readonly IKomisyonlarBE _komisyonlarBE;
 
-        public DereceListesiViewComponent(IDerecelerBE derecelerBE)
+        public KomisyonListesiViewComponent(IKomisyonlarBE komisyonlarBE)
         {
-            _derecelerBE = derecelerBE;
+            _komisyonlarBE = komisyonlarBE;
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
 
-            var requestmodel = _derecelerBE.DereceleriGetir();
+            var requestmodel = _komisyonlarBE.KomisyonlariGetir();
             if (requestmodel.IsSuccess)
             {
                 return View(requestmodel.Data);

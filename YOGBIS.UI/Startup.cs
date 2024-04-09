@@ -49,6 +49,7 @@ namespace YOGBIS.UI
             services.AddScoped<IFotoGaleriBE, FotoGaleriBE>();
             services.AddScoped<IKitalarBE, KitalarBE>();
             services.AddScoped<IKullaniciBE, KullaniciBE>();
+            services.AddScoped<IKomisyonlarBE, KomisyonlarBE>();
             services.AddScoped<IMulakatOlusturBE, MulakatOlusturBE>();
             services.AddScoped<IMulakatSorulariBE, MulakatSorulariBE>();
             services.AddScoped<INotlarBE, NotlarBE>();

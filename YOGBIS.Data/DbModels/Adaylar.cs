@@ -64,6 +64,9 @@ namespace YOGBIS.Data.DbModels
         public Guid MulakatId { get; set; }
         [ForeignKey("MulakatId")]
         public Mulakatlar Mulakatlar { get; set; }
+        public Guid KomisyonId { get; set; }
+        [ForeignKey("KomisyonId")]
+        public Komisyonlar Komisyonlar { get; set; }
         //Aday başvuru tablosu
         public string MYYSPuan { get; set; }
         public string MYYSonuc { get; set; }
