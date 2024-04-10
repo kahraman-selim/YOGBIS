@@ -41,6 +41,7 @@ namespace YOGBIS.UI
             //services.AddDbContext<YOGBISContext>(options => options.UseSqlServer(Configuration.GetConnectionString("YOGBISConnection")));
 
             #region Scopeds
+            services.AddScoped<IAdaylarBE, AdaylarBE>();
             services.AddScoped<IDerecelerBE, DerecelerBE>();
             services.AddScoped<IEtkinliklerBE, EtkinliklerBE>();
             services.AddScoped<IDosyaGaleriBE, DosyaGaleriBE>();

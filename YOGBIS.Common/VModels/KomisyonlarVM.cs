@@ -29,5 +29,6 @@ namespace YOGBIS.Common.VModels
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<AdaylarVM> Adaylar { get; set; }
+        public List<AdayNotVM> AdayNot { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,8 +52,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         YazılıSinavTarihi=item.YazılıSinavTarihi,
                         MulakatKategoriId=item.MulakatKategoriId,
                         MulakatAdi=item.MulakatAdi,
-                        MulakatDonemi=item.MulakatDonemi,
-                        DereceId = item.Dereceler.DereceId != null ? item.Dereceler.DereceId : Guid.Empty,
+                        MulakatDonemi=item.MulakatAdi + "-" + item.Dereceler.DereceAdi + "-" + item.BaslamaTarihi.Day.ToString() + "/" + item.BaslamaTarihi.Month.ToString() + "-" +
+                        item.BitisTarihi.Day.ToString() + "/" + item.BitisTarihi.Month.ToString() + "-" + item.BitisTarihi.Year.ToString(),
                         DereceAdi = item.Dereceler.DereceAdi,
                         BaslamaTarihi=item.BaslamaTarihi,
                         BitisTarihi=item.BitisTarihi,
@@ -98,10 +100,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var mulakatlar = _mapper.Map<MulakatlarVM, Mulakatlar>(model);
                     mulakatlar.KaydedenId = user.LoginId;
-                    var derecead = model.DereceId == Guid.Empty ? string.Empty : _derecelerBE.DereceAdGetir(model.DereceId).Data;
+                    //var derecead = model.DereceId == Guid.Empty ? string.Empty : _derecelerBE.DereceAdGetir(model.DereceId).Data;
 
-                    mulakatlar.MulakatDonemi = model.MulakatAdi + "-" + derecead + "-" + model.BaslamaTarihi.Day.ToString() + "/" + model.BaslamaTarihi.Month.ToString() + "-" + 
-                                               model.BitisTarihi.Day.ToString() + "/" + model.BitisTarihi.Month.ToString() + "-" + model.BitisTarihi.Year.ToString() + " Dönemi";
+                    //mulakatlar.MulakatDonemi = model.MulakatAdi + "-" + derecead + "-" + model.BaslamaTarihi.Day.ToString() + "/" + model.BaslamaTarihi.Month.ToString() + "-" + 
+                      //                         model.BitisTarihi.Day.ToString() + "/" + model.BitisTarihi.Month.ToString() + "-" + model.BitisTarihi.Year.ToString() + " Dönemi";
                     
                     _unitOfWork.mulakatlarRepository.Add(mulakatlar);
                     _unitOfWork.Save();
@@ -128,9 +130,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var mulakatlar = _mapper.Map<MulakatlarVM, Mulakatlar>(model);
-                    var derecead = model.DereceId != null ? _derecelerBE.DereceAdGetir((Guid)model.DereceId).Data : string.Empty;
-                    mulakatlar.MulakatDonemi = model.MulakatAdi + "-" + derecead + "-" + model.BaslamaTarihi.Day.ToString() + "/" + model.BaslamaTarihi.Month.ToString() + "-" +
-                                               model.BitisTarihi.Day.ToString() + "/" + model.BitisTarihi.Month.ToString() + "-" + model.BitisTarihi.Year.ToString() + " Dönemi";
+                    //var derecead = model.DereceId != null ? _derecelerBE.DereceAdGetir((Guid)model.DereceId).Data : string.Empty;
+                    //mulakatlar.MulakatDonemi = model.MulakatAdi + "-" + derecead + "-" + model.BaslamaTarihi.Day.ToString() + "/" + model.BaslamaTarihi.Month.ToString() + "-" +
+                                              // model.BitisTarihi.Day.ToString() + "/" + model.BitisTarihi.Month.ToString() + "-" + model.BitisTarihi.Year.ToString() + " Dönemi";
 
                     _unitOfWork.mulakatlarRepository.Update(mulakatlar);
                     _unitOfWork.Save();
@@ -186,7 +188,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         YazılıSinavTarihi = item.YazılıSinavTarihi,
                         MulakatKategoriId = item.MulakatKategoriId,
                         MulakatAdi = item.MulakatAdi,
-                        MulakatDonemi = item.MulakatDonemi,
+                        MulakatDonemi = item.MulakatAdi + "-" + item.Dereceler.DereceAdi + "-" + item.BaslamaTarihi.Day.ToString() + "/" + item.BaslamaTarihi.Month.ToString() + "-" +
+                        item.BitisTarihi.Day.ToString() + "/" + item.BitisTarihi.Month.ToString() + "-" + item.BitisTarihi.Year.ToString(),
                         DereceId = item.Dereceler.DereceId,
                         DereceAdi = item.Dereceler.DereceAdi,
                         BaslamaTarihi = item.BaslamaTarihi,
@@ -215,12 +218,40 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var data = _unitOfWork.mulakatlarRepository.Get(id);
             if (data != null)
             {
-                var donemadi = data.MulakatDonemi;
+                var donemadi = data.MulakatAdi + "-" + data.Dereceler.DereceAdi + "-" + data.BaslamaTarihi.Day.ToString() + "/" + data.BaslamaTarihi.Month.ToString() + "-" +
+                data.BitisTarihi.Day.ToString() + "/" + data.BitisTarihi.Month.ToString() + "-" + data.BitisTarihi.Year.ToString();
+
+
                 return new Result<string>(true, ResultConstant.RecordFound, donemadi);
             }
             else
             {
                 return new Result<string>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+        #region MulakatDonemAdiGetir(id)
+        public Result<MulakatlarVM> MulakatDonemAdiGetir(Guid id)
+        {
+            if (id != null)
+            {
+                var data = _unitOfWork.mulakatlarRepository.GetFirstOrDefault(u => u.DereceId == id, includeProperties: "Kullanici");
+                if (data != null)
+                {
+                    MulakatlarVM donem = new MulakatlarVM();
+                    donem.MulakatDonemi = data.MulakatAdi;
+
+                    return new Result<MulakatlarVM>(true, ResultConstant.RecordFound, donem);
+                }
+                else
+                {
+                    return new Result<MulakatlarVM>(false, ResultConstant.RecordNotFound);
+                }
+            }
+            else
+            {
+                return new Result<MulakatlarVM>(false, ResultConstant.RecordNotFound);
             }
         }
         #endregion

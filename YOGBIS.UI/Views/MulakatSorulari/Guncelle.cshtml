@@ -9,10 +9,10 @@
         <div class="card shadow-lg rounded-lg">
             <div class="card-header">
                 <i class="fas fa-table mr-1"></i>
-                <b>Mülakat Sorusuları Güncelleme</b>
+                <b>Mülakat Sorusuları Ekleme/Güncelleme</b>
             </div>
             <div class="card-body">
-                <form class="form-group m-0" asp-action="Guncelle">
+                <form class="form-group m-0" asp-action="MulakatSoruEkle">
                     @Html.HiddenFor(x => x.MulakatSorulariId)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-row">
@@ -28,7 +28,7 @@
                             <div class="form-group">
                                 <label asp-for="MulakatId" class="small mb-1 font-weight-bold">Mülakatı Seç</label>
                                 @Html.DropDownListFor(m => m.MulakatId, new SelectList(ViewBag.Mulakatlar,
-                                         "MulakatId", "MulakatDonemi"), "Mülakatı Seç", new { @id = "MulakatListesi", @class = "form-control-range form-control p-0" })
+                                         "MulakatId", "MulakatAdi"), "Mülakatı Seç", new { @id = "MulakatListesi", @class = "form-control-range form-control p-0" })
                                 <span class="text-danger" asp-validation-for="MulakatId"></span>
                             </div>
                         </div><!--Mülakat-->
@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 <label asp-for="SoruKategorilerId" class="small mb-1 font-weight-bold">Kategoriyi Seç</label>
                                 @Html.DropDownListFor(k => k.SoruKategorilerId, new SelectList(ViewBag.SoruKategorileri,
-                                         "SoruKategorilerId", "SinavKategoriTakmaAdi"), "Kategoriyi Seç", new { @id = "KategoriListesi", @class = "form-control-range form-control p-0" })
+                                         "SoruKategorilerId", "SoruKategorilerTakmaAdi"), "Kategoriyi Seç", new { @id = "KategoriListesi", @class = "form-control-range form-control p-0" })
                                 <span class="text-danger" asp-validation-for="SoruKategorilerId"></span>
                             </div>
                         </div><!--SoruKategori-->
@@ -146,7 +146,7 @@
                     //alert(data);
                     $('#MulakatListesi').append($('<option>', {
                         value: data[i]['mulakatId'],
-                        text: data[i]['mulakatDonemi']
+                        text: data[i]['mulakatAdi']
                     }));
 
                 });
@@ -180,7 +180,7 @@
 
             var mulakatId = $("#MulakatListesi").val();
 
-            alert(mulakatId);
+            //alert(mulakatId);
 
             $('#KategoriListesi').focus();
 
@@ -188,9 +188,9 @@
 
         $("#KategoriListesi").on("change", function () {
 
-            var soruKategorilerId = $("#KategoriListesi").val();
+            var SoruKategorilerId = $("#KategoriListesi").val();
 
-            alert(soruKategorilerId);
+            //alert(SoruKategorilerId);
 
             //$("#SoruKategoriSiraNo").empty();
             //$("#SoruKategoriAdi").empty();
@@ -198,25 +198,33 @@
             //$("#SinavKateogoriTurId").empty();
 
 
-            var url = '@Url.Action("KategoriDetayGetir", "MulakatSorulari")?kategoriId=' + soruKategorilerId;
+            var url = '@Url.Action("KategoriDetayGetir", "MulakatSorulari")?soruKategorilerId=' + SoruKategorilerId;
 
             $.getJSON(url, function (data) {
 
 
+                $.each(data, function (i = 0, soruKategorilerId, soruKategorilerSiraNo, soruKategorilerAdi, sinavKategoriTurAdi, sinavKateogoriTurId) {
 
-                $.each(data, function (i = 0, soruKategorilerId, soruKategorilerSiraNo) {
-
-                    alert(data);
+                    //alert(data);
                     /*$('#KategoriListesi').append($('<option>', {
                         value: data[i]['soruKategorilerId'],
                         text: data[i]['soruKategorilerTakmaAdi']
                     }));*/
-                    $("#SoruKategoriSiraNo").text = data[i]['soruKategorilerSiraNo']
+
+                    var ss = data[i]['soruKategorilerId'];
+
+                    //$('#SoruKategoriAdi').focus();
+                    $("#SoruKategoriAdi").text = ss;
                 });
             });
 
 
-            $('#SoruSiraNo').focus();
+        });
+
+        var table = $('#myTableE').DataTable({
+
+            destroy: true,
+            ordering: false
 
         });
 

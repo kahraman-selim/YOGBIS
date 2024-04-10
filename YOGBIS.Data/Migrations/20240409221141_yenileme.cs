@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace YOGBIS.Data.Migrations
 {
-    public partial class yuklee : Migration
+    public partial class yenileme : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -481,7 +481,6 @@ namespace YOGBIS.Data.Migrations
                     YazılıSinavTarihi = table.Column<DateTime>(nullable: false),
                     MulakatKategoriId = table.Column<int>(nullable: false),
                     MulakatAdi = table.Column<string>(nullable: true),
-                    MulakatDonemi = table.Column<string>(nullable: true),
                     DereceId = table.Column<byte[]>(nullable: false),
                     BaslamaTarihi = table.Column<DateTime>(nullable: false),
                     BitisTarihi = table.Column<DateTime>(nullable: false),
@@ -693,17 +692,13 @@ namespace YOGBIS.Data.Migrations
                     SoruSiraNo = table.Column<int>(nullable: false),
                     SoruNo = table.Column<int>(nullable: false),
                     DereceId = table.Column<byte[]>(nullable: false),
-                    SoruDereceAdi = table.Column<string>(nullable: true),
                     SoruKategorilerId = table.Column<byte[]>(nullable: false),
                     SoruKategoriSiraNo = table.Column<int>(nullable: false),
-                    SoruKategoriAdi = table.Column<string>(nullable: true),
-                    SoruKategoriTakmaAdi = table.Column<string>(nullable: true),
                     Soru = table.Column<string>(nullable: true),
                     Cevap = table.Column<string>(nullable: true),
                     SinavKateogoriTurId = table.Column<int>(nullable: false),
                     SinavKategoriTurAdi = table.Column<string>(nullable: true),
                     MulakatId = table.Column<byte[]>(nullable: false),
-                    MulakatDonemi = table.Column<string>(nullable: true),
                     KaydedenId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -804,6 +799,7 @@ namespace YOGBIS.Data.Migrations
                     AnaAd = table.Column<string>(nullable: true),
                     DogumTarihi = table.Column<string>(nullable: true),
                     DogumTarihi2 = table.Column<string>(nullable: true),
+                    Yasi = table.Column<int>(nullable: false),
                     DogumYeri = table.Column<string>(nullable: true),
                     Cinsiyet = table.Column<string>(nullable: true),
                     Askerlik = table.Column<string>(nullable: true),
@@ -845,25 +841,39 @@ namespace YOGBIS.Data.Migrations
                     OnayAciklama = table.Column<string>(nullable: true),
                     MYYSTarihi = table.Column<string>(nullable: true),
                     MYYSinavTedbiri = table.Column<string>(nullable: true),
-                    MYYSTedbirAciklama = table.Column<string>(nullable: true),
+                    MYYSTedbirAck = table.Column<string>(nullable: true),
                     DereceId = table.Column<byte[]>(nullable: false),
+                    DereceAdi = table.Column<string>(nullable: true),
                     Unvan = table.Column<string>(nullable: true),
                     MulakatId = table.Column<byte[]>(nullable: false),
-                    KomisyonId = table.Column<byte[]>(nullable: false),
+                    MulakatOnayNo = table.Column<string>(nullable: true),
                     MYYSPuan = table.Column<string>(nullable: true),
                     MYYSonuc = table.Column<string>(nullable: true),
                     MYSSDurum = table.Column<string>(nullable: true),
-                    MYSSDurumAciklama = table.Column<string>(nullable: true),
+                    MYSSDurumAck = table.Column<string>(nullable: true),
+                    MYSSTarih = table.Column<string>(nullable: true),
+                    MYSSSaat = table.Column<string>(nullable: true),
+                    MYSSMulakatYer = table.Column<string>(nullable: true),
+                    MYSSKomisyonSiraNo = table.Column<int>(nullable: false),
+                    MYSSKomisyonAdi = table.Column<string>(nullable: true),
+                    KomisyonId = table.Column<byte[]>(nullable: false),
                     MYSSPuan = table.Column<string>(nullable: true),
                     MYSSSonuc = table.Column<string>(nullable: true),
+                    MYSSSonucAck = table.Column<string>(nullable: true),
                     IlMemGorus = table.Column<string>(nullable: true),
                     Referans = table.Column<string>(nullable: true),
-                    ReferansAciklama = table.Column<string>(nullable: true),
+                    ReferansAck = table.Column<string>(nullable: true),
                     TYSDurumu = table.Column<string>(nullable: true),
-                    TYSDurumAciklama = table.Column<string>(nullable: true),
+                    TYSDurumAck = table.Column<string>(nullable: true),
+                    TYSTarih = table.Column<string>(nullable: true),
+                    TYSSaat = table.Column<string>(nullable: true),
+                    TYSYer = table.Column<string>(nullable: true),
+                    TYSKomisyonSayi = table.Column<int>(nullable: false),
+                    TYSKomisyonAdi = table.Column<string>(nullable: true),
                     TYSPuan = table.Column<string>(nullable: true),
                     TYSSonuc = table.Column<string>(nullable: true),
-                    GorevIptalAciklama = table.Column<string>(nullable: true),
+                    TYSSonucAck = table.Column<string>(nullable: true),
+                    GorevIptalAck = table.Column<string>(nullable: true),
                     GorevIptalBrans = table.Column<string>(nullable: true),
                     GorevIptalYil = table.Column<string>(nullable: true),
                     GorevIptalBAOK = table.Column<string>(nullable: true),
@@ -876,6 +886,11 @@ namespace YOGBIS.Data.Migrations
                     EDurum = table.Column<string>(nullable: true),
                     MDurum = table.Column<string>(nullable: true),
                     PDurum = table.Column<string>(nullable: true),
+                    KomisyonSN = table.Column<int>(nullable: false),
+                    KomisyonGunSN = table.Column<int>(nullable: false),
+                    Sendika = table.Column<string>(nullable: true),
+                    SendikaAck = table.Column<string>(nullable: true),
+                    BelgeEk1 = table.Column<byte[]>(nullable: true),
                     KaydedenId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -973,7 +988,8 @@ namespace YOGBIS.Data.Migrations
                     KomisyonUyeSiraId = table.Column<int>(nullable: false),
                     NotKategoriId = table.Column<byte[]>(nullable: false),
                     Not = table.Column<int>(nullable: false),
-                    KaydedenId = table.Column<string>(nullable: true)
+                    KaydedenId = table.Column<string>(nullable: true),
+                    KomisyonlarKomisyonId = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -989,6 +1005,12 @@ namespace YOGBIS.Data.Migrations
                         column: x => x.KaydedenId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AdayNot_Komisyonlar_KomisyonlarKomisyonId",
+                        column: x => x.KomisyonlarKomisyonId,
+                        principalTable: "Komisyonlar",
+                        principalColumn: "KomisyonId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1883,6 +1905,11 @@ namespace YOGBIS.Data.Migrations
                 name: "IX_AdayNot_KaydedenId",
                 table: "AdayNot",
                 column: "KaydedenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdayNot_KomisyonlarKomisyonId",
+                table: "AdayNot",
+                column: "KomisyonlarKomisyonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

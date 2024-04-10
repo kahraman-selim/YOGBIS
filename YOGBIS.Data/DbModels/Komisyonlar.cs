@@ -28,5 +28,6 @@ namespace YOGBIS.Data.DbModels
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
         public List<Adaylar> Adaylar { get; set; }
+        public List<AdayNot> AdayNot { get; set; }
     }
 }

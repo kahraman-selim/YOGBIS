@@ -1,0 +1,74 @@
+﻿@model IEnumerable<YOGBIS.Common.VModels.AdaylarVM>
+
+
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        <b>Adaylar</b>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTableE" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>TC</th>
+                        <th>AD</th>
+                        <th>SOYAD</th>
+                        <th>UNVAN</th>
+                        <th>ÜLKE TERCİDİ</th>
+                        <th>BRANŞ</th>
+                        <th>KOMİSYON</th>
+                        <th>TARİH</th>
+                        <th>SAAT</th>
+                        <th>KOM SN</th>
+                        <th>KOM GÜN SN</th>
+                        <th>MYYS Puan</th>
+                        <th>MYSS Puan</th>
+                        <th>MYSS Sonuc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var sirano = 0;
+                    }
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            sirano++;
+                            <tr>
+                                <td>@sirano</td>
+                                <td><a asp-controller="Adaylar" asp-action="Guncelle" asp-route-id="@item.AdayId" id="AdayTC">@item.TC</a></td>
+                                <td>@item.Ad</td>
+                                <td>@item.Soyad</td>
+                                <td>@item.DereceAdi</td>
+                                <td>@item.UlkeTercihi</td>
+                                <td>@item.Brans</td>
+                                <td>@item.MYSSKomisyonAdi</td>
+                                <td>@item.MYSSTarih</td>
+                                <td>@item.MYSSSaat</td>
+                                <td>@item.KomisyonSN</td>
+                                <td>@item.KomisyonGunSN</td>
+                                <td>@item.MYYSPuan</td>
+                                <td>@item.MYSSPuan</td>
+                                <td>@item.MYSSSonuc</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>Kayıt bulunamadı!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+

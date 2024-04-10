@@ -11,16 +11,12 @@ namespace YOGBIS.Common.VModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid OkulId { get; set; }
-
         [Required(ErrorMessage = "Okul kodu zorunlu bir alandır")]
         public int OkulKodu { get; set; }
-
         [Required(ErrorMessage = "Okul adı zorunlu bir alandır")]
         public string OkulAdi { get; set; }
-
         [Required(ErrorMessage = "Okul türü zorunlu bir alandır")]
         public string OkulTuru { get; set; }
-
         [Required(ErrorMessage = "Öğretim türü zorunlu bir alandır")]
         public string OgretimTuru { get; set; }
         public string OkulLogoURL { get; set; }
@@ -50,7 +46,6 @@ namespace YOGBIS.Common.VModels
         public Guid? EyaletId { get; set; }
         public string EyaletAdi { get; set; }
         public Guid? TemsilcilikId { get; set; }
-
         [Required(ErrorMessage = "Ülkeyi seçiniz")]
         public Guid UlkeId { get; set; }
         public string UlkeAdi { get; set; }

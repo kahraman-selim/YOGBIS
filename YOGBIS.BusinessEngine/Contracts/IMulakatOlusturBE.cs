@@ -15,5 +15,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<bool> MulakatSil(Guid id);
         Result<List<MulakatlarVM>> MulakatAdGetirDereceId(Guid dereceId);
         Result<string> MulakatDonemAdGetir(Guid id);
+        Result<MulakatlarVM> MulakatDonemAdiGetir(Guid id);
     }
 }

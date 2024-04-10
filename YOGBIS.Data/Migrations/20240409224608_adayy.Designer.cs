@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20240409224608_adayy")]
+    partial class adayy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -607,9 +609,6 @@ namespace YOGBIS.Data.Migrations
 
                     b.Property<string>("MYSSSonucAck")
                         .HasColumnType("text");
-
-                    b.Property<int?>("MYSSSorulanSoruNo")
-                        .HasColumnType("int");
 
                     b.Property<string>("MYSSTarih")
                         .HasColumnType("text");

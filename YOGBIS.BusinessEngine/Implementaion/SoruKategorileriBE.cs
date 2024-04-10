@@ -247,5 +247,37 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        #region SoruKategorilerKategorilerAdGetir(Guid id)
+        public Result<string> SoruKategorilerKategoriAdGetir(Guid id)
+        {
+            var data = _unitOfWork.sorukategorilerRepository.Get(id);
+            if (data != null)
+            {
+                var soruKategoriAdi = data.SoruKategorilerAdi;
+                return new Result<string>(true, ResultConstant.RecordFound, soruKategoriAdi);
+            }
+            else
+            {
+                return new Result<string>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+        #region SoruKategorilerKategoriSiraNoGetir(Guid id)
+        public Result<int> SoruKategorilerKategoriSiraNoGetir(Guid id)
+        {
+            var data = _unitOfWork.sorukategorilerRepository.Get(id);
+            if (data != null)
+            {
+                var soruKategoriSiraNo = data.SoruKategorilerSiraNo;
+                return new Result<int>(true, ResultConstant.RecordFound, soruKategoriSiraNo);
+            }
+            else
+            {
+                return new Result<int>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
     }
 }
