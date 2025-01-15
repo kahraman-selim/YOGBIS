@@ -1,23 +1,34 @@
 ﻿@*@model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>*@
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Mülakat";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@section Styles {
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+}
+
 <style type="text/css">
     #soruBlok {
         display: none;
     }
 
-    #notBlok {
+    #AdayNotBlok {
         display: none;
     }
 
     #btnBitir {
         display: none;
     }
+
+    #AdayBilgiBlok {
+        display: none;
+    }
+
 </style>
 
-<!-- Aday Blok -->
+<!-- Aday Özet Blok -->
 <div class="row m-0 p-0">
     <div class="col-lg-12">
         <div class="card shadow-lg" style="height:75px">
@@ -30,7 +41,7 @@
                     <span>-</span>
                     <span id="brans">Branş</span>
                     <span>-</span>
-                    <span id="ulke">Ülke Grubu</span>
+                    <span id="ulke">Ülke Grubu</span> 
                 </p>
             </div>
         </div>
@@ -38,8 +49,7 @@
             <div class="card-body p-1">
                 <p class="card-text text-center text-danger font-weight-bold p-1">
                     <input value="Bilgi Formu" class="btn btn-primary btn-sm ml-1" id="btnBilgi" />
-                    <input value="Adli Sicil" class="btn btn-secondary btn-sm ml-1" id="btnSicil" />
-                    <input value="Sınav İptal" class="btn btn-danger btn-sm ml-1" id="btnIptal" />
+                    <input value="Aday Sınava Girmedi" class="btn btn-danger btn-sm ml-1" id="btnIptal" />
                 </p>
             </div>
         </div>
@@ -49,10 +59,20 @@
 <!-- Buton Blok -->
 <div class="row m-0 mt-1">
     <div class="col-lg-12">
-        <input type="number" class="form-control font-weight-bold text-center" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Soru Numarasını Giriniz" id="soruno">
+        <input type="number" class="form-control font-weight-bold text-center text-danger btn-outline-success" style="font-size:22px" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Soru Numarasını Giriniz" id="soruno">
         <input type="submit" value="Mülakatı Başlat" class="btn btn-primary w-100 mt-1" id="btnBaslat" />
         <input type="submit" value="Mülakatı Bitir" class="btn btn-danger w-100 mt-1" id="btnBitir" />
     </div>
+</div>
+
+<!--Aday Bilgi Blok-->
+<div class="row col-xl-12 m-0 mt-2" id="AdayBilgiBlok" disable>
+    @await Component.InvokeAsync("AdayBilgi")
+</div>
+
+<!-- Not Blok-->
+<div class="row col-xl-12 m-0 mt-2 disable" id="AdayNotBlok">
+    @await Component.InvokeAsync("AdayNot")
 </div>
 
 <!-- Soru Blok -->
@@ -125,14 +145,9 @@
     </div>
 </div>
 
-<!-- Not Blok-->
-<div class="row" id="notBlok">
-
-</div>
-
 <!-- Aday Listesi -->
-<div class="row">
-
+<div class="col-xl-12 m-0 mt-2" id="AdayListesi">
+    @await Component.InvokeAsync("AdayMulakatListe")
 </div>
 
 
@@ -188,10 +203,100 @@
 @section Scripts {
 
     <partial name="_ValidationScriptsPartial" />
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
     <script type="text/javascript">
 
         document.getElementById("soruno").focus;
+
+
+        $('#btnBaslat').click(function () {
+
+            //var saniye = 0;
+            //var dakika = 0;
+            //var sayac = 0;
+            document.getElementById("soruno").focus();
+            var soruno = $("#soruno").val();
+            alert(soruno);
+            if (soruno > 0) {
+
+                $("#btnBitir").show();
+                $("#btnBaslat").hide();
+                $('#soruBlok').show();
+            }
+            else {
+
+                bootbox.confirm({
+                    message: "Soru Numarası Yazınız...",
+                    buttons: {
+                        confirm: {
+                            label: 'Tamam',
+                            className: 'btn-success'
+                        },
+                    },
+                    callback: function (result) {
+                        if (result) {
+
+                            document.getElementById("soruno").focus();
+                        }
+                    }
+                });
+            }
+
+        });
+
+        $('#btnIptal').click(function () {
+
+            $('#ModalSinavIptal').modal('show');
+        });
+
+        $('#btnBitir').click(function () {
+
+            $('#soruBlok').hide();
+            $('#AdayNotBlok').show();
+        });
+
+        $('#btnBilgiFormKapat').click(function () {
+
+            $('#AdayBilgiBlok').hide();
+
+        });
+
+        //Aday Bilgi Formu Butonu
+        $('#btnBilgi').click(function () {
+
+            $('#AdayBilgiBlok').show();
+
+        });
+        
+        //Aday Çağrı Butonu
+        $("#myTableE").on("click", ".btnCagri", function () {
+
+            var btn = $(this);
+            var id = btn.data("id");
+            alert(id);      
+
+        });
+
+        //Aday Sınava Al Butonu
+        $("#myTableE").on("click", ".btnSinavaAl", function () {
+
+            var btn = $(this);
+            var id = btn.data("id");
+            alert(id);
+
+        });
+
+        
+        
+        
+        //            //////////////////////sayaç için başlangıç//////////////
+
+        var myVar = setInterval(myTimer, 1000);
+        document.getElementById("saniye").innerHTML = "00";
+        document.getElementById("dakika").innerHTML = "00";
+
+        $('.toast').toast('hide')
 
         ////$("#derece").change(function () {
 
@@ -238,40 +343,8 @@
         //};
         //var derece = "Öğretmen";
         //var soruno = 5;
-        $('#btnBaslat').click(function () {
-
-            var saniye = 0;
-            var dakika = 0;
-            var sayac = 0;
-
-            $("#soruBlok").show();
-            $("#notBlok").show();
-            $("#btnBitir").show();
-            $("#btnBaslat").hide();
-            //$.ajax({
-            //    url: "/Mulakat/MulakatSoruGetir/"+soruno,
-            //    type: 'GET'
-            //});
-
-        });
-
-        $('#btnIptal').click(function () {
-
-            $('#ModalSinavIptal').modal('show');
-        });
-
-        $('#btnBitir').click(function () {
-
-            $('#soruBlok').hide();
-        });
-        //            //////////////////////sayaç için başlangıç//////////////
-
-        var myVar = setInterval(myTimer, 1000);
-        document.getElementById("saniye").innerHTML = "00";
-        document.getElementById("dakika").innerHTML = "00";
-
-        $('.toast').toast('hide')
-
+        
+        
         //if (sayac > 0) {
 
         //function myTimer() {
