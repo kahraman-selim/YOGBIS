@@ -3,7 +3,7 @@
     ViewData["Title"] = "Duyurular";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Styles{
+@section Styles {
     <link href="~/css/modern-business.css" rel="stylesheet" />
     <style>
         /* Make the image fully responsive */
@@ -27,15 +27,25 @@
             }
         </ol>
         <div class="carousel-inner" role="listbox">
-            @{ var j = 0;}
+            @{
+                var j = 0;
+            }
             @foreach (var item in Model)
             {
                 @if (j <= 5)
                 {
                     <div class="@(j==0 ? "carousel-item active" : "carousel-item")" style="background-image: url('@item.DuyuruKapakResimUrl') ">
-                        <div class="carousel-caption d-md-block"> <!--d-none-->
-                            <h3 class="text-dark font-weight-bold">@item.DuyuruBaslık</h3>
-                            <p class="text-dark font-weight-bold"><a asp-controller="Duyurular" asp-action="DuyuruDetay" asp-route-id="@item.DuyurularId" class="text-dark">@item.DuyuruAltBaslık</a></p>
+                        <div class="carousel-caption d-md-block">
+                            <!--d-none-->
+                            <h4 class="text-dark font-weight-bold">@item.DuyuruBaslık</h4>
+                            <p class="text-dark font-weight-bold">
+                                <a class="text-dark">@item.DuyuruAltBaslık</a>
+                            </p>
+                            <!--
+                                <p class="text-dark font-weight-bold"><a asp-controller="Duyurular" asp-action="DuyuruDetay"
+                                asp-route-id="@item.DuyurularId" class="text-dark">@item.DuyuruAltBaslık</a></p>
+                            -->
+
                         </div>
                     </div>
                     j++;
@@ -66,7 +76,9 @@
 
 <!--Geçmiş Duyurular Liste-->
 <div class="row justify-content-end">
-    @{ var k = Model.Count() - 6; var l = 1;}
+    @{
+        var k = Model.Count() - 6; var l = 1;
+    }
     @foreach (var item in Model.OrderBy(x => x.KayitTarihi))
     {
         @if (l <= k)

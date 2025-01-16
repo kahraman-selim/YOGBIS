@@ -32,16 +32,16 @@
 <div class="row m-0 p-0">
     <div class="col-lg-12">
         <div class="card shadow-lg" style="height:75px">
-            <h6 class="card-header text-center text-danger small">ADAY BİLGİLERİ - @DateTime.Now.ToShortDateString() </h6>
+            <h6 class="card-header text-center text-danger">ADAY BİLGİLERİ - @DateTime.Now.ToShortDateString() </h6>
             <div class="card-body p-1">
                 <p class="card-text text-center text-danger font-weight-bold">
-                    <span id="adsoyad">Aday Adı Soyadı</span>
+                    <span id="adsoyad" class="text-info">Aday Adı Soyadı</span>
                     <span>-</span>
-                    <span id="derece">Öğretmen</span>
+                    <span id="derece" class="text-primary">Öğretmen</span>
                     <span>-</span>
-                    <span id="brans">Branş</span>
+                    <span id="brans" class="text-secondary">Branş</span>
                     <span>-</span>
-                    <span id="ulke">Ülke Grubu</span> 
+                    <span id="ulke" class="text-dark">Ülke Grubu</span>
                 </p>
             </div>
         </div>
@@ -59,7 +59,7 @@
 <!-- Buton Blok -->
 <div class="row m-0 mt-1">
     <div class="col-lg-12">
-        <input type="number" class="form-control font-weight-bold text-center text-danger btn-outline-success" style="font-size:22px" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Soru Numarasını Giriniz" id="soruno">
+        <input type="number" id="soruNo" class="form-control font-weight-bold text-center text-danger btn-outline-success" style="font-size:22px" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Soru Numarasını Giriniz">
         <input type="submit" value="Mülakatı Başlat" class="btn btn-primary w-100 mt-1" id="btnBaslat" />
         <input type="submit" value="Mülakatı Bitir" class="btn btn-danger w-100 mt-1" id="btnBitir" />
     </div>
@@ -175,7 +175,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-center" id="exampleModalLabel">Aday Sınav İptali Açıklama</h5>
+                <h5 class="modal-title text-center" id="exampleModalLabel">AÇIKLAMA</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close" onclick="kapat()">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -186,8 +186,8 @@
                         <form action="/" method="post">
                             <div class="form-row mb-1">
                                 <div class="form-group col-md-12">
-                                    <textarea placeholder="Sınav iptaline ilişkin açıklamaları buraya yazınız..." class="form-control" id="AciklamaTextArea" rows="10"></textarea>
-                                 </div>
+                                    <textarea placeholder="Sınava alınmayan yada sınavı iptal edilen aday için açıklamaları buraya yazınız..." class="form-control" id="AciklamaTextArea" rows="10"></textarea>
+                                </div>
                             </div>
                             <div class="form-row mb-1 justify-content-center">
                                 <button class="btn btn-primary col-md-12" type="submit" data-dismiss="modal" id="btnOk" onclick="kapat()">Kaydet</button>
@@ -207,7 +207,7 @@
 
     <script type="text/javascript">
 
-        document.getElementById("soruno").focus;
+        document.getElementById("soruNo").focus;
 
 
         $('#btnBaslat').click(function () {
@@ -215,9 +215,9 @@
             //var saniye = 0;
             //var dakika = 0;
             //var sayac = 0;
-            document.getElementById("soruno").focus();
-            var soruno = $("#soruno").val();
-            alert(soruno);
+            document.getElementById("soruNo").focus();
+            var soruno = $("#soruNo").val();
+            //alert(soruno);
             if (soruno > 0) {
 
                 $("#btnBitir").show();
@@ -226,21 +226,14 @@
             }
             else {
 
-                bootbox.confirm({
+                bootbox.alert({
+                    title:'UYARI',    
                     message: "Soru Numarası Yazınız...",
-                    buttons: {
-                        confirm: {
-                            label: 'Tamam',
-                            className: 'btn-success'
-                        },
-                    },
-                    callback: function (result) {
-                        if (result) {
-
-                            document.getElementById("soruno").focus();
-                        }
-                    }
-                });
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale:'tr',
+                        callback: function() { /* your callback code */ }
+                    });
             }
 
         });
@@ -268,13 +261,20 @@
             $('#AdayBilgiBlok').show();
 
         });
-        
+
         //Aday Çağrı Butonu
         $("#myTableE").on("click", ".btnCagri", function () {
 
             var btn = $(this);
             var id = btn.data("id");
-            alert(id);      
+            bootbox.alert({
+                    title:'BİLGİ',
+                    message: "Aday bekleme odasına çağrıldı !",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale:'tr',
+                        callback: function() { /* your callback code */ }
+                    });
 
         });
 
@@ -283,13 +283,20 @@
 
             var btn = $(this);
             var id = btn.data("id");
-            alert(id);
+            bootbox.alert({
+                    title:'BİLGİ',
+                    message: "Aday sınava çağrıldı !",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale:'tr',
+                        callback: function() { /* your callback code */ }
+                    });
 
         });
 
-        
-        
-        
+
+
+
         //            //////////////////////sayaç için başlangıç//////////////
 
         var myVar = setInterval(myTimer, 1000);
@@ -343,8 +350,8 @@
         //};
         //var derece = "Öğretmen";
         //var soruno = 5;
-        
-        
+
+
         //if (sayac > 0) {
 
         //function myTimer() {
