@@ -50,6 +50,7 @@
                 <p class="card-text text-center text-danger font-weight-bold p-1">
                     <input value="Bilgi Formu" class="btn btn-primary btn-sm ml-1" id="btnBilgi" />
                     <input value="Aday Sınava Girmedi" class="btn btn-danger btn-sm ml-1" id="btnIptal" />
+                    <input value="Soruları Göster" class="btn btn-secondary btn-sm ml-1" id="btnSoruGoster" style="display:none"/>
                 </p>
             </div>
         </div>
@@ -76,72 +77,75 @@
 </div>
 
 <!-- Soru Blok -->
-<div class="row col-xl-12 m-0 mt-2" id="soruBlok">
-    <div class="row">
-        <!--////////////////////////////////////////////////////-->
-        <div class="col-xl-3">
-            <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-1</h6>
-            <div class="card shadow-lg" style="height: 300px">
-                <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
-                <div class="card-body">
-                    <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
+<div class="row col-xl-12 m-0 mt-2" style="border-color:red" id="soruBlok">
+        <div class="row">
+            <!--////////////////////////////////////////////////////-->
+            <div class="col-xl-3">
+                <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-1</h6>
+                <div class="card shadow-lg" style="height: 300px">
+                    <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
+                    <div class="card-body">
+                        <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
+                    </div>
+                </div>
+                <div class="card shadow-lg mb-1" style="height:150px">
+                    <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
+                    <div class="card-body">
+                        <p class="card-text">Ziya Osman Saba</p>
+                    </div>
                 </div>
             </div>
-            <div class="card shadow-lg mb-1" style="height:150px">
-                <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
-                <div class="card-body">
-                    <p class="card-text">Ziya Osman Saba</p>
+            <!--////////////////////////////////////////////////////-->
+            <div class="col-xl-3">
+                <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-2</h6>
+                <div class="card shadow-lg" style="height: 300px">
+                    <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
+                    <div class="card-body">
+                        <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
+                    </div>
+                </div>
+                <div class="card shadow-lg mb-1" style="height:150px">
+                    <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
+                    <div class="card-body">
+                        <p class="card-text">Ziya Osman Saba</p>
+                    </div>
+                </div>
+            </div>
+            <!--////////////////////////////////////////////////////-->
+            <div class="col-xl-3">
+                <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-3</h6>
+                <div class="card shadow-lg" style="height: 300px">
+                    <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
+                    <div class="card-body">
+                        <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
+                    </div>
+                </div>
+                <div class="card shadow-lg mb-1" style="height:150px">
+                    <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
+                    <div class="card-body">
+                        <p class="card-text">Ziya Osman Saba</p>
+                    </div>
+                </div>
+            </div>
+            <!--////////////////////////////////////////////////////-->
+            <div class="col-xl-3">
+                <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-4</h6>
+                <div class="card shadow-lg" style="height: 300px">
+                    <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
+                    <div class="card-body">
+                        <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
+                    </div>
+                </div>
+                <div class="card shadow-lg mb-1" style="height:150px">
+                    <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
+                    <div class="card-body">
+                        <p class="card-text">Ziya Osman Saba</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <!--////////////////////////////////////////////////////-->
-        <div class="col-xl-3">
-            <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-1</h6>
-            <div class="card shadow-lg" style="height: 300px">
-                <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
-                <div class="card-body">
-                    <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
-                </div>
-            </div>
-            <div class="card shadow-lg mb-1" style="height:150px">
-                <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
-                <div class="card-body">
-                    <p class="card-text">Ziya Osman Saba</p>
-                </div>
-            </div>
-        </div>
-        <!--////////////////////////////////////////////////////-->
-        <div class="col-xl-3">
-            <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-1</h6>
-            <div class="card shadow-lg" style="height: 300px">
-                <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
-                <div class="card-body">
-                    <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
-                </div>
-            </div>
-            <div class="card shadow-lg mb-1" style="height:150px">
-                <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
-                <div class="card-body">
-                    <p class="card-text">Ziya Osman Saba</p>
-                </div>
-            </div>
-        </div>
-        <!--////////////////////////////////////////////////////-->
-        <div class="col-xl-3">
-            <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-1</h6>
-            <div class="card shadow-lg" style="height: 300px">
-                <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
-                <div class="card-body">
-                    <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
-                </div>
-            </div>
-            <div class="card shadow-lg mb-1" style="height:150px">
-                <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
-                <div class="card-body">
-                    <p class="card-text">Ziya Osman Saba</p>
-                </div>
-            </div>
-        </div>
+    <div class="row m-2">
+        <a class="btn btn-secondary btn-sm text-white w-100 text-capitalize" id="btnSoruBlokKapat" style="font-size:large">SORULARI GİZLE</a>
     </div>
 </div>
 
@@ -152,7 +156,7 @@
 
 
 
-<!-- uyarı Modal-->
+<!-- Modal Uyarı -->
 <div class="modal fade modal-xl" id="ModalUyari" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -186,7 +190,7 @@
                         <form action="/" method="post">
                             <div class="form-row mb-1">
                                 <div class="form-group col-md-12">
-                                    <textarea placeholder="Sınava alınmayan yada sınavı iptal edilen aday için açıklamaları buraya yazınız..." class="form-control" id="AciklamaTextArea" rows="10"></textarea>
+                                    <textarea placeholder="Sınava girmeyen, alınmayan yada sınavı iptal edilen aday için açıklamaları buraya yazınız..." class="form-control" id="AciklamaTextArea" rows="10"></textarea>
                                 </div>
                             </div>
                             <div class="form-row mb-1 justify-content-center">
@@ -232,7 +236,7 @@
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
-                        callback: function() { /* your callback code */ }
+                        callback: function() { document.getElementById("soruNo").focus(); }
                     });
             }
 
@@ -255,15 +259,26 @@
 
         });
 
+        $('#btnSoruBlokKapat').click(function () {
+
+            $('#soruBlok').hide();
+            document.getElementById("btnSoruGoster").style.display = "inline";
+        });
+
         //Aday Bilgi Formu Butonu
         $('#btnBilgi').click(function () {
 
             $('#AdayBilgiBlok').show();
-
+            document.getElementById("soruNo").focus();
         });
 
+        $('#btnSoruGoster').click(function () {
+
+            $('#soruBlok').show();
+            
+        });
         //Aday Çağrı Butonu
-        $("#myTableE").on("click", ".btnCagri", function () {
+        $("#myTableNoButtons").on("click", ".btnCagri", function () {
 
             var btn = $(this);
             var id = btn.data("id");
@@ -273,13 +288,13 @@
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
-                        callback: function() { /* your callback code */ }
+                        callback: function() { alert(id);/* your callback code */ }
                     });
 
         });
 
         //Aday Sınava Al Butonu
-        $("#myTableE").on("click", ".btnSinavaAl", function () {
+        $("#myTableNoButtons").on("click", ".btnSinavaAl", function () {
 
             var btn = $(this);
             var id = btn.data("id");
@@ -289,7 +304,8 @@
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
-                        callback: function() { /* your callback code */ }
+                        callback: function() { 
+                            alert(id); }
                     });
 
         });
