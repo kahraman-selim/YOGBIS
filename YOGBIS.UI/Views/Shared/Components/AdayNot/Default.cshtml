@@ -1,69 +1,87 @@
 ﻿@model YOGBIS.Common.VModels.AdaylarVM
 
 
-<div class="card shadow-lg rounded-lg col-lg-12">
-    <div class="row col-lg-12 m-0">
-        <div class="col-lg-3">
+<div class="card card shadow-xl rounded-xl col-xl-12">
+    <!-- Tablo etiketleri -->
+    <div class="row equal-height-row d-flex flex-wrap m-0">
+        <div class="col-lg-3 d-flex flex-column justify-content-between">
             <p class="card-text text-center text-primary font-weight-bold p-1 small">
                 <span id="adsoyad">Komisyon Üye Ad Soyad</span>
             </p>
         </div>
-        <div class="col-lg-1">
+        <div class="col-lg-1 d-flex flex-column justify-content-between">
             <p class="card-text text-center text-primary font-weight-bold p-1 small">
                 <span id="adsoyad">MYYS Puan</span>
             </p>
         </div>
-        <div class="col-lg-1">
+        <div class="col-lg-1 d-flex flex-column justify-content-between">
             <p class="card-text text-center text-primary font-weight-bold p-1 small">
                 <span id="adsoyad">Kategori-1</span>
             </p>
         </div>
-        <div class="col-lg-1">
+        <div class="col-lg-1 d-flex flex-column justify-content-between">
             <p class="card-text text-center text-primary font-weight-bold p-1 small">
                 <span id="adsoyad">Kategori-2</span>
             </p>
         </div>
-        <div class="col-lg-1">
+        <div class="col-lg-1 d-flex flex-column justify-content-between">
             <p class="card-text text-center text-primary font-weight-bold p-1 small">
                 <span id="adsoyad">Kategori-3</span>
             </p>
         </div>
-        <div class="col-lg-1">
+        <div class="col-lg-1 d-flex flex-column justify-content-between">
             <p class="card-text text-center text-primary font-weight-bold p-1 small">
                 <span id="adsoyad">Kategori-4</span>
             </p>
         </div>
-        <div class="col-lg-1">
+        <div class="col-lg-1 d-flex flex-column justify-content-between">
             <p class="card-text text-center text-primary font-weight-bold p-1 small">
                 <span id="adsoyad">Kategori-5</span>
             </p>
         </div>
-        <div class="col-lg-1">
+        <div class="col-lg-1 d-flex flex-column justify-content-between">
             <p class="card-text text-center text-primary font-weight-bold p-1 small">
-                <span id="adsoyad">MYYS Ortalama</span>
+                <span id="adsoyad">MYS Ortalama</span>
             </p>          
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 d-flex flex-column justify-content-between">
             <p class="card-text text-center text-primary font-weight-bold p-1 small">
                 <span id="adsoyad">Sonuç</span>
             </p>
         </div>
     </div>
+    <!-- Aday Not Bloğu -->
     <div class="card-body">
         <form class="form-group m-0">
             @Html.HiddenFor(x => x.AdayId)
             <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-            <div class="form-row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <input asp-for="DogumYeri" type="text" class="form-control py-1 font-weight-bold" id="KomisyonAd">
+      
+            
+            <!-- Not Formu -->
+            <div class="form-row equal-height-row d-flex flex-wrap">
+                <!-- Komisyon Üue Bilgileri -->
+                <div class="col-md-3 d-flex flex-column justify-content-between">
+                    <div class="form-row equal-height-row d-flex flex-wrap">
+                        <div class="col-md-12 d-flex flex-column justify-content-between">
+                            <div class="form-group">
+                                <input asp-for="DogumYeri" type="text" class="form-control py-1 font-weight-bold" id="KomisyonAd-1" disabled value="KomisyonBaşkanAdSoyad">
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="DogumYeri" type="text" class="form-control py-1 font-weight-bold" id="KomisyonAd-2" disabled value="KomisyonÜyeAdSoyad">
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="DogumYeri" type="text" class="form-control py-1 font-weight-bold" id="KomisyonAd-3" disabled value="KomisyonÜyeAdSoyad">
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="IkametIl" type="text" class="form-control py-1 text-center font-weight-bold disabled" id="MYYSNot">
+                <!-- Aday MYYS Puan -->
+                <div class="col-md-1 d-flex flex-column justify-content-between">
+                    <div class="form-group h-100">
+                        <input asp-for="IkametIl" type="text" class="form-control py-1 text-center font-weight-bold h-100" id="MYYSNot" disabled value="MYYSPuan">
                     </div>
                 </div>
+                <!-- Komisyon Not Bloğu -->
                 <div class="col-md-1">
                     <div class="form-group">
                         <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" min="0" max="20" id="Kategori1">
@@ -71,130 +89,39 @@
                 </div>
                 <div class="col-md-1">
                     <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" id="Kategori2">
+                        <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" min="0" max="20" id="Kategori2">
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" id="Kategori3">
+                        <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" min="0" max="20" id="Kategori3">
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" id="Kategori4">
+                        <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" min="0" max="20" id="Kategori4">
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" id="Kategori5">
+                        <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" min="0" max="20" id="Kategori5">
                     </div>
                 </div>
+                <!-- MYS Ortalama Puan -->
                 <div class="col-md-1">
                     <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" id="Ortalama">
+                        <input asp-for="KurumAdi" type="text" class="form-control py-1 text-center font-weight-bold" id="Ortalama">
                     </div>
                 </div>
+                <!-- MYS Sonuç -->
                 <div class="col-md-2">
                     <div class="form-group">
                         <input asp-for="KurumAdi" type="text" class="form-control py-2 text-center font-weight-bold" id="Sonuc">
                     </div>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <input asp-for="DogumYeri" type="text" class="form-control py-2" id="KomisyonAd">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="IkametIl" type="text" class="form-control py-2" id="MYYSNot">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Kategori1">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Kategori2">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Kategori3">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Kategori4">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Kategori5">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Ortalama">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Sonuc">
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <input asp-for="DogumYeri" type="text" class="form-control py-2" id="KomisyonAd">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="IkametIl" type="text" class="form-control py-2" id="MYYSNot">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Kategori1">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Kategori2">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Kategori3">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Kategori4">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Kategori5">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Ortalama">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <input asp-for="KurumAdi" type="number" class="form-control py-2" id="Sonuc">
-                    </div>
-                </div>
-            </div>
-            <div class="form-row mb-3">
+            <!-- buton blok -->
+            <div class="form-row mb-2">
                 <div class="col-md-12">
                     <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white w-100" id="btnNotFormKapat" />
                 </div>

@@ -35,22 +35,22 @@
             <h6 class="card-header text-center text-danger">ADAY BİLGİLERİ - @DateTime.Now.ToShortDateString() </h6>
             <div class="card-body p-1">
                 <p class="card-text text-center text-danger font-weight-bold">
-                    <span id="adsoyad" class="text-info">Aday Adı Soyadı</span>
+                    <span id="adayadsoyad" class="text-info">Aday Adı Soyadı</span>
                     <span>-</span>
-                    <span id="derece" class="text-primary">Öğretmen</span>
+                    <span id="adayderece" class="text-primary">Öğretmen</span>
                     <span>-</span>
-                    <span id="brans" class="text-secondary">Branş</span>
+                    <span id="adaybrans" class="text-secondary">Branş</span>
                     <span>-</span>
-                    <span id="ulke" class="text-dark">Ülke Grubu</span>
+                    <span id="adayulke" class="text-dark">Ülke Grubu</span>
                 </p>
             </div>
         </div>
         <div class="card shadow-lg" style="height:50px">
             <div class="card-body p-1">
-                <p class="card-text text-center text-danger font-weight-bold p-1">
-                    <input value="Bilgi Formu" class="btn btn-primary btn-sm ml-1" id="btnBilgi" />
+                <p class="text-center font-weight-bold p-1">
+                    <input value="Bilgi Formu" class="btn btn-primary btn-sm ml-1" style="width:180px" id="btnBilgi" />
                     <input value="Aday Sınava Girmedi" class="btn btn-danger btn-sm ml-1" id="btnIptal" />
-                    <input value="Soruları Göster" class="btn btn-secondary btn-sm ml-1" id="btnSoruGoster" style="display:none"/>
+                    <input value="Soruları Göster" class="btn btn-secondary btn-sm ml-1" id="btnSoruGoster" style="display:none" />
                 </p>
             </div>
         </div>
@@ -60,7 +60,7 @@
 <!-- Buton Blok -->
 <div class="row m-0 mt-1">
     <div class="col-lg-12">
-        <input type="number" id="soruNo" class="form-control font-weight-bold text-center text-danger btn-outline-success" style="font-size:22px" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Soru Numarasını Giriniz">
+        <input type="number" id="soruNo" class="form-control font-weight-bold text-center text-danger" style="font-size:22px;border-color:darkred;border-style:double" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" min="1" placeholder="Soru Numarasını Giriniz">
         <input type="submit" value="Mülakatı Başlat" class="btn btn-primary w-100 mt-1" id="btnBaslat" />
         <input type="submit" value="Mülakatı Bitir" class="btn btn-danger w-100 mt-1" id="btnBitir" />
     </div>
@@ -77,77 +77,99 @@
 </div>
 
 <!-- Soru Blok -->
-<div class="row col-xl-12 m-0 mt-2" style="border-color:red" id="soruBlok">
-        <div class="row">
-            <!--////////////////////////////////////////////////////-->
-            <div class="col-xl-3">
+<div class="row col-xl-12 m-0 mt-2" id="soruBlok">
+    <div class="card shadow-xl rounded-xl col-xl-12">
+        <!--sorular-->
+        <div class="row equal-height-row d-flex flex-wrap">
+            <div class="col-md-3 p-1 d-flex flex-column justify-content-between">
                 <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-1</h6>
-                <div class="card shadow-lg" style="height: 300px">
+                <div class="card shadow-lg h-100">
                     <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
-                    <div class="card-body">
-                        <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
-                    </div>
-                </div>
-                <div class="card shadow-lg mb-1" style="height:150px">
-                    <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
-                    <div class="card-body">
-                        <p class="card-text">Ziya Osman Saba</p>
+                    <div class="card-body h-100">
+                        <p class="card-text h-100">İmtiyaz sahibi ve başyazarı Ebuzziya Tevfik  olan, yayımlandığı dönemde yaşanan ilmî, 
+                            edebî ve teknik gelişmelerle birlikte siyasi konulu makalelere yer verilen; Namık Kemal, 
+                            Şinasi, Ziya Paşa, Ali Kemal vb. gibi isimlerin  de yazılarının bulunduğu derginin adı nedir?                            
+                        </p>
                     </div>
                 </div>
             </div>
-            <!--////////////////////////////////////////////////////-->
-            <div class="col-xl-3">
+            <div class="col-md-3 p-1 d-flex flex-column justify-content-between">
                 <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-2</h6>
-                <div class="card shadow-lg" style="height: 300px">
+                <div class="card shadow-lg h-100">
                     <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
-                    <div class="card-body">
-                        <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
-                    </div>
-                </div>
-                <div class="card shadow-lg mb-1" style="height:150px">
-                    <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
-                    <div class="card-body">
-                        <p class="card-text">Ziya Osman Saba</p>
+                    <div class="card-body h-100">
+                        <p class="card-text h-100">
+                            "Sebil ve Güvercinler " adlı eser kime aittir?
+                        </p>
                     </div>
                 </div>
             </div>
-            <!--////////////////////////////////////////////////////-->
-            <div class="col-xl-3">
+            <div class="col-md-3 p-1 d-flex flex-column justify-content-between">
                 <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-3</h6>
-                <div class="card shadow-lg" style="height: 300px">
+                <div class="card shadow-lg h-100">
                     <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
-                    <div class="card-body">
-                        <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
-                    </div>
-                </div>
-                <div class="card shadow-lg mb-1" style="height:150px">
-                    <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
-                    <div class="card-body">
-                        <p class="card-text">Ziya Osman Saba</p>
+                    <div class="card-body h-100">
+                        <p class="card-text h-100">
+                            Bâki bu eserinde Mekke´nin tarihinden ve Osmanlı sultanlarının Mekke´de yaptırdığı eserlerden bahsetmektedir. Sözü edilen bu eserin adı nedir?
+                        </p>
                     </div>
                 </div>
             </div>
-            <!--////////////////////////////////////////////////////-->
-            <div class="col-xl-3">
+            <div class="col-md-3 p-1 d-flex flex-column justify-content-between">
                 <h6 class="card-header text-center text-info font-weight-bold">KATEGORİ-4</h6>
-                <div class="card shadow-lg" style="height: 300px">
+                <div class="card shadow-lg h-100">
                     <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
-                    <div class="card-body">
-                        <p class="card-text">"Sebil ve Güvercinler " adlı eser kime aittir?</p>
-                    </div>
-                </div>
-                <div class="card shadow-lg mb-1" style="height:150px">
-                    <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
-                    <div class="card-body">
-                        <p class="card-text">Ziya Osman Saba</p>
+                    <div class="card-body h-100">
+                        <p class="card-text h-100">
+                            “Denize Açılan Kapı” adlı eseriyle 1984 yılında Türkiye Yazarlar Birliği Yılın Hikâyecisi ödülüne layık görülen 2022 yılında kaybettiğimiz yazarımız kimdir?
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-    <div class="row m-2">
-        <a class="btn btn-secondary btn-sm text-white w-100 text-capitalize" id="btnSoruBlokKapat" style="font-size:large">SORULARI GİZLE</a>
+        <!-- cevaplar -->
+        <div class="row equal-height-row d-flex flex-wrap">
+            <div class="col-md-3 p-1 d-flex flex-column justify-content-between">
+                <div class="card shadow-lg h-100">
+                    <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
+                    <div class="card-body">
+                        <p class="card-text">Ziya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman Saba</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 p-1 d-flex flex-column justify-content-between">
+                <div class="card shadow-lg h-100">
+                    <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
+                    <div class="card-body">
+                        <p class="card-text">Ziya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman Saba</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 p-1 d-flex flex-column justify-content-between">
+                <div class="card shadow-lg h-100">
+                    <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
+                    <div class="card-body">
+                        <p class="card-text">SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman Saba</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 p-1 d-flex flex-column justify-content-between">
+                <div class="card shadow-lg h-100">
+                    <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
+                    <div class="card-body">
+                        <p class="card-text">SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman Saba</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- soru goster buton -->
+        <div class="row m-2">
+            <a class="btn btn-secondary btn-sm text-white w-100 text-capitalize" id="btnSoruBlokKapat" style="font-size:large">SORULARI GİZLE</a>
+        </div>
     </div>
 </div>
+
 
 <!-- Aday Listesi -->
 <div class="col-xl-12 m-0 mt-2" id="AdayListesi">
@@ -231,7 +253,7 @@
             else {
 
                 bootbox.alert({
-                    title:'UYARI',    
+                    title:'UYARI',
                     message: "Soru Numarası Yazınız...",
                         label: 'Tamam',
                         backdrop: false,
@@ -251,6 +273,8 @@
 
             $('#soruBlok').hide();
             $('#AdayNotBlok').show();
+            $('#AdayBilgiBlok').hide();
+            document.getElementById("btnSoruGoster").style.display = "inline";
         });
 
         $('#btnBilgiFormKapat').click(function () {
@@ -275,8 +299,9 @@
         $('#btnSoruGoster').click(function () {
 
             $('#soruBlok').show();
-            
+            document.getElementById("soruNo").focus();
         });
+
         //Aday Çağrı Butonu
         $("#myTableNoButtons").on("click", ".btnCagri", function () {
 
@@ -288,7 +313,7 @@
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
-                        callback: function() { alert(id);/* your callback code */ }
+                        callback: function() { /* your callback code */ }
                     });
 
         });
@@ -304,8 +329,8 @@
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
-                        callback: function() { 
-                            alert(id); }
+                        callback: function() {
+                             }
                     });
 
         });
@@ -432,3 +457,5 @@
         //};
     </script>
 }
+
+
