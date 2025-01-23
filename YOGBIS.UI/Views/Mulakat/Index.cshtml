@@ -170,13 +170,10 @@
     </div>
 </div>
 
-
 <!-- Aday Listesi -->
 <div class="col-xl-12 m-0 mt-2" id="AdayListesi">
     @await Component.InvokeAsync("AdayMulakatListe")
 </div>
-
-
 
 <!-- Modal Uyarı -->
 <div class="modal fade modal-xl" id="ModalUyari" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -275,6 +272,8 @@
             $('#AdayNotBlok').show();
             $('#AdayBilgiBlok').hide();
             document.getElementById("btnSoruGoster").style.display = "inline";
+            document.getElementById("Kategori1-1").focus();
+            document.getElementById("btnBitir").style.display = "none";
         });
 
         $('#btnBilgiFormKapat').click(function () {
