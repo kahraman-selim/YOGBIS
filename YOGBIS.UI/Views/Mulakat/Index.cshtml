@@ -334,7 +334,18 @@
 
         });
 
+        $(document).ready(function(){
+        jQuery(".komisyon1Not").change(function(){
 
+            var toplanot =$(".komisyon1Not").val();
+            var toplam=0;
+            toplam += parseInt(toplanot);
+            alert(toplam);
+            $("#Toplam1").val=toplam;
+            
+
+                        });
+        });
 
 
         //            //////////////////////sayaç için başlangıç//////////////
