@@ -45,13 +45,18 @@
             </p>
         </div>
         <div class="col-lg-1 d-flex flex-column justify-content-between">
-            <p class="card-text text-center text-primary font-weight-bold p-1 small">
-                <span id="adsoyad">MYS Ortalama</span>
+            <p class="card-text text-left text-primary font-weight-bold p-1 small">
+                <span id="adsoyad">Ortalama</span>
+            </p>
+        </div>
+        <div class="col-lg-1 d-flex flex-column justify-content-between">
+            <p class="card-text text-left text-primary font-weight-bold p-1 small">
+                <span id="adsoyad">MYS Puan</span>
             </p>          
         </div>
-        <div class="col-lg-2 d-flex flex-column justify-content-between">
-            <p class="card-text text-center text-primary font-weight-bold p-1 small">
-                <span id="adsoyad">Sonuç</span>
+        <div class="col-lg-1 d-flex flex-column justify-content-between">
+            <p class="card-text text-left text-primary font-weight-bold p-1 small">
+                <span id="adsoyad">MYS Sonuç</span>
             </p>
         </div>
     </div>
@@ -81,7 +86,7 @@
                 <!-- Aday MYYS Puan -->
                 <div class="col-md-1 d-flex flex-column justify-content-between">
                     <div class="form-group h-100">
-                        <input asp-for="IkametIl" type="text" class="form-control py-1 text-center font-weight-bold h-100" id="MYYSNot" disabled value="MYYSPuan">
+                        <input asp-for="IkametIl" type="text" class="form-control py-1 text-sm-left font-weight-bold h-100" id="MYYSPuan" disabled value="78,3333" style="font-size:small">
                     </div>
                 </div>
                 <!-- Komisyon Not Bloğu -->
@@ -114,7 +119,7 @@
                         </div>
                         <div class="col w-auto">
                             <div class="form-group">
-                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" min="0" max="100" id="Toplam1" >
+                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komtoplamlar" min="0" max="100" id="Toplam1">
                             </div>
                         </div>
                     </div>
@@ -146,7 +151,7 @@
                         </div>
                         <div class="col w-auto">
                             <div class="form-group">
-                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" min="0" max="100" id="Toplam2" disabled>
+                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komtoplamlar" min="0" max="100" id="Toplam2" disabled>
                             </div>
                         </div>
                     </div>
@@ -178,28 +183,34 @@
                         </div>
                         <div class="col w-auto">
                             <div class="form-group">
-                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold" min="0" max="100" id="Toplam3" disabled>
+                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komtoplamlar" min="0" max="100" id="Toplam3" disabled>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- MYS Ortalama Puan -->
+                <!-- Ortalama Puan -->
                 <div class="col-md-1 d-flex flex-column justify-content-between">
                     <div class="form-group h-100">
-                        <input asp-for="IkametIl" type="text" class="form-control py-1 text-center font-weight-bold h-100" id="MYSOrtalama" disabled value="MYSOrtalama">
+                        <input asp-for="IkametIl" type="text" class="form-control py-1 text-center font-weight-bold h-100" id="Ortalama" disabled>
+                    </div>
+                </div>
+                <!-- MYS Puan -->
+                <div class="col-md-1 d-flex flex-column justify-content-between">
+                    <div class="form-group h-100">
+                        <input asp-for="IkametIl" type="text" class="form-control py-1 text-center font-weight-bold h-100" id="MYSPuan" disabled>
                     </div>
                 </div>
                 <!-- MYS Sonuç -->
-                <div class="col-md-2 d-flex flex-column justify-content-between">
+                <div class="col-md-1 d-flex flex-column justify-content-between">
                     <div class="form-group h-100">
-                        <input asp-for="IkametIl" type="text" class="form-control py-1 text-left text-danger font-weight-bold h-100" id="MYYSSonuc" disabled value="MYYSSonuc">
+                        <input asp-for="IkametIl" type="text" class="form-control py-1 text-left text-success font-weight-bold h-100" id="MYSSonuc" disabled>
                     </div>
                 </div>
             </div>
             <!-- buton blok -->
             <div class="form-row mb-2">
                 <div class="col-md-12">
-                    <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white w-100" id="btnNotFormKapat" />
+                    <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white w-100" id="btnNotFormKapat"/>                    
                 </div>
             </div>
         </form>
