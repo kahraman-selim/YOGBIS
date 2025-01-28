@@ -3,11 +3,11 @@
     ViewData["Title"] = "Aday Takip";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style type="text/css" >
+<style type="text/css">
 
     #blink {
         font-size: 14px;
-        font-weight: bold;   
+        font-weight: bold;
     }
 </style>
 
@@ -33,69 +33,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td style="width:auto;font-size:12px;font-weight:bold;" class="text-center">1</td>
-                                <td style="width:auto"><a href="" style="font-size:12px;font-weight:bold;">Ahmet GÜZELLER</a></td>
-                                <td id="blink">
-                                    <p class="text-left m-0">
-                                        <span class="badge text-light text-center w-100" style="background-color: darkorange;font-weight:bold;font-size:13px">
-                                            <a class="text-center">Komisyon-12</a>
-                                        </span>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width:auto;font-size:12px;font-weight:bold;" class="text-center">2</td>
-                                <td style="width:auto"><a href="" style="font-size:12px;font-weight:bold;">Bayram HANCI</a></td>
-                                <td id="blink">
-                                    <p class="text-left m-0">
-                                        <span class="badge text-light text-center w-100" style="background-color: darkorange;font-weight:bold;font-size:13px">
-                                            <a class="text-center">Komisyon-5</a>
-                                        </span>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><h6>3</h6></td>
-                                <td><h6>Ahmet YAŞAR</h6></td>
-                                <td><span class="badge text-danger">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>4</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>5</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>6</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>7</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>8</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>9</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                            <tr>
-                                <td><h6>10</h6></td>
-                                <td><h6>Bayram DURSUN</h6></td>
-                                <td><span class="badge text-secondary">Bekliyor</span></td>
-                            </tr>
-                        </tbody>                        
+                            @{
+                                var a = 10;
+                            }
+                            @for (int i = 1; i <= a; i++)
+                            {
+                                <tr>
+                                    <td style="width:auto;font-size:12px;font-weight:bold;" class="text-center">@i</td>
+                                    <td style="width:auto"><a href="" style="font-size:12px;font-weight:bold;">Ahmet GÜZELLER</a></td>
+                                    <td>
+                                        <p class="text-left m-0">
+                                            <span class="badge text-light text-center w-100 blink" style="background-color: darkorange;font-weight:bold;font-size:13px">
+                                                <a class="text-center">Komisyon-@i</a>
+                                            </span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -103,16 +58,15 @@
     </div>
 </div>
 
-@section Scripts{
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
-        var blink =
-            document.getElementById('blink');
-
-        setInterval(function () {
-            blink.style.opacity =
-                (blink.style.opacity == 0 ? 1 : 0);
-        }, 1000);
+        document.querySelectorAll('.blink').forEach(function(element) {
+            element.style.opacity = 1; // Başlangıçta opaklığı 1 yap
+            setInterval(function () {
+                element.style.opacity = (element.style.opacity == 0 ? 1 : 0);
+            }, 1000);
+        });
     </script>
 }
 

@@ -239,6 +239,9 @@
 
     <script type="text/javascript">
 
+        document.getElementById("Ortalama").val=0;
+        document.getElementById("MYSPuan").val=0;
+        document.getElementById("MYSSonuc").val="";
         document.getElementById("soruNo").focus();
 
 
@@ -779,20 +782,33 @@
         });
 
         //toplamlar bloğu
+        $(document).ready(function() {
+            $(".komisyonnotlar").on('change keyup paste', function() {
+  
+                    var top1 = parseInt($(Toplam1).val()) || 0;
+                    var top2 = parseInt($(Toplam2).val()) || 0;
+                    var top3 = parseInt($(Toplam3).val()) || 0;                    
+                    var myyspuan=parseFloat($(MYYSPuan).val()) || 0;
+                    var ortalama=0;
+                    
 
-        $(document).ready(function(){
+                    ortalama=(top1+top2+top3)/3;
 
-            jQuery("#Toplam1").on('change', function(){
-            var top1 = parseInt($("#Toplam1").val());
+                    $('#Ortalama').val(Math.ceil((top1+top2+top3)/3));
 
-            if(top1>=0){
-                    alert(top1*5);
-                }
 
+                    $('#MYSPuan').val(parseFloat((ortalama+myyspuan)/2).toFixed(2));
+                    
+                    if(parseInt($(Ortalama).val())>=60){
+                        document.getElementById("MYSSonuc").value="BAŞARILI";
+                        document.getElementById("MYSSonuc").className = "form-control py-1 text-left text-success font-weight-bold h-100";
+                    }
+                    else{
+                        document.getElementById("MYSSonuc").value="BAŞARISIZ";
+                        document.getElementById("MYSSonuc").className = "form-control py-1 text-left text-danger font-weight-bold h-100";
+                    }
             });
         });
-
-
 
         // #region sayaç
 
