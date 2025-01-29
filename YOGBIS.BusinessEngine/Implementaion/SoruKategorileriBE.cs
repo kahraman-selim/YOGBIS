@@ -238,8 +238,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var data = _unitOfWork.sorukategorilerRepository.Get(id);
             if (data != null)
             {
-                var soruTakmaAdi = data.SoruKategorilerTakmaAdi;
-                return new Result<string>(true, ResultConstant.RecordFound, soruTakmaAdi);
+                var soruKategoriAdi = data.SoruKategorilerAdi;
+                return new Result<string>(true, ResultConstant.RecordFound, soruKategoriAdi);
             }
             else
             {

@@ -11,13 +11,14 @@
             <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th class="text-center">Sıra No</th>
+                        <th class="text-center">SN</th>
                         <th class="text-center">Komisyon Sıra No</th>
                         <th class="text-center">Komisyon Adı</th>
                         <th class="text-center">Komisyon Üye Sıra No</th>
                         <th class="text-center">Komisyon Görevi</th>
                         <th class="text-center">Komisyon Üye Ad Soyad</th>
                         <th class="text-center">Durumu</th>
+                        <th class="text-center">Görevde</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,6 +51,18 @@
                                     <td style="color:red" class="font-weight-bold">Yedek</td>
                                 }
 
+                                <td>
+                                    <a asp-action="Durum" asp-route-id="@item.KomisyonId">
+                                        @if (@item.KomisyonUyeDurum == true)
+                                        {
+                                            <b>Aktif</b>
+                                        }
+                                        else
+                                        {
+                                            <b class="text-danger">Pasif</b>
+                                        }
+                                    </a>
+                                </td>
                             </tr>
                         }
                     }

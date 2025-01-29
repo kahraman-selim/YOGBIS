@@ -484,7 +484,7 @@
             }
 
             toplam1=parseInt(kom11)+parseInt(kom12)+parseInt(kom13)+parseInt(kom14)+parseInt(kom15);
-            
+
             document.getElementById("Toplam1").value=toplam1;
 
 
@@ -629,7 +629,7 @@
             }
 
             toplam2=parseInt(kom21)+parseInt(kom22)+parseInt(kom23)+parseInt(kom24)+parseInt(kom25);
-           
+
             document.getElementById("Toplam2").value=toplam2;
 
 
@@ -774,7 +774,7 @@
             }
 
             toplam3=parseInt(kom31)+parseInt(kom32)+parseInt(kom33)+parseInt(kom34)+parseInt(kom35);
-         
+
             document.getElementById("Toplam3").value=toplam3;
 
 
@@ -784,13 +784,13 @@
         //toplamlar bloğu
         $(document).ready(function() {
             $(".komisyonnotlar").on('change keyup paste', function() {
-  
+
                     var top1 = parseInt($(Toplam1).val()) || 0;
                     var top2 = parseInt($(Toplam2).val()) || 0;
-                    var top3 = parseInt($(Toplam3).val()) || 0;                    
+                    var top3 = parseInt($(Toplam3).val()) || 0;
                     var myyspuan=parseFloat($(MYYSPuan).val()) || 0;
                     var ortalama=0;
-                    
+
 
                     ortalama=(top1+top2+top3)/3;
 
@@ -798,7 +798,7 @@
 
 
                     $('#MYSPuan').val(parseFloat((ortalama+myyspuan)/2).toFixed(2));
-                    
+
                     if(parseInt($(Ortalama).val())>=60){
                         document.getElementById("MYSSonuc").value="BAŞARILI";
                         document.getElementById("MYSSonuc").className = "form-control py-1 text-left text-success font-weight-bold h-100";

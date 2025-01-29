@@ -204,16 +204,25 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region MulakatSoruGuncelle
         public Result<MulakatSorulariVM> MulakatSoruGuncelle(MulakatSorulariVM model, SessionContext user)
         {
-            if (model != null)
+            if (model.MulakatSorulariId != null)
             {
                 try
                 {
-                    var mulakatSoru = _mapper.Map<MulakatSorulariVM, MulakatSorulari>(model);
-                    mulakatSoru.KaydedenId = user.LoginId;
+                    var data = _unitOfWork.mulakatSorulariRepository.Get(model.MulakatSorulariId);
+                    if (data != null) 
+                    {
+                        data.SoruKategorilerId = model.SoruKategorilerId;
+                        data.Soru = model.Soru;
+                        data.Cevap = model.Cevap;
 
-                    _unitOfWork.mulakatSorulariRepository.Update(mulakatSoru);
-                    _unitOfWork.Save();
-                    return new Result<MulakatSorulariVM>(true, ResultConstant.RecordCreateSuccess);
+                        _unitOfWork.mulakatSorulariRepository.Update(data);
+                        _unitOfWork.Save();
+                        return new Result<MulakatSorulariVM>(true, ResultConstant.RecordCreateSuccess);
+                    }
+                    else 
+                    {
+                        return new Result<MulakatSorulariVM>(false, "Lütfen kayıt seçiniz");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -286,9 +295,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-              
 
-        #region KullanilmayanYontem
+
+        #region KullanilmayanYontem MulakatSorulariGetir
         //public Result<List<MulakatSorulariVM>> MulakatSorulariGetir(Guid id, string derece)
         //{
         //    var data = _unitOfWork.mulakatSorulariRepository.GetAll(k => k.SoruSiraNo == id).ToList(); //&& k.Dereceler.DereceAdi == derece (parantez içi eklenecek)

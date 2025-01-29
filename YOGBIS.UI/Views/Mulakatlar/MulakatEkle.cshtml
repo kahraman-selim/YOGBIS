@@ -24,7 +24,7 @@
                     @Html.HiddenFor(x => x.MulakatId)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label asp-for="DereceId" class="small mb-1 font-weight-bold">Derecesi</label>
                                 @Html.DropDownListFor(a => a.DereceId, new SelectList(ViewBag.Dereceler, "DereceId",
@@ -41,13 +41,11 @@
                                 <span class="text-danger" asp-validation-for="OnaySayisi"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Onay Tarihi</label>
                                 <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                    <input id="inputBastDate" asp-for="OnayTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                                    <input id="inputOnaytDate" asp-for="OnayTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
                                     <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
@@ -64,14 +62,12 @@
                                 <span class="text-danger" asp-validation-for="KararSayisi"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Karar Tarihi</label>
-                                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                    <input id="inputBastDate" asp-for="KararTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
-                                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                    <input id="inputKararDate" asp-for="KararTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
+                                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
                                 </div>
@@ -83,17 +79,15 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Yazılı Sınav Tarihi</label>
-                                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                    <input id="inputBastDate" asp-for="YazılıSinavTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
-                                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                <div class="input-group date" id="datetimepicker3" data-target-input="nearest">
+                                    <input id="inputSinavDate" asp-for="YazılıSinavTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker3" />
+                                    <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
                                 </div>
                                 <span class="text-danger" asp-validation-for="YazılıSinavTarihi"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Mülakat Kategori Numarası</label>
@@ -103,7 +97,7 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Mülakat Adı</label>
                                 <input asp-for="MulakatAdi" type="text" class="form-control py-2 text-left font-weight-bold" id="MulakatKategoriAdi" placeholder="">
@@ -115,23 +109,21 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Başlama Tarihi</label>
-                                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                    <input id="inputBastDate" asp-for="BaslamaTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
-                                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                                    <input id="inputBasDate" asp-for="BaslamaTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker4" />
+                                    <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
                                 </div>
                                 <span class="text-danger" asp-validation-for="BaslamaTarihi"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1 font-weight-bold">Bitiş Tarihi</label>
-                                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                                    <input id="inputBittDate" type="text" asp-for="BitisTarihi" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
-                                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                <div class="input-group date" id="datetimepicker5" data-target-input="nearest">
+                                    <input id="inputBitDate" type="text" asp-for="BitisTarihi" class="form-control datetimepicker-input" data-target="#datetimepicker5" />
+                                    <div class="input-group-append" data-target="#datetimepicker5" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
                                 </div>
@@ -219,7 +211,7 @@
 
     <script type="text/javascript">
 
-        $('#datetimepicker1, #datetimepicker2').datetimepicker({
+        $('#datetimepicker1, #datetimepicker2,#datetimepicker3,#datetimepicker4,#datetimepicker5').datetimepicker({
             format: 'DD/MM/YYYY'
         });
 
@@ -227,7 +219,7 @@
 
             document.getElementById("MulakatId").focus();
             var btn = $("#MulakatId").val();
-            alert(btn);
+           
             var id = btn.data("id");
 
             bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {

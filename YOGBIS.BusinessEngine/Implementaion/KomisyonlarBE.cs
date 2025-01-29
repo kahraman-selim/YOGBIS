@@ -35,7 +35,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region KomisyonlariGetir
         public Result<List<KomisyonlarVM>> KomisyonlariGetir()
         {
-            var data = _unitOfWork.komisyonlarRepository.GetAll(includeProperties: "Kullanici").OrderBy(x => x.KomisyonSiraNo).ToList();
+            var data = _unitOfWork.komisyonlarRepository.GetAll(includeProperties: "Kullanici").OrderBy(x => x.KomisyonSiraNo).ThenBy(x=>x.KomisyonUyeSiraNo).ToList();
 
             if (data != null)
             {

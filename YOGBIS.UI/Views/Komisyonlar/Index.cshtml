@@ -52,7 +52,7 @@
                             <div class="form-group">
                                 <label asp-for="KomisyonUyeDurum" class="small mb-1 font-weight-bold">Durum</label>
                                 <select asp-for="KomisyonUyeDurum" class="form-control-range form-control py-2" aria-label="Default select example">
-                                    <option asp-for="UyeDurumu" selected class="text-center"></option>
+                                    <option asp-for="UyeDurumu" selected class="text-left">Seçim yapınız</option>
                                     <option asp-for="UyeDurumu" value="True">Asıl</option>
                                     <option asp-for="UyeDurumu" value="False">Yedek</option>
                                 </select>
@@ -125,7 +125,7 @@
                             <div class="form-group">
                                 <label asp-for="KomisyonGorevBaslamaTarihi" class="small mb-1 font-weight-bold">Başlama Tarihi</label>
                                 <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                    <input id="inputBastDate" asp-for="KomisyonGorevBaslamaTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                                    <input id="KomisyonGorevBaslamaTarihi" asp-for="KomisyonGorevBaslamaTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
                                     <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
@@ -137,7 +137,7 @@
                             <div class="form-group">
                                 <label asp-for="KomisyonGorevBitisTarihi" class="small mb-1 font-weight-bold">Bitiş Tarihi</label>
                                 <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                                    <input id="inputBittDate" asp-for="KomisyonGorevBitisTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
+                                    <input id="KomisyonGorevBitisTarihi" asp-for="KomisyonGorevBitisTarihi" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
                                     <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
