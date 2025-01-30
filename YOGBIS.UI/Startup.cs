@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -72,6 +73,12 @@ namespace YOGBIS.UI
             #endregion
 
 
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 104857600; // 100 MB
+                //options.AllowSynchronousIO = true; // Eðer senkron IO gerekliyse
+            });
+
             services.AddIdentity<Kullanici, IdentityRole>(options => {
                 options.User.RequireUniqueEmail = true; //kullanýcý email giriþi zorunluluðu
                 //options.User.AllowedUserNameCharacters="" izin verilen karakterler için
@@ -113,6 +120,7 @@ namespace YOGBIS.UI
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
                 options.SlidingExpiration = true;
             });
+
         }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

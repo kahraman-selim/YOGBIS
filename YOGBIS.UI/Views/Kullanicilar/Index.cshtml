@@ -14,8 +14,31 @@
         <a asp-controller="KullaniciYetkileri" asp-action="Index" class="btn btn-info btn-circle btn-sm" style="width:100px;" title="Yetkiler">
             Yetkiler <i class="fas fa-vote-yea"></i>
         </a>
-    </li>            
+    </li>
+    <li class="m-1">
+        <a asp-controller="Kullanicilar" asp-action="DeactivateNonAdminUsers" class="btn btn-warning btn-circle btn-sm" style="width:auto">
+            Tüm Kullanıcıları Kapat <i class="fas fa-vote-yea"></i>
+        </a>
+    </li>
+    <li class="m-1">
+        <a asp-controller="Kullanicilar" asp-action="ActivateNonAdminUsers" class="btn btn-primary btn-circle btn-sm" style="width:auto">
+            Tüm Kullanıcıları Aç <i class="fas fa-vote-yea"></i>
+        </a>
+    </li>
 </ol>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (TempData["Errors"] != null)
+{
+    <div class="alert alert-danger">
+        <pre>@TempData["Errors"]</pre>
+    </div>
+}
 <div class="card mt-2 mb-4">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
