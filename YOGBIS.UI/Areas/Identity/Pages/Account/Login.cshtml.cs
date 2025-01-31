@@ -22,12 +22,13 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
+        #region Tanımlamalar
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<Kullanici> _userManager;
         private readonly SignInManager<Kullanici> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public LoginModel(SignInManager<Kullanici> signInManager, 
+        public LoginModel(SignInManager<Kullanici> signInManager,
             ILogger<LoginModel> logger,
             UserManager<Kullanici> userManager, IUnitOfWork unitOfWork, RoleManager<IdentityRole> roleManager)
         {
@@ -36,7 +37,8 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
             _logger = logger;
             _unitOfWork = unitOfWork;
             _roleManager = roleManager;
-        }
+        } 
+        #endregion
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -48,11 +50,12 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
+        #region InputModel
         public class InputModel
         {
             [Required(ErrorMessage = "E-Posta alanı boş geçilemez !")]
             [Display(Name = "E-Posta")]
-            [EmailAddress(ErrorMessage="Geçersiz E-posta adresi !")]            
+            [EmailAddress(ErrorMessage = "Geçersiz E-posta adresi !")]
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Şifrenizi yazmalısınız !")]
@@ -63,7 +66,9 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
             [Display(Name = "Beni hatırla?")]
             public bool RememberMe { get; set; }
         }
+        #endregion
 
+        #region OnGetAsync
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
@@ -80,7 +85,88 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
 
             ReturnUrl = returnUrl;
         }
+        #endregion
 
+        #region OnPostAsyncOturumKontrol
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+
+            if (ModelState.IsValid)
+            {
+                var userName = Input.Email;
+                if (IsValidEmail(Input.Email))
+                {
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    if (user != null)
+                    {
+                        userName = user.UserName;
+
+                        if (user.Aktif == true)
+                        {
+                            // Kullanıcının zaten bir oturumu varsa
+                            var existingSession = HttpContext.Session.GetString(ResultConstant.LoginUserInfo);
+                            if (!string.IsNullOrEmpty(existingSession))
+                            {
+                                ModelState.AddModelError(string.Empty, "Kullanıcı oturum açmış durumda. Bir sorun olduğunu düşünüyorsanız Sistem Yöneticisine başvurunuz.");
+                                return Page();
+                            }
+
+                            var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                            if (result.Succeeded)
+                            {
+                                var userInfo = new SessionContext()
+                                {
+                                    Email = user.Email,
+                                    FirstName = user.Ad,
+                                    //TODO:Admın Bilgisini dinamic olarak getir
+                                    IsAdmin = false,
+                                    LastName = user.Soyad,
+                                    LoginId = user.Id,
+                                    Aktif = user.Aktif
+                                };
+
+                                //Set To User ınfo Session
+                                HttpContext.Session.SetString(ResultConstant.LoginUserInfo, JsonConvert.SerializeObject(userInfo));
+
+                                _logger.LogInformation("User logged in.");
+                                return LocalRedirect(returnUrl);
+                            }
+                            if (result.RequiresTwoFactor)
+                            {
+                                return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                            }
+                            if (result.IsLockedOut)
+                            {
+                                _logger.LogWarning("User account locked out.");
+                                return RedirectToPage("./Lockout");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
+                                return Page();
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
+                            return Page();
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı veya şifre yanlış !");
+                        return Page();
+                    }
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return Page();
+        } 
+        #endregion
+
+        /*#region OnPostAsync
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -93,7 +179,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                 if (IsValidEmail(Input.Email))
                 {
                     var user = await _userManager.FindByEmailAsync(Input.Email);
-                    if (user!=null)
+                    if (user != null)
                     {
                         userName = user.UserName;
 
@@ -203,7 +289,9 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+        #endregion*/
 
+        #region IsValidEmail
         public bool IsValidEmail(string emailaddress)
         {
             try
@@ -216,6 +304,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
             {
                 return false;
             }
-        }
+        } 
+        #endregion
     }
 }

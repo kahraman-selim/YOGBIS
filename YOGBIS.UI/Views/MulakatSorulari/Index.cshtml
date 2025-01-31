@@ -29,7 +29,7 @@
                                     </div>
                                 </div>
                                 <!--Mülakat-->
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label asp-for="MulakatId" class="small mb-1 font-weight-bold">Mülakatı Seç</label>
                                         @Html.DropDownListFor(m => m.MulakatId, new SelectList(ViewBag.Mulakatlar,
@@ -44,6 +44,20 @@
                                         @Html.DropDownListFor(k => k.SoruKategorilerId, new SelectList(ViewBag.SoruKategorileri,
                                                  "SoruKategorilerId", "SoruKategorilerAdi"), "Kategoriyi Seç", new { @id = "KategoriListesi", @class = "form-control-range form-control p-0" })
                                         <span class="text-danger" asp-validation-for="SoruKategorilerId"></span>
+                                    </div>
+                                </div>
+                                <!--Soruİptal-->
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label asp-for="SoruSiraNo" class="small mb-1 font-weight-bold">Soruyu Çıkar</label>
+                                            <select asp-for="SoruSiraNo" class="form-control-range form-control py-0" aria-label="Default select example">
+                                                <option asp-for="SoruSiraNo" selected class="text-left">Seçim Yapınız</option>
+                                                <option asp-for="SoruSiraNo" value="True">Evet</option>
+                                                <option asp-for="SoruSiraNo" value="False">Hayır</option>
+                                            </select>
+                                            <span class="text-danger" asp-validation-for="SoruSiraNo"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -112,26 +126,54 @@
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
-                                    <a asp-controller="MulakatSorulari" asp-action="Index" class="btn btn-primary btn-sm text-white" id="btnYeni" style="width:100px">Yeni Kayıt</a>
+                                    <a asp-controller="MulakatSorulari" asp-action="Index" class="btn btn-primary btn-sm text-white" id="btnYeni" style="width:100px;display:none">Yeni Kayıt</a>
                                     <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white" style="width:100px" />
                                     <a asp-controller="MulakatSorulari" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm" style="width:100px">Vazgeç</a>
                                 </div><!--ButonGrup-->
                             </div>
                         </form>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="form-row m-2">
-                    <div class="col-6">
+                    <div class="col-md-6">
                         <form asp-action="ExceldenMulakatSoruEkle" enctype="multipart/form-data" method="post" class="form-group m-0">
-                            <div class="form-group">
-                                <label>Excel Dosyası Seçin</label>
-                                <input type="file" name="file" class="form-control" accept=".xlsx" required />
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <div class="form-row">
+                                        <div class="col-md-auto">
+                                            <label>Excel Dosyası Seçin</label>
+                                        </div>
+                                        <div class="col-md-auto">
+                                            <input type="file" name="file" class="form-control w-100" accept=".xlsx" required style="width:500px" />
+                                        </div>
+                                        <div class="col-md-auto">
+                                            <button type="submit" class="btn btn-primary w-100">Yükle</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Yükle</button>
                         </form>
                     </div>
-                </div>              
-              </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <form id="uploadForm" enctype="multipart/form-data" style="display:none"> 
+                                <input type="file" id="fileInput" name="file" accept=".xlsx" />
+                                <button type="button" onclick="uploadExcel()">YükleAjax</button>
+                            </form>
+                            <form action="/" method="post">
+                                <div class="form-row">
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary w-100">Önceki Soru</button>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary w-100">Sonraki Soru</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     @if (TempData["Message"] != null)
@@ -157,12 +199,12 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script type="text/javascript">
-        
+
         $("#DereceListesi").on("change", function () {
 
             var DereceId = $("#DereceListesi").val();
 
-            //alert(DereceId);
+           alert(DereceId); //işlem yaparken aç
             //mülakatları getir
             $("#MulakatListesi").empty();
 
@@ -184,7 +226,7 @@
 
                 });
             });
-            
+
             // kategorileri getir
             $("#KategoriListesi").empty();
             $("#KategoriListesi").append("<option value=''> Kategori seçiniz </option>");
@@ -213,7 +255,7 @@
 
             var mulakatId = $("#MulakatListesi").val();
 
-            //alert(mulakatId);
+            alert(mulakatId); //işlem yaparken aç
 
             $('#KategoriListesi').focus();
 
@@ -223,7 +265,7 @@
 
             var SoruKategorilerId = $("#KategoriListesi").val();
 
-            //alert(SoruKategorilerId);
+            alert(SoruKategorilerId); // işlem yaparken aç
 
             //$("#SoruKategoriSiraNo").empty();
             //$("#SoruKategoriAdi").empty();
@@ -250,16 +292,37 @@
                     $("#SoruKategoriAdi").text = ss;
                 });
             });
-            
+
 
         });
 
         var table = $('#myTableE').DataTable({
 
             destroy: true,
-            ordering: false
+            ordering: false,
 
         });
 
+
+            function uploadExcel() {
+            var formData = new FormData();
+            var fileInput = document.getElementById('fileInput');
+            formData.append('file', fileInput.files[0]);
+
+            $.ajax({
+                url: '/MulakatSorulari/ExceldenMulakatSoruEkle',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    alert('Yükleme başarılı!');
+                    window.location.href = '/MulakatSorulari/Index';
+                },
+                error: function(xhr, status, error) {
+                    alert('Hata oluştu: ' + error);
+                }
+            });
+        }
     </script>
 }

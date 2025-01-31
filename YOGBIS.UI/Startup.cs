@@ -72,10 +72,10 @@ namespace YOGBIS.UI
             services.AddAutoMapper(typeof(Maps));
             #endregion
 
-
+            
             services.Configure<FormOptions>(options =>
             {
-                options.MultipartBodyLengthLimit = 104857600; // 100 MB
+                options.MultipartBodyLengthLimit = int.MaxValue;
                 //options.AllowSynchronousIO = true; // Eðer senkron IO gerekliyse
             });
 
