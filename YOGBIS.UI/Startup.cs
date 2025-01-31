@@ -9,6 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Threading;
 using System.Web.Mvc;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.BusinessEngine.Implementaion;
@@ -69,10 +72,10 @@ namespace YOGBIS.UI
             services.AddScoped<IUlkelerBE, UlkelerBE>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddAutoMapper(typeof(Maps));
+            services.AddAutoMapper(typeof(Maps));            
             #endregion
 
-            
+
             services.Configure<FormOptions>(options =>
             {
                 options.MultipartBodyLengthLimit = int.MaxValue;
@@ -121,10 +124,51 @@ namespace YOGBIS.UI
                 options.SlidingExpiration = true;
             });
 
+            services.AddHostedService<SessionCheckBackgroundService>();
         }
 
-            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-            public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
+        public class SessionCheckBackgroundService : BackgroundService
+        {
+            private readonly IServiceProvider _serviceProvider;
+
+            public SessionCheckBackgroundService(IServiceProvider serviceProvider)
+            {
+                _serviceProvider = serviceProvider;
+            }
+
+            protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+            {
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    try
+                    {
+                        using (var scope = _serviceProvider.CreateScope())
+                        {
+                            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Kullanici>>();
+
+                            var activeUsers = await userManager.Users
+                                .Where(u => u.OturumDurumu == true)
+                                .ToListAsync();
+
+                            foreach (var user in activeUsers)
+                            {
+                                user.OturumDurumu = false;
+                                await userManager.UpdateAsync(user);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Hata loglamasý yapýlabilir
+                    }
+
+                    await Task.Delay(TimeSpan.FromMinutes(30), stoppingToken);
+                }
+            }
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
            UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
             {
                 if (env.IsDevelopment())

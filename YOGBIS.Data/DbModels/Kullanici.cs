@@ -16,6 +16,7 @@ namespace YOGBIS.Data.DbModels
         public byte[] KullaniciResim { get; set; }
         public string KullaniciResimYol { get; set; }
         public bool? Aktif { get; set; }
+        public bool? OturumDurumu { get; set; }
 
         #region BağlıTablolar
         public List<AdayDDK> AdayDDK { get; set; }

@@ -31,6 +31,7 @@ namespace YOGBIS.Common.VModels
         public string KullaniciResimYol { get; set; }
         public IFormFile KullaniciResimIFromFile { get; set; }
         public bool? Aktif { get; set; }
+        public bool? OturumDurumu { get; set; }
 
         #region BağlıTablolar
         public List<AdayDDKVM> AdayDDK { get; set; }

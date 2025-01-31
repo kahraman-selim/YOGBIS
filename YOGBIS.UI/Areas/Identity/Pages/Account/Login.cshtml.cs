@@ -115,6 +115,9 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                             var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                             if (result.Succeeded)
                             {
+                                user.OturumDurumu = true;
+                                await _userManager.UpdateAsync(user);
+
                                 var userInfo = new SessionContext()
                                 {
                                     Email = user.Email,
