@@ -76,7 +76,7 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
             catch (Exception ex)
             {
                 // Olası hataları yakala ve logla
-                _logger.LogError(ex, "Logout sırasında hata oluştu");
+                _logger.LogError(ex, "Çıkış sırasında hata oluştu");
             }
 
             // Oturumu sonlandır

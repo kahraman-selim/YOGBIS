@@ -54,6 +54,7 @@
                         <th>Ad</th>
                         <th>Soyad</th>
                         <th>Durum</th>
+                        <th>Oturum</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,6 +79,18 @@
                                         else
                                         {
                                             <b class="text-danger">Pasif</b>
+                                        }
+                                    </a>
+                                </td>
+                                <td>
+                                    <a asp-action="OturumYenile" asp-route-id="@item.Id">
+                                        @if (@item.OturumDurumu == true)
+                                        {
+                                            <b>Açık</b>
+                                        }
+                                        else
+                                        {
+                                            <b class="text-danger">Kapalı</b>
                                         }
                                     </a>
                                 </td>

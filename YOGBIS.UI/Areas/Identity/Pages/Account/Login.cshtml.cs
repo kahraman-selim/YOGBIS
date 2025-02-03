@@ -106,7 +106,12 @@ namespace YOGBIS.UI.Areas.Identity.Pages.Account
                         {
                             // Kullanıcının zaten bir oturumu varsa
                             var existingSession = HttpContext.Session.GetString(ResultConstant.LoginUserInfo);
-                            if (!string.IsNullOrEmpty(existingSession))
+                            //if (!string.IsNullOrEmpty(existingSession))
+                            //{
+                            //    ModelState.AddModelError(string.Empty, "Kullanıcı oturum açmış durumda. Bir sorun olduğunu düşünüyorsanız Sistem Yöneticisine başvurunuz.");
+                            //    return Page();
+                            //}
+                            if (user.OturumDurumu==true)
                             {
                                 ModelState.AddModelError(string.Empty, "Kullanıcı oturum açmış durumda. Bir sorun olduğunu düşünüyorsanız Sistem Yöneticisine başvurunuz.");
                                 return Page();

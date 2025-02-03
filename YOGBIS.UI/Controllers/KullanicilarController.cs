@@ -99,6 +99,24 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region OturumYenile
+        public IActionResult OturumYenile(string id)
+        {
+
+            var user = _userManager.FindByIdAsync(id);
+
+            if (user.Result.OturumDurumu == true) // Oturum Açılmışsa 
+                user.Result.Aktif = false; // Oturumu kapalı olarak değiştir
+            else
+                user.Result.Aktif = true;
+
+            _userManager.UpdateAsync(user.Result);
+
+            return RedirectToAction("Index");
+
+        }
+        #endregion
+
         #region DeactivateNonAdminUsers
         public async Task<IActionResult> DeactivateNonAdminUsers()
         {
