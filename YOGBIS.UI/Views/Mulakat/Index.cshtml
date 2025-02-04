@@ -26,6 +26,10 @@
         display: none;
     }
 
+    .input-error {
+        border: 2px solid red;
+    }
+
 </style>
 <!-- #endregion -->
 <!-- Aday Özet Blok -->
@@ -51,7 +55,8 @@
                 <p class="text-center font-weight-bold p-1">
                     <input value="Bilgi Formu" class="btn btn-primary btn-sm ml-1" style="width:180px" id="btnBilgi" />
                     <input value="Aday Sınava Girmedi" class="btn btn-danger btn-sm ml-1" id="btnIptal" />
-                    <input value="Soruları Göster" class="btn btn-secondary btn-sm ml-1" id="btnSoruGoster" style="display:none" />
+                    <input value="Soruları Göster" class="btn btn-info btn-sm ml-1" id="btnSoruGoster" style="display:none" />
+                    <input value="Soruları Gizle" class="btn btn-primary btn-sm ml-1" id="btnSoruGizle" style="display:none" />
                 </p>
             </div>
         </div>
@@ -298,6 +303,35 @@
 
             $('#soruBlok').hide();
             document.getElementById("btnSoruGoster").style.display = "inline";
+            document.getElementById("btnSoruGizle").style.display = "none";
+        });
+
+        //Aday Not Formu Kaydet Butonu
+        $('#btnNotFormKapat').click(function () {
+            var kategoriIds = [
+                "#Kategori1-1", "#Kategori1-2", "#Kategori1-3",
+                "#Kategori2-1", "#Kategori2-2", "#Kategori2-3",
+                "#Kategori3-1", "#Kategori3-2", "#Kategori3-3"
+            ];
+
+            var notlar = kategoriIds.map(function(id) {
+                return parseInt($(id).val(), 10) || 0;
+            });
+
+            var isValid = notlar.every(not => not === notlar[0]);
+
+            $(kategoriIds.join(",")).removeClass('input-error'); 
+
+            if (!isValid) {
+                $(kategoriIds.join(",")).each(function() {
+                    if (parseInt($(this).val(), 10) !== notlar[0]) {
+                        $(this).addClass('input-error'); 
+                    }
+                });
+                bootbox.alert("İlk üç KATEGORİ için verilen puanlar birbirine eşit olmalıdır!");
+                return false;
+            }
+            return true;
         });
 
         //Aday Bilgi Formu Butonu
@@ -309,9 +343,22 @@
 
         $('#btnSoruGoster').click(function () {
 
+            document.getElementById("btnSoruGizle").style.display = "inline";
+            document.getElementById("btnSoruGoster").style.display = "none";
+
             $('#soruBlok').show();
             document.getElementById("soruNo").focus();
         });
+
+        $('#btnSoruGizle').click(function () {
+
+            document.getElementById("btnSoruGoster").style.display = "inline";
+            document.getElementById("btnSoruGizle").style.display = "none";
+
+            $('#soruBlok').hide();
+            document.getElementById("soruNo").focus();
+        });
+
 
         //Aday Çağrı Butonu
         $("#myTableNoButtons").on("click", ".btnCagri", function () {

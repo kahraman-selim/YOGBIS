@@ -295,7 +295,36 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        /*public Result TopluMulakatSoruEkle(List<MulakatSorulariVM> sorular, SessionContext user)
+        {
+            try
+            {
+                // Toplu ekleme işlemi (örneğin Entity Framework ile)
+                var entities = sorular.Select(soru => new MulakatSorulari
+                {
+                    SoruSiraNo = soru.SoruSiraNo,
+                    SoruNo = soru.SoruNo,
+                    DereceId = soru.DereceId,
+                    SoruKategorilerId = soru.SoruKategorilerId,
+                    SoruKategoriSiraNo = soru.SoruKategoriSiraNo,
+                    Soru = soru.Soru,
+                    Cevap = soru.Cevap,
+                    SinavKateogoriTurId = soru.SinavKateogoriTurId,
+                    SinavKategoriTurAdi = soru.SinavKategoriTurAdi,
+                    MulakatId = soru.MulakatId,
+                    KaydedenId = user.UserId
+                }).ToList();
 
+                _context.MulakatSorulari.AddRange(entities);
+                _context.SaveChanges();
+
+                return new Result { IsSuccess = true, Message = "Toplu ekleme başarılı." };
+            }
+            catch (Exception ex)
+            {
+                return new Result { IsSuccess = false, Message = ex.Message };
+            }
+        }*/
 
         #region KullanilmayanYontem MulakatSorulariGetir
         //public Result<List<MulakatSorulariVM>> MulakatSorulariGetir(Guid id, string derece)

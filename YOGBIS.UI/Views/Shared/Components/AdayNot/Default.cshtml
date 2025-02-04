@@ -62,7 +62,7 @@
     </div>
     <!-- Aday Not Bloğu -->
     <div class="card-body">
-        <form class="form-group m-0">
+        <form class="form-group m-0" id="validationForm">
             @Html.HiddenFor(x => x.AdayId)
             <div class="text-danger" asp-validation-summary="ModelOnly"></div>   
             <!-- Not Formu -->
@@ -90,21 +90,21 @@
                     </div>
                 </div>
                 <!-- Komisyon Not Bloğu -->
-                <div class="col-6 w-100">
+                <div class="col-6 w-100 input-container">
                     <div class="form-row equal-height-row d-flex flex-wrap" id="Komisyon1Blok">
                         <div class="col w-auto">
                             <div class="form-group">
-                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon1Not komisyonnotlar" min="0" max="20" id="Kategori1-1" required>
+                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon1Not komisyonnotlar validate-input" min="0" max="20" id="Kategori1-1" required>
                             </div>
                         </div>
                         <div class="col w-auto">
                             <div class="form-group">
-                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon1Not komisyonnotlar" min="0" max="20" id="Kategori1-2" required>
+                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon1Not komisyonnotlar validate-input" min="0" max="20" id="Kategori1-2" required>
                             </div>
                         </div>
                         <div class="col w-auto">
                             <div class="form-group">
-                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon1Not komisyonnotlar" min="0" max="20" id="Kategori1-3" required>
+                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon1Not komisyonnotlar validate-input" min="0" max="20" id="Kategori1-3" required>
                             </div>
                         </div>
                         <div class="col w-auto">
@@ -126,17 +126,17 @@
                     <div class="form-row equal-height-row d-flex flex-wrap" id="Komisyon2Blok">
                         <div class="col w-auto">
                             <div class="form-group">
-                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon2Not komisyonnotlar" min="0" max="20" id="Kategori2-1" required>
+                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon2Not komisyonnotlar validate-input" min="0" max="20" id="Kategori2-1" required>
                             </div>
                         </div>
                         <div class="col w-auto">
                             <div class="form-group">
-                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon2Not komisyonnotlar" min="0" max="20" id="Kategori2-2" required>
+                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon2Not komisyonnotlar validate-input" min="0" max="20" id="Kategori2-2" required>
                             </div>
                         </div>
                         <div class="col w-auto">
                             <div class="form-group">
-                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon2Not komisyonnotlar" min="0" max="20" id="Kategori2-3" required>
+                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon2Not komisyonnotlar validate-input" min="0" max="20" id="Kategori2-3" required>
                             </div>
                         </div>
                         <div class="col w-auto">
@@ -158,17 +158,17 @@
                     <div class="form-row equal-height-row d-flex flex-wrap" id="Komisyon3Blok">
                         <div class="col w-auto">
                             <div class="form-group">
-                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon3Not komisyonnotlar" min="0" max="20" id="Kategori3-1" required>
+                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon3Not komisyonnotlar validate-input" min="0" max="20" id="Kategori3-1" required>
                             </div>
                         </div>
                         <div class="col w-auto">
                             <div class="form-group">
-                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon3Not komisyonnotlar" min="0" max="20" id="Kategori3-2" required>
+                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon3Not komisyonnotlar validate-input" min="0" max="20" id="Kategori3-2" required>
                             </div>
                         </div>
                         <div class="col w-auto">
                             <div class="form-group">
-                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon3Not komisyonnotlar" min="0" max="20" id="Kategori3-3" required>
+                                <input asp-for="KurumAdi" type="number" class="form-control py-1 text-center font-weight-bold komisyon3Not komisyonnotlar validate-input" min="0" max="20" id="Kategori3-3" required>
                             </div>
                         </div>
                         <div class="col w-auto">
