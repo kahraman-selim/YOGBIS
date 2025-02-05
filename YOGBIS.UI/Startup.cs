@@ -21,6 +21,7 @@ using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DataContext;
 using YOGBIS.Data.DbModels;
 using YOGBIS.Data.Implementaion;
+using MySql.Data.EntityFrameworkCore.Infrastructure.Internal;
 
 namespace YOGBIS.UI
 {
@@ -41,11 +42,18 @@ namespace YOGBIS.UI
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
-            services.AddDbContext<YOGBISContext>(options => options.UseMySQL(Configuration.GetConnectionString("YOGBISConnection")));
-            //services.AddDbContext<YOGBISContext>(options => options.UseSqlServer(Configuration.GetConnectionString("YOGBISConnection")));
+            services.AddDbContext<YOGBISContext>(options =>
+            {
+                options.UseMySQL(Configuration.GetConnectionString("YOGBISConnection"),
+                sqlOptions => sqlOptions.CommandTimeout(180)); // Zaman aþýmýný 180 saniyeye çýkar
 
-            #region Scopeds
-            services.AddScoped<IAdaylarBE, AdaylarBE>();
+                //services.AddDbContext<YOGBISContext>(options => options.UseSqlServer(Configuration.GetConnectionString("YOGBISConnection")));
+            });
+
+
+
+        #region Scopeds
+        services.AddScoped<IAdaylarBE, AdaylarBE>();
             services.AddScoped<IDerecelerBE, DerecelerBE>();
             services.AddScoped<IEtkinliklerBE, EtkinliklerBE>();
             services.AddScoped<IDosyaGaleriBE, DosyaGaleriBE>();
@@ -80,6 +88,11 @@ namespace YOGBIS.UI
             {
                 options.MultipartBodyLengthLimit = int.MaxValue;
                 //options.AllowSynchronousIO = true; // Eðer senkron IO gerekliyse
+            });
+
+            services.AddHttpClient("MyClient", client =>
+            {
+                client.Timeout = TimeSpan.FromMinutes(10); // Zaman aþýmýný 10 dakikaya çýkar
             });
 
             services.AddIdentity<Kullanici, IdentityRole>(options => {
