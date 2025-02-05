@@ -39,6 +39,7 @@ namespace YOGBIS.UI.Controllers
                 thisViewModel.Email = user.Email;
                 thisViewModel.Ad = user.Ad;
                 thisViewModel.Soyad = user.Soyad;
+                thisViewModel.UserName = user.UserName;
                 thisViewModel.EnumsKullaniciRolleri = await GetUserRoles(user);
                 userRolesViewModel.Add(thisViewModel);
             }

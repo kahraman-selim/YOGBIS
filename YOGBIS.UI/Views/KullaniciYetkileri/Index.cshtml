@@ -25,7 +25,7 @@
                 <tbody>
                     @foreach (var user in Model)
                     {
-                        @if (user.Email != "yogbis@meb.gov.tr")
+                        @if (user.UserName != "Administrator")
                         {
                             <tr>
                                 <td class="text-capitalize">@user.Ad</td>
