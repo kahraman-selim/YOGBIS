@@ -19,7 +19,10 @@
                     <input type="hidden" asp-for="@Model[i].RoleId" />
                     <input type="hidden" asp-for="@Model[i].RoleName" />
                     <input asp-for="@Model[i].Selected" class="form-check-input" />
-                    <label class="form-check-label" asp-for="@Model[i].Selected">@Model[i].RoleName</label>
+                   @*  <label class="form-check-label" asp-for="@Model[i].Selected">@Model[i].RoleName</label> *@
+                    <label class="form-check-label" asp-for="@Model[i].Selected">
+                        @(((EnumsKullaniciRolleri)Enum.Parse(typeof(EnumsKullaniciRolleri), Model[i].RoleName)).GetDisplayName())
+                    </label>
                 </div>           
             }
             <div asp-validation-summary="All" class="text-danger"></div>
