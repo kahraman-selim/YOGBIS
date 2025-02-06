@@ -189,6 +189,19 @@
             <pre>@TempData["Error"]</pre>
         </div>
     }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success col-md-12">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Warning"] != null)
+    {
+        <div class="alert alert-warning col-md-12">
+            @TempData["Warning"]
+        </div>
+    }
     <div class="col-md-12">
         @await Component.InvokeAsync("MulakatSorulariListesi")
     </div>

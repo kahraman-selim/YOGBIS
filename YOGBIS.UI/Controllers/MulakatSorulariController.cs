@@ -201,7 +201,7 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        /*#region SoruYükleme
+        #region SoruYükleme
         [HttpPost]
         public async Task<IActionResult> ExceldenMulakatSoruEkle(IFormFile file)
         {
@@ -226,45 +226,101 @@ namespace YOGBIS.UI.Controllers
                 using (var stream = new MemoryStream())
                 {
                     await file.CopyToAsync(stream);
+
                     using (var package = new ExcelPackage(stream))
                     {
                         var worksheet = package.Workbook.Worksheets[0];
                         var rowCount = worksheet.Dimension?.Rows ?? 0;
 
-
-                        if (rowCount == 0)
+                        if (rowCount == 1)
                         {
                             TempData["Error"] = "Excel dosyası boş veya geçersiz.";
                             return RedirectToAction("Index");
                         }
 
+                        // Sadece gerekli hücreleri oku
+                        var basariliEklenen = 0;
+                        for (int row = 2; row <= rowCount; row++) // İlk satır başlık olduğu için 2'den başlıyoruz
+                        {
+                            var soru = new MulakatSorulariVM
+                            {
+                                SoruSiraNo = int.Parse(worksheet.Cells[row, 1].Value?.ToString() ?? "0"),
+                                SoruNo = int.Parse(worksheet.Cells[row, 2].Value?.ToString() ?? "0"),
+                                DereceId = Guid.Parse(worksheet.Cells[row, 3].Value?.ToString() ?? "0"),
+                                SoruKategorilerId = Guid.Parse(worksheet.Cells[row, 4].Value?.ToString() ?? "0"),
+                                SoruKategoriSiraNo = int.Parse(worksheet.Cells[row, 5].Value?.ToString() ?? "0"),
+                                Soru = worksheet.Cells[row, 6].Value?.ToString(),
+                                Cevap = worksheet.Cells[row, 7].Value?.ToString(),
+                                SinavKateogoriTurId = int.Parse(worksheet.Cells[row, 8].Value?.ToString() ?? "0"),
+                                SinavKategoriTurAdi = worksheet.Cells[row, 9].Value?.ToString(),
+                                MulakatId = Guid.Parse(worksheet.Cells[row, 10].Value?.ToString() ?? "0"),
+                            };
+
+                            // Soruyu işle
+                            
+                            var result = _mulakatSorulariBE.MulakatSoruEkle(soru, user);
+                            if (!result.IsSuccess)
+                            {
+                                // Hata durumunda loglama
+                                _logger.LogError($"Soru eklenirken hata: {result.Message}");
+                            }
+
+                            basariliEklenen++;
+                        }
+
+
+                        TempData["Success"] = $"{basariliEklenen} soru başarıyla eklendi.";
+                        TempData.Keep("Success"); // Veriyi bir sonraki istek için koru
+                        return RedirectToAction("Index");
+                    }
+
+                    /*using (var package = new ExcelPackage(stream))
+                    {
+
                         // Parça boyutu (100-200 arasında)
-                        int chunkSize = 150; // Bu değeri ihtiyacınıza göre ayarlayabilirsiniz
+                        int chunkSize = 200; // Bu değeri ihtiyacınıza göre ayarlayabilirsiniz
                         int totalChunks = (int)Math.Ceiling((double)rowCount / chunkSize);
 
                         for (int chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++)
                         {
-                            var chunkSorular = new List<MulakatSorulariVM>();
                             int startRow = 2 + (chunkIndex * chunkSize); // İlk satır başlık olduğu için 2'den başlıyoruz
-                            int endRow = Math.Min(startRow + chunkSize, rowCount + 1);
-
-                            // İlk satır başlık olduğu için 2'den başlıyoruz
+                            int endRow = Math.Min(startRow + chunkSize - 1, rowCount); // endRow'u doğru hesapla
+                            var chunkSorular = new List<MulakatSorulariVM>();
                             for (int row = startRow; row <= endRow; row++)
                             {
                                 try
                                 {
+                                    // Guid değerlerini kontrol et
+                                    if (!Guid.TryParse(worksheet.Cells[row, 3].Value?.ToString(), out Guid dereceId))
+                                    {
+                                        hatalar.Add($"Satır {row}: Geçersiz DereceId formatı.");
+                                        continue;
+                                    }
+
+                                    if (!Guid.TryParse(worksheet.Cells[row, 4].Value?.ToString(), out Guid soruKategorilerId))
+                                    {
+                                        hatalar.Add($"Satır {row}: Geçersiz SoruKategorilerId formatı.");
+                                        continue;
+                                    }
+
+                                    if (!Guid.TryParse(worksheet.Cells[row, 10].Value?.ToString(), out Guid mulakatId))
+                                    {
+                                        hatalar.Add($"Satır {row}: Geçersiz MulakatId formatı.");
+                                        continue;
+                                    }
+
                                     var soru = new MulakatSorulariVM
                                     {
                                         SoruSiraNo = int.Parse(worksheet.Cells[row, 1].Value?.ToString() ?? "0"),
                                         SoruNo = int.Parse(worksheet.Cells[row, 2].Value?.ToString() ?? "0"),
-                                        DereceId = Guid.Parse(worksheet.Cells[row, 3].Value?.ToString() ?? ""),
-                                        SoruKategorilerId = Guid.Parse(worksheet.Cells[row, 4].Value?.ToString() ?? ""),
+                                        DereceId = dereceId,
+                                        SoruKategorilerId = soruKategorilerId,
                                         SoruKategoriSiraNo = int.Parse(worksheet.Cells[row, 5].Value?.ToString() ?? "0"),
                                         Soru = worksheet.Cells[row, 6].Value?.ToString(),
                                         Cevap = worksheet.Cells[row, 7].Value?.ToString(),
                                         SinavKateogoriTurId = int.Parse(worksheet.Cells[row, 8].Value?.ToString() ?? "0"),
                                         SinavKategoriTurAdi = worksheet.Cells[row, 9].Value?.ToString(),
-                                        MulakatId = Guid.Parse(worksheet.Cells[row, 10].Value?.ToString() ?? ""),
+                                        MulakatId = mulakatId,
                                     };
 
                                     // Temel validasyonlar
@@ -274,19 +330,16 @@ namespace YOGBIS.UI.Controllers
                                         continue;
                                     }
 
-                                    chunkSorular.Add(soru);
-
+                                    sorular.Add(soru);
                                 }
                                 catch (Exception ex)
                                 {
                                     hatalar.Add($"Satır {row}: {ex.Message}");
                                 }
                             }
-
-
                         }
+                    }*/
 
-                    }
                 }
 
                 // Hata varsa göster
@@ -296,10 +349,7 @@ namespace YOGBIS.UI.Controllers
                     return RedirectToAction("Index");
                 }
 
-                TempData["Success"] = $"{sorular.Count} soru başarıyla okundu.";
-               // return RedirectToAction("Index");
-
-                //Soruları veritabanına ekle
+                /*Soruları veritabanına ekle
                 var basariliEklenen = 0;
                 foreach (var soru in sorular)
                 {
@@ -328,7 +378,7 @@ namespace YOGBIS.UI.Controllers
                 else
                 {
                     TempData["Success"] = $"{basariliEklenen} soru başarıyla eklendi.";
-                }
+                }*/
 
                 return RedirectToAction("Index");
             }
@@ -337,247 +387,157 @@ namespace YOGBIS.UI.Controllers
                 _logger.LogError(ex, "Excel'den soru yüklenirken hata oluştu: {Message}", ex.Message);
                 TempData["Error"] = $"Dosya işlenirken bir hata oluştu: {ex.Message}";
                 return RedirectToAction("Index");
+            }
+        }
+        #endregion
+
+        #region SoruYüklemeUzunYöntem
+        [HttpPost]
+        public async Task<IActionResult> ExceldenMulakatSoruEkle2(IFormFile file)
+        {
+            try
+            {
+                // Dosya validasyonu
+                if (!ValidateFile(file, out string errorMessage))
+                {
+                    TempData["Error"] = errorMessage;
+                    return RedirectToAction("Index");
+                }
+
+                // Kullanıcı bilgilerini al
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+                // Excel'den soruları oku
+                var (sorular, hatalar) = await ReadQuestionsFromExcelAsync(file);
+
+                // Soruları veritabanına ekle
+                var basariliEklenen = await AddQuestionsToDatabaseAsync(sorular, user, hatalar);
+
+                // Kullanıcıya geri bildirim
+                SetFeedbackMessages(basariliEklenen, hatalar);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Excel'den soru yüklenirken hata oluştu: {Message}", ex.Message);
+                TempData["Error"] = $"Dosya işlenirken bir hata oluştu: {ex.Message}";
+                return RedirectToAction("Index");
+            }
+        }
+
+        // Dosya validasyonu
+        private bool ValidateFile(IFormFile file, out string errorMessage)
+        {
+            errorMessage = null;
+
+            if (file == null || file.Length <= 0)
+            {
+                errorMessage = "Lütfen bir Excel dosyası seçin.";
+                return false;
+            }
+
+            if (!Path.GetExtension(file.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+            {
+                errorMessage = "Lütfen .xlsx formatında bir dosya yükleyin.";
+                return false;
+            }
+
+            return true;
+        }
+
+        // Excel'den soruları okuma
+        private async Task<(List<MulakatSorulariVM> sorular, List<string> hatalar)> ReadQuestionsFromExcelAsync(IFormFile file)
+        {
+            var sorular = new List<MulakatSorulariVM>();
+            var hatalar = new List<string>();
+
+            using (var stream = new MemoryStream())
+            {
+                await file.CopyToAsync(stream);
+
+                using (var package = new ExcelPackage(stream))
+                {
+                    var worksheet = package.Workbook.Worksheets[0];
+                    var rowCount = worksheet.Dimension?.Rows ?? 0;
+
+                    if (rowCount == 1)
+                    {
+                        hatalar.Add("Excel dosyası boş veya geçersiz.");
+                        return (sorular, hatalar);
+                    }
+
+                    for (int row = 2; row <= rowCount; row++) // İlk satır başlık olduğu için 2'den başlıyoruz
+                    {
+                        try
+                        {
+                            var soru = new MulakatSorulariVM
+                            {
+                                SoruSiraNo = int.Parse(worksheet.Cells[row, 1].Value?.ToString() ?? "0"),
+                                SoruNo = int.Parse(worksheet.Cells[row, 2].Value?.ToString() ?? "0"),
+                                DereceId = Guid.Parse(worksheet.Cells[row, 3].Value?.ToString() ?? "0"),
+                                SoruKategorilerId = Guid.Parse(worksheet.Cells[row, 4].Value?.ToString() ?? "0"),
+                                SoruKategoriSiraNo = int.Parse(worksheet.Cells[row, 5].Value?.ToString() ?? "0"),
+                                Soru = worksheet.Cells[row, 6].Value?.ToString(),
+                                Cevap = worksheet.Cells[row, 7].Value?.ToString(),
+                                SinavKateogoriTurId = int.Parse(worksheet.Cells[row, 8].Value?.ToString() ?? "0"),
+                                SinavKategoriTurAdi = worksheet.Cells[row, 9].Value?.ToString(),
+                                MulakatId = Guid.Parse(worksheet.Cells[row, 10].Value?.ToString() ?? "0"),
+                            };
+
+                            sorular.Add(soru);
+                        }
+                        catch (Exception ex)
+                        {
+                            hatalar.Add($"Satır {row}: {ex.Message}");
+                        }
+                    }
+                }
+            }
+
+            return (sorular, hatalar);
+        }
+
+        // Soruları veritabanına ekleme
+        private async Task<int> AddQuestionsToDatabaseAsync(List<MulakatSorulariVM> sorular, SessionContext user, List<string> hatalar)
+        {
+            var basariliEklenen = 0;
+
+            foreach (var soru in sorular)
+            {
+                try
+                {
+                    var result = _mulakatSorulariBE.MulakatSoruEkle(soru, user);
+                    if (result.IsSuccess)
+                    {
+                        basariliEklenen++;
+                    }
+                    else
+                    {
+                        hatalar.Add($"Soru eklenirken hata: {result.Message}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    hatalar.Add($"Soru eklenirken hata: {ex.Message}");
+                }
+            }
+
+            return basariliEklenen;
+        }
+
+        // Kullanıcıya geri bildirim
+        private void SetFeedbackMessages(int basariliEklenen, List<string> hatalar)
+        {
+            if (hatalar.Any())
+            {
+                TempData["Warning"] = $"{basariliEklenen} soru başarıyla eklendi, ancak bazı hatalar oluştu:<br/>{string.Join("<br/>", hatalar)}";
+            }
+            else
+            {
+                TempData["Success"] = $"{basariliEklenen} soru başarıyla eklendi.";
             }
         } 
-        #endregion*/
-
-        /*[HttpPost]
-        public async Task<IActionResult> ExceldenMulakatSoruEkle(IFormFile file)
-        {
-            try
-            {
-                if (file == null || file.Length <= 0)
-                {
-                    TempData["Error"] = "Lütfen bir Excel dosyası seçin.";
-                    return RedirectToAction("Index");
-                }
-
-                if (!Path.GetExtension(file.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
-                {
-                    TempData["Error"] = "Lütfen .xlsx formatında bir dosya yükleyin.";
-                    return RedirectToAction("Index");
-                }
-
-                var sorular = new List<MulakatSorulariVM>();
-                var hatalar = new List<string>();
-                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
-                using (var stream = new MemoryStream())
-                {
-                    await file.CopyToAsync(stream);
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        var worksheet = package.Workbook.Worksheets[0];
-                        var rowCount = worksheet.Dimension?.Rows ?? 0;
-
-                        if (rowCount == 0)
-                        {
-                            TempData["Error"] = "Excel dosyası boş veya geçersiz.";
-                            return RedirectToAction("Index");
-                        }
-
-                        // Parça boyutu (100-200 arasında)
-                        int chunkSize = 100; // Bu değeri ihtiyacınıza göre ayarlayabilirsiniz
-                        int totalChunks = (int)Math.Ceiling((double)rowCount / chunkSize);
-
-                        for (int chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++)
-                        {
-                            var chunkSorular = new List<MulakatSorulariVM>();
-                            int startRow = 2 + (chunkIndex * chunkSize); // İlk satır başlık olduğu için 2'den başlıyoruz
-                            int endRow = Math.Min(startRow + chunkSize, rowCount + 1);
-
-                            for (int row = startRow; row <= endRow; row++)
-                            {
-                                try
-                                {
-                                    var soru = new MulakatSorulariVM
-                                    {
-                                        SoruSiraNo = int.Parse(worksheet.Cells[row, 1].Value?.ToString() ?? "0"),
-                                        SoruNo = int.Parse(worksheet.Cells[row, 2].Value?.ToString() ?? "0"),
-                                        DereceId = Guid.Parse(worksheet.Cells[row, 3].Value?.ToString() ?? ""),
-                                        SoruKategorilerId = Guid.Parse(worksheet.Cells[row, 4].Value?.ToString() ?? ""),
-                                        SoruKategoriSiraNo = int.Parse(worksheet.Cells[row, 5].Value?.ToString() ?? "0"),
-                                        Soru = worksheet.Cells[row, 6].Value?.ToString(),
-                                        Cevap = worksheet.Cells[row, 7].Value?.ToString(),
-                                        SinavKateogoriTurId = int.Parse(worksheet.Cells[row, 8].Value?.ToString() ?? "0"),
-                                        SinavKategoriTurAdi = worksheet.Cells[row, 9].Value?.ToString(),
-                                        MulakatId = Guid.Parse(worksheet.Cells[row, 10].Value?.ToString() ?? ""),
-                                    };
-
-                                    // Temel validasyonlar
-                                    if (string.IsNullOrEmpty(soru.Soru))
-                                    {
-                                        hatalar.Add($"Satır {row}: Soru boş olamaz.");
-                                        continue;
-                                    }
-
-                                    chunkSorular.Add(soru);
-                                }
-                                catch (Exception ex)
-                                {
-                                    hatalar.Add($"Satır {row}: {ex.Message}");
-                                }
-                            }
-
-                            // Parçayı veritabanına ekle
-                            var basariliEklenen = 0;
-                            foreach (var soru in chunkSorular)
-                            {
-                                try
-                                {
-                                    var result = _mulakatSorulariBE.MulakatSoruEkle(soru, user);
-                                    if (result.IsSuccess)
-                                    {
-                                        basariliEklenen++;
-                                    }
-                                    else
-                                    {
-                                        hatalar.Add($"Soru eklenirken hata: {result.Message}");
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    hatalar.Add($"Soru eklenirken hata: {ex.Message}");
-                                }
-                            }
-
-                            if (hatalar.Any())
-                            {
-                                TempData["Warning"] = $"{basariliEklenen} soru başarıyla eklendi, ancak bazı hatalar oluştu:<br/>{string.Join("<br/>", hatalar)}";
-                            }
-                            else
-                            {
-                                TempData["Success"] = $"{basariliEklenen} soru başarıyla eklendi.";
-                            }
-                        }
-                    }
-                }
-
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Excel'den soru yüklenirken hata oluştu: {Message}", ex.Message);
-                TempData["Error"] = $"Dosya işlenirken bir hata oluştu: {ex.Message}";
-                return RedirectToAction("Index");
-            }
-        }*/
-
-        /*[HttpPost]
-        public async Task<IActionResult> ExceldenMulakatSoruEkle(IFormFile file)
-        {
-            try
-            {
-                if (file == null || file.Length <= 0)
-                {
-                    TempData["Error"] = "Lütfen bir Excel dosyası seçin.";
-                    return RedirectToAction("Index");
-                }
-
-                if (!Path.GetExtension(file.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
-                {
-                    TempData["Error"] = "Lütfen .xlsx formatında bir dosya yükleyin.";
-                    return RedirectToAction("Index");
-                }
-
-                var hatalar = new List<string>();
-                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
-                using (var stream = new MemoryStream())
-                {
-                    await file.CopyToAsync(stream);
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        var worksheet = package.Workbook.Worksheets[0];
-                        var rowCount = worksheet.Dimension?.Rows ?? 0;
-
-                        if (rowCount == 0)
-                        {
-                            TempData["Error"] = "Excel dosyası boş veya geçersiz.";
-                            return RedirectToAction("Index");
-                        }
-
-                        // Parça boyutu (örneğin 100 kayıt)
-                        int chunkSize = 100;
-                        int totalChunks = (int)Math.Ceiling((double)(rowCount - 1) / chunkSize); // İlk satır başlık olduğu için -1
-
-                        for (int chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++)
-                        {
-                            var chunkSorular = new List<MulakatSorulariVM>();
-                            int startRow = 2 + (chunkIndex * chunkSize); // İlk satır başlık olduğu için 2'den başlıyoruz
-                            int endRow = Math.Min(startRow + chunkSize, rowCount + 1);
-
-                            for (int row = startRow; row <= endRow; row++)
-                            {
-                                try
-                                {
-                                    var soru = new MulakatSorulariVM
-                                    {
-                                        SoruSiraNo = int.Parse(worksheet.Cells[row, 1].Value?.ToString() ?? "0"),
-                                        SoruNo = int.Parse(worksheet.Cells[row, 2].Value?.ToString() ?? "0"),
-                                        DereceId = Guid.Parse(worksheet.Cells[row, 3].Value?.ToString() ?? ""),
-                                        SoruKategorilerId = Guid.Parse(worksheet.Cells[row, 4].Value?.ToString() ?? ""),
-                                        SoruKategoriSiraNo = int.Parse(worksheet.Cells[row, 5].Value?.ToString() ?? "0"),
-                                        Soru = worksheet.Cells[row, 6].Value?.ToString(),
-                                        Cevap = worksheet.Cells[row, 7].Value?.ToString(),
-                                        SinavKateogoriTurId = int.Parse(worksheet.Cells[row, 8].Value?.ToString() ?? "0"),
-                                        SinavKategoriTurAdi = worksheet.Cells[row, 9].Value?.ToString(),
-                                        MulakatId = Guid.Parse(worksheet.Cells[row, 10].Value?.ToString() ?? ""),
-                                    };
-
-                                    // Temel validasyonlar
-                                    if (string.IsNullOrEmpty(soru.Soru))
-                                    {
-                                        hatalar.Add($"Satır {row}: Soru boş olamaz.");
-                                        continue;
-                                    }
-
-                                    chunkSorular.Add(soru);
-                                }
-                                catch (Exception ex)
-                                {
-                                    hatalar.Add($"Satır {row}: {ex.Message}");
-                                }
-                            }
-
-                            // Toplu ekleme işlemi
-                            if (chunkSorular.Any())
-                            {
-                                try
-                                {
-                                    var result = _mulakatSorulariBE.TopluMulakatSoruEkle(chunkSorular, user);
-                                    if (result.IsSuccess)
-                                    {
-                                        TempData["Success"] = $"{chunkSorular.Count} soru başarıyla eklendi.";
-                                    }
-                                    else
-                                    {
-                                        hatalar.Add($"Parça {chunkIndex + 1} eklenirken hata: {result.Message}");
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    hatalar.Add($"Parça {chunkIndex + 1} eklenirken hata: {ex.Message}");
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // Hata varsa göster
-                if (hatalar.Any())
-                {
-                    TempData["Warning"] = $"Bazı hatalar oluştu:<br/>{string.Join("<br/>", hatalar)}";
-                }
-
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Excel'den soru yüklenirken hata oluştu: {Message}", ex.Message);
-                TempData["Error"] = $"Dosya işlenirken bir hata oluştu: {ex.Message}";
-                return RedirectToAction("Index");
-            }
-        }*/
+        #endregion
     }
 }

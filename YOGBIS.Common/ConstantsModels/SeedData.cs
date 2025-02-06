@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
+using YOGBIS.Common.Extentsion;
 using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.ConstantsModels
@@ -35,11 +36,11 @@ namespace YOGBIS.Common.ConstantsModels
                 {
                     await userManager.CreateAsync(defaultUser, "Yogbis@2024.");
                     await userManager.AddToRoleAsync(defaultUser, ConstantsModels.EnumsKullaniciRolleri.Administrator.ToString());
-                    //await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.Manager).ToString());
-                    //await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.SubManager).ToString());
-                    //await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.Follower).ToString());
-                    //await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.Lecturer).ToString());
-                    //await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.Teacher).ToString());
+                    await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.Manager).ToString());
+                    await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.SubManager).ToString());
+                    await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.Follower).ToString());
+                    await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.Lecturer).ToString());
+                    await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.Teacher).ToString());
                 }
 
             }

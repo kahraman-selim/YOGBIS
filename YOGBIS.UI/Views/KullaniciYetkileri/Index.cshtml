@@ -1,6 +1,7 @@
 ﻿@using YOGBIS.Common.VModels
 @model List<YOGBIS.Common.VModels.KullaniciYetkilerVM>
-
+@using YOGBIS.Common.Extentsion
+@using YOGBIS.Common.ConstantsModels
 @{ ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml"; 
 }
@@ -9,6 +10,7 @@
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
         <b>Kullanıcı Yetki Yönetimi</b>
+        <a class="btn btn-primary btn-sm ml-3" asp-controller="Kullanicilar" asp-action="Index">Geri Dön</a>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -31,7 +33,12 @@
                                 <td class="text-capitalize">@user.Ad</td>
                                 <td>@user.Soyad</td>
                                 <td>@user.Email</td>
-                                <td>@string.Join(" , ", user.EnumsKullaniciRolleri.ToList())</td>
+                                @* <td>@string.Join(" , ", user.EnumsKullaniciRolleri.ToList())</td> *@
+                                <td>
+                                    @string.Join(" , ", user.EnumsKullaniciRolleri
+                                             .Select(role => ((EnumsKullaniciRolleri)Enum.Parse(typeof(EnumsKullaniciRolleri), role.ToString())).GetDisplayName())
+                                             .ToList())
+                                </td>
                                 <td>
                                     <a class="btn btn-primary btn-sm" asp-controller="KullaniciYetkileri" asp-action="Yonetim" asp-route-userId="@user.Id">Yetki Yönetimi</a>
                                 </td>
