@@ -537,7 +537,92 @@ namespace YOGBIS.UI.Controllers
             {
                 TempData["Success"] = $"{basariliEklenen} soru başarıyla eklendi.";
             }
-        } 
+        }
+        #endregion
+
+        #region SoruYüklemeClaude
+        [HttpPost]
+        public async Task<IActionResult> ExceldenMulakatSoruEkleee(IFormFile file, MulakatSorulariVM model)
+        {
+            try
+            {
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                var dereceler = _derecelerBE.DereceleriGetir().Data;
+                var soruKategorileri = _soruKategorileriBE.SoruKategorileriGetir().Data;
+                var mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+
+                ViewBag.Dereceler = dereceler;
+                ViewBag.SoruKategorileri = soruKategorileri;
+                ViewBag.Mulakatlar = mulakatlar;
+
+                // Seçilen değerleri kontrol et
+                if (model.DereceId == Guid.Empty || model.SoruKategorilerId == Guid.Empty || model.MulakatId == Guid.Empty)
+                {
+                    TempData["Error"] = "Lütfen Derece, Soru Kategorisi ve Mülakat seçimlerini yapınız.";
+                    return RedirectToAction("Index");
+                }
+
+                if (file == null || file.Length <= 0)
+                {
+                    TempData["Error"] = "Lütfen bir Excel dosyası seçin.";
+                    return RedirectToAction("Index");
+                }
+
+                // ... Excel işlemleri ...
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    stream.Position = 0;
+
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        var rowCount = worksheet.Dimension?.Rows ?? 0;
+
+                        if (rowCount == 1)
+                        {
+                            TempData["Error"] = "Excel dosyası boş veya geçersiz.";
+                            return RedirectToAction("Index");
+                        }
+
+                        var basariliEklenen = 0;
+                        for (int row = 2; row <= rowCount; row++)
+                        {
+                            var soru = new MulakatSorulariVM
+                            {
+                                SoruSiraNo = int.Parse(worksheet.Cells[row, 1].Value?.ToString() ?? "0"),
+                                SoruNo = int.Parse(worksheet.Cells[row, 2].Value?.ToString() ?? "0"),
+                                DereceId = model.DereceId,  // Form'dan gelen değer
+                                SoruKategorilerId = model.SoruKategorilerId,  // Form'dan gelen değer
+                                SoruKategoriSiraNo = int.Parse(worksheet.Cells[row, 3].Value?.ToString() ?? "0"),
+                                Soru = worksheet.Cells[row, 4].Value?.ToString(),
+                                Cevap = worksheet.Cells[row, 5].Value?.ToString(),
+                                SinavKateogoriTurId = int.Parse(worksheet.Cells[row, 6].Value?.ToString() ?? "0"),
+                                SinavKategoriTurAdi = worksheet.Cells[row, 7].Value?.ToString(),
+                                MulakatId = model.MulakatId  // Form'dan gelen değer
+                            };
+
+                            var result = _mulakatSorulariBE.MulakatSoruEkle(soru, user);
+                            if (!result.IsSuccess)
+                            {
+                                _logger.LogError($"Soru eklenirken hata: {result.Message}");
+                            }
+
+                            basariliEklenen++;
+                        }
+
+                        TempData["Success"] = $"{basariliEklenen} soru başarıyla eklendi.";
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Excel'den soru yüklenirken hata oluştu: {Message}", ex.Message);
+                TempData["Error"] = $"Dosya işlenirken bir hata oluştu: {ex.Message}";
+                return RedirectToAction("Index");
+            }
+        }
         #endregion
     }
 }
