@@ -37,9 +37,17 @@
 <div class="row m-0 p-0">
     <div class="col-lg-12">
         <div class="card shadow-lg" style="height:75px">
-            <h6 class="card-header text-center text-danger">ADAY BİLGİLERİ - @DateTime.Now.ToShortDateString() </h6>
+            <h6 class="card-header text-center text-danger p-md-1">
+                <span id="oncekigun" class="text-danger">
+                    <a href="" class="text-danger" title="Önceki Gün"><  </a>
+                </span>
+                    ADAY BİLGİLERİ - @DateTime.Now.ToShortDateString()
+                <span id="sonrakigun" class="text-danger">
+                    <a href="" class="text-danger" title="Sonraki Gün">  ></a>
+                </span>
+            </h6>
             <div class="card-body p-1">
-                <p class="card-text text-center text-danger font-weight-bold">
+                <p class="card-text text-center text-danger font-weight-bold p-md-2">
                     <span id="adayadsoyad" class="text-info">Aday Adı Soyadı</span>
                     <span>-</span>
                     <span id="adayderece" class="text-primary">Öğretmen</span>
@@ -50,13 +58,14 @@
                 </p>
             </div>
         </div>
-        <div class="card shadow-lg" style="height:50px">
+        <div class="card shadow-lg" style="height:50px;display:none" id="cardBtnGrup">
             <div class="card-body p-1">
                 <p class="text-center font-weight-bold p-1">
-                    <input value="Bilgi Formu" class="btn btn-primary btn-sm ml-1" style="width:180px" id="btnBilgi" />
+                    <input value="Bilgi Formunu Aç" class="btn btn-primary btn-sm ml-1" id="btnBilgiAc" />
+                    <input value="Bilgi Formunu Kapat" class="btn btn-primary btn-sm ml-1" style="display:none" id="btnBilgiKapat" />
+                    <input value="Soruları Göster" class="btn btn-info btn-sm ml-1" id="btnSoruGoster" style="display:none"/>
+                    <input value="Soruları Gizle" class="btn btn-primary btn-sm ml-1" id="btnSoruGizle" style="display:none"/>
                     <input value="Aday Sınava Girmedi" class="btn btn-danger btn-sm ml-1" id="btnIptal" />
-                    <input value="Soruları Göster" class="btn btn-info btn-sm ml-1" id="btnSoruGoster" style="display:none" />
-                    <input value="Soruları Gizle" class="btn btn-primary btn-sm ml-1" id="btnSoruGizle" style="display:none" />
                 </p>
             </div>
         </div>
@@ -263,12 +272,13 @@
                 $("#btnBitir").show();
                 $("#btnBaslat").hide();
                 $('#soruBlok').show();
+                document.getElementById("cardBtnGrup").style="height:50px"; //bu satır sonra silinecek
             }
             else {
 
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Soru Numarası Yazınız...",
+                    message: "Soru Numarası Yazınız!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -291,11 +301,16 @@
             document.getElementById("btnSoruGoster").style.display = "inline";
             document.getElementById("Kategori1-1").focus();
             document.getElementById("btnBitir").style.display = "none";
+            document.getElementById("btnBilgiKapat").style.display = "none";
+            document.getElementById("btnBilgiAc").style.display = "inline";
+            document.getElementById("btnIptal").style.display = "none";
         });
 
         $('#btnBilgiFormKapat').click(function () {
 
             $('#AdayBilgiBlok').hide();
+            document.getElementById("btnBilgiKapat").style.display = "none";
+            document.getElementById("btnBilgiAc").style.display = "inline";
 
         });
 
@@ -328,17 +343,27 @@
                         $(this).addClass('input-error'); 
                     }
                 });
-                bootbox.alert("İlk üç KATEGORİ için verilen puanlar birbirine eşit olmalıdır!");
+                bootbox.alert("İlk 3 KATEGORİ için verilen puanlar birbirine eşit olmalıdır!");
                 return false;
             }
             return true;
         });
 
-        //Aday Bilgi Formu Butonu
-        $('#btnBilgi').click(function () {
+        //Aday Bilgi Formu Butonları
+        $('#btnBilgiAc').click(function () {
 
             $('#AdayBilgiBlok').show();
             document.getElementById("soruNo").focus();
+            document.getElementById("btnBilgiKapat").style.display = "inline";
+            document.getElementById("btnBilgiAc").style.display = "none";
+        });
+
+        $('#btnBilgiKapat').click(function () {
+
+            $('#AdayBilgiBlok').hide();
+            document.getElementById("soruNo").focus();
+            document.getElementById("btnBilgiAc").style.display = "inline";
+            document.getElementById("btnBilgiKapat").style.display = "none";
         });
 
         $('#btnSoruGoster').click(function () {
@@ -367,7 +392,7 @@
             var id = btn.data("id");
             bootbox.alert({
                     title:'BİLGİ',
-                    message: "Aday bekleme odasına çağrıldı !",
+                    message: "Aday bekleme odasına çağrıldı!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -383,7 +408,7 @@
             var id = btn.data("id");
             bootbox.alert({
                     title:'BİLGİ',
-                    message: "Aday sınava çağrıldı !",
+                    message: "Aday sınava çağrıldı!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -403,7 +428,7 @@
             if(parseInt($("#Kategori1-1").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -421,7 +446,7 @@
             if(parseInt($("#Kategori1-2").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -439,7 +464,7 @@
             if(parseInt($("#Kategori1-3").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -457,7 +482,7 @@
             if(parseInt($("#Kategori1-4").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -475,7 +500,7 @@
             if(parseInt($("#Kategori1-5").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -548,7 +573,7 @@
             if(parseInt($("#Kategori2-1").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -566,7 +591,7 @@
             if(parseInt($("#Kategori2-2").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -584,7 +609,7 @@
             if(parseInt($("#Kategori2-3").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -602,7 +627,7 @@
             if(parseInt($("#Kategori2-4").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -620,7 +645,7 @@
             if(parseInt($("#Kategori2-5").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -693,7 +718,7 @@
             if(parseInt($("#Kategori3-1").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -711,7 +736,7 @@
             if(parseInt($("#Kategori3-2").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -729,7 +754,7 @@
             if(parseInt($("#Kategori3-3").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -747,7 +772,7 @@
             if(parseInt($("#Kategori3-4").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
@@ -765,7 +790,7 @@
             if(parseInt($("#Kategori3-5").val())>20){
                 bootbox.alert({
                     title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz !",
+                    message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
                         locale:'tr',
