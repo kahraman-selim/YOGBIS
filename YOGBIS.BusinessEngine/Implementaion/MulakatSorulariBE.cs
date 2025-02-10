@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.ResultModels;
@@ -33,85 +35,162 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region MulakatSorulariGetir
+        #region MulakatSorulariGetirEskiMetod
+        //public Result<List<MulakatSorulariVM>> MulakatSorulariGetir()
+        //{
+        //    //1. Yöntem
+        //    var data = _unitOfWork.mulakatSorulariRepository.GetAll(includeProperties: "Kullanici,SoruDereceler,SoruKategoriler,Mulakatlar").OrderBy(x=>x.DereceId).ThenBy(y=>y.SoruSiraNo).ThenBy(z=>z.SoruKategoriSiraNo).ToList(); 
+        //    var mulakatSorulari = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
+
+        //    if (data != null)
+        //    {
+        //        List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
+
+        //        foreach (var item in data)
+        //        {
+        //            returnData.Add(new MulakatSorulariVM()
+        //            {
+        //                MulakatSorulariId = item.MulakatSorulariId,
+        //                SoruSiraNo = item.SoruSiraNo,
+        //                SoruNo = item.SoruNo,
+        //                DereceId = item.DereceId,
+        //                DereceAdi = item.SoruDereceler.DereceAdi,
+        //                SoruKategorilerId = item.SoruKategorilerId,
+        //                SoruKategoriSiraNo = item.SoruKategoriSiraNo,
+        //                SoruKategoriAdi = item.SoruKategoriler.SoruKategorilerAdi,
+        //                SoruKategoriTakmaAdi = item.SoruKategoriler.SoruKategorilerTakmaAdi,
+        //                Soru = item.Soru,
+        //                Cevap = item.Cevap,
+        //                SinavKateogoriTurId = item.SinavKateogoriTurId,
+        //                SinavKategoriTurAdi = item.SinavKategoriTurAdi,
+        //                MulakatId = item.MulakatId,
+        //                MulakatDonemi = item.Mulakatlar.MulakatAdi,
+        //                KayitTarihi = item.KayitTarihi,
+        //                KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+        //                KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+        //            });
+        //        }
+
+        //        return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
+        //    }
+        //    else 
+        //    {
+        //        return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
+        //    }
+        //}
+        #endregion
+
+        #region MulakatSorulariGetirYeniMetod
         public Result<List<MulakatSorulariVM>> MulakatSorulariGetir()
         {
-            //1. Yöntem
-            var data = _unitOfWork.mulakatSorulariRepository.GetAll(includeProperties: "Kullanici,SoruDereceler,SoruKategoriler,Mulakatlar").OrderBy(x=>x.DereceId).ThenBy(y=>y.SoruSiraNo).ThenBy(z=>z.SoruKategoriSiraNo).ToList(); 
-            var mulakatSorulari = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
-
-            if (data != null)
+            try
             {
-                List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
+                // 1. Sorguyu IQueryable olarak oluştur (henüz execute etme)
+                var query = _unitOfWork.mulakatSorulariRepository.GetAll()
+                    .AsNoTracking() // Change tracking'i devre dışı bırak
+                    .Include(x => x.SoruDereceler)
+                    .Include(x => x.SoruKategoriler)
+                    .Include(x => x.Mulakatlar)
+                    .Include(x => x.Kullanici)
+                    .OrderBy(x => x.DereceId)
+                    .ThenBy(y => y.SoruSiraNo)
+                    .ThenBy(z => z.SoruKategoriSiraNo);
 
-                foreach (var item in data)
+                // 2. Sadece ihtiyaç duyulan alanları seç
+                var data = query.Select(item => new MulakatSorulariVM
                 {
-                    returnData.Add(new MulakatSorulariVM()
-                    {
-                        MulakatSorulariId = item.MulakatSorulariId,
-                        SoruSiraNo = item.SoruSiraNo,
-                        SoruNo = item.SoruNo,
-                        DereceId = item.DereceId,
-                        DereceAdi = item.SoruDereceler.DereceAdi,
-                        SoruKategorilerId = item.SoruKategorilerId,
-                        SoruKategoriSiraNo = item.SoruKategoriSiraNo,
-                        SoruKategoriAdi = item.SoruKategoriler.SoruKategorilerAdi,
-                        SoruKategoriTakmaAdi = item.SoruKategoriler.SoruKategorilerTakmaAdi,
-                        Soru = item.Soru,
-                        Cevap = item.Cevap,
-                        SinavKateogoriTurId = item.SinavKateogoriTurId,
-                        SinavKategoriTurAdi = item.SinavKategoriTurAdi,
-                        MulakatId = item.MulakatId,
-                        MulakatDonemi = item.Mulakatlar.MulakatAdi,
-                        KayitTarihi = item.KayitTarihi,
-                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
-                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
-                    });
+                    MulakatSorulariId = item.MulakatSorulariId,
+                    SoruSiraNo = item.SoruSiraNo,
+                    SoruNo = item.SoruNo,
+                    DereceId = item.DereceId,
+                    DereceAdi = item.SoruDereceler.DereceAdi,
+                    SoruKategorilerId = item.SoruKategorilerId,
+                    SoruKategoriSiraNo = item.SoruKategoriSiraNo,
+                    SoruKategoriAdi = item.SoruKategoriler.SoruKategorilerAdi,
+                    SoruKategoriTakmaAdi = item.SoruKategoriler.SoruKategorilerTakmaAdi,
+                    Soru = item.Soru,
+                    Cevap = item.Cevap,
+                    SinavKateogoriTurId = item.SinavKateogoriTurId,
+                    SinavKategoriTurAdi = item.SinavKategoriTurAdi,
+                    Iptal=item.Iptal,
+                    MulakatId = item.MulakatId,
+                    MulakatDonemi = item.Mulakatlar.MulakatAdi,
+                    KayitTarihi = item.KayitTarihi,
+                    KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                    KaydedenAdi = item.Kullanici != null ?
+                        item.Kullanici.Ad + " " + item.Kullanici.Soyad :
+                        string.Empty
+                }).ToList(); // Asenkron olarak çalıştır
+
+                if (data != null)
+                {
+                    return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, data);
                 }
 
-                return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
-            }
-            else 
-            {
                 return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
             }
-
-            #region 2.Yöntem
-            /*var data = _unitOfWork.mulakatSorulariRepository.GetAll(includeProperties: "SoruBankasi,SoruKategoriler,Dereceler,Mulakatlar,Kullanici").ToList();
-            var soruBankasi = _mapper.Map<List<MulakatSorulari>, List<MulakatSorulariVM>>(data);
-
-            if (data != null)
+            catch (Exception ex)
             {
-                List<MulakatSorulariVM> returnData = new List<MulakatSorulariVM>();
-
-                foreach (var item in data)
-                {
-                    returnData.Add(new MulakatSorulariVM()
-                    {
-                        MulakatSorulariId=item.MulakatSorulariId,
-                        SoruSiraNo=item.SoruSiraNo,
-                        //SoruId=item.SoruBankasi.SoruBankasiId,
-                        //SoruKategoriId=item.SoruKategoriler.SoruKategorilerId,
-                        //SoruKategoriAdi=item.SoruKategoriler.SoruKategorilerAdi,
-                        //DereceId=item.Dereceler.DereceId,
-                        //DereceAdi=item.Dereceler.DereceAdi,
-                         Soru=item.Soru,
-                        Cevap=item.Cevap,
-                        MulakatId=item.Mulakatlar.MulakatId,
-                        MulakatAdi=item.Mulakatlar.MulakatAdi,
-                        KaydedenId =item.Kullanici.Id,
-                        //KullaniciAdi=item.Kullanici.Ad+" "+item.Kullanici.Soyad
-                    });
-                }
-                return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
+                // Loglama yapılabilir
+                return new Result<List<MulakatSorulariVM>>(false, ex.Message);
             }
-            else
-            {
-                return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
-            }*/
-            #endregion
-        }
+        } 
         #endregion
+
+        // Pagination için overload
+
+        //public Result<List<MulakatSorulariVM>> MulakatSorulariGetir(int pageSize = 50, int pageNumber = 1)
+        //{
+        //    try
+        //    {
+        //        var query = _unitOfWork.mulakatSorulariRepository.GetAll()
+        //            .AsNoTracking()
+        //            .Include(x => x.SoruDereceler)
+        //            .Include(x => x.SoruKategoriler)
+        //            .Include(x => x.Mulakatlar)
+        //            .Include(x => x.Kullanici)
+        //            .OrderBy(x => x.DereceId)
+        //            .ThenBy(y => y.SoruSiraNo)
+        //            .ThenBy(z => z.SoruKategoriSiraNo)
+        //            .Skip((pageNumber - 1) * pageSize)
+        //            .Take(pageSize);
+
+        //        var data = query.Select(item => new MulakatSorulariVM
+        //        {
+        //            MulakatSorulariId = item.MulakatSorulariId,
+        //            SoruSiraNo = item.SoruSiraNo,
+        //            SoruNo = item.SoruNo,
+        //            DereceId = item.DereceId,
+        //            DereceAdi = item.SoruDereceler.DereceAdi,
+        //            SoruKategorilerId = item.SoruKategorilerId,
+        //            SoruKategoriSiraNo = item.SoruKategoriSiraNo,
+        //            SoruKategoriAdi = item.SoruKategoriler.SoruKategorilerAdi,
+        //            SoruKategoriTakmaAdi = item.SoruKategoriler.SoruKategorilerTakmaAdi,
+        //            Soru = item.Soru,
+        //            Cevap = item.Cevap,
+        //            SinavKateogoriTurId = item.SinavKateogoriTurId,
+        //            SinavKategoriTurAdi = item.SinavKategoriTurAdi,
+        //            MulakatId = item.MulakatId,
+        //            MulakatDonemi = item.Mulakatlar.MulakatAdi,
+        //            KayitTarihi = item.KayitTarihi,
+        //            KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+        //            KaydedenAdi = item.Kullanici != null ?
+        //                            item.Kullanici.Ad + " " + item.Kullanici.Soyad :
+        //                            string.Empty
+        //        }).ToList();
+
+        //        if (data != null && data.Any())
+        //        {
+        //            return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, data);
+        //        }
+
+        //        return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new Result<List<MulakatSorulariVM>>(false, ex.Message);
+        //    }
+        //}
 
         #region MulakatSoruGetir(Guid id)
         public Result<MulakatSorulariVM> MulakatSoruGetir(Guid id)
@@ -137,6 +216,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     mulakatsoru.Cevap=data.Cevap;
                     mulakatsoru.SinavKateogoriTurId = data.SinavKateogoriTurId;
                     mulakatsoru.SinavKategoriTurAdi = data.SinavKategoriTurAdi;
+                    mulakatsoru.Iptal=data.Iptal;
                     mulakatsoru.MulakatId = data.MulakatId;
                     mulakatsoru.MulakatDonemi = data.Mulakatlar.MulakatAdi;
                     mulakatsoru.KayitTarihi=data.KayitTarihi;
@@ -214,6 +294,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.SoruKategorilerId = model.SoruKategorilerId;
                         data.Soru = model.Soru;
                         data.Cevap = model.Cevap;
+                        data.SoruNo=model.SoruNo;
 
                         _unitOfWork.mulakatSorulariRepository.Update(data);
                         _unitOfWork.Save();
@@ -233,6 +314,75 @@ namespace YOGBIS.BusinessEngine.Implementaion
             else
             {
                 return new Result<MulakatSorulariVM>(false, "Boş veri olamaz");
+            }
+        }
+        #endregion
+
+        #region SoruNoIleTopluGuncelle
+        public Result<string> SoruNoIleTopluGuncelle(MulakatSorulariVM model, SessionContext user)
+        {
+            try
+            {
+                // Aynı SoruNo'ya sahip tüm kayıtları getir
+                var kayitlar = _unitOfWork.mulakatSorulariRepository.GetAll().Where(x => x.SoruNo == model.SoruNo).ToList();
+
+                if (kayitlar == null || !kayitlar.Any())
+                {
+                    return new Result<string>(false, "Belirtilen soru numarasına ait kayıt bulunamadı.");
+                }
+
+                // Tüm kayıtları güncelle
+                foreach (var kayit in kayitlar)
+                {
+                    //kayit.SoruKategorilerId = model.SoruKategorilerId;
+                    kayit.Soru = model.Soru;
+                    kayit.Cevap = model.Cevap;
+                    //kayit.SoruNo = model.SoruNo; // SoruNo'yu da güncellemek istiyorsanız
+
+                    _unitOfWork.mulakatSorulariRepository.Update(kayit);
+                }
+
+                _unitOfWork.Save();
+
+                return new Result<string>(true, $"{kayitlar.Count} adet kayıt başarıyla güncellendi.");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (e.g., using a logging framework)
+                // Logger.LogError(ex, "SoruNo ile toplu güncelleme sırasında hata oluştu.");
+
+                return new Result<string>(false, $"Toplu güncelleme sırasında hata oluştu: {ex.Message}");
+            }
+        }
+        #endregion
+
+        #region SoruSıraNoIleTopluGuncelle
+        public Result<MulakatSorulariVM> SoruSiraNoIleTopluGuncelle(MulakatSorulariVM model, SessionContext user)
+        {
+            try
+            {
+                var kayitlar = _unitOfWork.mulakatSorulariRepository
+                    .GetAll()
+                    .Where(x => x.SoruSiraNo == model.SoruSiraNo)
+                    .ToList();
+
+                if (!kayitlar.Any())
+                {
+                    return new Result<MulakatSorulariVM>(false, "Belirtilen soru numarasına ait kayıt bulunamadı.");
+                }
+
+                foreach (var kayit in kayitlar)
+                {
+                    kayit.Iptal = model.Iptal; // Gelen model'deki Iptal değerini kullan
+                    _unitOfWork.mulakatSorulariRepository.Update(kayit);
+                }
+
+                _unitOfWork.Save();
+                return new Result<MulakatSorulariVM>(true, $"{kayitlar.Count} adet kayıt başarıyla güncellendi.");
+            }
+            catch (Exception ex)
+            {
+                return new Result<MulakatSorulariVM>(false, $"Toplu güncelleme sırasında hata oluştu: {ex.Message}");
             }
         }
         #endregion

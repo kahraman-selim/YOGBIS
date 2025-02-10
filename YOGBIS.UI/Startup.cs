@@ -1,3 +1,4 @@
+#region using
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,21 +22,25 @@ using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DataContext;
 using YOGBIS.Data.DbModels;
 using YOGBIS.Data.Implementaion;
-using MySql.Data.EntityFrameworkCore.Infrastructure.Internal;
+using MySql.Data.EntityFrameworkCore.Infrastructure.Internal; 
+#endregion
 
 namespace YOGBIS.UI
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
+
+        #region Startup(IConfiguration configuration)
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
+        #endregion
 
         // This method gets called by the runtime. Use this method to add services to the container.
-       public void ConfigureServices(IServiceCollection services)
+        #region ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
 
 
@@ -52,8 +57,8 @@ namespace YOGBIS.UI
 
 
 
-        #region Scopeds
-        services.AddScoped<IAdaylarBE, AdaylarBE>();
+            #region Scopeds
+            services.AddScoped<IAdaylarBE, AdaylarBE>();
             services.AddScoped<IDerecelerBE, DerecelerBE>();
             services.AddScoped<IEtkinliklerBE, EtkinliklerBE>();
             services.AddScoped<IDosyaGaleriBE, DosyaGaleriBE>();
@@ -80,7 +85,7 @@ namespace YOGBIS.UI
             services.AddScoped<IUlkelerBE, UlkelerBE>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddAutoMapper(typeof(Maps));            
+            services.AddAutoMapper(typeof(Maps));
             #endregion
 
 
@@ -95,7 +100,8 @@ namespace YOGBIS.UI
                 client.Timeout = TimeSpan.FromMinutes(10); // Zaman aþýmýný 10 dakikaya çýkar
             });
 
-            services.AddIdentity<Kullanici, IdentityRole>(options => {
+            services.AddIdentity<Kullanici, IdentityRole>(options =>
+            {
                 options.User.RequireUniqueEmail = true; //kullanýcý email giriþi zorunluluðu
                 //options.User.AllowedUserNameCharacters="" izin verilen karakterler için
                 //options.SignIn.RequireConfirmedEmail= email doðrulama zorunluluðu,
@@ -117,7 +123,8 @@ namespace YOGBIS.UI
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
-                opt=> {
+                opt =>
+                {
                     opt.Cookie.HttpOnly = true;
                     opt.Cookie.Name = "YOGBISCookies";
                     opt.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
@@ -129,7 +136,7 @@ namespace YOGBIS.UI
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.Cookie.Name = "YOGBISCookies";
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5); 
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                 options.LoginPath = "/Identity/Account/Login";
                 // ReturnUrlParameter requires 
                 //using Microsoft.AspNetCore.Authentication.Cookies;
@@ -139,7 +146,9 @@ namespace YOGBIS.UI
 
             services.AddHostedService<SessionCheckBackgroundService>();
         }
+        #endregion
 
+        #region SessionCheckBackgroundService
         public class SessionCheckBackgroundService : BackgroundService
         {
             private readonly IServiceProvider _serviceProvider;
@@ -179,42 +188,45 @@ namespace YOGBIS.UI
                 }
             }
         }
+        #endregion
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
-           UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
+        #region Configure
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+        UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            if (env.IsDevelopment())
             {
-                if (env.IsDevelopment())
-                {
-                    app.UseDeveloperExceptionPage();
-                }
-                else
-                {
-                    app.UseExceptionHandler("/Home/Error");
-                    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                    app.UseHsts();
-                }
-
-                app.UseHttpsRedirection();
-                app.UseStaticFiles();
-                SeedData.Seed(userManager, roleManager);
-                app.UseRouting();
-                app.UseAuthentication();
-                app.UseAuthorization();
-                app.UseSession();
-
-                app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllerRoute(
-                        name:"Detail",
-                        pattern: "{controller}/{id:Guid}",
-                        defaults: new { action = "Details", id = UrlParameter.Optional },
-                        constraints: new { id = "[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}" });
-                    endpoints.MapControllerRoute(
-                        name:"default",
-                        pattern:"{controller=Home}/{action=Index}/{id?}");
-                    endpoints.MapRazorPages();
-                });
+                app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            SeedData.Seed(userManager, roleManager);
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseSession();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "Detail",
+                    pattern: "{controller}/{id:Guid}",
+                    defaults: new { action = "Details", id = UrlParameter.Optional },
+                    constraints: new { id = "[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}" });
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+            });
+        }
+        #endregion
     }
 }

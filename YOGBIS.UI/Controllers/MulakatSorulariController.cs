@@ -98,7 +98,7 @@ namespace YOGBIS.UI.Controllers
 
             if (MulakatSorulariId != null)
             {
-                var data = _mulakatSorulariBE.MulakatSoruGuncelle(model, user);
+                var data = _mulakatSorulariBE.SoruNoIleTopluGuncelle(model, user);
 
                 return RedirectToAction("Index");
             }
@@ -132,6 +132,20 @@ namespace YOGBIS.UI.Controllers
             {
                 return View();
             }
+
+        }
+        #endregion
+
+        #region SoruSiraNoIleTopluGuncelle
+        [HttpPost]
+        public JsonResult SoruSiraNoIleTopluGuncelle(MulakatSorulariVM model)
+        {
+
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var data = _mulakatSorulariBE.SoruSiraNoIleTopluGuncelle(model, user);
+
+            return Json("200");
 
         }
         #endregion
@@ -232,7 +246,7 @@ namespace YOGBIS.UI.Controllers
                         var worksheet = package.Workbook.Worksheets[0];
                         var rowCount = worksheet.Dimension?.Rows ?? 0;
 
-                        if (rowCount == 1)
+                        if (rowCount <= 1)
                         {
                             TempData["Error"] = "Excel dosyası boş veya geçersiz.";
                             return RedirectToAction("Index");
@@ -253,6 +267,7 @@ namespace YOGBIS.UI.Controllers
                                 Cevap = worksheet.Cells[row, 7].Value?.ToString(),
                                 SinavKateogoriTurId = int.Parse(worksheet.Cells[row, 8].Value?.ToString() ?? "0"),
                                 SinavKategoriTurAdi = worksheet.Cells[row, 9].Value?.ToString(),
+                                Iptal=true,
                                 MulakatId = Guid.Parse(worksheet.Cells[row, 10].Value?.ToString() ?? "0"),
                             };
 
@@ -343,11 +358,11 @@ namespace YOGBIS.UI.Controllers
                 }
 
                 // Hata varsa göster
-                if (hatalar.Any())
-                {
-                    TempData["Error"] = string.Join("<br/>", hatalar);
-                    return RedirectToAction("Index");
-                }
+                //if (hatalar.Any())
+                //{
+                //    TempData["Error"] = string.Join("<br/>", hatalar);
+                //    return RedirectToAction("Index");
+                //}
 
                 /*Soruları veritabanına ekle
                 var basariliEklenen = 0;
@@ -380,7 +395,7 @@ namespace YOGBIS.UI.Controllers
                     TempData["Success"] = $"{basariliEklenen} soru başarıyla eklendi.";
                 }*/
 
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
             }
             catch (Exception ex)
             {

@@ -1,8 +1,12 @@
 ﻿@page
 @model LoginModel
-
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration _configuration
 @{
     ViewData["Title"] = "Giriş";
+    // Tarih bilgisini appsettings.json'dan oku
+    var registrationEndDate = _configuration["AppSettings:RegistrationEndDate"];
+    bool isRegistrationOpen = DateTime.Now.Date < DateTime.Parse(registrationEndDate).Date;
 }
 
 <div class="container-lg">
@@ -41,7 +45,7 @@
                 </div>
                 <div class="card-footer text-center">
                     <div asp-validation-summary="All" class="text-danger"></div>
-                    @if (DateTime.Now.Date < DateTime.Parse("01/03/2023").Date)
+                    @if (!isRegistrationOpen)
                     {
                         
                     }

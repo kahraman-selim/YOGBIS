@@ -22,6 +22,7 @@ namespace YOGBIS.Data.DbModels
         public string Cevap { get; set; }
         public int SinavKateogoriTurId { get; set; }
         public string SinavKategoriTurAdi { get; set; }
+        public bool? Iptal { get; set; }
         public Guid MulakatId { get; set; }
         [ForeignKey("MulakatId")]
         public Mulakatlar Mulakatlar { get; set; }       

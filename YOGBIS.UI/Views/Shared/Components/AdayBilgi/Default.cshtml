@@ -6,50 +6,73 @@
     <div class="card-body">
         <form class="form-group m-0">
             @Html.HiddenFor(x => x.AdayId)
-            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-            
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>            
             <div class="form-row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
                         <label asp-for="DogumYeri" class="small mb-1 font-weight-bold">Dogum Yeri</label>
                         <input asp-for="DogumYeri" type="text" class="form-control py-2" id="DogumYeri">
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
                         <label asp-for="IkametIl" class="small mb-1 font-weight-bold">İkamet İl</label>
                         <input asp-for="IkametIl" type="text" class="form-control py-2" id="IkametIl">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-2">
                     <div class="form-group">
-                        <label asp-for="KurumAdi" class="small mb-1 font-weight-bold">Kurum Adı</label>
-                        <input asp-for="KurumAdi" type="text" class="form-control py-2" id="KurumAdi">
+                        <label asp-for="DogumTarihi" class="small mb-1 font-weight-bold">Doğum Tarihi</label>
+                        <input asp-for="DogumTarihi" type="text" class="form-control py-2" id="DogumTarihi">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label asp-for="Yasi" class="small mb-1 font-weight-bold">Yaşı</label>
+                        <input asp-for="Yasi" type="text" class="form-control py-2" id="Yasi">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label asp-for="HizmetAy" class="small mb-1 font-weight-bold">Hizmet Yıl/Ay/Gün</label>
+                        <input asp-for="HizmetAy" type="text" class="form-control py-2" id="HizmetAy">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label asp-for="Kademe" class="small mb-1 font-weight-bold">Derece/Kademe</label>
+                        <input asp-for="Kademe" type="text" class="form-control py-2" id="Kademe">
                     </div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label asp-for="GorevIptalAck" class="small mb-1 font-weight-bold">Görev İptal</label>
+                        <label asp-for="GorevIptalAck" class="small mb-1 font-weight-bold">Görev İptal/İptal Yıl</label>
                         <input asp-for="GorevIptalAck" type="text" class="form-control py-2" id="GorevIptalAck">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label asp-for="GorevIptalYil" class="small mb-1 font-weight-bold">Görev İptal Yıl</label>
+                        <label asp-for="GorevIptalYil" class="small mb-1 font-weight-bold">İlk Görev Kaydı/Yıl</label>
                         <input asp-for="GorevIptalYil" type="text" class="form-control py-2" id="GorevIptalYil">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label asp-for="IlkGorevKaydi" class="small mb-1 font-weight-bold">İlk Görev Kaydı</label>
+                        <label asp-for="IlkGorevKaydi" class="small mb-1 font-weight-bold">Görevden Uzaklaştırma/Yıl-Adli Sicil</label>
                         <input asp-for="IlkGorevKaydi" type="text" class="form-control py-2" id="IlkGorevKaydi">
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-1">
                     <div class="form-group">
                         <label asp-for="Sendika" class="small mb-1 font-weight-bold">Sendika</label>
+                        <input asp-for="Sendika" type="text" class="form-control py-2" id="Sendika">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label asp-for="Sendika" class="small mb-1 font-weight-bold">Güvenlik</label>
                         <input asp-for="Sendika" type="text" class="form-control py-2" id="Sendika">
                     </div>
                 </div>
@@ -63,7 +86,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label asp-for="YabanciDilIGN" class="small mb-1 font-weight-bold">İnglizce</label>
+                        <label asp-for="YabanciDilIGN" class="small mb-1 font-weight-bold">İngilizce</label>
                         <input asp-for="YabanciDilIGN" type="text" class="form-control py-2" id="YabanciDilIGN">
                     </div>
                 </div>
@@ -89,18 +112,16 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label asp-for="EDurum" class="small mb-1 font-weight-bold">EDurum</label>
+                        <label asp-for="EDurum" class="small mb-1 font-weight-bold">Referans</label>
                         <textarea asp-for="EDurum" class="form-control" id="EDurum" rows="5"></textarea>
                     </div>
                 </div>
-            </div>
-            
+            </div>            
             <div class="form-row mb-3">
                 <div class="col-md-12 center">                    
                     <a class="btn btn-sm text-white w-100 text-capitalize" title="Kapat" id="btnBilgiFormKapat" style="font-size:large;background-color:darkorange">BİLGİ FORMUNU KAPAT</a>                    
                 </div>
             </div>
-
         </form>
     </div>
 </div>

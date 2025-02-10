@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    // Tarih bilgisini ViewBag'den al
+    var registrationEndDate = ViewBag.RegistrationEndDate;
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fas fa-pen mr-1"></i>
+                <b>Üye Kayıt Aç Kapa</b>
+            </div>
+            <div class="card-body">
+                <form class="form-group m-0" asp-action="UpdateRegistrationDate" method="post">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="small mb-1 font-weight-bold">Tarih</label>
+                                        <input value="@registrationEndDate" type="text" class="form-control py-2" id="CreateDateInput" name="newDate" required>
+                                        <span class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <input type="submit" value="Kaydet" class="btn btn-success btn-sm" />
+                                    <a asp-controller="Home" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm">Vazgeç</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success col-md-12">
+        @TempData["Success"]
+    </div>
+}

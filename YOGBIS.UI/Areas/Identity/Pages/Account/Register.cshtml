@@ -3,12 +3,17 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration _configuration
 @{
     ViewData["Title"] = "Yeni Kullanıcı";
+    // Tarih bilgisini appsettings.json'dan oku
+    var registrationEndDate = _configuration["AppSettings:RegistrationEndDate"];
+    bool isRegistrationOpen = DateTime.Now.Date < DateTime.Parse(registrationEndDate).Date;
 }
 
 
-@if (DateTime.Now.Date < DateTime.Parse("01/03/2023").Date)
+@if (!isRegistrationOpen)
  {
      <header>
             <h1 class="text-danger text-center">Hata</h1>
@@ -137,6 +142,11 @@
                             </form>
                         </div>
                         <div class="card-footer text-center">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <a asp-controller="Home" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-block">Vazgeç</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -152,14 +162,6 @@
             </div>
         </div>
     }
-    @*else
- {
-     <header>
-            <h1 class="text-danger text-center">Hata</h1>
-            <p class="text-danger text-center">Bu sayfaya erişim yetkiniz yok.</p>
-            <p class="text-center"><a class="text-primary" asp-controller="Home" asp-action="Index">Anasayfa'ya dön</a></p>
-        </header>
- }*@
 }
 
 @section Scripts {
