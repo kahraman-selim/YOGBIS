@@ -69,7 +69,7 @@ namespace YOGBIS.UI.Controllers
         #region KomisyonEkle(Post)
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> KomisyonEkle(KomisyonlarVM model, Guid? KomisyonlarId)
+        public async Task<IActionResult> KomisyonEkle(KomisyonlarVM model, Guid? KomisyonId)
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -77,15 +77,17 @@ namespace YOGBIS.UI.Controllers
             var komisyon = await _kullaniciBE.KomisyonGetir();
             ViewBag.Komisyonlar = komisyon.Data;
 
-            if (KomisyonlarId != null)
+            if (KomisyonId != null)
             {
                 var data = _komisyonlarBE.KomisyonGuncelle(model, user);
 
-                if (data.IsSuccess)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View(model);
+                //if (data.IsSuccess)
+                //{
+                //    return RedirectToAction("Index");
+                //}
+                //return View(model);
+
+                return RedirectToAction("Index");
             }
             else
             {
@@ -93,9 +95,9 @@ namespace YOGBIS.UI.Controllers
 
                 if (data.IsSuccess)
                 {
-                    return RedirectToAction("Index");
+                    return View();
                 }
-                return View(model);
+                return RedirectToAction("Index");
             }
         }
         #endregion

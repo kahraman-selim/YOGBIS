@@ -28,7 +28,7 @@
                     }
                     @if (Model != null)
                     {
-                        @foreach (var item in Model.OrderBy(x => x.KomisyonUyeSiraNo))
+                        @foreach (var item in Model)
                         {
                             sirano++;
                             <tr>
