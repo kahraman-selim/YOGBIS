@@ -187,6 +187,10 @@
                                     {
                                         <a class="nav-link" asp-controller="Adaylar" asp-action="Index">Aday Not Bilgileri</a>
                                     }
+                                    @if (User.IsInRole("Administrator"))
+                                    {
+                                        <a class="nav-link" asp-controller="MulaktSonuc" asp-action="Index">Mülakat Sonuç</a>
+                                    }
                                 </nav>
                             </div>
                             <!--Takip Modülü-->

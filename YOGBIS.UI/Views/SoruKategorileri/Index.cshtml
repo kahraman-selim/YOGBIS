@@ -19,10 +19,19 @@
                     <div class="form-row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="DereceId" class="small mb-1 font-weight-bold">Derece</label>
-                                @Html.DropDownListFor(u => u.DereceId, new SelectList(ViewBag.Dereceler,
-                                         "DereceId", "DereceAdi"), "Dereceyi seçiniz", new { @id="DereceListesi", @class = "form-control-range form-control py-2" })
-                                <span class="text-danger" asp-validation-for="DereceId"></span>
+                                @if (ViewBag.Dereceler != null && ViewBag.Dereceler.Count > 0)
+                                {
+                                    <label asp-for="DereceId" class="small mb-1 font-weight-bold">Derece</label>
+                                    @Html.DropDownListFor(u => u.DereceId, new SelectList(ViewBag.Dereceler,
+                                             "DereceId", "DereceAdi"), "Dereceyi seçiniz", new { @id = "DereceListesi", @class = "form-control-range form-control py-2" })
+                                    <span class="text-danger" asp-validation-for="DereceId"></span>
+                                }
+                                else
+                                {
+                                    <select class="form-control-range form-control py-2" aria-label="Default select example">
+                                        <option selected class="text-left">Seçim yapınız</option>
+                                    </select>
+                                }
                             </div>
                         </div>
                     </div>
@@ -113,6 +122,12 @@
             </div>
         </div>
     </div>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger col-md-12">
+            @TempData["ErrorMessage"]
+        </div>
+    }
     <div class="col-md-12">
         @await Component.InvokeAsync("SoruKategoriListesi")
     </div>

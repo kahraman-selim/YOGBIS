@@ -15,12 +15,27 @@ namespace YOGBIS.UI.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
 
-            var requestmodel = _derecelerBE.DereceleriGetir();
-            if (requestmodel.IsSuccess)
+            try
             {
-                return View(requestmodel.Data);
+                var requestmodel = _derecelerBE.DereceleriGetir();
+                if (requestmodel.IsSuccess)
+                {
+                    return View(requestmodel.Data);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = requestmodel.Message;
+                    return View();
+                }
+                    
             }
-            return View();
+            catch (System.Exception)
+            {
+
+                TempData["ErrorMessage"] = "Dereceler getirilirken bir hata oluştu.";
+                return View();
+            }
+
         }
     }
 }

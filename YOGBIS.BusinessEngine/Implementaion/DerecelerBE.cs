@@ -31,36 +31,40 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region DereceleriGetir
         public Result<List<SoruDerecelerVM>> DereceleriGetir()
         {
-            try 
+            try
             {
+                // Veritabanından verileri çek
                 var data = _unitOfWork.soruDerecelerRepository.GetAll(includeProperties: "Kullanici").ToList();
-                
+
+                // Veri yoksa hata fırlat
                 if (data == null || !data.Any())
                 {
-                    throw new YogbisNotFoundException("Herhangi bir derece kaydı bulunamadı.");
+                    return new Result<List<SoruDerecelerVM>>(false, ResultConstant.RecordNotFound);
                 }
 
-                List<SoruDerecelerVM> returnData = new List<SoruDerecelerVM>();
+                // Mapping işlemi
+                var dereceler = _mapper.Map<List<SoruDereceler>, List<SoruDerecelerVM>>(data);
 
-                foreach (var item in data)
+                // Mapping sonrası kontrol
+                if (dereceler == null || !dereceler.Any())
                 {
-                    returnData.Add(new SoruDerecelerVM()
-                    {
-                        DereceId = item.DereceId,
-                        DereceAdi = item.DereceAdi,
-                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
-                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
-                    });
+                    return new Result<List<SoruDerecelerVM>>(false, ResultConstant.RecordNotFound);
                 }
+
+                // Verileri işle ve döndür
+                var returnData = data.Select(item => new SoruDerecelerVM
+                {
+                    DereceId = item.DereceId,
+                    DereceAdi = item.DereceAdi,
+                    KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                    KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+                }).ToList();
+
                 return new Result<List<SoruDerecelerVM>>(true, ResultConstant.RecordFound, returnData);
-            }
-            catch (YogbisNotFoundException)
-            {
-                throw new YogbisNotFoundException("Herhangi bir derece kaydı bulunamadı.");
             }
             catch (Exception ex)
             {
-                throw new YogbisBusinessException($"Dereceler getirilirken bir hata oluştu: {ex.Message}");
+                return new Result<List<SoruDerecelerVM>>(false, $"Dereceler getirilirken bir hata oluştu: {ex.Message}");
             }
         }
         #endregion

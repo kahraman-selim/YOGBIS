@@ -59,7 +59,7 @@
 
         $(document).ready(function () {
 
-                    $("#myTable").on("click", ".btnSil", function () {
+            $("#myTable").on("click", ".btnSil", function () {
 
             var btn = $(this);
             bootbox.confirm({
@@ -113,11 +113,10 @@
                         $.ajax({
                             type: "DELETE",
                             url: "/Dereceler/DereceSil/" + id,
-                            success: function () {
-                                
+                            success: function () {                                
                                 alertify.success('Kayıt silindi');
                                 setTimeout(function() {
-                                location.reload(); // 2 saniye sonra sayfayı yenile
+                                location.href="/Dereceler/Index";
                             }, 2000);
 
                             }                            
@@ -129,8 +128,6 @@
 
 
             });
-
-
 
         });
 

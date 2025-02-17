@@ -36,7 +36,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region AdaylariGetir
         public Result<List<AdaylarVM>> AdaylariGetir()
         {
-            var data = _unitOfWork.adaylarRepository.GetAll(includeProperties: "Kullanici,Mulakatlar,Komisyonlar").ToList(); 
+            var data = _unitOfWork.adaylarRepository.GetAll(includeProperties: "Kullanici").ToList(); //,Mulakatlar,Komisyonlar
             var Adaylar = _mapper.Map<List<Adaylar>, List<AdaylarVM>>(data);
 
             if (data != null)

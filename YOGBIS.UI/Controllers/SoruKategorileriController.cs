@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -32,17 +33,40 @@ namespace YOGBIS.UI.Controllers
         {
 
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
-            if (id != null)
+            try
             {
-                var data = _soruKategorileriBE.SoruKategoriGetir((Guid)id);
-                return View(data.Data);
+                var result = _derecelerBE.DereceleriGetir();
+                if (result.IsSuccess)
+                {
+                    //ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
+                    ViewBag.Dereceler = result.Data; //?? new List<SoruDerecelerVM>();
+
+                    if (id != null)
+                    {
+                        var data = _soruKategorileriBE.SoruKategoriGetir((Guid)id);
+                        return View(data.Data);
+                    }
+                    else
+                    {
+                        return View();
+                    }
+                }
+                else
+                {
+                    // Başarısız ise hata mesajını TempData veya ViewBag ile view'e gönder
+                    TempData["ErrorMessage"] = result.Message;
+                    return View(); // Hata durumunda başka bir sayfaya yönlendir
+                }
+                
             }
-            else
+            catch (Exception)
             {
-                return View();
+                TempData["ErrorMessage"] = "Dereceler getirilirken bir hata oluştu.";                
             }
+
+            return View();
+
         }
         #endregion
 

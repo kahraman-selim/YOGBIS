@@ -50,6 +50,7 @@ namespace YOGBIS.Data.Contracts
         ITemsilciliklerRepository temsilciliklerRepository { get; }
         IUlkeGruplariRepository ulkeGruplariRepository { get; }        
         IUlkelerRepository ulkelerRepository { get; }
+        IUlkeTercihRepository ulkeTercihRepository { get; }
         IUniversitelerRepository universitelerRepository { get; }
 
         void Save();

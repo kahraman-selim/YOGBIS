@@ -72,19 +72,10 @@ namespace YOGBIS.Data.DbModels
         public string DereceAdi { get; set; }
         public string Unvan { get; set; }
         public Guid? MulakatId { get; set; }
-        public string MulakatOnayNo { get; set; }
-        [ForeignKey("MulakatId")]
-        public Mulakatlar Mulakatlar { get; set; }
+        public Guid? UlkeTercihId { get; set; }
+        public Guid? BransId { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
-
-        /// <summary>
-        /// /////////
-        /// </summary>
-        public string UlkeTercihi { get; set; }
-        public string Brans { get; set; }
-        public string BasvuruBrans { get; set; }
-
     }
 }

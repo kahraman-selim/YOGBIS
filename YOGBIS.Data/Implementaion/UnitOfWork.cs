@@ -58,6 +58,7 @@ namespace YOGBIS.Data.Implementaion
             temsilciliklerRepository = new TemsilciliklerRepository(_ctx);
             ulkeGruplariRepository = new UlkeGruplariRepository(_ctx);            
             ulkelerRepository = new UlkelerRepository(_ctx);
+            ulkeTercihRepository = new UlkeTercihRepository(_ctx);
             universitelerRepository = new UniversitelerRepository(_ctx);
             
         }
@@ -108,7 +109,8 @@ namespace YOGBIS.Data.Implementaion
         public ISubelerRepository subelerRepository { get; private set; }
         public ITemsilciliklerRepository temsilciliklerRepository { get; private set; }
         public IUlkeGruplariRepository ulkeGruplariRepository { get; private set; }        
-        public IUlkelerRepository ulkelerRepository { get; private set; }         
+        public IUlkelerRepository ulkelerRepository { get; private set; }
+        public IUlkeTercihRepository ulkeTercihRepository { get; private set; }
         public IUniversitelerRepository universitelerRepository { get; private set; }
 
 
