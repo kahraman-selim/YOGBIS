@@ -47,7 +47,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<OkullarVM>> OkullariGetir()
         {
             var data = _unitOfWork.okullarRepository.GetAll(x => x.OkulDurumu == true, includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
-                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList();
+                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList(); 
 
             if (data != null)
             {
@@ -143,7 +143,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<OkullarVM>> OkullariGetirAZ()
         {
             var data = _unitOfWork.okullarRepository.GetAll(o=>o.OkulDurumu == true, includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
-                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList();
+                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList(); 
 
             if (data != null)
             {
@@ -186,7 +186,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<OkullarVM>> OkulGetirYoneticiId(string userId)
         {
             var data = _unitOfWork.okullarRepository.GetAll(u => u.OkulMudurId == userId && u.OkulDurumu == true, includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
-                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList();
+                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList(); 
             if (data != null)
             {
                 List<OkullarVM> returnData = new List<OkullarVM>();
@@ -280,7 +280,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<OkullarVM>> OkulGetirOkulId(Guid id)
         {
             var data = _unitOfWork.okullarRepository.GetAll(u => u.OkulId == id, includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
-                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList();
+                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList(); 
             if (data != null)
             {
                 List<OkullarVM> returnData = new List<OkullarVM>();
@@ -373,7 +373,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region OkulGetirOkulIdSecilenAy(id)
         public Result<List<OkullarVM>> OkulGetirOkulIdSecilenAy(Guid id, int ay)
         {
-            var data = _unitOfWork.okullarRepository.GetAll(u => u.OkulId == id, includeProperties: "Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Subeler,AdayGorevKaydi").OrderBy(u => u.OkulAdi).ToList();
+            var data = _unitOfWork.okullarRepository.GetAll(u => u.OkulId == id, includeProperties: "Kullanici,FotoGaleri,Etkinlikler,OkulBinaBolum,Subeler,AdayGorevKaydi").OrderBy(u => u.OkulAdi).ToList(); 
             if (data != null)
             {
                 List<OkullarVM> returnData = new List<OkullarVM>();
@@ -499,7 +499,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public Result<List<OkullarVM>> OkulGetirUlkeId(Guid UlkeId)
         {
             var data = _unitOfWork.okullarRepository.GetAll(u => u.UlkeId == UlkeId && u.OkulDurumu == true, includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
-                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList();
+                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri").OrderBy(o => o.OkulAdi).ToList(); 
             if (data != null)
             {
                 List<OkullarVM> returnData = new List<OkullarVM>();
@@ -595,7 +595,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             if (id != null)
             {
                 var data = _unitOfWork.okullarRepository.GetFirstOrDefault(u => u.OkulId == id, includeProperties: "Kullanici,OkulBinaBolum,Subeler,Siniflar,Ogrenciler," +
-                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri");
+                "AdayGorevKaydi,Etkinlikler,EpostaAdresleri,Telefonlar,FotoGaleri"); 
                 if (data != null)
                 {
                     OkullarVM okul = new OkullarVM();
