@@ -37,7 +37,7 @@
                     <div class="form-row">
                         <div class="col-md-12">
                             <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px" asp-controller="Dereceler" asp-action="Index">Yeni Kayıt</a>
-                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" />
+                            <input type="submit" value="Değiştir" class="btn btn-success btn-sm text-white mb-1" style="width:100px" />
                             <a class="btn btn-danger btn-sm text-white mb-1 btnSil" id="btnSil" style="width:100px">Sil</a>
                         </div>
                     </div>
@@ -57,7 +57,9 @@
 
     <script type="text/javascript">
 
-        $("#myTable").on("click", ".btnSil", function () {
+        $(document).ready(function () {
+
+                    $("#myTable").on("click", ".btnSil", function () {
 
             var btn = $(this);
             bootbox.confirm({
@@ -80,7 +82,6 @@
                             url: "/Dereceler/DereceSil/" + id,
                             success: function () {
                                 btn.parent().parent().remove();
-                                location.reload();
                                 alertify.success('Kayıt silindi');
                             }
                         });
@@ -90,32 +91,42 @@
 
         });
 
-        $(document).ready(function () {
-
-
             $("#btnSil").on("click", function () {
 
                 document.getElementById("DereceId").focus();
                 var id = $("#DereceId").val();
-                //var id = dereceno;
-                //alert(id);
-                //var btn = $(this);
 
-                bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
-                    if (result) {
-                        //var id = btn.data("id");
+                                bootbox.confirm({
+                    message: "Silmek istediğinize emin misiniz?",
+                    buttons: {
+                        confirm: {
+                            label: 'Evet',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Hayır',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
                         $.ajax({
                             type: "DELETE",
                             url: "/Dereceler/DereceSil/" + id,
                             success: function () {
+                                
+                                alertify.success('Kayıt silindi');
+                                setTimeout(function() {
+                                location.reload(); // 2 saniye sonra sayfayı yenile
+                            }, 2000);
 
-                                location.reload();
-                                //btn.parent().parent().remove();
-                                //alertify.success("Kaydı Sildik iyimi ?");
-                            }
+                            }                            
                         });
+                        }
+                        
                     }
                 });
+
 
             });
 

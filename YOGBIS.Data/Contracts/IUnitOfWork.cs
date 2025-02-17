@@ -4,10 +4,14 @@ namespace YOGBIS.Data.Contracts
 {
     public interface IUnitOfWork : IDisposable
     {
+        IAdayBasvuruBilgileriRepository adayBasvuruBilgileriRepository { get; }
         IAdayDDKRepository adayDDKRepository { get; }
         IAdayGorevKaydiRepository adayGorevKaydiRepository { get; }
+        IAdayIletisimBilgileriRepository adayIletisimBilgileriRepository { get; }
         IAdaylarRepository adaylarRepository { get; }
+        IAdayMYSSRepository adayMYSSRepository { get; }
         IAdayNotRepository adayNotRepository { get; }
+        IAdayTYSRepository adayTYSRepository { get; }
         IAutoHistoryRepository autoHistoryRepository { get; }
         IBranslarRepository branslarRepository { get; }
         IDosyaGaleriRepository dosyaGaleriRepository { get; }

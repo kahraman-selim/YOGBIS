@@ -1,7 +1,4 @@
-﻿
 @model IEnumerable<YOGBIS.Common.VModels.SoruDerecelerVM>
-
-
 
 <div class="card mb-3">
     <div class="card-header">
@@ -15,21 +12,23 @@
                     <tr>
                         <th>Sıra No</th>
                         <th>Derece</th>
-                        <th class="text-center">Sil</th>
+                        <th class="text-center">İşlemler</th>
                     </tr>
                 </thead>
                 <tbody>
                     @{ var sirano = 0;}
-                    @if (Model != null)
+                    @if (Model != null && Model.Any())
                     {
                         @foreach (var item in Model)
                         {
                             sirano++;
                             <tr>
                                 <td>@sirano</td>
-                                <td><a asp-controller="Dereceler" asp-action="Guncelle" asp-route-id="@item.DereceId" id="DereceAdi">@item.DereceAdi</a></td>
+                                <td>
+                                    <a asp-controller="Dereceler" asp-action="Guncelle" asp-route-id="@item.DereceId">@item.DereceAdi</a>
+                                </td>
                                 <td class="text-center">
-                                    <a class="btn btn-sm btn-danger btnSil" title="Sil" id="btnSil" data-id="@item.DereceId">
+                                    <a class="btn btn-sm btn-danger btnSil" data-id="@item.DereceId">
                                         <i class="fas fa-trash text-white"></i>
                                     </a>
                                 </td>
@@ -39,7 +38,7 @@
                     else
                     {
                         <tr>
-                            <td>Kayıt bulunamadı!</td>
+                            <td colspan="3" class="text-center">Kayıt bulunamadı!</td>
                         </tr>
                     }
                 </tbody>
@@ -47,7 +46,3 @@
         </div>
     </div>
 </div>
-
-
-
-

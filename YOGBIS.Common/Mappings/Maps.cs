@@ -8,10 +8,14 @@ namespace YOGBIS.Common.Mappings
     {
         public Maps()
         {
+            CreateMap<AdayBasvuruBilgileri, AdayBasvuruBilgileriVM>().ReverseMap();
             CreateMap<AdayDDK, AdayDDKVM>().ReverseMap();
             CreateMap<AdayGorevKaydi, AdayGorevKaydiVM>().ReverseMap();
+            CreateMap<AdayIletisimBilgileri, AdayIletisimBilgileriVM>().ReverseMap();
             CreateMap<Adaylar, AdaylarVM>().ReverseMap();
+            CreateMap<AdayMYSS, AdayMYSSVM>().ReverseMap();
             CreateMap<AdayNot, AdayNotVM>().ReverseMap();
+            CreateMap<AdayTYS, AdayTYSVM>().ReverseMap();
             CreateMap<AutoHistory, AutoHistoryVM>().ReverseMap();
             CreateMap<Branslar, BranslarVM>().ReverseMap();
             CreateMap<DosyaGaleri, DosyaGaleriVM>().ReverseMap();

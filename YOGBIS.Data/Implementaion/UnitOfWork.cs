@@ -11,10 +11,14 @@ namespace YOGBIS.Data.Implementaion
         {
             _ctx = ctx;
 
-            adayDDKRepository = new AdayDDKRepository(_ctx);
+            adayBasvuruBilgileriRepository = new AdayBasvuruBilgileriRepository(_ctx);
+            adayDDKRepository = new AdayDDKRepository(_ctx);            
             adayGorevKaydiRepository = new AdayGorevKaydiRepository(_ctx);
+            adayIletisimBilgileriRepository = new AdayIletisimBilgileriRepository(_ctx);
             adaylarRepository = new AdaylarRepository(_ctx);
-            adayNotRepository = new AdayNotRepository(_ctx);            
+            adayMYSSRepository = new AdayMYSSRepository(_ctx);
+            adayNotRepository = new AdayNotRepository(_ctx);
+            adayTYSRepository = new AdayTYSRepository(_ctx);
             autoHistoryRepository = new AutoHistoryRepository(_ctx);
             branslarRepository = new BranslarRepository(_ctx);
             dosyaGaleriRepository = new DosyaGaleriRepository(_ctx);
@@ -58,10 +62,14 @@ namespace YOGBIS.Data.Implementaion
             
         }
 
+        public IAdayBasvuruBilgileriRepository adayBasvuruBilgileriRepository { get; private set; }
         public IAdayDDKRepository adayDDKRepository { get; private set; }
         public IAdayGorevKaydiRepository adayGorevKaydiRepository { get; private set; }
+        public IAdayIletisimBilgileriRepository adayIletisimBilgileriRepository { get; private set; }
         public IAdaylarRepository adaylarRepository { get; private set; }
-        public IAdayNotRepository adayNotRepository { get; private set; }        
+        public IAdayMYSSRepository adayMYSSRepository { get; private set; }
+        public IAdayNotRepository adayNotRepository { get; private set; }  
+        public IAdayTYSRepository adayTYSRepository { get; private set; }
         public IAutoHistoryRepository autoHistoryRepository { get; private set; }
         public IBranslarRepository branslarRepository { get; private set; }
         public IDosyaGaleriRepository dosyaGaleriRepository { get; private set; }

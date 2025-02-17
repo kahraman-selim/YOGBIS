@@ -11,7 +11,7 @@ namespace YOGBIS.Common.VModels
         public Guid Id { get; set; }
         public Guid AdayId { get; set; }       
         public AdaylarVM Adaylar { get; set; }
-        public string AdayTC { get; set; }
+        public string TC { get; set; }
         //diğeralanlar
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }

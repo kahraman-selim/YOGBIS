@@ -36,7 +36,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region AdaylariGetir
         public Result<List<AdaylarVM>> AdaylariGetir()
         {
-            var data = _unitOfWork.adaylarRepository.GetAll(includeProperties: "Kullanici,Mulakatlar,Komisyonlar").OrderBy(x=>x.KomisyonSN).ThenBy(y=>y.KomisyonGunSN).ToList(); 
+            var data = _unitOfWork.adaylarRepository.GetAll(includeProperties: "Kullanici,Mulakatlar,Komisyonlar").ToList(); 
             var Adaylar = _mapper.Map<List<Adaylar>, List<AdaylarVM>>(data);
 
             if (data != null)
@@ -51,14 +51,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         TC=item.TC,
                         Ad=item.Ad,
                         Soyad=item.Soyad,
-                        DereceAdi=item.DereceAdi,
-                        UlkeTercihi=item.UlkeTercihi,
-                        Brans=item.Brans,
-                        MYYSTarihi=item.MYYSTarihi, 
-                        MYSSSaat=item.MYSSSaat,
-                        MYSSKomisyonAdi=item.MYSSKomisyonAdi,
-                        KomisyonSN=item.KomisyonSN,
-                        KomisyonGunSN = item.KomisyonGunSN,                       
+                        //DereceAdi=item.DereceAdi,
+                        //UlkeTercihi=item.UlkeTercihi,
+                        //Brans=item.Brans,
+                        //MYYSTarihi=item.MYYSTarihi, 
+                        //MYSSSaat=item.MYSSSaat,
+                        //MYSSKomisyonAdi=item.MYSSKomisyonAdi,
+                        //KomisyonSN=item.KomisyonSN,
+                        //KomisyonGunSN = item.KomisyonGunSN,                       
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
@@ -89,14 +89,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     Adaylar.TC=data.TC;
                     Adaylar.Ad=data.Ad;
                     Adaylar.Soyad = data.Soyad;
-                    Adaylar.DereceAdi = data.DereceAdi;
-                    Adaylar.UlkeTercihi = data.UlkeTercihi;
-                    Adaylar.Brans = data.Brans;
-                    Adaylar.MYYSTarihi = data.MYYSTarihi;
-                    Adaylar.MYSSSaat = data.MYSSSaat;
-                    Adaylar.MYSSKomisyonAdi = data.MYSSKomisyonAdi;
-                    Adaylar.KomisyonSN = data.KomisyonSN;
-                    Adaylar.KomisyonGunSN = data.KomisyonGunSN;
+                    //Adaylar.DereceAdi = data.DereceAdi;
+                    //Adaylar.UlkeTercihi = data.UlkeTercihi;
+                    //Adaylar.Brans = data.Brans;
+                    //Adaylar.MYYSTarihi = data.MYYSTarihi;
+                    //Adaylar.MYSSSaat = data.MYSSSaat;
+                    //Adaylar.MYSSKomisyonAdi = data.MYSSKomisyonAdi;
+                    //Adaylar.KomisyonSN = data.KomisyonSN;
+                    //Adaylar.KomisyonGunSN = data.KomisyonGunSN;
                     Adaylar.KayitTarihi=data.KayitTarihi;
                     Adaylar.KaydedenId = data.KaydedenId;
                     Adaylar.KaydedenAdi = data.Kullanici.Ad + " " + data.Kullanici.Soyad;
@@ -203,14 +203,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         TC = item.TC,
                         Ad = item.Ad,
                         Soyad = item.Soyad,
-                        DereceAdi = item.DereceAdi,
-                        UlkeTercihi = item.UlkeTercihi,
-                        Brans = item.Brans,
-                        MYYSTarihi = item.MYYSTarihi,
-                        MYSSSaat = item.MYSSSaat,
-                        MYSSKomisyonAdi = item.MYSSKomisyonAdi,
-                        KomisyonSN = item.KomisyonSN,
-                        KomisyonGunSN = item.KomisyonGunSN,
+                        //DereceAdi = item.DereceAdi,
+                        //UlkeTercihi = item.UlkeTercihi,
+                        //Brans = item.Brans,
+                        //MYYSTarihi = item.MYYSTarihi,
+                        //MYSSSaat = item.MYSSSaat,
+                        //MYSSKomisyonAdi = item.MYSSKomisyonAdi,
+                        //KomisyonSN = item.KomisyonSN,
+                        //KomisyonGunSN = item.KomisyonGunSN,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,

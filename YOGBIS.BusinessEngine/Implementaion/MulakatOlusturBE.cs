@@ -100,10 +100,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     var mulakatlar = _mapper.Map<MulakatlarVM, Mulakatlar>(model);
                     mulakatlar.KaydedenId = user.LoginId;
-                    //var derecead = model.DereceId == Guid.Empty ? string.Empty : _derecelerBE.DereceAdGetir(model.DereceId).Data;
-
-                    //mulakatlar.MulakatDonemi = model.MulakatAdi + "-" + derecead + "-" + model.BaslamaTarihi.Day.ToString() + "/" + model.BaslamaTarihi.Month.ToString() + "-" + 
-                      //                         model.BitisTarihi.Day.ToString() + "/" + model.BitisTarihi.Month.ToString() + "-" + model.BitisTarihi.Year.ToString() + " Dönemi";
                     
                     _unitOfWork.mulakatlarRepository.Add(mulakatlar);
                     _unitOfWork.Save();
@@ -130,9 +126,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var mulakatlar = _mapper.Map<MulakatlarVM, Mulakatlar>(model);
-                    //var derecead = model.DereceId != null ? _derecelerBE.DereceAdGetir((Guid)model.DereceId).Data : string.Empty;
-                    //mulakatlar.MulakatDonemi = model.MulakatAdi + "-" + derecead + "-" + model.BaslamaTarihi.Day.ToString() + "/" + model.BaslamaTarihi.Month.ToString() + "-" +
-                                              // model.BitisTarihi.Day.ToString() + "/" + model.BitisTarihi.Month.ToString() + "-" + model.BitisTarihi.Year.ToString() + " Dönemi";
+                    mulakatlar.KaydedenId = user.LoginId;
 
                     _unitOfWork.mulakatlarRepository.Update(mulakatlar);
                     _unitOfWork.Save();

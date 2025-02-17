@@ -179,7 +179,7 @@ namespace YOGBIS.UI
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         // Hata loglamasý yapýlabilir
                     }

@@ -1,9 +1,10 @@
-﻿using AutoMapper;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.Exceptions;
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
@@ -30,15 +31,15 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region DereceleriGetir
         public Result<List<SoruDerecelerVM>> DereceleriGetir()
         {
-            //var data = _unitOfWork.derecelerRepository.GetAll().ToList();
-            //var dereceler = _mapper.Map<List<Dereceler>, List<DerecelerVM>>(data);
-            //return new Result<List<DerecelerVM>>(true, ResultConstant.RecordFound, dereceler);
-
-            var data = _unitOfWork.soruDerecelerRepository.GetAll(includeProperties: "Kullanici").ToList();
-            var dereceler = _mapper.Map<List<SoruDereceler>, List<SoruDerecelerVM>>(data);
-
-            if (data != null)
+            try 
             {
+                var data = _unitOfWork.soruDerecelerRepository.GetAll(includeProperties: "Kullanici").ToList();
+                
+                if (data == null || !data.Any())
+                {
+                    throw new YogbisNotFoundException("Herhangi bir derece kaydı bulunamadı.");
+                }
+
                 List<SoruDerecelerVM> returnData = new List<SoruDerecelerVM>();
 
                 foreach (var item in data)
@@ -53,9 +54,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 }
                 return new Result<List<SoruDerecelerVM>>(true, ResultConstant.RecordFound, returnData);
             }
-            else
+            catch (YogbisNotFoundException)
             {
-                return new Result<List<SoruDerecelerVM>>(false, ResultConstant.RecordNotFound);
+                throw new YogbisNotFoundException("Herhangi bir derece kaydı bulunamadı.");
+            }
+            catch (Exception ex)
+            {
+                throw new YogbisBusinessException($"Dereceler getirilirken bir hata oluştu: {ex.Message}");
             }
         }
         #endregion
@@ -63,9 +68,20 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region DereceGetirKullaniciId
         public Result<List<SoruDerecelerVM>> DereceGetirKullaniciId(string userId)
         {
-            var data = _unitOfWork.soruDerecelerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici").ToList();
-            if (data != null)
+            try
             {
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new YogbisValidationException("Kullanıcı ID boş olamaz.");
+                }
+
+                var data = _unitOfWork.soruDerecelerRepository.GetAll(u => u.KaydedenId == userId, includeProperties: "Kullanici").ToList();
+                
+                if (data == null || !data.Any())
+                {
+                    throw new YogbisNotFoundException($"Kullanıcı için derece kaydı bulunamadı. (KullanıcıID: {userId})");
+                }
+
                 List<SoruDerecelerVM> returnData = new List<SoruDerecelerVM>();
 
                 foreach (var item in data)
@@ -81,9 +97,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 }
                 return new Result<List<SoruDerecelerVM>>(true, ResultConstant.RecordFound, returnData);
             }
-            else
+            catch (YogbisValidationException)
             {
-                return new Result<List<SoruDerecelerVM>>(false, ResultConstant.RecordNotFound);
+                throw new YogbisValidationException("Kullanıcı ID boş olamaz.");
+            }
+            catch (YogbisNotFoundException)
+            {
+                throw new YogbisNotFoundException($"Kullanıcı için derece kaydı bulunamadı. (KullanıcıID: {userId})");
+            }
+            catch (Exception ex)
+            {
+                throw new YogbisBusinessException($"Kullanıcı dereceleri getirilirken bir hata oluştu: {ex.Message}");
             }
         }
         #endregion
@@ -91,15 +115,28 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region DereceGetir(Guid id)
         public Result<SoruDerecelerVM> DereceGetir(Guid id)
         {
-            var data = _unitOfWork.soruDerecelerRepository.Get(id);
-            if (data != null)
+            try
             {
+                if (id == Guid.Empty)
+                {
+                    throw new YogbisValidationException("Geçersiz derece ID'si.");
+                }
+
+                var data = _unitOfWork.soruDerecelerRepository.Get(id);
                 var dereceler = _mapper.Map<SoruDereceler, SoruDerecelerVM>(data);
                 return new Result<SoruDerecelerVM>(true, ResultConstant.RecordFound, dereceler);
             }
-            else
+            catch (YogbisValidationException)
             {
-                return new Result<SoruDerecelerVM>(false, ResultConstant.RecordNotFound);
+                throw new YogbisValidationException("Geçersiz derece ID'si.");
+            }
+            catch (YogbisNotFoundException)
+            {
+                throw new YogbisNotFoundException("Herhangi bir derece kaydı bulunamadı.");
+            }
+            catch (Exception ex)
+            {
+                throw new YogbisBusinessException($"Derece getirilirken bir hata oluştu: {ex.Message}");
             }
         }
         #endregion
@@ -107,15 +144,30 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region DereceAdGetir(Guid id)
         public Result<string> DereceAdGetir(Guid id)
         {
-            var data = _unitOfWork.soruDerecelerRepository.Get(id);
-            if (data != null)
+            try
             {
-                var dereceadi = data.DereceAdi.ToString();
-                return new Result<string>(true, ResultConstant.RecordFound, dereceadi);
+                if (id == Guid.Empty)
+                {
+                    throw new YogbisValidationException("Geçersiz derece ID'si.");
+                }
+
+                var data = _unitOfWork.soruDerecelerRepository.Get(id);
+
+                return data == null
+                    ? throw new YogbisNotFoundException($"Derece bulunamadı. (DereceID: {id})")
+                    : new Result<string>(true, ResultConstant.RecordFound, data.DereceAdi);
             }
-            else
+            catch (YogbisValidationException)
             {
-                return new Result<string>(false, ResultConstant.RecordNotFound);
+                throw new YogbisValidationException("Geçersiz derece ID'si.");
+            }
+            catch (YogbisNotFoundException)
+            {
+                throw new YogbisNotFoundException($"Derece bulunamadı. (DereceID: {id})");
+            }
+            catch (Exception ex)
+            {
+                throw new YogbisBusinessException($"Derece adı getirilirken bir hata oluştu: {ex.Message}");
             }
         }
         #endregion
@@ -123,25 +175,37 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region DereceEkle
         public Result<SoruDerecelerVM> DereceEkle(SoruDerecelerVM model, SessionContext user)
         {
-            if (model != null)
+            try
             {
-                try
+                if (model == null)
                 {
-                    var derece = _mapper.Map<SoruDerecelerVM, SoruDereceler>(model);
-                    derece.KaydedenId = user.LoginId;
-                    _unitOfWork.soruDerecelerRepository.Add(derece);
-                    _unitOfWork.Save();
-                    return new Result<SoruDerecelerVM>(true, ResultConstant.RecordCreateSuccess);
+                    throw new YogbisValidationException("Derece modeli boş olamaz.");
                 }
-                catch (Exception ex)
-                {
 
-                    return new Result<SoruDerecelerVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                if (string.IsNullOrEmpty(model.DereceAdi))
+                {
+                    throw new YogbisValidationException("Derece adı boş olamaz.");
                 }
+
+                if (user == null || string.IsNullOrEmpty(user.LoginId))
+                {
+                    throw new YogbisValidationException("Geçersiz kullanıcı bilgisi.");
+                }
+
+                var derece = _mapper.Map<SoruDerecelerVM, SoruDereceler>(model);
+                derece.KaydedenId = user.LoginId;
+                _unitOfWork.soruDerecelerRepository.Add(derece);
+                _unitOfWork.Save();
+
+                return new Result<SoruDerecelerVM>(true, ResultConstant.RecordCreateSuccess);
             }
-            else
+            catch (YogbisValidationException)
             {
-                return new Result<SoruDerecelerVM>(false, "Boş veri olamaz");
+                throw new YogbisValidationException("Derece modeli boş olamaz.");
+            }
+            catch (Exception ex)
+            {
+                throw new YogbisBusinessException($"Derece eklenirken bir hata oluştu: {ex.Message}");
             }
         }
         #endregion
@@ -149,25 +213,37 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region DereceGuncelle
         public Result<SoruDerecelerVM> DereceGuncelle(SoruDerecelerVM model, SessionContext user)
         {
-            if (model != null)
+            try
             {
-                try
+                if (model == null)
                 {
-                    var derece = _mapper.Map<SoruDerecelerVM, SoruDereceler>(model);
-                    derece.KaydedenId = user.LoginId;
-                    _unitOfWork.soruDerecelerRepository.Update(derece);
-                    _unitOfWork.Save();
-                    return new Result<SoruDerecelerVM>(true, ResultConstant.RecordCreateSuccess);
+                    throw new YogbisValidationException("Derece modeli boş olamaz.");
                 }
-                catch (Exception ex)
-                {
 
-                    return new Result<SoruDerecelerVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                if (string.IsNullOrEmpty(model.DereceAdi))
+                {
+                    throw new YogbisValidationException("Derece adı boş olamaz.");
                 }
+
+                if (user == null || string.IsNullOrEmpty(user.LoginId))
+                {
+                    throw new YogbisValidationException("Geçersiz kullanıcı bilgisi.");
+                }
+
+                var derece = _mapper.Map<SoruDerecelerVM, SoruDereceler>(model);
+                derece.KaydedenId = user.LoginId;
+                _unitOfWork.soruDerecelerRepository.Update(derece);
+                _unitOfWork.Save();
+
+                return new Result<SoruDerecelerVM>(true, ResultConstant.RecordCreateSuccess);
             }
-            else
+            catch (YogbisValidationException)
             {
-                return new Result<SoruDerecelerVM>(false, "Boş veri olamaz");
+                throw new YogbisValidationException("Derece modeli boş olamaz.");
+            }
+            catch (Exception ex)
+            {
+                throw new YogbisBusinessException($"Derece güncellenirken bir hata oluştu: {ex.Message}");
             }
         }
         #endregion

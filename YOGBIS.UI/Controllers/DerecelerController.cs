@@ -25,23 +25,9 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
-        public IActionResult Index(Guid? id)
+        public IActionResult Index()
         {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            //var requestmodel= _derecelerBE.DereceleriGetir(); 
-            //if (requestmodel.IsSuccess)
-            //{
-            //    return View(requestmodel.Data);
-            //}
-            if (id != null)
-            {
-                var data = _derecelerBE.DereceGetir((Guid)id);
-                return View(data.Data);
-            }
-            else
-            {
-                return View();
-            }
+            return View();
         }
         #endregion
 
@@ -70,11 +56,9 @@ namespace YOGBIS.UI.Controllers
             else
             {
                 var data = _derecelerBE.DereceEkle(model, user);
-                if (data.IsSuccess)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View(model);
+
+                return RedirectToAction("Index");
+
             }
         }
         #endregion
@@ -83,7 +67,7 @@ namespace YOGBIS.UI.Controllers
         public ActionResult Guncelle(Guid? id)
         {
 
-            if (id != null)
+            if (id != Guid.Empty)
             {
                 var data = _derecelerBE.DereceGetir((Guid)id);
                 return View(data.Data);
@@ -100,7 +84,7 @@ namespace YOGBIS.UI.Controllers
         [HttpDelete]
         public IActionResult DereceSil(Guid id)
         {
-            if (id == null)
+            if (id == Guid.Empty)
                 return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
 
             var data = _derecelerBE.DereceSil(id);
