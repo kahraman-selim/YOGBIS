@@ -97,36 +97,34 @@
 
         $(document).ready(function () {
 
-                    $("#DereceListesi").on("change", function () {
+            $("#DereceListesi").on("change", function () {
 
-            var DereceId = $("#DereceListesi").val();
-            alert(DereceId);
-            //mülakatları getir
-            $("#MulakatListesi").empty();
+                var DereceId = $("#DereceListesi").val();
 
-            $("#MulakatListesi").append("<option value=''> Mülakatı seçiniz </option>");
+                //mülakatları getir
+                $("#MulakatListesi").empty();
 
-            var url = '@Url.Action("MulakatAdGetir", "UlkeTercihleri")?dereceId=' + DereceId;
+                $("#MulakatListesi").append("<option value=''> Mülakatı seçiniz </option>");
 
-            $.getJSON(url, function (data) {
+                var url = '@Url.Action("MulakatAdGetir", "UlkeTercihleri")?dereceId=' + DereceId;
 
-                $.each(data, function (i = 0, mulakatId, mulakatAdi) {
+                $.getJSON(url, function (data) {
 
-                    //alert(data);
-                    $('#MulakatListesi').append($('<option>', {
-                        value: data[i]['mulakatId'],
-                        text: data[i]['mulakatAdi']
-                    }));
+                    $.each(data, function (i = 0, mulakatId, mulakatAdi) {
 
+                        //alert(data);
+                        $('#MulakatListesi').append($('<option>', {
+                            value: data[i]['mulakatId'],
+                            text: data[i]['mulakatAdi']
+                        }));
+
+                    });
                 });
+
+                 $('#MulakatListesi').focus();
+
             });
-
-            $('#MulakatListesi').focus();
-
         });
-
-        });
-
 
     </script>
 }

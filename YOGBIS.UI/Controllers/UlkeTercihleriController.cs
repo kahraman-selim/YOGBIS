@@ -35,6 +35,8 @@ namespace YOGBIS.UI.Controllers
         #region Index
         public IActionResult Index()
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Mulakatlar = string.Empty;
 
