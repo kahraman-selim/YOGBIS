@@ -173,7 +173,7 @@ namespace YOGBIS.UI.Controllers
 
             if (dereceId != null)
             {
-                var data = _unitOfWork.mulakatlarRepository.GetAll(x => x.DereceId == dereceId);  // _mulakatOlusturBE.MulakatDonemAdiGetir(dereceId).Data; //
+                var data = _unitOfWork.mulakatlarRepository.GetAll(x => x.DereceId == dereceId);  //  //_mulakatOlusturBE.MulakatDonemAdiGetir(dereceId).Data; 
                 //string donem = JsonConvert.SerializeObject(data);
 
                 return Json(data);

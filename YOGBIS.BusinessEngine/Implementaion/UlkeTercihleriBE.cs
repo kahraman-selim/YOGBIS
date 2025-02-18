@@ -15,7 +15,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.BusinessEngine.Implementaion
 {
-    public class UlkeTercihBE:IUlkeTercihleriBE
+    public class UlkeTercihleriBE:IUlkeTercihleriBE
     {
         #region Degiskenler
         private readonly IUnitOfWork _unitOfWork;
@@ -24,7 +24,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region Donusturuculer
-        public UlkeTercihBE(IUnitOfWork unitOfWork, IMapper mapper, IMulakatOlusturBE mulakatOlusturBE)
+        public UlkeTercihleriBE(IUnitOfWork unitOfWork, IMapper mapper, IMulakatOlusturBE mulakatOlusturBE)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

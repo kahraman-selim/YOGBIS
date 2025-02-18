@@ -83,6 +83,7 @@ namespace YOGBIS.UI
             services.AddScoped<ISubelerBE, SubelerBE>();
             services.AddScoped<IUlkeGruplariBE, UlkeGruplariBE>();
             services.AddScoped<IUlkelerBE, UlkelerBE>();
+            services.AddScoped<IUlkeTercihleriBE, UlkeTercihleriBE>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(Maps));

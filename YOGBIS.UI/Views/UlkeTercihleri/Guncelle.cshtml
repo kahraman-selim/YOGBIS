@@ -75,7 +75,9 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">
-                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" />
+                            <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px" asp-controller="UlkeTercihleri" asp-action="Index">Yeni Kayıt</a>
+                            <input type="submit" value="Değiştir" class="btn btn-success btn-sm text-white mb-1" style="width:100px" />
+                            <a class="btn btn-danger btn-sm text-white mb-1 btnSil" id="btnSil" style="width:100px">Sil</a>
                         </div>
                     </div>
                 </form>
@@ -97,36 +99,73 @@
 
         $(document).ready(function () {
 
-                    $("#DereceListesi").on("change", function () {
+           $("#DereceListesi").on("change", function () {
 
-            var DereceId = $("#DereceListesi").val();
-            alert(DereceId);
-            //mülakatları getir
-            $("#MulakatListesi").empty();
+                var DereceId = $("#DereceListesi").val();
+                alert(DereceId);
+                //mülakatları getir
+                $("#MulakatListesi").empty();
 
-            $("#MulakatListesi").append("<option value=''> Mülakatı seçiniz </option>");
+                $("#MulakatListesi").append("<option value=''> Mülakatı seçiniz </option>");
 
-            var url = '@Url.Action("MulakatAdGetir", "UlkeTercihleri")?dereceId=' + DereceId;
+                var url = '@Url.Action("MulakatAdGetir", "UlkeTercihleri")?dereceId=' + DereceId;
 
-            $.getJSON(url, function (data) {
+                $.getJSON(url, function (data) {
 
-                $.each(data, function (i = 0, mulakatId, mulakatAdi) {
+                    $.each(data, function (i = 0, mulakatId, mulakatAdi) {
 
-                    //alert(data);
-                    $('#MulakatListesi').append($('<option>', {
-                        value: data[i]['mulakatId'],
-                        text: data[i]['mulakatAdi']
-                    }));
+                        //alert(data);
+                        $('#MulakatListesi').append($('<option>', {
+                            value: data[i]['mulakatId'],
+                            text: data[i]['mulakatAdi']
+                        }));
 
+                    });
                 });
+
+                $('#MulakatListesi').focus();
+
             });
 
-            $('#MulakatListesi').focus();
+           $("#btnSil").on("click", function () {
+
+                    document.getElementById("UlkeTercihId").focus();
+                    var id = $("#UlkeTercihId").val();
+
+                                    bootbox.confirm({
+                        message: "Silmek istediğinize emin misiniz?",
+                        buttons: {
+                            confirm: {
+                                label: 'Evet',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'Hayır',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function (result) {
+                            if (result) {
+                            $.ajax({
+                                type: "DELETE",
+                                url: "/UlkeTercihleri/UlkeTercihSil/" + id,
+                                success: function () {
+                                    alertify.success('Kayıt silindi');
+                                    setTimeout(function() {
+                                    location.href="/UlkeTercihleri/Index";
+                                }, 2000);
+
+                                }
+                            });
+                            }
+
+                        }
+                    });
+
+
+                });
 
         });
-
-        });
-
 
     </script>
 }

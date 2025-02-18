@@ -1,24 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
+using YOGBIS.BusinessEngine.Implementaion;
 
 namespace YOGBIS.UI.ViewComponents
 {
-    public class DereceListesiViewComponent : ViewComponent
+    public class UlkeTercihleriViewComponent : ViewComponent
     {
-        private readonly IDerecelerBE _derecelerBE;
-
-        public DereceListesiViewComponent(IDerecelerBE derecelerBE)
+        private readonly IUlkeTercihleriBE _ulkeTercihleriBE;
+        
+        public UlkeTercihleriViewComponent(IUlkeTercihleriBE ulkeTercihleriBE)
         {
-            _derecelerBE = derecelerBE;
+            _ulkeTercihleriBE = ulkeTercihleriBE;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-
             try
             {
-                var requestmodel = _derecelerBE.DereceleriGetir();
+                var requestmodel = _ulkeTercihleriBE.UlkeTercihleriGetir();
+
                 if (requestmodel.IsSuccess)
                 {
                     return View(requestmodel.Data);
@@ -28,15 +29,14 @@ namespace YOGBIS.UI.ViewComponents
                     TempData["ErrorMessage"] = requestmodel.Message;
                     return View();
                 }
-                    
+
             }
             catch (System.Exception)
             {
 
-                TempData["ErrorMessage"] = "Dereceler getirilirken bir hata oluştu.";
+                TempData["ErrorMessage"] = "Bilgiler getirilirken bir hata oluştu.";
                 return View();
             }
-
         }
     }
 }

@@ -95,38 +95,5 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function () {
-
-                    $("#DereceListesi").on("change", function () {
-
-            var DereceId = $("#DereceListesi").val();
-            alert(DereceId);
-            //mülakatları getir
-            $("#MulakatListesi").empty();
-
-            $("#MulakatListesi").append("<option value=''> Mülakatı seçiniz </option>");
-
-            var url = '@Url.Action("MulakatAdGetir", "UlkeTercihleri")?dereceId=' + DereceId;
-
-            $.getJSON(url, function (data) {
-
-                $.each(data, function (i = 0, mulakatId, mulakatAdi) {
-
-                    //alert(data);
-                    $('#MulakatListesi').append($('<option>', {
-                        value: data[i]['mulakatId'],
-                        text: data[i]['mulakatAdi']
-                    }));
-
-                });
-            });
-
-            $('#MulakatListesi').focus();
-
-        });
-
-        });
-
-
     </script>
 }
