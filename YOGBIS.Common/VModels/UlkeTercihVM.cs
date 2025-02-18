@@ -18,6 +18,7 @@ namespace YOGBIS.Common.VModels
         public int UlkeTercihSiraNo { get; set; }
         [Required(ErrorMessage = "Yabancı dil seçimi yapınız...")]
         public string YabancıDil { get; set; }
+        public Guid DereceId { get; set; }
         [Required(ErrorMessage = "Mülakat seçimi yapınız...")]
         public Guid MulakatId { get; set; }
         public int MulakatYil { get; set; }
