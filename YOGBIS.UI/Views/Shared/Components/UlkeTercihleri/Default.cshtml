@@ -1,18 +1,32 @@
 ﻿@model IEnumerable<YOGBIS.Common.VModels.UlkeTercihVM>
 
 <div class="card mb-3">
-    <div class="card-header">
-        <i class="fas fa-table mr-1"></i>
-        <b>Ülke Tercihleri</b>
-    </div>
+    <h6 class="card-header text-center text-danger p-md-1">
+        @{
+            var yil = 0;
+
+        }
+        @foreach (var item in Model) { yil = (int)item.MulakatYil; }
+
+        <span id="oncekiyil" class="text-primary">
+            <a href="" class="text-primary">Önceki Yıl</a>
+        </span>
+        ÜLKE KONTENJANLARI - @yil.ToString()
+        <span id="sonrakiyil" class="text-primary">
+            <a href="" class="text-primary">Sonraki Yıl</a>
+        </span>
+    </h6>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Sıra No</th>
+                        <th>Derece</th>
                         <th>Ülke Grubu</th>
                         <th>Yabancı Dil</th>
+                        <th>Branşlar</th>
+                        <th>Kontenjan</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,8 +40,15 @@
                             sirano++;
                             <tr>
                                 <td>@sirano</td>
+                                <td>@item.DereceAdi</td>
                                 <td>
                                     <a asp-controller="UlkeTercihleri" asp-action="Guncelle" asp-route-id="@item.UlkeTecihId">@item.UlkeTercihAdi</a>
+                                </td>
+                                <td>
+                                    @item.YabancıDil
+                                </td>
+                                <td>
+                                    @item.YabancıDil
                                 </td>
                                 <td>
                                     @item.YabancıDil

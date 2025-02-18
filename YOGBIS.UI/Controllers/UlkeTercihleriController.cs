@@ -38,7 +38,7 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-            ViewBag.Mulakatlar = string.Empty;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
 
             return View();
         }
@@ -89,7 +89,7 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-            ViewBag.Mulakatlar = string.Empty;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
 
             if (id != Guid.Empty)
             {

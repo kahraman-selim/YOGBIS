@@ -1,6 +1,7 @@
 using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
@@ -146,32 +147,25 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region DereceAdGetir(Guid id)
-        public Result<string> DereceAdGetir(Guid id)
+        public Result<string> DereceAdGetir(Guid DereceId)
         {
-            try
+            if (DereceId == null)
             {
-                if (id == Guid.Empty)
+                var dereceadi = "";
+                return new Result<string>(true, ResultConstant.RecordFound, dereceadi);
+            }
+            else
+            {
+                var data = _unitOfWork.soruDerecelerRepository.Get(DereceId);
+                if (data != null)
                 {
-                    throw new YogbisValidationException("Geçersiz derece ID'si.");
+                    var dereceadi = data.DereceAdi.ToString();
+                    return new Result<string>(true, ResultConstant.RecordFound, dereceadi);
                 }
-
-                var data = _unitOfWork.soruDerecelerRepository.Get(id);
-
-                return data == null
-                    ? throw new YogbisNotFoundException($"Derece bulunamadı. (DereceID: {id})")
-                    : new Result<string>(true, ResultConstant.RecordFound, data.DereceAdi);
-            }
-            catch (YogbisValidationException)
-            {
-                throw new YogbisValidationException("Geçersiz derece ID'si.");
-            }
-            catch (YogbisNotFoundException)
-            {
-                throw new YogbisNotFoundException($"Derece bulunamadı. (DereceID: {id})");
-            }
-            catch (Exception ex)
-            {
-                throw new YogbisBusinessException($"Derece adı getirilirken bir hata oluştu: {ex.Message}");
+                else
+                {
+                    return new Result<string>(false, ResultConstant.RecordNotFound);
+                }
             }
         }
         #endregion
