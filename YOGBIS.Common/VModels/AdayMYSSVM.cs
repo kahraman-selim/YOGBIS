@@ -33,7 +33,7 @@ namespace YOGBIS.Common.VModels
         public int MYSSSorulanSoruNo { get; set; }
         public Guid? MulakatId { get; set; }
         public string MulakatOnayNo { get; set; }
-         public MulakatlarVM Mulakatlar { get; set; }
+        public MulakatlarVM Mulakatlar { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }

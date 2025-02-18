@@ -25,22 +25,21 @@ namespace YOGBIS.Common.VModels
         //Kayıt yapan kullanıcı
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
-        [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
         //Bağlı tablolar
         public IFormFileCollection FotoGaleris { get; set; }
         public List<FotoGaleriVM> FotoGaleri { get; set; }
         public IFormFileCollection DosyaGaleris { get; set; }
         public List<DosyaGaleriVM> DosyaGaleri { get; set; }
-        public List<AdayNotVM> AdayNot { get; set; }
-        public List<AdayDDKVM> AdayDDK { get; set; }
-        public List<AdayGorevKaydiVM> AdayGorevKaydi { get; set; }
-        public List<EPostaAdresleriVM> EpostaAdresleri { get; set; }
-        public List<TelefonlarVM> Telefonlar { get; set; }
-        public List<IkametAdresleriVM> IkametAdresleri { get; set; }
-        public List<AdayBasvuruBilgileriVM> AdayBasvuruBilgileri { get; set; }
-        public List<AdayIletisimBilgileriVM> AdayIletisimBilgileri { get; set; }
-        public List<AdayMYSSVM> AdayMYSS { get; set; }
-        public List<AdayTYSVM> AdayTYS { get; set; }
+        public List<AdayNotVM> AdayNots { get; set; }
+        public List<AdayDDKVM> AdayDDKs { get; set; }
+        public List<AdayGorevKaydiVM> AdayGorevKaydis { get; set; }
+        public List<EPostaAdresleriVM> EpostaAdresleris { get; set; }
+        public List<TelefonlarVM> Telefonlars { get; set; }
+        public List<IkametAdresleriVM> IkametAdresleris { get; set; }
+        public List<AdayBasvuruBilgileriVM> AdayBasvuruBilgileris { get; set; }
+        public List<AdayIletisimBilgileriVM> AdayIletisimBilgileris { get; set; }
+        public List<AdayMYSSVM> AdayMYSSs { get; set; }
+        public List<AdayTYSVM> AdayTYSs { get; set; }
     }
 }

@@ -133,6 +133,10 @@
                                         {
                                             <a class="nav-link" asp-controller="Ayarlar" asp-action="Index">Ayarlar</a>
                                         }
+                                        @if (User.IsInRole("Administrator"))
+                                        {
+                                            <a class="nav-link" asp-controller="UlkeTercihleri" asp-action="Index">Ülke Tercihleri</a>
+                                        }
                                     </nav>
                                 </div>
                             }
@@ -189,7 +193,7 @@
                                     }
                                     @if (User.IsInRole("Administrator"))
                                     {
-                                        <a class="nav-link" asp-controller="MulaktSonuc" asp-action="Index">Mülakat Sonuç</a>
+                                        <a class="nav-link" asp-controller="MulakatSonuc" asp-action="Index">Mülakat Sonuç</a>
                                     }
                                 </nav>
                             </div>

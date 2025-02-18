@@ -73,16 +73,13 @@ namespace YOGBIS.Common.VModels
         public string Unvan { get; set; }
         public Guid? MulakatId { get; set; }
         public string MulakatOnayNo { get; set; }
+        public int MulakatYil { get; set; }
         public MulakatlarVM Mulakatlar { get; set; }
+        public Guid? UlkeTercihId { get; set; }
+        public Guid? BransId { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
 
-        /// <summary>
-        /// /////////
-        /// </summary>
-        public string UlkeTercihi { get; set; }
-        public string Brans { get; set; }
-        public string BasvuruBrans { get; set; }
     }
 }

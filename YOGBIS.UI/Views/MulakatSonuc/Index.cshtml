@@ -1,5 +1,71 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
+@inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
+@model YOGBIS.Common.VModels.UlkeTercihVM
 @{
+    ViewData["Title"] = "Mülakat Sonuç";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-lg rounded-lg mt-0" style="width:100%">
+            <h6 class="card-header text-center text-danger p-md-1">
+                <span id="oncekiyil" class="text-primary">
+                    <a href="" class="text-primary">Önceki Yıl</a>
+                </span>
+                MÜLAKAT SONUÇLARI - @DateTime.Now.Year.ToString()
+                <span id="sonrakiyil" class="text-primary">
+                    <a href="" class="text-primary">Sonraki Yıl</a>
+                </span>
+            </h6>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Ülke Grubu</th>
+                                <th>Alanı</th>
+                                <th>Branş Sayısı</th>
+                                <th>Başvuran Aday Sayısı</th>
+                                <th>MYYS Giren</th>
+                                <th>MYYS Girmeyen</th>
+                                <th>MYYS Geçemeyen</th>
+                                <th>Taban Puan</th>
+                                <th>Kontenjan</th>
+                                <th>MYSS Katılacaklar</th>
+                                <th>Puan Eşitliği</th>
+                                <th>MYSS Girecekler</th>
+                                <th>MYSS Girenler</th>
+                                <th>MYSS Girmeyenler</th>
+                                <th>MYSS Geçenler</th>
+                                <th>MYSS Kalanlar</th>
+                                <th>MYSS Başarı Ort</th>
+                                <th>TYS Girenler</th>
+                                <th>TYS Girmeyenler</th>
+                                <th>TYS Geçenler</th>
+                                <th>TYS Kalanlar</th>
+                                <th>TYS Başarı Ort</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model!=null)
+                            {
+                                
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript">
+
+    </script>
 }

@@ -23,7 +23,7 @@ namespace YOGBIS.Common.ConstantsModels
             var defaultUser = new Kullanici
             {
                 UserName = "Administrator",
-                Email = "yogbis@yogbis.com.tr", //bu alanı yükleme öncesi değiştir
+                Email = "", //admin alanı
                 Ad = "YOGBİS",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
@@ -34,7 +34,7 @@ namespace YOGBIS.Common.ConstantsModels
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Yogbis@2024.");
+                    await userManager.CreateAsync(defaultUser, ""); //şifre alanı
                     await userManager.AddToRoleAsync(defaultUser, ConstantsModels.EnumsKullaniciRolleri.Administrator.ToString());
                     await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.Manager).ToString());
                     await userManager.AddToRoleAsync(defaultUser, EnumExtension<EnumsKullaniciRolleri>.GetDisplayValue(ConstantsModels.EnumsKullaniciRolleri.SubManager).ToString());
