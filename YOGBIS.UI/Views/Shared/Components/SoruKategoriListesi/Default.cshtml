@@ -1,7 +1,5 @@
 ﻿@model List<YOGBIS.Common.VModels.SoruKategorilerVM>
 
-
-
 <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
@@ -30,7 +28,7 @@
                             <tr>
                                 <td>@item.SoruKategorilerSiraNo</td>
                                 <td class="text-left">
-                                    <a class="font-weight-bold" asp-controller="SoruKategorileri" asp-route-id="@item.SoruKategorilerId" id="SoruKategoriler" title="Değişiklik yapmak için seçiniz">
+                                    <a class="font-weight-bold" asp-controller="SoruKategorileri" asp-action="Guncelle" asp-route-id="@item.SoruKategorilerId" id="SoruKategoriler" title="Değişiklik yapmak için seçiniz">
                                         @item.SoruKategorilerAdi
                                     </a>
                                 </td>
@@ -40,12 +38,6 @@
                                 <td>@item.SoruKategorilerPuan</td>
                             </tr>
                         }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td>Kayıt bulunamadı!</td>
-                        </tr>
                     }
                 </tbody>
             </table>

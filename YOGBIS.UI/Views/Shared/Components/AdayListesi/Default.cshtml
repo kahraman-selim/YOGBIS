@@ -17,7 +17,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @*@{ var sirano = 0;}
+@*                     @{
+                        var sirano = 0;
+                    }
                     @if (Model != null)
                     {
                         @foreach (var item in Model)
@@ -28,13 +30,7 @@
                                 <td><a asp-controller="Dereceler" asp-route-id="@item.DereceId" id="DereceAdi">@item.DereceAdi</a></td>
                             </tr>
                         }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td>Kayıt bulunamadı!</td>
-                        </tr>
-                    }*@
+                    } *@
                 </tbody>
             </table>
         </div>
