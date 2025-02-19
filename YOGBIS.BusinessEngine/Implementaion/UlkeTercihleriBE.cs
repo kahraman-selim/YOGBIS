@@ -166,6 +166,23 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.KaydedenId = model.KaydedenId;
                         data.KayitTarihi = model.KayitTarihi;
 
+                        if (model.Branslars != null)
+                        {
+                            data.Branslar = new List<Branslar>();
+                            foreach (var item in model.Branslars)
+                            {
+                                data.Branslar.Add(new Branslar()
+                                {
+                                    BransAdi=item.BransAdi,
+                                    BransCinsiyet=item.BransCinsiyet,
+                                    BransKontSayi=item.BransKontSayi,
+                                    EsitBrans=item.EsitBrans,
+                                    UlkeTercihId=item.UlkeTercihId,
+                                    KayitTarihi=item.KayitTarihi                                    
+                                });
+                            }
+                        }
+
                         _unitOfWork.ulkeTercihRepository.Update(data);
                         _unitOfWork.Save();
                         return new Result<UlkeTercihVM>(true, ResultConstant.RecordCreateSuccess);

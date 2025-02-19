@@ -3,7 +3,12 @@
     ViewData["Title"] = "Soru Kategorisi Ekleme";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Styles {
 
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+}
 
 <div class="row">
     <div class="col-md-12">
@@ -105,7 +110,7 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px" asp-controller="SoruKategorileri" asp-action="Index">Yeni Kayıt</a>
-                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" />
+                            <input type="submit" value="Değiştir" class="btn btn-success btn-sm text-white mb-1" style="width:100px" />
                             <a class="btn btn-danger btn-sm text-white mb-1" id="btnSil" style="width:100px">Sil</a>
                         </div>
                     </div>
@@ -121,48 +126,51 @@
 
 
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
     <script type="text/javascript">
 
-        $("#btnSil").on("click", function () {
+        $(document).ready(function () {
 
-            document.getElementById("SoruKategorilerId").focus();
-            var kategorino = $("#SoruKategorilerId").val();
-            var id = parseInt(kategorino);
-            /*alert(id);*/
+            $("#btnSil").on("click", function () {
 
-            bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
-                if (result) {
-                    $.ajax({
-                        type: "DELETE",
-                        url: "/SoruKategorileri/SoruKategoriSil/" + id,
-                        success: function () {
-                            location.reload();
+                document.getElementById("SoruKategorilerId").focus();
+                var id = $("#SoruKategorilerId").val();
+
+                    bootbox.confirm({
+                    message: "Silmek istediğinize emin misiniz?",
+                    buttons: {
+                        confirm: {
+                            label: 'Evet',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Hayır',
+                            className: 'btn-danger'
                         }
-                    });
-                }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/SoruKategorileri/SoruKategoriSil/" + id,
+                            success: function () {
+                                alertify.success('Kayıt silindi');
+                                setTimeout(function() {
+                                location.href="/SoruKategorileri/Index";
+                            }, 2000);
+
+                            }
+                        });
+                        }
+                    }
+                });
+
             });
 
-        });
-
-        $("#btnYeni").on("click", function () {
-
-            document.getElementById("SoruKategorilerId").focus();
-            document.getElementById("SoruKategorilerId").value = "";
-            document.getElementById("btnSil").className += " disabled";
-            document.getElementById("SoruKategorilerPuan").focus();
-            document.getElementById("SoruKategorilerPuan").value = "";
-            document.getElementById("SoruKategorilerKullanimi").focus();
-            document.getElementById("SoruKategorilerKullanimi").value = "";
-            document.getElementById("DereceId").focus();
-            document.getElementById("DereceId").value = "";
-            document.getElementById("SoruKategorilerAdi").focus();
-            document.getElementById("SoruKategorilerAdi").value = "";
-            document.getElementById("SoruKategorilerAdiVal").focus();
-            document.getElementById("SoruKategorilerAdiVal").value = "fssdfsdfs";
-            //işlemleri tamamla en başa konumlan
-            document.getElementById("SoruKategorilerAdi").focus();
         });
 
     </script>

@@ -13,11 +13,8 @@ namespace YOGBIS.Common.VModels
         public Guid BransId { get; set; }
         [Required(ErrorMessage = "Branş adını yazınız...")]
         public string BransAdi { get; set; }
-        [Required(ErrorMessage = "Cinsiyet belirtiniz...")]
         public string BransCinsiyet { get; set; }
-        [Required(ErrorMessage = "Kontenjan sayını yazınız...")]
         public int BransKontSayi { get; set; }
-        [Required(ErrorMessage = "Eşit branş durumunu seçiniz...")]
         public bool EsitBrans { get; set; }
         public Guid UlkeTercihId { get; set; }
         public UlkeTercihVM UlkeTercih { get; set; }

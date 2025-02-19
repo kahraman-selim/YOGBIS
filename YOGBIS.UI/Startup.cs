@@ -59,6 +59,7 @@ namespace YOGBIS.UI
 
             #region Scopeds
             services.AddScoped<IAdaylarBE, AdaylarBE>();
+            services.AddScoped<IBranslarBE, BranslarBE>();
             services.AddScoped<IDerecelerBE, DerecelerBE>();
             services.AddScoped<IEtkinliklerBE, EtkinliklerBE>();
             services.AddScoped<IDosyaGaleriBE, DosyaGaleriBE>();
