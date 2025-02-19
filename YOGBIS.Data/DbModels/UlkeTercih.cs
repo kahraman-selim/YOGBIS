@@ -9,7 +9,7 @@ namespace YOGBIS.Data.DbModels
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public Guid UlkeTecihId { get; set; }
+        public Guid UlkeTercihId { get; set; }
         public string UlkeTercihAdi { get; set; }
         public int UlkeTercihSiraNo { get; set; }
         public string YabancıDil { get; set; }

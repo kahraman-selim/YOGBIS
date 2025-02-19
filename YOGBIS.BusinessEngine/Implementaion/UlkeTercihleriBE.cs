@@ -40,7 +40,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
             try
             {
-                var data = _unitOfWork.ulkeTercihRepository.GetAll(includeProperties: "Kullanici,SoruDereceler").ToList();
+                var data = _unitOfWork.ulkeTercihRepository.GetAll(includeProperties: "Kullanici,SoruDereceler").OrderBy(t => t.UlkeTercihSiraNo).ToList();
 
                 // Veri yoksa hata fırlat
                 if (data == null || !data.Any())
@@ -88,7 +88,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             if (id != null)
             {
-                var data = _unitOfWork.ulkeTercihRepository.GetFirstOrDefault(x => x.UlkeTecihId == id, includeProperties: "Kullanici,Mulakatlar");
+                var data = _unitOfWork.ulkeTercihRepository.GetFirstOrDefault(x => x.UlkeTecihId == id, includeProperties: "Kullanici,SoruDereceler");
 
                 if (data != null)
                 {
@@ -98,12 +98,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     tercihulke.UlkeTercihAdi = data.UlkeTercihAdi;
                     tercihulke.UlkeTercihSiraNo = data.UlkeTercihSiraNo;
                     tercihulke.YabancıDil = data.YabancıDil;
-                    tercihulke.DereceId = data.Mulakatlar.DereceId;
-                    tercihulke.MulakatId = data.MulakatId;
-                    tercihulke.MulakatYil = data.Mulakatlar.BaslamaTarihi.Date.Year;
+                    tercihulke.DereceId = data.DereceId != null ? data.DereceId : Guid.Empty;
+                    tercihulke.DereceAdi = data.SoruDereceler.DereceAdi;
+                    tercihulke.MulakatId = data.MulakatId != null ? data.MulakatId : Guid.Empty;
+                    tercihulke.MulakatYil = data.Mulakatlar != null ? data.Mulakatlar.BaslamaTarihi.Year : 0;
                     tercihulke.KayitTarihi = data.KayitTarihi;
-                    tercihulke.KaydedenId = data.KaydedenId;
-                    tercihulke.KaydedenAdi = data.Kullanici.Ad + " " + data.Kullanici.Soyad;
+                    tercihulke.KaydedenId = data.Kullanici != null ? data.KaydedenId : string.Empty;
+                    tercihulke.KaydedenAdi = data.Kullanici !=null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
 
                     return new Result<UlkeTercihVM>(true, ResultConstant.RecordFound, tercihulke);
@@ -150,17 +151,29 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region UlkeTercihGuncelle
         public Result<UlkeTercihVM> UlkeTercihGuncelle(UlkeTercihVM model, SessionContext user)
         {
-            if (model != null)
+            if (model.UlkeTercihId != null)
             {
                 try
                 {
-                    var ulketercih = _mapper.Map<UlkeTercihVM, UlkeTercih>(model);
-                    ulketercih.KaydedenId = user.LoginId;
+                    var data = _unitOfWork.ulkeTercihRepository.Get(model.UlkeTercihId);
+                    if (data != null)
+                    {
+                        data.UlkeTercihAdi = model.UlkeTercihAdi;
+                        data.UlkeTercihSiraNo = model.UlkeTercihSiraNo;
+                        data.YabancıDil = model.YabancıDil;
+                        data.DereceId = model.DereceId;
+                        data.MulakatId = model.MulakatId;
+                        data.KaydedenId = model.KaydedenId;
+                        data.KayitTarihi = model.KayitTarihi;
 
-                    _unitOfWork.ulkeTercihRepository.Update(ulketercih);
-                    _unitOfWork.Save();
-
-                    return new Result<UlkeTercihVM>(true, ResultConstant.RecordCreateSuccess);
+                        _unitOfWork.ulkeTercihRepository.Update(data);
+                        _unitOfWork.Save();
+                        return new Result<UlkeTercihVM>(true, ResultConstant.RecordCreateSuccess);
+                    }
+                    else
+                    {
+                        return new Result<UlkeTercihVM>(false, "Lütfen kayıt seçiniz");
+                    }
                 }
                 catch (Exception ex)
                 {

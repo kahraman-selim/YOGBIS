@@ -11,7 +11,7 @@ namespace YOGBIS.Common.VModels
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public Guid UlkeTecihId { get; set; }
+        public Guid UlkeTercihId { get; set; }
         [Required(ErrorMessage = "Ülke adını yazınız...")]
         public string UlkeTercihAdi { get; set; }
         [Required(ErrorMessage = "Ülke tercih sırasını yazınız...")]
