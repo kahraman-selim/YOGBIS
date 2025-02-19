@@ -6,8 +6,13 @@
             var yil = 0;
 
         }
-        @foreach (var item in Model) { yil = (int)item.MulakatYil; }
-
+        @if (Model != null)
+        {
+            foreach (var item in Model) 
+            {
+                yil = (int)item.MulakatYil;
+            }
+        }
         <span id="oncekiyil" class="text-primary">
             <a href="" class="text-primary">Önceki Yıl</a>
         </span>
@@ -55,12 +60,6 @@
                                 </td>
                             </tr>
                         }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="3" class="text-center">Kayıt bulunamadı!</td>
-                        </tr>
                     }
                 </tbody>
             </table>

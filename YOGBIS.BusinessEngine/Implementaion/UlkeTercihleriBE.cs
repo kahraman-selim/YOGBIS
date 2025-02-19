@@ -60,7 +60,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 // Verileri işle ve döndür
                 var returnData = data.Select(item => new UlkeTercihVM
                 {
-                    UlkeTecihId = item.UlkeTecihId,
+                    UlkeTercihId = item.UlkeTercihId,
                     UlkeTercihAdi = item.UlkeTercihAdi,
                     UlkeTercihSiraNo = item.UlkeTercihSiraNo,
                     YabancıDil = item.YabancıDil,
@@ -88,13 +88,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             if (id != null)
             {
-                var data = _unitOfWork.ulkeTercihRepository.GetFirstOrDefault(x => x.UlkeTecihId == id, includeProperties: "Kullanici,SoruDereceler");
+                var data = _unitOfWork.ulkeTercihRepository.GetFirstOrDefault(x => x.UlkeTercihId == id, includeProperties: "Kullanici,SoruDereceler");
 
                 if (data != null)
                 {
                     UlkeTercihVM tercihulke = new UlkeTercihVM();
 
-                    tercihulke.UlkeTecihId = data.UlkeTecihId;
+                    tercihulke.UlkeTercihId = data.UlkeTercihId;
                     tercihulke.UlkeTercihAdi = data.UlkeTercihAdi;
                     tercihulke.UlkeTercihSiraNo = data.UlkeTercihSiraNo;
                     tercihulke.YabancıDil = data.YabancıDil;
