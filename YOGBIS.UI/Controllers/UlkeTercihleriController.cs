@@ -28,18 +28,20 @@ namespace YOGBIS.UI.Controllers
         private readonly IMulakatOlusturBE _mulakatOlusturBE;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBranslarBE _branslarBE;
+        private readonly IUlkeTercihBranslarBE _ulkeTercihBranslarBE;
         private readonly ILogger<UlkeTercihleriController> _logger;
         #endregion
 
         #region Dönüştürücüler
         public UlkeTercihleriController(IUlkeTercihleriBE ulkeTercihleriBE, IDerecelerBE derecelerBE, 
-            IMulakatOlusturBE mulakatOlusturBE, IUnitOfWork unitOfWork, IBranslarBE branslarBE, ILogger<UlkeTercihleriController> logger)
+            IMulakatOlusturBE mulakatOlusturBE, IUnitOfWork unitOfWork, IBranslarBE branslarBE, IUlkeTercihBranslarBE ulkeTercihBranslarBE, ILogger<UlkeTercihleriController> logger)
         {
             _ulkeTercihleriBE = ulkeTercihleriBE;
             _derecelerBE = derecelerBE;
             _mulakatOlusturBE = mulakatOlusturBE;
-            _unitOfWork = unitOfWork;
+            _ulkeTercihBranslarBE = ulkeTercihBranslarBE;
             _branslarBE = branslarBE;
+            _unitOfWork = unitOfWork;
             _logger = logger;
         }
         #endregion
@@ -49,11 +51,11 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            var ulkeTercihleri = _ulkeTercihleriBE.UlkeTercihleriGetir();
+            
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
             
-            return View(ulkeTercihleri.Data);
+            return View();
         }
         #endregion
 
@@ -152,11 +154,11 @@ namespace YOGBIS.UI.Controllers
         #region BransEkle
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult BransEkle(Guid UlkeTercihId, Guid BransId, string BransCinsiyet, int BransKontSayi, bool EsitBrans)
+        public IActionResult BransEkle(Guid UlkeTercihId, Guid TercihBransId, string BransCinsiyet, int BransKontSayi, bool EsitBrans)
         {
             try
             {
-                if (UlkeTercihId == Guid.Empty || BransId == Guid.Empty)
+                if (UlkeTercihId == Guid.Empty || TercihBransId == Guid.Empty)
                 {
                     TempData["error"] = "Ülke tercihi ve branş seçimi zorunludur.";
                     return RedirectToAction(nameof(Guncelle), new { id = UlkeTercihId });
@@ -165,7 +167,7 @@ namespace YOGBIS.UI.Controllers
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
                 
                 // Seçilen branşı getir
-                var secilenBrans = _branslarBE.BransGetir(BransId).Data;
+                var secilenBrans = _ulkeTercihBranslarBE.UlkeTercihBransGetir(TercihBransId).Data;
                 if (secilenBrans == null)
                 {
                     TempData["error"] = "Seçilen branş bulunamadı.";
@@ -173,21 +175,17 @@ namespace YOGBIS.UI.Controllers
                 }
 
                 // Yeni branş nesnesi oluştur
-                var yeniBrans = new BranslarVM
+                var yeniBrans = new UlkeTercihBranslarVM
                 {
-                    BransId = Guid.NewGuid(),
                     BransAdi = secilenBrans.BransAdi,
                     BransCinsiyet = BransCinsiyet,
                     BransKontSayi = BransKontSayi,
                     EsitBrans = EsitBrans,
-                    UlkeTercihId = UlkeTercihId,
-                    KayitTarihi = DateTime.Now,
-                    KaydedenId = user.LoginId,
-                    KaydedenAdi = user.FirstName + " " + user.LastName
+                    UlkeTercihId = UlkeTercihId
                 };
 
                 // Branşı ekle
-                var result = _branslarBE.BransEkle(yeniBrans, user);
+                var result = _ulkeTercihBranslarBE.UlkeTercihBransEkle(yeniBrans, user);
                 if (result.IsSuccess)
                 {
                     TempData["success"] = result.Message;
@@ -217,7 +215,7 @@ namespace YOGBIS.UI.Controllers
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
                 
                 // Silinecek branşı getir
-                var brans = _branslarBE.BransGetir(id).Data;
+                var brans = _ulkeTercihBranslarBE.UlkeTercihBransGetir(id).Data;
                 if (brans == null)
                 {
                     TempData["ErrorMessage"] = "Silinecek branş bulunamadı.";
@@ -225,7 +223,7 @@ namespace YOGBIS.UI.Controllers
                 }
 
                 // Branşı sil
-                var result = _branslarBE.BransSil(id);
+                var result = _ulkeTercihBranslarBE.UlkeTercihBransSil(id);
                 if (result.IsSuccess)
                 {
                     TempData["Success"] = "Branş başarıyla silindi.";
@@ -278,14 +276,7 @@ namespace YOGBIS.UI.Controllers
                         {
                             var brans = new BranslarVM
                             {
-                                //BransId = Guid.NewGuid(),
                                 BransAdi = worksheet.Cells[row, 1].Value?.ToString(),
-                                //BransCinsiyet = worksheet.Cells[row, 2].Value?.ToString(),
-                                //BransKontSayi = Convert.ToInt32(worksheet.Cells[row, 3].Value),
-                                //EsitBrans = Convert.ToBoolean(worksheet.Cells[row, 4].Value),
-                                UlkeTercihId = Guid.Parse(worksheet.Cells[row, 2].Value?.ToString() ?? "0"),
-                                //KayitTarihi = DateTime.Now,
-                                //KaydedenId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value)
                             };
 
                             var result = _branslarBE.BransEkle(brans, user);
@@ -310,80 +301,5 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region BransYükleme
-        [HttpPost]
-        public async Task<IActionResult> ExceldenBransEkle(IFormFile file)
-        {
-            try
-            {
-                if (file == null || file.Length <= 0)
-                {
-                    TempData["Error"] = "Lütfen bir Excel dosyası seçin.";
-                    return RedirectToAction("Index");
-                }
-
-                if (!Path.GetExtension(file.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
-                {
-                    TempData["Error"] = "Lütfen .xlsx formatında bir dosya yükleyin.";
-                    return RedirectToAction("Index");
-                }
-
-                var branslar = new List<BranslarVM>();
-                var hatalar = new List<string>();
-                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
-                using (var stream = new MemoryStream())
-                {
-                    await file.CopyToAsync(stream);
-
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        var worksheet = package.Workbook.Worksheets[0];
-                        var rowCount = worksheet.Dimension?.Rows ?? 0;
-
-                        if (rowCount <= 1)
-                        {
-                            TempData["Error"] = "Excel dosyası boş veya geçersiz.";
-                            return RedirectToAction("Index");
-                        }
-
-                        // Sadece gerekli hücreleri oku
-                        var basariliEklenen = 0;
-                        for (int row = 2; row <= rowCount; row++) // İlk satır başlık olduğu için 2'den başlıyoruz
-                        {
-                            var brans = new BranslarVM
-                            {
-                                BransAdi = worksheet.Cells[row, 1].Value?.ToString(),
-                                UlkeTercihId = Guid.Parse(worksheet.Cells[row, 2].Value?.ToString() ?? "0"),
-                            };
-
-                            // Soruyu işle
-
-                            var result = _branslarBE.BransEkle(brans, user);
-                            if (!result.IsSuccess)
-                            {
-                                // Hata durumunda loglama
-                                _logger.LogError($"Soru eklenirken hata: {result.Message}");
-                            }
-
-                            basariliEklenen++;
-                        }
-
-
-                        TempData["Success"] = $"{basariliEklenen} soru başarıyla eklendi.";
-                        TempData.Keep("Success"); // Veriyi bir sonraki istek için koru
-                        return RedirectToAction("Index");
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Excel'den soru yüklenirken hata oluştu: {Message}", ex.Message);
-                TempData["Error"] = $"Dosya işlenirken bir hata oluştu: {ex.Message}";
-                return RedirectToAction("Index");
-            }
-        }
-        #endregion
     }
 }

@@ -192,12 +192,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.KayitTarihi = model.KayitTarihi;
                         data.KaydedenId = user.LoginId;
 
-                        if (model.Branslars != null)
+                        if (model.TercihBranslar != null)
                         {
-                            data.Branslar = new List<Branslar>();
-                            foreach (var item in model.Branslars)
+                            data.TercihBranslar = new List<UlkeTercihBranslar>();
+                            foreach (var item in model.TercihBranslar)
                             {
-                                data.Branslar.Add(new Branslar()
+                                data.TercihBranslar.Add(new UlkeTercihBranslar()
                                 {
                                     BransAdi=item.BransAdi,
                                     BransCinsiyet=item.BransCinsiyet,

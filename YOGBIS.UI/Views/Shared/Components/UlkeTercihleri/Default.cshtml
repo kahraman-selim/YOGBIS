@@ -50,14 +50,14 @@
                                 </td>
                                 <td>@item.YabancıDil</td>
                                 <td>
-                                    @if (item.Branslars != null && item.Branslars.Any())
+                                    @if (item.TercihBranslar != null && item.TercihBranslar.Any())
                                     {
-                                        var esitBranslar = item.Branslars
+                                        var esitBranslar = item.TercihBranslar
                                             .Where(b => b.EsitBrans)
                                             .OrderBy(b => b.BransAdi)
                                             .Select(b => b.BransAdi);
 
-                                        var digerBranslar = item.Branslars
+                                        var digerBranslar = item.TercihBranslar
                                             .Where(b => !b.EsitBrans)
                                             .OrderBy(b => b.BransAdi)
                                             .Select(b => b.BransAdi);
@@ -73,10 +73,10 @@
                                     }
                                 </td>
                                 <td>
-                                    @if (item.Branslars != null && item.Branslars.Any())
+                                    @if (item.TercihBranslar != null && item.TercihBranslar.Any())
                                     {
-                                        var esitBranslar = item.Branslars.Where(b => b.EsitBrans);
-                                        var digerBranslar = item.Branslars.Where(b => !b.EsitBrans);
+                                        var esitBranslar = item.TercihBranslar.Where(b => b.EsitBrans);
+                                        var digerBranslar = item.TercihBranslar.Where(b => !b.EsitBrans);
 
                                         if (esitBranslar.Any())
                                         {

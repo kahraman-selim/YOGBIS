@@ -125,6 +125,7 @@
     <partial name="_ValidationScriptsPartial" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
+        
         $("#DereceListesi").on("change", function () {
             var DereceId = $("#DereceListesi").val();
             $("#MulakatListesi").empty();
@@ -140,5 +141,26 @@
             });
             $('#MulakatListesi').focus();
         });
+
+        function uploadExcel() {
+            var formData = new FormData();
+            var fileInput = document.getElementById('fileInput');
+            formData.append('file', fileInput.files[0]);
+
+            $.ajax({
+                url: '/UlkeTercihleri/ExceldenBransYukle',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    alert('Yükleme başarılı!');
+                    window.location.href = '/UlkeTercihleri/Index';
+                },
+                error: function(xhr, status, error) {
+                    alert('Hata oluştu: ' + error);
+                }
+            });
+        }
     </script>
 }

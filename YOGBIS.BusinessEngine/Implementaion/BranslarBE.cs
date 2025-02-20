@@ -38,7 +38,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
             try
             {
-                var data = _unitOfWork.branslarRepository.GetAll(includeProperties: "Kullanici,UlkeTercih").OrderBy(t => t.BransAdi).ToList();
+                var data = _unitOfWork.branslarRepository.GetAll(includeProperties: "Kullanici").OrderBy(t => t.BransAdi).ToList();
 
                 // Veri yoksa hata fırlat
                 if (data == null || !data.Any())
@@ -60,10 +60,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     BransId=item.BransId,
                     BransAdi=item.BransAdi,
-                    BransCinsiyet=item.BransCinsiyet,
-                    BransKontSayi=item.BransKontSayi,
-                    EsitBrans=item.EsitBrans,
-                    UlkeTercihId=item.UlkeTercih != null ? item.UlkeTercihId : Guid.Empty,
                     KayitTarihi = item.KayitTarihi,
                     KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                     KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
@@ -84,7 +80,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             if (id != null)
             {
-                var data = _unitOfWork.branslarRepository.GetFirstOrDefault(x => x.BransId == id, includeProperties: "Kullanici,UlkeTercih");
+                var data = _unitOfWork.branslarRepository.GetFirstOrDefault(x => x.BransId == id, includeProperties: "Kullanici");
 
                 if (data != null)
                 {
@@ -92,10 +88,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     brans.BransId = data.BransId;
                     brans.BransAdi = data.BransAdi;
-                    brans.BransCinsiyet = data.BransCinsiyet;
-                    brans.BransKontSayi = data.BransKontSayi;
-                    brans.EsitBrans = data.EsitBrans;
-                    brans.UlkeTercihId = data.UlkeTercih != null ? data.UlkeTercihId : Guid.Empty;
                     brans.KayitTarihi = data.KayitTarihi;
                     brans.KaydedenId = data.Kullanici != null ? data.KaydedenId : string.Empty;
                     brans.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
@@ -153,10 +145,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     if (data != null)
                     {
                         data.BransAdi = model.BransAdi;
-                        data.BransCinsiyet = model.BransCinsiyet;
-                        data.BransKontSayi = model.BransKontSayi;
-                        data.EsitBrans = model.EsitBrans;
-                        data.UlkeTercihId = model.UlkeTercihId;
                         data.KaydedenId = model.KaydedenId;
                         data.KayitTarihi = model.KayitTarihi;
 
