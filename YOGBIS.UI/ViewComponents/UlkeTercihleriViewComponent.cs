@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
-using YOGBIS.BusinessEngine.Implementaion;
+using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.ViewComponents
 {
@@ -26,20 +27,24 @@ namespace YOGBIS.UI.ViewComponents
                 if (requestmodel.IsSuccess)
                 {
                     System.Diagnostics.Debug.WriteLine($"UlkeTercihleriViewComponent - Veri sayısı: {requestmodel.Data?.Count ?? 0}");
+                    foreach (var item in requestmodel.Data)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Ülke: {item.UlkeTercihAdi}, Branş sayısı: {item.TercihBranslar?.Count ?? 0}");
+                    }
                     return View(requestmodel.Data);
                 }
                 else
                 {
                     System.Diagnostics.Debug.WriteLine($"UlkeTercihleriViewComponent - Hata mesajı: {requestmodel.Message}");
                     TempData["ErrorMessage"] = requestmodel.Message;
-                    return View();
+                    return View(new List<UlkeTercihVM>());
                 }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"UlkeTercihleriViewComponent - Hata: {ex.Message}");
                 TempData["ErrorMessage"] = "Bilgiler getirilirken bir hata oluştu.";
-                return View();
+                return View(new List<UlkeTercihVM>());
             }
         }
     }

@@ -93,7 +93,9 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">
-                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" />
+                            <a class="btn btn-primary btn-sm text-white mb-1" id="btnYeni" style="width:100px" asp-controller="UlkeTercihleri" asp-action="Index">Yeni Kayıt</a>
+                            <input type="submit" value="Değiştir" class="btn btn-success btn-sm text-white mb-1" style="width:100px" />
+                            <a class="btn btn-danger btn-sm text-white mb-1 btnSil" id="btnSil" style="width:100px">Sil</a>
                         </div>
                     </div>
                 </form>
@@ -114,7 +116,7 @@
                                 @if (ViewBag.Branslar != null && ViewBag.Branslar.Count > 0)
                                 {
                                     <label class="small mb-1 font-weight-bold">Branş Seçiniz</label>
-                                    @Html.DropDownList("BransId", new SelectList(ViewBag.Branslar,
+                                    @Html.DropDownList("TercihBransId", new SelectList(ViewBag.Branslar,
                                             "BransId", "BransAdi"), "Branşı seçiniz", new { @class = "form-control-range form-control py-0" })
                                 }
                                 else
@@ -164,7 +166,10 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    
     <script type="text/javascript">
+
         $("#DereceListesi").on("change", function () {
             var DereceId = $("#DereceListesi").val();
             $("#MulakatListesi").empty();
@@ -180,5 +185,42 @@
             });
             $('#MulakatListesi').focus();
         });
+
+
+        $("#btnSil").on("click", function () {
+
+                document.getElementById("UlkeTercihId").focus();
+                var id = $("#UlkeTercihId").val();
+
+                                bootbox.confirm({
+                    message: "Silmek istediğinize emin misiniz?",
+                    buttons: {
+                        confirm: {
+                            label: 'Evet',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Hayır',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/UlkeTercihleri/UlkeTercihSil/" + id,
+                            success: function () {
+                                alertify.success('Kayıt silindi');
+                                setTimeout(function() {
+                                location.href="/UlkeTercihleri/Index";
+                            }, 2000);
+
+                            }
+                        });
+                        }
+
+                    }
+                });
+            });
     </script>
 }

@@ -167,7 +167,7 @@ namespace YOGBIS.UI.Controllers
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
                 
                 // Seçilen branşı getir
-                var secilenBrans = _ulkeTercihBranslarBE.UlkeTercihBransGetir(TercihBransId).Data;
+                var secilenBrans = _branslarBE.BransGetir(TercihBransId).Data;
                 if (secilenBrans == null)
                 {
                     TempData["error"] = "Seçilen branş bulunamadı.";
@@ -195,11 +195,11 @@ namespace YOGBIS.UI.Controllers
                     TempData["error"] = result.Message;
                 }
 
-                return RedirectToAction(nameof(Guncelle), new { id = UlkeTercihId });
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Branş eklenirken hata oluştu: {ex.Message}");
+                _logger.LogError($"BransEkle - Hata: {ex.Message}");
                 TempData["error"] = "Branş eklenirken bir hata oluştu.";
                 return RedirectToAction(nameof(Guncelle), new { id = UlkeTercihId });
             }
