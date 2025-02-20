@@ -221,6 +221,8 @@ namespace YOGBIS.UI.Controllers
         {
             try
             {
+                //çalışan metod
+
                 if (file == null || file.Length <= 0)
                 {
                     TempData["Error"] = "Lütfen bir Excel dosyası seçin.";
@@ -254,7 +256,7 @@ namespace YOGBIS.UI.Controllers
 
                         // Sadece gerekli hücreleri oku
                         var basariliEklenen = 0;
-                        for (int row = 2; row <= rowCount; row++) // İlk satır başlık olduğu için 2'den başlıyoruz
+                        for (int row = 2; row <= rowCount; row++) 
                         {
                             var soru = new MulakatSorulariVM
                             {

@@ -262,17 +262,28 @@ namespace YOGBIS.UI.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
+                var branslar = new List<BranslarVM>();
+                var hatalar = new List<string>();
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
                 
                 using (var stream = new MemoryStream())
                 {
                     await file.CopyToAsync(stream);
+
                     using (var package = new ExcelPackage(stream))
                     {
                         var worksheet = package.Workbook.Worksheets[0];
                         var rowCount = worksheet.Dimension.Rows;
 
-                        for (int row = 2; row <= rowCount; row++) // İlk satır başlık olduğu için 2'den başlıyoruz
+                        if (rowCount <= 1)
+                        {
+                            TempData["Error"] = "Excel dosyası boş veya geçersiz.";
+                            return RedirectToAction("Index");
+                        }
+
+                        var basariliEklenen = 0;
+
+                        for (int row = 2; row <= rowCount; row++)
                         {
                             var brans = new BranslarVM
                             {
@@ -282,14 +293,19 @@ namespace YOGBIS.UI.Controllers
                             var result = _branslarBE.BransEkle(brans, user);
                             if (!result.IsSuccess)
                             {
-                                TempData["ErrorMessage"] = $"Satır {row}: {result.Message}";
-                                return RedirectToAction(nameof(Index));
+                                // Hata durumunda loglama
+                                _logger.LogError($"Branş eklenirken hata: {result.Message}");
                             }
+
+                            basariliEklenen++;
                         }
+
+                        TempData["Success"] = $"{basariliEklenen} branş başarıyla eklendi.";
+                        TempData.Keep("Success"); // Veriyi bir sonraki istek için koru
+                        return RedirectToAction("Index");
                     }
                 }
 
-                TempData["Success"] = "Branşlar başarıyla yüklendi.";
             }
             catch (Exception ex)
             {
