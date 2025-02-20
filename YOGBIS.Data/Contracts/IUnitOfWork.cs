@@ -51,6 +51,7 @@ namespace YOGBIS.Data.Contracts
         IUlkeGruplariRepository ulkeGruplariRepository { get; }        
         IUlkelerRepository ulkelerRepository { get; }
         IUlkeTercihRepository ulkeTercihRepository { get; }
+        IUlkeTercihBransRepository ulkeTercihBransRepository { get; }   
         IUniversitelerRepository universitelerRepository { get; }
 
         void Save();

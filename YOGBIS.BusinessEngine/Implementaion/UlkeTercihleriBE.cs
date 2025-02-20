@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using System;
@@ -37,87 +37,113 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region UlkeTercihleriGetir
         public Result<List<UlkeTercihVM>> UlkeTercihleriGetir()
         {
-
             try
             {
-                var data = _unitOfWork.ulkeTercihRepository.GetAll(includeProperties: "Kullanici,SoruDereceler").OrderBy(t => t.UlkeTercihSiraNo).ToList();
+                var data = _unitOfWork.ulkeTercihRepository
+                    .GetAll(includeProperties: "Kullanici,SoruDereceler,Mulakatlar,UlkeTercihBranslar")
+                    .OrderBy(t => t.UlkeTercihSiraNo)
+                    .ToList();
+
+                // Debug için veri kontrolü
+                System.Diagnostics.Debug.WriteLine($"UlkeTercihleriGetir - Veri sayısı: {data?.Count ?? 0}");
+                if (data != null && data.Any())
+                {
+                    foreach (var item in data)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Ülke: {item.UlkeTercihAdi}, Branş sayısı: {item.TercihBranslar?.Count ?? 0}");
+                    }
+                }
 
                 // Veri yoksa hata fırlat
                 if (data == null || !data.Any())
                 {
+                    System.Diagnostics.Debug.WriteLine("UlkeTercihleriGetir - Veri bulunamadı");
                     return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound);
                 }
 
-                // Mapping işlemi
-                var tercihler = _mapper.Map<List<UlkeTercih>, List<UlkeTercihVM>>(data);
-
-                // Mapping sonrası kontrol
-                if (tercihler == null || !tercihler.Any())
-                {
-                    return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound);
-                }
-
-                // Verileri işle ve döndür
+                //Verileri işle ve döndür
                 var returnData = data.Select(item => new UlkeTercihVM
                 {
                     UlkeTercihId = item.UlkeTercihId,
                     UlkeTercihAdi = item.UlkeTercihAdi,
                     UlkeTercihSiraNo = item.UlkeTercihSiraNo,
                     YabancıDil = item.YabancıDil,
-                    DereceId = item.DereceId !=null ? item.DereceId : Guid.Empty,
-                    DereceAdi= item.SoruDereceler.DereceAdi, 
-                    MulakatId = item.Mulakatlar != null ? item.MulakatId : Guid.Empty,
+                    DereceId = item.DereceId != null ? item.DereceId : Guid.Empty,
+                    DereceAdi = item.SoruDereceler != null ? item.SoruDereceler.DereceAdi : string.Empty,
+                    MulakatId = item.MulakatId != null ? item.MulakatId : Guid.Empty,
                     MulakatYil = item.Mulakatlar != null ? item.Mulakatlar.BaslamaTarihi.Year : 0,
                     KayitTarihi = item.KayitTarihi,
                     KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                     KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
-
+                    TercihBranslar= item.TercihBranslar ?.Select(b => new UlkeTercihBranslarVM
+                    {
+                        TercihBransId = b.TercihBransId,
+                        BransAdi = b.BransAdi,
+                        BransCinsiyet = b.BransCinsiyet,
+                        BransKontSayi = b.BransKontSayi,
+                        EsitBrans = b.EsitBrans,
+                        UlkeTercihId = b.UlkeTercihId,
+                        KayitTarihi = b.KayitTarihi,
+                        KaydedenId = b.KaydedenId,
+                        KaydedenAdi = b.Kullanici != null ? b.Kullanici.Ad + " " + b.Kullanici.Soyad : string.Empty
+                    }).ToList() ?? new List<UlkeTercihBranslarVM>()
                 }).ToList();
+
+                System.Diagnostics.Debug.WriteLine($"UlkeTercihleriGetir - Dönüştürülen veri sayısı: {returnData.Count}");
 
                 return new Result<List<UlkeTercihVM>>(true, ResultConstant.RecordFound, returnData);
             }
             catch (Exception ex)
             {
-                return new Result<List<UlkeTercihVM>>(false, $"Dereceler getirilirken bir hata oluştu: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"UlkeTercihleriGetir - Hata: {ex.Message}");
+                return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound);
             }
         }
         #endregion
 
-        #region UlkeTercihGetir(Guid id)
+        #region UlkeTercihGetir
         public Result<UlkeTercihVM> UlkeTercihGetir(Guid id)
         {
             if (id != null)
             {
-                var data = _unitOfWork.ulkeTercihRepository.GetFirstOrDefault(x => x.UlkeTercihId == id, includeProperties: "Kullanici,SoruDereceler");
+                var data = _unitOfWork.ulkeTercihRepository.GetFirstOrDefault(
+                    x => x.UlkeTercihId == id, 
+                    includeProperties: "Kullanici,SoruDereceler,Mulakatlar,Branslar,Branslar.Kullanici");
 
                 if (data != null)
                 {
-                    UlkeTercihVM tercihulke = new UlkeTercihVM();
-
-                    tercihulke.UlkeTercihId = data.UlkeTercihId;
-                    tercihulke.UlkeTercihAdi = data.UlkeTercihAdi;
-                    tercihulke.UlkeTercihSiraNo = data.UlkeTercihSiraNo;
-                    tercihulke.YabancıDil = data.YabancıDil;
-                    tercihulke.DereceId = data.DereceId != null ? data.DereceId : Guid.Empty;
-                    tercihulke.DereceAdi = data.SoruDereceler.DereceAdi;
-                    tercihulke.MulakatId = data.MulakatId != null ? data.MulakatId : Guid.Empty;
-                    tercihulke.MulakatYil = data.Mulakatlar != null ? data.Mulakatlar.BaslamaTarihi.Year : 0;
-                    tercihulke.KayitTarihi = data.KayitTarihi;
-                    tercihulke.KaydedenId = data.Kullanici != null ? data.KaydedenId : string.Empty;
-                    tercihulke.KaydedenAdi = data.Kullanici !=null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
-
+                    var tercihulke = new UlkeTercihVM()
+                    {
+                        UlkeTercihId = data.UlkeTercihId,
+                        UlkeTercihAdi = data.UlkeTercihAdi,
+                        UlkeTercihSiraNo = data.UlkeTercihSiraNo,
+                        YabancıDil = data.YabancıDil,
+                        DereceId = data.DereceId != null ? data.DereceId : Guid.Empty,
+                        DereceAdi = data.SoruDereceler != null ? data.SoruDereceler.DereceAdi : string.Empty,
+                        MulakatId = data.MulakatId != null ? data.MulakatId : Guid.Empty,
+                        MulakatYil = data.Mulakatlar != null ? data.Mulakatlar.BaslamaTarihi.Year : 0,
+                        KayitTarihi = data.KayitTarihi,
+                        KaydedenId = data.Kullanici != null ? data.KaydedenId : string.Empty,
+                        KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty,
+                        //Branslars = data.Branslar?.Select(b => new BranslarVM
+                        //{
+                        //    BransId = b.BransId,
+                        //    BransAdi = b.BransAdi,
+                        //    BransCinsiyet = b.BransCinsiyet,
+                        //    BransKontSayi = b.BransKontSayi,
+                        //    EsitBrans = b.EsitBrans,
+                        //    UlkeTercihId = b.UlkeTercihId,
+                        //    KayitTarihi = b.KayitTarihi,
+                        //    KaydedenId = b.KaydedenId,
+                        //    KaydedenAdi = b.Kullanici != null ? b.Kullanici.Ad + " " + b.Kullanici.Soyad : string.Empty
+                        //}).ToList() ?? new List<BranslarVM>()
+                    };
 
                     return new Result<UlkeTercihVM>(true, ResultConstant.RecordFound, tercihulke);
                 }
-                else
-                {
-                    return new Result<UlkeTercihVM>(false, ResultConstant.RecordNotFound);
-                }
             }
-            else
-            {
-                return new Result<UlkeTercihVM>(false, ResultConstant.RecordNotFound);
-            }
+
+            return new Result<UlkeTercihVM>(false, ResultConstant.RecordNotFound);
         }
         #endregion
 
@@ -163,8 +189,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.YabancıDil = model.YabancıDil;
                         data.DereceId = model.DereceId;
                         data.MulakatId = model.MulakatId;
-                        data.KaydedenId = model.KaydedenId;
                         data.KayitTarihi = model.KayitTarihi;
+                        data.KaydedenId = user.LoginId;
 
                         if (model.Branslars != null)
                         {

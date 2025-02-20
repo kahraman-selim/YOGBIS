@@ -1,10 +1,9 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.UlkeTercihVM>
+@model IEnumerable<YOGBIS.Common.VModels.UlkeTercihVM>
 
 <div class="card mb-3">
     <h6 class="card-header text-center text-danger p-md-1">
         @{
             var yil = 0;
-
         }
         @if (Model != null)
         {
@@ -23,7 +22,7 @@
     </h6>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" width="100%" cellspacing="0">
+            <table class="table table-bordered table-hover table-striped display nowrap" id="myTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Sıra No</th>
@@ -49,14 +48,50 @@
                                 <td>
                                     <a asp-controller="UlkeTercihleri" asp-action="Guncelle" asp-route-id="@item.UlkeTercihId">@item.UlkeTercihAdi</a>
                                 </td>
+                                <td>@item.YabancıDil</td>
                                 <td>
-                                    @item.YabancıDil
+                                    @if (item.Branslars != null && item.Branslars.Any())
+                                    {
+                                        var esitBranslar = item.Branslars
+                                            .Where(b => b.EsitBrans)
+                                            .OrderBy(b => b.BransAdi)
+                                            .Select(b => b.BransAdi);
+
+                                        var digerBranslar = item.Branslars
+                                            .Where(b => !b.EsitBrans)
+                                            .OrderBy(b => b.BransAdi)
+                                            .Select(b => b.BransAdi);
+
+                                        if (esitBranslar.Any())
+                                        {
+                                            @string.Join(", ", esitBranslar)<br/>
+                                        }
+                                        if (digerBranslar.Any())
+                                        {
+                                            @string.Join(", ", digerBranslar)
+                                        }
+                                    }
                                 </td>
                                 <td>
-                                    @item.YabancıDil
-                                </td>
-                                <td>
-                                    @item.YabancıDil
+                                    @if (item.Branslars != null && item.Branslars.Any())
+                                    {
+                                        var esitBranslar = item.Branslars.Where(b => b.EsitBrans);
+                                        var digerBranslar = item.Branslars.Where(b => !b.EsitBrans);
+
+                                        if (esitBranslar.Any())
+                                        {
+                                            var esitKontenjan = esitBranslar.First().BransKontSayi;
+                                            @:@esitKontenjan<br/>
+                                        }
+
+                                        if (digerBranslar.Any())
+                                        {
+                                            foreach (var brans in digerBranslar.OrderBy(b => b.BransAdi))
+                                            {
+                                                @:@brans.BransKontSayi<br/>
+                                            }
+                                        }
+                                    }
                                 </td>
                             </tr>
                         }
@@ -66,4 +101,3 @@
         </div>
     </div>
 </div>
-

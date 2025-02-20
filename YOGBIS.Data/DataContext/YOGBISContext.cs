@@ -139,6 +139,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<UlkeGruplari> UlkeGruplari { get; set; }        
         public DbSet<Ulkeler> Ulkeler { get; set; }
         public DbSet<UlkeTercih> UlkeTercih { get; set; }
+        public DbSet<UlkeTercihBranslar> UlkeTercihBranslar { get; set; }
         public DbSet<Universiteler> Universiteler { get; set; }
 
         #endregion

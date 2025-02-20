@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,6 +15,7 @@ using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.Implementaion;
+using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -48,10 +49,11 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
+            var ulkeTercihleri = _ulkeTercihleriBE.UlkeTercihleriGetir();
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
             
-            return View();
+            return View(ulkeTercihleri.Data);
         }
         #endregion
 
@@ -144,6 +146,167 @@ namespace YOGBIS.UI.Controllers
             }
 
             return NotFound();
+        }
+        #endregion
+
+        #region BransEkle
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult BransEkle(Guid UlkeTercihId, Guid BransId, string BransCinsiyet, int BransKontSayi, bool EsitBrans)
+        {
+            try
+            {
+                if (UlkeTercihId == Guid.Empty || BransId == Guid.Empty)
+                {
+                    TempData["error"] = "Ülke tercihi ve branş seçimi zorunludur.";
+                    return RedirectToAction(nameof(Guncelle), new { id = UlkeTercihId });
+                }
+
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                
+                // Seçilen branşı getir
+                var secilenBrans = _branslarBE.BransGetir(BransId).Data;
+                if (secilenBrans == null)
+                {
+                    TempData["error"] = "Seçilen branş bulunamadı.";
+                    return RedirectToAction(nameof(Guncelle), new { id = UlkeTercihId });
+                }
+
+                // Yeni branş nesnesi oluştur
+                var yeniBrans = new BranslarVM
+                {
+                    BransId = Guid.NewGuid(),
+                    BransAdi = secilenBrans.BransAdi,
+                    BransCinsiyet = BransCinsiyet,
+                    BransKontSayi = BransKontSayi,
+                    EsitBrans = EsitBrans,
+                    UlkeTercihId = UlkeTercihId,
+                    KayitTarihi = DateTime.Now,
+                    KaydedenId = user.LoginId,
+                    KaydedenAdi = user.FirstName + " " + user.LastName
+                };
+
+                // Branşı ekle
+                var result = _branslarBE.BransEkle(yeniBrans, user);
+                if (result.IsSuccess)
+                {
+                    TempData["success"] = result.Message;
+                }
+                else
+                {
+                    TempData["error"] = result.Message;
+                }
+
+                return RedirectToAction(nameof(Guncelle), new { id = UlkeTercihId });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Branş eklenirken hata oluştu: {ex.Message}");
+                TempData["error"] = "Branş eklenirken bir hata oluştu.";
+                return RedirectToAction(nameof(Guncelle), new { id = UlkeTercihId });
+            }
+        }
+        #endregion
+
+        #region BransSil
+        [HttpGet]
+        public IActionResult BransSil(Guid id)
+        {
+            try
+            {
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                
+                // Silinecek branşı getir
+                var brans = _branslarBE.BransGetir(id).Data;
+                if (brans == null)
+                {
+                    TempData["ErrorMessage"] = "Silinecek branş bulunamadı.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                // Branşı sil
+                var result = _branslarBE.BransSil(id);
+                if (result.IsSuccess)
+                {
+                    TempData["Success"] = "Branş başarıyla silindi.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Branş silinirken bir hata oluştu: " + result.Message;
+                }
+
+                return RedirectToAction(nameof(Guncelle), new { id = brans.UlkeTercihId });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Branş silinirken hata oluştu: {ex.Message}");
+                TempData["ErrorMessage"] = "Branş silinirken bir hata oluştu.";
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        #endregion
+
+        #region ExceldenBransYukle
+        [HttpPost]
+        public async Task<IActionResult> ExceldenBransYukle(IFormFile file)
+        {
+            try
+            {
+                if (file == null || file.Length <= 0)
+                {
+                    TempData["ErrorMessage"] = "Lütfen bir Excel dosyası seçin.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                if (!Path.GetExtension(file.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+                {
+                    TempData["ErrorMessage"] = "Lütfen geçerli bir Excel dosyası (.xlsx) seçin.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        var rowCount = worksheet.Dimension.Rows;
+
+                        for (int row = 2; row <= rowCount; row++) // İlk satır başlık olduğu için 2'den başlıyoruz
+                        {
+                            var brans = new BranslarVM
+                            {
+                                //BransId = Guid.NewGuid(),
+                                BransAdi = worksheet.Cells[row, 1].Value?.ToString(),
+                                //BransCinsiyet = worksheet.Cells[row, 2].Value?.ToString(),
+                                //BransKontSayi = Convert.ToInt32(worksheet.Cells[row, 3].Value),
+                                //EsitBrans = Convert.ToBoolean(worksheet.Cells[row, 4].Value),
+                                UlkeTercihId = Guid.Parse(worksheet.Cells[row, 2].Value?.ToString() ?? "0"),
+                                //KayitTarihi = DateTime.Now,
+                                //KaydedenId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value)
+                            };
+
+                            var result = _branslarBE.BransEkle(brans, user);
+                            if (!result.IsSuccess)
+                            {
+                                TempData["ErrorMessage"] = $"Satır {row}: {result.Message}";
+                                return RedirectToAction(nameof(Index));
+                            }
+                        }
+                    }
+                }
+
+                TempData["Success"] = "Branşlar başarıyla yüklendi.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excel'den branş yüklenirken hata oluştu: {ex.Message}");
+                TempData["ErrorMessage"] = "Excel'den branş yüklenirken bir hata oluştu.";
+            }
+
+            return RedirectToAction(nameof(Index));
         }
         #endregion
 

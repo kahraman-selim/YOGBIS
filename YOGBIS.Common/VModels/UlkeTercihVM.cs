@@ -29,7 +29,7 @@ namespace YOGBIS.Common.VModels
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
-        public List<BranslarVM> Branslars { get; set; }
+        public List<UlkeTercihBranslarVM> TercihBranslar { get; set; }
         public List<AdayBasvuruBilgileriVM> AdayBasvuruBilgileris { get; set; }
     }
 }

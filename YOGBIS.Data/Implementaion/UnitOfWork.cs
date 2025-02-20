@@ -59,6 +59,7 @@ namespace YOGBIS.Data.Implementaion
             ulkeGruplariRepository = new UlkeGruplariRepository(_ctx);            
             ulkelerRepository = new UlkelerRepository(_ctx);
             ulkeTercihRepository = new UlkeTercihRepository(_ctx);
+            ulkeTercihBransRepository = new UlkeTercihBransRepository(_ctx);
             universitelerRepository = new UniversitelerRepository(_ctx);
             
         }
@@ -111,6 +112,7 @@ namespace YOGBIS.Data.Implementaion
         public IUlkeGruplariRepository ulkeGruplariRepository { get; private set; }        
         public IUlkelerRepository ulkelerRepository { get; private set; }
         public IUlkeTercihRepository ulkeTercihRepository { get; private set; }
+        public IUlkeTercihBransRepository ulkeTercihBransRepository { get; private set; }
         public IUniversitelerRepository universitelerRepository { get; private set; }
 
 

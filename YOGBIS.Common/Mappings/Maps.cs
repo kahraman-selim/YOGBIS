@@ -57,6 +57,7 @@ namespace YOGBIS.Common.Mappings
             CreateMap<UlkeGruplari, UlkeGruplariVM>().ReverseMap();
             CreateMap<Ulkeler, UlkelerVM>().ReverseMap();
             CreateMap<UlkeTercih, UlkeTercihVM>().ReverseMap();
+            CreateMap<UlkeTercihBranslar, UlkeTercihBranslarVM>().ReverseMap();
             CreateMap<Universiteler, UniversitelerVM>().ReverseMap();
 
         }

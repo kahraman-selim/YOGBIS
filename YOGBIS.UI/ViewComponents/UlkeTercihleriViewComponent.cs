@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.BusinessEngine.Implementaion;
@@ -18,22 +19,25 @@ namespace YOGBIS.UI.ViewComponents
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine("UlkeTercihleriViewComponent - InvokeAsync başladı");
                 var requestmodel = _ulkeTercihleriBE.UlkeTercihleriGetir();
 
+                System.Diagnostics.Debug.WriteLine($"UlkeTercihleriViewComponent - IsSuccess: {requestmodel.IsSuccess}");
                 if (requestmodel.IsSuccess)
                 {
+                    System.Diagnostics.Debug.WriteLine($"UlkeTercihleriViewComponent - Veri sayısı: {requestmodel.Data?.Count ?? 0}");
                     return View(requestmodel.Data);
                 }
                 else
                 {
+                    System.Diagnostics.Debug.WriteLine($"UlkeTercihleriViewComponent - Hata mesajı: {requestmodel.Message}");
                     TempData["ErrorMessage"] = requestmodel.Message;
                     return View();
                 }
-
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
+                System.Diagnostics.Debug.WriteLine($"UlkeTercihleriViewComponent - Hata: {ex.Message}");
                 TempData["ErrorMessage"] = "Bilgiler getirilirken bir hata oluştu.";
                 return View();
             }
