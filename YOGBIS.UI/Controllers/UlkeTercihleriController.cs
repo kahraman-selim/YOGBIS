@@ -121,6 +121,27 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region BransGuncelle
+        public IActionResult BransGuncelle(Guid id)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            ViewBag.Branslar = _branslarBE.BranslariGetir().Data;
+
+            if (id != Guid.Empty)
+            {
+                var data = _ulkeTercihBranslarBE.UlkeTercihBransGetir((Guid)id);
+                return View(data.Data);
+            }
+            else
+            {
+                return View();
+            }
+        }
+        #endregion
+
         #region UlkeTercihSil
         public IActionResult UlkeTercihSil(Guid id)
         {
@@ -178,6 +199,7 @@ namespace YOGBIS.UI.Controllers
                 var yeniBrans = new UlkeTercihBranslarVM
                 {
                     BransAdi = secilenBrans.BransAdi,
+                    BransId=secilenBrans.BransId,
                     BransCinsiyet = BransCinsiyet,
                     BransKontSayi = BransKontSayi,
                     EsitBrans = EsitBrans,

@@ -101,7 +101,8 @@
                                             </td>
                                             <td>@item.YabancıDil</td>
                                             <td>
-                                                @brans.BransAdi
+                                                @* @brans.BransAdi *@
+                                                <a asp-controller="UlkeTercihleri" asp-action="BransGuncelle" asp-route-id="@brans.BransAdi">@brans.BransAdi</a>
                                                 @if (!string.IsNullOrEmpty(brans.BransCinsiyet))
                                                 {
                                                     if (brans.BransCinsiyet == "1")
@@ -130,7 +131,8 @@
                                             </td>
                                             <td>@item.YabancıDil</td>
                                             <td>
-                                                @brans.BransAdi
+                                                @* @brans.BransAdi *@
+                                                <a asp-controller="UlkeTercihleri" asp-action="BransGuncelle" asp-route-id="@brans.BransAdi">@brans.BransAdi</a>
                                                 @if (!string.IsNullOrEmpty(brans.BransCinsiyet))
                                                 {
                                                     if (brans.BransCinsiyet == "1")

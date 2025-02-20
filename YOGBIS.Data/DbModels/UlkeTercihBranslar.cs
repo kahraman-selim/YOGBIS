@@ -10,6 +10,7 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public Guid TercihBransId { get; set; }
         public string BransAdi { get; set; }
+        public Guid BransId { get; set; }
         public string BransCinsiyet { get; set; }
         public int BransKontSayi { get; set; }
         public bool EsitBrans { get; set; }

@@ -68,6 +68,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         {
                             TercihBransId = b.TercihBransId,
                             BransAdi = b.BransAdi,
+                            BransId=b.BransId,
                             BransCinsiyet = b.BransCinsiyet,
                             BransKontSayi = b.BransKontSayi,
                             EsitBrans = b.EsitBrans,
@@ -119,6 +120,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         {
                             TercihBransId = b.TercihBransId,
                             BransAdi = b.BransAdi,
+                            BransId=b.BransId,
                             BransCinsiyet = b.BransCinsiyet,
                             BransKontSayi = b.BransKontSayi,
                             EsitBrans = b.EsitBrans,
@@ -190,6 +192,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                                 data.TercihBranslar.Add(new UlkeTercihBranslar()
                                 {
                                     BransAdi=item.BransAdi,
+                                    BransId=item.BransId,
                                     BransCinsiyet=item.BransCinsiyet,
                                     BransKontSayi=item.BransKontSayi,
                                     EsitBrans=item.EsitBrans,

@@ -60,6 +60,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     TercihBransId=item.TercihBransId,
                     BransAdi=item.BransAdi,
+                    BransId=item.BransId,
                     BransCinsiyet=item.BransCinsiyet,
                     BransKontSayi=item.BransKontSayi,
                     EsitBrans=item.EsitBrans,
@@ -92,6 +93,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     brans.TercihBransId = data.TercihBransId;
                     brans.BransAdi = data.BransAdi;
+                    brans.BransId = data.BransId;
                     brans.BransCinsiyet = data.BransCinsiyet;
                     brans.BransKontSayi = data.BransKontSayi;
                     brans.EsitBrans = data.EsitBrans;
@@ -153,6 +155,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     if (data != null)
                     {
                         data.BransAdi = model.BransAdi;
+                        data.BransId = model.BransId;
                         data.BransCinsiyet = model.BransCinsiyet;
                         data.BransKontSayi = model.BransKontSayi;
                         data.EsitBrans = model.EsitBrans;
