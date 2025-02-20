@@ -98,6 +98,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     brans.BransKontSayi = data.BransKontSayi;
                     brans.EsitBrans = data.EsitBrans;
                     brans.UlkeTercihId = data.UlkeTercih != null ? data.UlkeTercihId : Guid.Empty;
+                    brans.UlkeTercihAdi = data.UlkeTercih != null ? data.UlkeTercih.UlkeTercihAdi : string.Empty;
                     brans.KayitTarihi = data.KayitTarihi;
                     brans.KaydedenId = data.Kullanici != null ? data.KaydedenId : string.Empty;
                     brans.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;

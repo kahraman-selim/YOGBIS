@@ -20,6 +20,7 @@ namespace YOGBIS.Common.VModels
         public int BransKontSayi { get; set; }
         public bool EsitBrans { get; set; }
         public Guid UlkeTercihId { get; set; }
+        public string UlkeTercihAdi { get; set; }
         public UlkeTercihVM UlkeTercih { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
