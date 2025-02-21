@@ -1,0 +1,83 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
+@inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
+@model YOGBIS.Common.VModels.AdaylarVM
+@{
+    ViewData["Title"] = "Adaylar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow-lg rounded-lg">
+            <div class="card-header">
+                <i class="fas fa-table mr-1"></i>
+                <b>Aday Yükleme/Güncellme</b>
+            </div>
+            <div class="card-body">
+                <form asp-action="ExceldenAdayEkle" enctype="multipart/form-data" method="post" class="form-group m-0">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <div class="form-row">
+                                <div class="col-md-auto">
+                                    <label>Aday Bilgilerini yüklemek için Excel Dosyası Seçin</label>
+                                </div>
+                                <div class="col-md-auto">
+                                    <input type="file" name="file" class="form-control w-100" accept=".xlsx" required style="width:500px" />
+                                </div>
+                                <div class="col-md-auto">
+                                    <button type="submit" class="btn btn-primary w-100">Yükle</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success col-md-12">
+                @TempData["Message"]
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger col-md-12">
+                <pre>@TempData["Error"]</pre>
+            </div>
+        }
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success col-md-12">
+                @TempData["Success"]
+            </div>
+        }
+        @if (TempData["Warning"] != null)
+        {
+            <div class="alert alert-warning col-md-12">
+                @TempData["Warning"]
+            </div>
+        }
+        <div class="card shadow-lg rounded-lg mt-1">
+            <div class="card-header">
+                <i class="fas fa-table mr-1"></i>
+                <b>Aday Bilgileri</b>
+            </div>
+        </div>
+        <div class="card-body bg-gradient-light">
+            @await Component.InvokeAsync("AdayTemelBilgi")
+        </div>
+    </div>
+    <div class="col-md-8">
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript">
+
+
+    </script>
+}

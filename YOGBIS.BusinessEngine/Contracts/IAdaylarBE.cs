@@ -8,7 +8,8 @@ namespace YOGBIS.BusinessEngine.Contracts
 {
     public interface IAdaylarBE
     {
-        Result<List<AdaylarVM>> AdaylariGetir();        
+        Result<List<AdaylarVM>> AdaylariGetir();
+        Result<List<AdaylarVM>> AdayTemelBilgileriGetir();
         Result<AdaylarVM> AdayGetir(Guid id);
         Result<AdaylarVM> AdayEkle(AdaylarVM model, SessionContext user);
         Result<AdaylarVM> AdayGuncelle(AdaylarVM model, SessionContext user);

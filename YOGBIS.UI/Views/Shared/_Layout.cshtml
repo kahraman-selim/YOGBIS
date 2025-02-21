@@ -137,6 +137,10 @@
                                         {
                                             <a class="nav-link" asp-controller="UlkeTercihleri" asp-action="Index">Ülke Tercihleri</a>
                                         }
+                                        @if (User.IsInRole("Administrator"))
+                                        {
+                                            <a class="nav-link" asp-controller="AdayTanimlama" asp-action="Index">Adaylar</a>
+                                        }
                                     </nav>
                                 </div>
                             }

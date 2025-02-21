@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,6 +72,47 @@ namespace YOGBIS.BusinessEngine.Implementaion
             else 
             {
                 return new Result<List<AdaylarVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+        #region AdayTemelBilgileriGetir
+        public Result<List<AdaylarVM>> AdayTemelBilgileriGetir()
+        {
+            try
+            {
+                // 1. Sorguyu IQueryable olarak oluştur (henüz execute etme)
+                var query = _unitOfWork.adaylarRepository.GetAll()
+                    .AsNoTracking() // Change tracking'i devre dışı bırak
+                    .Include(x => x.Kullanici)
+                    .OrderBy(x => x.Ad)
+                    .ThenBy(y => y.Soyad);
+
+                // 2. Sadece ihtiyaç duyulan alanları seç
+                var data = query.Select(item => new AdaylarVM
+                {
+                    AdayId=item.AdayId,
+                    TC=item.TC,
+                    Ad=item.Ad,
+                    Soyad=item.Soyad,
+                    KayitTarihi = item.KayitTarihi,
+                    KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                    KaydedenAdi = item.Kullanici != null ?
+                        item.Kullanici.Ad + " " + item.Kullanici.Soyad :
+                        string.Empty
+                }).ToList();
+
+                if (data != null)
+                {
+                    return new Result<List<AdaylarVM>>(true, ResultConstant.RecordFound, data);
+                }
+
+                return new Result<List<AdaylarVM>>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                // Loglama yapılabilir
+                return new Result<List<AdaylarVM>>(false, ex.Message);
             }
         }
         #endregion
