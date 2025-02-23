@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
 @model YOGBIS.Common.VModels.AdaylarVM
@@ -9,31 +9,52 @@
 
 <div class="row">
     <div class="col-md-4">
-        <div class="card shadow-lg rounded-lg">
+        <div class="card shadow-lg rounded-lg mb-1">
             <div class="card-header">
                 <i class="fas fa-table mr-1"></i>
                 <b>Aday Yükleme/Güncellme</b>
             </div>
             <div class="card-body">
-                <form asp-action="ExceldenAdayEkle" enctype="multipart/form-data" method="post" class="form-group m-0">
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <div class="form-row">
-                                <div class="col-md-auto">
-                                    <label>Aday Bilgilerini yüklemek için Excel Dosyası Seçin</label>
-                                </div>
-                                <div class="col-md-auto">
-                                    <input type="file" name="file" class="form-control w-100" accept=".xlsx" required style="width:500px" />
-                                </div>
-                                <div class="col-md-auto">
-                                    <button type="submit" class="btn btn-primary w-100">Yükle</button>
-                                </div>
-                            </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="small font-weight-bold">Yükleme dosyası için seçim yapınız</label>
+                            <select id="yuklemeTipi" class="form-control-range form-control py-0" aria-label="Yükleme tipi seçimi">
+                                <option selected value="">Seçim yapınız</option>
+                                <option value="1">Aday Temel Bilgileri</option>
+                                <option value="2">Aday Başvuru Bilgileri</option>
+                                <option value="3">Aday İletişim Bilgileri</option>
+                            </select>
+                            <span id="yuklemeTipiHata" class="text-danger" style="display: none;">Lütfen yükleme tipini seçiniz!</span>
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="uploadForm" enctype="multipart/form-data" method="post" class="form-group m-0" onsubmit="return submitForm(event)">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <div class="form-row">
+                                        <div class="col-md-12">
+                                            <label>Aday Bilgilerini yüklemek için Excel Dosyası Seçin</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-8">
+                                            <input type="file" name="file" class="form-control w-100 p-1" accept=".xlsx" required style="width:500px" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="submit" class="btn btn-primary w-100">Yükle</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
+
         @if (TempData["Message"] != null)
         {
             <div class="alert alert-success col-md-12">
@@ -58,7 +79,32 @@
                 @TempData["Warning"]
             </div>
         }
-        <div class="card shadow-lg rounded-lg mt-1">
+
+        <div id="progressBarContainer" style="display: none;">
+            <div class="progress mb-1" role="progressbar" aria-label="İşlem durumu" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%">0%</div>
+            </div>
+        </div>
+
+        <div id="progressInfo" class="alert alert-info py-2 px-3" style="display: none;">
+            <div>
+                <span id="islemDurumu" class="text-dark text-sm">İşlem başlatılıyor...</span>
+            </div>
+            <div>
+                <span class="text-dark text-sm">İşlenen Kayıt: </span>
+                <span id="islemYapilan" class="text-dark text-sm">0</span> / <span id="toplamKayit" class="text-dark text-sm">0</span>
+            </div>
+            <div>
+                <span class="text-dark text-sm">Tamamlanma: %</span><span id="yuzde" class="text-dark text-sm">0</span>
+            </div>
+        </div>
+
+        <div id="islemSonucu" style="display: none;">
+            <div id="warningAlert" class="alert alert-warning" style="display: none;"></div>
+            <div id="successAlert" class="alert alert-success" style="display: none;"></div>
+        </div>
+
+        <div class="card shadow-lg rounded-lg m-0">
             <div class="card-header">
                 <i class="fas fa-table mr-1"></i>
                 <b>Aday Bilgileri</b>
@@ -69,15 +115,205 @@
         </div>
     </div>
     <div class="col-md-8">
-
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
 
     <script type="text/javascript">
+        var progressTimer;
 
+        function submitForm(event) {
+            event.preventDefault();
 
+            var yuklemeTipi = document.getElementById('yuklemeTipi').value;
+            if (!yuklemeTipi) {
+                document.getElementById('yuklemeTipiHata').style.display = 'block';
+                return false;
+            }
+            document.getElementById('yuklemeTipiHata').style.display = 'none';
+
+            showProgress();
+
+            var formData = new FormData(document.getElementById('uploadForm'));
+            var url = '';
+
+            // Yükleme tipine göre action belirle
+            if (yuklemeTipi === '1') {
+                url = '@Url.Action("AdayTemelBilgileriYukle")';
+            } else if (yuklemeTipi === '2') {
+                url = '@Url.Action("AdayBasvuruBilgileriYukle")';
+            }
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (!data.success) {
+                    bootbox.alert({
+                        title: 'Hata',
+                        message: 'İşlem sırasında bir hata oluştu!',
+                        centerVertical: true
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                bootbox.alert({
+                    title: 'Hata',
+                    message: 'İşlem sırasında bir hata oluştu!',
+                    centerVertical: true
+                });
+            });
+
+            return false;
+        }
+
+        function showProgress() {
+            document.getElementById('progressBarContainer').style.display = 'block';
+            document.getElementById('progressInfo').style.display = 'block';
+            document.getElementById('islemSonucu').style.display = 'none';
+            document.getElementById('islemDurumu').textContent = 'İşlem başlatılıyor...';
+            document.getElementById('islemYapilan').textContent = '0';
+            document.getElementById('toplamKayit').textContent = '0';
+            document.getElementById('yuzde').textContent = '0';
+            updateProgressBar(0, 0, 0);
+            startProgressCheck();
+        }
+
+        function updateProgressBar(islemYapilan, toplamKayit, yuzde) {
+            var progressBar = document.getElementById('progressBar');
+            var progress = 0;
+
+            if (toplamKayit > 0) {
+                progress = yuzde; // Direkt yüzdeyi kullan
+            }
+
+            // Progress bar'ı güncelle
+            requestAnimationFrame(function() {
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = progress + '%';
+                progressBar.setAttribute('aria-valuenow', progress);
+            });
+
+            // Progress durumuna göre renk değişimi
+            if (progress < 25) {
+                progressBar.className = 'progress-bar progress-bar-striped progress-bar-animated bg-danger';
+            } else if (progress < 50) {
+                progressBar.className = 'progress-bar progress-bar-striped progress-bar-animated bg-warning';
+            } else if (progress < 75) {
+                progressBar.className = 'progress-bar progress-bar-striped progress-bar-animated bg-info';
+            } else {
+                progressBar.className = 'progress-bar progress-bar-striped progress-bar-animated bg-success';
+            }
+        }
+
+        function startProgressCheck() {
+            if (progressTimer) {
+                clearInterval(progressTimer);
+            }
+            progressTimer = setInterval(checkProgress, 10); // Her 10ms'de bir kontrol et
+        }
+
+        function checkProgress() {
+            fetch('@Url.Action("GetProgress")')
+                .then(response => response.json())
+                .then(data => {
+                    if (!data) return;
+
+                    requestAnimationFrame(function() {
+                        // Sayaçları güncelle
+                        if (data.toplamKayit) {
+                            document.getElementById('islemYapilan').textContent = data.islemYapilan;
+                            document.getElementById('toplamKayit').textContent = data.toplamKayit;
+                            document.getElementById('yuzde').textContent = data.yuzde;
+
+                            // Progress bar'ı sayaçlara göre güncelle
+                            updateProgressBar(data.islemYapilan, data.toplamKayit, data.yuzde);
+                        }
+
+                        // Durum mesajını güncelle
+                        if (data.islemAsamasi) {
+                            var durumText = '';
+                            switch(data.islemAsamasi) {
+                                case 'Baslatiliyor':
+                                    durumText = 'İşlem başlatılıyor...';
+                                    break;
+                                case 'TCKontrol':
+                                    durumText = 'TC Kimlik numaraları kontrol ediliyor...';
+                                    break;
+                                case 'KayitBasliyor':
+                                    durumText = 'Kayıt işlemi başlatılıyor...';
+                                    // Progress'i sıfırla
+                                    updateProgressBar(0, 1, 0);
+                                    break;
+                                case 'Kayit':
+                                    durumText = 'Kayıtlar sisteme ekleniyor...';
+                                    break;
+                                case 'Tamamlandi':
+                                    durumText = 'İşlem tamamlandı!';
+                                    clearInterval(progressTimer);
+
+                                    var message = '';
+                                    if (data.warning) {
+                                        message += '<div class="alert alert-warning">' + data.warning + '</div>';
+                                    }
+                                    if (data.success) {
+                                        message += '<div class="alert alert-success">' + data.success + '</div>';
+                                    }
+
+                                    if (message) {
+                                        bootbox.dialog({
+                                            title: 'İşlem Tamamlandı',
+                                            message: message,
+                                            centerVertical: true,
+                                            closeButton: false,
+                                            buttons: {
+                                                ok: {
+                                                    label: 'Tamam',
+                                                    className: 'btn-primary',
+                                                    callback: function() {
+                                                        islemTamamlandi();
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        islemTamamlandi();
+                                    }
+                                    break;
+                            }
+                            document.getElementById('islemDurumu').textContent = durumText;
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('İlerleme kontrolü sırasında hata:', error);
+                });
+        }
+
+        function islemTamamlandi() {
+            fetch('@Url.Action("TamamlandiOnayla")', {
+                method: 'POST'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                window.location.href = '@Url.Action("Index")';
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+            });
+        }
     </script>
 }

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -159,6 +159,28 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region AdayGetirTC
+        public Result<AdaylarVM> AdayGetirTC(string TC)
+        {
+            try
+            {
+                var data = _unitOfWork.adaylarRepository.GetFirstOrDefault(x => x.TC == TC);
+
+                if (data != null)
+                {
+                    var aday = _mapper.Map<AdaylarVM>(data);
+                    return new Result<AdaylarVM>(true, "Aday bilgileri başarıyla getirildi.", aday, 1);
+                }
+                
+                return new Result<AdaylarVM>(false, "Aday bulunamadı.", null, 0);
+            }
+            catch (Exception ex)
+            {
+                return new Result<AdaylarVM>(false, $"Aday bilgileri getirilirken hata oluştu: {ex.Message}", null, 0);
+            }
+        }
+        #endregion
+
         #region AdayEkle
         public Result<AdaylarVM> AdayEkle(AdaylarVM model, SessionContext user)
         {
@@ -265,6 +287,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 return new Result<List<AdaylarVM>>(false, ResultConstant.RecordNotFound);
             }
+        }
+        #endregion
+
+        #region TCKontrol
+        public bool TCKontrol(string TC)
+        {
+            return _unitOfWork.adaylarRepository.GetFirstOrDefault(x => x.TC == TC) != null;
         }
         #endregion
             
