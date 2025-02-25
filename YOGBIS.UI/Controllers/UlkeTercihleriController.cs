@@ -124,20 +124,60 @@ namespace YOGBIS.UI.Controllers
         #region BransGuncelle
         public IActionResult BransGuncelle(Guid id)
         {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
-            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
-            ViewBag.Branslar = _branslarBE.BranslariGetir().Data;
-
-            if (id != Guid.Empty)
+            try
             {
-                var data = _ulkeTercihBranslarBE.UlkeTercihBransGetir((Guid)id);
-                return View(data.Data);
+                if (id == Guid.Empty)
+                {
+                    TempData["error"] = "Geçersiz branş ID'si";
+                    return RedirectToAction("Index");
+                }
+
+                var brans = _ulkeTercihBranslarBE.UlkeTercihBransGetir(id);
+                if (!brans.IsSuccess || brans.Data == null)
+                {
+                    TempData["error"] = brans.Message;
+                    return RedirectToAction("Index");
+                }
+
+                return View(brans.Data);
             }
-            else
+            catch (Exception ex)
             {
-                return View();
+                _logger.LogError($"Branş güncellenirken hata oluştu: {ex.Message}");
+                TempData["error"] = "İşlem sırasında bir hata oluştu";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult BransGuncelle(UlkeTercihBranslarVM model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                model.KaydedenId = user.LoginId;
+
+                var result = _ulkeTercihBranslarBE.UlkeTercihBransGuncelle(model,user);
+                if (result.IsSuccess)
+                {
+                    TempData["success"] = result.Message;
+                    return RedirectToAction("Guncelle", new { id = model.UlkeTercihId });
+                }
+
+                TempData["error"] = result.Message;
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Branş güncellenirken hata oluştu: {ex.Message}");
+                TempData["error"] = "İşlem sırasında bir hata oluştu";
+                return View(model);
             }
         }
         #endregion
@@ -229,39 +269,47 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region BransSil
-        [HttpGet]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult BransSil(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                TempData["error"] = "Geçersiz branş ID'si";
+                return RedirectToAction("Index");
+            }
+
             try
             {
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
                 
-                // Silinecek branşı getir
-                var brans = _ulkeTercihBranslarBE.UlkeTercihBransGetir(id).Data;
-                if (brans == null)
+                // Önce branşı ve ülke tercihini alalım
+                var bransResult = _ulkeTercihBranslarBE.UlkeTercihBransGetir(id);
+                if (!bransResult.IsSuccess || bransResult.Data == null)
                 {
-                    TempData["ErrorMessage"] = "Silinecek branş bulunamadı.";
-                    return RedirectToAction(nameof(Index));
+                    TempData["error"] = bransResult.Message;
+                    return RedirectToAction("Index");
                 }
 
-                // Branşı sil
-                var result = _ulkeTercihBranslarBE.UlkeTercihBransSil(id);
-                if (result.IsSuccess)
+                // Ülke tercihi ID'sini saklayalım
+                var ulkeTercihId = bransResult.Data.UlkeTercihId;
+
+                // Branşı silelim
+                var result = _ulkeTercihBranslarBE.UlkeTercihBransSil(id, user);
+                if (!result.IsSuccess)
                 {
-                    TempData["Success"] = "Branş başarıyla silindi.";
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Branş silinirken bir hata oluştu: " + result.Message;
+                    TempData["error"] = result.Message;
+                    return RedirectToAction("BransGuncelle", new { id = id });
                 }
 
-                return RedirectToAction(nameof(Guncelle), new { id = brans.UlkeTercihId });
+                TempData["success"] = result.Message;
+                return RedirectToAction("Guncelle", new { id = ulkeTercihId });
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Branş silinirken hata oluştu: {ex.Message}");
-                TempData["ErrorMessage"] = "Branş silinirken bir hata oluştu.";
-                return RedirectToAction(nameof(Index));
+                TempData["error"] = "İşlem sırasında bir hata oluştu";
+                return RedirectToAction("Index");
             }
         }
         #endregion

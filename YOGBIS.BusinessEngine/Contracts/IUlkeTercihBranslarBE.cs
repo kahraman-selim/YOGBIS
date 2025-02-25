@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.SessionOperations;
@@ -12,6 +12,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<UlkeTercihBranslarVM> UlkeTercihBransGetir(Guid id);
         Result<UlkeTercihBranslarVM> UlkeTercihBransEkle(UlkeTercihBranslarVM model, SessionContext user);
         Result<UlkeTercihBranslarVM> UlkeTercihBransGuncelle(UlkeTercihBranslarVM model, SessionContext user);
-        Result<bool> UlkeTercihBransSil(Guid id);
+        Result<bool> UlkeTercihBransSil(Guid id, SessionContext user);
     }
 }

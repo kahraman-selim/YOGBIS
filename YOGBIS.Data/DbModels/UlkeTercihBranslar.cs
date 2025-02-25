@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,6 +11,8 @@ namespace YOGBIS.Data.DbModels
         public Guid TercihBransId { get; set; }
         public string BransAdi { get; set; }
         public Guid BransId { get; set; }
+        [ForeignKey("BransId")]
+        public Branslar Brans { get; set; }
         public string BransCinsiyet { get; set; }
         public int BransKontSayi { get; set; }
         public bool EsitBrans { get; set; }

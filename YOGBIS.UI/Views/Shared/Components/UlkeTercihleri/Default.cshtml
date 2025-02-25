@@ -22,36 +22,44 @@
     </h6>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped display nowrap" id="myTable" width="100%" cellspacing="0">
+            <table class="table table-bordered cell-border table-hover table-striped display nowrap table-light" id="myTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Sıra No</th>
-                        <th>Derece</th>
-                        <th>Ülke Grubu</th>
-                        <th>Yabancı Dil</th>
-                        <th>Branşlar</th>
-                        <th>Kontenjan</th>
+                        <th style="width: 5%">Sıra No</th>
+                        <th style="width: 15%">Derece</th>
+                        <th style="width: 25%">Ülke Grubu</th>
+                        <th style="width: 15%">Yabancı Dil</th>
+                        <th style="width: 30%">Branşlar</th>
+                        <th style="width: 10%">Kontenjan</th>
                     </tr>
                 </thead>
                 <tbody>
                     @{
                         var sirano = 0;
+                        var toplamKontenjan = 0;
                     }
                     @foreach (var item in Model)
                     {
-                        var satirNumarasi = ++sirano;
-                        
                         if (item.TercihBranslar == null || !item.TercihBranslar.Any())
                         {
-                            // Branşı olmayan kayıtları göster
+                            sirano++;
                             <tr>
-                                <td>@satirNumarasi</td>
+                                <td>@sirano</td>
                                 <td>@item.DereceAdi</td>
                                 <td>
                                     <a asp-controller="UlkeTercihleri" asp-action="Guncelle" asp-route-id="@item.UlkeTercihId">@item.UlkeTercihAdi</a>
                                 </td>
-                                <td>@item.YabancıDil</td>
-                                <td><span class="text-muted">Branş Eklenmemiş</span></td>
+                                <td>
+                                    @if (item.YabancıDil == "Dil Belgesi İstenmeyecektir")
+                                    {
+                                        <span class="text-muted">-</span>
+                                    }
+                                    else
+                                    {
+                                        @item.YabancıDil
+                                    }
+                                </td>
+                                <td><span class="text-muted">-</span></td>
                                 <td><span class="text-muted">-</span></td>
                             </tr>
                         }
@@ -61,25 +69,36 @@
                             var esitBranslar = item.TercihBranslar.Where(b => b.EsitBrans);
                             if (esitBranslar.Any())
                             {
+                                sirano++;
+                                var esitBransKontenjan = esitBranslar.FirstOrDefault()?.BransKontSayi ?? 0;
+                                toplamKontenjan += esitBransKontenjan;
                                 <tr>
-                                    <td>@satirNumarasi</td>
+                                    <td>@sirano</td>
                                     <td>@item.DereceAdi</td>
                                     <td>
                                         <a asp-controller="UlkeTercihleri" asp-action="Guncelle" asp-route-id="@item.UlkeTercihId">@item.UlkeTercihAdi</a>
                                     </td>
-                                    <td>@item.YabancıDil</td>
                                     <td>
-                                        @Html.Raw(string.Join(", ", esitBranslar.Select(b => b.BransAdi)))
+                                        @if (item.YabancıDil == "Dil Belgesi İstenmeyecektir")
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                        else
+                                        {
+                                            @item.YabancıDil
+                                        }
                                     </td>
-                                    <td>
-                                        @{
-                                            var esitBrans = esitBranslar.FirstOrDefault();
-                                            if (esitBrans != null)
+                                    <td style="white-space: normal; word-wrap: break-word;">
+                                        @foreach (var brans in esitBranslar)
+                                        {
+                                            <a asp-controller="UlkeTercihleri" asp-action="BransGuncelle" asp-route-id="@brans.TercihBransId">@brans.BransAdi</a>
+                                            if (brans != esitBranslar.Last())
                                             {
-                                                @esitBrans.BransKontSayi
+                                                <span>, </span>
                                             }
                                         }
                                     </td>
+                                    <td>@esitBransKontenjan</td>
                                 </tr>
                             }
 
@@ -87,72 +106,48 @@
                             var digerBranslar = item.TercihBranslar.Where(b => !b.EsitBrans);
                             if (digerBranslar.Any())
                             {
-                                var ilkBrans = true;
                                 foreach (var brans in digerBranslar)
                                 {
-                                    if (!esitBranslar.Any() && ilkBrans)
-                                    {
-                                        // Eğer eşit branş yoksa ilk eşit olmayan branş için mevcut satır numarasını kullan
-                                        <tr class="table-light">
-                                            <td>@satirNumarasi</td>
-                                            <td>@item.DereceAdi</td>
-                                            <td>
-                                                <a asp-controller="UlkeTercihleri" asp-action="Guncelle" asp-route-id="@item.UlkeTercihId">@item.UlkeTercihAdi</a>
-                                            </td>
-                                            <td>@item.YabancıDil</td>
-                                            <td>
-                                                @* @brans.BransAdi *@
-                                                <a asp-controller="UlkeTercihleri" asp-action="BransGuncelle" asp-route-id="@brans.BransAdi">@brans.BransAdi</a>
+                                    sirano++;
+                                    toplamKontenjan += brans.BransKontSayi;
+                                    <tr class="table-light">
+                                        <td>@sirano</td>
+                                        <td>@item.DereceAdi</td>
+                                        <td>
+                                            <a asp-controller="UlkeTercihleri" asp-action="Guncelle" asp-route-id="@item.UlkeTercihId">@item.UlkeTercihAdi</a>
+                                        </td>
+                                        <td>
+                                            @if (item.YabancıDil == "Dil Belgesi İstenmeyecektir")
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                            else
+                                            {
+                                                @item.YabancıDil
+                                            }
+                                        </td>
+                                        <td style="white-space: normal; word-wrap: break-word;">
+                                            <a asp-controller="UlkeTercihleri" asp-action="BransGuncelle" asp-route-id="@brans.TercihBransId">
+                                                @brans.BransAdi
                                                 @if (!string.IsNullOrEmpty(brans.BransCinsiyet))
                                                 {
-                                                    if (brans.BransCinsiyet == "1")
-                                                    {
-                                                        <span class="text-primary">(E)</span>
-                                                    }
-                                                    else if (brans.BransCinsiyet == "2")
-                                                    {
-                                                        <span class="text-danger">(K)</span>
-                                                    }
+                                                    @(brans.BransCinsiyet == "1" ? " (E)" : brans.BransCinsiyet == "2" ? " (K)" : "")
                                                 }
-                                            </td>
-                                            <td>@brans.BransKontSayi</td>
-                                        </tr>
-                                        ilkBrans = false;
-                                    }
-                                    else
-                                    {
-                                        // Her yeni branş için yeni satır numarası al
-                                        satirNumarasi = ++sirano;
-                                        <tr class="table-light">
-                                            <td>@satirNumarasi</td>
-                                            <td>@item.DereceAdi</td>
-                                            <td>
-                                                <a asp-controller="UlkeTercihleri" asp-action="Guncelle" asp-route-id="@item.UlkeTercihId">@item.UlkeTercihAdi</a>
-                                            </td>
-                                            <td>@item.YabancıDil</td>
-                                            <td>
-                                                @* @brans.BransAdi *@
-                                                <a asp-controller="UlkeTercihleri" asp-action="BransGuncelle" asp-route-id="@brans.BransAdi">@brans.BransAdi</a>
-                                                @if (!string.IsNullOrEmpty(brans.BransCinsiyet))
-                                                {
-                                                    if (brans.BransCinsiyet == "1")
-                                                    {
-                                                        <span class="text-primary">(E)</span>
-                                                    }
-                                                    else if (brans.BransCinsiyet == "2")
-                                                    {
-                                                        <span class="text-danger">(K)</span>
-                                                    }
-                                                }
-                                            </td>
-                                            <td>@brans.BransKontSayi</td>
-                                        </tr>
-                                    }
+                                            </a>
+                                        </td>
+                                        <td>@brans.BransKontSayi</td>
+                                    </tr>
                                 }
                             }
                         }
                     }
                 </tbody>
+                <tfoot>
+                    <tr class="font-weight-bold table-info">
+                        <td colspan="5" class="text-right">TOPLAM KONTENJAN</td>
+                        <td>@toplamKontenjan</td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -163,9 +158,17 @@
         $(document).ready(function () {
             $('#myTable').DataTable({
                 "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Turkish.json"
+                    "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json"
                 },
-                "ordering": false
+                "autoWidth": false,
+                "columnDefs": [
+                    { "width": "5%", "targets": 0 },
+                    { "width": "15%", "targets": 1 },
+                    { "width": "25%", "targets": 2 },
+                    { "width": "15%", "targets": 3 },
+                    { "width": "30%", "targets": 4, "className": "text-wrap" },
+                    { "width": "10%", "targets": 5 }
+                ]
             });
         });
     </script>

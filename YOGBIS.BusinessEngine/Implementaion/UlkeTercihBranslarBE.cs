@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Renci.SshNet.Security.Cryptography.Ciphers.Modes;
 using System;
 using System.Collections.Generic;
@@ -43,7 +43,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 // Veri yoksa hata fırlat
                 if (data == null || !data.Any())
                 {
-                    return new Result<List<UlkeTercihBranslarVM>>(false, ResultConstant.RecordNotFound);
+                    return new Result<List<UlkeTercihBranslarVM>>(false, ResultConstant.RecordNotFound, default(List<UlkeTercihBranslarVM>));
                 }
 
                 // Mapping işlemi
@@ -52,7 +52,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 // Mapping sonrası kontrol
                 if (branslar == null || !branslar.Any())
                 {
-                    return new Result<List<UlkeTercihBranslarVM>>(false, ResultConstant.RecordNotFound);
+                    return new Result<List<UlkeTercihBranslarVM>>(false, ResultConstant.RecordNotFound, default(List<UlkeTercihBranslarVM>));
                 }
 
                 // Verileri işle ve döndür
@@ -75,45 +75,45 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
             catch (Exception ex)
             {
-                return new Result<List<UlkeTercihBranslarVM>>(false, $"Dereceler getirilirken bir hata oluştu: {ex.Message}");
+                return new Result<List<UlkeTercihBranslarVM>>(false, $"Dereceler getirilirken bir hata oluştu: {ex.Message}", default(List<UlkeTercihBranslarVM>));
             }
         }
         #endregion
 
-        #region BransGetir(Guid id)
+        #region UlkeTercihBransGetir
         public Result<UlkeTercihBranslarVM> UlkeTercihBransGetir(Guid id)
         {
-            if (id != null)
+            try
             {
-                var data = _unitOfWork.ulkeTercihBransRepository.GetFirstOrDefault(x => x.TercihBransId == id, includeProperties: "Kullanici,UlkeTercih");
+                var brans = _unitOfWork.ulkeTercihBransRepository.GetFirstOrDefault(
+                    x => x.TercihBransId == id, 
+                    includeProperties: "UlkeTercih,Brans"
+                );
 
-                if (data != null)
+                if (brans == null)
                 {
-                    UlkeTercihBranslarVM brans = new UlkeTercihBranslarVM();
-
-                    brans.TercihBransId = data.TercihBransId;
-                    brans.BransAdi = data.BransAdi;
-                    brans.BransId = data.BransId;
-                    brans.BransCinsiyet = data.BransCinsiyet;
-                    brans.BransKontSayi = data.BransKontSayi;
-                    brans.EsitBrans = data.EsitBrans;
-                    brans.UlkeTercihId = data.UlkeTercih != null ? data.UlkeTercihId : Guid.Empty;
-                    brans.UlkeTercihAdi = data.UlkeTercih != null ? data.UlkeTercih.UlkeTercihAdi : string.Empty;
-                    brans.KayitTarihi = data.KayitTarihi;
-                    brans.KaydedenId = data.Kullanici != null ? data.KaydedenId : string.Empty;
-                    brans.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
-
-
-                    return new Result<UlkeTercihBranslarVM>(true, ResultConstant.RecordFound, brans);
+                    return new Result<UlkeTercihBranslarVM>(false, "Branş bulunamadı", default(UlkeTercihBranslarVM));
                 }
-                else
+
+                var tercihBrans = new UlkeTercihBranslarVM
                 {
-                    return new Result<UlkeTercihBranslarVM>(false, ResultConstant.RecordNotFound);
-                }
+                    TercihBransId = brans.TercihBransId,
+                    UlkeTercihId = brans.UlkeTercihId,
+                    BransId = brans.BransId,
+                    BransAdi = brans.BransAdi,
+                    BransCinsiyet = brans.BransCinsiyet,
+                    BransKontSayi = brans.BransKontSayi,
+                    EsitBrans = brans.EsitBrans,
+                    KaydedenId = brans.KaydedenId,
+                    KayitTarihi = brans.KayitTarihi,
+                    UlkeTercihAdi = brans.UlkeTercih?.UlkeTercihAdi
+                };
+
+                return new Result<UlkeTercihBranslarVM>(true, "Branş başarıyla getirildi", tercihBrans);
             }
-            else
+            catch (Exception ex)
             {
-                return new Result<UlkeTercihBranslarVM>(false, ResultConstant.RecordNotFound);
+                return new Result<UlkeTercihBranslarVM>(false, $"Branş getirilirken hata oluştu: {ex.Message}", default(UlkeTercihBranslarVM));
             }
         }
         #endregion
@@ -130,17 +130,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     _unitOfWork.ulkeTercihBransRepository.Add(brans);
                     _unitOfWork.Save();
-                    return new Result<UlkeTercihBranslarVM>(true, ResultConstant.RecordCreateSuccess);
+                    return new Result<UlkeTercihBranslarVM>(true, ResultConstant.RecordCreateSuccess, default(UlkeTercihBranslarVM));
                 }
                 catch (Exception ex)
                 {
 
-                    return new Result<UlkeTercihBranslarVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                    return new Result<UlkeTercihBranslarVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString(), default(UlkeTercihBranslarVM));
                 }
             }
             else
             {
-                return new Result<UlkeTercihBranslarVM>(false, "Boş veri olamaz");
+                return new Result<UlkeTercihBranslarVM>(false, "Boş veri olamaz", default(UlkeTercihBranslarVM));
             }
         }
         #endregion
@@ -166,39 +166,51 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                         _unitOfWork.ulkeTercihBransRepository.Update(data);
                         _unitOfWork.Save();
-                        return new Result<UlkeTercihBranslarVM>(true, ResultConstant.RecordCreateSuccess);
+                        return new Result<UlkeTercihBranslarVM>(true, ResultConstant.RecordCreateSuccess, default(UlkeTercihBranslarVM));
                     }
                     else
                     {
-                        return new Result<UlkeTercihBranslarVM>(false, "Lütfen kayıt seçiniz");
+                        return new Result<UlkeTercihBranslarVM>(false, "Lütfen kayıt seçiniz", default(UlkeTercihBranslarVM));
                     }
                 }
                 catch (Exception ex)
                 {
 
-                    return new Result<UlkeTercihBranslarVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                    return new Result<UlkeTercihBranslarVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString(), default(UlkeTercihBranslarVM));
                 }
             }
             else
             {
-                return new Result<UlkeTercihBranslarVM>(false, "Boş veri olamaz");
+                return new Result<UlkeTercihBranslarVM>(false, "Boş veri olamaz", default(UlkeTercihBranslarVM));
             }
         }
         #endregion
 
         #region BranshSil
-        public Result<bool> UlkeTercihBransSil(Guid id)
+        public Result<bool> UlkeTercihBransSil(Guid id, SessionContext user)
         {
-            var data = _unitOfWork.ulkeTercihBransRepository.Get(id);
-            if (data != null)
+            try
             {
+                var data = _unitOfWork.ulkeTercihBransRepository.GetFirstOrDefault(
+                    x => x.TercihBransId == id,
+                    includeProperties: "UlkeTercih"
+                );
+
+                if (data == null)
+                {
+                    return new Result<bool>(false, "Silinecek branş bulunamadı", false);
+                }
+
+                var ulkeTercihId = data.UlkeTercihId;
+
                 _unitOfWork.ulkeTercihBransRepository.Remove(data);
                 _unitOfWork.Save();
-                return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
+
+                return new Result<bool>(true, "Branş başarıyla silindi", true);
             }
-            else
+            catch (Exception ex)
             {
-                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+                return new Result<bool>(false, $"Branş silinirken hata oluştu: {ex.Message}", false);
             }
         }
         #endregion
