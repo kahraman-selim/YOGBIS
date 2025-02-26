@@ -62,6 +62,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     BransAdi=item.BransAdi,
                     BransId=item.BransId,
                     BransCinsiyet=item.BransCinsiyet,
+                    YabanciDil=item.YabanciDil,
                     BransKontSayi=item.BransKontSayi,
                     EsitBrans=item.EsitBrans,
                     UlkeTercihId=item.UlkeTercih != null ? item.UlkeTercihId : Guid.Empty,
@@ -102,6 +103,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     BransId = brans.BransId,
                     BransAdi = brans.BransAdi,
                     BransCinsiyet = brans.BransCinsiyet,
+                    YabanciDil=brans.YabanciDil,
                     BransKontSayi = brans.BransKontSayi,
                     EsitBrans = brans.EsitBrans,
                     KaydedenId = brans.KaydedenId,
@@ -118,23 +120,44 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region BransEkle
+        #region UlkeTercihBransEkle
         public Result<UlkeTercihBranslarVM> UlkeTercihBransEkle(UlkeTercihBranslarVM model, SessionContext user)
         {
             if (model != null)
             {
                 try
                 {
-                    var brans = _mapper.Map<UlkeTercihBranslarVM, UlkeTercihBranslar>(model);
-                    brans.KaydedenId = user.LoginId;
+                    var ulkeTercih = _unitOfWork.ulkeTercihRepository.GetFirstOrDefault(
+                        x => x.UlkeTercihId == model.UlkeTercihId,
+                        includeProperties: "SoruDereceler"
+                    );
+
+                    if (ulkeTercih == null)
+                    {
+                        return new Result<UlkeTercihBranslarVM>(false, "Ülke tercihi bulunamadı", default(UlkeTercihBranslarVM));
+                    }
+
+                    var brans = new UlkeTercihBranslar
+                    {
+                        TercihBransId = Guid.NewGuid(),
+                        BransAdi = model.BransAdi,
+                        BransId = model.BransId,
+                        BransCinsiyet = model.BransCinsiyet,                        
+                        BransKontSayi = model.BransKontSayi,
+                        EsitBrans = model.EsitBrans,
+                        YabanciDil = model.EsitBrans ? ulkeTercih.YabancıDil : model.YabanciDil,
+                        UlkeTercihId = model.UlkeTercihId,
+                        KayitTarihi = DateTime.Now,
+                        KaydedenId = user.LoginId
+                    };
 
                     _unitOfWork.ulkeTercihBransRepository.Add(brans);
                     _unitOfWork.Save();
+
                     return new Result<UlkeTercihBranslarVM>(true, ResultConstant.RecordCreateSuccess, default(UlkeTercihBranslarVM));
                 }
                 catch (Exception ex)
                 {
-
                     return new Result<UlkeTercihBranslarVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString(), default(UlkeTercihBranslarVM));
                 }
             }
@@ -145,14 +168,18 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region BransGuncelle
+        #region UlkeTercihBransGuncelle
         public Result<UlkeTercihBranslarVM> UlkeTercihBransGuncelle(UlkeTercihBranslarVM model, SessionContext user)
         {
-            if (model.TercihBransId != null)
+            if (model != null)
             {
                 try
                 {
-                    var data = _unitOfWork.ulkeTercihBransRepository.Get(model.TercihBransId);
+                    var data = _unitOfWork.ulkeTercihBransRepository.GetFirstOrDefault(
+                        x => x.TercihBransId == model.TercihBransId,
+                        includeProperties: "UlkeTercih"
+                    );
+
                     if (data != null)
                     {
                         data.BransAdi = model.BransAdi;
@@ -160,12 +187,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.BransCinsiyet = model.BransCinsiyet;
                         data.BransKontSayi = model.BransKontSayi;
                         data.EsitBrans = model.EsitBrans;
-                        data.UlkeTercihId = model.UlkeTercihId;
-                        data.KaydedenId = model.KaydedenId;
-                        data.KayitTarihi = model.KayitTarihi;
+                        data.YabanciDil = model.EsitBrans ? data.UlkeTercih.YabancıDil : model.YabanciDil;
+                        data.KayitTarihi = DateTime.Now;
+                        data.KaydedenId = user.LoginId;
 
                         _unitOfWork.ulkeTercihBransRepository.Update(data);
                         _unitOfWork.Save();
+
                         return new Result<UlkeTercihBranslarVM>(true, ResultConstant.RecordCreateSuccess, default(UlkeTercihBranslarVM));
                     }
                     else
@@ -175,7 +203,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 }
                 catch (Exception ex)
                 {
-
                     return new Result<UlkeTercihBranslarVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString(), default(UlkeTercihBranslarVM));
                 }
             }

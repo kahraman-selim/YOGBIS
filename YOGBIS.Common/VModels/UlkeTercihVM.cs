@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,6 +21,7 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Derece seçimi yapınız...")]
         public Guid DereceId { get; set; }
         public string DereceAdi { get; set; }
+        public int DereceKodu { get; set; }
         public SoruDerecelerVM SoruDereceler { get; set; }
         [Required(ErrorMessage = "Mülakat seçimi yapınız...")]
         public Guid MulakatId { get; set; }

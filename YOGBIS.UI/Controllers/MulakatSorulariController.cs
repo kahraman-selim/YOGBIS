@@ -53,7 +53,7 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-            ViewBag.Mulakatlar = string.Empty;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
             ViewBag.SoruKategorileri = string.Empty;
 
             //ViewBag.SoruKategorileri = _soruKategorileriBE.SoruKategorileriGetir().Data;
@@ -173,10 +173,10 @@ namespace YOGBIS.UI.Controllers
 
             if (dereceId != null)
             {
-                var data = _unitOfWork.mulakatlarRepository.GetAll(x => x.DereceId == dereceId);  //  //_mulakatOlusturBE.MulakatDonemAdiGetir(dereceId).Data; 
+               // var data = _unitOfWork.mulakatlarRepository.GetAll(x => x.DereceId == dereceId);  //  //_mulakatOlusturBE.MulakatDonemAdiGetir(dereceId).Data; 
                 //string donem = JsonConvert.SerializeObject(data);
 
-                return Json(data);
+                //return Json(data);
             }
 
             return NotFound();

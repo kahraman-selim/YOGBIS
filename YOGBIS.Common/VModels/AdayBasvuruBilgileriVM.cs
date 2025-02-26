@@ -74,7 +74,7 @@ namespace YOGBIS.Common.VModels
         public Guid? MulakatId { get; set; }
         public string MulakatOnayNo { get; set; }
         public int MulakatYil { get; set; }
-        public MulakatlarVM Mulakatlar { get; set; }
+        public Guid? KomisyonId { get; set; }
         public Guid? UlkeTercihId { get; set; }
         public Guid? BransId { get; set; }
         public string KaydedenId { get; set; }

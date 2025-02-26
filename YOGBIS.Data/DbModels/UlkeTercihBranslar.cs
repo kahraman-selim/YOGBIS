@@ -16,9 +16,10 @@ namespace YOGBIS.Data.DbModels
         public string BransCinsiyet { get; set; }
         public int BransKontSayi { get; set; }
         public bool EsitBrans { get; set; }
+        public string YabanciDil { get; set; }
         public Guid UlkeTercihId { get; set; }
         [ForeignKey("UlkeTercihId")]
-        public UlkeTercih UlkeTercih { get; set; }
+        public UlkeTercih UlkeTercih { get; set; }       
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

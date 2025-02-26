@@ -25,12 +25,9 @@ namespace YOGBIS.Common.VModels
         public string KomisyonUyeEPosta { get; set; }
         public DateTime KomisyonGorevBaslamaTarihi { get; set; }
         public DateTime KomisyonGorevBitisTarihi { get; set; }
-        public Guid MulakatId { get; set; }
-        public MulakatlarVM Mulakatlar { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
-        public List<AdaylarVM> Adaylar { get; set; }
         public List<AdayNotVM> AdayNot { get; set; }
     }
 }

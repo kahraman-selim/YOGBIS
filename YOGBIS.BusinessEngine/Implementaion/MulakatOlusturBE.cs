@@ -52,9 +52,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         YazılıSinavTarihi=item.YazılıSinavTarihi,
                         MulakatKategoriId=item.MulakatKategoriId,
                         MulakatAdi=item.MulakatAdi,
-                        MulakatDonemi=item.MulakatAdi + "-" + item.Dereceler.DereceAdi + "-" + item.BaslamaTarihi.Day.ToString() + "/" + item.BaslamaTarihi.Month.ToString() + "-" +
+                        MulakatDonemi=item.MulakatAdi + "-" + item.BaslamaTarihi.Day.ToString() + "/" + item.BaslamaTarihi.Month.ToString() + "-" +
                         item.BitisTarihi.Day.ToString() + "/" + item.BitisTarihi.Month.ToString() + "-" + item.BitisTarihi.Year.ToString(),
-                        DereceAdi = item.Dereceler.DereceAdi,
+                        MulakatYil = Convert.ToInt32(item.YazılıSinavTarihi.Year.ToString()),
                         BaslamaTarihi=item.BaslamaTarihi,
                         BitisTarihi=item.BitisTarihi,
                         AdaySayisi = item.AdaySayisi,
@@ -163,47 +163,47 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region MulakatlariGetir
-        public Result<List<MulakatlarVM>> MulakatAdGetirDereceId(Guid dereceId)
-        {
-            var data = _unitOfWork.mulakatlarRepository.GetAll(u=>u.DereceId==dereceId, includeProperties: "Kullanici,Mulakatlar").OrderByDescending(s => s.MulakatKategoriId).ToList();
-            if (data != null)
-            {
-                List<MulakatlarVM> returnData = new List<MulakatlarVM>();
+        //public Result<List<MulakatlarVM>> MulakatAdGetirDereceId(Guid dereceId)
+        //{
+        //    var data = _unitOfWork.mulakatlarRepository.GetAll(u=>u.DereceId==dereceId, includeProperties: "Kullanici,Mulakatlar").OrderByDescending(s => s.MulakatKategoriId).ToList();
+        //    if (data != null)
+        //    {
+        //        List<MulakatlarVM> returnData = new List<MulakatlarVM>();
 
-                foreach (var item in data)
-                {
-                    returnData.Add(new MulakatlarVM()
-                    {
-                        MulakatId = item.MulakatId,
-                        OnaySayisi = item.OnaySayisi,
-                        OnayTarihi = item.OnayTarihi,
-                        KararSayisi = item.KararSayisi,
-                        KararTarihi = item.KararTarihi,
-                        YazılıSinavTarihi = item.YazılıSinavTarihi,
-                        MulakatKategoriId = item.MulakatKategoriId,
-                        MulakatAdi = item.MulakatAdi,
-                        MulakatDonemi = item.MulakatAdi + "-" + item.Dereceler.DereceAdi + "-" + item.BaslamaTarihi.Day.ToString() + "/" + item.BaslamaTarihi.Month.ToString() + "-" +
-                        item.BitisTarihi.Day.ToString() + "/" + item.BitisTarihi.Month.ToString() + "-" + item.BitisTarihi.Year.ToString(),
-                        DereceId = item.Dereceler.DereceId,
-                        DereceAdi = item.Dereceler.DereceAdi,
-                        BaslamaTarihi = item.BaslamaTarihi,
-                        BitisTarihi = item.BitisTarihi,
-                        AdaySayisi = item.AdaySayisi,
-                        SorulanSoruSayisi = (int)item.SorulanSoruSayisi,
-                        Durumu = item.Durumu,
-                        MulakatAciklama = item.MulakatAciklama,
-                        KaydedenId = item.KaydedenId != null ? item.KaydedenId : string.Empty,
-                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
-                        KayitTarihi = item.KayitTarihi
-                    });
-                }
-                return new Result<List<MulakatlarVM>>(true, ResultConstant.RecordFound, returnData);
-            }
-            else
-            {
-                return new Result<List<MulakatlarVM>>(false, ResultConstant.RecordNotFound);
-            }
-        }
+        //        foreach (var item in data)
+        //        {
+        //            returnData.Add(new MulakatlarVM()
+        //            {
+        //                MulakatId = item.MulakatId,
+        //                OnaySayisi = item.OnaySayisi,
+        //                OnayTarihi = item.OnayTarihi,
+        //                KararSayisi = item.KararSayisi,
+        //                KararTarihi = item.KararTarihi,
+        //                YazılıSinavTarihi = item.YazılıSinavTarihi,
+        //                MulakatKategoriId = item.MulakatKategoriId,
+        //                MulakatAdi = item.MulakatAdi,
+        //                MulakatDonemi = item.MulakatAdi + "-" + item.Dereceler.DereceAdi + "-" + item.BaslamaTarihi.Day.ToString() + "/" + item.BaslamaTarihi.Month.ToString() + "-" +
+        //                item.BitisTarihi.Day.ToString() + "/" + item.BitisTarihi.Month.ToString() + "-" + item.BitisTarihi.Year.ToString(),
+        //                DereceId = item.Dereceler.DereceId,
+        //                DereceAdi = item.Dereceler.DereceAdi,
+        //                BaslamaTarihi = item.BaslamaTarihi,
+        //                BitisTarihi = item.BitisTarihi,
+        //                AdaySayisi = item.AdaySayisi,
+        //                SorulanSoruSayisi = (int)item.SorulanSoruSayisi,
+        //                Durumu = item.Durumu,
+        //                MulakatAciklama = item.MulakatAciklama,
+        //                KaydedenId = item.KaydedenId != null ? item.KaydedenId : string.Empty,
+        //                KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+        //                KayitTarihi = item.KayitTarihi
+        //            });
+        //        }
+        //        return new Result<List<MulakatlarVM>>(true, ResultConstant.RecordFound, returnData);
+        //    }
+        //    else
+        //    {
+        //        return new Result<List<MulakatlarVM>>(false, ResultConstant.RecordNotFound);
+        //    }
+        //}
         #endregion
 
         #region MulakatDonemAdGetir(Guid id)
@@ -212,7 +212,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var data = _unitOfWork.mulakatlarRepository.Get(id);
             if (data != null)
             {
-                var donemadi = data.MulakatAdi + "-" + data.Dereceler.DereceAdi + "-" + data.BaslamaTarihi.Day.ToString() + "/" + data.BaslamaTarihi.Month.ToString() + "-" +
+                var donemadi = data.MulakatAdi + "-" + data.BaslamaTarihi.Day.ToString() + "/" + data.BaslamaTarihi.Month.ToString() + "-" +
                 data.BitisTarihi.Day.ToString() + "/" + data.BitisTarihi.Month.ToString() + "-" + data.BitisTarihi.Year.ToString();
 
 
@@ -226,28 +226,28 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region MulakatDonemAdiGetir(id)
-        public Result<MulakatlarVM> MulakatDonemAdiGetir(Guid id)
-        {
-            if (id != null)
-            {
-                var data = _unitOfWork.mulakatlarRepository.GetFirstOrDefault(u => u.DereceId == id, includeProperties: "Kullanici");
-                if (data != null)
-                {
-                    MulakatlarVM donem = new MulakatlarVM();
-                    donem.MulakatDonemi = data.MulakatAdi;
+        //public Result<MulakatlarVM> MulakatDonemAdiGetir(Guid id)
+        //{
+        //    if (id != null)
+        //    {
+        //        var data = _unitOfWork.mulakatlarRepository.GetFirstOrDefault(u => u.DereceId == id, includeProperties: "Kullanici");
+        //        if (data != null)
+        //        {
+        //            MulakatlarVM donem = new MulakatlarVM();
+        //            donem.MulakatDonemi = data.MulakatAdi;
 
-                    return new Result<MulakatlarVM>(true, ResultConstant.RecordFound, donem);
-                }
-                else
-                {
-                    return new Result<MulakatlarVM>(false, ResultConstant.RecordNotFound);
-                }
-            }
-            else
-            {
-                return new Result<MulakatlarVM>(false, ResultConstant.RecordNotFound);
-            }
-        }
+        //            return new Result<MulakatlarVM>(true, ResultConstant.RecordFound, donem);
+        //        }
+        //        else
+        //        {
+        //            return new Result<MulakatlarVM>(false, ResultConstant.RecordNotFound);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return new Result<MulakatlarVM>(false, ResultConstant.RecordNotFound);
+        //    }
+        //}
         #endregion
     }
 }

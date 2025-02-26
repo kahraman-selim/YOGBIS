@@ -13,8 +13,8 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<MulakatlarVM> MulakatEkle(MulakatlarVM model, SessionContext user);              
         Result<MulakatlarVM> MulakatGuncelle(MulakatlarVM model, SessionContext user);        
         Result<bool> MulakatSil(Guid id);
-        Result<List<MulakatlarVM>> MulakatAdGetirDereceId(Guid dereceId);
+        //Result<List<MulakatlarVM>> MulakatAdGetirDereceId(Guid dereceId);
         Result<string> MulakatDonemAdGetir(Guid id);
-        Result<MulakatlarVM> MulakatDonemAdiGetir(Guid id);
+        //Result<MulakatlarVM> MulakatDonemAdiGetir(Guid id);
     }
 }

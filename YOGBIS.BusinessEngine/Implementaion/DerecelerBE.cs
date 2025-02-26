@@ -57,6 +57,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 {
                     DereceId = item.DereceId,
                     DereceAdi = item.DereceAdi,
+                    DereceKodu=item.DereceKodu,
                     KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                     KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                 }).ToList();
@@ -95,6 +96,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         DereceId = item.DereceId,
                         DereceAdi = item.DereceAdi,
+                        DereceKodu=item.DereceKodu,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
@@ -191,7 +193,11 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 }
 
                 var derece = _mapper.Map<SoruDerecelerVM, SoruDereceler>(model);
-                derece.KaydedenId = user.LoginId;
+                if (derece.DereceAdi == "Öğretmen")
+                    derece.DereceKodu = 1;
+                else
+                    derece.DereceKodu = 2;
+                    derece.KaydedenId = user.LoginId;
                 _unitOfWork.soruDerecelerRepository.Add(derece);
                 _unitOfWork.Save();
 
@@ -229,6 +235,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 }
 
                 var derece = _mapper.Map<SoruDerecelerVM, SoruDereceler>(model);
+                if (derece.DereceAdi == "Öğretmen")
+                    derece.DereceKodu = 1;
+                else
+                    derece.DereceKodu = 2;
                 derece.KaydedenId = user.LoginId;
                 _unitOfWork.soruDerecelerRepository.Update(derece);
                 _unitOfWork.Save();

@@ -11,11 +11,11 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public Guid DereceId { get; set; }
         public string DereceAdi { get; set; }
+        public int DereceKodu { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }
         public List<SoruDerece> SoruDerece { get; set; }
-        public List<SoruKategoriler> SoruKategoriler { get; set; }
-        public List<Mulakatlar> Mulakatlar { get; set; }
+        public List<SoruKategoriler> SoruKategoriler { get; set; }        
     }
 }

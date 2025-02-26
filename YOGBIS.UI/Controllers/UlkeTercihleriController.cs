@@ -203,9 +203,9 @@ namespace YOGBIS.UI.Controllers
 
             if (dereceId != null)
             {
-                var data = _unitOfWork.mulakatlarRepository.GetAll(x => x.DereceId == dereceId);
+               // var data = _unitOfWork.mulakatlarRepository.GetAll(x => x.DereceId == dereceId);
 
-                return Json(data);
+               // return Json(data);
             }
 
             return NotFound();

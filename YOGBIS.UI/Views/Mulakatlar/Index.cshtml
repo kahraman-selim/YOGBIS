@@ -26,10 +26,13 @@
                     <div class="form-row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label asp-for="DereceId" class="small mb-1 font-weight-bold">Derecesi</label>
-                                @Html.DropDownListFor(a => a.DereceId, new SelectList(ViewBag.Dereceler, "DereceId",
-                                         "DereceAdi"), "Dereceyi seçiniz", new { @class = "form-control-range form-control" })
-                                <span class="text-danger" asp-validation-for="DereceId"></span>
+                                <label asp-for="MulakatKategoriId" class="small mb-1 font-weight-bold">Mülakat Türü Seç</label>
+                                <select asp-for="MulakatKategoriId" class="form-control-range form-control py-2" aria-label="Default select example">
+                                    <option asp-for="MulakatKategoriId" selected class="text-center"></option>
+                                    <option asp-for="MulakatKategoriId" value="1">Mesleki Yeterlilik Sözlü Sınavı</option>
+                                    <option asp-for="MulakatKategoriId" value="2">Temsil Yeteneği Sınavı</option>
+                                </select>
+                                <span class="text-danger" asp-validation-for="Durumu"></span>
                             </div>
                         </div>
                     </div>

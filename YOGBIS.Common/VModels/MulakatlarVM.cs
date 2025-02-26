@@ -24,11 +24,7 @@ namespace YOGBIS.Common.VModels
         public int MulakatKategoriId { get; set; }
         public string MulakatAdi { get; set; }
         public string MulakatDonemi { get; set; }
-        [Required(ErrorMessage = "Derece seçimi yapınız !")]
-        public Guid DereceId { get; set; }
-        public string DereceAdi { get; set; }
-        [Required(ErrorMessage = "Derece seçimi yapınız !")]
-        public SoruDerecelerVM Dereceler { get; set; }
+        public int MulakatYil { get; set; }
         [Required(ErrorMessage = "Başlama Tarihini belirtiniz !")]
         public DateTime BaslamaTarihi { get; set; }        
         [Required(ErrorMessage = "Bitiş Tarihini belirtiniz !")]
@@ -43,7 +39,6 @@ namespace YOGBIS.Common.VModels
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<MulakatSorulariVM> MulakatSorularis { get; set; }
-        public List<AdaylarVM> Adaylars { get; set; }
-        public List<KomisyonlarVM> Komisyonlars { get; set; }
+        public List<AdayBasvuruBilgileriVM> AdayBasvuruBilgileris { get; set; }        
     }
 }

@@ -131,30 +131,9 @@
 
         $("#DereceListesi").on("change", function () {
 
-            var DereceId = $("#DereceListesi").val();
+            $('#MulakatListesi').focus();
 
-            //alert(DereceId);
-            //mülakatları getir
-            $("#MulakatListesi").empty();
-
-            $("#MulakatListesi").append("<option value=''> Mülakatı seçiniz </option>");
-
-            //$("#MulakatListesi").append("<option value='0'> Tümünü seç </option>");
-
-            var url = '@Url.Action("MulakatAdGetir", "MulakatSorulari")?dereceId=' + DereceId;
-
-            $.getJSON(url, function (data) {
-
-                $.each(data, function (i = 0, mulakatId, mulakatAdi) {
-
-                    //alert(data);
-                    $('#MulakatListesi').append($('<option>', {
-                        value: data[i]['mulakatId'],
-                        text: data[i]['mulakatAdi']
-                    }));
-
-                });
-            });
+            var DereceId = $("#DereceListesi").val();            
 
             // kategorileri getir
             $("#KategoriListesi").empty();
@@ -176,7 +155,7 @@
             });
 
 
-            $('#MulakatListesi').focus();
+            
 
         });
 

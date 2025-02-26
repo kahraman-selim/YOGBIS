@@ -72,6 +72,7 @@ namespace YOGBIS.Data.DbModels
         public string DereceAdi { get; set; }
         public string Unvan { get; set; }
         public Guid? MulakatId { get; set; }
+        public Guid? KomisyonId { get; set; }
         public Guid? UlkeTercihId { get; set; }
         public Guid? BransId { get; set; }
         public string KaydedenId { get; set; }

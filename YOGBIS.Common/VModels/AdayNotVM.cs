@@ -15,7 +15,9 @@ namespace YOGBIS.Common.VModels
         public string TC { get; set; }
         public Guid? KomisyonId { get; set; }
         public int KomisyonUyeSiraId { get; set; }
+        public string KomisyonUyeAdSoyad { get; set; }
         public Guid? NotKategoriId { get; set; }
+        public string NotKategoriTakmaAdi { get; set; }
         public int Not { get; set; }
         public Guid? MulakatId { get; set; }
         public string KaydedenId { get; set; }

@@ -41,13 +41,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 var data = _unitOfWork.ulkeTercihRepository
                     .GetAll(includeProperties: "Kullanici,SoruDereceler,Mulakatlar,TercihBranslar,TercihBranslar.Kullanici")
-                    .OrderBy(t => t.UlkeTercihSiraNo)
+                    .OrderBy(t => t.SoruDereceler.DereceKodu) // Derece koduna göre sırala (öğretmen=1, okutman=2)
+                    .ThenBy(t => t.UlkeTercihSiraNo)
                     .ThenBy(t => t.YabancıDil)
                     .ToList();
 
                 if (data == null || !data.Any())
                 {
-                    return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound);
+                    return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound, default(List<UlkeTercihVM>));
                 }
 
                 var returnData = data.Select(item => new UlkeTercihVM
@@ -58,6 +59,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     YabancıDil = item.YabancıDil,
                     DereceId = item.DereceId != null ? item.DereceId : Guid.Empty,
                     DereceAdi = item.SoruDereceler != null ? item.SoruDereceler.DereceAdi : string.Empty,
+                    DereceKodu = item.SoruDereceler?.DereceKodu ?? 0,
                     MulakatId = item.MulakatId != null ? item.MulakatId : Guid.Empty,
                     MulakatYil = item.Mulakatlar != null ? item.Mulakatlar.BaslamaTarihi.Year : 0,
                     KayitTarihi = item.KayitTarihi,
@@ -87,7 +89,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
             catch (Exception ex)
             {
-                return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound);
+                return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound, default(List<UlkeTercihVM>));
             }
         }
         #endregion
@@ -194,6 +196,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                                     BransAdi=item.BransAdi,
                                     BransId=item.BransId,
                                     BransCinsiyet=item.BransCinsiyet,
+                                    YabanciDil=item.YabanciDil,
                                     BransKontSayi=item.BransKontSayi,
                                     EsitBrans=item.EsitBrans,
                                     UlkeTercihId=item.UlkeTercihId,
