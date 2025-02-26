@@ -35,13 +35,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region UlkeTercihleriGetir
-        public Result<List<UlkeTercihVM>> UlkeTercihleriGetir()
+        public Result<List<UlkeTercihVM>> UlkeTercihleriGetir(int year)
         {
             try
             {
                 var data = _unitOfWork.ulkeTercihRepository
-                    .GetAll(includeProperties: "Kullanici,SoruDereceler,Mulakatlar,TercihBranslar,TercihBranslar.Kullanici")
-                    .OrderBy(t => t.SoruDereceler.DereceKodu) // Derece koduna göre sırala (öğretmen=1, okutman=2)
+                    .GetAll(includeProperties: "Kullanici,SoruDereceler,Mulakatlar,TercihBranslar,Kullanici")
+                    .Where(t => t.Mulakatlar.BaslamaTarihi.Year == year)
+                    .OrderBy(t => t.SoruDereceler.DereceKodu) 
                     .ThenBy(t => t.UlkeTercihSiraNo)
                     .ThenBy(t => t.YabancıDil)
                     .ToList();
@@ -74,6 +75,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                             BransCinsiyet = b.BransCinsiyet,
                             BransKontSayi = b.BransKontSayi,
                             EsitBrans = b.EsitBrans,
+                            YabanciDil = b.YabanciDil,
                             UlkeTercihId = b.UlkeTercihId,
                             KayitTarihi = b.KayitTarihi,
                             KaydedenId = b.KaydedenId,
@@ -113,6 +115,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         YabancıDil = data.YabancıDil,
                         DereceId = data.DereceId != null ? data.DereceId : Guid.Empty,
                         DereceAdi = data.SoruDereceler != null ? data.SoruDereceler.DereceAdi : string.Empty,
+                        DereceKodu = data.SoruDereceler?.DereceKodu ?? 0,
                         MulakatId = data.MulakatId != null ? data.MulakatId : Guid.Empty,
                         MulakatYil = data.Mulakatlar != null ? data.Mulakatlar.BaslamaTarihi.Year : 0,
                         KayitTarihi = data.KayitTarihi,
@@ -137,7 +140,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 }
             }
 
-            return new Result<UlkeTercihVM>(false, ResultConstant.RecordNotFound);
+            return new Result<UlkeTercihVM>(false, ResultConstant.RecordNotFound, default(UlkeTercihVM));
         }
         #endregion
 
@@ -153,75 +156,47 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     _unitOfWork.ulkeTercihRepository.Add(ulketercih);
                     _unitOfWork.Save();
-                    return new Result<UlkeTercihVM>(true, ResultConstant.RecordCreateSuccess);
+                    return new Result<UlkeTercihVM>(true, ResultConstant.RecordCreateSuccess, model);
                 }
                 catch (Exception ex)
                 {
 
-                    return new Result<UlkeTercihVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                    return new Result<UlkeTercihVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString(), default(UlkeTercihVM));
                 }
             }
             else
             {
-                return new Result<UlkeTercihVM>(false, "Boş veri olamaz");
+                return new Result<UlkeTercihVM>(false, "Boş veri olamaz", default(UlkeTercihVM));
             }
         }
         #endregion
 
         #region UlkeTercihGuncelle
-        public Result<UlkeTercihVM> UlkeTercihGuncelle(UlkeTercihVM model, SessionContext user)
+        public Result<bool> UlkeTercihGuncelle(UlkeTercihVM model, SessionContext user)
         {
-            if (model.UlkeTercihId != null)
+            try
             {
-                try
+                var ulkeTercihi = _unitOfWork.ulkeTercihRepository.GetFirstOrDefault(u => u.UlkeTercihId == model.UlkeTercihId);
+                if (ulkeTercihi != null)
                 {
-                    var data = _unitOfWork.ulkeTercihRepository.Get(model.UlkeTercihId);
-                    if (data != null)
-                    {
-                        data.UlkeTercihAdi = model.UlkeTercihAdi;
-                        data.UlkeTercihSiraNo = model.UlkeTercihSiraNo;
-                        data.YabancıDil = model.YabancıDil;
-                        data.DereceId = model.DereceId;
-                        data.MulakatId = model.MulakatId;
-                        data.KayitTarihi = model.KayitTarihi;
-                        data.KaydedenId = user.LoginId;
+                    ulkeTercihi.UlkeTercihAdi = model.UlkeTercihAdi;
+                    ulkeTercihi.YabancıDil = model.YabancıDil;
+                    ulkeTercihi.DereceId = model.DereceId;
+                    ulkeTercihi.MulakatId = model.MulakatId;
+                    ulkeTercihi.UlkeTercihSiraNo = model.UlkeTercihSiraNo;
+                    ulkeTercihi.KaydedenId = user.LoginId;
 
-                        if (model.TercihBranslar != null)
-                        {
-                            data.TercihBranslar = new List<UlkeTercihBranslar>();
-                            foreach (var item in model.TercihBranslar)
-                            {
-                                data.TercihBranslar.Add(new UlkeTercihBranslar()
-                                {
-                                    BransAdi=item.BransAdi,
-                                    BransId=item.BransId,
-                                    BransCinsiyet=item.BransCinsiyet,
-                                    YabanciDil=item.YabanciDil,
-                                    BransKontSayi=item.BransKontSayi,
-                                    EsitBrans=item.EsitBrans,
-                                    UlkeTercihId=item.UlkeTercihId,
-                                    KayitTarihi=item.KayitTarihi                                    
-                                });
-                            }
-                        }
+                    _unitOfWork.ulkeTercihRepository.Update(ulkeTercihi);
+                    _unitOfWork.Save();
 
-                        _unitOfWork.ulkeTercihRepository.Update(data);
-                        _unitOfWork.Save();
-                        return new Result<UlkeTercihVM>(true, ResultConstant.RecordFound);
-                    }
-                    else
-                    {
-                        return new Result<UlkeTercihVM>(false, ResultConstant.RecordNotFound);
-                    }
+                    return new Result<bool>(true, "Ülke tercihi başarıyla güncellendi.", true);
                 }
-                catch (Exception ex)
-                {
-                    return new Result<UlkeTercihVM>(false, ResultConstant.RecordNotFound + " " + ex.Message.ToString());
-                }
+                
+                return new Result<bool>(false, "Güncellenecek ülke tercihi bulunamadı.", false);
             }
-            else
+            catch (Exception ex)
             {
-                return new Result<UlkeTercihVM>(false, "Boş veri olamaz");
+                return new Result<bool>(false, $"Ülke tercihi güncellenirken bir hata oluştu: {ex.Message}", false);
             }
         }
         #endregion
@@ -229,16 +204,67 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region UlkeTercihSil
         public Result<bool> UlkeTercihSil(Guid id)
         {
-            var data = _unitOfWork.ulkeTercihRepository.Get(id);
-            if (data != null)
+            try
             {
-                _unitOfWork.ulkeTercihRepository.Remove(data);
-                _unitOfWork.Save();
-                return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
+                var ulkeTercihi = _unitOfWork.ulkeTercihRepository.GetFirstOrDefault(u => u.UlkeTercihId == id);
+                if (ulkeTercihi != null)
+                {
+                    _unitOfWork.ulkeTercihRepository.Remove(ulkeTercihi);
+                    _unitOfWork.Save();
+
+                    return new Result<bool>(true, "Ülke tercihi başarıyla silindi.", true);
+                }
+                
+                return new Result<bool>(false, "Silinecek ülke tercihi bulunamadı.", false);
             }
-            else
+            catch (Exception ex)
             {
-                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+                return new Result<bool>(false, $"Ülke tercihi silinirken bir hata oluştu: {ex.Message}", false);
+            }
+        }
+        #endregion
+
+        #region BransEkle
+        public Result<bool> BransEkle(Guid ulkeTercihId, Guid tercihBransId, string yabancıDil, int bransKontSayi, string bransCinsiyet, bool esitBrans, SessionContext user)
+        {
+            try
+            {
+                // Ülke tercihini kontrol et
+                var ulkeTercihi = _unitOfWork.ulkeTercihRepository.GetFirstOrDefault(x => x.UlkeTercihId == ulkeTercihId);
+                if (ulkeTercihi == null)
+                {
+                    return new Result<bool>(false, "Ülke tercihi bulunamadı.", false);
+                }
+
+                // Branşı kontrol et
+                var brans = _unitOfWork.branslarRepository.GetFirstOrDefault(x => x.BransId == tercihBransId);
+                if (brans == null)
+                {
+                    return new Result<bool>(false, "Seçilen branş bulunamadı.", false);
+                }
+
+                // Yeni branş nesnesi oluştur
+                var yeniBrans = new UlkeTercihBranslar
+                {
+                    UlkeTercihId = ulkeTercihId,
+                    BransId = tercihBransId,
+                    BransAdi = brans.BransAdi,
+                    YabanciDil = yabancıDil,
+                    BransCinsiyet = bransCinsiyet,
+                    BransKontSayi = bransKontSayi,
+                    EsitBrans = esitBrans,
+                    KayitTarihi = DateTime.Now,
+                    KaydedenId = user.LoginId                    
+                };
+
+                _unitOfWork.ulkeTercihBransRepository.Add(yeniBrans);
+                _unitOfWork.Save();
+
+                return new Result<bool>(true, "Branş başarıyla eklendi.", true);
+            }
+            catch (Exception ex)
+            {
+                return new Result<bool>(false, $"Branş eklenirken bir hata oluştu: {ex.Message}", false);
             }
         }
         #endregion

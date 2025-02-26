@@ -2,140 +2,138 @@
 @{
     ViewData["Title"] = "Branş Güncelle";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentYear = ViewBag.CurrentYear ?? DateTime.Now.Year;
 }
 
-@if (TempData["error"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        @TempData["error"]
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-}
-@if (TempData["success"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @TempData["success"]
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-}
+<div class="row">
+    <div class="col-md-4">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+        <div class="card">
+            <div class="card-header text-center">
+                <h5 class="card-title text-danger">@Model.UlkeTercihAdi - @Model.BransAdi - @currentYear</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="BransGuncelle" method="post">
+                    <input type="hidden" asp-for="TercihBransId" />
+                    <input type="hidden" asp-for="UlkeTercihId" />
+                    <input type="hidden" asp-for="BransId" />
+                    <input type="hidden" name="year" value="@currentYear" />
+                    <input type="hidden" asp-for="UlkeTercihAdi" />
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-edit mr-1"></i>
-                        @Model.UlkeTercihAdi - Branş Güncelleme
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <form asp-action="BransGuncelle" method="post">
-                        @Html.HiddenFor(x => x.TercihBransId)
-                        @Html.HiddenFor(x => x.UlkeTercihId)
-                        @Html.HiddenFor(x => x.BransId)
-                        @Html.HiddenFor(x => x.KaydedenId)
-                        @Html.HiddenFor(x => x.KayitTarihi)
+                    <div class="form-group">
+                        <label asp-for="BransAdi">Branş Adı</label>
+                        <input asp-for="BransAdi" class="form-control" readonly />
+                        <span asp-validation-for="BransAdi" class="text-danger"></span>
+                    </div>
 
-                        <div class="form-group">
-                            <label asp-for="BransAdi" class="font-weight-bold">Branş Adı</label>
-                            <input asp-for="BransAdi" class="form-control" readonly />
-                            <span asp-validation-for="BransAdi" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="YabanciDil" class="small mb-1 font-weight-bold">Yabancı Dil</label>
-                            <select asp-for="YabanciDil" class="form-control-range form-control py-2" aria-label="Default select example" id="YabancıDil">
-                                <option selected class="text-left">Seçim yapınız</option>
-                                <option asp-for="YabanciDil" value="Dil Belgesi İstenmeyecektir">Dil Belgesi İstenmeyecektir</option>
-                                <option asp-for="YabanciDil" value="Almanca">Almanca</option>
-                                <option asp-for="YabanciDil" value="Fransızca">Fransızca</option>
-                                <option asp-for="YabanciDil" value="İngilizce">İngilizce</option>
-                            </select>
-                            <span class="text-danger" asp-validation-for="YabanciDil"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="font-weight-bold">Cinsiyet</label>
-                            <select asp-for="BransCinsiyet" class="form-control">
-                                <option value="">Seçim yapınız</option>
-                                <option value="0">Belirtilmemiş</option>
-                                <option value="1">Erkek</option>
-                                <option value="2">Kadın</option>
-                            </select>
-                            <span asp-validation-for="BransCinsiyet" class="text-danger"></span>
-                        </div>
+                    <div class="form-group">
+                        <label asp-for="YabanciDil">Yabancı Dil</label>
+                        <select asp-for="YabanciDil" class="form-control">
+                            <option value="">Seçiniz</option>
+                            <option value="Dil Belgesi İstenmeyecektir">Dil Belgesi İstenmeyecektir</option>
+                            <option value="Almanca">Almanca</option>
+                            <option value="Fransızca">Fransızca</option>
+                            <option value="İngilizce">İngilizce</option>
+                        </select>
+                        <span asp-validation-for="YabanciDil" class="text-danger"></span>
+                    </div>
 
-                        <div class="form-group">
-                            <label asp-for="BransKontSayi" class="font-weight-bold">Kontenjan Sayısı</label>
-                            <input asp-for="BransKontSayi" type="number" class="form-control" min="1" required />
-                            <span asp-validation-for="BransKontSayi" class="text-danger"></span>
-                        </div>
+                    <div class="form-group">
+                        <label asp-for="BransCinsiyet">Cinsiyet</label>
+                        <select asp-for="BransCinsiyet" class="form-control">
+                            <option value="">Seçiniz</option>
+                            <option value="0">Belirtilmemiş</option>
+                            <option value="1">Erkek</option>
+                            <option value="2">Kadın</option>
+                        </select>
+                        <span asp-validation-for="BransCinsiyet" class="text-danger"></span>
+                    </div>
 
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input asp-for="EsitBrans" type="checkbox" class="custom-control-input" id="esitBrans" />
-                                <label class="custom-control-label font-weight-bold" for="esitBrans">Eşit Branş</label>
-                            </div>
-                            <span asp-validation-for="EsitBrans" class="text-danger"></span>
-                        </div>
+                    <div class="form-group">
+                        <label asp-for="BransKontSayi">Kontenjan Sayısı</label>
+                        <input asp-for="BransKontSayi" class="form-control" type="number" min="1" />
+                        <span asp-validation-for="BransKontSayi" class="text-danger"></span>
+                    </div>
 
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save mr-1"></i> Kaydet
-                            </button>
-                            <a asp-action="Guncelle" asp-route-id="@Model.UlkeTercihId" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left mr-1"></i> Geri Dön
-                            </a>
-                            <button type="button" class="btn btn-danger" onclick="silBransi('@Model.TercihBransId')">
-                                <i class="fas fa-trash mr-1"></i> Sil
-                            </button>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input asp-for="EsitBrans" class="form-check-input" type="checkbox" />
+                            <label asp-for="EsitBrans" class="form-check-label">Eşit Branş</label>
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <input type="submit" value="Güncelle" class="btn btn-primary w-25" />
+                        <button type="button" class="btn btn-danger w-25" onclick="silmeOnay()">Sil</button>
+
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
+    <div class="col-md-8">
+        @await Component.InvokeAsync("UlkeTercihleri", new { year = currentYear })
     </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script>
-        function silBransi(bransId) {
-            Swal.fire({
-                title: 'Emin misiniz?',
-                text: "Bu branş silinecektir!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Evet, sil!',
-                cancelButtonText: 'İptal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var form = document.createElement('form');
-                    form.method = 'post';
-                    form.action = '@Url.Action("BransSil", "UlkeTercihleri")';
+        function silmeOnay() {
+            bootbox.confirm({
+                title: "Branş Silme",
+                message: "Bu branşı silmek istediğinizden emin misiniz?",
+                buttons: {
+                    cancel: {
+                        label: 'İptal',
+                        className: 'btn-secondary'
+                    },
+                    confirm: {
+                        label: 'Sil',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var form = document.createElement("form");
+                        form.method = "POST";
+                        form.action = "@Url.Action("BransSil", "UlkeTercihleri")";
 
-                    // Add antiforgery token
-                    var tokenInput = document.createElement('input');
-                    tokenInput.type = 'hidden';
-                    tokenInput.name = '__RequestVerificationToken';
-                    tokenInput.value = document.querySelector('input[name="__RequestVerificationToken"]').value;
-                    form.appendChild(tokenInput);
+                        var idInput = document.createElement("input");
+                        idInput.type = "hidden";
+                        idInput.name = "id";
+                        idInput.value = "@Model.TercihBransId";
+                        form.appendChild(idInput);
 
-                    // Add id parameter
-                    var idInput = document.createElement('input');
-                    idInput.type = 'hidden';
-                    idInput.name = 'id';
-                    idInput.value = bransId;
-                    form.appendChild(idInput);
+                        var yearInput = document.createElement("input");
+                        yearInput.type = "hidden";
+                        yearInput.name = "year";
+                        yearInput.value = "@currentYear";
+                        form.appendChild(yearInput);
 
-                    document.body.appendChild(form);
-                    form.submit();
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
                 }
             });
         }

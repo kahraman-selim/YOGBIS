@@ -45,6 +45,7 @@
             <div class="card-body">
                 <form class="form-group m-0" asp-action="UlkeTercihEkle">
                     @Html.HiddenFor(x => x.UlkeTercihId)
+                    <input type="hidden" name="year" value="@ViewBag.CurrentYear" />
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-row">
                         <div class="col-md-12">
@@ -117,38 +118,65 @@
         </div>
     </div>
     <div class="col-md-8">
-        @await Component.InvokeAsync("UlkeTercihleri")
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div id="ulkeTercihleriContainer">
+                        @await Component.InvokeAsync("UlkeTercihleri", new { year = ViewBag.CurrentYear })
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="text/javascript">
-        
-        $("#DereceListesi").on("change", function () {
-
-            $('#MulakatListesi').focus();
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            initializeDataTable();
         });
 
-        function uploadExcel() {
-            var formData = new FormData();
-            var fileInput = document.getElementById('fileInput');
-            formData.append('file', fileInput.files[0]);
-
-            $.ajax({
-                url: '/UlkeTercihleri/ExceldenBransYukle',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    alert('Yükleme başarılı!');
-                    window.location.href = '/UlkeTercihleri/Index';
+        function initializeDataTable() {
+            if ($.fn.DataTable.isDataTable('#myTable')) {
+                $('#myTable').DataTable().destroy();
+            }
+            $('#myTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json"
                 },
-                error: function(xhr, status, error) {
-                    alert('Hata oluştu: ' + error);
+                "autoWidth": false,
+                "columnDefs": [
+                    { "width": "5%", "targets": 0 },
+                    { "width": "15%", "targets": 1 },
+                    { "width": "25%", "targets": 2 },
+                    { "width": "15%", "targets": 3 },
+                    { "width": "30%", "targets": 4, "className": "text-wrap" },
+                    { "width": "10%", "targets": 5 }
+                ]
+            });
+        }
+
+        function loadUlkeTercihleri(year) {
+            $.get('@Url.Action("Index", "UlkeTercihleri")', { year: year }, function (result) {
+                if (result.indexOf('table') === -1) {
+                    bootbox.alert({
+                        title: 'Uyarı!',
+                        message: year + " yılına ait kayıt bulunamadı!",
+                        className: 'rubberBand animated'
+                    });
+                } else {
+                    $('#ulkeTercihleriContainer').html(result);
+                    initializeDataTable();
                 }
+            }).fail(function (xhr, status, error) {
+                bootbox.alert({
+                    title: 'Hata!',
+                    message: "Veriler yüklenirken bir hata oluştu!",
+                    className: 'rubberBand animated'
+                });
             });
         }
     </script>

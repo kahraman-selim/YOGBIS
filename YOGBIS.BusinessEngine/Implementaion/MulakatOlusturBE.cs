@@ -35,7 +35,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region MulakatlariGetir
         public Result<List<MulakatlarVM>> MulakatlariGetir()
         {
-            var data = _unitOfWork.mulakatlarRepository.GetAll(includeProperties: "Kullanici").OrderByDescending(s => s.MulakatId).ToList();
+            var data = _unitOfWork.mulakatlarRepository.GetAll(includeProperties: "Kullanici").OrderBy(s => s.MulakatId).ToList();
             if (data != null)
             {
                 List<MulakatlarVM> returnData = new List<MulakatlarVM>();

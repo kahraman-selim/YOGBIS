@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.BusinessEngine.Implementaion;
@@ -47,14 +49,24 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
-        public IActionResult Index()
+        public IActionResult Index(int? year)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
             
+            if (year == null)
+            {
+                year = DateTime.Now.Year;
+            }
+
+            ViewBag.CurrentYear = year;
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return ViewComponent("UlkeTercihleri", new { year = year });
+            }
+
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
-            
             return View();
         }
         #endregion
@@ -76,123 +88,204 @@ namespace YOGBIS.UI.Controllers
         #region UlkeTercihEkle(Post)
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult UlkeTercihEkle(UlkeTercihVM model, Guid? UlkeTercihId)
+        public IActionResult UlkeTercihEkle(UlkeTercihVM model, int? year)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
+            var data = _ulkeTercihleriBE.UlkeTercihEkle(model, user);
+            if (data.IsSuccess)
+            {
+                // Seçilen mülakatın yılını al
+                var mulakat = _mulakatOlusturBE.MulakatGetir(model.MulakatId);
+                if (mulakat.IsSuccess && mulakat.Data != null)
+                {
+                    year = mulakat.Data.BaslamaTarihi.Year;
+                }
+                else
+                {
+                    year = DateTime.Now.Year;
+                }
+
+                TempData["success"] = "Ülke tercihi başarıyla eklendi.";
+                return RedirectToAction(nameof(Index), new { year = year });
+            }
+
+            TempData["error"] = data.Message;
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
             ViewBag.Branslar = _branslarBE.BranslariGetir().Data;
-
-            if (UlkeTercihId != null)
-            {
-                var data = _ulkeTercihleriBE.UlkeTercihGuncelle(model, user);
-
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                var data = _ulkeTercihleriBE.UlkeTercihEkle(model, user);
-
-                return RedirectToAction("Index");
-
-            }
+            ViewBag.CurrentYear = year ?? DateTime.Now.Year;
+            return View(model);
         }
         #endregion
 
         #region Guncelle
-        public IActionResult Guncelle(Guid? id)
+        public IActionResult Guncelle(Guid? id, int? year)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
             ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
             ViewBag.Branslar = _branslarBE.BranslariGetir().Data;
+            ViewBag.CurrentYear = year ?? DateTime.Now.Year;
 
-            if (id != Guid.Empty)
+            if (year == null)
             {
-                var data = _ulkeTercihleriBE.UlkeTercihGetir((Guid)id);
-                return View(data.Data);
+                year = DateTime.Now.Year;
             }
-            else
+
+            if (id == null || id == Guid.Empty)
             {
-                return View();
+                return RedirectToAction(nameof(Index), new { year = year });
             }
+
+            var data = _ulkeTercihleriBE.UlkeTercihGetir((Guid)id);
+            if (!data.IsSuccess || data.Data == null)
+            {
+                return RedirectToAction(nameof(Index), new { year = year });
+            }
+
+            ViewBag.CurrentYear = year;
+            return View(data.Data);
+        }
+
+        [HttpPost]
+        public IActionResult Guncelle(UlkeTercihVM model, int? year)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var data = _ulkeTercihleriBE.UlkeTercihGuncelle(model, user);
+            if (data.IsSuccess)
+            {
+                // Seçilen mülakatın yılını al
+                var mulakat = _mulakatOlusturBE.MulakatGetir(model.MulakatId);
+                if (mulakat.IsSuccess && mulakat.Data != null)
+                {
+                    year = mulakat.Data.BaslamaTarihi.Year;
+                }
+                else
+                {
+                    year = DateTime.Now.Year;
+                }
+
+                TempData["success"] = "Ülke tercihi başarıyla güncellendi.";
+                return RedirectToAction(nameof(Index), new { year = year });
+            }
+
+            TempData["error"] = data.Message;
+            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            ViewBag.Branslar = _branslarBE.BranslariGetir().Data;
+            ViewBag.CurrentYear = year ?? DateTime.Now.Year;
+            return View(model);
         }
         #endregion
 
         #region BransGuncelle
-        public IActionResult BransGuncelle(Guid id)
+        public IActionResult BransGuncelle(Guid? id, int? year)
         {
-            try
-            {
-                if (id == Guid.Empty)
-                {
-                    TempData["error"] = "Geçersiz branş ID'si";
-                    return RedirectToAction("Index");
-                }
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-                var brans = _ulkeTercihBranslarBE.UlkeTercihBransGetir(id);
-                if (!brans.IsSuccess || brans.Data == null)
-                {
-                    TempData["error"] = brans.Message;
-                    return RedirectToAction("Index");
-                }
-
-                return View(brans.Data);
-            }
-            catch (Exception ex)
+            if (year == null)
             {
-                _logger.LogError($"Branş güncellenirken hata oluştu: {ex.Message}");
-                TempData["error"] = "İşlem sırasında bir hata oluştu";
-                return RedirectToAction("Index");
+                year = DateTime.Now.Year;
             }
+
+            if (id == null || id == Guid.Empty)
+            {
+                return RedirectToAction(nameof(Index), new { year = year });
+            }
+
+            var data = _ulkeTercihBranslarBE.UlkeTercihBransGetir((Guid)id);
+            if (!data.IsSuccess || data.Data == null)
+            {
+                return RedirectToAction(nameof(Index), new { year = year });
+            }
+
+            // Ülke tercihini al
+            var ulkeTercih = _ulkeTercihleriBE.UlkeTercihGetir(data.Data.UlkeTercihId);
+            if (ulkeTercih.IsSuccess && ulkeTercih.Data != null)
+            {
+                data.Data.UlkeTercihAdi = ulkeTercih.Data.UlkeTercihAdi;
+            }
+
+            ViewBag.CurrentYear = year;
+            return View(data.Data);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult BransGuncelle(UlkeTercihBranslarVM model)
+        public IActionResult BransGuncelle(UlkeTercihBranslarVM model, int? year)
         {
-            try
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            if (year == null)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
-
-                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-                model.KaydedenId = user.LoginId;
-
-                var result = _ulkeTercihBranslarBE.UlkeTercihBransGuncelle(model,user);
-                if (result.IsSuccess)
-                {
-                    TempData["success"] = result.Message;
-                    return RedirectToAction("Guncelle", new { id = model.UlkeTercihId });
-                }
-
-                TempData["error"] = result.Message;
-                return View(model);
+                year = DateTime.Now.Year;
             }
-            catch (Exception ex)
+
+            if (ModelState.IsValid)
             {
-                _logger.LogError($"Branş güncellenirken hata oluştu: {ex.Message}");
-                TempData["error"] = "İşlem sırasında bir hata oluştu";
-                return View(model);
+                var data = _ulkeTercihBranslarBE.UlkeTercihBransGuncelle(model, user);
+                if (data.IsSuccess)
+                {
+                    TempData["SuccessMessage"] = "Branş başarıyla güncellendi.";
+                    return RedirectToAction(nameof(Index), new { year = year });
+                }
+                TempData["ErrorMessage"] = data.Message;
             }
+
+            // Hata durumunda ülke adını tekrar al
+            var ulkeTercihHata = _ulkeTercihleriBE.UlkeTercihGetir(model.UlkeTercihId);
+            if (ulkeTercihHata.IsSuccess && ulkeTercihHata.Data != null)
+            {
+                model.UlkeTercihAdi = ulkeTercihHata.Data.UlkeTercihAdi;
+            }
+
+            ViewBag.CurrentYear = year;
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult BransSil(Guid id, int? year)
+        {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            if (year == null)
+            {
+                year = DateTime.Now.Year;
+            }
+
+            var data = _ulkeTercihBranslarBE.UlkeTercihBransSil(id,user);
+            if (data.IsSuccess)
+            {
+                TempData["SuccessMessage"] = "Branş başarıyla silindi.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = data.Message;
+            }
+
+            return RedirectToAction(nameof(Index), new { year = year });
         }
         #endregion
 
         #region UlkeTercihSil
-        public IActionResult UlkeTercihSil(Guid id)
+        [HttpDelete]
+        public IActionResult UlkeTercihSil(Guid id, int? year)
         {
-            if (id == Guid.Empty)
-                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+            if (year == null)
+            {
+                year = DateTime.Now.Year;
+            }
 
             var data = _ulkeTercihleriBE.UlkeTercihSil(id);
             if (data.IsSuccess)
-                return Json(new { success = data.IsSuccess, message = data.Message });
-            else
-                return Json(new { success = data.IsSuccess, message = data.Message });
+            {
+                TempData["success"] = "Ülke tercihi başarıyla silindi.";
+                return Json(new { success = true, redirectUrl = Url.Action("Index", new { year = year }) });
+            }
+
+            TempData["error"] = data.Message;
+            return Json(new { success = false, message = data.Message });
         }
         #endregion
 
@@ -215,102 +308,24 @@ namespace YOGBIS.UI.Controllers
         #region BransEkle
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult BransEkle(Guid UlkeTercihId, Guid TercihBransId, string BransCinsiyet, int BransKontSayi, bool EsitBrans)
+        public IActionResult BransEkle(Guid ulkeTercihId, Guid tercihBransId, string yabancıDil, int bransKontSayi, string bransCinsiyet, bool esitBrans, int? year)
         {
-            try
+            if (year == null)
             {
-                if (UlkeTercihId == Guid.Empty || TercihBransId == Guid.Empty)
-                {
-                    TempData["error"] = "Ülke tercihi ve branş seçimi zorunludur.";
-                    return RedirectToAction(nameof(Guncelle), new { id = UlkeTercihId });
-                }
-
-                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-                
-                // Seçilen branşı getir
-                var secilenBrans = _branslarBE.BransGetir(TercihBransId).Data;
-                if (secilenBrans == null)
-                {
-                    TempData["error"] = "Seçilen branş bulunamadı.";
-                    return RedirectToAction(nameof(Guncelle), new { id = UlkeTercihId });
-                }
-
-                // Yeni branş nesnesi oluştur
-                var yeniBrans = new UlkeTercihBranslarVM
-                {
-                    BransAdi = secilenBrans.BransAdi,
-                    BransId=secilenBrans.BransId,
-                    BransCinsiyet = BransCinsiyet,
-                    BransKontSayi = BransKontSayi,
-                    EsitBrans = EsitBrans,
-                    UlkeTercihId = UlkeTercihId
-                };
-
-                // Branşı ekle
-                var result = _ulkeTercihBranslarBE.UlkeTercihBransEkle(yeniBrans, user);
-                if (result.IsSuccess)
-                {
-                    TempData["success"] = result.Message;
-                }
-                else
-                {
-                    TempData["error"] = result.Message;
-                }
-
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"BransEkle - Hata: {ex.Message}");
-                TempData["error"] = "Branş eklenirken bir hata oluştu.";
-                return RedirectToAction(nameof(Guncelle), new { id = UlkeTercihId });
-            }
-        }
-        #endregion
-
-        #region BransSil
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult BransSil(Guid id)
-        {
-            if (id == Guid.Empty)
-            {
-                TempData["error"] = "Geçersiz branş ID'si";
-                return RedirectToAction("Index");
+                year = DateTime.Now.Year;
             }
 
-            try
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            var data = _ulkeTercihleriBE.BransEkle(ulkeTercihId, tercihBransId, yabancıDil, bransKontSayi, bransCinsiyet, esitBrans, user);
+
+            if (data.IsSuccess)
             {
-                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-                
-                // Önce branşı ve ülke tercihini alalım
-                var bransResult = _ulkeTercihBranslarBE.UlkeTercihBransGetir(id);
-                if (!bransResult.IsSuccess || bransResult.Data == null)
-                {
-                    TempData["error"] = bransResult.Message;
-                    return RedirectToAction("Index");
-                }
-
-                // Ülke tercihi ID'sini saklayalım
-                var ulkeTercihId = bransResult.Data.UlkeTercihId;
-
-                // Branşı silelim
-                var result = _ulkeTercihBranslarBE.UlkeTercihBransSil(id, user);
-                if (!result.IsSuccess)
-                {
-                    TempData["error"] = result.Message;
-                    return RedirectToAction("BransGuncelle", new { id = id });
-                }
-
-                TempData["success"] = result.Message;
-                return RedirectToAction("Guncelle", new { id = ulkeTercihId });
+                TempData["success"] = "Branş başarıyla eklendi.";
+                return RedirectToAction(nameof(Guncelle), new { id = ulkeTercihId, year = year });
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Branş silinirken hata oluştu: {ex.Message}");
-                TempData["error"] = "İşlem sırasında bir hata oluştu";
-                return RedirectToAction("Index");
-            }
+
+            TempData["error"] = data.Message;
+            return RedirectToAction(nameof(Guncelle), new { id = ulkeTercihId, year = year });
         }
         #endregion
 
