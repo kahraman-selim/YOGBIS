@@ -296,6 +296,33 @@ namespace YOGBIS.BusinessEngine.Implementaion
             return _unitOfWork.adaylarRepository.GetFirstOrDefault(x => x.TC == TC) != null;
         }
         #endregion
-            
+
+        #region AdayBasvuruBilgileriEkle
+        public Result<AdayBasvuruBilgileriVM> AdayBasvuruBilgileriEkle(AdayBasvuruBilgileriVM model, SessionContext user)
+        {
+            if (model != null)
+            {
+                try
+                {
+                    var Adaylar = _mapper.Map<AdayBasvuruBilgileriVM, AdayBasvuruBilgileri>(model);
+                    Adaylar.KaydedenId = user.LoginId;
+
+                    _unitOfWork.adayBasvuruBilgileriRepository.Add(Adaylar);
+                    _unitOfWork.Save();
+                    return new Result<AdayBasvuruBilgileriVM>(true, ResultConstant.RecordCreateSuccess);
+                }
+                catch (Exception ex)
+                {
+
+                    return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                }
+            }
+            else
+            {
+                return new Result<AdayBasvuruBilgileriVM>(false, "Boş veri olamaz");
+            }
+        }
+        #endregion
+
     }
 }

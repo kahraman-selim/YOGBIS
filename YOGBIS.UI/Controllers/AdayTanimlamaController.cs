@@ -110,6 +110,7 @@ namespace YOGBIS.UI.Controllers
             {
                 if (file == null || file.Length <= 0)
                 {
+                    TempData["Error"] = "Lütfen bir dosya seçin!";
                     return Json(new { success = false });
                 }
 
@@ -288,8 +289,11 @@ namespace YOGBIS.UI.Controllers
         }
 
         [HttpPost]
+        [RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
+        [RequestSizeLimit(209715200)]
         public async Task<IActionResult> AdayBasvuruBilgileriYukle(IFormFile file)
         {
+            var sessionId = HttpContext.Session.Id;
             try
             {
                 if (file == null || file.Length == 0)

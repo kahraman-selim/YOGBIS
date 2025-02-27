@@ -16,15 +16,16 @@ namespace YOGBIS.Common.VModels
         public string KurumAdi { get; set; }
         public string Ogrenim { get; set; }
         public string MezunOkulKodu { get; set; }
+        public string Mezuniyet { get; set; }
         public string HizmetYil { get; set; }
         public string HizmetAy { get; set; }
         public string HizmetGun { get; set; }
         public string Derece { get; set; }
         public string Kademe { get; set; }
         public string Enaz5Yil { get; set; }
-        public string DahaOnceYYGorev { get; set; }
+        public string DahaOnceYDGorev { get; set; }
         public string YIciGorevBasTar { get; set; }
-        public string YabanciDilBelge { get; set; }
+        public string YabanciDilBasvuru { get; set; }
         public string YabanciDilAdi { get; set; }
         public string YabanciDilTuru { get; set; }
         public string YabanciDilTarihi { get; set; }
@@ -38,7 +39,7 @@ namespace YOGBIS.Common.VModels
         public string BasvuruTarihi { get; set; }
         public string SonDegisiklikTarihi { get; set; }
         public string OnayDurumu { get; set; }
-        public string OnayAciklama { get; set; }
+        public string OnayDurumuAck { get; set; }
         public string MYYSTarihi { get; set; }
         public string MYYSinavTedbiri { get; set; }
         public string MYYSTedbirAck { get; set; }
@@ -55,7 +56,7 @@ namespace YOGBIS.Common.VModels
         public string GorevIptalBAOK { get; set; }
         public string IlkGorevKaydi { get; set; }
         public string YabanciDilALM { get; set; }
-        public string YabanciDilIGN { get; set; }
+        public string YabanciDilING { get; set; }
         public string YabanciDilFRS { get; set; }
         public string YabanciDilDiger { get; set; }
         public string GorevdenUzaklastirma { get; set; }
@@ -64,6 +65,9 @@ namespace YOGBIS.Common.VModels
         public string PDurum { get; set; }
         public string Sendika { get; set; }
         public string SendikaAck { get; set; }
+        public string MYYSSonucItiraz { get; set; }
+        public string BasvuruBrans { get; set; }
+        public Guid? BransId { get; set; }
         [MaxLength]
         public byte[] AdliSicilBelge { get; set; }
         [MaxLength]
@@ -71,12 +75,11 @@ namespace YOGBIS.Common.VModels
         public Guid? DereceId { get; set; }
         public string DereceAdi { get; set; }
         public string Unvan { get; set; }
+        public Guid? UlkeTercihId { get; set; }
         public Guid? MulakatId { get; set; }
         public string MulakatOnayNo { get; set; }
         public int MulakatYil { get; set; }
-        public Guid? KomisyonId { get; set; }
-        public Guid? UlkeTercihId { get; set; }
-        public Guid? BransId { get; set; }
+        public Guid? KomisyonId { get; set; }              
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
