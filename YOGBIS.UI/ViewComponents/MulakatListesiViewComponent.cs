@@ -15,7 +15,7 @@ namespace YOGBIS.UI.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
 
-            var requestmodel = _mulakatOlusturBE.MulakatlariGetir();
+            var requestmodel = _mulakatOlusturBE.MulakatlariGetirViewComponent();
             if (requestmodel.IsSuccess)
             {
                 return View(requestmodel.Data);
