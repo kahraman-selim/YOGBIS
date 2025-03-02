@@ -522,5 +522,32 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        #region AdayIletisimBilgileriEkle
+        public Result<AdayIletisimBilgileriVM> AdayIletisimBilgileriEkle(AdayIletisimBilgileriVM model, SessionContext user)
+        {
+            if (model != null)
+            {
+                try
+                {
+                    var Aday= _mapper.Map<AdayIletisimBilgileriVM, AdayIletisimBilgileri>(model);
+                    Aday.KaydedenId = user.LoginId;
+
+                    _unitOfWork.adayIletisimBilgileriRepository.Add(Aday);
+                    _unitOfWork.Save();
+                    return new Result<AdayIletisimBilgileriVM>(true, ResultConstant.RecordCreateSuccess);
+                }
+                catch (Exception ex)
+                {
+
+                    return new Result<AdayIletisimBilgileriVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                }
+            }
+            else
+            {
+                return new Result<AdayIletisimBilgileriVM>(false, "Boş veri olamaz");
+            }
+        }
+        #endregion
     }
 }

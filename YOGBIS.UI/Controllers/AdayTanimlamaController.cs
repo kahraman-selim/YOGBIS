@@ -505,6 +505,137 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region AdayBasvuruBilgileriYukle
+        [HttpPost]
+        [RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
+        [RequestSizeLimit(209715200)]
+        public async Task<IActionResult> AdayIletisimBilgileriYukle(IFormFile file)
+        {
+            var sessionId = HttpContext.Session.Id;
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    TempData["Error"] = "Lütfen bir dosya seçin!";
+                    return Json(new { success = false });
+                }
+
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                if (user == null)
+                {
+                    return Json(new { success = false });
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        var rowCount = worksheet.Dimension?.Rows ?? 0;
+
+                        if (rowCount <= 1)
+                        {
+                            return Json(new { success = false });
+                        }
+
+                        var toplamKayit = rowCount - 1;
+                        var islemYapilan = 0;
+
+                        UpdateProgress(sessionId, p =>
+                        {
+                            p.IslemAsamasi = "Baslatiliyor";
+                            p.ToplamKayit = toplamKayit;
+                            p.IslemYapilan = 0;
+                            p.Yuzde = 0;
+                            p.BasariliEklenen = 0;
+                        });
+
+                        await Task.Delay(500);
+
+                        // AŞAMA 1: Kayıt İşlemi
+                        islemYapilan = 0;
+                        var kayitEdilecekToplam = toplamKayit;
+
+                        UpdateProgress(sessionId, p =>
+                        {
+                            p.IslemAsamasi = "Kayit";
+                            p.IslemYapilan = 0;
+                            p.ToplamKayit = kayitEdilecekToplam;
+                            p.Yuzde = 0;
+                        });
+
+                        var basariliEklenen = 0;
+
+                        for (int row = 2; row <= rowCount; row++)
+                        {
+                            var aday = new AdayIletisimBilgileriVM
+                            {
+                                TC = worksheet.Cells[row, 1].Value?.ToString(),
+                                CepTelNo= worksheet.Cells[row, 2].Value?.ToString(),
+                                EPosta= worksheet.Cells[row, 3].Value?.ToString(),
+                                NufusIl= worksheet.Cells[row, 4].Value?.ToString(),
+                                NufusIlce= worksheet.Cells[row, 5].Value?.ToString(),
+                                IkametAdres= worksheet.Cells[row, 6].Value?.ToString(),
+                                IkametIl= worksheet.Cells[row, 7].Value?.ToString(),
+                                IkametIlce= worksheet.Cells[row, 8].Value?.ToString(),
+                                MulakatId= Guid.Parse(worksheet.Cells[row, 9].Value?.ToString()),
+
+                            };
+
+                            var result = _adaylarBE.AdayIletisimBilgileriEkle(aday, user);
+                            if (result.IsSuccess)
+                            {
+                                basariliEklenen++;
+                            }
+
+                            islemYapilan++;
+                            UpdateProgress(sessionId, p =>
+                            {
+                                p.IslemYapilan = islemYapilan;
+                                p.BasariliEklenen = basariliEklenen;
+                                p.Yuzde = kayitEdilecekToplam > 0 ? (int)((double)islemYapilan / kayitEdilecekToplam * 100) : 100;
+                            });
+                            await Task.Delay(10);
+                        }
+
+
+                        // İşlem Tamamlandı
+                        UpdateProgress(sessionId, p =>
+                        {
+                            p.IslemAsamasi = "Tamamlandi";
+                            p.IslemYapilan = kayitEdilecekToplam;
+                            p.Yuzde = 100;
+
+                            if (basariliEklenen > 0)
+                            {
+                                p.Success = $"{basariliEklenen} adet kayıt başarıyla eklenmiştir.";
+                            }
+                        });
+
+                        await Task.Delay(500); // Tamamlandı mesajının görünmesi için kısa bir bekleme
+
+                        return Json(new { success = true });
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Excel'den aday yüklenirken hata oluştu: {Message}", ex.Message);
+                return Json(new { success = false, error = ex.Message });
+            }
+            finally
+            {
+                // İşlem bittiğinde progress datasını temizle
+                lock (_lockObject)
+                {
+                    _progressData.Remove(sessionId);
+                }
+            }
+        }
+        #endregion
+
         #region GetAdliSicilBelge
         [HttpGet]
         public IActionResult GetAdliSicilBelge(Guid id)

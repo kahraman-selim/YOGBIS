@@ -18,8 +18,8 @@ namespace YOGBIS.Common.VModels
         public string IkametAdres { get; set; }
         public string IkametIl { get; set; }
         public string IkametIlce { get; set; }
-        public Guid? AdayId { get; set; }
-        public AdaylarVM Adaylar { get; set; }
+        public Guid? MulakatId { get; set; }
+        public int MulakatYil { get; set; }
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }

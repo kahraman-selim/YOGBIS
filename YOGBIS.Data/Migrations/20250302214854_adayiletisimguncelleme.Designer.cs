@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20250302214854_adayiletisimguncelleme")]
+    partial class adayiletisimguncelleme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -627,7 +629,7 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("varbinary(16)");
 
-                    b.Property<byte[]>("AdaylarAdayId")
+                    b.Property<byte[]>("AdayId")
                         .HasColumnType("varbinary(16)");
 
                     b.Property<string>("CepTelNo")
@@ -665,7 +667,7 @@ namespace YOGBIS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdaylarAdayId");
+                    b.HasIndex("AdayId");
 
                     b.HasIndex("KaydedenId");
 
@@ -2874,9 +2876,9 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.AdayIletisimBilgileri", b =>
                 {
-                    b.HasOne("YOGBIS.Data.DbModels.Adaylar", null)
+                    b.HasOne("YOGBIS.Data.DbModels.Adaylar", "Adaylar")
                         .WithMany("AdayIletisimBilgileri")
-                        .HasForeignKey("AdaylarAdayId");
+                        .HasForeignKey("AdayId");
 
                     b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
                         .WithMany()
