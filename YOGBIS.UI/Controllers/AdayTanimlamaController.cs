@@ -505,6 +505,28 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region GetAdliSicilBelge
+        [HttpGet]
+        public IActionResult GetAdliSicilBelge(Guid id)
+        {
+            try
+            {
+                var result = _adaylarBE.AdayBasvuruBilgileriniGetirById(id);
+                if (result.IsSuccess && result.Data?.AdliSicilBelge != null)
+                {
+                    var base64String = Convert.ToBase64String(result.Data.AdliSicilBelge);
+                    return Json(new { isSuccess = true, data = base64String });
+                }
+                
+                return Json(new { isSuccess = false, message = "Belge bulunamadı" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isSuccess = false, message = "Belge gösterilirken hata oluştu: " + ex.Message });
+            }
+        }
+        #endregion
+
         #region TCKimlikNoDogrula
         private bool TCKimlikNoDogrula(string tcKimlikNo)
         {

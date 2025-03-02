@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using YOGBIS.Data.DbModels;
@@ -71,8 +71,7 @@ namespace YOGBIS.Common.VModels
         public Guid? BransId { get; set; }
         [MaxLength]
         public byte[] AdliSicilBelge { get; set; }
-        [MaxLength]
-        public byte[] BelgeEk1 { get; set; }
+        public bool HasAdliSicilBelge { get; set; }
         public Guid? DereceId { get; set; }
         public string DereceAdi { get; set; }
         public string Unvan { get; set; }

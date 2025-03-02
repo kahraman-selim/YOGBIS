@@ -20,5 +20,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         bool TCKontrol(string TC);
         Result<AdayBasvuruBilgileriVM> AdayBasvuruBilgileriEkle(AdayBasvuruBilgileriVM model, SessionContext user);
         Result<List<AdayBasvuruBilgileriVM>> AdayBasvuruBilgileriniGetir(string TC);       
+        Result<AdayBasvuruBilgileriVM> AdayBasvuruBilgileriniGetirById(Guid id);
     }
 }
