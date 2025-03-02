@@ -46,12 +46,15 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
             return View();
-        } 
+        }
         #endregion
 
+        #region EkTanımalalar
         private static readonly object _lockObject = new object();
         private static Dictionary<string, ProgressInfo> _progressData = new Dictionary<string, ProgressInfo>();
+        #endregion
 
+        #region ProgressInfo
         private class ProgressInfo
         {
             public int IslemYapilan { get; set; }
@@ -62,7 +65,9 @@ namespace YOGBIS.UI.Controllers
             public string Success { get; set; }
             public int BasariliEklenen { get; set; }
         }
+        #endregion
 
+        #region UpdateProgress
         private void UpdateProgress(string sessionId, Action<ProgressInfo> updateAction)
         {
             lock (_lockObject)
@@ -75,7 +80,9 @@ namespace YOGBIS.UI.Controllers
                 updateAction(_progressData[sessionId]);
             }
         }
+        #endregion
 
+        #region GetProgress
         [HttpGet]
         public IActionResult GetProgress()
         {
@@ -99,7 +106,9 @@ namespace YOGBIS.UI.Controllers
                 return Json(new { });
             }
         }
+        #endregion
 
+        #region AdayTemelBilgileriYukle
         [HttpPost]
         [RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
         [RequestSizeLimit(209715200)]
@@ -148,7 +157,7 @@ namespace YOGBIS.UI.Controllers
                         await Task.Delay(500);
 
                         // AŞAMA 1: TC Kontrol
-                        UpdateProgress(sessionId, p => 
+                        UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "TCKontrol";
                             p.IslemYapilan = 0;
@@ -156,7 +165,7 @@ namespace YOGBIS.UI.Controllers
 
                         var tcListesi = new List<string>();
                         var gecerliTcler = new List<string>(); // Geçerli TC'leri sakla
-                        
+
                         for (int row = 2; row <= rowCount; row++)
                         {
                             var tc = worksheet.Cells[row, 1].Value?.ToString();
@@ -179,7 +188,7 @@ namespace YOGBIS.UI.Controllers
                         var tekrarEdenTCSayisi = toplamKayit - gecerliTcler.Count;
 
                         // Kayıt aşamasına geçiş
-                        UpdateProgress(sessionId, p => 
+                        UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "KayitBasliyor";
                             p.IslemYapilan = 0;
@@ -193,7 +202,7 @@ namespace YOGBIS.UI.Controllers
                         islemYapilan = 0;
                         var kayitEdilecekToplam = gecerliTcler.Count;
 
-                        UpdateProgress(sessionId, p => 
+                        UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Kayit";
                             p.IslemYapilan = 0;
@@ -206,7 +215,7 @@ namespace YOGBIS.UI.Controllers
                         for (int row = 2; row <= rowCount; row++)
                         {
                             var tc = worksheet.Cells[row, 1].Value?.ToString();
-                            if (string.IsNullOrEmpty(tc) || !gecerliTcler.Contains(tc)) 
+                            if (string.IsNullOrEmpty(tc) || !gecerliTcler.Contains(tc))
                             {
                                 continue;
                             }
@@ -219,7 +228,7 @@ namespace YOGBIS.UI.Controllers
                                 BabaAd = worksheet.Cells[row, 4].Value?.ToString(),
                                 AnaAd = worksheet.Cells[row, 5].Value?.ToString(),
                                 DogumTarihi = worksheet.Cells[row, 6].Value?.ToString(),
-                                DogumTarihi2 = worksheet.Cells[row, 6].Value?.ToString()?.Replace("/","."),
+                                DogumTarihi2 = worksheet.Cells[row, 6].Value?.ToString()?.Replace("/", "."),
                                 DogumYeri = worksheet.Cells[row, 7].Value?.ToString(),
                                 Cinsiyet = worksheet.Cells[row, 8].Value?.ToString(),
                             };
@@ -276,7 +285,9 @@ namespace YOGBIS.UI.Controllers
                 }
             }
         }
+        #endregion
 
+        #region TamamlandiOnayla
         [HttpPost]
         public IActionResult TamamlandiOnayla()
         {
@@ -287,7 +298,9 @@ namespace YOGBIS.UI.Controllers
             }
             return Json(new { success = true });
         }
+        #endregion
 
+        #region AdayBasvuruBilgileriYukle
         [HttpPost]
         [RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
         [RequestSizeLimit(209715200)]
@@ -302,16 +315,175 @@ namespace YOGBIS.UI.Controllers
                     return Json(new { success = false });
                 }
 
-                // Burada başvuru bilgileri yükleme işlemleri yapılacak
-                // Şimdilik sadece başarılı döndürelim
-                return Json(new { success = true });
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                if (user == null)
+                {
+                    return Json(new { success = false });
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        var rowCount = worksheet.Dimension?.Rows ?? 0;
+
+                        if (rowCount <= 1)
+                        {
+                            return Json(new { success = false });
+                        }
+
+                        var toplamKayit = rowCount - 1;
+                        var islemYapilan = 0;
+
+                        UpdateProgress(sessionId, p =>
+                        {
+                            p.IslemAsamasi = "Baslatiliyor";
+                            p.ToplamKayit = toplamKayit;
+                            p.IslemYapilan = 0;
+                            p.Yuzde = 0;
+                            p.BasariliEklenen = 0;
+                        });
+
+                        await Task.Delay(500);
+
+                        // AŞAMA 1: Kayıt İşlemi
+                        islemYapilan = 0;
+                        var kayitEdilecekToplam = toplamKayit;
+
+                        UpdateProgress(sessionId, p =>
+                        {
+                            p.IslemAsamasi = "Kayit";
+                            p.IslemYapilan = 0;
+                            p.ToplamKayit = kayitEdilecekToplam;
+                            p.Yuzde = 0;
+                        });
+
+                        var basariliEklenen = 0;
+
+                        for (int row = 2; row <= rowCount; row++)
+                        {
+                            var aday = new AdayBasvuruBilgileriVM
+                            {
+                                TC = worksheet.Cells[row, 1].Value?.ToString(),
+                                Askerlik= worksheet.Cells[row, 2].Value?.ToString(),
+                                KurumKod= worksheet.Cells[row, 3].Value?.ToString(),
+                                KurumAdi= worksheet.Cells[row, 4].Value?.ToString(),
+                                Ogrenim= worksheet.Cells[row, 5].Value?.ToString(),
+                                MezunOkulKodu= worksheet.Cells[row, 6].Value?.ToString(),
+                                Mezuniyet= worksheet.Cells[row, 7].Value?.ToString(),
+                                HizmetYil= worksheet.Cells[row, 8].Value?.ToString(),
+                                HizmetAy= worksheet.Cells[row, 9].Value?.ToString(),
+                                HizmetGun= worksheet.Cells[row, 10].Value?.ToString(),
+                                Derece= worksheet.Cells[row, 11].Value?.ToString(),
+                                Kademe= worksheet.Cells[row, 12].Value?.ToString(),
+                                Enaz5Yil= worksheet.Cells[row, 13].Value?.ToString(),
+                                DahaOnceYDGorev= worksheet.Cells[row, 14].Value?.ToString(),
+                                YIciGorevBasTar= worksheet.Cells[row, 15].Value?.ToString(),
+                                YabanciDilBasvuru= worksheet.Cells[row, 16].Value?.ToString(),
+                                YabanciDilAdi= worksheet.Cells[row, 17].Value?.ToString(),
+                                YabanciDilTuru= worksheet.Cells[row, 18].Value?.ToString(),
+                                YabanciDilTarihi= worksheet.Cells[row, 19].Value?.ToString(),
+                                YabanciDilPuan= worksheet.Cells[row, 20].Value?.ToString(),
+                                YabanciDilSeviye= worksheet.Cells[row, 21].Value?.ToString(),
+                                IlTercihi1= worksheet.Cells[row, 22].Value?.ToString(),
+                                IlTercihi2= worksheet.Cells[row, 23].Value?.ToString(),
+                                IlTercihi3= worksheet.Cells[row, 24].Value?.ToString(),
+                                IlTercihi4= worksheet.Cells[row, 25].Value?.ToString(),
+                                IlTercihi5= worksheet.Cells[row, 26].Value?.ToString(),
+                                BasvuruTarihi= worksheet.Cells[row, 27].Value?.ToString(),
+                                SonDegisiklikTarihi= worksheet.Cells[row, 28].Value?.ToString(),
+                                OnayDurumu= worksheet.Cells[row, 29].Value?.ToString(),
+                                OnayDurumuAck= worksheet.Cells[row, 30].Value?.ToString(),
+                                MYYSTarihi= worksheet.Cells[row, 31].Value?.ToString(),
+                                MYYSinavTedbiri= worksheet.Cells[row, 32].Value?.ToString(),
+                                MYYSTedbirAck= worksheet.Cells[row, 33].Value?.ToString(),
+                                MYYSPuan= worksheet.Cells[row, 34].Value?.ToString(),
+                                MYYSonuc= worksheet.Cells[row, 35].Value?.ToString(),
+                                MYSSDurum= worksheet.Cells[row, 36].Value?.ToString(),
+                                MYSSDurumAck= worksheet.Cells[row, 37].Value?.ToString(),
+                                IlMemGorus= worksheet.Cells[row, 38].Value?.ToString(),
+                                Referans= worksheet.Cells[row, 39].Value?.ToString(),
+                                ReferansAck= worksheet.Cells[row, 40].Value?.ToString(),
+                                GorevIptalAck= worksheet.Cells[row, 41].Value?.ToString(),
+                                GorevIptalBrans= worksheet.Cells[row, 42].Value?.ToString(),
+                                GorevIptalYil= worksheet.Cells[row, 43].Value?.ToString(),
+                                GorevIptalBAOK= worksheet.Cells[row, 44].Value?.ToString(),
+                                IlkGorevKaydi= worksheet.Cells[row, 45].Value?.ToString(),
+                                YabanciDilALM= worksheet.Cells[row, 46].Value?.ToString(),
+                                YabanciDilING= worksheet.Cells[row, 47].Value?.ToString(),
+                                YabanciDilFRS= worksheet.Cells[row, 48].Value?.ToString(),
+                                YabanciDilDiger= worksheet.Cells[row, 49].Value?.ToString(),
+                                GorevdenUzaklastirma= worksheet.Cells[row, 50].Value?.ToString(),
+                                EDurum= worksheet.Cells[row, 51].Value?.ToString(),
+                                MDurum= worksheet.Cells[row, 52].Value?.ToString(),
+                                PDurum= worksheet.Cells[row, 53].Value?.ToString(),
+                                Sendika= worksheet.Cells[row, 54].Value?.ToString(),
+                                SendikaAck= worksheet.Cells[row, 55].Value?.ToString(),
+                                MYYSSoruItiraz= worksheet.Cells[row, 56].Value?.ToString(),
+                                MYYSSonucItiraz= worksheet.Cells[row, 57].Value?.ToString(),
+                                BasvuruBrans= worksheet.Cells[row, 58].Value?.ToString(),
+                                BransId=Guid.Parse(worksheet.Cells[row, 59].Value?.ToString()),
+                                DereceId=Guid.Parse(worksheet.Cells[row, 60].Value?.ToString()),
+                                DereceAdi= worksheet.Cells[row, 61].Value?.ToString(),
+                                Unvan= worksheet.Cells[row, 62].Value?.ToString(),
+                                UlkeTercihId=Guid.Parse(worksheet.Cells[row, 63].Value?.ToString()),
+                                MulakatId=Guid.Parse(worksheet.Cells[row, 64].Value?.ToString()),
+                            };
+
+                            var result = _adaylarBE.AdayBasvuruBilgileriEkle(aday, user);
+                            if (result.IsSuccess)
+                            {
+                                basariliEklenen++;
+                            }
+
+                            islemYapilan++;
+                            UpdateProgress(sessionId, p =>
+                            {
+                                p.IslemYapilan = islemYapilan;
+                                p.BasariliEklenen = basariliEklenen;
+                                p.Yuzde = kayitEdilecekToplam > 0 ? (int)((double)islemYapilan / kayitEdilecekToplam * 100) : 100;
+                            });
+                            await Task.Delay(10);
+                        }
+
+
+                        // İşlem Tamamlandı
+                        UpdateProgress(sessionId, p =>
+                        {
+                            p.IslemAsamasi = "Tamamlandi";
+                            p.IslemYapilan = kayitEdilecekToplam;
+                            p.Yuzde = 100;
+
+                            if (basariliEklenen > 0)
+                            {
+                                p.Success = $"{basariliEklenen} adet kayıt başarıyla eklenmiştir.";
+                            }
+                        });
+
+                        await Task.Delay(500); // Tamamlandı mesajının görünmesi için kısa bir bekleme
+
+                        return Json(new { success = true });
+                    }
+                }
+
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Bir hata oluştu: " + ex.Message;
-                return Json(new { success = false });
+                _logger.LogError(ex, "Excel'den aday yüklenirken hata oluştu: {Message}", ex.Message);
+                return Json(new { success = false, error = ex.Message });
             }
-        }
+            finally
+            {
+                // İşlem bittiğinde progress datasını temizle
+                lock (_lockObject)
+                {
+                    _progressData.Remove(sessionId);
+                }
+            }
+        } 
+        #endregion
 
         #region TCKimlikNoDogrula
         private bool TCKimlikNoDogrula(string tcKimlikNo)

@@ -13,7 +13,7 @@
         {
             yil = DateTime.Now.Year;
         }
-        
+
         <div class="d-flex justify-content-center align-items-center">
             <a href="javascript:void(0)" onclick="loadUlkeTercihleri(@(yil - 1))" class="btn btn-outline-primary btn-sm mr-3">
                 <i class="fas fa-chevron-left"></i> Önceki Yıl
@@ -64,7 +64,7 @@
                                     <td>@sirano</td>
                                     <td>@item.DereceAdi</td>
                                     <td style="white-space: normal; word-wrap: break-word;">
-                                        <a asp-controller="UlkeTercihleri" asp-action="Guncelle" asp-route-id="@item.UlkeTercihId" asp-route-year="@yil">@item.UlkeTercihAdi</a>
+                                        <a asp-controller="UlkeTercihleri" asp-action="Guncelle" class="btnulkead" asp-route-id="@item.UlkeTercihId" asp-route-year="@yil">@item.UlkeTercihAdi</a>
                                     </td>
                                     <td>
                                         @if (item.YabancıDil == "Dil Belgesi İstenmeyecektir")
@@ -146,11 +146,24 @@
                                             <td style="white-space: normal; word-wrap: break-word;">
                                                 <a asp-controller="UlkeTercihleri" asp-action="BransGuncelle" asp-route-id="@brans.TercihBransId" asp-route-year="@yil">
                                                     @brans.BransAdi
-                                                    @if (!string.IsNullOrEmpty(brans.BransCinsiyet))
-                                                    {
-                                                        @(brans.BransCinsiyet == "1" ? " (E)" : brans.BransCinsiyet == "2" ? " (K)" : "")
-                                                    }
                                                 </a>
+                                                @if (brans.YabanciDil != "Dil Belgesi İstenmeyecektir")
+                                                {
+                                                    <span class="text-muted">(</span>
+
+                                                    @brans.YabanciDil
+
+                                                    <span class="text-muted">)</span>
+                                                }
+                                                else
+                                                {
+
+                                                }
+                                                @if (!string.IsNullOrEmpty(brans.BransCinsiyet))
+                                                {
+                                                    @(brans.BransCinsiyet == "1" ? " (E)" : brans.BransCinsiyet == "2" ? " (K)" : "")
+                                                }
+
                                             </td>
                                             <td>@brans.BransKontSayi</td>
                                         </tr>

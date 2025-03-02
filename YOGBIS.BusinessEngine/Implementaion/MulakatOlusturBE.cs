@@ -225,32 +225,43 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region MulakatDonemAdiGetir(id)
-        //public Result<MulakatlarVM> MulakatDonemAdiGetir(Guid id)
-        //{
-        //    if (id != null)
-        //    {
-        //        var data = _unitOfWork.mulakatlarRepository.GetFirstOrDefault(u => u.DereceId == id, includeProperties: "Kullanici");
-        //        if (data != null)
-        //        {
-        //            MulakatlarVM donem = new MulakatlarVM();
-        //            donem.MulakatDonemi = data.MulakatAdi;
+        #region MulakatOnayGetir(id)
+        public Result<string> MulakatOnayGetir(Guid id)
+        {
+            var data = _unitOfWork.mulakatlarRepository.Get(id);
+            if (data != null)
+            {
+                var mulakatonaysayi = data.OnaySayisi;
 
-        //            return new Result<MulakatlarVM>(true, ResultConstant.RecordFound, donem);
-        //        }
-        //        else
-        //        {
-        //            return new Result<MulakatlarVM>(false, ResultConstant.RecordNotFound);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return new Result<MulakatlarVM>(false, ResultConstant.RecordNotFound);
-        //    }
-        //}
+
+                return new Result<string>(true, ResultConstant.RecordFound, mulakatonaysayi);
+            }
+            else
+            {
+                return new Result<string>(false, ResultConstant.RecordNotFound);
+            }
+        }
         #endregion
 
-        #region MulakatlariGetir
+        #region MulakatYilGetir(id)
+        public Result<string> MulakatYilGetir(Guid id)
+        {
+            var data = _unitOfWork.mulakatlarRepository.Get(id);
+            if (data != null)
+            {
+                var mulakatyil = data.YazılıSinavTarihi.Year.ToString();
+
+
+                return new Result<string>(true, ResultConstant.RecordFound, mulakatyil);
+            }
+            else
+            {
+                return new Result<string>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+        #region MulakatlariGetirViewComponent
         public Result<List<MulakatlarVM>> MulakatlariGetirViewComponent()
         {
             var data = _unitOfWork.mulakatlarRepository.GetAll(includeProperties: "Kullanici").OrderBy(s => s.MulakatId).ToList();

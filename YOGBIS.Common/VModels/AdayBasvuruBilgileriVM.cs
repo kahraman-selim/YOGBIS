@@ -41,10 +41,10 @@ namespace YOGBIS.Common.VModels
         public string OnayDurumu { get; set; }
         public string OnayDurumuAck { get; set; }
         public string MYYSTarihi { get; set; }
-        public string MYYSinavTedbiri { get; set; }
+        public string MYYSSinavTedbiri { get; set; }
         public string MYYSTedbirAck { get; set; }
         public string MYYSPuan { get; set; }
-        public string MYYSonuc { get; set; }
+        public string MYYSSonuc { get; set; }
         public string MYSSDurum { get; set; }
         public string MYSSDurumAck { get; set; }
         public string IlMemGorus { get; set; }
@@ -65,6 +65,7 @@ namespace YOGBIS.Common.VModels
         public string PDurum { get; set; }
         public string Sendika { get; set; }
         public string SendikaAck { get; set; }
+        public string MYYSSoruItiraz { get; set; }
         public string MYYSSonucItiraz { get; set; }
         public string BasvuruBrans { get; set; }
         public Guid? BransId { get; set; }
@@ -78,8 +79,7 @@ namespace YOGBIS.Common.VModels
         public Guid? UlkeTercihId { get; set; }
         public Guid? MulakatId { get; set; }
         public string MulakatOnayNo { get; set; }
-        public int MulakatYil { get; set; }
-        public Guid? KomisyonId { get; set; }              
+        public int MulakatYil { get; set; }             
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }

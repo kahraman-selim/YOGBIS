@@ -324,5 +324,103 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region AdayBasvuruBilgileriGetir(string TC)
+        public Result<AdayBasvuruBilgileriVM> AdayBasvuruBilgileriGetir(string TC)
+        {
+            if (TC != null)
+            {
+                var data = _unitOfWork.adayBasvuruBilgileriRepository.GetFirstOrDefault(x => x.TC == TC, includeProperties: "Kullanici,Mulakatlar");
+
+                if (data != null)
+                {
+                    AdayBasvuruBilgileriVM Aday = new AdayBasvuruBilgileriVM();
+
+                    Aday.Id = data.Id;
+                    Aday.TC = data.TC;
+                    Aday.Askerlik = data.Askerlik;
+                    Aday.KurumKod = data.KurumKod;
+                    Aday.KurumAdi = data.KurumAdi;
+                    Aday.Ogrenim = data.Ogrenim;
+                    Aday.MezunOkulKodu = data.MezunOkulKodu;
+                    Aday.Mezuniyet = data.Mezuniyet;
+                    Aday.HizmetYil = data.HizmetYil;
+                    Aday.HizmetAy = data.HizmetAy;
+                    Aday.HizmetGun = data.HizmetGun;
+                    Aday.Derece = data.Derece;
+                    Aday.Kademe = data.Kademe;
+                    Aday.Enaz5Yil = data.Enaz5Yil;
+                    Aday.DahaOnceYDGorev = data.DahaOnceYDGorev;
+                    Aday.YIciGorevBasTar = data.YIciGorevBasTar;
+                    Aday.YabanciDilBasvuru = data.YabanciDilBasvuru;
+                    Aday.YabanciDilAdi = data.YabanciDilAdi;
+                    Aday.YabanciDilTuru = data.YabanciDilTuru;
+                    Aday.YabanciDilTarihi = data.YabanciDilTarihi;
+                    Aday.YabanciDilPuan = data.YabanciDilPuan;
+                    Aday.YabanciDilSeviye = data.YabanciDilSeviye;
+                    Aday.IlTercihi1 = data.IlTercihi1;
+                    Aday.IlTercihi2 = data.IlTercihi2;
+                    Aday.IlTercihi3 = data.IlTercihi3;
+                    Aday.IlTercihi4 = data.IlTercihi4;
+                    Aday.IlTercihi5 = data.IlTercihi5;
+                    Aday.BasvuruTarihi = data.BasvuruTarihi;
+                    Aday.SonDegisiklikTarihi = data.SonDegisiklikTarihi;
+                    Aday.OnayDurumu = data.OnayDurumu;
+                    Aday.OnayDurumuAck = data.OnayDurumuAck;
+                    Aday.MYYSTarihi = data.MYYSTarihi;
+                    Aday.MYYSSinavTedbiri = data.MYYSSinavTedbiri;
+                    Aday.MYYSTedbirAck = data.MYYSTedbirAck;
+                    Aday.MYYSPuan = data.MYYSPuan;
+                    Aday.MYYSSonuc = data.MYYSSonuc;
+                    Aday.MYSSDurum = data.MYSSDurum;
+                    Aday.MYSSDurumAck = data.MYSSDurumAck;
+                    Aday.IlMemGorus = data.IlMemGorus;
+                    Aday.Referans = data.Referans;
+                    Aday.ReferansAck = data.ReferansAck;
+                    Aday.GorevIptalAck = data.GorevIptalAck;
+                    Aday.GorevIptalBrans = data.GorevIptalBrans;
+                    Aday.GorevIptalYil = data.GorevIptalYil;
+                    Aday.GorevIptalBAOK = data.GorevIptalBAOK;
+                    Aday.IlkGorevKaydi = data.IlkGorevKaydi;
+                    Aday.YabanciDilALM = data.YabanciDilALM;
+                    Aday.YabanciDilING = data.YabanciDilING;
+                    Aday.YabanciDilFRS = data.YabanciDilFRS;
+                    Aday.YabanciDilDiger = data.YabanciDilDiger;
+                    Aday.GorevdenUzaklastirma = data.GorevdenUzaklastirma;
+                    Aday.EDurum = data.EDurum;
+                    Aday.MDurum = data.MDurum;
+                    Aday.PDurum = data.PDurum;
+                    Aday.Sendika = data.Sendika;
+                    Aday.SendikaAck = data.SendikaAck;
+                    Aday.MYYSSoruItiraz = data.MYYSSoruItiraz;
+                    Aday.MYYSSonucItiraz = data.MYYSSonucItiraz;
+                    Aday.BasvuruBrans = data.BasvuruBrans;
+                    Aday.BransId = data.BransId;
+                    Aday.AdliSicilBelge = data.AdliSicilBelge;
+                    Aday.DereceId = data.DereceId;
+                    Aday.DereceAdi = data.DereceAdi;
+                    Aday.Unvan = data.Unvan;
+                    Aday.UlkeTercihId = data.UlkeTercihId;
+                    Aday.MulakatOnayNo = _mulakatOlusturBE.MulakatOnayGetir((Guid)data.MulakatId).Data;
+                    Aday.MulakatYil = int.Parse(_mulakatOlusturBE.MulakatYilGetir((Guid)data.MulakatId).Data);
+                    Aday.MulakatId = data.MulakatId;
+
+                    Aday.KayitTarihi = data.KayitTarihi;
+                    Aday.KaydedenId = data.KaydedenId;
+                    Aday.KaydedenAdi = data.Kullanici.Ad + " " + data.Kullanici.Soyad;
+
+
+                    return new Result<AdayBasvuruBilgileriVM>(true, ResultConstant.RecordFound, Aday);
+                }
+                else
+                {
+                    return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordNotFound);
+                }
+            }
+            else
+            {
+                return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
     }
 }
