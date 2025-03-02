@@ -1,5 +1,4 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.AdaylarVM>
-
+@model IEnumerable<YOGBIS.Common.VModels.AdaylarVM>
 
 <div class="table-responsive">
     <table class="table table-bordered table-hover table-striped display nowrap" id="myTable" width="100%" cellspacing="0">
@@ -23,9 +22,7 @@
                     <tr>
                         <td style="width:20px">@sirano</td>
                         <td class="text-center" style="width:20px">
-                            <a asp-controller="AdayTanimlama" asp-action="Index" asp-route-id="@item.AdayId" id="AdayId">
-                                @item.TC
-                            </a>
+                            <a href="#" onclick="getAdayBasvuruBilgileri('@item.TC'); return false;" style="cursor:pointer">@item.TC</a>
                         </td>
                         <td style="width:20px">@item.Ad</td>
                         <td style="width:20px">@item.Soyad</td>

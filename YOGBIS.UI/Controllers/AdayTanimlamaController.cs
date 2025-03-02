@@ -8,6 +8,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -483,6 +484,25 @@ namespace YOGBIS.UI.Controllers
                 }
             }
         } 
+        #endregion
+
+        #region AdayBasvuruBilgileriniGetir
+        public IActionResult AdayBasvuruBilgileriniGetir(string TC)
+        {
+            System.Diagnostics.Debug.WriteLine($"Controller - TC ile sorgu başladı: {TC}");
+            var result = _adaylarBE.AdayBasvuruBilgileriniGetir(TC);
+
+            if (result.IsSuccess && result.Data != null && result.Data.Any())
+            {
+                System.Diagnostics.Debug.WriteLine($"Controller - {result.Data.Count} adet veri bulundu");
+                return ViewComponent("AdayBasvuruBilgileri", result.Data);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"Controller - Hata: {result.Message}");
+                return Json(new { success = false, message = result.Message });
+            }
+        }
         #endregion
 
         #region TCKimlikNoDogrula

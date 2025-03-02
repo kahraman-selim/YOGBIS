@@ -16,7 +16,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 {
     public class AdaylarBE : IAdaylarBE
     {
-        #region Değişkenler
+        #region Fields
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IDerecelerBE _derecelerBE;
@@ -24,7 +24,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         private readonly IKomisyonlarBE _komisyonlarBE;
         #endregion
 
-        #region Donustucuruler
+        #region Constructors
         public AdaylarBE(IUnitOfWork unitOfWork, IMapper mapper, IDerecelerBE derecelerBE, IMulakatOlusturBE mulakatOlusturBE, IKomisyonlarBE komisyonlarBE)
         {
             _unitOfWork = unitOfWork;
@@ -111,7 +111,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
             catch (Exception ex)
             {
-                // Loglama yapılabilir
                 return new Result<List<AdaylarVM>>(false, ex.Message);
             }
         }
@@ -419,6 +418,145 @@ namespace YOGBIS.BusinessEngine.Implementaion
             else
             {
                 return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+        
+        #region AdayBasvuruBilgileriniGetir
+        public Result<List<AdayBasvuruBilgileriVM>> AdayBasvuruBilgileriniGetir(string TC)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - TC ile sorgu başladı: {TC}");
+
+                if (string.IsNullOrEmpty(TC))
+                {
+                    System.Diagnostics.Debug.WriteLine("Business Engine - TC boş");
+                    return new Result<List<AdayBasvuruBilgileriVM>>(false, "TC kimlik numarası boş olamaz");
+                }
+                
+                System.Diagnostics.Debug.WriteLine("Business Engine - Repository'den veri çekiliyor");
+                var data = _unitOfWork.adayBasvuruBilgileriRepository.GetAll(x => x.TC == TC).ToList();
+                
+                if (data != null && data.Any())
+                {
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - {data.Count} adet veri bulundu. TC: {TC}");
+                    
+                    var adaylar = data.Select(data => new AdayBasvuruBilgileriVM()
+                    {
+                        Id = data.Id,
+                        TC = data.TC,
+                        Askerlik=data.Askerlik,
+                        KurumKod = data.KurumKod,
+                        KurumAdi = data.KurumAdi,
+                        Ogrenim = data.Ogrenim,
+                        MezunOkulKodu = data.MezunOkulKodu,
+                        Mezuniyet = data.Mezuniyet,
+                        HizmetYil = data.HizmetYil,
+                        HizmetAy = data.HizmetAy,
+                        HizmetGun = data.HizmetGun,
+                        Derece = data.Derece,
+                        Kademe = data.Kademe,
+                        Enaz5Yil = data.Enaz5Yil,
+                        DahaOnceYDGorev = data.DahaOnceYDGorev,
+                        YIciGorevBasTar = data.YIciGorevBasTar,
+                        YabanciDilBasvuru = data.YabanciDilBasvuru,
+                        YabanciDilAdi = data.YabanciDilAdi,
+                        YabanciDilTuru = data.YabanciDilTuru,
+                        YabanciDilTarihi = data.YabanciDilTarihi,
+                        YabanciDilPuan = data.YabanciDilPuan,
+                        YabanciDilSeviye = data.YabanciDilSeviye,
+                        IlTercihi1 = data.IlTercihi1,
+                        IlTercihi2 = data.IlTercihi2,
+                        IlTercihi3 = data.IlTercihi3,
+                        IlTercihi4 = data.IlTercihi4,
+                        IlTercihi5 = data.IlTercihi5,
+                        BasvuruTarihi = data.BasvuruTarihi,
+                        SonDegisiklikTarihi = data.SonDegisiklikTarihi,
+                        OnayDurumu = data.OnayDurumu,
+                        OnayDurumuAck = data.OnayDurumuAck,
+                        MYYSTarihi = data.MYYSTarihi,
+                        MYYSSinavTedbiri = data.MYYSSinavTedbiri,
+                        MYYSTedbirAck = data.MYYSTedbirAck,
+                        MYYSPuan = data.MYYSPuan,
+                        MYYSSonuc = data.MYYSSonuc,
+                        MYSSDurum = data.MYSSDurum,
+                        MYSSDurumAck = data.MYSSDurumAck,
+                        IlMemGorus = data.IlMemGorus,
+                        Referans = data.Referans,
+                        ReferansAck = data.ReferansAck,
+                        GorevIptalAck = data.GorevIptalAck,
+                        GorevIptalBrans = data.GorevIptalBrans,
+                        GorevIptalYil = data.GorevIptalYil,
+                        GorevIptalBAOK = data.GorevIptalBAOK,
+                        IlkGorevKaydi = data.IlkGorevKaydi,
+                        YabanciDilALM = data.YabanciDilALM,
+                        YabanciDilING = data.YabanciDilING,
+                        YabanciDilFRS = data.YabanciDilFRS,
+                        YabanciDilDiger = data.YabanciDilDiger,
+                        GorevdenUzaklastirma = data.GorevdenUzaklastirma,
+                        EDurum = data.EDurum,
+                        MDurum = data.MDurum,
+                        PDurum = data.PDurum,
+                        Sendika = data.Sendika,
+                        SendikaAck = data.SendikaAck,
+                        MYYSSoruItiraz = data.MYYSSoruItiraz,
+                        MYYSSonucItiraz = data.MYYSSonucItiraz,
+                        BasvuruBrans = data.BasvuruBrans,
+                        BransId = data.BransId,
+                        //AdliSicilBelge = data.AdliSicilBelge,
+                        DereceId = data.DereceId,
+                        DereceAdi = data.DereceAdi,
+                        Unvan = data.Unvan,
+                        UlkeTercihId = data.UlkeTercihId,                
+                        MulakatId = data.MulakatId,
+                        //MulakatYil=int.Parse(_mulakatOlusturBE.MulakatYilGetir((Guid)data.MulakatId.GetValueOrDefault()).Data.ToString()),
+                        KayitTarihi = data.KayitTarihi,
+                        KaydedenId = data.KaydedenId
+                    }).ToList();
+
+                    foreach (var aday in adaylar.Where(x => x.MulakatId.HasValue))
+                    {
+                        try 
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Business Engine - {aday.TC} için mülakat bilgileri alınıyor. MulakatId: {aday.MulakatId}");
+                            var mulakatOnay = _mulakatOlusturBE.MulakatOnayGetir((Guid)aday.MulakatId);
+                            var mulakatYil = _mulakatOlusturBE.MulakatYilGetir((Guid)aday.MulakatId);
+
+                            if (mulakatOnay?.Data != null)
+                            {
+                                aday.MulakatOnayNo = mulakatOnay.Data;
+                                System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat onay no alındı: {mulakatOnay.Data}");
+                            }
+
+                            if (mulakatYil?.Data != null)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı alındı: {mulakatYil.Data}");
+                                aday.MulakatYil = int.Parse(mulakatYil.Data);
+                            }
+                            else
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı bulunamadı. MulakatId: {aday.MulakatId}");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat bilgileri alınırken hata: {ex.Message}");
+                        }
+                    }
+
+                    return new Result<List<AdayBasvuruBilgileriVM>>(true, ResultConstant.RecordFound, adaylar);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - TC ile veri bulunamadı: {TC}");
+                    return new Result<List<AdayBasvuruBilgileriVM>>(false, "TC numarası ile kayıt bulunamadı");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Hata: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                return new Result<List<AdayBasvuruBilgileriVM>>(false, "Veri getirme hatası: " + ex.Message);
             }
         }
         #endregion

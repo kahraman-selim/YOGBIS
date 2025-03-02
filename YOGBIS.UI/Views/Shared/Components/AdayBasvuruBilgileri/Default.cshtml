@@ -1,6 +1,4 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.AdayBasvuruBilgileriVM>
-
-
+@model List<YOGBIS.Common.VModels.AdayBasvuruBilgileriVM>
 
 <div class="card mb-3">
     <div class="card-header">
@@ -12,79 +10,92 @@
             <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTableE" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>SN</th>
                         <th>Mülakat Yılı</th>
-                        <th>TC</th>
+                        <th>Ülke Tercihi</th>
                         <th>Başvuru Branş</th>
+                        <th>Derece</th>
+                        <th>Ünvan</th>
                         <th>Askerlik</th>
-                        <th>Kurum Kod</th>
                         <th>Kurum Adı</th>
-                        <th>Öğrenim</th>
-                        <th>Mezuniyet Kod</th>
-                        <th>Mezun Olduğu Kurum</th>
-                        <th>Hizmet Yıl/Ay/Gün</th>
+                        <th>Öğrenim</th>                       
+                        <th>Mezuniyet</th>
+                        <th>Hizmet</th>
                         <th>Derece/Kademe</th>
                         <th>Yurt Dışı Görev</th>
-                        <th>Yurt İçi Gör. Baş. Tar.</th>
+                        <th>Yurt İçi Başlama Tar.</th>
                         <th>Başvuru Yabancı Dil Bilgileri</th>
-                        <th>Başvuru İl Tercihleri</th>
+                        <th>ALM/ING/FRS/Diğer</th>
+                        <th>İl Tercihleri</th>
                         <th>Başvuru Tarihi</th>
-                        <th>Başvuru Değ. Tar.</th>
+                        <th>Son Değişiklik Tar.</th>
                         <th>Başvuru Onay</th>
-                        <th>Onay Açıklama</th>
+                        <th>Onay Açk.</th>
                         <th>MYYS Sınav Ted.</th>
                         <th>MYYS Puan</th>
                         <th>MYYS Sonuç</th>
-                        <th>İlk Görev Kaydı</th>
-                        <th>Görevden Uzaklaştırma</th>
-                        <th>Görev İptal Bilgileri</th>
-                        <th>Yabancı Dil Bilgi</th>                       
-                        <th>Adli Sicil Kaydı</th>
-                        <th>Soru İtiraz</th>
-                        <th>Sonuç İtiraz</th>
+                        <th>MYYS Durum</th>
+                        <th>MYYS Durum Açk.</th>
+                        <th>Referans</th>
+                        <th>Sendika</th>                        
+                        <th>Görev İptal</th>                        
+                        <th>İlk Görev Kaydı</th>                        
+                        <th>Görevden Uzaklaştırma</th>                        
+                        <th>EDurum</th>                        
+                        <th>MDurum</th>                        
+                        <th>PDurum</th>                        
+                        <th>Soru İtiraz</th>                        
+                        <th>Sonuç İtiraz</th>                        
+                        <th>Adli Sicil</th>                        
                     </tr>
                 </thead>
                 <tbody>
-                    @{
-                        var sirano = 0;
-                    }
-                    @if (Model != null)
+                    @if (Model != null && Model.Any())
                     {
-                        @foreach (var item in Model)
+                        foreach (var item in Model.Where(x => x.MulakatId.HasValue))
                         {
-                            sirano++;
                             <tr>
-                                <td>@sirano</td>
                                 <td>@item.MulakatYil</td>
-                                <td>@item.TC</td>
+                                <td>@item.UlkeTercihAdi</td>
                                 <td>@item.BasvuruBrans</td>
+                                <td>@item.DereceAdi</td>
+                                <td>@item.Unvan</td>
                                 <td>@item.Askerlik</td>
-                                <td>@item.KurumKod</td>
                                 <td>@item.KurumAdi</td>
                                 <td>@item.Ogrenim</td>
-                                <td>@item.MezunOkulKodu</td>
                                 <td>@item.Mezuniyet</td>
-                                <td>@item.HizmetYil / @item.HizmetAy / @item.HizmetGun</td>
-                                <td>@item.Derece / @item.Kademe</td>
+                                <td>@($"{item.HizmetYil}/{item.HizmetAy}/{item.HizmetGun}")</td>
+                                <td>@($"{item.Derece}/{item.Kademe}")</td>
                                 <td>@item.DahaOnceYDGorev</td>
                                 <td>@item.YIciGorevBasTar</td>
-                                <td>@item.YabanciDilBasvuru / @item.YabanciDilAdi / @item.YabanciDilTuru / @item.YabanciDilTarihi / @item.YabanciDilPuan / @item.YabanciDilSeviye</td>
-                                <td>@item.IlTercihi1 / @item.IlTercihi2 / @item.IlTercihi3 / @item.IlTercihi4 / @item.IlTercihi5</td>
+                                <td>@($"{item.YabanciDilBasvuru}/{item.YabanciDilAdi}/{item.YabanciDilTuru}/{item.YabanciDilTarihi}/{item.YabanciDilPuan}/{item.YabanciDilSeviye}")</td>
+                                <td>@($"{item.YabanciDilALM}/{item.YabanciDilING}/{item.YabanciDilFRS}/{item.YabanciDilDiger}")</td>
+                                <td>
+                                    @item.IlTercihi1
+                                    @if (!string.IsNullOrEmpty(item.IlTercihi2)) { <span>, @item.IlTercihi2</span> }
+                                    @if (!string.IsNullOrEmpty(item.IlTercihi3)) { <span>, @item.IlTercihi3</span> }
+                                    @if (!string.IsNullOrEmpty(item.IlTercihi4)) { <span>, @item.IlTercihi4</span> }
+                                    @if (!string.IsNullOrEmpty(item.IlTercihi5)) { <span>, @item.IlTercihi5</span> }
+                                </td>
                                 <td>@item.BasvuruTarihi</td>
-                                <td>@item.SonDegisiklikTarihi</td>
                                 <td>@item.SonDegisiklikTarihi</td>
                                 <td>@item.OnayDurumu</td>
                                 <td>@item.OnayDurumuAck</td>
-                                <td>@item.MYYSSinavTedbiri</td>
+                                <td>@($"{item.MYYSSinavTedbiri}/{item.MYYSTedbirAck}")</td>
                                 <td>@item.MYYSPuan</td>
                                 <td>@item.MYYSSonuc</td>
-                                <td>@item.IlkGorevKaydi</td>                                
+                                <td>@item.MYSSDurum</td>
+                                <td>@item.MYSSDurumAck</td>
+                                <td>@($"{item.Referans}/{item.ReferansAck}")</td>
+                                <td>@($"{item.Sendika}/{item.SendikaAck}")</td>
+                                <td>@($"{item.GorevIptalAck}/{item.GorevIptalBrans}/{item.GorevIptalYil}/{item.GorevIptalBAOK}")</td>
+                                <td>@item.IlkGorevKaydi</td>
                                 <td>@item.GorevdenUzaklastirma</td>
-                                <td>@item.GorevIptalAck / @item.GorevIptalBrans / @item.GorevIptalYil / @item.GorevIptalBAOK</td>
-                                <td>@item.YabanciDilALM / @item.YabanciDilING / @item.YabanciDilFRS / @item.YabanciDilDiger</td>
-                                <td>@item.AdliSicilBelge</td>
+                                <td>@item.EDurum</td>
+                                <td>@item.MDurum</td>
+                                <td>@item.PDurum</td>
                                 <td>@item.MYYSSoruItiraz</td>
                                 <td>@item.MYYSSonucItiraz</td>
+                                <td>AdliSicilBelge</td>
                             </tr>
                         }
                     }

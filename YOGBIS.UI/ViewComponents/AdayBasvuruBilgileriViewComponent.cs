@@ -1,22 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
-using YOGBIS.Data.Contracts;
+using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.ViewComponents
 {
-    public class AdayBasvuruBilgileriViewComponent:ViewComponent
+    public class AdayBasvuruBilgileriViewComponent : ViewComponent
     {
         private readonly IAdaylarBE _adaylarBE;
 
         public AdayBasvuruBilgileriViewComponent(IAdaylarBE adaylarBE)
         {
-            adaylarBE = _adaylarBE;
+            _adaylarBE = adaylarBE;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync() 
+        public IViewComponentResult Invoke(List<AdayBasvuruBilgileriVM> model)
         {
-            return View();
+            return View(model);
         }
     }
 }

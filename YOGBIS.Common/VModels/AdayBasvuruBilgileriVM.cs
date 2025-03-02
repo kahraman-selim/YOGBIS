@@ -77,6 +77,7 @@ namespace YOGBIS.Common.VModels
         public string DereceAdi { get; set; }
         public string Unvan { get; set; }
         public Guid? UlkeTercihId { get; set; }
+        public string UlkeTercihAdi { get; set; }
         public Guid? MulakatId { get; set; }
         public string MulakatOnayNo { get; set; }
         public int MulakatYil { get; set; }             

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
@@ -18,6 +19,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<List<AdaylarVM>> AdayGetirKullaniciId(string userId);
         bool TCKontrol(string TC);
         Result<AdayBasvuruBilgileriVM> AdayBasvuruBilgileriEkle(AdayBasvuruBilgileriVM model, SessionContext user);
-        Result<AdayBasvuruBilgileriVM> AdayBasvuruBilgileriGetir(string TC);
+        Result<List<AdayBasvuruBilgileriVM>> AdayBasvuruBilgileriniGetir(string TC);       
     }
 }
