@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -98,7 +98,7 @@ namespace YOGBIS.Data.DataContext
         public DbSet<AdayDDK> AdayDDK { get; set; }
         public DbSet<AdayGorevKaydi> AdayGorevKaydi { get; set; }
         public DbSet<Adaylar> Adaylar { get; set; }
-        public DbSet<AdayNot> AdayNot { get; set; }
+        public DbSet<AdaySinavNotlar> AdaySinavNotlar { get; set; }
         public DbSet<Branslar> Branslar { get; set; }
         public DbSet<DosyaGaleri> DosyaGaleri { get; set; }
         public DbSet<Duyurular> Duyurular { get; set; }

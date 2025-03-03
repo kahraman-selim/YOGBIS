@@ -37,7 +37,7 @@ namespace YOGBIS.Common.VModels
         public List<AdayDDKVM> AdayDDK { get; set; }
         public List<AdayGorevKaydiVM> AdayGorevKaydi { get; set; }
         public List<AdaylarVM> Adaylars { get; set; }
-        public List<AdayNotVM> AdayNot { get; set; }
+        //public List<AdayNotVM> AdayNot { get; set; }
         public List<BranslarVM> Branslar { get; set; }
         public IFormFileCollection DosyaGaleris { get; set; }
         public List<DosyaGaleriVM> DosyaGaleri { get; set; }

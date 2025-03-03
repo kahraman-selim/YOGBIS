@@ -27,7 +27,7 @@ namespace YOGBIS.Data.DbModels
         //Bağlı tablolar
         public ICollection<FotoGaleri> FotoGaleri { get; set; }
         public ICollection<DosyaGaleri> DosyaGaleri { get; set; }
-        public List<AdayNot> AdayNot { get; set; }
+        public List<AdaySinavNotlar> AdaySinavNotlar { get; set; }
         public List<AdayDDK> AdayDDK { get; set; }
         public List<AdayGorevKaydi> AdayGorevKaydi { get; set; }
         public List<EPostaAdresleri> EpostaAdresleri { get; set; }

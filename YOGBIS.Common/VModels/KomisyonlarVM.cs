@@ -28,6 +28,6 @@ namespace YOGBIS.Common.VModels
         public string KaydedenId { get; set; }
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
-        public List<AdayNotVM> AdayNot { get; set; }
+        //public List<AdayNotVM> AdayNot { get; set; }
     }
 }

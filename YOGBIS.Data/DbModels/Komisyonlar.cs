@@ -24,9 +24,11 @@ namespace YOGBIS.Data.DbModels
         public string KomisyonUyeEPosta { get; set; }
         public DateTime KomisyonGorevBaslamaTarihi { get; set; }
         public DateTime KomisyonGorevBitisTarihi { get; set; }
+        public Guid? MulakatId { get; set; }
+        [ForeignKey("MulakatId")]
+        public Mulakatlar Mulakatlar { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }     
-        public List<AdayNot> AdayNot { get; set; }
+        public Kullanici Kullanici { get; set; }             
     }
 }
