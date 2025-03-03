@@ -580,7 +580,6 @@ namespace YOGBIS.UI.Controllers
                                 IkametIl= worksheet.Cells[row, 7].Value?.ToString(),
                                 IkametIlce= worksheet.Cells[row, 8].Value?.ToString(),
                                 MulakatId= Guid.Parse(worksheet.Cells[row, 9].Value?.ToString()),
-
                             };
 
                             var result = _adaylarBE.AdayIletisimBilgileriEkle(aday, user);
@@ -645,7 +644,7 @@ namespace YOGBIS.UI.Controllers
             if (result.IsSuccess && result.Data != null && result.Data.Any())
             {
                 System.Diagnostics.Debug.WriteLine($"Controller - {result.Data.Count} adet veri bulundu");
-                return ViewComponent("AdayBasvuruBilgileri", result.Data);
+                return ViewComponent("AdayIletisimBilgileri", result.Data);
             }
             else
             {

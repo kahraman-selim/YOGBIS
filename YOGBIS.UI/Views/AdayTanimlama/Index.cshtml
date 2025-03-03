@@ -151,6 +151,8 @@
                 url = '@Url.Action("AdayTemelBilgileriYukle")';
             } else if (yuklemeTipi === '2') {
                 url = '@Url.Action("AdayBasvuruBilgileriYukle")';
+            } else if (yuklemeTipi === '3') {
+                url = '@Url.Action("AdayIletisimBilgileriYukle")';
             }
 
             fetch(url, {

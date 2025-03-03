@@ -579,7 +579,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         NufusIl=data.NufusIl,
                         NufusIlce=data.NufusIlce,
                         IkametAdres=data.IkametAdres,
-                        IkametIl=data.IkametAdres,
+                        IkametIl=data.IkametIl,
                         IkametIlce=data.IkametIlce,
                         MulakatId = data.MulakatId,
                         KayitTarihi = data.KayitTarihi,
