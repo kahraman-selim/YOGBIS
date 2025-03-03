@@ -118,6 +118,9 @@
         <div id="adayBasvuruBilgileriContainer">
             @await Component.InvokeAsync("AdayBasvuruBilgileri")
         </div>
+        <div id="adayIletisimBilgileriContainer">
+            @await Component.InvokeAsync("AdayIletisimBilgileri")
+        </div>
     </div>
 </div>
 
@@ -370,5 +373,54 @@
                 }
             });
         }
+
+        function getAdayIletisimBilgileri(tc) {
+            console.log('TC gönderiliyor:', tc);
+
+            $.ajax({
+                url: '/AdayTanimlama/AdayIletisimBilgileriniGetir',
+                type: 'GET',
+                data: { TC: tc },
+                success: function (result) {
+                    if (result.error) {
+                        console.error('Sunucu hatası:', result.error);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: result.error,
+                            size: 'small'
+                        });
+                        return;
+                    }
+                    console.log('Başarılı sonuç:', result);
+                    $('#adayIletisimBilgileriContainer').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.group('AJAX Hata Detayları');
+                    console.error('Hata:', error);
+                    console.error('Status:', status);
+                    console.error('Status Code:', xhr.status);
+                    console.error('Response Text:', xhr.responseText);
+                    try {
+                        var jsonResponse = JSON.parse(xhr.responseText);
+                        console.error('JSON Response:', jsonResponse);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: jsonResponse.error || 'Veri getirme hatası',
+                            size: 'small'
+                        });
+                    } catch (e) {
+                        console.error('Raw Response:', xhr.responseText);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: 'Veri getirme hatası',
+                            size: 'small'
+                        });
+                    }
+                    console.groupEnd();
+                }
+            });
+        }
+
+
     </script>
 }

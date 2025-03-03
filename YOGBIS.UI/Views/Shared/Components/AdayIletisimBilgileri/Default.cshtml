@@ -1,0 +1,47 @@
+﻿@model List<YOGBIS.Common.VModels.AdayIletisimBilgileriVM>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        <b>Aday İletişim Bilgileri</b>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTableE" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Mülakat Yılı</th>
+                        <th>Cep Telefonu</th>
+                        <th>E-Posta</th>
+                        <th>Nüfus İl</th>
+                        <th>Nüfus İlçe</th>
+                        <th>Adres</th>
+                        <th>Adres İl</th>
+                        <th>Adres İlçe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model.Where(x => x.MulakatId.HasValue))
+                        {
+                            <tr>
+                                <td>@item.MulakatYil</td>
+                                <td>@item.CepTelNo</td>
+                                <td>@item.EPosta</td>
+                                <td>@item.NufusIl</td>
+                                <td>@item.NufusIlce</td>
+                                <td>@item.IkametAdres</td>
+                                <td>@item.IkametIl</td>
+                                <td>@item.IkametIlce</td>                                
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+

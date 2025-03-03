@@ -505,7 +505,7 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region AdayBasvuruBilgileriYukle
+        #region AdayIletisimBilgileriYukle
         [HttpPost]
         [RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
         [RequestSizeLimit(209715200)]
@@ -632,6 +632,25 @@ namespace YOGBIS.UI.Controllers
                 {
                     _progressData.Remove(sessionId);
                 }
+            }
+        }
+        #endregion
+
+        #region AdayIletisimBilgileriniGetir
+        public IActionResult AdayIletisimBilgileriniGetir(string TC)
+        {
+            System.Diagnostics.Debug.WriteLine($"Controller - TC ile sorgu başladı: {TC}");
+            var result = _adaylarBE.AdayIletisimBilgileriniGetir(TC);
+
+            if (result.IsSuccess && result.Data != null && result.Data.Any())
+            {
+                System.Diagnostics.Debug.WriteLine($"Controller - {result.Data.Count} adet veri bulundu");
+                return ViewComponent("AdayBasvuruBilgileri", result.Data);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"Controller - Hata: {result.Message}");
+                return Json(new { success = false, message = result.Message });
             }
         }
         #endregion

@@ -549,5 +549,126 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        #region AdayIletisimBilgileriniGetir
+        public Result<List<AdayIletisimBilgileriVM>> AdayIletisimBilgileriniGetir(string TC)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - TC ile sorgu başladı: {TC}");
+
+                if (string.IsNullOrEmpty(TC))
+                {
+                    System.Diagnostics.Debug.WriteLine("Business Engine - TC boş");
+                    return new Result<List<AdayIletisimBilgileriVM>>(false, "TC kimlik numarası boş olamaz");
+                }
+
+                System.Diagnostics.Debug.WriteLine("Business Engine - Repository'den veri çekiliyor");
+                var data = _unitOfWork.adayIletisimBilgileriRepository.GetAll(x => x.TC == TC).ToList();
+
+                if (data != null && data.Any())
+                {
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - {data.Count} adet veri bulundu. TC: {TC}");
+
+                    var adaylar = data.Select(data => new AdayIletisimBilgileriVM()
+                    {
+                        Id = data.Id,
+                        TC = data.TC,
+                        CepTelNo=data.CepTelNo,
+                        EPosta=data.EPosta,
+                        NufusIl=data.NufusIl,
+                        NufusIlce=data.NufusIlce,
+                        IkametAdres=data.IkametAdres,
+                        IkametIl=data.IkametAdres,
+                        IkametIlce=data.IkametIlce,
+                        MulakatId = data.MulakatId,
+                        KayitTarihi = data.KayitTarihi,
+                        KaydedenId = data.KaydedenId
+                    }).ToList();
+
+                    foreach (var aday in adaylar)
+                    {
+                        if (aday.MulakatId.HasValue)
+                        {
+                            try
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Business Engine - {aday.TC} için mülakat bilgileri alınıyor. MulakatId: {aday.MulakatId}");
+
+                                // Önce mülakat verisini direkt veritabanından alalım
+                                var mulakat = _unitOfWork.mulakatlarRepository.Get((Guid)aday.MulakatId);
+                                if (mulakat != null && mulakat.YazılıSinavTarihi != default(DateTime))
+                                {
+                                    aday.MulakatYil = mulakat.YazılıSinavTarihi.Year;
+                                    System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı veritabanından alındı: {aday.MulakatYil}");
+                                }
+                                else
+                                {
+                                    // Eğer veritabanından alamazsak servisten deneyelim
+                                    var mulakatYil = _mulakatOlusturBE.MulakatYilGetir((Guid)aday.MulakatId);
+                                    if (mulakatYil.IsSuccess && !string.IsNullOrEmpty(mulakatYil.Data))
+                                    {
+                                        aday.MulakatYil = int.Parse(mulakatYil.Data);
+                                        System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı servisten alındı: {aday.MulakatYil}");
+                                    }
+                                    else
+                                    {
+                                        System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı alınamadı");
+                                    }
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat bilgileri alınırken hata: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                            }
+                        }
+                    }
+
+                    return new Result<List<AdayIletisimBilgileriVM>>(true, ResultConstant.RecordFound, adaylar);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - TC ile veri bulunamadı: {TC}");
+                    return new Result<List<AdayIletisimBilgileriVM>>(false, "TC numarası ile kayıt bulunamadı");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Hata: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                return new Result<List<AdayIletisimBilgileriVM>>(false, "Veri getirme hatası: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region AdayIletisimBilgileriniGetirById
+        public Result<AdayIletisimBilgileriVM> AdayIletisimBilgileriniGetirById(Guid id)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Id ile sorgu başladı: {id}");
+
+                var data = _unitOfWork.adayIletisimBilgileriRepository.Get(id);
+                if (data != null)
+                {
+                    var aday = new AdayIletisimBilgileriVM()
+                    {
+                        Id = data.Id,
+                        TC = data.TC,
+                    };
+
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - Veri bulundu. TC: {aday.TC}");
+                    return new Result<AdayIletisimBilgileriVM>(true, ResultConstant.RecordFound, aday);
+                }
+
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Veri bulunamadı. Id: {id}");
+                return new Result<AdayIletisimBilgileriVM>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Hata: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                return new Result<AdayIletisimBilgileriVM>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
+            }
+        }
+        #endregion
     }
 }
