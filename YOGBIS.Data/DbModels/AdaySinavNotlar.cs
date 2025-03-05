@@ -25,7 +25,9 @@ namespace YOGBIS.Data.DbModels
         public Guid AdayId { get; set; }
         [ForeignKey("AdayId")]
         public Adaylar Adaylar { get; set; }
-        public Guid? MulakatId { get; set; }
+        public Guid MulakatId { get; set; }
+        [ForeignKey("MulakatId")]
+        public Mulakatlar Mulakatlar { get; set; }
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public Kullanici Kullanici { get; set; }

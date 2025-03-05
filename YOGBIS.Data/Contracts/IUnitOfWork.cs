@@ -10,7 +10,7 @@ namespace YOGBIS.Data.Contracts
         IAdayIletisimBilgileriRepository adayIletisimBilgileriRepository { get; }
         IAdaylarRepository adaylarRepository { get; }
         IAdayMYSSRepository adayMYSSRepository { get; }
-        IAdayNotRepository adayNotRepository { get; }
+        IAdaySinavNotlarRepository adayNotRepository { get; }
         IAdayTYSRepository adayTYSRepository { get; }
         IAutoHistoryRepository autoHistoryRepository { get; }
         IBranslarRepository branslarRepository { get; }

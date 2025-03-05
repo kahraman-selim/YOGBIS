@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class Siniflar:Base
+    public class Siniflar : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -13,13 +13,16 @@ namespace YOGBIS.Data.DbModels
         public string SinifAdi { get; set; }
         public string SinifGrubu { get; set; }
         public DateTime SinifAcilisTarihi { get; set; }
+
         public Guid OkulId { get; set; }
         [ForeignKey("OkulId")]
-        public Okullar Okullar { get; set; }
+        public virtual Okullar Okul { get; set; }
+
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }
-        public List<Subeler> Subeler { get; set; }
-        public List<Ogrenciler> Ogrenciler { get; set; }
+        public virtual Kullanici Kullanici { get; set; }
+
+        public virtual ICollection<Subeler> Subeler { get; set; }
+        public virtual ICollection<Ogrenciler> Ogrenciler { get; set; }
     }
 }

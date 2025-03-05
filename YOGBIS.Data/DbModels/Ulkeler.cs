@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class Ulkeler:Base
+    public class Ulkeler : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -16,19 +16,22 @@ namespace YOGBIS.Data.DbModels
         public string UlkeBayrakAdi { get; set; }
         public string UlkeAciklama { get; set; }
         public bool Aktif { get; set; }
+        
         public Guid KitaId { get; set; }
         [ForeignKey("KitaId")]
-        public Kitalar Kitalar { get; set; }
+        public virtual Kitalar Kita { get; set; }
+        
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }
-        public List<Ogrenciler> Ogrenciler { get; set; }
-        public List<AdayGorevKaydi> Gorevliler { get; set; }
-        public List<Universiteler> Universiteler { get; set; }
-        public List<Okullar> Okullar { get; set; }
-        public List<Sehirler> Sehirler { get; set; }
-        public List<Eyaletler> Eyaletler { get; set; }        
-        public List<Temsilcilikler> Temsilcilikler { get; set; }
-        public ICollection<FotoGaleri> FotoGaleri { get; set; }
+        public virtual Kullanici Kullanici { get; set; }
+        
+        public virtual ICollection<Ogrenciler> Ogrenciler { get; set; }
+        public virtual ICollection<AdayGorevKaydi> Gorevliler { get; set; }
+        public virtual ICollection<Universiteler> Universiteler { get; set; }
+        public virtual ICollection<Okullar> Okullar { get; set; }
+        public virtual ICollection<Sehirler> Sehirler { get; set; }
+        public virtual ICollection<Eyaletler> Eyaletler { get; set; }
+        public virtual ICollection<Temsilcilikler> Temsilcilikler { get; set; }
+        public virtual ICollection<FotoGaleri> FotoGaleri { get; set; }
     }
 }

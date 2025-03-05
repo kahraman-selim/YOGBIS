@@ -17,7 +17,7 @@ namespace YOGBIS.Data.Implementaion
             adayIletisimBilgileriRepository = new AdayIletisimBilgileriRepository(_ctx);
             adaylarRepository = new AdaylarRepository(_ctx);
             adayMYSSRepository = new AdayMYSSRepository(_ctx);
-            adayNotRepository = new AdayNotRepository(_ctx);
+            adayNotRepository = new AdaySinavNotlarRepository(_ctx);
             adayTYSRepository = new AdayTYSRepository(_ctx);
             autoHistoryRepository = new AutoHistoryRepository(_ctx);
             branslarRepository = new BranslarRepository(_ctx);
@@ -70,7 +70,7 @@ namespace YOGBIS.Data.Implementaion
         public IAdayIletisimBilgileriRepository adayIletisimBilgileriRepository { get; private set; }
         public IAdaylarRepository adaylarRepository { get; private set; }
         public IAdayMYSSRepository adayMYSSRepository { get; private set; }
-        public IAdayNotRepository adayNotRepository { get; private set; }  
+        public IAdaySinavNotlarRepository adayNotRepository { get; private set; }  
         public IAdayTYSRepository adayTYSRepository { get; private set; }
         public IAutoHistoryRepository autoHistoryRepository { get; private set; }
         public IBranslarRepository branslarRepository { get; private set; }

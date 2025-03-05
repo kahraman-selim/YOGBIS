@@ -95,10 +95,14 @@ namespace YOGBIS.Data.DataContext
         }
 
         #region DbSets
+        public DbSet<AdayBasvuruBilgileri> AdayBasvuruBilgileri { get; set; }
         public DbSet<AdayDDK> AdayDDK { get; set; }
         public DbSet<AdayGorevKaydi> AdayGorevKaydi { get; set; }
+        public DbSet<AdayIletisimBilgileri> AdayIletisimBilgileri { get; set; }
         public DbSet<Adaylar> Adaylar { get; set; }
+        public DbSet<AdayMYSS> AdayMYSS { get; set; }
         public DbSet<AdaySinavNotlar> AdaySinavNotlar { get; set; }
+        public DbSet<AdayTYS> AdayTYS { get; set; }
         public DbSet<Branslar> Branslar { get; set; }
         public DbSet<DosyaGaleri> DosyaGaleri { get; set; }
         public DbSet<Duyurular> Duyurular { get; set; }

@@ -4,11 +4,11 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Data.Implementaion
 {
-    public class AdayNotRepository : Repository<AdayNot>, IAdayNotRepository
+    public class AdaySinavNotlarRepository : Repository<AdayNot>, IAdaySinavNotlarRepository
     {
         private readonly YOGBISContext _ctx;
 
-        public AdayNotRepository(YOGBISContext ctx) : base(ctx)
+        public AdaySinavNotlarRepository(YOGBISContext ctx) : base(ctx)
         {
             _ctx = ctx;
         }

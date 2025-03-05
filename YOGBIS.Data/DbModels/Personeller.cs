@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class Personeller:Base
+    public class Personeller : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -17,11 +17,13 @@ namespace YOGBIS.Data.DbModels
         public string PersonelEPosta { get; set; }
         public string PersonelGorevAlani { get; set; }
         public string PersonelGorevYeri { get; set; }
+
         public Guid? TemsilcilikId { get; set; }
         [ForeignKey("TemsilcilikId")]
-        public Temsilcilikler Temsilcilikler { get; set; }
+        public virtual Temsilcilikler Temsilcilik { get; set; }
+
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }
+        public virtual Kullanici Kullanici { get; set; }
     }
 }

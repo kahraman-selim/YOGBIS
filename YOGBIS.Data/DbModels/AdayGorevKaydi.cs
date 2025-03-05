@@ -28,6 +28,7 @@ namespace YOGBIS.Data.DbModels
         public Guid? TemsilcilikId { get; set; }
         public Guid? SehirId { get; set; }        
         public Guid? EyaletId { get; set; }
+        public Guid? MulakatId { get; set; }
         public Guid UlkeId { get; set; }
         [ForeignKey("UlkeId")]
         public Ulkeler Ulkeler { get; set; }

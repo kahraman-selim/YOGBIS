@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class Mulakatlar:Base
+    public class Mulakatlar : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -23,11 +23,13 @@ namespace YOGBIS.Data.DbModels
         public int? SorulanSoruSayisi { get; set; }
         public bool Durumu { get; set; }
         public string MulakatAciklama { get; set; }
+
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }
-        public List<MulakatSorulari> MulakatSorulari { get; set; }
-        public List<AdayBasvuruBilgileri> AdayBasvuruBilgileri { get; set; }
-        public List<Komisyonlar> Komisyonlar { get; set; }
+        public virtual Kullanici Kullanici { get; set; }
+
+        public virtual ICollection<MulakatSorulari> MulakatSorulari { get; set; }
+        public virtual ICollection<AdayBasvuruBilgileri> AdayBasvuruBilgileri { get; set; }
+        public virtual ICollection<Komisyonlar> Komisyonlar { get; set; }
     }
 }

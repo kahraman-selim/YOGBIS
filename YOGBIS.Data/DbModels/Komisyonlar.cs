@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class Komisyonlar:Base
+    public class Komisyonlar : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -24,11 +24,13 @@ namespace YOGBIS.Data.DbModels
         public string KomisyonUyeEPosta { get; set; }
         public DateTime KomisyonGorevBaslamaTarihi { get; set; }
         public DateTime KomisyonGorevBitisTarihi { get; set; }
+
         public Guid? MulakatId { get; set; }
         [ForeignKey("MulakatId")]
-        public Mulakatlar Mulakatlar { get; set; }
+        public virtual Mulakatlar Mulakat { get; set; }
+
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }             
+        public virtual Kullanici Kullanici { get; set; }
     }
 }

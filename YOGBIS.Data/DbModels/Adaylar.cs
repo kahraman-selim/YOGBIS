@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class Adaylar:Base
+    public class Adaylar : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -17,26 +17,24 @@ namespace YOGBIS.Data.DbModels
         public string AnaAd { get; set; }
         public string DogumTarihi { get; set; }
         public string DogumTarihi2 { get; set; }
-        //public int? Yasi { get; set; }
         public string DogumYeri { get; set; }
         public string Cinsiyet { get; set; }
-        //Kayıt yapan kullanıcı
+
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }        
-        //Bağlı tablolar
-        public ICollection<FotoGaleri> FotoGaleri { get; set; }
-        public ICollection<DosyaGaleri> DosyaGaleri { get; set; }
-        public List<AdaySinavNotlar> AdaySinavNotlar { get; set; }
-        public List<AdayDDK> AdayDDK { get; set; }
-        public List<AdayGorevKaydi> AdayGorevKaydi { get; set; }
-        public List<EPostaAdresleri> EpostaAdresleri { get; set; }
-        public List<Telefonlar> Telefonlar { get; set; }
-        public List<IkametAdresleri> IkametAdresleri { get; set; }
-        public List<AdayBasvuruBilgileri> AdayBasvuruBilgileri { get; set; }
-        public List<AdayIletisimBilgileri> AdayIletisimBilgileri { get; set; }
-        public List<AdayMYSS> AdayMYSS { get; set; }
-        public List<AdayTYS> AdayTYS { get; set; }    
+        public virtual Kullanici Kullanici { get; set; }
+
+        public virtual ICollection<FotoGaleri> FotoGaleri { get; set; }
+        public virtual ICollection<DosyaGaleri> DosyaGaleri { get; set; }
+        public virtual ICollection<AdaySinavNotlar> AdaySinavNotlar { get; set; }
+        public virtual ICollection<AdayDDK> AdayDDK { get; set; }
+        public virtual ICollection<AdayGorevKaydi> AdayGorevKaydi { get; set; }
+        public virtual ICollection<EPostaAdresleri> EpostaAdresleri { get; set; }
+        public virtual ICollection<Telefonlar> Telefonlar { get; set; }
+        public virtual ICollection<IkametAdresleri> IkametAdresleri { get; set; }
+        public virtual ICollection<AdayBasvuruBilgileri> AdayBasvuruBilgileri { get; set; }
+        public virtual ICollection<AdayIletisimBilgileri> AdayIletisimBilgileri { get; set; }
+        public virtual ICollection<AdayMYSS> AdayMYSS { get; set; }
+        public virtual ICollection<AdayTYS> AdayTYS { get; set; }
     }
-    
 }

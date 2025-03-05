@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class Okullar:Base
+    public class Okullar : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -14,7 +14,7 @@ namespace YOGBIS.Data.DbModels
         public string OkulAdi { get; set; }
         public string OkulTuru { get; set; }
         public string OgretimTuru { get; set; }
-        public string OkulLogoURL { get; set; } 
+        public string OkulLogoURL { get; set; }
         public string OkulBilgi { get; set; }
         public DateTime? OkulAcilisTarihi { get; set; }
         public bool OkulDurumu { get; set; }
@@ -27,26 +27,35 @@ namespace YOGBIS.Data.DbModels
         public string OkulInternetAdresi { get; set; }
         public string OkulEPostaAdresi { get; set; }
         public string OkulTelefon { get; set; }
-        ///////////////////////////////////////////////        
+
         public Guid? SehirId { get; set; }
-        //[ForeignKey("SehirId")]
-        //public Sehirler Sehirler { get; set; }
+        [ForeignKey("SehirId")]
+        public virtual Sehirler Sehir { get; set; }
+
         public Guid? EyaletId { get; set; }
-        //public Eyaletler Eyaletler { get; set; }
+        [ForeignKey("EyaletId")]
+        public virtual Eyaletler Eyalet { get; set; }
+
         public Guid? TemsilcilikId { get; set; }
+        [ForeignKey("TemsilcilikId")]
+        public virtual Temsilcilikler Temsilcilik { get; set; }
+
         public Guid UlkeId { get; set; }
-        //public Ulkeler Ulkeler { get; set; }
+        [ForeignKey("UlkeId")]
+        public virtual Ulkeler Ulke { get; set; }
+
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }
-        public List<OkulBinaBolum> OkulBinaBolum { get; set; }
-        public List<Siniflar> Siniflar { get; set; }
-        public List<Subeler> Subeler { get; set; }
-        public List<Ogrenciler> Ogrenciler { get; set; }
-        public List<AdayGorevKaydi> AdayGorevKaydi { get; set; }
-        public List<Etkinlikler> Etkinlikler { get; set; }
-        public List<EPostaAdresleri> EpostaAdresleri { get; set; }
-        public List<Telefonlar> Telefonlar { get; set; }
-        public ICollection<FotoGaleri> FotoGaleri { get; set; }
+        public virtual Kullanici Kullanici { get; set; }
+
+        public virtual ICollection<OkulBinaBolum> OkulBinaBolum { get; set; }
+        public virtual ICollection<Siniflar> Siniflar { get; set; }
+        public virtual ICollection<Subeler> Subeler { get; set; }
+        public virtual ICollection<Ogrenciler> Ogrenciler { get; set; }
+        public virtual ICollection<AdayGorevKaydi> AdayGorevKaydi { get; set; }
+        public virtual ICollection<Etkinlikler> Etkinlikler { get; set; }
+        public virtual ICollection<EPostaAdresleri> EpostaAdresleri { get; set; }
+        public virtual ICollection<Telefonlar> Telefonlar { get; set; }
+        public virtual ICollection<FotoGaleri> FotoGaleri { get; set; }
     }
 }

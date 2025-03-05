@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class SoruKategoriler:Base
+    public class SoruKategoriler : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -18,12 +18,15 @@ namespace YOGBIS.Data.DbModels
         public string SoruKategorilerTamAdi { get; set; }
         public int SinavKateogoriTurId { get; set; }
         public string SinavKategoriTurAdi { get; set; }
+
         public Guid DereceId { get; set; }
         [ForeignKey("DereceId")]
-        public SoruDereceler SoruDereceler { get; set; }
+        public virtual SoruDereceler SoruDereceler { get; set; }
+
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }
-        public List<SoruKategori> SoruKategori { get; set; }
+        public virtual Kullanici Kullanici { get; set; }
+
+        public virtual ICollection<SoruKategori> SoruKategori { get; set; }
     }
 }

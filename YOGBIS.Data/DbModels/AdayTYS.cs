@@ -30,8 +30,7 @@ namespace YOGBIS.Data.DbModels
         public string TYSSonuc { get; set; }
         public string TYSSonucAck { get; set; }
         public int TYSSorulanSoruNo { get; set; }
-        public Guid? MulakatId { get; set; }
-        public string MulakatOnayNo { get; set; }
+        public Guid MulakatId { get; set; }
         [ForeignKey("MulakatId")]
         public Mulakatlar Mulakatlar { get; set; }
         public string KaydedenId { get; set; }

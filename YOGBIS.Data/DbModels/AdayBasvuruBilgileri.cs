@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class AdayBasvuruBilgileri:Base
+    public class AdayBasvuruBilgileri : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -68,18 +68,39 @@ namespace YOGBIS.Data.DbModels
         public string MYYSSoruItiraz { get; set; }
         public string MYYSSonucItiraz { get; set; }
         public string BasvuruBrans { get; set; }
+
         public Guid? BransId { get; set; }
+        [ForeignKey("BransId")]
+        public virtual Branslar Branslar { get; set; }
+
         [MaxLength]
         public byte[] AdliSicilBelge { get; set; }
         [MaxLength]
         public byte[] BelgeEk1 { get; set; }
+
         public Guid? DereceId { get; set; }
+        [ForeignKey("DereceId")]
+        public virtual SoruDereceler SoruDereceler { get; set; }
+
         public string DereceAdi { get; set; }
-        public string Unvan { get; set; }             
+        public string Unvan { get; set; }
+
         public Guid? UlkeTercihId { get; set; }
+        [ForeignKey("UlkeTercihId")]
+        public virtual UlkeTercih UlkeTercih { get; set; }
+
         public Guid? MulakatId { get; set; }
+        [ForeignKey("MulakatId")]
+        public virtual Mulakatlar Mulakatlar { get; set; }
+
+        public Guid AdayId { get; set; }
+        [ForeignKey("AdayId")]
+        public virtual Adaylar Adaylar { get; set; }
+
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }
+        public virtual Kullanici Kullanici { get; set; }
+
+
     }
 }
