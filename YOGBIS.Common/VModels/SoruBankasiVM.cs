@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,15 +12,20 @@ namespace YOGBIS.Common.VModels
         public Guid SoruBankasiId { get; set; }
 
         [Required(ErrorMessage = "Soruyu yazınız...")]
+        [Display(Name = "Soru")]
         public string Soru { get; set; }
 
         [Required(ErrorMessage = "Cevabı yazınız...")]
+        [Display(Name = "Cevap")]
         public string Cevap { get; set; }
         public int SorulmaSayisi { get; set; } = 0;
 
         [Required(ErrorMessage = "Soru durumunu seçiniz...")]
+        [Display(Name = "Soru Durumu")]
         public bool SoruDurumu { get; set; } = true;
         public string KaydedenId { get; set; }
+
+        [Display(Name = "Kaydeden")]
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kaydeden { get; set; }
         [Required(ErrorMessage = "Soru kategorisini seçiniz...")]

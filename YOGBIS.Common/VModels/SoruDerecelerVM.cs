@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,6 +15,7 @@ namespace YOGBIS.Common.VModels
         public string DereceAdi { get; set; }
         public int DereceKodu { get; set; }
         public string KaydedenId { get; set; }
+        [Display(Name = "Kaydeden")]
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<SoruDereceVM> SoruDereces { get; set; }

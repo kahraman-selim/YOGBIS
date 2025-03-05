@@ -68,15 +68,14 @@ namespace YOGBIS.Data.DbModels
         public string MYYSSoruItiraz { get; set; }
         public string MYYSSonucItiraz { get; set; }
         public string BasvuruBrans { get; set; }
-
-        public Guid? BransId { get; set; }
-        [ForeignKey("BransId")]
-        public virtual Branslar Branslar { get; set; }
-
         [MaxLength]
         public byte[] AdliSicilBelge { get; set; }
         [MaxLength]
         public byte[] BelgeEk1 { get; set; }
+
+        public Guid? BransId { get; set; }
+        [ForeignKey("BransId")]
+        public virtual Branslar Branslar { get; set; }
 
         public Guid? DereceId { get; set; }
         [ForeignKey("DereceId")]

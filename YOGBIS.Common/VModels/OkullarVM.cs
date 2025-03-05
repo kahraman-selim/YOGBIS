@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -50,6 +50,7 @@ namespace YOGBIS.Common.VModels
         public Guid UlkeId { get; set; }
         public string UlkeAdi { get; set; }
         public string KaydedenId { get; set; }
+        [Display(Name = "Kaydeden")]
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public List<OkulBinaBolumVM> OkulBinaBolum { get; set; }

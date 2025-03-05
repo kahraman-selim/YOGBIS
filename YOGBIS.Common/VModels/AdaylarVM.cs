@@ -1,45 +1,101 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
 {
-    public class AdaylarVM:BaseVM
+    public class AdaylarVM : BaseVM
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
         public Guid AdayId { get; set; }
+
+        [Required(ErrorMessage = "TC Kimlik No zorunludur")]
+        [StringLength(11, MinimumLength = 11, ErrorMessage = "TC Kimlik No 11 haneli olmalıdır")]
+        [Display(Name = "TC Kimlik No")]
         public string TC { get; set; }
+
+        [Required(ErrorMessage = "Ad zorunludur")]
+        [StringLength(50, ErrorMessage = "Ad en fazla 50 karakter olabilir")]
+        [Display(Name = "Ad")]
         public string Ad { get; set; }
+
+        [Required(ErrorMessage = "Soyad zorunludur")]
+        [StringLength(50, ErrorMessage = "Soyad en fazla 50 karakter olabilir")]
+        [Display(Name = "Soyad")]
         public string Soyad { get; set; }
+
+        [Required(ErrorMessage = "Baba adı zorunludur")]
+        [StringLength(50, ErrorMessage = "Baba adı en fazla 50 karakter olabilir")]
+        [Display(Name = "Baba Adı")]
         public string BabaAd { get; set; }
+
+        [Required(ErrorMessage = "Ana adı zorunludur")]
+        [StringLength(50, ErrorMessage = "Ana adı en fazla 50 karakter olabilir")]
+        [Display(Name = "Ana Adı")]
         public string AnaAd { get; set; }
+
+        [Required(ErrorMessage = "Doğum tarihi zorunludur")]
+        [Display(Name = "Doğum Tarihi")]
         public string DogumTarihi { get; set; }
+
+        [Display(Name = "Doğum Tarihi (Alternatif)")]
         public string DogumTarihi2 { get; set; }
+
+        [Display(Name = "Yaş")]
         public int? Yasi { get; set; }
+
+        [Required(ErrorMessage = "Doğum yeri zorunludur")]
+        [Display(Name = "Doğum Yeri")]
         public string DogumYeri { get; set; }
+
+        [Required(ErrorMessage = "Cinsiyet zorunludur")]
+        [Display(Name = "Cinsiyet")]
         public string Cinsiyet { get; set; }
-        //Kayıt yapan kullanıcı
+
+        [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public string KaydedenId { get; set; }
+
+        [Display(Name = "Kaydeden")]
         public string KaydedenAdi { get; set; }
-        public Kullanici Kullanici { get; set; }
-        //Bağlı tablolar
+        public KullaniciVM Kullanici { get; set; }
+
+        [Display(Name = "Fotoğraf Dosyaları")]
         public IFormFileCollection FotoGaleris { get; set; }
-        public List<FotoGaleriVM> FotoGaleri { get; set; }
+
+        [Display(Name = "Fotoğraf Galerisi")]
+        public virtual List<FotoGaleriVM> FotoGaleri { get; set; }
+
+        [Display(Name = "Dosyalar")]
         public IFormFileCollection DosyaGaleris { get; set; }
-        public List<DosyaGaleriVM> DosyaGaleri { get; set; }
-        //public List<AdayNotVM> AdayNots { get; set; }
-        public List<AdayDDKVM> AdayDDKs { get; set; }
-        public List<AdayGorevKaydiVM> AdayGorevKaydis { get; set; }
-        public List<EPostaAdresleriVM> EpostaAdresleris { get; set; }
-        public List<TelefonlarVM> Telefonlars { get; set; }
-        public List<IkametAdresleriVM> IkametAdresleris { get; set; }
-        public List<AdayBasvuruBilgileriVM> AdayBasvuruBilgileris { get; set; }
-        public List<AdayIletisimBilgileriVM> AdayIletisimBilgileris { get; set; }
-        public List<AdayMYSSVM> AdayMYSSs { get; set; }
-        public List<AdayTYSVM> AdayTYSs { get; set; }
+
+        [Display(Name = "Dosya Galerisi")]
+        public virtual ICollection<DosyaGaleriVM> DosyaGaleri { get; set; }
+
+        [Display(Name = "DDK Bilgileri")]
+        public virtual ICollection<AdayDDKVM> AdayDDKs { get; set; }
+
+        [Display(Name = "Görev Kayıtları")]
+        public virtual ICollection<AdayGorevKaydiVM> AdayGorevKaydis { get; set; }
+
+        [Display(Name = "E-posta Adresleri")]
+        public virtual ICollection<EPostaAdresleriVM> EpostaAdresleris { get; set; }
+
+        [Display(Name = "Telefon Numaraları")]
+        public virtual ICollection<TelefonlarVM> Telefonlars { get; set; }
+
+        [Display(Name = "İkamet Adresleri")]
+        public virtual ICollection<IkametAdresleriVM> IkametAdresleris { get; set; }
+
+        [Display(Name = "Başvuru Bilgileri")]
+        public virtual ICollection<AdayBasvuruBilgileriVM> AdayBasvuruBilgileris { get; set; }
+
+        [Display(Name = "İletişim Bilgileri")]
+        public virtual ICollection<AdayIletisimBilgileriVM> AdayIletisimBilgileris { get; set; }
+
+        [Display(Name = "MYSS Bilgileri")]
+        public virtual ICollection<AdayMYSSVM> AdayMYSSs { get; set; }
+
+        [Display(Name = "TYS Bilgileri")]
+        public virtual ICollection<AdayTYSVM> AdayTYSs { get; set; }
     }
 }

@@ -57,7 +57,7 @@
                         }
                         @foreach (var item in Model)
                         {
-                            if (item.TercihBranslar == null || !item.TercihBranslar.Any())
+                            if (item.UlkeTercihBranslar == null || !item.UlkeTercihBranslar.Any())
                             {
                                 sirano++;
                                 <tr>
@@ -83,7 +83,7 @@
                             else
                             {
                                 // Eşit branşları göster
-                                var esitBranslar = item.TercihBranslar.Where(b => b.EsitBrans);
+                                var esitBranslar = item.UlkeTercihBranslar.Where(b => b.EsitBrans);
                                 if (esitBranslar.Any())
                                 {
                                     sirano++;
@@ -120,7 +120,7 @@
                                 }
 
                                 // Eşit olmayan branşları göster
-                                var digerBranslar = item.TercihBranslar.Where(b => !b.EsitBrans);
+                                var digerBranslar = item.UlkeTercihBranslar.Where(b => !b.EsitBrans);
                                 if (digerBranslar.Any())
                                 {
                                     foreach (var brans in digerBranslar)

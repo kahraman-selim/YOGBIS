@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,12 +11,16 @@ namespace YOGBIS.Common.VModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid OkulBinaBolumId { get; set; }
+        [Required(ErrorMessage = "Bölüm adı zorunludur")]
+        [Display(Name = "Bölüm Adı")]
         public string BolumAdi { get; set; }
         public int BolumAdedi { get; set; }
         public int BolumAdToplam { get; set; }
         public Guid OkulId { get; set; }
         public OkullarVM Okullar { get; set; }
+        [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public string KaydedenId { get; set; }
+        [Display(Name = "Kaydeden")]
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
         public IFormFileCollection FotoGaleris { get; set; }

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Common.VModels
 {
-    public class OgrencilerVM
+    public class OgrencilerVM : BaseVM
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -42,7 +42,9 @@ namespace YOGBIS.Common.VModels
         public string UlkeAdi { get; set; }
         public UlkelerVM Ulkeler { get; set; }
         public string StatusMessage { get; set; } = "";
+        [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public string KaydedenId { get; set; }
+        [Display(Name = "Kaydeden")]
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
     }
