@@ -4,7 +4,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Data.Implementaion
 {
-    public class AdaySinavNotlarRepository : Repository<AdayNot>, IAdaySinavNotlarRepository
+    public class AdaySinavNotlarRepository : Repository<AdaySinavNotlar>, IAdaySinavNotlarRepository
     {
         private readonly YOGBISContext _ctx;
 

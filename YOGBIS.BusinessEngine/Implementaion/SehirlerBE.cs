@@ -79,7 +79,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SehirAdi= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(item.SehirAdi.ToString()),
                         Baskent=item.Baskent,
                         SehirAciklama=item.SehirAciklama,
-                        TemsilciId=item.TemsilciId,
+                        //TemsilciId=item.TemsilciId,
                         EyaletId = item.EyaletId,
                         UlkeId = item.UlkeId,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
@@ -171,7 +171,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KayitTarihi = model.KayitTarihi,
                         KaydedenId=user.LoginId,
                         UlkeId=model.UlkeId,
-                        TemsilciId = model.TemsilciId != null ? model.TemsilciId : string.Empty,
+                        //TemsilciId = model.TemsilciId != null ? model.TemsilciId : string.Empty,
                     };
 
                     _unitOfWork.sehirlerRepository.Add(sehirler);
@@ -204,7 +204,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     data.EyaletId= (model.EyaletId == null || model.EyaletId.ToString() == "00000000-0000-0000-0000-000000000000") ? null : model.EyaletId;
                     data.KayitTarihi = model.KayitTarihi;
                     data.KaydedenId = user.LoginId;
-                    data.TemsilciId= model.TemsilciId != null ? model.TemsilciId : string.Empty;
+                    //data.TemsilciId= model.TemsilciId != null ? model.TemsilciId : string.Empty;
                     data.UlkeId = model.UlkeId;
 
                     _unitOfWork.sehirlerRepository.Update(data);

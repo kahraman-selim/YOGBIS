@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YOGBIS.Data.DbModels
 {
-    public class UlkeTercih:Base
+    public class UlkeTercih : Base
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -13,16 +13,20 @@ namespace YOGBIS.Data.DbModels
         public string UlkeTercihAdi { get; set; }
         public int UlkeTercihSiraNo { get; set; }
         public string YabancıDil { get; set; }
+
         public Guid DereceId { get; set; }
         [ForeignKey("DereceId")]
-        public SoruDereceler SoruDereceler { get; set; }
+        public virtual SoruDereceler SoruDereceler { get; set; }
+
         public Guid MulakatId { get; set; }
         [ForeignKey("MulakatId")]
-        public Mulakatlar Mulakatlar { get; set; }
+        public virtual Mulakatlar Mulakatlar { get; set; }
+
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
-        public Kullanici Kullanici { get; set; }
-        public List<UlkeTercihBranslar> TercihBranslar { get; set; }
-        public List<AdayBasvuruBilgileri> AdayBasvuruBilgileri { get; set; }
+        public virtual Kullanici Kullanici { get; set; }
+
+        public virtual ICollection<UlkeTercihBranslar> UlkeTercihBranslar { get; set; }
+        public virtual ICollection<AdayBasvuruBilgileri> AdayBasvuruBilgileri { get; set; }
     }
 }

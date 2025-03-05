@@ -66,7 +66,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     KayitTarihi = item.KayitTarihi,
                     KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                     KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
-                    TercihBranslar = item.TercihBranslar?
+                    TercihBranslar = item.UlkeTercihBranslar?
                         .Select(b => new UlkeTercihBranslarVM
                         {
                             TercihBransId = b.TercihBransId,
@@ -121,7 +121,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KayitTarihi = data.KayitTarihi,
                         KaydedenId = data.Kullanici != null ? data.KaydedenId : string.Empty,
                         KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty,
-                        TercihBranslar = data.TercihBranslar?.Select(b => new UlkeTercihBranslarVM
+                        TercihBranslar = data.UlkeTercihBranslar?.Select(b => new UlkeTercihBranslarVM
                         {
                             TercihBransId = b.TercihBransId,
                             BransAdi = b.BransAdi,

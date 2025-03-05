@@ -21,11 +21,11 @@ namespace YOGBIS.Data.DbModels
 
         public Guid OkulId { get; set; }
         [ForeignKey("OkulId")]
-        public virtual Okullar Okul { get; set; }
+        public virtual Okullar Okullar { get; set; }
 
         public Guid SinifId { get; set; }
         [ForeignKey("SinifId")]
-        public virtual Siniflar Sinif { get; set; }
+        public virtual Siniflar Siniflar { get; set; }
 
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]

@@ -2,7 +2,7 @@
 
 namespace YOGBIS.Data.Contracts
 {
-    public interface IAdaySinavNotlarRepository : IRepositoryBase<AdayNot>
+    public interface IAdaySinavNotlarRepository : IRepositoryBase<AdaySinavNotlar>
     {
     }
 }

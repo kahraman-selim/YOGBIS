@@ -15,7 +15,7 @@ namespace YOGBIS.Data.DbModels
         public string SehirAciklama { get; set; }
         public int SehirVatandas { get; set; }
 
-        public string TemsilciId { get; set; }
+        public Guid TemsilciId { get; set; }
         [ForeignKey("TemsilciId")]
         public virtual Temsilcilikler Temsilcilik { get; set; }
 

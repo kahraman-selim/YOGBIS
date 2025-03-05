@@ -19,7 +19,7 @@ namespace YOGBIS.Data.DbModels
         
         public Guid KitaId { get; set; }
         [ForeignKey("KitaId")]
-        public virtual Kitalar Kita { get; set; }
+        public virtual Kitalar Kitalar { get; set; }
         
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]

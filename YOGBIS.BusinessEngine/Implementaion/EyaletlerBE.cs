@@ -143,7 +143,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     if (eyalet.Sehirler != null)
                     {
-                        eyalet.Sehirler = data.Sehirlers.Select(s => new SehirlerVM()
+                        eyalet.Sehirler = data.Sehirler.Select(s => new SehirlerVM()
                         {
                             SehirId = s.SehirId,
                             SehirAdi = s.SehirAdi
@@ -294,7 +294,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                     if (eyalet.Sehirler != null)
                     {
-                        eyalet.Sehirler = data.Sehirlers.Select(s => new SehirlerVM()
+                        eyalet.Sehirler = data.Sehirler.Select(s => new SehirlerVM()
                         {
                             SehirId = s.SehirId,
                             SehirAdi = s.SehirAdi

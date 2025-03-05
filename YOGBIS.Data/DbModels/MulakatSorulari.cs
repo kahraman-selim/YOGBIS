@@ -14,11 +14,11 @@ namespace YOGBIS.Data.DbModels
 
         public Guid DereceId { get; set; }
         [ForeignKey("DereceId")]
-        public virtual SoruDereceler SoruDerece { get; set; }
+        public virtual SoruDereceler SoruDereceler { get; set; }
 
         public Guid SoruKategorilerId { get; set; }
         [ForeignKey("SoruKategorilerId")]
-        public virtual SoruKategoriler SoruKategori { get; set; }
+        public virtual SoruKategoriler SoruKategoriler { get; set; }
 
         public int SoruKategoriSiraNo { get; set; }
         public string Soru { get; set; }
@@ -29,7 +29,7 @@ namespace YOGBIS.Data.DbModels
 
         public Guid MulakatId { get; set; }
         [ForeignKey("MulakatId")]
-        public virtual Mulakatlar Mulakat { get; set; }
+        public virtual Mulakatlar Mulakatlar { get; set; }
 
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
