@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -174,17 +174,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     soruKategori.KaydedenId = user.LoginId;
                     _unitOfWork.sorukategorilerRepository.Add(soruKategori);
                     _unitOfWork.Save();
-                    return new Result<SoruKategorilerVM>(true, ResultConstant.RecordCreateSuccess);
+                    return new Result<SoruKategorilerVM>(true, "Soru kategorisi başarıyla eklendi");
                 }
                 catch (Exception ex)
                 {
-
-                    return new Result<SoruKategorilerVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                    return new Result<SoruKategorilerVM>(false, "Soru kategorisi eklenirken bir hata oluştu: " + ex.Message);
                 }
             }
             else
             {
-                return new Result<SoruKategorilerVM>(false, "Boş veri olamaz");
+                return new Result<SoruKategorilerVM>(false, "Lütfen gerekli alanları doldurunuz");
             }
         }
         #endregion
@@ -200,17 +199,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     soruKategori.KaydedenId = user.LoginId;
                     _unitOfWork.sorukategorilerRepository.Update(soruKategori);
                     _unitOfWork.Save();
-                    return new Result<SoruKategorilerVM>(true, ResultConstant.RecordCreateSuccess);
+                    return new Result<SoruKategorilerVM>(true, "Soru kategorisi başarıyla güncellendi");
                 }
                 catch (Exception ex)
                 {
-
-                    return new Result<SoruKategorilerVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                    return new Result<SoruKategorilerVM>(false, "Soru kategorisi güncellenirken bir hata oluştu: " + ex.Message);
                 }
             }
             else
             {
-                return new Result<SoruKategorilerVM>(false, "Boş veri olamaz");
+                return new Result<SoruKategorilerVM>(false, "Lütfen gerekli alanları doldurunuz");
             }
         }
         #endregion

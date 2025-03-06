@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model LoginModel
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration _configuration
@@ -9,10 +9,10 @@
     bool isRegistrationOpen = DateTime.Now.Date < DateTime.Parse(registrationEndDate).Date;
 }
 
-<div class="container-lg">
-    <div class="row justify-content-center">
+<div class="container-lg min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="row w-100 justify-content-center">
         <div class="col-lg-5">
-            <div class="card shadow-lg rounded-lg mt-5">
+            <div class="card shadow-lg rounded-lg">
                 <div class="card-header bg-gray-600">                    
                     <h6 class="text-center text-white my-1">T.C.</h6>
                     <h6 class="text-center text-white my-1">T.C. MİLLİ EĞİTİM BAKANLIĞI</h6>

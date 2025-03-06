@@ -40,7 +40,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             try
             {
                 var data = _unitOfWork.ulkeTercihRepository
-                    .GetAll(includeProperties: "Kullanici,SoruDereceler,Mulakatlar,TercihBranslar,Kullanici")
+                    .GetAll(includeProperties: "Kullanici,SoruDereceler,Mulakatlar,UlkeTercihBranslar")
                     .Where(t => t.Mulakatlar.BaslamaTarihi.Year == year)
                     .OrderBy(t => t.SoruDereceler.DereceKodu) 
                     .ThenBy(t => t.UlkeTercihSiraNo)

@@ -20,15 +20,17 @@ namespace YOGBIS.UI.Controllers
         #region Değişkenler
         private readonly IKomisyonlarBE _komisyonlarBE;
         private readonly IKullaniciBE _kullaniciBE;
+        private readonly IMulakatOlusturBE _mulakatOlusturBE;
         private readonly IUnitOfWork _unitOfWork;
         #endregion
 
         #region Dönüştücüler
-        public KomisyonlarController(IKomisyonlarBE komisyonlarBE, IKullaniciBE kullaniciBE, IUnitOfWork unitOfWork)
+        public KomisyonlarController(IKomisyonlarBE komisyonlarBE, IKullaniciBE kullaniciBE, IMulakatOlusturBE mulakatOlusturBE,IUnitOfWork unitOfWork)
         {
 
             _komisyonlarBE = komisyonlarBE;
             _kullaniciBE = kullaniciBE;
+            _mulakatOlusturBE = mulakatOlusturBE;
             _unitOfWork = unitOfWork;
         }
         #endregion
@@ -40,6 +42,8 @@ namespace YOGBIS.UI.Controllers
 
             var komisyon = await _kullaniciBE.KomisyonGetir();
             ViewBag.Komisyonlar = komisyon.Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            
             
             if (id != null) 
             {
@@ -61,6 +65,7 @@ namespace YOGBIS.UI.Controllers
 
             var komisyon = await _kullaniciBE.KomisyonGetir();
             ViewBag.Komisyonlar = komisyon.Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
 
             return View();
         }
@@ -76,6 +81,7 @@ namespace YOGBIS.UI.Controllers
 
             var komisyon = await _kullaniciBE.KomisyonGetir();
             ViewBag.Komisyonlar = komisyon.Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
 
             if (KomisyonId != null)
             {
@@ -108,6 +114,7 @@ namespace YOGBIS.UI.Controllers
 
             var komisyon = await _kullaniciBE.KomisyonGetir();
             ViewBag.Komisyonlar = komisyon.Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
 
             if (id != null)
             {

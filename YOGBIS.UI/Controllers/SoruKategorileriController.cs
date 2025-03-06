@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
@@ -14,7 +13,6 @@ namespace YOGBIS.UI.Controllers
     [Authorize(Roles = "Administrator")]
     public class SoruKategorileriController : Controller
     {
-
         #region Değişkenler
         private readonly ISoruKategorileriBE _soruKategorileriBE;
         private readonly IDerecelerBE _derecelerBE;
@@ -31,7 +29,6 @@ namespace YOGBIS.UI.Controllers
         #region Index
         public IActionResult Index(Guid? id)
         {
-
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
             try
@@ -39,8 +36,7 @@ namespace YOGBIS.UI.Controllers
                 var result = _derecelerBE.DereceleriGetir();
                 if (result.IsSuccess)
                 {
-                    //ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-                    ViewBag.Dereceler = result.Data; //?? new List<SoruDerecelerVM>();
+                    ViewBag.Dereceler = result.Data;
 
                     if (id != null)
                     {
@@ -54,11 +50,9 @@ namespace YOGBIS.UI.Controllers
                 }
                 else
                 {
-                    // Başarısız ise hata mesajını TempData veya ViewBag ile view'e gönder
                     TempData["ErrorMessage"] = result.Message;
-                    return View(); // Hata durumunda başka bir sayfaya yönlendir
+                    return View();
                 }
-                
             }
             catch (Exception)
             {
@@ -66,7 +60,6 @@ namespace YOGBIS.UI.Controllers
             }
 
             return View();
-
         }
         #endregion
 
@@ -86,7 +79,6 @@ namespace YOGBIS.UI.Controllers
         public IActionResult SoruKategoriEkle(SoruKategorilerVM model, Guid? SoruKategorilerId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
             if (SoruKategorilerId != null)
             {
@@ -96,11 +88,7 @@ namespace YOGBIS.UI.Controllers
             else
             {
                 var data = _soruKategorileriBE.SoruKategoriEkle(model, user);
-                if (data.IsSuccess)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View(model);
+                return RedirectToAction("Index");
             }
         }
         #endregion
@@ -134,9 +122,7 @@ namespace YOGBIS.UI.Controllers
                 return Json(new { success = data.IsSuccess, message = data.Message });
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
-
         } 
         #endregion
-
     }
 }

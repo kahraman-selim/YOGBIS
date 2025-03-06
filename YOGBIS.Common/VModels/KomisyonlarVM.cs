@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
 {
@@ -63,6 +65,12 @@ namespace YOGBIS.Common.VModels
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime KomisyonGorevBitisTarihi { get; set; }
+
+        [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
+        public Guid? MulakatId { get; set; }
+        [Display(Name = "Mülakat Yıl")]
+        public virtual MulakatlarVM Mulakatlar { get; set; }
+
 
         [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public string KaydedenId { get; set; }

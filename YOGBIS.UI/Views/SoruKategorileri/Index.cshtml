@@ -1,4 +1,4 @@
-﻿@model YOGBIS.Common.VModels.SoruKategorilerVM
+@model YOGBIS.Common.VModels.SoruKategorilerVM
 @{
     ViewData["Title"] = "Soru Kategorileri";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -131,12 +131,26 @@
     </div>
 </div>
 
-
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            // Success message
+            @if (TempData["success"] != null)
+            {
+                <text>
+                alertify.success('@TempData["success"]');
+                </text>
+            }
 
+            // Error message
+            @if (TempData["error"] != null)
+            {
+                <text>
+                alertify.error('@TempData["error"]');
+                </text>
+            }
+        });
     </script>
 }

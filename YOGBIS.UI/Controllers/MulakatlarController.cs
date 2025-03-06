@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -52,7 +52,6 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-
             return View();
         }
         #endregion
@@ -62,9 +61,7 @@ namespace YOGBIS.UI.Controllers
         [HttpPost]
         public IActionResult MulakatEkle(MulakatlarVM model, Guid? MulakatId)
         {
-
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
             if (MulakatId != null)
             {
@@ -74,11 +71,7 @@ namespace YOGBIS.UI.Controllers
             else
             {
                 var data = _mulakatOlusturBE.MulakatEkle(model, user);
-                if (data.IsSuccess)
-                {
-                    return RedirectToAction("Index");
-                }
-                return View(model);
+                return RedirectToAction("Index");
             }
         }
         #endregion
@@ -86,7 +79,6 @@ namespace YOGBIS.UI.Controllers
         #region Guncelle
         public IActionResult Guncelle(Guid? id)
         {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
 
             if (id != null)
@@ -105,15 +97,8 @@ namespace YOGBIS.UI.Controllers
         [HttpDelete]
         public IActionResult MulakatSil(Guid id)
         {
-            if (id == null)
-                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
-
             var data = _mulakatOlusturBE.MulakatSil(id);
-            if (data.IsSuccess)
-                return Json(new { success = data.IsSuccess, message = data.Message });
-            else
-                return Json(new { success = data.IsSuccess, message = data.Message });
-
+            return RedirectToAction("Index");
         } 
         #endregion
     }

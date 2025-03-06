@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -35,7 +35,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region MulakatlariGetir
         public Result<List<MulakatlarVM>> MulakatlariGetir()
         {
-            var data = _unitOfWork.mulakatlarRepository.GetAll(u => u.Durumu == true, includeProperties: "Kullanici").OrderBy(s => s.MulakatId).ToList();
+            var data = _unitOfWork.mulakatlarRepository.GetAll(u => u.Durumu == true, includeProperties: "Kullanici")
+                .OrderBy(s => s.BaslamaTarihi.Year)
+                .ThenBy(s => s.MulakatKategoriId)
+                .ToList();
             if (data != null)
             {
                 List<MulakatlarVM> returnData = new List<MulakatlarVM>();
@@ -51,7 +54,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         KararTarihi=item.KararTarihi,
                         YazılıSinavTarihi=item.YazılıSinavTarihi,
                         MulakatKategoriId=item.MulakatKategoriId,
-                        MulakatAdi=item.MulakatAdi,
+                        MulakatAdi=item.MulakatAdi + "-" + item.YazılıSinavTarihi.Year,
                         MulakatDonemi=item.MulakatAdi + "-" + item.BaslamaTarihi.Day.ToString() + "/" + item.BaslamaTarihi.Month.ToString() + "-" +
                         item.BitisTarihi.Day.ToString() + "/" + item.BitisTarihi.Month.ToString() + "-" + item.BitisTarihi.Year.ToString(),
                         MulakatYil = Convert.ToInt32(item.YazılıSinavTarihi.Year.ToString()),
@@ -264,7 +267,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region MulakatlariGetirViewComponent
         public Result<List<MulakatlarVM>> MulakatlariGetirViewComponent()
         {
-            var data = _unitOfWork.mulakatlarRepository.GetAll(includeProperties: "Kullanici").OrderBy(s => s.MulakatId).ToList();
+            var data = _unitOfWork.mulakatlarRepository.GetAll(includeProperties: "Kullanici")
+            .OrderBy(s => s.BaslamaTarihi.Year)
+            .ThenBy(s => s.MulakatKategoriId)
+            .ToList();
             if (data != null)
             {
                 List<MulakatlarVM> returnData = new List<MulakatlarVM>();

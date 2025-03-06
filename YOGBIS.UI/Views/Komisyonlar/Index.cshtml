@@ -26,6 +26,14 @@
                     <div class="form-row">
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label asp-for="MulakatId" class="small mb-1 font-weight-bold">Mülakatı Seç</label>
+                                @Html.DropDownListFor(u => u.MulakatId, new SelectList(ViewBag.Mulakatlar,
+                                         "MulakatId", "MulakatDonemi"), "Mülakatı seçiniz", new { @id = "MulakatListesi", @class = "form-control-range form-control p-0" })
+                                <span class="text-danger" asp-validation-for="MulakatId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label asp-for="KomisyonKullaniciId" class="small mb-1 font-weight-bold">Komisyonu Seç</label>
                                 @Html.DropDownListFor(u => u.KomisyonKullaniciId, new SelectList(ViewBag.Komisyonlar,
                                          "Id", "Ad"), "Komisyonu seçiniz", new { @id = "KomisyonListesi", @class = "form-control-range form-control p-0" })
@@ -147,10 +155,8 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-md-12">
-                            <a asp-controller="Komisyonlar" asp-action="Index" class="btn btn-primary btn-sm text-white" id="btnYeni" style="width:100px">Yeni Kayıt</a>
-                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white" style="width:100px" />
-                            <a asp-controller="Komisyonlar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm" style="width:100px">Vazgeç</a>
+                        <div class="col-md-12">                           
+                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white" style="width:100px" />                           
                         </div>
                     </div>
                 </form>

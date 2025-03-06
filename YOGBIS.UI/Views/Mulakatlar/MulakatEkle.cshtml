@@ -1,19 +1,14 @@
-﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
 @model YOGBIS.Common.VModels.MulakatlarVM
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Mülakat Ekleme";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-@section Styles {
-
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
 }
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="card mb-3">
             <div class="card-header">
                 <i class="fas fa-pen mr-1"></i>
@@ -188,57 +183,11 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="card mb-3">
-            <div class="card-header">
-                <i class="fas fa-table mr-1"></i>
-                <b>Aday Listesi</b>
-            </div>
-            <div class="card-body">
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
     <div class="col-md-12">
         @await Component.InvokeAsync("MulakatListesi")
     </div>
 </div>
 
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.28/moment-timezone-with-data-10-year-range.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <script type="text/javascript">
-
-        $('#datetimepicker1, #datetimepicker2,#datetimepicker3,#datetimepicker4,#datetimepicker5').datetimepicker({
-            format: 'DD/MM/YYYY'
-        });
-
-        $("#btnSil").on("click", function () {
-
-            document.getElementById("MulakatId").focus();
-            var btn = $("#MulakatId").val();
-           
-            var id = btn.data("id");
-
-            bootbox.confirm("Silmek istediğinize emin misiniz?", function (result) {
-                if (result) {
-                    $.ajax({
-                        type: "DELETE",
-                        url: "/Mulakatlar/MulakatSil/" + id,
-                        success: function () {
-                            location.reload();
-                        }
-                    });
-                }
-            });
-
-        });
-
-
-    </script>
 }
