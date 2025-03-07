@@ -1,5 +1,27 @@
 @model List<YOGBIS.Common.VModels.AdayBasvuruBilgileriVM>
 
+<style>
+    .tc-column { width: 100px; }
+    .askerlik-column { width: 80px; }
+    .kurum-column { width: 150px; }
+    .ogrenim-column { width: 120px; }
+    .mezuniyet-column { width: 120px; }
+    .hizmet-column { width: 80px; }
+    .derece-column { width: 80px; }
+    .yillik-column { width: 80px; }
+    .ydgorev-column { width: 100px; }
+    .dil-column { width: 200px; }
+    .il-tercihi-column { width: 200px; }
+    .basvuru-column { width: 100px; }
+    .onay-column { width: 120px; }
+    .myys-column { width: 120px; }
+    .ilmem-column { width: 120px; }
+    .referans-column { width: 150px; }
+    .sendika-column { width: 150px; }
+    .gorev-iptal-column { width: 200px; }
+    .durum-column { width: 80px; }
+</style>
+
 <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
@@ -35,6 +57,7 @@
                         <th>MYYS Sonuç</th>
                         <th>MYYS Durum</th>
                         <th>MYYS Durum Açk.</th>
+                        <th>İL MEM Görüş</th>
                         <th>Referans</th>
                         <th>Sendika</th>                        
                         <th>Görev İptal</th>                        
@@ -54,47 +77,87 @@
                         foreach (var item in Model.Where(x => x.MulakatId.HasValue))
                         {
                             <tr class="@(item.OnayDurumu == "İptal Edildi" ? "bg-warning" : "")">
-                                <td>@item.MulakatYil</td>
-                                <td>@item.UlkeTercihAdi</td>
-                                <td>@item.BasvuruBrans</td>
-                                <td>@item.DereceAdi</td>
-                                <td>@item.Unvan</td>
-                                <td>@item.Askerlik</td>
-                                <td>@item.KurumAdi</td>
-                                <td>@item.Ogrenim</td>
-                                <td>@item.Mezuniyet</td>
-                                <td>@($"{item.HizmetYil}/{item.HizmetAy}/{item.HizmetGun}")</td>
-                                <td>@($"{item.Derece}/{item.Kademe}")</td>
-                                <td>@item.DahaOnceYDGorev</td>
-                                <td>@item.YIciGorevBasTar</td>
-                                <td>@($"{item.YabanciDilBasvuru}/{item.YabanciDilAdi}/{item.YabanciDilTuru}/{item.YabanciDilTarihi}/{item.YabanciDilPuan}/{item.YabanciDilSeviye}")</td>
-                                <td>@($"{item.YabanciDilALM}/{item.YabanciDilING}/{item.YabanciDilFRS}/{item.YabanciDilDiger}")</td>
-                                <td>
+                                <td class="tc-column">@item.MulakatYil</td>
+                                <td class="askerlik-column">@item.UlkeTercihAdi</td>
+                                <td class="kurum-column">@item.BasvuruBrans</td>
+                                <td class="ogrenim-column">@item.DereceAdi</td>
+                                <td class="mezuniyet-column">@item.Unvan</td>
+                                <td class="hizmet-column">@item.Askerlik</td>
+                                <td class="derece-column">@item.KurumAdi</td>
+                                <td class="yillik-column">@item.Ogrenim</td>
+                                <td class="ydgorev-column">@item.Mezuniyet</td>
+                                <td class="dil-column">@($"{item.HizmetYil}/{item.HizmetAy}/{item.HizmetGun}")</td>
+                                <td class="il-tercihi-column">@($"{item.Derece}/{item.Kademe}")</td>
+                                <td class="basvuru-column">@item.DahaOnceYDGorev</td>
+                                <td class="onay-column">@item.YIciGorevBasTar</td>
+                                @if(!string.IsNullOrEmpty(item.YabanciDilAdi)){
+                                    <td class="myys-column">@($"{item.YabanciDilBasvuru}/{item.YabanciDilAdi}/{item.YabanciDilTuru}/{item.YabanciDilTarihi}/{item.YabanciDilPuan}/{item.YabanciDilSeviye}")</td>
+                                }
+                                else{
+                                    <td class="myys-column">@($"{item.YabanciDilBasvuru}")</td>
+                                }
+                                
+                                @{
+                                    var diller = new List<string>();
+                                    if (!string.IsNullOrEmpty(item.YabanciDilALM)) diller.Add(item.YabanciDilALM);
+                                    if (!string.IsNullOrEmpty(item.YabanciDilING)) diller.Add(item.YabanciDilING);
+                                    if (!string.IsNullOrEmpty(item.YabanciDilFRS)) diller.Add(item.YabanciDilFRS);
+                                    if (!string.IsNullOrEmpty(item.YabanciDilDiger)) diller.Add(item.YabanciDilDiger);
+                                }
+                                <td class="myys-column">@string.Join("/", diller)</td>
+                                <td class="ilmem-column">
                                     @item.IlTercihi1
                                     @if (!string.IsNullOrEmpty(item.IlTercihi2)) { <span>, @item.IlTercihi2</span> }
                                     @if (!string.IsNullOrEmpty(item.IlTercihi3)) { <span>, @item.IlTercihi3</span> }
                                     @if (!string.IsNullOrEmpty(item.IlTercihi4)) { <span>, @item.IlTercihi4</span> }
                                     @if (!string.IsNullOrEmpty(item.IlTercihi5)) { <span>, @item.IlTercihi5</span> }
                                 </td>
-                                <td>@item.BasvuruTarihi</td>
-                                <td>@item.SonDegisiklikTarihi</td>
-                                <td>@item.OnayDurumu</td>
-                                <td>@item.OnayDurumuAck</td>
-                                <td>@($"{item.MYYSSinavTedbiri}/{item.MYYSTedbirAck}")</td>
-                                <td>@item.MYYSPuan</td>
-                                <td>@item.MYYSSonuc</td>
-                                <td>@item.MYSSDurum</td>
-                                <td>@item.MYSSDurumAck</td>
-                                <td>@($"{item.Referans}/{item.ReferansAck}")</td>
-                                <td>@($"{item.Sendika}/{item.SendikaAck}")</td>
-                                <td>@($"{item.GorevIptalAck}/{item.GorevIptalBrans}/{item.GorevIptalYil}/{item.GorevIptalBAOK}")</td>
-                                <td>@item.IlkGorevKaydi</td>
-                                <td>@item.GorevdenUzaklastirma</td>
-                                <td>@item.EDurum</td>
-                                <td>@item.MDurum</td>
-                                <td>@item.PDurum</td>
-                                <td>@item.MYYSSoruItiraz</td>
-                                <td>@item.MYYSSonucItiraz</td>
+                                <td class="referans-column">@item.BasvuruTarihi</td>
+                                <td class="sendika-column">@item.SonDegisiklikTarihi</td>
+                                <td class="gorev-iptal-column">@item.OnayDurumu</td>
+                                <td class="gorev-iptal-column">@item.OnayDurumuAck</td>
+                                @if (!string.IsNullOrEmpty(item.MYYSSinavTedbiri) && !string.IsNullOrEmpty(item.MYYSTedbirAck))
+                                {
+                                    <td class="durum-column">@($"{item.MYYSSinavTedbiri}/{item.MYYSTedbirAck}")</td>
+                                }
+                                else{
+                                    <td class="durum-column"></td>
+                                }
+                                
+                                <td class="durum-column">@item.MYYSPuan</td>
+                                <td class="durum-column">@item.MYYSSonuc</td>
+                                <td class="durum-column">@item.MYSSDurum</td>
+                                <td class="durum-column">@item.MYSSDurumAck</td>
+                                <td class="durum-column">@item.IlMemGorus</td>
+                                @{
+                                    var referanslar = new List<string>();
+                                    if (!string.IsNullOrEmpty(item.Referans)) referanslar.Add(item.Referans);
+                                    if (!string.IsNullOrEmpty(item.ReferansAck)) referanslar.Add(item.ReferansAck);
+                                }
+                                <td class="referans-column">@string.Join("/", referanslar)</td>
+
+                                @{
+                                    var sendikalar = new List<string>();
+                                    if (!string.IsNullOrEmpty(item.Sendika)) sendikalar.Add(item.Sendika);
+                                    if (!string.IsNullOrEmpty(item.SendikaAck)) sendikalar.Add(item.SendikaAck);
+                                }
+                                <td class="sendika-column">@string.Join("/", sendikalar)</td>
+
+                                @{
+                                    var gorevIptaller = new List<string>();
+                                    if (!string.IsNullOrEmpty(item.GorevIptalAck)) gorevIptaller.Add(item.GorevIptalAck);
+                                    if (!string.IsNullOrEmpty(item.GorevIptalBrans)) gorevIptaller.Add(item.GorevIptalBrans);
+                                    if (!string.IsNullOrEmpty(item.GorevIptalYil)) gorevIptaller.Add(item.GorevIptalYil);
+                                    if (!string.IsNullOrEmpty(item.GorevIptalBAOK)) gorevIptaller.Add(item.GorevIptalBAOK);
+                                }
+                                <td class="gorev-iptal-column">@string.Join("/", gorevIptaller)</td>
+                                <td class="durum-column">@item.IlkGorevKaydi</td>
+                                <td class="durum-column">@item.GorevdenUzaklastirma</td>
+                                <td class="durum-column">@item.EDurum</td>
+                                <td class="durum-column">@item.MDurum</td>
+                                <td class="durum-column">@item.PDurum</td>
+                                <td class="durum-column">@item.MYYSSoruItiraz</td>
+                                <td class="durum-column">@item.MYYSSonucItiraz</td>
                                 @if (item.AdliSicilBelge != null && item.AdliSicilBelge.Length > 0)
                                 {
                                     <td class="bg-danger">

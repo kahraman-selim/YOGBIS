@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.Common.VModels
 {
@@ -51,6 +53,9 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Cinsiyet zorunludur")]
         [Display(Name = "Cinsiyet")]
         public string Cinsiyet { get; set; }
+
+        public Guid? MulakatId { get; set; }
+        public virtual MulakatlarVM Mulakatlar { get; set; }
 
         [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public string KaydedenId { get; set; }

@@ -12,6 +12,8 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "TC Kimlik No")]
         public string TC { get; set; }
 
+        public Guid? AdayId { get; set; }
+
         [Display(Name = "Askerlik Durumu")]
         public string Askerlik { get; set; }
 

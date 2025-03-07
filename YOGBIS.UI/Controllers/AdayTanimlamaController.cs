@@ -28,15 +28,21 @@ namespace YOGBIS.UI.Controllers
         #region Değişkenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAdaylarBE _adaylarBE;
+        private readonly IMulakatOlusturBE _mulakatOlusturBE;
         private readonly ILogger<AdayTanimlamaController> _logger;
+        private readonly IBranslarBE _branslarBE;
+        private readonly IDerecelerBE _derecelerBE;
         #endregion
 
         #region Dönüştürücüler
-        public AdayTanimlamaController(IUnitOfWork unitOfWork, IAdaylarBE adaylarBE, ILogger<AdayTanimlamaController> logger)
+        public AdayTanimlamaController(IUnitOfWork unitOfWork, IAdaylarBE adaylarBE, IMulakatOlusturBE mulakatOlusturBE, ILogger<AdayTanimlamaController> logger, IBranslarBE branslarBE, IDerecelerBE derecelerBE)
         {
             _unitOfWork = unitOfWork;
             _adaylarBE = adaylarBE;
+            _mulakatOlusturBE = mulakatOlusturBE;
             _logger = logger;
+            _branslarBE = branslarBE;
+            _derecelerBE = derecelerBE;
         }
         #endregion
 
@@ -45,6 +51,7 @@ namespace YOGBIS.UI.Controllers
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
 
             return View();
         }
@@ -307,6 +314,8 @@ namespace YOGBIS.UI.Controllers
         [RequestSizeLimit(209715200)]
         public async Task<IActionResult> AdayBasvuruBilgileriYukle(IFormFile file)
         {
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+
             var sessionId = HttpContext.Session.Id;
             try
             {
@@ -368,69 +377,82 @@ namespace YOGBIS.UI.Controllers
                             var aday = new AdayBasvuruBilgileriVM
                             {
                                 TC = worksheet.Cells[row, 1].Value?.ToString(),
-                                Askerlik= worksheet.Cells[row, 2].Value?.ToString(),
-                                KurumKod= worksheet.Cells[row, 3].Value?.ToString(),
-                                KurumAdi= worksheet.Cells[row, 4].Value?.ToString(),
-                                Ogrenim= worksheet.Cells[row, 5].Value?.ToString(),
-                                MezunOkulKodu= worksheet.Cells[row, 6].Value?.ToString(),
-                                Mezuniyet= worksheet.Cells[row, 7].Value?.ToString(),
-                                HizmetYil= worksheet.Cells[row, 8].Value?.ToString(),
-                                HizmetAy= worksheet.Cells[row, 9].Value?.ToString(),
-                                HizmetGun= worksheet.Cells[row, 10].Value?.ToString(),
-                                Derece= worksheet.Cells[row, 11].Value?.ToString(),
-                                Kademe= worksheet.Cells[row, 12].Value?.ToString(),
-                                Enaz5Yil= worksheet.Cells[row, 13].Value?.ToString(),
-                                DahaOnceYDGorev= worksheet.Cells[row, 14].Value?.ToString(),
-                                YIciGorevBasTar= worksheet.Cells[row, 15].Value?.ToString(),
-                                YabanciDilBasvuru= worksheet.Cells[row, 16].Value?.ToString(),
-                                YabanciDilAdi= worksheet.Cells[row, 17].Value?.ToString(),
-                                YabanciDilTuru= worksheet.Cells[row, 18].Value?.ToString(),
-                                YabanciDilTarihi= worksheet.Cells[row, 19].Value?.ToString(),
-                                YabanciDilPuan= worksheet.Cells[row, 20].Value?.ToString(),
-                                YabanciDilSeviye= worksheet.Cells[row, 21].Value?.ToString(),
-                                IlTercihi1= worksheet.Cells[row, 22].Value?.ToString(),
-                                IlTercihi2= worksheet.Cells[row, 23].Value?.ToString(),
-                                IlTercihi3= worksheet.Cells[row, 24].Value?.ToString(),
-                                IlTercihi4= worksheet.Cells[row, 25].Value?.ToString(),
-                                IlTercihi5= worksheet.Cells[row, 26].Value?.ToString(),
-                                BasvuruTarihi= worksheet.Cells[row, 27].Value?.ToString(),
-                                SonDegisiklikTarihi= worksheet.Cells[row, 28].Value?.ToString(),
-                                OnayDurumu= worksheet.Cells[row, 29].Value?.ToString(),
-                                OnayDurumuAck= worksheet.Cells[row, 30].Value?.ToString(),
-                                MYYSTarihi= worksheet.Cells[row, 31].Value?.ToString(),
-                                MYYSSinavTedbiri= worksheet.Cells[row, 32].Value?.ToString(),
-                                MYYSTedbirAck= worksheet.Cells[row, 33].Value?.ToString(),
-                                MYYSPuan= worksheet.Cells[row, 34].Value?.ToString(),
-                                MYYSSonuc= worksheet.Cells[row, 35].Value?.ToString(),
-                                MYSSDurum= worksheet.Cells[row, 36].Value?.ToString(),
-                                MYSSDurumAck= worksheet.Cells[row, 37].Value?.ToString(),
-                                IlMemGorus= worksheet.Cells[row, 38].Value?.ToString(),
-                                Referans= worksheet.Cells[row, 39].Value?.ToString(),
-                                ReferansAck= worksheet.Cells[row, 40].Value?.ToString(),
-                                GorevIptalAck= worksheet.Cells[row, 41].Value?.ToString(),
-                                GorevIptalBrans= worksheet.Cells[row, 42].Value?.ToString(),
-                                GorevIptalYil= worksheet.Cells[row, 43].Value?.ToString(),
-                                GorevIptalBAOK= worksheet.Cells[row, 44].Value?.ToString(),
-                                IlkGorevKaydi= worksheet.Cells[row, 45].Value?.ToString(),
-                                YabanciDilALM= worksheet.Cells[row, 46].Value?.ToString(),
-                                YabanciDilING= worksheet.Cells[row, 47].Value?.ToString(),
-                                YabanciDilFRS= worksheet.Cells[row, 48].Value?.ToString(),
-                                YabanciDilDiger= worksheet.Cells[row, 49].Value?.ToString(),
-                                GorevdenUzaklastirma= worksheet.Cells[row, 50].Value?.ToString(),
-                                EDurum= worksheet.Cells[row, 51].Value?.ToString(),
-                                MDurum= worksheet.Cells[row, 52].Value?.ToString(),
-                                PDurum= worksheet.Cells[row, 53].Value?.ToString(),
-                                Sendika= worksheet.Cells[row, 54].Value?.ToString(),
-                                SendikaAck= worksheet.Cells[row, 55].Value?.ToString(),
-                                MYYSSoruItiraz= worksheet.Cells[row, 56].Value?.ToString(),
-                                MYYSSonucItiraz= worksheet.Cells[row, 57].Value?.ToString(),
-                                BasvuruBrans= worksheet.Cells[row, 58].Value?.ToString(),
-                                BransId=Guid.Parse(worksheet.Cells[row, 59].Value?.ToString()),
-                                DereceId=Guid.Parse(worksheet.Cells[row, 60].Value?.ToString()),
-                                DereceAdi= worksheet.Cells[row, 61].Value?.ToString(),
-                                Unvan= worksheet.Cells[row, 62].Value?.ToString(),
-                                UlkeTercihId=Guid.Parse(worksheet.Cells[row, 63].Value?.ToString()),
-                                MulakatId=Guid.Parse(worksheet.Cells[row, 64].Value?.ToString()),
+                                Askerlik = worksheet.Cells[row, 2].Value?.ToString(),
+                                KurumKod = worksheet.Cells[row, 3].Value?.ToString(),
+                                KurumAdi = worksheet.Cells[row, 4].Value?.ToString(),
+                                Ogrenim = worksheet.Cells[row, 5].Value?.ToString(),
+                                MezunOkulKodu = worksheet.Cells[row, 6].Value?.ToString(),
+                                Mezuniyet = worksheet.Cells[row, 7].Value?.ToString(),
+                                HizmetYil = worksheet.Cells[row, 8].Value?.ToString(),
+                                HizmetAy = worksheet.Cells[row, 9].Value?.ToString(),
+                                HizmetGun = worksheet.Cells[row, 10].Value?.ToString(),
+                                Derece = worksheet.Cells[row, 11].Value?.ToString(),
+                                Kademe = worksheet.Cells[row, 12].Value?.ToString(),
+                                Enaz5Yil = worksheet.Cells[row, 13].Value?.ToString(),
+                                DahaOnceYDGorev = worksheet.Cells[row, 14].Value?.ToString(),
+                                YIciGorevBasTar = worksheet.Cells[row, 15].Value?.ToString(),
+                                YabanciDilBasvuru = worksheet.Cells[row, 16].Value?.ToString(),
+                                YabanciDilAdi = worksheet.Cells[row, 17].Value?.ToString(),
+                                YabanciDilTuru = worksheet.Cells[row, 18].Value?.ToString(),
+                                YabanciDilTarihi = worksheet.Cells[row, 19].Value?.ToString(),
+                                YabanciDilPuan = worksheet.Cells[row, 20].Value?.ToString(),
+                                YabanciDilSeviye = worksheet.Cells[row, 21].Value?.ToString(),
+                                IlTercihi1 = worksheet.Cells[row, 22].Value?.ToString(),
+                                IlTercihi2 = worksheet.Cells[row, 23].Value?.ToString(),
+                                IlTercihi3 = worksheet.Cells[row, 24].Value?.ToString(),
+                                IlTercihi4 = worksheet.Cells[row, 25].Value?.ToString(),
+                                IlTercihi5 = worksheet.Cells[row, 26].Value?.ToString(),
+                                BasvuruTarihi = worksheet.Cells[row, 27].Value?.ToString(),
+                                SonDegisiklikTarihi = worksheet.Cells[row, 28].Value?.ToString(),
+                                OnayDurumu = worksheet.Cells[row, 29].Value?.ToString(),
+                                OnayDurumuAck = worksheet.Cells[row, 30].Value?.ToString(),
+                                MYYSTarihi = worksheet.Cells[row, 31].Value?.ToString(),
+                                MYYSSinavTedbiri = worksheet.Cells[row, 32].Value?.ToString(),
+                                MYYSTedbirAck = worksheet.Cells[row, 33].Value?.ToString(),
+                                MYYSPuan = worksheet.Cells[row, 34].Value?.ToString(),
+                                MYYSSonuc = worksheet.Cells[row, 35].Value?.ToString(),
+                                MYSSDurum = worksheet.Cells[row, 36].Value?.ToString(),
+                                MYSSDurumAck = worksheet.Cells[row, 37].Value?.ToString(),
+                                IlMemGorus = worksheet.Cells[row, 38].Value?.ToString(),
+                                Referans = worksheet.Cells[row, 39].Value?.ToString(),
+                                ReferansAck = worksheet.Cells[row, 40].Value?.ToString(),
+                                GorevIptalAck = worksheet.Cells[row, 41].Value?.ToString(),
+                                GorevIptalBrans = worksheet.Cells[row, 42].Value?.ToString(),
+                                GorevIptalYil = worksheet.Cells[row, 43].Value?.ToString(),
+                                GorevIptalBAOK = worksheet.Cells[row, 44].Value?.ToString(),
+                                IlkGorevKaydi = worksheet.Cells[row, 45].Value?.ToString(),
+                                YabanciDilALM = worksheet.Cells[row, 46].Value?.ToString(),
+                                YabanciDilING = worksheet.Cells[row, 47].Value?.ToString(),
+                                YabanciDilFRS = worksheet.Cells[row, 48].Value?.ToString(),
+                                YabanciDilDiger = worksheet.Cells[row, 49].Value?.ToString(),
+                                GorevdenUzaklastirma = worksheet.Cells[row, 50].Value?.ToString(),
+                                EDurum = worksheet.Cells[row, 51].Value?.ToString(),
+                                MDurum = worksheet.Cells[row, 52].Value?.ToString(),
+                                PDurum = worksheet.Cells[row, 53].Value?.ToString(),
+                                Sendika = worksheet.Cells[row, 54].Value?.ToString(),
+                                SendikaAck = worksheet.Cells[row, 55].Value?.ToString(),
+                                MYYSSoruItiraz = worksheet.Cells[row, 56].Value?.ToString(),
+                                MYYSSonucItiraz = worksheet.Cells[row, 57].Value?.ToString(),
+                                BasvuruBrans = worksheet.Cells[row, 58].Value?.ToString(),
+
+                                //BransAdi ile BransId yi eşleştirme
+                                BransId = _branslarBE.BranslariGetir().Data
+                                    .FirstOrDefault(b => b.BransAdi == worksheet.Cells[row, 59].Value?.ToString())?.BransId,
+
+                                //DereceAdi ile DereceId yi eşleştirme
+                                DereceId = _derecelerBE.DereceleriGetir().Data
+                                    .FirstOrDefault(d => d.DereceAdi == worksheet.Cells[row, 60].Value?.ToString())?.DereceId,
+                                DereceAdi = worksheet.Cells[row, 60].Value?.ToString(),
+
+                                Unvan = worksheet.Cells[row, 61].Value?.ToString(),
+                                UlkeTercihId = Guid.Parse(worksheet.Cells[row, 62].Value?.ToString()),
+
+                                //MulakatId yi ViewBag.Mulakatlar dan alma
+                                MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
+
+                                //AdayId yi TC ile eşleştirme
+                                AdayId = _adaylarBE.AdaylariGetir().Data
+                                    .FirstOrDefault(a => a.TC == worksheet.Cells[row, 1].Value?.ToString())?.AdayId
                             };
 
                             var result = _adaylarBE.AdayBasvuruBilgileriEkle(aday, user);
@@ -483,7 +505,7 @@ namespace YOGBIS.UI.Controllers
                     _progressData.Remove(sessionId);
                 }
             }
-        } 
+        }
         #endregion
 
         #region AdayBasvuruBilgileriniGetir
@@ -572,14 +594,14 @@ namespace YOGBIS.UI.Controllers
                             var aday = new AdayIletisimBilgileriVM
                             {
                                 TC = worksheet.Cells[row, 1].Value?.ToString(),
-                                CepTelNo= worksheet.Cells[row, 2].Value?.ToString(),
-                                EPosta= worksheet.Cells[row, 3].Value?.ToString(),
-                                NufusIl= worksheet.Cells[row, 4].Value?.ToString(),
-                                NufusIlce= worksheet.Cells[row, 5].Value?.ToString(),
-                                IkametAdres= worksheet.Cells[row, 6].Value?.ToString(),
-                                IkametIl= worksheet.Cells[row, 7].Value?.ToString(),
-                                IkametIlce= worksheet.Cells[row, 8].Value?.ToString(),
-                                MulakatId= Guid.Parse(worksheet.Cells[row, 9].Value?.ToString()),
+                                CepTelNo = worksheet.Cells[row, 2].Value?.ToString(),
+                                EPosta = worksheet.Cells[row, 3].Value?.ToString(),
+                                NufusIl = worksheet.Cells[row, 4].Value?.ToString(),
+                                NufusIlce = worksheet.Cells[row, 5].Value?.ToString(),
+                                IkametAdres = worksheet.Cells[row, 6].Value?.ToString(),
+                                IkametIl = worksheet.Cells[row, 7].Value?.ToString(),
+                                IkametIlce = worksheet.Cells[row, 8].Value?.ToString(),
+                                MulakatId = Guid.Parse(worksheet.Cells[row, 9].Value?.ToString()),
                             };
 
                             var result = _adaylarBE.AdayIletisimBilgileriEkle(aday, user);
@@ -666,7 +688,7 @@ namespace YOGBIS.UI.Controllers
                     var base64String = Convert.ToBase64String(result.Data.AdliSicilBelge);
                     return Json(new { isSuccess = true, data = base64String });
                 }
-                
+
                 return Json(new { isSuccess = false, message = "Belge bulunamadı" });
             }
             catch (Exception ex)
@@ -692,7 +714,7 @@ namespace YOGBIS.UI.Controllers
             // elde edilen sonucun 10'a bölümünden kalan, yani Mod10'u 10. haneyi vermelidir.
             int tekler = digits[0] + digits[2] + digits[4] + digits[6] + digits[8];
             int ciftler = digits[1] + digits[3] + digits[5] + digits[7];
-            
+
             int hane10 = (tekler * 7 - ciftler) % 10;
             if (hane10 != digits[9])
                 return false;
