@@ -190,6 +190,9 @@ namespace YOGBIS.Common.VModels
 
         [Display(Name = "Adli Sicil Belgesi Var Mı?")]
         public bool HasAdliSicilBelge { get; set; }
+        
+        [Display(Name = "BilgiFormu")]
+        public byte[] BilgiFormu { get; set; }
 
         public Guid? BransId { get; set; }
 

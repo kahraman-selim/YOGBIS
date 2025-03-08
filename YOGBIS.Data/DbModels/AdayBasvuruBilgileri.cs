@@ -71,7 +71,7 @@ namespace YOGBIS.Data.DbModels
         [MaxLength]
         public byte[] AdliSicilBelge { get; set; }
         [MaxLength]
-        public byte[] BelgeEk1 { get; set; }
+        public byte[] BilgiFormu { get; set; }
 
         public Guid? BransId { get; set; }
         [ForeignKey("BransId")]

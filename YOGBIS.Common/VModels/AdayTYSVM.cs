@@ -12,7 +12,7 @@ namespace YOGBIS.Common.VModels
         public string TC { get; set; }
 
         [Display(Name = "TYS Tarihi")]
-        public DateTime? TYSTarih { get; set; }
+        public string TYSTarih { get; set; }
 
         [Display(Name = "TYS Saati")]
         public string TYSSaat { get; set; }
@@ -57,7 +57,7 @@ namespace YOGBIS.Common.VModels
         public string SinavaGelmediAck { get; set; }
 
         [Display(Name = "TYS Puanı")]
-        public decimal? TYSPuan { get; set; }
+        public string TYSPuan { get; set; }
 
         [Display(Name = "TYS Sonucu")]
         public string TYSSonuc { get; set; }

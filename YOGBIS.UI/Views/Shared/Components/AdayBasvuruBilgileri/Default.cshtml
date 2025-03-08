@@ -135,7 +135,7 @@
                                     <td class="durum-column"></td>
                                 }
 
-                                <td class="durum-column">@item.MYYSPuan</td>
+                                <td class="durum-column">@(!string.IsNullOrEmpty(item.MYYSPuan) && decimal.TryParse(item.MYYSPuan, out decimal puan) ? puan.ToString("#,##0.00") : "")</td>
                                 <td class="durum-column">@item.MYYSSonuc</td>
                                 <td class="durum-column">@item.MYSSDurum</td>
                                 <td class="durum-column">@item.MYSSDurumAck</td>

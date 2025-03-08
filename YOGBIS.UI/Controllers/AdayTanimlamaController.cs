@@ -359,6 +359,10 @@ namespace YOGBIS.UI.Controllers
 
                         for (int row = 2; row <= rowCount; row++)
                         {
+                            //BransAdi ile BransId yi eşleştirme
+                            var brans = _branslarBE.BranslariGetir().Data
+                                .FirstOrDefault(b => b.BransAdi == worksheet.Cells[row, 59].Value?.ToString());
+
                             var aday = new AdayBasvuruBilgileriVM
                             {
                                 TC = worksheet.Cells[row, 1].Value?.ToString(),
@@ -394,7 +398,9 @@ namespace YOGBIS.UI.Controllers
                                 MYYSTarihi = worksheet.Cells[row, 31].Value?.ToString(),
                                 MYYSSinavTedbiri = worksheet.Cells[row, 32].Value?.ToString(),
                                 MYYSTedbirAck = worksheet.Cells[row, 33].Value?.ToString(),
-                                MYYSPuan = worksheet.Cells[row, 34].Value?.ToString(),
+                                MYYSPuan = worksheet.Cells[row, 34].Value != null ? 
+                                    Math.Round(Convert.ToDecimal(worksheet.Cells[row, 34].Value), 2, MidpointRounding.AwayFromZero)
+                                    .ToString("F2", new System.Globalization.CultureInfo("tr-TR")) : null,
                                 MYYSSonuc = worksheet.Cells[row, 35].Value?.ToString(),
                                 MYSSDurum = worksheet.Cells[row, 36].Value?.ToString(),
                                 MYSSDurumAck = worksheet.Cells[row, 37].Value?.ToString(),
@@ -420,11 +426,7 @@ namespace YOGBIS.UI.Controllers
                                 MYYSSonucItiraz = worksheet.Cells[row, 57].Value?.ToString(),
                                 BasvuruBrans = worksheet.Cells[row, 58].Value?.ToString(),
 
-                                //BransAdi ile BransId yi eşleştirme
-                                BransId = _branslarBE.BranslariGetir().Data
-                                    .FirstOrDefault(b => b.BransAdi == worksheet.Cells[row, 59].Value?.ToString())?.BransId,
-
-                                //DereceAdi ile DereceId yi eşleştirme
+                                BransId = brans?.BransId,
                                 DereceId = _derecelerBE.DereceleriGetir().Data
                                     .FirstOrDefault(d => d.DereceAdi == worksheet.Cells[row, 60].Value?.ToString())?.DereceId,
                                 DereceAdi = worksheet.Cells[row, 60].Value?.ToString(),
@@ -644,8 +646,9 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region AdayBasvuruBilgileriGetir
-        public IActionResult AdayBasvuruBilgileriGetir(string TC)
+        #region AdayBasvuruBilgileriniGetir
+        [HttpGet]
+        public IActionResult AdayBasvuruBilgileriniGetir(string TC)
         {
             System.Diagnostics.Debug.WriteLine($"Controller - TC ile sorgu başladı: {TC}");
             var result = _adaylarBE.AdayBasvuruBilgileriniGetir(TC);
@@ -722,10 +725,13 @@ namespace YOGBIS.UI.Controllers
 
                         for (int row = 2; row <= rowCount; row++)
                         {
+                            var komisyon = _komisyonlarBE.KomisyonlariGetir().Data
+                                .FirstOrDefault(d => d.KomisyonSiraNo == Convert.ToInt32(worksheet.Cells[row, 7].Value?.ToString()));
+
                             var aday = new AdayMYSSVM
                             {
                                 TC = worksheet.Cells[row, 1].Value?.ToString().Trim(),
-                                MYSSTarih = DateTime.Parse(worksheet.Cells[row, 2].Value?.ToString()),
+                                MYSSTarih = worksheet.Cells[row, 2].Value?.ToString(),
                                 MYSSSaat = worksheet.Cells[row, 3].Value?.ToString(),
                                 MYSSMulakatYer = worksheet.Cells[row, 4].Value?.ToString(),
                                 MYSSDurum = worksheet.Cells[row, 5].Value?.ToString(),
@@ -733,14 +739,14 @@ namespace YOGBIS.UI.Controllers
                                 MYSSKomisyonSiraNo = worksheet.Cells[row, 7].Value?.ToString(),
                                 KomisyonSN = Convert.ToInt32(worksheet.Cells[row, 8].Value),
                                 KomisyonGunSN = Convert.ToInt32(worksheet.Cells[row, 9].Value),
-                                MYSPuan = Convert.ToDecimal(worksheet.Cells[row, 10].Value),
+                                MYSPuan = worksheet.Cells[row, 10].Value != null ? 
+                                    Math.Round(Convert.ToDecimal(worksheet.Cells[row, 10].Value), 2, MidpointRounding.AwayFromZero)
+                                    .ToString("F2", new System.Globalization.CultureInfo("tr-TR")) : null,
                                 MYSSonuc = worksheet.Cells[row, 11].Value?.ToString(),
                                 MYSSonucAck = worksheet.Cells[row, 12].Value?.ToString(),
 
-                                //MYSSKomisyonSiraNo ile KomisyonId yi eşleştirme
-                                KomisyonId = _komisyonlarBE.KomisyonlariGetir().Data
-                                    .FirstOrDefault(d => d.KomisyonSiraNo == Convert.ToInt32(worksheet.Cells[row, 7].Value?.ToString()))?.KomisyonId,                             
-
+                                KomisyonId = komisyon?.KomisyonId,
+                                MYSSKomisyonAdi = komisyon?.KomisyonAdi,
 
                                 //MulakatId yi ViewBag.Mulakatlar dan alma
                                 MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
@@ -881,25 +887,28 @@ namespace YOGBIS.UI.Controllers
 
                         for (int row = 2; row <= rowCount; row++)
                         {
+                            var komisyon = _komisyonlarBE.KomisyonlariGetir().Data
+                                .FirstOrDefault(d => d.KomisyonSiraNo == Convert.ToInt32(worksheet.Cells[row, 7].Value?.ToString()));
+
                             var aday = new AdayTYSVM
                             {
                                 TC = worksheet.Cells[row, 1].Value?.ToString().Trim(),
-                                TYSTarih= DateTime.Parse(worksheet.Cells[row, 2].Value?.ToString().Trim()),
-                                TYSSaat= worksheet.Cells[row, 3].Value?.ToString().Trim(),
-                                TYSMulakatYer= worksheet.Cells[row, 4].Value?.ToString().Trim(),
-                                TYSDurumu= worksheet.Cells[row, 5].Value?.ToString().Trim(),
-                                TYSDurumAck= worksheet.Cells[row, 6].Value?.ToString().Trim(),
-                                TYSKomisyonSiraNo= worksheet.Cells[row, 7].Value?.ToString().Trim(),
-                                KomisyonSN= Convert.ToInt32(worksheet.Cells[row, 8].Value?.ToString().Trim()),
-                                KomisyonGunSN= Convert.ToInt32(worksheet.Cells[row, 9].Value?.ToString().Trim()),
-                                TYSPuan= Convert.ToDecimal(worksheet.Cells[row, 10].Value?.ToString().Trim()),
-                                TYSSonuc= worksheet.Cells[row, 11].Value?.ToString().Trim(),
-                                TYSSonucAck= worksheet.Cells[row, 12].Value?.ToString().Trim(),
+                                TYSTarih = worksheet.Cells[row, 2].Value?.ToString().Trim(),
+                                TYSSaat = worksheet.Cells[row, 3].Value?.ToString().Trim(),
+                                TYSMulakatYer = worksheet.Cells[row, 4].Value?.ToString().Trim(),
+                                TYSDurumu = worksheet.Cells[row, 5].Value?.ToString().Trim(),
+                                TYSDurumAck = worksheet.Cells[row, 6].Value?.ToString().Trim(),
+                                TYSKomisyonSiraNo = worksheet.Cells[row, 7].Value?.ToString().Trim(),
+                                KomisyonSN = Convert.ToInt32(worksheet.Cells[row, 8].Value?.ToString().Trim()),
+                                KomisyonGunSN = Convert.ToInt32(worksheet.Cells[row, 9].Value?.ToString().Trim()),
+                                TYSPuan = worksheet.Cells[row, 10].Value != null ? 
+                                    Math.Round(Convert.ToDecimal(worksheet.Cells[row, 10].Value), 2, MidpointRounding.AwayFromZero)
+                                    .ToString("F2", new System.Globalization.CultureInfo("tr-TR")) : null,
+                                TYSSonuc = worksheet.Cells[row, 11].Value?.ToString().Trim(),
+                                TYSSonucAck = worksheet.Cells[row, 12].Value?.ToString().Trim(),
 
-                                //MYSSKomisyonSiraNo ile KomisyonId yi eşleştirme
-                                KomisyonId = _komisyonlarBE.KomisyonlariGetir().Data
-                                    .FirstOrDefault(d => d.KomisyonSiraNo == Convert.ToInt32(worksheet.Cells[row, 7].Value?.ToString()))?.KomisyonId,
-
+                                KomisyonId = komisyon?.KomisyonId,
+                                TYSKomisyonAdi = komisyon?.KomisyonAdi,
 
                                 //MulakatId yi ViewBag.Mulakatlar dan alma
                                 MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
@@ -924,7 +933,6 @@ namespace YOGBIS.UI.Controllers
                             });
                             await Task.Delay(10);
                         }
-
 
                         // İşlem Tamamlandı
                         UpdateProgress(sessionId, p =>

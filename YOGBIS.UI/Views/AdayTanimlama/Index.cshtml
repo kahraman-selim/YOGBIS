@@ -460,7 +460,7 @@
             });
          }
 
-         function getAdayMYSSBilgileri(tc) {
+        function getAdayMYSSBilgileri(tc) {
             console.log('TC gönderiliyor:', tc);
 
             $.ajax({
@@ -507,11 +507,11 @@
             });
          }
 
-         function getAdayTYSSBilgileri(tc) {
+        function getAdayTYSBilgileri(tc) {
             console.log('TC gönderiliyor:', tc);
 
             $.ajax({
-                url: '/AdayTanimlama/AdayTYSSBilgileriniGetir',
+                url: '/AdayTanimlama/AdayTYSBilgileriniGetir',
                 type: 'GET',
                 data: { TC: tc },
                 success: function (result) {
