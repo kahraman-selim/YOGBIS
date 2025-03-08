@@ -19,13 +19,16 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="small font-weight-bold">Yükleme dosyası için seçim yapınız</label>
-                            <select id="yuklemeTipi" class="form-control-range form-control py-0" aria-label="Yükleme tipi seçimi">
+                            <select id="islemTipi" class="form-control-range form-control py-0" aria-label="Yükleme tipi seçimi">
                                 <option selected value="">Seçim yapınız</option>
                                 <option value="1">Aday Temel Bilgileri</option>
                                 <option value="2">Aday Başvuru Bilgileri</option>
                                 <option value="3">Aday İletişim Bilgileri</option>
                                 <option value="4">Aday MYSS Bilgileri</option>
                                 <option value="5">Aday TYS Bilgileri</option>
+                                <option value="6">Aday MYSS Notları</option>
+                                <option value="7">Aday TYS Notları</option>
+                                <option value="8">Aday Bilgileri Güncelle</option>
                             </select>
                             <span id="yuklemeTipiHata" class="text-danger" style="display: none;">Lütfen yükleme tipini seçiniz!</span>
                         </div>
@@ -140,6 +143,72 @@
     </div>
 </div>
 
+<!-- Aday Bilgileri Güncelleme Modal -->
+<div class="modal fade" id="adayBilgileriGuncelleModal" tabindex="-1" role="dialog" aria-labelledby="adayBilgileriGuncelleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adayBilgileriGuncelleModalLabel">Aday Bilgileri Güncelleme</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="mulakatYili">Mülakat Yılı</label>
+                    <select class="form-control" id="mulakatYili" name="mulakatYili">
+                        <option value="">Seçiniz...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="adayTablosu">Güncellenecek Tablo</label>
+                    <select class="form-control" id="adayTablosu" name="adayTablosu">
+                        <option value="">Seçiniz...</option>
+                        <option value="Adaylar">Aday Temel Bilgileri</option>
+                        <option value="AdayBasvuruBilgileri">Aday Başvuru Bilgileri</option>
+                        <option value="AdayIletisimBilgileri">Aday İletişim Bilgileri</option>
+                        <option value="AdayMYSS">MYSS Bilgileri</option>
+                        <option value="AdayTYS">TYS Bilgileri</option>
+                        <option value="AdaySinavNotlar">Aday Sınav Notları</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Güncellenecek Alanlar</label>
+                    <div id="alanlarContainer" class="border rounded p-3 mb-2" style="max-height: 300px; overflow-y: auto;">
+                        <!-- Alanlar buraya dinamik olarak eklenecek -->
+                    </div>
+                    <div class="alert alert-info mt-2">
+                        <i class="fas fa-info-circle"></i> Güncellemek istediğiniz alanları seçiniz, yükleme yapmak istediğiniz excel dosyası aynı kolon başlıkları içermeli ve aynı sıra ile olmalı
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row w-100">
+                    <div class="col-md-10 text-left">
+                        <form id="uploadForm" enctype="multipart/form-data" method="post" class="form-group m-0" onsubmit="return submitForm(event)">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <div class="form-row">
+                                        <div class="col-md-8">
+                                            <input type="file" name="file" class="form-control w-100 p-1" accept=".xlsx" required style="width:500px" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="submit" class="btn btn-primary w-100">Yükle</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
@@ -148,7 +217,7 @@
         var progressTimer;
 
         // Add event listener for yuklemeTipi change
-        document.getElementById('yuklemeTipi').addEventListener('change', function() {
+        document.getElementById('islemTipi').addEventListener('change', function() {
             var yuklemeTipi = this.value;
             var mulakatYilElement = document.getElementById("MulakatYil");
 
@@ -156,7 +225,7 @@
             mulakatYilElement.style.display = "none";
 
             // Show only if yuklemeTipi is '2'
-            if (yuklemeTipi === '2' || yuklemeTipi === '3'|| yuklemeTipi === '4'|| yuklemeTipi === '5') {
+            if (yuklemeTipi === '2' || yuklemeTipi === '3'|| yuklemeTipi === '4'|| yuklemeTipi === '5' || yuklemeTipi === '6'|| yuklemeTipi === '7') {
                 mulakatYilElement.style.display = "inline";
             }
         });
@@ -164,56 +233,79 @@
         function submitForm(event) {
             event.preventDefault();
 
-            var yuklemeTipi = document.getElementById('yuklemeTipi').value;
-            if (!yuklemeTipi) {
-                document.getElementById('yuklemeTipiHata').style.display = 'block';
+            // Seçili alanları kontrol et
+            var secilenAlanlar = $('#alanlarContainer input[type="checkbox"]:checked').length;
+
+            if (secilenAlanlar === 0) {
+                bootbox.alert({
+                    title: '<i class="fas fa-exclamation-triangle text-warning"></i> Uyarı',
+                    message: 'Lütfen bir alan veya alanları seçiniz',
+                    centerVertical: true,
+                    buttons: {
+                        ok: {
+                            label: 'Tamam',
+                            className: 'btn-primary'
+                        }
+                    }
+                });
                 return false;
             }
-            document.getElementById('yuklemeTipiHata').style.display = 'none';
 
-            showProgress();
-
+            // Form gönderme işlemine devam et
             var formData = new FormData(document.getElementById('uploadForm'));
-            var url = '';
 
-            // Yükleme tipine göre action belirle
-            if (yuklemeTipi === '1') {
-                url = '@Url.Action("AdayTemelBilgileriYukle")';
-            } else if (yuklemeTipi === '2') {
-                url = '@Url.Action("AdayBasvuruBilgileriYukle")';
-            } else if (yuklemeTipi === '3') {
-                url = '@Url.Action("AdayIletisimBilgileriYukle")';
-            } else if (yuklemeTipi === '4') {
-                url = '@Url.Action("AdayMYSSBilgileriYukle")';
-            } else if (yuklemeTipi === '5') {
-                url = '@Url.Action("AdayTYSBilgileriYukle")';
-            }
-            fetch(url, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (!data.success) {
-                    bootbox.alert({
-                        title: 'Hata',
-                        message: 'İşlem sırasında bir hata oluştu!',
-                        centerVertical: true
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Hata:', error);
-                bootbox.alert({
-                    title: 'Hata',
-                    message: 'İşlem sırasında bir hata oluştu!',
-                    centerVertical: true
+            // Seçili alanları ekle
+            var secilenAlanlarListesi = [];
+            $('#alanlarContainer input[type="checkbox"]:checked').each(function() {
+                secilenAlanlarListesi.push({
+                    name: $(this).val(),
+                    siraNo: $(this).data('sirano')
                 });
+            });
+
+            // Mülakat yılı ve tablo adını ekle
+            var mulakatYili = $('#mulakatYili').val();
+            var tabloAdi = $('#adayTablosu').val();
+
+            if (!mulakatYili || !tabloAdi) {
+                bootbox.alert({
+                    title: '<i class="fas fa-exclamation-triangle text-warning"></i> Uyarı',
+                    message: 'Lütfen mülakat yılı ve güncellenecek tabloyu seçiniz',
+                    centerVertical: true,
+                    buttons: {
+                        ok: {
+                            label: 'Tamam',
+                            className: 'btn-primary'
+                        }
+                    }
+                });
+                return false;
+            }
+
+            formData.append('secilenAlanlar', JSON.stringify(secilenAlanlarListesi));
+            formData.append('mulakatYili', mulakatYili);
+            formData.append('tabloAdi', tabloAdi);
+
+            // AJAX ile form gönder
+            $.ajax({
+                url: '@Url.Action("DosyaYukle", "AdayTanimlama")',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success(response.message);
+                        $('#guncelleModal').modal('hide');
+                        // Sayfayı yenile
+                        location.reload();
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function() {
+                    toastr.error('Dosya yükleme işlemi sırasında bir hata oluştu.');
+                }
             });
 
             return false;
@@ -554,5 +646,126 @@
             });
          }
 
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // İşlem tipine göre modal açma
+            $('#islemTipi').change(function () {
+                var selectedValue = $(this).val();
+                if (selectedValue === '8') {
+                    getMulakatYillari();
+                    $('#adayBilgileriGuncelleModal').modal('show');
+                }
+            });
+
+            // Mülakat yıllarını getir
+            function getMulakatYillari() {
+                $.ajax({
+                    url: '@Url.Action("GetMulakatYillari", "AdayTanimlama")',
+                    type: 'GET',
+                    success: function (data) {
+                        var select = $('#mulakatYili');
+                        select.empty();
+                        select.append($('<option>', {
+                            value: '',
+                            text: 'Seçiniz...'
+                        }));
+                        $.each(data, function (index, item) {
+                            select.append($('<option>', {
+                                value: item,
+                                text: item
+                            }));
+                        });
+                    },
+                    error: function () {
+                        toastr.error('Mülakat yılları getirilirken bir hata oluştu.');
+                    }
+                });
+            }
+
+            // Tablo seçildiğinde alanları getir
+            $('#adayTablosu').change(function() {
+                var tabloAdi = $(this).val();
+                if (tabloAdi) {
+                    getTabloAlanlari(tabloAdi);
+                } else {
+                    $('#alanlarContainer').empty();
+                }
+            });
+
+            // Tablo alanlarını getir
+            function getTabloAlanlari(tabloAdi) {
+                $.ajax({
+                    url: '@Url.Action("GetTabloAlanlari", "AdayTanimlama")',
+                    type: 'GET',
+                    data: { tabloAdi: tabloAdi },
+                    success: function (data) {
+                        var container = $('#alanlarContainer');
+                        container.empty();
+
+                        // Her alan için checkbox oluştur
+                        data.forEach(function(alan) {
+                            var div = $('<div>', {
+                                class: 'custom-control custom-checkbox mb-2'
+                            });
+
+                            var checkbox = $('<input>', {
+                                type: 'checkbox',
+                                class: 'custom-control-input',
+                                id: 'alan_' + alan.name,
+                                value: alan.name,
+                                'data-sirano': alan.siraNo
+                            });
+
+                            var label = $('<label>', {
+                                class: 'custom-control-label',
+                                for: 'alan_' + alan.name,
+                                text: alan.siraNo + '. ' + alan.name
+                            });
+
+                            div.append(checkbox).append(label);
+                            container.append(div);
+                        });
+                    },
+                    error: function () {
+                        toastr.error('Tablo alanları getirilirken bir hata oluştu.');
+                    }
+                });
+            }
+
+            // Modal kapandığında select'leri ve alanları temizle
+            $('#adayBilgileriGuncelleModal').on('hidden.bs.modal', function () {
+                $('#mulakatYili').val('');
+                $('#adayTablosu').val('');
+                $('#alanlarContainer').empty();
+            });
+
+            // Güncelle butonuna tıklandığında
+            $('#btnGuncelle').click(function () {
+                var mulakatYili = $('#mulakatYili').val();
+                var adayTablosu = $('#adayTablosu').val();
+                var secilenAlanlar = [];
+
+                // Seçili alanları topla
+                $('#alanlarContainer input[type="checkbox"]:checked').each(function() {
+                    secilenAlanlar.push($(this).val());
+                });
+
+                if (!mulakatYili || !adayTablosu) {
+                    toastr.warning('Lütfen mülakat yılı ve tablo seçiniz.');
+                    return;
+                }
+
+                if (secilenAlanlar.length === 0) {
+                    toastr.warning('Lütfen en az bir alan seçiniz.');
+                    return;
+                }
+
+                // TODO: Güncelleme işlemi için gerekli endpoint'e istek atılacak
+                toastr.info('Güncelleme işlemi başlatılıyor...');
+                console.log('Seçilen alanlar:', secilenAlanlar);
+            });
+        });
     </script>
 }
