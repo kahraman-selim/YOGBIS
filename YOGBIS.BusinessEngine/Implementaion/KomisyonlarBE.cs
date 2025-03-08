@@ -1,9 +1,10 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.ResultModels;
@@ -11,6 +12,7 @@ using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
+using Microsoft.Extensions.Logging;
 
 namespace YOGBIS.BusinessEngine.Implementaion
 {
@@ -21,15 +23,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
         private readonly IMapper _mapper;
         private readonly IMulakatOlusturBE _mulakatOlusturBE;
         private readonly IKullaniciBE _kullaniciBE;
+        private readonly ILogger<KomisyonlarBE> _logger;
         #endregion
 
         #region Dönüştürücüler
-        public KomisyonlarBE(IUnitOfWork unitOfWork, IMapper mapper, IKullaniciBE kullaniciBE, IMulakatOlusturBE mulakatOlusturBE)
+        public KomisyonlarBE(IUnitOfWork unitOfWork, IMapper mapper, IKullaniciBE kullaniciBE, IMulakatOlusturBE mulakatOlusturBE, ILogger<KomisyonlarBE> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _mulakatOlusturBE = mulakatOlusturBE;
             _kullaniciBE = kullaniciBE;
+            _logger = logger;
         }
         #endregion
 
@@ -211,6 +215,22 @@ namespace YOGBIS.BusinessEngine.Implementaion
             else
             {
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+        }
+        #endregion
+
+        #region GetKomisyonIdBySiraNo
+        public async Task<Guid?> GetKomisyonIdBySiraNo(int siraNo)
+        {
+            try
+            {
+                var komisyon = _unitOfWork.komisyonlarRepository.GetFirstOrDefault(x => x.KomisyonSiraNo == siraNo);
+                return await Task.FromResult(komisyon?.KomisyonId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"GetKomisyonIdBySiraNo {ex.Message}");
+                return null;
             }
         }
         #endregion

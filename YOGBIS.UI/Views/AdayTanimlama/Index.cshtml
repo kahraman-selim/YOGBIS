@@ -24,6 +24,8 @@
                                 <option value="1">Aday Temel Bilgileri</option>
                                 <option value="2">Aday Başvuru Bilgileri</option>
                                 <option value="3">Aday İletişim Bilgileri</option>
+                                <option value="4">Aday MYSS Bilgileri</option>
+                                <option value="5">Aday TYS Bilgileri</option>
                             </select>
                             <span id="yuklemeTipiHata" class="text-danger" style="display: none;">Lütfen yükleme tipini seçiniz!</span>
                         </div>
@@ -129,6 +131,12 @@
         <div id="adayIletisimBilgileriContainer">
             @await Component.InvokeAsync("AdayIletisimBilgileri")
         </div>
+        <div id="adayMYSSBilgileriContainer">
+            @await Component.InvokeAsync("AdayMYSSBilgileri")
+        </div>
+        <div id="adayTYSBilgileriContainer">
+            @await Component.InvokeAsync("AdayTYSBilgileri")
+        </div>
     </div>
 </div>
 
@@ -143,12 +151,12 @@
         document.getElementById('yuklemeTipi').addEventListener('change', function() {
             var yuklemeTipi = this.value;
             var mulakatYilElement = document.getElementById("MulakatYil");
-            
+
             // Hide by default
             mulakatYilElement.style.display = "none";
-            
+
             // Show only if yuklemeTipi is '2'
-            if (yuklemeTipi === '2' || yuklemeTipi === '3') {
+            if (yuklemeTipi === '2' || yuklemeTipi === '3'|| yuklemeTipi === '4'|| yuklemeTipi === '5') {
                 mulakatYilElement.style.display = "inline";
             }
         });
@@ -175,8 +183,11 @@
                 url = '@Url.Action("AdayBasvuruBilgileriYukle")';
             } else if (yuklemeTipi === '3') {
                 url = '@Url.Action("AdayIletisimBilgileriYukle")';
+            } else if (yuklemeTipi === '4') {
+                url = '@Url.Action("AdayMYSSBilgileriYukle")';
+            } else if (yuklemeTipi === '5') {
+                url = '@Url.Action("AdayTYSBilgileriYukle")';
             }
-
             fetch(url, {
                 method: 'POST',
                 body: formData
@@ -353,7 +364,7 @@
 
         function getAdayBasvuruBilgileri(tc) {
             console.log('TC gönderiliyor:', tc);
-            
+
             $.ajax({
                 url: '/AdayTanimlama/AdayBasvuruBilgileriniGetir',
                 type: 'GET',
@@ -366,6 +377,10 @@
                             message: result.error,
                             size: 'small'
                         });
+                        return;
+                    }
+                    if (result === '') {
+                        $('#adayBasvuruBilgileriContainer').html('<div class="card mb-3"><div class="card-header"><i class="fas fa-table mr-1"></i><b>Aday Başvuru Bilgileri</b></div><div class="card-body"><div class="table-responsive"><table class="table table-bordered"><tbody><tr><td class="text-center">Herhangi bir kayıt bulunamadı!</td></tr></tbody></table></div></div></div>');
                         return;
                     }
                     console.log('Başarılı sonuç:', result);
@@ -443,8 +458,101 @@
                     console.groupEnd();
                 }
             });
-        }
+         }
 
+         function getAdayMYSSBilgileri(tc) {
+            console.log('TC gönderiliyor:', tc);
+
+            $.ajax({
+                url: '/AdayTanimlama/AdayMYSSBilgileriniGetir',
+                type: 'GET',
+                data: { TC: tc },
+                success: function (result) {
+                    if (result.error) {
+                        console.error('Sunucu hatası:', result.error);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: result.error,
+                            size: 'small'
+                        });
+                        return;
+                    }
+                    console.log('Başarılı sonuç:', result);
+                    $('#adayMYSSBilgileriContainer').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.group('AJAX Hata Detayları');
+                    console.error('Hata:', error);
+                    console.error('Status:', status);
+                    console.error('Status Code:', xhr.status);
+                    console.error('Response Text:', xhr.responseText);
+                    try {
+                        var jsonResponse = JSON.parse(xhr.responseText);
+                        console.error('JSON Response:', jsonResponse);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: jsonResponse.error || 'Veri getirme hatası',
+                            size: 'small'
+                        });
+                    } catch (e) {
+                        console.error('Raw Response:', xhr.responseText);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: 'Veri getirme hatası',
+                            size: 'small'
+                        });
+                    }
+                    console.groupEnd();
+                }
+            });
+         }
+
+         function getAdayTYSSBilgileri(tc) {
+            console.log('TC gönderiliyor:', tc);
+
+            $.ajax({
+                url: '/AdayTanimlama/AdayTYSSBilgileriniGetir',
+                type: 'GET',
+                data: { TC: tc },
+                success: function (result) {
+                    if (result.error) {
+                        console.error('Sunucu hatası:', result.error);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: result.error,
+                            size: 'small'
+                        });
+                        return;
+                    }
+                    console.log('Başarılı sonuç:', result);
+                    $('#adayTYSBilgileriContainer').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.group('AJAX Hata Detayları');
+                    console.error('Hata:', error);
+                    console.error('Status:', status);
+                    console.error('Status Code:', xhr.status);
+                    console.error('Response Text:', xhr.responseText);
+                    try {
+                        var jsonResponse = JSON.parse(xhr.responseText);
+                        console.error('JSON Response:', jsonResponse);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: jsonResponse.error || 'Veri getirme hatası',
+                            size: 'small'
+                        });
+                    } catch (e) {
+                        console.error('Raw Response:', xhr.responseText);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: 'Veri getirme hatası',
+                            size: 'small'
+                        });
+                    }
+                    console.groupEnd();
+                }
+            });
+         }
 
     </script>
 }

@@ -11,6 +11,7 @@ using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
+using Microsoft.Extensions.Logging;
 
 namespace YOGBIS.BusinessEngine.Implementaion
 {
@@ -22,16 +23,18 @@ namespace YOGBIS.BusinessEngine.Implementaion
         private readonly IDerecelerBE _derecelerBE;
         private readonly IMulakatOlusturBE _mulakatOlusturBE;
         private readonly IKomisyonlarBE _komisyonlarBE;
+        private readonly ILogger<AdaylarBE> _logger;
         #endregion
 
         #region Constructors
-        public AdaylarBE(IUnitOfWork unitOfWork, IMapper mapper, IDerecelerBE derecelerBE, IMulakatOlusturBE mulakatOlusturBE, IKomisyonlarBE komisyonlarBE)
+        public AdaylarBE(IUnitOfWork unitOfWork, IMapper mapper, IDerecelerBE derecelerBE, IMulakatOlusturBE mulakatOlusturBE, IKomisyonlarBE komisyonlarBE, ILogger<AdaylarBE> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _derecelerBE = derecelerBE;
             _mulakatOlusturBE = mulakatOlusturBE;
             _komisyonlarBE = komisyonlarBE;
+            _logger = logger;
         }
         #endregion
 
@@ -670,5 +673,330 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        #region AdayMYSSBilgileriEkle
+        public Result<AdayMYSSVM> AdayMYSSBilgileriEkle(AdayMYSSVM model, SessionContext user)
+        {
+            if (model != null)
+            {
+                try
+                {
+                    var Aday = _mapper.Map<AdayMYSSVM, AdayMYSS>(model);
+                    Aday.KaydedenId = user.LoginId;
+
+                    _unitOfWork.adayMYSSRepository.Add(Aday);
+                    _unitOfWork.Save();
+                    return new Result<AdayMYSSVM>(true, ResultConstant.RecordCreateSuccess);
+                }
+                catch (Exception ex)
+                {
+
+                    return new Result<AdayMYSSVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                }
+            }
+            else
+            {
+                return new Result<AdayMYSSVM>(false, "Boş veri olamaz");
+            }
+        }
+        #endregion
+
+        #region AdayMYSSBilgileriniGetir
+        public Result<List<AdayMYSSVM>> AdayMYSSBilgileriniGetir(string TC)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - TC ile sorgu başladı: {TC}");
+
+                if (string.IsNullOrEmpty(TC))
+                {
+                    System.Diagnostics.Debug.WriteLine("Business Engine - TC boş");
+                    return new Result<List<AdayMYSSVM>>(false, "TC kimlik numarası boş olamaz");
+                }
+
+                System.Diagnostics.Debug.WriteLine("Business Engine - Repository'den veri çekiliyor");
+                var data = _unitOfWork.adayMYSSRepository.GetAll(x => x.TC == TC).ToList();
+
+                if (data != null && data.Any())
+                {
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - {data.Count} adet veri bulundu. TC: {TC}");
+
+                    var adaylar = data.Select(data => new AdayMYSSVM()
+                    {
+                        Id = data.Id,
+                        TC = data.TC,
+                        MYSSTarih = !string.IsNullOrEmpty(data.MYSSTarih) ? DateTime.Parse(data.MYSSTarih) : (DateTime?)null,
+                        MYSSSaat = data.MYSSSaat,
+                        MYSSMulakatYer = data.MYSSMulakatYer,
+                        MYSSDurum = data.MYSSDurum,
+                        MYSSDurumAck = data.MYSSDurumAck,
+                        MYSSKomisyonSiraNo = data.MYSSKomisyonSiraNo.ToString(),
+                        MYSSKomisyonAdi = data.MYSSKomisyonAdi,
+                        KomisyonId = data.KomisyonId,
+                        KomisyonSN = data.KomisyonSN,
+                        KomisyonGunSN = data.KomisyonGunSN,
+                        CagriDurum = data.CagriDurum ?? false,
+                        KabulDurum = data.KabulDurum ?? false,
+                        SinavDurum = data.SinavDurum ?? false,
+                        SinavaGelmedi = data.SinavaGelmedi ?? false,
+                        SinavaGelmediAck = data.SinavGelmediAck,
+                        MYSPuan = !string.IsNullOrEmpty(data.MYSPuan) ? decimal.Parse(data.MYSPuan) : (decimal?)null,
+                        MYSSonuc = data.MYSSonuc,
+                        MYSSonucAck = data.MYSSonucAck,
+                        MYSSSorulanSoruNo = data.MYSSSorulanSoruNo.ToString(),
+                        SinavIptal = data.SinavIptal ?? false,
+                        SinavIptalAck = data.SinavIptalAck,
+                        AdayId = data.AdayId,
+                        MulakatId = data.MulakatId,
+                        KaydedenId = data.KaydedenId
+                    }).ToList();
+
+                    foreach (var aday in adaylar)
+                    {
+                        if (aday.MulakatId.HasValue)
+                        {
+                            try
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Business Engine - {aday.TC} için mülakat bilgileri alınıyor. MulakatId: {aday.MulakatId}");
+
+                                // Önce mülakat verisini direkt veritabanından alalım
+                                var mulakat = _unitOfWork.mulakatlarRepository.Get((Guid)aday.MulakatId);
+                                if (mulakat != null && mulakat.YazılıSinavTarihi != default(DateTime))
+                                {
+                                    aday.MulakatYil = mulakat.YazılıSinavTarihi.Year;
+                                    System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı veritabanından alındı: {aday.MulakatYil}");
+                                }
+                                else
+                                {
+                                    // Eğer veritabanından alamazsak servisten deneyelim
+                                    var mulakatYil = _mulakatOlusturBE.MulakatYilGetir((Guid)aday.MulakatId);
+                                    if (mulakatYil.IsSuccess && !string.IsNullOrEmpty(mulakatYil.Data))
+                                    {
+                                        aday.MulakatYil = int.Parse(mulakatYil.Data);
+                                        System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı servisten alındı: {aday.MulakatYil}");
+                                    }
+                                    else
+                                    {
+                                        System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı alınamadı");
+                                    }
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat bilgileri alınırken hata: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                            }
+                        }
+                    }
+
+                    return new Result<List<AdayMYSSVM>>(true, ResultConstant.RecordFound, adaylar);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - TC ile veri bulunamadı: {TC}");
+                    return new Result<List<AdayMYSSVM>>(false, "TC numarası ile kayıt bulunamadı");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Hata: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                return new Result<List<AdayMYSSVM>>(false, "Veri getirme hatası: " + ex.Message);
+            }
+        } 
+        #endregion
+
+        #region AdayMYSSBilgileriniGetirById
+        public Result<AdayMYSSVM> AdayMYSSBilgileriniGetirById(Guid id)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Id ile sorgu başladı: {id}");
+
+                var data = _unitOfWork.adayMYSSRepository.Get(id);
+                if (data != null)
+                {
+                    var aday = new AdayMYSSVM()
+                    {
+                        Id = data.Id,
+                        TC = data.TC,
+                    };
+
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - Veri bulundu. TC: {aday.TC}");
+                    return new Result<AdayMYSSVM>(true, ResultConstant.RecordFound, aday);
+                }
+
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Veri bulunamadı. Id: {id}");
+                return new Result<AdayMYSSVM>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Hata: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                return new Result<AdayMYSSVM>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
+            }
+        } 
+        #endregion
+
+        #region AdayTYSBilgileriEkle
+        public Result<AdayTYSVM> AdayTYSBilgileriEkle(AdayTYSVM model, SessionContext user)
+        {
+            if (model != null)
+            {
+                try
+                {
+                    var Aday = _mapper.Map<AdayTYSVM, AdayTYS>(model);
+                    Aday.KaydedenId = user.LoginId;
+
+                    _unitOfWork.adayTYSRepository.Add(Aday);
+                    _unitOfWork.Save();
+                    return new Result<AdayTYSVM>(true, ResultConstant.RecordCreateSuccess);
+                }
+                catch (Exception ex)
+                {
+
+                    return new Result<AdayTYSVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                }
+            }
+            else
+            {
+                return new Result<AdayTYSVM>(false, "Boş veri olamaz");
+            }
+        }
+        #endregion
+
+        #region AdayTYSBilgileriniGetir
+        public Result<List<AdayTYSVM>> AdayTYSBilgileriniGetir(string TC)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - TC ile sorgu başladı: {TC}");
+
+                if (string.IsNullOrEmpty(TC))
+                {
+                    System.Diagnostics.Debug.WriteLine("Business Engine - TC boş");
+                    return new Result<List<AdayTYSVM>>(false, "TC kimlik numarası boş olamaz");
+                }
+
+                System.Diagnostics.Debug.WriteLine("Business Engine - Repository'den veri çekiliyor");
+                var data = _unitOfWork.adayTYSRepository.GetAll(x => x.TC == TC).ToList();
+
+                if (data != null && data.Any())
+                {
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - {data.Count} adet veri bulundu. TC: {TC}");
+
+                    var adaylar = data.Select(data => new AdayTYSVM()
+                    {
+                        Id = data.Id,
+                        TC = data.TC,
+                        TYSTarih = !string.IsNullOrEmpty(data.TYSTarih) ? DateTime.Parse(data.TYSTarih) : (DateTime?)null,
+                        TYSSaat = data.TYSSaat,
+                        TYSMulakatYer = data.TYSMulakatYer,
+                        TYSDurumu = data.TYSDurumu,
+                        TYSDurumAck = data.TYSDurumAck,
+                        TYSKomisyonSiraNo = data.TYSKomisyonSiraNo.ToString(),
+                        TYSKomisyonAdi = data.TYSKomisyonAdi,
+                        KomisyonId = data.KomisyonId,
+                        KomisyonSN = data.KomisyonSN,
+                        KomisyonGunSN = data.KomisyonGunSN,
+                        CagriDurum = data.CagriDurum ?? false,
+                        KabulDurum = data.KabulDurum ?? false,
+                        SinavDurum = data.SinavDurum ?? false,
+                        SinavaGelmedi = data.SinavaGelmedi ?? false,
+                        SinavaGelmediAck = data.SinavaGelmediAck,
+                        TYSPuan = !string.IsNullOrEmpty(data.TYSPuan) ? decimal.Parse(data.TYSPuan) : (decimal?)null,
+                        TYSSonuc = data.TYSSonuc,
+                        TYSSonucAck = data.TYSSonucAck,
+                        TYSSorulanSoruNo = data.TYSSorulanSoruNo.ToString(),
+                        SinavIptal = data.SinavIptal ?? false,
+                        SinavIptalAck = data.SinavIptalAck,
+                        AdayId = data.AdayId,
+                        MulakatId = data.MulakatId,
+                        KaydedenId = data.KaydedenId
+                    }).ToList();
+
+                    foreach (var aday in adaylar)
+                    {
+                        if (aday.MulakatId.HasValue)
+                        {
+                            try
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Business Engine - {aday.TC} için mülakat bilgileri alınıyor. MulakatId: {aday.MulakatId}");
+
+                                // Önce mülakat verisini direkt veritabanından alalım
+                                var mulakat = _unitOfWork.mulakatlarRepository.Get((Guid)aday.MulakatId);
+                                if (mulakat != null && mulakat.YazılıSinavTarihi != default(DateTime))
+                                {
+                                    aday.MulakatYil = mulakat.YazılıSinavTarihi.Year;
+                                    System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı veritabanından alındı: {aday.MulakatYil}");
+                                }
+                                else
+                                {
+                                    // Eğer veritabanından alamazsak servisten deneyelim
+                                    var mulakatYil = _mulakatOlusturBE.MulakatYilGetir((Guid)aday.MulakatId);
+                                    if (mulakatYil.IsSuccess && !string.IsNullOrEmpty(mulakatYil.Data))
+                                    {
+                                        aday.MulakatYil = int.Parse(mulakatYil.Data);
+                                        System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı servisten alındı: {aday.MulakatYil}");
+                                    }
+                                    else
+                                    {
+                                        System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı alınamadı");
+                                    }
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat bilgileri alınırken hata: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                            }
+                        }
+                    }
+
+                    return new Result<List<AdayTYSVM>>(true, ResultConstant.RecordFound, adaylar);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - TC ile veri bulunamadı: {TC}");
+                    return new Result<List<AdayTYSVM>>(false, "TC numarası ile kayıt bulunamadı");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Hata: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                return new Result<List<AdayTYSVM>>(false, "Veri getirme hatası: " + ex.Message);
+            }
+        } 
+        #endregion
+
+        #region AdayTYSBilgileriniGetirById
+        public Result<AdayTYSVM> AdayTYSBilgileriniGetirById(Guid id)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Id ile sorgu başladı: {id}");
+
+                var data = _unitOfWork.adayTYSRepository.Get(id);
+                if (data != null)
+                {
+                    var aday = new AdayTYSVM()
+                    {
+                        Id = data.Id,
+                        TC = data.TC,
+                    };
+
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - Veri bulundu. TC: {aday.TC}");
+                    return new Result<AdayTYSVM>(true, ResultConstant.RecordFound, aday);
+                }
+
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Veri bulunamadı. Id: {id}");
+                return new Result<AdayTYSVM>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Hata: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                return new Result<AdayTYSVM>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
+            }
+        } 
+        #endregion
+
     }
 }

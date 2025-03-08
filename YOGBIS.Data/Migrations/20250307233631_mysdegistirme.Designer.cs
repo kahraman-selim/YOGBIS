@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20250307233631_mysdegistirme")]
+    partial class mysdegistirme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -752,13 +754,13 @@ namespace YOGBIS.Data.Migrations
                     b.Property<string>("SinavGelmediAck")
                         .HasColumnType("text");
 
-                    b.Property<bool?>("SinavIptal")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("SinavIptalAck")
+                    b.Property<string>("SinavIptalAciklama")
                         .HasColumnType("text");
 
                     b.Property<bool?>("SinavaGelmedi")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool?>("Sinavİptal")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("TC")

@@ -5,22 +5,19 @@ namespace YOGBIS.Common.VModels
 {
     public class AdayMYSSVM : BaseVM
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         [Required(ErrorMessage = "TC Kimlik No zorunludur")]
         [StringLength(11, MinimumLength = 11, ErrorMessage = "TC Kimlik No 11 haneli olmalıdır")]
         [Display(Name = "TC Kimlik No")]
         public string TC { get; set; }
 
-        [Required(ErrorMessage = "MYSS tarihi zorunludur")]
         [Display(Name = "MYSS Tarihi")]
-        public string MYSSTarih { get; set; }
+        public DateTime? MYSSTarih { get; set; }
 
-        [Required(ErrorMessage = "MYSS saati zorunludur")]
         [Display(Name = "MYSS Saati")]
         public string MYSSSaat { get; set; }
 
-        [Required(ErrorMessage = "MYSS mülakat yeri zorunludur")]
         [Display(Name = "MYSS Mülakat Yeri")]
         public string MYSSMulakatYer { get; set; }
 
@@ -31,59 +28,70 @@ namespace YOGBIS.Common.VModels
         public string MYSSDurumAck { get; set; }
 
         [Display(Name = "MYSS Komisyon Sıra No")]
-        public int MYSSKomisyonSiraNo { get; set; }
+        public string MYSSKomisyonSiraNo { get; set; }
 
         [Display(Name = "MYSS Komisyon Adı")]
         public string MYSSKomisyonAdi { get; set; }
 
+        [Display(Name = "Komisyon")]
         public Guid? KomisyonId { get; set; }
 
-        [Display(Name = "Komisyon")]
-        public KomisyonlarVM Komisyonlar { get; set; }
-
-        [Display(Name = "Komisyon Sıra No")]
-        public int KomisyonSiraNo { get; set; }
-
-        [Display(Name = "Komisyon Adı")]
-        public string KomisyonAdi { get; set; }
-
         [Display(Name = "Komisyon SN")]
-        public int KomisyonSN { get; set; }
+        public int? KomisyonSN { get; set; }
 
         [Display(Name = "Komisyon Gün SN")]
-        public int KomisyonGunSN { get; set; }
+        public int? KomisyonGunSN { get; set; }
 
         [Display(Name = "Çağrı Durumu")]
-        public bool? CagriDurum { get; set; }
+        public bool CagriDurum { get; set; }
 
         [Display(Name = "Kabul Durumu")]
-        public bool? KabulDurum { get; set; }
+        public bool KabulDurum { get; set; }
 
         [Display(Name = "Sınav Durumu")]
-        public bool? SinavDurum { get; set; }
+        public bool SinavDurum { get; set; }
 
-        [Display(Name = "MYSS Puanı")]
-        public string MYSSPuan { get; set; }
+        [Display(Name = "Sınava Gelmedi")]
+        public bool SinavaGelmedi { get; set; }
 
-        [Display(Name = "MYSS Sonucu")]
-        public string MYSSSonuc { get; set; }
+        [Display(Name = "Sınava Gelmedi Açıklaması")]
+        public string SinavaGelmediAck { get; set; }
 
-        [Display(Name = "MYSS Sonuç Açıklaması")]
-        public string MYSSSonucAck { get; set; }
+        [Display(Name = "MYS Puanı")]
+        public decimal? MYSPuan { get; set; }
+
+        [Display(Name = "MYS Sonucu")]
+        public string MYSSonuc { get; set; }
+
+        [Display(Name = "MYS Sonuç Açıklaması")]
+        public string MYSSonucAck { get; set; }
 
         [Display(Name = "MYSS Sorulan Soru No")]
-        public int MYSSSorulanSoruNo { get; set; }
+        public string MYSSSorulanSoruNo { get; set; }
+
+        [Display(Name = "Sınav İptal")]
+        public bool SinavIptal { get; set; }
+
+        [Display(Name = "Sınav İptal Açıklaması")]
+        public string SinavIptalAck { get; set; }
+
+        public Guid? AdayId { get; set; }
 
         public Guid? MulakatId { get; set; }
 
-        [Display(Name = "Mülakat")]
-        public MulakatlarVM Mulakatlar { get; set; }
-
-        [Display(Name = "Mülakat Onay No")]
-        public string MulakatOnayNo { get; set; }
-
         [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public string KaydedenId { get; set; }
+
+        public int? MulakatYil { get; set; }
+
+        [Display(Name = "Adaylar")]
+        public AdaylarVM Adaylar { get; set; }
+
+        [Display(Name = "Komisyonlar")]
+        public KomisyonlarVM Komisyonlar { get; set; }
+
+        [Display(Name = "Mülakatlar")]
+        public MulakatlarVM Mulakatlar { get; set; }
 
         [Display(Name = "Kaydeden")]
         public string KaydedenAdi { get; set; }

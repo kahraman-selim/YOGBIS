@@ -12,6 +12,8 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "TC Kimlik No")]
         public string TC { get; set; }
 
+        public Guid? AdayId { get; set; }
+
         [Required(ErrorMessage = "Cep telefonu numarası zorunludur")]
         [Phone(ErrorMessage = "Geçerli bir telefon numarası giriniz")]
         [Display(Name = "Cep Telefonu")]

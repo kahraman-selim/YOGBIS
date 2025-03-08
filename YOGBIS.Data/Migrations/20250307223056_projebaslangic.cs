@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace YOGBIS.Data.Migrations
 {
-    public partial class ProjeBaslangic : Migration
+    public partial class projebaslangic : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -857,23 +857,27 @@ namespace YOGBIS.Data.Migrations
                     CagriDurum = table.Column<bool>(nullable: true),
                     KabulDurum = table.Column<bool>(nullable: true),
                     SinavDurum = table.Column<bool>(nullable: true),
+                    SinavaGelmedi = table.Column<bool>(nullable: true),
+                    SinavGelmediAck = table.Column<string>(nullable: true),
                     MYSSPuan = table.Column<string>(nullable: true),
                     MYSSSonuc = table.Column<string>(nullable: true),
                     MYSSSonucAck = table.Column<string>(nullable: true),
                     MYSSSorulanSoruNo = table.Column<int>(nullable: false),
+                    Sinavİptal = table.Column<bool>(nullable: true),
+                    SinavIptalAciklama = table.Column<string>(nullable: true),
+                    AdayId = table.Column<byte[]>(nullable: false),
                     MulakatId = table.Column<byte[]>(nullable: false),
-                    KaydedenId = table.Column<string>(nullable: true),
-                    AdaylarAdayId = table.Column<byte[]>(nullable: true)
+                    KaydedenId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AdayMYSS", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AdayMYSS_Adaylar_AdaylarAdayId",
-                        column: x => x.AdaylarAdayId,
+                        name: "FK_AdayMYSS_Adaylar_AdayId",
+                        column: x => x.AdayId,
                         principalTable: "Adaylar",
                         principalColumn: "AdayId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AdayMYSS_AspNetUsers_KaydedenId",
                         column: x => x.KaydedenId,
@@ -914,23 +918,27 @@ namespace YOGBIS.Data.Migrations
                     CagriDurum = table.Column<bool>(nullable: true),
                     KabulDurum = table.Column<bool>(nullable: true),
                     SinavDurum = table.Column<bool>(nullable: true),
+                    SinavaGelmedi = table.Column<bool>(nullable: true),
+                    SinavaGelmediAck = table.Column<string>(nullable: true),
                     TYSPuan = table.Column<string>(nullable: true),
                     TYSSonuc = table.Column<string>(nullable: true),
                     TYSSonucAck = table.Column<string>(nullable: true),
                     TYSSorulanSoruNo = table.Column<int>(nullable: false),
+                    SinavIptal = table.Column<bool>(nullable: true),
+                    SinavIptalAck = table.Column<string>(nullable: true),
+                    AdayId = table.Column<byte[]>(nullable: false),
                     MulakatId = table.Column<byte[]>(nullable: false),
-                    KaydedenId = table.Column<string>(nullable: true),
-                    AdaylarAdayId = table.Column<byte[]>(nullable: true)
+                    KaydedenId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AdayTYS", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AdayTYS_Adaylar_AdaylarAdayId",
-                        column: x => x.AdaylarAdayId,
+                        name: "FK_AdayTYS_Adaylar_AdayId",
+                        column: x => x.AdayId,
                         principalTable: "Adaylar",
                         principalColumn: "AdayId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AdayTYS_AspNetUsers_KaydedenId",
                         column: x => x.KaydedenId,
@@ -1132,9 +1140,9 @@ namespace YOGBIS.Data.Migrations
                     MYYSSoruItiraz = table.Column<string>(nullable: true),
                     MYYSSonucItiraz = table.Column<string>(nullable: true),
                     BasvuruBrans = table.Column<string>(nullable: true),
-                    BransId = table.Column<byte[]>(nullable: true),
                     AdliSicilBelge = table.Column<byte[]>(nullable: true),
                     BelgeEk1 = table.Column<byte[]>(nullable: true),
+                    BransId = table.Column<byte[]>(nullable: true),
                     DereceId = table.Column<byte[]>(nullable: true),
                     DereceAdi = table.Column<string>(nullable: true),
                     Unvan = table.Column<string>(nullable: true),
@@ -2235,9 +2243,9 @@ namespace YOGBIS.Data.Migrations
                 column: "KaydedenId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AdayMYSS_AdaylarAdayId",
+                name: "IX_AdayMYSS_AdayId",
                 table: "AdayMYSS",
-                column: "AdaylarAdayId");
+                column: "AdayId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdayMYSS_KaydedenId",
@@ -2270,9 +2278,9 @@ namespace YOGBIS.Data.Migrations
                 column: "MulakatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AdayTYS_AdaylarAdayId",
+                name: "IX_AdayTYS_AdayId",
                 table: "AdayTYS",
-                column: "AdaylarAdayId");
+                column: "AdayId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdayTYS_KaydedenId",

@@ -25,7 +25,7 @@
 <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
-        <b>Aday Başvuru Bilgileri</b>
+        <b>Aday Başvuru Bilgileri-Mesleki Yeterlilik Yazılı Sınavı Bilgileri</b>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -55,8 +55,8 @@
                         <th>MYYS Sınav Ted.</th>
                         <th>MYYS Puan</th>
                         <th>MYYS Sonuç</th>
-                        <th>MYYS Durum</th>
-                        <th>MYYS Durum Açk.</th>
+                        <th>MYSS Durum</th>
+                        <th>MYSS Durum Açk.</th>
                         <th>İL MEM Görüş</th>
                         <th>Referans</th>
                         <th>Sendika</th>                        
@@ -86,8 +86,19 @@
                                 <td class="derece-column">@item.KurumAdi</td>
                                 <td class="yillik-column">@item.Ogrenim</td>
                                 <td class="ydgorev-column">@item.Mezuniyet</td>
-                                <td class="dil-column">@($"{item.HizmetYil}/{item.HizmetAy}/{item.HizmetGun}")</td>
-                                <td class="il-tercihi-column">@($"{item.Derece}/{item.Kademe}")</td>
+                                @{
+                                    var hizmet = new List<string>();
+                                    if (!string.IsNullOrEmpty(item.HizmetYil)) hizmet.Add(item.HizmetYil);
+                                    if (!string.IsNullOrEmpty(item.HizmetAy)) hizmet.Add(item.HizmetAy);
+                                    if (!string.IsNullOrEmpty(item.HizmetGun)) hizmet.Add(item.HizmetGun);
+                                }
+                                <td class="dil-column">@string.Join("/", hizmet)</td>
+                                @{
+                                    var dereceKademe = new List<string>();
+                                    if (!string.IsNullOrEmpty(item.Derece)) dereceKademe.Add(item.Derece);
+                                    if (!string.IsNullOrEmpty(item.Kademe)) dereceKademe.Add(item.Kademe);
+                                }
+                                <td class="il-tercihi-column">@string.Join("/", dereceKademe)</td>
                                 <td class="basvuru-column">@item.DahaOnceYDGorev</td>
                                 <td class="onay-column">@item.YIciGorevBasTar</td>
                                 @if(!string.IsNullOrEmpty(item.YabanciDilAdi)){
@@ -96,7 +107,7 @@
                                 else{
                                     <td class="myys-column">@($"{item.YabanciDilBasvuru}")</td>
                                 }
-                                
+
                                 @{
                                     var diller = new List<string>();
                                     if (!string.IsNullOrEmpty(item.YabanciDilALM)) diller.Add(item.YabanciDilALM);
@@ -123,7 +134,7 @@
                                 else{
                                     <td class="durum-column"></td>
                                 }
-                                
+
                                 <td class="durum-column">@item.MYYSPuan</td>
                                 <td class="durum-column">@item.MYYSSonuc</td>
                                 <td class="durum-column">@item.MYSSDurum</td>
@@ -170,6 +181,15 @@
                                 }
                             </tr>
                         }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="37" class="text-center" style="padding: 20px;">
+                                <i class="fas fa-info-circle text-info mr-2"></i>
+                                Herhangi bir kayıt bulunamadı!
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>

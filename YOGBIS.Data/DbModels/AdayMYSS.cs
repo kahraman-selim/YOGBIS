@@ -26,10 +26,17 @@ namespace YOGBIS.Data.DbModels
         public bool? CagriDurum { get; set; }
         public bool? KabulDurum { get; set; }
         public bool? SinavDurum { get; set; }
-        public string MYSSPuan { get; set; }
-        public string MYSSSonuc { get; set; }
-        public string MYSSSonucAck { get; set; }
+        public bool? SinavaGelmedi { get; set; }
+        public string SinavGelmediAck { get; set; }
+        public string MYSPuan { get; set; }
+        public string MYSSonuc { get; set; }
+        public string MYSSonucAck { get; set; }
         public int MYSSSorulanSoruNo { get; set; }
+        public bool? SinavIptal { get; set; }
+        public string SinavIptalAck { get; set; }
+        public Guid AdayId { get; set; }
+        [ForeignKey("AdayId")]
+        public virtual Adaylar Adaylar { get; set; }
         public Guid MulakatId { get; set; }        
         [ForeignKey("MulakatId")]
         public Mulakatlar Mulakatlar { get; set; }

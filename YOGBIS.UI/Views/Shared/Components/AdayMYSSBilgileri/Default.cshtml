@@ -1,9 +1,9 @@
-@model List<YOGBIS.Common.VModels.AdayIletisimBilgileriVM>
+﻿@model List<YOGBIS.Common.VModels.AdayMYSSVM>
 
 <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
-        <b>Aday İletişim Bilgileri</b>
+        <b>Aday Mesleki Yeterlilik Sözlü Sınavı Bilgileri</b>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -11,13 +11,14 @@
                 <thead>
                     <tr>
                         <th>Mülakat Yılı</th>
-                        <th>Cep Telefonu</th>
-                        <th>E-Posta</th>
-                        <th>Nüfus İl</th>
-                        <th>Nüfus İlçe</th>
-                        <th>Adres</th>
-                        <th>Adres İl</th>
-                        <th>Adres İlçe</th>
+                        <th>Sınav Tarihi</th>
+                        <th>Sınav Saati</th>
+                        <th>Komisyon</th>
+                        <th>Komisyon SN</th>
+                        <th>Komisyon GnSn</th>
+                        <th>Soru No</th>
+                        <th>MYSS Puan</th>
+                        <th>MYSS Sonuç</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,20 +28,21 @@
                         {
                             <tr>
                                 <td>@item.MulakatYil</td>
-                                <td>@item.CepTelNo</td>
-                                <td>@item.EPosta</td>
-                                <td>@item.NufusIl</td>
-                                <td>@item.NufusIlce</td>
-                                <td>@item.IkametAdres</td>
-                                <td>@item.IkametIl</td>
-                                <td>@item.IkametIlce</td>                                
+                                <td>@item.MYSSTarih</td>
+                                <td>@item.MYSSSaat</td>
+                                <td>@item.MYSSKomisyonAdi</td>
+                                <td>@item.KomisyonSN</td>
+                                <td>@item.KomisyonGunSN</td>
+                                <td>@item.MYSSSorulanSoruNo</td>
+                                <td>@item.MYSPuan</td>
+                                <td>@item.MYSSonuc</td>
                             </tr>
                         }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="8" class="text-center" style="padding: 20px;">
+                            <td colspan="9" class="text-center" style="padding: 20px;">
                                 <i class="fas fa-info-circle text-info mr-2"></i>
                                 Herhangi bir kayıt bulunamadı!
                             </td>

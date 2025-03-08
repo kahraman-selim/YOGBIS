@@ -9,8 +9,8 @@ using YOGBIS.Data.DataContext;
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    [Migration("20250305212100_ProjeBaslangic")]
-    partial class ProjeBaslangic
+    [Migration("20250307223056_projebaslangic")]
+    partial class projebaslangic
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -686,7 +686,8 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("varbinary(16)");
 
-                    b.Property<byte[]>("AdaylarAdayId")
+                    b.Property<byte[]>("AdayId")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.Property<bool?>("CagriDurum")
@@ -750,12 +751,24 @@ namespace YOGBIS.Data.Migrations
                     b.Property<bool?>("SinavDurum")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("SinavGelmediAck")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SinavIptalAciklama")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("SinavaGelmedi")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool?>("Sinavİptal")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("TC")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdaylarAdayId");
+                    b.HasIndex("AdayId");
 
                     b.HasIndex("KaydedenId");
 
@@ -842,7 +855,8 @@ namespace YOGBIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("varbinary(16)");
 
-                    b.Property<byte[]>("AdaylarAdayId")
+                    b.Property<byte[]>("AdayId")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.Property<bool?>("CagriDurum")
@@ -872,6 +886,18 @@ namespace YOGBIS.Data.Migrations
 
                     b.Property<bool?>("SinavDurum")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<bool?>("SinavIptal")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("SinavIptalAck")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("SinavaGelmedi")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("SinavaGelmediAck")
+                        .HasColumnType("text");
 
                     b.Property<string>("TC")
                         .HasColumnType("text");
@@ -911,7 +937,7 @@ namespace YOGBIS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdaylarAdayId");
+                    b.HasIndex("AdayId");
 
                     b.HasIndex("KaydedenId");
 
@@ -2885,9 +2911,11 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.AdayMYSS", b =>
                 {
-                    b.HasOne("YOGBIS.Data.DbModels.Adaylar", null)
+                    b.HasOne("YOGBIS.Data.DbModels.Adaylar", "Adaylar")
                         .WithMany("AdayMYSS")
-                        .HasForeignKey("AdaylarAdayId");
+                        .HasForeignKey("AdayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
                         .WithMany("AdayMYSS")
@@ -2925,9 +2953,11 @@ namespace YOGBIS.Data.Migrations
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.AdayTYS", b =>
                 {
-                    b.HasOne("YOGBIS.Data.DbModels.Adaylar", null)
+                    b.HasOne("YOGBIS.Data.DbModels.Adaylar", "Adaylar")
                         .WithMany("AdayTYS")
-                        .HasForeignKey("AdaylarAdayId");
+                        .HasForeignKey("AdayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
                         .WithMany("AdayTYS")
