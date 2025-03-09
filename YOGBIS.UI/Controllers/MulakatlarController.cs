@@ -29,6 +29,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
+        [Route("ML10001", Name = "MulakatlarIndexRoute")]
         public IActionResult Index(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
