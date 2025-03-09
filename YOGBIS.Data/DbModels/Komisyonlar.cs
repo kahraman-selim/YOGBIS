@@ -14,6 +14,7 @@ namespace YOGBIS.Data.DbModels
         public int KomisyonSiraNo { get; set; }
         public string KomisyonAdi { get; set; }
         public bool KomisyonUyeDurum { get; set; }
+        public bool KomisyonGorevDurum { get; set; }
         public int KomisyonUyeSiraNo { get; set; }
         public string KomisyonUyeGorevi { get; set; }
         public string KomisyonUyeAdiSoyadi { get; set; }
