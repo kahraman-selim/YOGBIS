@@ -63,8 +63,8 @@
                                 <label asp-for="KomisyonUyeDurum" class="small mb-1 font-weight-bold">Durum</label>
                                 <select asp-for="KomisyonUyeDurum" class="form-control-range form-control py-2" aria-label="Default select example">
                                     <option asp-for="UyeDurumu" selected class="text-left">Seçim yapınız</option>
-                                    <option asp-for="UyeDurumu" value="True">Asıl</option>
-                                    <option asp-for="UyeDurumu" value="False">Yedek</option>
+                                    <option asp-for="UyeDurumu" value="Asıl">Asıl</option>
+                                    <option asp-for="UyeDurumu" value="Yedek">Yedek</option>
                                 </select>
                                 <span class="text-danger" asp-validation-for="KomisyonUyeDurum"></span>
                             </div>

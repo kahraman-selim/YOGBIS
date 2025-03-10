@@ -1,20 +1,23 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using OfficeOpenXml;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
-using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Data.Contracts;
-
+using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -22,25 +25,32 @@ namespace YOGBIS.UI.Controllers
     public class KomisyonlarController : Controller
     {
         #region Değişkenler
+        private readonly UserManager<Kullanici> _userManager;
+        private readonly ILogger<KomisyonlarController> _logger; 
         private readonly IKomisyonlarBE _komisyonlarBE;
         private readonly IKullaniciBE _kullaniciBE;
         private readonly IMulakatOlusturBE _mulakatOlusturBE;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<KomisyonlarController> _logger;
 
         private static readonly object _lockObject = new object();
         #endregion
 
         #region Dönüştücüler
-        public KomisyonlarController(IKomisyonlarBE komisyonlarBE, IKullaniciBE kullaniciBE, IMulakatOlusturBE mulakatOlusturBE,
-            ILogger<KomisyonlarController> logger, IUnitOfWork unitOfWork)
+        public KomisyonlarController(
+            UserManager<Kullanici> userManager,
+            ILogger<KomisyonlarController> logger,
+      
+            IKomisyonlarBE komisyonlarBE,
+            IKullaniciBE kullaniciBE,
+            IMulakatOlusturBE mulakatOlusturBE,
+            IUnitOfWork unitOfWork)
         {
-
+            _userManager = userManager;
+            _logger = logger;   
             _komisyonlarBE = komisyonlarBE;
             _kullaniciBE = kullaniciBE;
             _mulakatOlusturBE = mulakatOlusturBE;
             _unitOfWork = unitOfWork;
-            _logger = logger;
         }
         #endregion
 
@@ -86,23 +96,47 @@ namespace YOGBIS.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> KomisyonEkle(KomisyonlarVM model, Guid? KomisyonId)
         {
-
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
-            var komisyon = await _kullaniciBE.KomisyonGetir();
-            ViewBag.Komisyonlar = komisyon.Data;
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
-
-            if (KomisyonId != null)
+            try
             {
-                var data = _komisyonlarBE.KomisyonGuncelle(model, user);
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-                return RedirectToAction("Index");
+                var komisyon = await _kullaniciBE.KomisyonGetir();
+                ViewBag.Komisyonlar = komisyon.Data;
+                ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+
+                if (KomisyonId != null)
+                {
+                    var data = _komisyonlarBE.KomisyonGuncelle(model, user);
+                    if (!data.IsSuccess)
+                    {
+                        _logger.LogWarning($"Komisyon güncellenemedi: {data.Message}");
+                        TempData["error"] = $"Komisyon güncellenemedi: {data.Message}";
+                        return RedirectToAction("Index");
+                    }
+
+                    _logger.LogInformation($"Komisyon başarıyla güncellendi: {model.KomisyonAdi}");
+                    TempData["success"] = "Komisyon başarıyla güncellendi";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    var data = _komisyonlarBE.KomisyonEkle(model, user);
+                    if (!data.IsSuccess)
+                    {
+                        _logger.LogWarning($"Komisyon eklenemedi: {data.Message}");
+                        TempData["error"] = $"Komisyon eklenemedi: {data.Message}";
+                        return RedirectToAction("Index");
+                    }
+
+                    _logger.LogInformation($"Komisyon başarıyla eklendi: {model.KomisyonAdi}");
+                    TempData["success"] = "Komisyon başarıyla eklendi";
+                    return RedirectToAction("Index");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var data = _komisyonlarBE.KomisyonEkle(model, user);
-
+                _logger.LogError($"Komisyon işlemi sırasında hata: {ex.Message}");
+                TempData["error"] = "İşlem sırasında bir hata oluştu";
                 return RedirectToAction("Index");
             }
         }
@@ -147,25 +181,28 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region KomisyonBilgileriYukle
-        [System.Web.Mvc.HttpPost]
-        public async Task<IActionResult> KomisyonBilgileriYukle(IFormFile file)
+        [HttpPost]
+        public async Task<IActionResult> KomisyonBilgileriYukle(IFormFile file, Guid mulakatId)
         {
-
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
-
-            var sessionId = HttpContext.Session.Id;
             try
             {
                 if (file == null || file.Length == 0)
                 {
-                    TempData["Error"] = "Lütfen bir dosya seçin!";
-                    return Json(new { success = false });
+                    _logger.LogWarning("Excel dosyası boş veya seçilmedi");
+                    return Json(new { success = false, error = "Lütfen bir Excel dosyası seçiniz!" });
+                }
+
+                if (mulakatId == Guid.Empty)
+                {
+                    _logger.LogWarning("Mülakat seçilmedi");
+                    return Json(new { success = false, error = "Lütfen bir mülakat seçiniz!" });
                 }
 
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
                 if (user == null)
                 {
-                    return Json(new { success = false });
+                    _logger.LogWarning("Oturum bilgisi bulunamadı");
+                    return Json(new { success = false, error = "Oturum bilgisi bulunamadı!" });
                 }
 
                 using (var stream = new MemoryStream())
@@ -173,75 +210,247 @@ namespace YOGBIS.UI.Controllers
                     await file.CopyToAsync(stream);
                     using (var package = new ExcelPackage(stream))
                     {
-                        var worksheet = package.Workbook.Worksheets[0];
-                        var rowCount = worksheet.Dimension?.Rows ?? 0;
-
-                        if (rowCount <= 1)
+                        var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                        if (worksheet == null)
                         {
-                            return Json(new { success = false });
+                            _logger.LogWarning("Excel dosyası boş veya geçersiz");
+                            return Json(new { success = false, error = "Excel dosyası boş veya geçersiz!" });
                         }
 
-                        var toplamKayit = rowCount - 1;
-                        var islemYapilan = 0;
+                        var rowCount = worksheet.Dimension?.Rows ?? 0;
+                        if (rowCount <= 1)
+                        {
+                            _logger.LogWarning("Excel dosyasında veri bulunamadı");
+                            return Json(new { success = false, error = "Excel dosyasında veri bulunamadı!" });
+                        }
 
-                        await Task.Delay(500);
-
-                        // AŞAMA 1: Kayıt İşlemi
-                        islemYapilan = 0;
-                        var kayitEdilecekToplam = toplamKayit;
-
+                        var hatalar = new List<string>();
                         var basariliEklenen = 0;
+
+                        // Kullanıcı adlarını toplu olarak kontrol et
+                        var usernames = new HashSet<string>();
+                        for (int row = 2; row <= rowCount; row++)
+                        {
+                            var username = worksheet.Cells[row, 3].Value?.ToString().Trim();
+                            if (!string.IsNullOrEmpty(username))
+                            {
+                                usernames.Add(username);
+                            }
+                        }
+
+                        // Kullanıcı ID'lerini al
+                        var userIds = await _userManager.Users
+                            .Where(u => usernames.Contains(u.UserName))
+                            .ToDictionaryAsync(u => u.UserName, u => u.Id);
 
                         for (int row = 2; row <= rowCount; row++)
                         {
-
-                            //var komisyon = _kullaniciBE.KomisyonKullaniciIDGetir().Data.
-                            //    FirstOrDefault(x=>x.Id == worksheet.Cells[row, 3].Value?.ToString().Trim());
-
-
-                            var komisyon = new KomisyonlarVM
+                            try
                             {
+                                var komisyonuyedurum = worksheet.Cells[row, 4].Value?.ToString().Trim();
+                                var komisyongorevdurum = true;
 
-                                //KomisyonKullaniciId = komisyon?.Id,
-                                KomisyonSiraNo = Convert.ToInt32(worksheet.Cells[row, 1].Value?.ToString().Trim()),
-                                KomisyonAdi = worksheet.Cells[row, 2].Value?.ToString().Trim(),
-                                KomisyonUyeDurum = Convert.ToBoolean(worksheet.Cells[row, 4].Value?.ToString().Trim()),
-                                KomisyonUyeSiraNo = Convert.ToInt32(worksheet.Cells[row, 5].Value?.ToString().Trim()),
-                                KomisyonUyeGorevi = worksheet.Cells[row, 6].Value?.ToString().Trim(),
-                                KomisyonUyeAdiSoyadi = worksheet.Cells[row, 7].Value?.ToString().Trim() + " " + worksheet.Cells[row, 8].Value?.ToString().Trim(),
-                                KomisyonUyeGorevYeri = worksheet.Cells[row, 9].Value?.ToString().Trim(),
-                                KomisyoUyeStatu = worksheet.Cells[row, 10].Value?.ToString().Trim(),
-                                KomisyonUlkeGrubu = worksheet.Cells[row, 11].Value?.ToString().Trim(),
-                                KomisyoUyeTel = "0",
-                                KomisyonUyeEPosta = "y@y.com.tr",
-                                KomisyonGorevBaslamaTarihi = DateTime.Parse(worksheet.Cells[row, 12].Value?.ToString().Trim()),
-                                KomisyonGorevBitisTarihi = DateTime.Parse(worksheet.Cells[row, 13].Value?.ToString().Trim()),
-                                
-                                MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId
-                            };
+                                if (komisyonuyedurum == "Asıl")
+                                {
+                                    komisyongorevdurum = true;
+                                }
+                                else
+                                {
+                                    komisyongorevdurum = false;
+                                }
 
-                            var result = _komisyonlarBE.KomisyonEkle(komisyon, user);
-                            if (result.IsSuccess)
-                            {
-                                basariliEklenen++;
+                                var userName = worksheet.Cells[row, 3].Value?.ToString().Trim();
+                                if (string.IsNullOrEmpty(userName))
+                                {
+                                    hatalar.Add($"Satır {row}: Kullanıcı adı boş olamaz!");
+                                    _logger.LogWarning($"Satır {row}: Kullanıcı adı boş!");
+                                    continue;
+                                }
+
+                                if (!userIds.ContainsKey(userName))
+                                {
+                                    hatalar.Add($"Satır {row}: {userName} kullanıcısı sistemde bulunamadı!");
+                                    _logger.LogWarning($"Satır {row}: {userName} kullanıcısı bulunamadı!");
+                                    continue;
+                                }
+
+                                var komisyonModel = new KomisyonlarVM
+                                {
+                                    KomisyonKullaniciId = userIds[userName],
+                                    KomisyonSiraNo = Convert.ToInt32(worksheet.Cells[row, 1].Value?.ToString().Trim()),
+                                    KomisyonAdi = worksheet.Cells[row, 2].Value?.ToString().Trim(),
+                                    KomisyonUyeDurum = komisyonuyedurum,
+                                    KomisyonGorevDurum = komisyongorevdurum,
+                                    KomisyonUyeSiraNo = Convert.ToInt32(worksheet.Cells[row, 5].Value?.ToString().Trim()),
+                                    KomisyonUyeGorevi = worksheet.Cells[row, 6].Value?.ToString().Trim(),
+                                    KomisyonUyeAdiSoyadi = worksheet.Cells[row, 7].Value?.ToString().Trim() + " " + worksheet.Cells[row, 8].Value?.ToString().Trim(),
+                                    KomisyonUyeGorevYeri = worksheet.Cells[row, 9].Value?.ToString().Trim(),
+                                    KomisyoUyeStatu = worksheet.Cells[row, 10].Value?.ToString().Trim(),
+                                    KomisyonUlkeGrubu = worksheet.Cells[row, 11].Value?.ToString().Trim() ?? "",
+                                    KomisyoUyeTel = "0",
+                                    KomisyonUyeEPosta = "y@y.com.tr",
+                                    KomisyonGorevBaslamaTarihi = DateTime.Parse(worksheet.Cells[row, 12].Value?.ToString().Trim()),
+                                    KomisyonGorevBitisTarihi = DateTime.Parse(worksheet.Cells[row, 13].Value?.ToString().Trim()),
+                                    MulakatId = mulakatId
+                                };
+
+                                if (string.IsNullOrEmpty(komisyonModel.KomisyonAdi))
+                                {
+                                    hatalar.Add($"Satır {row}: Komisyon adı boş olamaz!");
+                                    _logger.LogWarning($"Satır {row}: Komisyon adı boş!");
+                                    continue;
+                                }
+                                if (string.IsNullOrEmpty(komisyonModel.KomisyonUyeAdiSoyadi))
+                                {
+                                    hatalar.Add($"Satır {row}: Komisyon üye adı soyadı boş olamaz!");
+                                    _logger.LogWarning($"Satır {row}: Komisyon üye adı soyadı boş!");
+                                    continue;
+                                }
+                                if (string.IsNullOrEmpty(komisyonModel.KomisyonUyeGorevi))
+                                {
+                                    hatalar.Add($"Satır {row}: Komisyon üye görevi boş olamaz!");
+                                    _logger.LogWarning($"Satır {row}: Komisyon üye görevi boş!");
+                                    continue;
+                                }
+
+                                _logger.LogInformation($"Satır {row} için komisyon ekleniyor: KomisyonAdi={komisyonModel.KomisyonAdi}, UyeDurum={komisyonModel.KomisyonUyeDurum}, GorevDurum={komisyonModel.KomisyonGorevDurum}");
+                                var result = _komisyonlarBE.KomisyonEkle(komisyonModel, user);
+                                if (result.IsSuccess)
+                                {
+                                    basariliEklenen++;
+                                    _logger.LogInformation($"Satır {row} başarıyla eklendi");
+                                }
+                                else
+                                {
+                                    var errorMessage = result.Message ?? "Bilinmeyen bir hata oluştu";
+                                    hatalar.Add($"Satır {row}: {errorMessage}");
+                                    _logger.LogWarning($"Satır {row}: {errorMessage}");
+                                }
                             }
-
-                            islemYapilan++;
-
-                            await Task.Delay(10);
+                            catch (Exception ex)
+                            {
+                                var errorMessage = $"Satır {row}: İşlem sırasında hata oluştu - {ex.Message}";
+                                hatalar.Add(errorMessage);
+                                _logger.LogError(errorMessage);
+                                _logger.LogError($"Stack trace: {ex.StackTrace}");
+                            }
                         }
 
-                        await Task.Delay(500);
-
-                        return Json(new { success = true });
+                        if (basariliEklenen > 0)
+                        {
+                            var message = $"{basariliEklenen} adet komisyon kaydı başarıyla eklendi.";
+                            if (hatalar.Any())
+                            {
+                                message += $" Ancak {hatalar.Count} adet hata oluştu: {string.Join(", ", hatalar)}";
+                            }
+                            return Json(new { success = true, message = message });
+                        }
+                        else
+                        {
+                            var errorMessage = "Komisyon kaydı eklenemedi. ";
+                            if (hatalar.Any())
+                            {
+                                errorMessage += $"Hatalar: {string.Join(", ", hatalar)}";
+                            }
+                            else
+                            {
+                                errorMessage += "Lütfen Excel dosyasını kontrol ediniz.";
+                            }
+                            return Json(new { success = false, error = errorMessage });
+                        }
                     }
                 }
-
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Excel'den aday yüklenirken hata oluştu: {Message}", ex.Message);
-                return Json(new { success = false, error = ex.Message });
+                _logger.LogError($"Excel yükleme hatası: {ex.Message}");
+                _logger.LogError($"Stack trace: {ex.StackTrace}");
+                return Json(new { success = false, error = $"Excel yükleme sırasında bir hata oluştu: {ex.Message}" });
+            }
+        }
+        #endregion
+
+        #region OrnekExcelIndir
+        public IActionResult OrnekExcelIndir()
+        {
+            try
+            {
+                using (var package = new ExcelPackage())
+                {
+                    var worksheet = package.Workbook.Worksheets.Add("Komisyonlar");
+
+                    // Başlıkları ekle
+                    var headers = new[]
+                    {
+                        "Komisyon Sıra No",
+                        "Komisyon Adı",
+                        "Kullanıcı Adı",
+                        "Üye Durumu",
+                        "Üye Sıra No",
+                        "Üye Görevi",
+                        "Üye Adı",
+                        "Üye Soyadı",
+                        "Görev Yeri",
+                        "Üye Statüsü",
+                        "Ülke Grubu",
+                        "Görev Başlama Tarihi",
+                        "Görev Bitiş Tarihi"
+                    };
+
+                    for (int i = 0; i < headers.Length; i++)
+                    {
+                        worksheet.Cells[1, i + 1].Value = headers[i];
+                        worksheet.Cells[1, i + 1].Style.Font.Bold = true;
+                        worksheet.Cells[1, i + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        worksheet.Cells[1, i + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+                        worksheet.Cells[1, i + 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    }
+
+                    // Örnek veri ekle
+                    var exampleData = new object[]
+                    {
+                        1,
+                        "Örnek Komisyon",
+                        "ornek.kullanici",
+                        true,
+                        1,
+                        "Başkan",
+                        "Ahmet",
+                        "Yılmaz",
+                        "Ankara MEM",
+                        "Daire Başkanı",
+                        "Avrupa",
+                        DateTime.Now.ToString("dd/MM/yyyy"),
+                        DateTime.Now.AddYears(1).ToString("dd/MM/yyyy")
+                    };
+
+                    for (int i = 0; i < exampleData.Length; i++)
+                    {
+                        worksheet.Cells[2, i + 1].Value = exampleData[i];
+                        worksheet.Cells[2, i + 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    }
+
+                    // Tarih formatını ayarla
+                    worksheet.Cells["L2:M2"].Style.Numberformat.Format = "dd/mm/yyyy";
+
+                    // Sütun genişliklerini otomatik ayarla
+                    worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                    // Başlık satırını dondur
+                    worksheet.View.FreezePanes(2, 1);
+
+                    var fileBytes = package.GetAsByteArray();
+                    var fileName = "KomisyonYukleme_Ornek.xlsx";
+
+                    return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Örnek Excel oluşturma hatası: {ex.Message}");
+                _logger.LogError($"Stack trace: {ex.StackTrace}");
+                TempData["Error"] = "Örnek Excel dosyası oluşturulurken bir hata oluştu!";
+                return RedirectToAction("Index");
             }
         }
         #endregion

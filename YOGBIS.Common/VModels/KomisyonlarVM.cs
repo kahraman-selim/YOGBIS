@@ -23,7 +23,7 @@ namespace YOGBIS.Common.VModels
         public string KomisyonAdi { get; set; }
 
         [Display(Name = "Komisyon Üye Durumu")]
-        public bool KomisyonUyeDurum { get; set; }
+        public string KomisyonUyeDurum { get; set; }
 
         [Display(Name = "Komisyon Gorev Durumu")]
         public bool KomisyonGorevDurum { get; set; }

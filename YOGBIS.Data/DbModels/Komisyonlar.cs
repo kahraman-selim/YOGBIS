@@ -13,7 +13,7 @@ namespace YOGBIS.Data.DbModels
         public string KomisyonKullaniciId { get; set; }
         public int KomisyonSiraNo { get; set; }
         public string KomisyonAdi { get; set; }
-        public bool KomisyonUyeDurum { get; set; }
+        public string KomisyonUyeDurum { get; set; }
         public bool KomisyonGorevDurum { get; set; }
         public int KomisyonUyeSiraNo { get; set; }
         public string KomisyonUyeGorevi { get; set; }

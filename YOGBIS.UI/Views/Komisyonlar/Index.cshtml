@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity
+@using System.Runtime.CompilerServices
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
 @model YOGBIS.Common.VModels.KomisyonlarVM
@@ -11,6 +12,7 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 }
 
 <div class="row">
@@ -28,9 +30,17 @@
                     <div class="form-row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="MulakatId" class="small mb-1 font-weight-bold">Mülakatı Seç</label>
-                                @Html.DropDownListFor(u => u.MulakatId, new SelectList(ViewBag.Mulakatlar,
-                                         "MulakatId", "MulakatDonemi"), "Mülakatı seçiniz", new { @id = "MulakatListesi", @class = "form-control-range form-control p-0" })
+                                <label for="MulakatId" class="small mb-1 font-weight-bold">Mülakatı Seç</label>
+                                <select id="MulakatId" name="MulakatId" class="form-control" required>
+                                    <option value="">Seçiniz...</option>
+                                    @if (ViewBag.Mulakatlar != null)
+                                    {
+                                        foreach (var mulakat in ViewBag.Mulakatlar)
+                                        {
+                                            <option value="@mulakat.MulakatId">@mulakat.MulakatDonemi</option>
+                                        }
+                                    }
+                                </select>
                                 <span class="text-danger" asp-validation-for="MulakatId"></span>
                             </div>
                         </div>
@@ -63,8 +73,8 @@
                                 <label asp-for="KomisyonUyeDurum" class="small mb-1 font-weight-bold">Durum</label>
                                 <select asp-for="KomisyonUyeDurum" class="form-control-range form-control py-2" aria-label="Default select example">
                                     <option asp-for="UyeDurumu" selected class="text-left">Seçim yapınız</option>
-                                    <option asp-for="UyeDurumu" value="True">Asıl</option>
-                                    <option asp-for="UyeDurumu" value="False">Yedek</option>
+                                    <option asp-for="UyeDurumu" value="Asıl">Asıl</option>
+                                    <option asp-for="UyeDurumu" value="Yedek">Yedek</option>
                                 </select>
                                 <span class="text-danger" asp-validation-for="KomisyonUyeDurum"></span>
                             </div>
@@ -168,32 +178,41 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-md-6">                           
+                        <div class="col-md-3">                           
                             <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white" style="width:100px" />    
                         </div>
-                        <div class="col-md-6">
-                            <form id="uploadForm" enctype="multipart/form-data" method="post" class="form-group m-0" onsubmit="return submitForm(event)">
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <div class="form-row">
-                                            <div class="col-md-12">
-                                                <label>Komisyon Bilgilerini yüklemek için Excel Dosyası Seçin</label>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col-md-8">
-                                                <input type="file" name="file" class="form-control w-100 p-1" accept=".xlsx" required style="width:500px" />
-                                            </div>
-                                            <div class="col-md-4">
-                                                <button type="submit" class="btn btn-primary w-100">Yükle</button>
-                                            </div>
-                                        </div>
+                    </div>
+                </form>
+
+                <div class="col-md-9" id="KomisyonExcelYukle" style="display:none">
+                    <hr />
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-file-excel"></i> Toplu Komisyon Yükleme</h5>
+                        </div>
+                        <div class="card-body">                            
+                            <form id="uploadForm" enctype="multipart/form-data" method="post" onsubmit="return submitForm(event)">
+                                <div class="form-group">
+                                    <div class="custom-file">
+                                        <input type="file" name="file" class="custom-file-input" accept=".xlsx" required />
+                                        <label class="custom-file-label">Excel dosyası seçiniz...</label>
                                     </div>
+                                    <small class="form-text text-muted">
+                                        Maksimum dosya boyutu: 10MB
+                                    </small>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-upload"></i> Yükle
+                                    </button>
+                                    <a href="#" class="btn btn-secondary" onclick="$('#KomisyonExcelYukle').slideUp(); return false;">
+                                        <i class="fas fa-times"></i> İptal
+                                    </a>
                                 </div>
                             </form>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -202,25 +221,150 @@
     </div>
 </div>
 
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.28/moment-timezone-with-data-10-year-range.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <script type="text/javascript">
+        // Alertify ayarları
+        alertify.set('notifier', 'position', 'top-right');
+        alertify.set('notifier', 'delay', 5);
+
+        $(document).ready(function () {
+            // Dosya seçildiğinde label'ı güncelle
+            $('.custom-file-input').on('change', function () {
+                var fileName = $(this).val().split('\\').pop();
+                if (fileName) {
+                    $(this).next('.custom-file-label').html(fileName);
+                } else {
+                    $(this).next('.custom-file-label').html('Excel dosyası seçiniz...');
+                }
+            });
+
+            mulakatChanged();
+            $('#MulakatId').change(mulakatChanged);
+        });
 
         $('#datetimepicker1, #datetimepicker2').datetimepicker({
             format: 'DD/MM/YYYY'
         });
 
+        function mulakatChanged() {
+            var mulakatId = $('#MulakatId').val();
+            if (mulakatId) {
+                $('#KomisyonExcelYukle').slideDown();
+            } else {
+                $('#KomisyonExcelYukle').slideUp();
+                $('.custom-file-input').val('');
+                $('.custom-file-label').html('Excel dosyası seçiniz...');
+            }
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+
+            var mulakatId = $('#MulakatId').val();
+            if (!mulakatId) {
+                alertify.error('Lütfen önce bir mülakat seçiniz!');
+                return false;
+            }
+
+            var fileInput = $('.custom-file-input')[0];
+            if (!fileInput.files.length) {
+                alertify.error('Lütfen bir Excel dosyası seçiniz!');
+                return false;
+            }
+
+            // Dosya uzantısı kontrolü
+            var fileName = fileInput.files[0].name;
+            var fileExt = fileName.split('.').pop().toLowerCase();
+            if (fileExt !== 'xlsx') {
+                alertify.error('Lütfen sadece .xlsx uzantılı Excel dosyası seçiniz!');
+                return false;
+            }
+
+            // Dosya boyutu kontrolü (max 10MB)
+            if (fileInput.files[0].size > 10 * 1024 * 1024) {
+                alertify.error('Dosya boyutu 10MB\'dan büyük olamaz!');
+                return false;
+            }
+
+            var formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('mulakatId', mulakatId);
+
+            var $submitButton = $('#uploadForm button[type="submit"]');
+            $submitButton.prop('disabled', true)
+                .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Yükleniyor...');
+
+            $.ajax({
+                url: '/Komisyonlar/KomisyonBilgileriYukle',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    if (result.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Başarılı!',
+                            text: result.message || 'Excel dosyası başarıyla yüklendi.',
+                            confirmButtonText: 'Tamam'
+                        }).then((result) => {
+                            window.location.reload();
+                        });
+                    } else {
+                        var errorMessage = result.error || 'Excel dosyası yüklenirken bir hata oluştu!';
+                        // Kullanıcı adı hatalarını düzenli göster
+                        if (errorMessage.includes('bulunamadı')) {
+                            errorMessage = errorMessage.split('\n').map(function(line) {
+                                return line.trim();
+                            }).filter(Boolean).join('<br>');
+                        }
+                        
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata!',
+                            html: errorMessage,
+                            confirmButtonText: 'Tamam'
+                        });
+                        $submitButton.prop('disabled', false).html('<i class="fas fa-upload"></i> Yükle');
+                    }
+                },
+                error: function (xhr) {
+                    console.error('Hata:', xhr);
+                    var errorMessage = 'Excel dosyası yüklenirken bir hata oluştu!';
+                    
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMessage = xhr.responseJSON.error;
+                    } else if (xhr.status === 400) {
+                        errorMessage = 'Geçersiz istek! Lütfen dosyanızı kontrol ediniz.';
+                    } else if (xhr.status === 401) {
+                        errorMessage = 'Oturum süreniz dolmuş olabilir. Lütfen sayfayı yenileyiniz.';
+                    } else if (xhr.status === 413) {
+                        errorMessage = 'Dosya boyutu çok büyük!';
+                    } else if (xhr.status >= 500) {
+                        errorMessage = 'Sunucu hatası! Lütfen daha sonra tekrar deneyiniz.';
+                    }
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata!',
+                        text: errorMessage,
+                        confirmButtonText: 'Tamam'
+                    });
+                    $submitButton.prop('disabled', false).html('<i class="fas fa-upload"></i> Yükle');
+                }
+            });
+
+            return false;
+        }
+
         $(document).ready(function () {
-
             $("#myTable").on("click", ".btnSil", function () {
-
                 var btn = $(this);
                 bootbox.confirm({
                     message: "Silmek istediğinize emin misiniz?",
@@ -248,11 +392,8 @@
                             });
                         }
                     }
-                 });
-
+                });
             });
-
         });
-
     </script>
 }

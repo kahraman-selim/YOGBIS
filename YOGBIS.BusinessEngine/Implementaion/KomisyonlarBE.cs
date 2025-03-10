@@ -46,7 +46,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     .AsNoTracking()
                     .Include(x => x.Kullanici)
                     .OrderBy(x => x.KomisyonSiraNo)
-                    .ThenBy(y => y.KomisyonUyeSiraNo);
+                    .ThenBy(y => y.KomisyonUyeSiraNo)
+                    .ThenBy(z=>z.KomisyonUyeDurum);
 
                 var data = query.Select(item => new KomisyonlarVM
                 {
@@ -110,24 +111,32 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 try
                 {
-                    var komisyon = _mapper.Map<KomisyonlarVM, Komisyonlar>(model);
-                    komisyon.KomisyonGorevDurum = true;
-                    komisyon.KaydedenId = user.LoginId;
+                    _logger.LogInformation($"Komisyon ekleniyor: KomisyonAdi={model.KomisyonAdi}, UyeDurum={model.KomisyonUyeDurum}, GorevDurum={model.KomisyonGorevDurum}");
 
+                    var komisyon = _mapper.Map<KomisyonlarVM, Komisyonlar>(model);
+                    komisyon.KaydedenId = user.LoginId;
+                   
                     _unitOfWork.komisyonlarRepository.Add(komisyon);
                     _unitOfWork.Save();
 
-                    return new Result<KomisyonlarVM>(true, ResultConstant.RecordCreateSuccess);
+                    _logger.LogInformation($"Komisyon başarıyla eklendi: KomisyonAdi={model.KomisyonAdi}");
+                    return new Result<KomisyonlarVM>(true, "Komisyon başarıyla eklendi");
+                }
+                catch (DbUpdateException dbEx)
+                {
+                    _logger.LogError($"Veritabanı hatası: {dbEx.Message}, InnerException: {dbEx.InnerException?.Message}");
+                    return new Result<KomisyonlarVM>(false, $"Veritabanı hatası: {dbEx.InnerException?.Message ?? dbEx.Message}");
                 }
                 catch (Exception ex)
                 {
-
-                    return new Result<KomisyonlarVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                    _logger.LogError($"Komisyon eklenirken hata: {ex.Message}, StackTrace: {ex.StackTrace}");
+                    return new Result<KomisyonlarVM>(false, $"Komisyon eklenirken hata oluştu: {ex.Message}");
                 }
             }
             else
             {
-                return new Result<KomisyonlarVM>(false, "Boş veri olamaz");
+                _logger.LogWarning("Komisyon eklenemedi: Model boş");
+                return new Result<KomisyonlarVM>(false, "Komisyon bilgileri boş olamaz");
             }
         }
         #endregion
@@ -145,17 +154,23 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     _unitOfWork.komisyonlarRepository.Update(komisyon);
                     _unitOfWork.Save();
 
-                    return new Result<KomisyonlarVM>(true, ResultConstant.RecordCreateSuccess);
+                    return new Result<KomisyonlarVM>(true, "Komisyon başarıyla güncellendi");
+                }
+                catch (DbUpdateException dbEx)
+                {
+                    _logger.LogError($"Veritabanı hatası: {dbEx.Message}, InnerException: {dbEx.InnerException?.Message}");
+                    return new Result<KomisyonlarVM>(false, $"Veritabanı hatası: {dbEx.InnerException?.Message ?? dbEx.Message}");
                 }
                 catch (Exception ex)
                 {
-
-                    return new Result<KomisyonlarVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                    _logger.LogError($"Komisyon güncellenirken hata: {ex.Message}, StackTrace: {ex.StackTrace}");
+                    return new Result<KomisyonlarVM>(false, $"Komisyon güncellenirken hata oluştu: {ex.Message}");
                 }
             }
             else
             {
-                return new Result<KomisyonlarVM>(false, "Boş veri olamaz");
+                _logger.LogWarning("Komisyon güncellenemedi: Model boş");
+                return new Result<KomisyonlarVM>(false, "Komisyon bilgileri boş olamaz");
             }
         }
         #endregion
@@ -168,11 +183,11 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 _unitOfWork.komisyonlarRepository.Remove(data);
                 _unitOfWork.Save();
-                return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
+                return new Result<bool>(true, "Komisyon başarıyla silindi");
             }
             else
             {
-                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+                return new Result<bool>(false, "Komisyon silinirken hata oluştu");
             }
         }
         #endregion
