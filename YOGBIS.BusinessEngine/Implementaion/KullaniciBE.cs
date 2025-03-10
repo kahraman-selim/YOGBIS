@@ -176,5 +176,23 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        #region KomisyonKullaniciIDGetir(string KomisyonUserName)
+        public Result<string> KomisyonKullaniciIDGetir(string KomisyonUserName)
+        {
+            var data = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.UserName == KomisyonUserName);
+
+            if (data != null)
+            {
+                var id = data.Id;
+
+                return new Result<string>(true, ResultConstant.RecordFound, id);
+            }
+            else
+            {
+                return new Result<string>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
     }
 }

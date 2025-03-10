@@ -157,7 +157,7 @@ namespace YOGBIS.UI.Controllers
                         });
 
                         var tcListesi = new List<string>();
-                        var gecerliTcler = new List<string>(); // Geçerli TC'leri sakla
+                        var gecerliTcler = new List<string>();
 
                         for (int row = 2; row <= rowCount; row++)
                         {
@@ -166,7 +166,7 @@ namespace YOGBIS.UI.Controllers
                             {
                                 if (!_adaylarBE.TCKontrol(tc))
                                 {
-                                    gecerliTcler.Add(tc); // Geçerli TC'yi listeye ekle
+                                    gecerliTcler.Add(tc);
                                 }
                                 islemYapilan++;
                                 UpdateProgress(sessionId, p =>
@@ -185,25 +185,21 @@ namespace YOGBIS.UI.Controllers
                         {
                             p.IslemAsamasi = "KayitBasliyor";
                             p.IslemYapilan = 0;
-                            p.ToplamKayit = 0;
+                            p.ToplamKayit = gecerliTcler.Count;
                             p.Yuzde = 0;
                         });
 
-                        await Task.Delay(500); // Geçiş animasyonu için bekle
+                        await Task.Delay(500);
 
                         // AŞAMA 2: Kayıt İşlemi
                         islemYapilan = 0;
-                        var kayitEdilecekToplam = gecerliTcler.Count;
+                        var basariliEklenen = 0;
 
                         UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Kayit";
                             p.IslemYapilan = 0;
-                            p.ToplamKayit = kayitEdilecekToplam;
-                            p.Yuzde = 0;
                         });
-
-                        var basariliEklenen = 0;
 
                         for (int row = 2; row <= rowCount; row++)
                         {
@@ -237,7 +233,7 @@ namespace YOGBIS.UI.Controllers
                             {
                                 p.IslemYapilan = islemYapilan;
                                 p.BasariliEklenen = basariliEklenen;
-                                p.Yuzde = kayitEdilecekToplam > 0 ? (int)((double)islemYapilan / kayitEdilecekToplam * 100) : 100;
+                                p.Yuzde = gecerliTcler.Count > 0 ? (int)((double)islemYapilan / gecerliTcler.Count * 100) : 100;
                             });
                             await Task.Delay(10);
                         }
@@ -246,7 +242,7 @@ namespace YOGBIS.UI.Controllers
                         UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Tamamlandi";
-                            p.IslemYapilan = kayitEdilecekToplam;
+                            p.IslemYapilan = gecerliTcler.Count;
                             p.Yuzde = 100;
                             if (tekrarEdenTCSayisi > 0)
                             {
@@ -258,7 +254,7 @@ namespace YOGBIS.UI.Controllers
                             }
                         });
 
-                        await Task.Delay(500); // Tamamlandı mesajının görünmesi için kısa bir bekleme
+                        await Task.Delay(500);
 
                         return Json(new { success = true });
                     }
@@ -271,25 +267,11 @@ namespace YOGBIS.UI.Controllers
             }
             finally
             {
-                // İşlem bittiğinde progress datasını temizle
                 lock (_lockObject)
                 {
                     _progressData.Remove(sessionId);
                 }
             }
-        }
-        #endregion
-
-        #region TamamlandiOnayla
-        [HttpPost]
-        public IActionResult TamamlandiOnayla()
-        {
-            var sessionId = HttpContext.Session.Id;
-            lock (_lockObject)
-            {
-                _progressData.Remove(sessionId);
-            }
-            return Json(new { success = true });
         }
         #endregion
 
@@ -458,7 +440,6 @@ namespace YOGBIS.UI.Controllers
                             await Task.Delay(10);
                         }
 
-
                         // İşlem Tamamlandı
                         UpdateProgress(sessionId, p =>
                         {
@@ -472,7 +453,7 @@ namespace YOGBIS.UI.Controllers
                             }
                         });
 
-                        await Task.Delay(500); // Tamamlandı mesajının görünmesi için kısa bir bekleme
+                        await Task.Delay(500);
 
                         return Json(new { success = true });
                     }
@@ -486,7 +467,6 @@ namespace YOGBIS.UI.Controllers
             }
             finally
             {
-                // İşlem bittiğinde progress datasını temizle
                 lock (_lockObject)
                 {
                     _progressData.Remove(sessionId);
@@ -596,7 +576,6 @@ namespace YOGBIS.UI.Controllers
                             await Task.Delay(10);
                         }
 
-
                         // İşlem Tamamlandı
                         UpdateProgress(sessionId, p =>
                         {
@@ -610,7 +589,7 @@ namespace YOGBIS.UI.Controllers
                             }
                         });
 
-                        await Task.Delay(500); // Tamamlandı mesajının görünmesi için kısa bir bekleme
+                        await Task.Delay(500);
 
                         return Json(new { success = true });
                     }
@@ -624,7 +603,6 @@ namespace YOGBIS.UI.Controllers
             }
             finally
             {
-                // İşlem bittiğinde progress datasını temizle
                 lock (_lockObject)
                 {
                     _progressData.Remove(sessionId);
@@ -772,7 +750,6 @@ namespace YOGBIS.UI.Controllers
                             await Task.Delay(10);
                         }
 
-
                         // İşlem Tamamlandı
                         UpdateProgress(sessionId, p =>
                         {
@@ -786,7 +763,7 @@ namespace YOGBIS.UI.Controllers
                             }
                         });
 
-                        await Task.Delay(500); // Tamamlandı mesajının görünmesi için kısa bir bekleme
+                        await Task.Delay(500);
 
                         return Json(new { success = true });
                     }
@@ -800,7 +777,6 @@ namespace YOGBIS.UI.Controllers
             }
             finally
             {
-                // İşlem bittiğinde progress datasını temizle
                 lock (_lockObject)
                 {
                     _progressData.Remove(sessionId);
@@ -947,7 +923,7 @@ namespace YOGBIS.UI.Controllers
                             }
                         });
 
-                        await Task.Delay(500); // Tamamlandı mesajının görünmesi için kısa bir bekleme
+                        await Task.Delay(500);
 
                         return Json(new { success = true });
                     }
@@ -961,7 +937,6 @@ namespace YOGBIS.UI.Controllers
             }
             finally
             {
-                // İşlem bittiğinde progress datasını temizle
                 lock (_lockObject)
                 {
                     _progressData.Remove(sessionId);

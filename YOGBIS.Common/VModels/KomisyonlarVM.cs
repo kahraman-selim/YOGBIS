@@ -72,6 +72,7 @@ namespace YOGBIS.Common.VModels
         [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public Guid? MulakatId { get; set; }
         public int MulakatYil { get; set; }
+        public string MulakatDonemi { get; set; }
         public virtual MulakatlarVM Mulakatlar { get; set; }
 
 

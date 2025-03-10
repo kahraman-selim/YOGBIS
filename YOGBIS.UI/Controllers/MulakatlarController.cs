@@ -78,6 +78,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Guncelle
+        [Route("ML10002", Name = "MulakatlarGuncelleRoute")]
         public IActionResult Guncelle(Guid? id)
         {
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;

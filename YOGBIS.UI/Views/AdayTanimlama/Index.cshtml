@@ -216,100 +216,117 @@
     <script type="text/javascript">
         var progressTimer;
 
-        // Add event listener for yuklemeTipi change
-        document.getElementById('islemTipi').addEventListener('change', function() {
-            var yuklemeTipi = this.value;
-            var mulakatYilElement = document.getElementById("MulakatYil");
-
-            // Hide by default
-            mulakatYilElement.style.display = "none";
-
-            // Show only if yuklemeTipi is '2'
-            if (yuklemeTipi === '2' || yuklemeTipi === '3'|| yuklemeTipi === '4'|| yuklemeTipi === '5' || yuklemeTipi === '6'|| yuklemeTipi === '7') {
-                mulakatYilElement.style.display = "inline";
-            }
-        });
-
         function submitForm(event) {
             event.preventDefault();
+            var islemTipi = document.getElementById('islemTipi').value;
+            var mulakatId = document.getElementById('MulakatListesi').value;
+            var fileInput = document.querySelector('input[type="file"]');
+            var formData = new FormData();
 
-            // Seçili alanları kontrol et
-            var secilenAlanlar = $('#alanlarContainer input[type="checkbox"]:checked').length;
-
-            if (secilenAlanlar === 0) {
-                bootbox.alert({
-                    title: '<i class="fas fa-exclamation-triangle text-warning"></i> Uyarı',
-                    message: 'Lütfen bir alan veya alanları seçiniz',
-                    centerVertical: true,
-                    buttons: {
-                        ok: {
-                            label: 'Tamam',
-                            className: 'btn-primary'
-                        }
-                    }
-                });
+            if (!islemTipi) {
+                document.getElementById('yuklemeTipiHata').style.display = 'block';
                 return false;
             }
 
-            // Form gönderme işlemine devam et
-            var formData = new FormData(document.getElementById('uploadForm'));
-
-            // Seçili alanları ekle
-            var secilenAlanlarListesi = [];
-            $('#alanlarContainer input[type="checkbox"]:checked').each(function() {
-                secilenAlanlarListesi.push({
-                    name: $(this).val(),
-                    siraNo: $(this).data('sirano')
-                });
-            });
-
-            // Mülakat yılı ve tablo adını ekle
-            var mulakatYili = $('#mulakatYili').val();
-            var tabloAdi = $('#adayTablosu').val();
-
-            if (!mulakatYili || !tabloAdi) {
-                bootbox.alert({
-                    title: '<i class="fas fa-exclamation-triangle text-warning"></i> Uyarı',
-                    message: 'Lütfen mülakat yılı ve güncellenecek tabloyu seçiniz',
-                    centerVertical: true,
-                    buttons: {
-                        ok: {
-                            label: 'Tamam',
-                            className: 'btn-primary'
-                        }
-                    }
-                });
+            if (!fileInput.files[0]) {
+                bootbox.alert("Lütfen bir Excel dosyası seçiniz!");
                 return false;
             }
 
-            formData.append('secilenAlanlar', JSON.stringify(secilenAlanlarListesi));
-            formData.append('mulakatYili', mulakatYili);
-            formData.append('tabloAdi', tabloAdi);
+            formData.append('file', fileInput.files[0]);
+            formData.append('mulakatId', mulakatId);
 
-            // AJAX ile form gönder
+            var url;
+            switch (islemTipi) {
+                case '1':
+                    url = '@Url.Action("AdayTemelBilgileriYukle")';
+                    break;
+                case '2':
+                    url = '@Url.Action("AdayBasvuruBilgileriYukle")';
+                    break;
+                case '3':
+                    url = '@Url.Action("AdayIletisimBilgileriYukle")';
+                    break;
+                case '4':
+                    url = '@Url.Action("AdayMYSSBilgileriYukle")';
+                    break;
+                case '5':
+                    url = '@Url.Action("AdayTYSBilgileriYukle")';
+                    break;
+                case '6':
+                    url = '@Url.Action("AdayMYSSNotlariYukle")';
+                    break;
+                case '7':
+                    url = '@Url.Action("AdayTYSNotlariYukle")';
+                    break;
+                case '8':
+                    url = '@Url.Action("AdayBilgileriGuncelle")';
+                    break;
+                default:
+                    bootbox.alert("Geçersiz işlem tipi!");
+                    return false;
+            }
+
+            document.getElementById('progressBarContainer').style.display = 'block';
+            document.getElementById('progressInfo').style.display = 'block';
+            document.getElementById('islemSonucu').style.display = 'none';
+
             $.ajax({
-                url: '@Url.Action("DosyaYukle", "AdayTanimlama")',
+                url: url,
                 type: 'POST',
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function(response) {
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', function (evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            percentComplete = parseInt(percentComplete * 100);
+                            $('#progressBar').width(percentComplete + '%');
+                            $('#progressBar').text(percentComplete + '%');
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function (response) {
                     if (response.success) {
-                        toastr.success(response.message);
-                        $('#guncelleModal').modal('hide');
-                        // Sayfayı yenile
-                        location.reload();
+                        progressTimer = setInterval(checkProgress, 500);
                     } else {
-                        toastr.error(response.message);
+                        showError("İşlem başarısız: " + (response.message || "Bilinmeyen hata"));
                     }
                 },
-                error: function() {
-                    toastr.error('Dosya yükleme işlemi sırasında bir hata oluştu.');
+                error: function (xhr, status, error) {
+                    showError("Sunucu hatası: " + error);
                 }
             });
 
             return false;
         }
+
+        function showError(message) {
+            clearInterval(progressTimer);
+            $('#progressBarContainer').hide();
+            $('#progressInfo').hide();
+            $('#warningAlert').text(message).show();
+            $('#successAlert').hide();
+        }
+
+        function showSuccess(message) {
+            $('#warningAlert').hide();
+            $('#successAlert').text(message).show();
+        }
+
+        // İşlem tipine göre mülakat yılı alanını göster/gizle
+        $('#islemTipi').change(function() {
+            var selectedValue = $(this).val();
+            if (['2', '3', '4', '5', '6', '7'].includes(selectedValue)) {
+                $('#MulakatYil').show();
+            } else {
+                $('#MulakatYil').hide();
+            }
+            $('#yuklemeTipiHata').hide();
+        });
 
         function showProgress() {
             document.getElementById('progressBarContainer').style.display = 'block';
@@ -328,26 +345,15 @@
             var progress = 0;
 
             if (toplamKayit > 0) {
-                progress = yuzde; // Direkt yüzdeyi kullan
+                progress = (islemYapilan / toplamKayit) * 100;
             }
 
-            // Progress bar'ı güncelle
-            requestAnimationFrame(function() {
-                progressBar.style.width = progress + '%';
-                progressBar.textContent = progress + '%';
-                progressBar.setAttribute('aria-valuenow', progress);
-            });
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = Math.round(progress) + '%';
 
-            // Progress durumuna göre renk değişimi
-            if (progress < 25) {
-                progressBar.className = 'progress-bar progress-bar-striped progress-bar-animated bg-danger';
-            } else if (progress < 50) {
-                progressBar.className = 'progress-bar progress-bar-striped progress-bar-animated bg-warning';
-            } else if (progress < 75) {
-                progressBar.className = 'progress-bar progress-bar-striped progress-bar-animated bg-info';
-            } else {
-                progressBar.className = 'progress-bar progress-bar-striped progress-bar-animated bg-success';
-            }
+            document.getElementById('islemYapilan').textContent = islemYapilan;
+            document.getElementById('toplamKayit').textContent = toplamKayit;
+            document.getElementById('yuzde').textContent = Math.round(progress);
         }
 
         function startProgressCheck() {
@@ -363,90 +369,54 @@
                 .then(data => {
                     if (!data) return;
 
-                    requestAnimationFrame(function() {
-                        // Sayaçları güncelle
-                        if (data.toplamKayit) {
-                            document.getElementById('islemYapilan').textContent = data.islemYapilan;
-                            document.getElementById('toplamKayit').textContent = data.toplamKayit;
-                            document.getElementById('yuzde').textContent = data.yuzde;
+                    var islemDurumu = document.getElementById('islemDurumu');
+                    var warningAlert = document.getElementById('warningAlert');
+                    var successAlert = document.getElementById('successAlert');
+                    var islemTipi = document.getElementById('islemTipi').value;
 
-                            // Progress bar'ı sayaçlara göre güncelle
-                            updateProgressBar(data.islemYapilan, data.toplamKayit, data.yuzde);
-                        }
-
-                        // Durum mesajını güncelle
-                        if (data.islemAsamasi) {
-                            var durumText = '';
-                            switch(data.islemAsamasi) {
-                                case 'Baslatiliyor':
-                                    durumText = 'İşlem başlatılıyor...';
-                                    break;
-                                case 'TCKontrol':
-                                    durumText = 'TC Kimlik numaraları kontrol ediliyor...';
-                                    break;
-                                case 'KayitBasliyor':
-                                    durumText = 'Kayıt işlemi başlatılıyor...';
-                                    // Progress'i sıfırla
-                                    updateProgressBar(0, 1, 0);
-                                    break;
-                                case 'Kayit':
-                                    durumText = 'Kayıtlar sisteme ekleniyor...';
-                                    break;
-                                case 'Tamamlandi':
-                                    durumText = 'İşlem tamamlandı!';
-                                    clearInterval(progressTimer);
-
-                                    var message = '';
-                                    if (data.warning) {
-                                        message += '<div class="alert alert-warning">' + data.warning + '</div>';
-                                    }
-                                    if (data.success) {
-                                        message += '<div class="alert alert-success">' + data.success + '</div>';
-                                    }
-
-                                    if (message) {
-                                        bootbox.dialog({
-                                            title: 'İşlem Tamamlandı',
-                                            message: message,
-                                            centerVertical: true,
-                                            closeButton: false,
-                                            buttons: {
-                                                ok: {
-                                                    label: 'Tamam',
-                                                    className: 'btn-primary',
-                                                    callback: function() {
-                                                        islemTamamlandi();
-                                                    }
-                                                }
-                                            }
-                                        });
-                                    } else {
-                                        islemTamamlandi();
-                                    }
-                                    break;
+                    switch (data.islemAsamasi) {
+                        case 'Baslatiliyor':
+                            islemDurumu.textContent = 'İşlem başlatılıyor...';
+                            break;
+                        case 'TCKontrol':
+                            // TC kontrolü sadece aday temel bilgileri eklenirken gösterilecek
+                            if (islemTipi === '1') {
+                                islemDurumu.textContent = 'TC Kimlik numaraları kontrol ediliyor...';
                             }
-                            document.getElementById('islemDurumu').textContent = durumText;
-                        }
-                    });
+                            break;
+                        case 'KayitBasliyor':
+                            islemDurumu.textContent = 'Kayıt işlemi başlatılıyor...';
+                            break;
+                        case 'Kayit':
+                            islemDurumu.textContent = islemTipi === '1' ? 
+                                'Aday temel bilgileri kaydediliyor...' :
+                                'Kayıtlar işleniyor...';
+                            break;
+                        case 'Tamamlandi':
+                            islemDurumu.textContent = 'İşlem tamamlandı';
+                            clearInterval(progressTimer);
+                            
+                            if (data.error) {
+                                warningAlert.textContent = data.error;
+                                warningAlert.style.display = 'block';
+                                successAlert.style.display = 'none';
+                            } else {
+                                var successMessage = data.success || 'İşlem başarıyla tamamlandı.';
+                                if (data.basariliEklenen > 0) {
+                                    successMessage += ` ${data.basariliEklenen} kayıt başarıyla eklendi.`;
+                                }
+                                successAlert.textContent = successMessage;
+                                successAlert.style.display = 'block';
+                                warningAlert.style.display = 'none';
+                            }
+                            break;
+                    }
+
+                    updateProgressBar(data.islemYapilan, data.toplamKayit, data.yuzde);
                 })
                 .catch(error => {
                     console.error('İlerleme kontrolü sırasında hata:', error);
                 });
-        }
-
-        function islemTamamlandi() {
-            fetch('@Url.Action("TamamlandiOnayla")', {
-                method: 'POST'
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                window.location.href = '@Url.Action("Index")';
-            })
-            .catch(error => {
-                console.error('Hata:', error);
-            });
         }
 
         function testTC(tc) {
@@ -462,45 +432,15 @@
                 type: 'GET',
                 data: { TC: tc },
                 success: function (result) {
-                    if (result.error) {
-                        console.error('Sunucu hatası:', result.error);
-                        bootbox.alert({
-                            title: 'Hata',
-                            message: result.error,
-                            size: 'small'
-                        });
-                        return;
-                    }
-                    if (result === '') {
-                        $('#adayBasvuruBilgileriContainer').html('<div class="card mb-3"><div class="card-header"><i class="fas fa-table mr-1"></i><b>Aday Başvuru Bilgileri</b></div><div class="card-body"><div class="table-responsive"><table class="table table-bordered"><tbody><tr><td class="text-center">Herhangi bir kayıt bulunamadı!</td></tr></tbody></table></div></div></div>');
-                        return;
-                    }
-                    console.log('Başarılı sonuç:', result);
                     $('#adayBasvuruBilgileriContainer').html(result);
                 },
                 error: function (xhr, status, error) {
-                    console.group('AJAX Hata Detayları');
-                    console.error('Hata:', error);
-                    console.error('Status:', status);
-                    console.error('Status Code:', xhr.status);
-                    console.error('Response Text:', xhr.responseText);
-                    try {
-                        var jsonResponse = JSON.parse(xhr.responseText);
-                        console.error('JSON Response:', jsonResponse);
-                        bootbox.alert({
-                            title: 'Hata',
-                            message: jsonResponse.error || 'Veri getirme hatası',
-                            size: 'small'
-                        });
-                    } catch (e) {
-                        console.error('Raw Response:', xhr.responseText);
-                        bootbox.alert({
-                            title: 'Hata',
-                            message: 'Veri getirme hatası',
-                            size: 'small'
-                        });
-                    }
-                    console.groupEnd();
+                    console.error('Başvuru bilgileri getirme hatası:', error);
+                    bootbox.alert({
+                        title: '<i class="fas fa-exclamation-triangle text-danger"></i> Hata',
+                        message: 'Aday başvuru bilgileri getirilirken bir hata oluştu.',
+                        centerVertical: true
+                    });
                 }
             });
         }
@@ -513,44 +453,18 @@
                 type: 'GET',
                 data: { TC: tc },
                 success: function (result) {
-                    if (result.error) {
-                        console.error('Sunucu hatası:', result.error);
-                        bootbox.alert({
-                            title: 'Hata',
-                            message: result.error,
-                            size: 'small'
-                        });
-                        return;
-                    }
-                    console.log('Başarılı sonuç:', result);
                     $('#adayIletisimBilgileriContainer').html(result);
                 },
                 error: function (xhr, status, error) {
-                    console.group('AJAX Hata Detayları');
-                    console.error('Hata:', error);
-                    console.error('Status:', status);
-                    console.error('Status Code:', xhr.status);
-                    console.error('Response Text:', xhr.responseText);
-                    try {
-                        var jsonResponse = JSON.parse(xhr.responseText);
-                        console.error('JSON Response:', jsonResponse);
-                        bootbox.alert({
-                            title: 'Hata',
-                            message: jsonResponse.error || 'Veri getirme hatası',
-                            size: 'small'
-                        });
-                    } catch (e) {
-                        console.error('Raw Response:', xhr.responseText);
-                        bootbox.alert({
-                            title: 'Hata',
-                            message: 'Veri getirme hatası',
-                            size: 'small'
-                        });
-                    }
-                    console.groupEnd();
+                    console.error('İletişim bilgileri getirme hatası:', error);
+                    bootbox.alert({
+                        title: '<i class="fas fa-exclamation-triangle text-danger"></i> Hata',
+                        message: 'Aday iletişim bilgileri getirilirken bir hata oluştu.',
+                        centerVertical: true
+                    });
                 }
             });
-         }
+        }
 
         function getAdayMYSSBilgileri(tc) {
             console.log('TC gönderiliyor:', tc);
@@ -560,44 +474,18 @@
                 type: 'GET',
                 data: { TC: tc },
                 success: function (result) {
-                    if (result.error) {
-                        console.error('Sunucu hatası:', result.error);
-                        bootbox.alert({
-                            title: 'Hata',
-                            message: result.error,
-                            size: 'small'
-                        });
-                        return;
-                    }
-                    console.log('Başarılı sonuç:', result);
                     $('#adayMYSSBilgileriContainer').html(result);
                 },
                 error: function (xhr, status, error) {
-                    console.group('AJAX Hata Detayları');
-                    console.error('Hata:', error);
-                    console.error('Status:', status);
-                    console.error('Status Code:', xhr.status);
-                    console.error('Response Text:', xhr.responseText);
-                    try {
-                        var jsonResponse = JSON.parse(xhr.responseText);
-                        console.error('JSON Response:', jsonResponse);
-                        bootbox.alert({
-                            title: 'Hata',
-                            message: jsonResponse.error || 'Veri getirme hatası',
-                            size: 'small'
-                        });
-                    } catch (e) {
-                        console.error('Raw Response:', xhr.responseText);
-                        bootbox.alert({
-                            title: 'Hata',
-                            message: 'Veri getirme hatası',
-                            size: 'small'
-                        });
-                    }
-                    console.groupEnd();
+                    console.error('MYSS bilgileri getirme hatası:', error);
+                    bootbox.alert({
+                        title: '<i class="fas fa-exclamation-triangle text-danger"></i> Hata',
+                        message: 'Aday MYSS bilgileri getirilirken bir hata oluştu.',
+                        centerVertical: true
+                    });
                 }
             });
-         }
+        }
 
         function getAdayTYSBilgileri(tc) {
             console.log('TC gönderiliyor:', tc);
@@ -607,44 +495,18 @@
                 type: 'GET',
                 data: { TC: tc },
                 success: function (result) {
-                    if (result.error) {
-                        console.error('Sunucu hatası:', result.error);
-                        bootbox.alert({
-                            title: 'Hata',
-                            message: result.error,
-                            size: 'small'
-                        });
-                        return;
-                    }
-                    console.log('Başarılı sonuç:', result);
                     $('#adayTYSBilgileriContainer').html(result);
                 },
                 error: function (xhr, status, error) {
-                    console.group('AJAX Hata Detayları');
-                    console.error('Hata:', error);
-                    console.error('Status:', status);
-                    console.error('Status Code:', xhr.status);
-                    console.error('Response Text:', xhr.responseText);
-                    try {
-                        var jsonResponse = JSON.parse(xhr.responseText);
-                        console.error('JSON Response:', jsonResponse);
-                        bootbox.alert({
-                            title: 'Hata',
-                            message: jsonResponse.error || 'Veri getirme hatası',
-                            size: 'small'
-                        });
-                    } catch (e) {
-                        console.error('Raw Response:', xhr.responseText);
-                        bootbox.alert({
-                            title: 'Hata',
-                            message: 'Veri getirme hatası',
-                            size: 'small'
-                        });
-                    }
-                    console.groupEnd();
+                    console.error('TYS bilgileri getirme hatası:', error);
+                    bootbox.alert({
+                        title: '<i class="fas fa-exclamation-triangle text-danger"></i> Hata',
+                        message: 'Aday TYS bilgileri getirilirken bir hata oluştu.',
+                        centerVertical: true
+                    });
                 }
             });
-         }
+        }
 
     </script>
 

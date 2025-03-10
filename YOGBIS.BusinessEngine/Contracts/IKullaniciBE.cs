@@ -13,5 +13,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Task<Result<List<KullaniciVM>>> OnayKullaniciGetir();
         Task<Result<List<KullaniciVM>>> OkulMuduruGetir();
         Task<Result<List<KullaniciVM>>> KomisyonGetir();
+        Result<string> KomisyonKullaniciIDGetir(string KomisyonUserName);
     }
 }
