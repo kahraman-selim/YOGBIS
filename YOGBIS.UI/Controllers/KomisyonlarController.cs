@@ -36,6 +36,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
+        [Route("KO10001", Name = "KomisyonlarIndexRoute")]
         public async Task<IActionResult> Index(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -59,6 +60,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region KomisyonEkle(Get)
+        [Route("KO10002", Name = "KomisyonlarEkleGetRoute")]
         public async Task<IActionResult> KomisyonEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -74,6 +76,7 @@ namespace YOGBIS.UI.Controllers
         #region KomisyonEkle(Post)
         [ValidateAntiForgeryToken]
         [HttpPost]
+        [Route("KO10003", Name = "KomisyonlarEklePostRoute")]
         public async Task<IActionResult> KomisyonEkle(KomisyonlarVM model, Guid? KomisyonId)
         {
 
@@ -109,6 +112,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Guncelle
+        [Route("KO10004", Name = "KomisyonlarGuncelleRoute")]
         public async Task<ActionResult> Guncelle(Guid? id)
         {
 

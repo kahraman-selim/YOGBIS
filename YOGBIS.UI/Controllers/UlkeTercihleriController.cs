@@ -66,7 +66,7 @@ namespace YOGBIS.UI.Controllers
             }
 
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirKontejanSelectedBox().Data;
             return View();
         }
         #endregion
@@ -78,7 +78,7 @@ namespace YOGBIS.UI.Controllers
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirKontejanSelectedBox().Data;
             ViewBag.Branslar = _branslarBE.BranslariGetir().Data;
 
             return View();
@@ -112,7 +112,7 @@ namespace YOGBIS.UI.Controllers
 
             TempData["error"] = data.Message;
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirKontejanSelectedBox().Data;
             ViewBag.Branslar = _branslarBE.BranslariGetir().Data;
             ViewBag.CurrentYear = year ?? DateTime.Now.Year;
             return View(model);
@@ -124,7 +124,7 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirKontejanSelectedBox().Data;
             ViewBag.Branslar = _branslarBE.BranslariGetir().Data;
             ViewBag.CurrentYear = year ?? DateTime.Now.Year;
 
@@ -173,7 +173,7 @@ namespace YOGBIS.UI.Controllers
 
             TempData["error"] = data.Message;
             ViewBag.Dereceler = _derecelerBE.DereceleriGetir().Data;
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirKontejanSelectedBox().Data;
             ViewBag.Branslar = _branslarBE.BranslariGetir().Data;
             ViewBag.CurrentYear = year ?? DateTime.Now.Year;
             return View(model);

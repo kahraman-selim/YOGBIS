@@ -16,10 +16,10 @@
                         <th class="text-center">Komisyon Adı</th>
                         <th class="text-center">Üye Sıra No</th>
                         <th class="text-center">Görevi</th>
-                        <th class="text-center">Ad Soyad</th>
-                        <th class="text-center">Ülke</th>
+                        <th class="text-center">Ad Soyad</th>                        
                         <th class="text-center">Durumu</th>
                         <th class="text-center">Görevde</th>
+                        <th class="text-center">Sil</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,15 +34,14 @@
                             <tr>
                                 <td>@sirano</td>
                                 <td>@item.KomisyonSiraNo</td>
-                                <td class="text-center">
-                                    <a asp-controller="Komisyonlar" asp-action="Guncelle" asp-route-id="@item.KomisyonId" id="KomisyonId">
-                                        @item.KomisyonAdi
-                                    </a>
-                                </td>
+                                <td>@item.KomisyonAdi</td>
                                 <td>@item.KomisyonUyeSiraNo</td>
                                 <td>@item.KomisyonUyeGorevi</td>
-                                <td>@item.KomisyonUyeAdiSoyadi</td>
-                                <td>@item.KomisyonUlkeGrubu</td>
+                                <td>
+                                    <a asp-controller="Komisyonlar" asp-action="Guncelle" asp-route-id="@item.KomisyonId" id="KomisyonId">
+                                        @item.KomisyonUyeAdiSoyadi
+                                    </a>
+                                </td>
 
                                 @if (@item.KomisyonUyeDurum == true)
                                 {
@@ -53,16 +52,25 @@
                                     <td style="color:red" class="font-weight-bold">Yedek</td>
                                 }
 
-                                <td>
-                                    <a asp-action="Durum" asp-route-id="@item.KomisyonId">
-                                        @if (@item.KomisyonUyeDurum == true)
-                                        {
-                                            <b>Aktif</b>
-                                        }
-                                        else
-                                        {
+                                @if (@item.KomisyonGorevDurum == true)
+                                {
+                                    <td>
+                                        <a asp-controller="Komisyonlar" asp-action="DurumDegistir" asp-route-id="@item.KomisyonId">
+                                            <b class="text-primary">Aktif</b>
+                                        </a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a asp-controller="Komisyonlar" asp-action="DurumDegistir" asp-route-id="@item.KomisyonId">
                                             <b class="text-danger">Pasif</b>
-                                        }
+                                        </a>
+                                    </td>                                   
+                                }
+                                <td class="text-center">
+                                    <a class="btn btn-sm btn-danger btnSil" data-id="@item.KomisyonId">
+                                        <i class="fas fa-trash text-white"></i>
                                     </a>
                                 </td>
                             </tr>

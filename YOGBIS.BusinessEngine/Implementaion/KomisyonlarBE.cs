@@ -35,53 +35,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
             _kullaniciBE = kullaniciBE;
             _logger = logger;
         }
-        #endregion
+        #endregion        
 
-        #region KomisyonlariGetirEskiMetod
-        //public Result<List<KomisyonlarVM>> KomisyonlariGetir()
-        //{
-        //    var data = _unitOfWork.komisyonlarRepository.GetAll(includeProperties: "Kullanici").OrderBy(x => x.KomisyonSiraNo).ThenBy(x=>x.KomisyonUyeSiraNo).ToList();
-
-        //    if (data != null)
-        //    {
-        //        List<KomisyonlarVM> returnData = new List<KomisyonlarVM>();
-
-        //        foreach (var item in data)
-        //        {
-        //            returnData.Add(new KomisyonlarVM()
-        //            {
-        //                KomisyonId=item.KomisyonId,
-        //                KomisyonKullaniciId=item.KomisyonKullaniciId,
-        //                KomisyonSiraNo=item.KomisyonSiraNo,
-        //                KomisyonAdi=item.KomisyonAdi,
-        //                KomisyonUyeDurum=item.KomisyonUyeDurum,
-        //                KomisyonUyeSiraNo=item.KomisyonUyeSiraNo,
-        //                KomisyonUyeGorevi=item.KomisyonUyeGorevi,
-        //                KomisyonUyeAdiSoyadi=item.KomisyonUyeAdiSoyadi,
-        //                KomisyonUyeGorevYeri=item.KomisyonUyeGorevi,
-        //                KomisyoUyeStatu=item.KomisyoUyeStatu,
-        //                KomisyonUlkeGrubu=item.KomisyonUlkeGrubu,
-        //                KomisyoUyeTel=item.KomisyoUyeTel,
-        //                KomisyonUyeEPosta=item.KomisyonUyeEPosta,
-        //                KomisyonGorevBaslamaTarihi=item.KomisyonGorevBaslamaTarihi,
-        //                KomisyonGorevBitisTarihi=item.KomisyonGorevBitisTarihi,
-        //                KayitTarihi=item.KayitTarihi,
-        //                KaydedenId = item.KaydedenId,
-        //                KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
-
-        //            });
-        //        }
-        //        return new Result<List<KomisyonlarVM>>(true, ResultConstant.RecordFound, returnData);
-        //    }
-        //    else
-        //    {
-        //        return new Result<List<KomisyonlarVM>>(false, ResultConstant.RecordNotFound);
-        //    }
-
-        //}
-        #endregion
-
-        #region KomisyonlarıGetirYeniMetod
+        #region KomisyonlarıGetir
         public Result<List<KomisyonlarVM>> KomisyonlariGetir()
         {
             try
@@ -99,6 +55,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     KomisyonSiraNo = item.KomisyonSiraNo,
                     KomisyonAdi = item.KomisyonAdi,
                     KomisyonUyeDurum = item.KomisyonUyeDurum,
+                    KomisyonGorevDurum = item.KomisyonGorevDurum,
                     KomisyonUyeSiraNo = item.KomisyonUyeSiraNo,
                     KomisyonUyeGorevi = item.KomisyonUyeGorevi,
                     KomisyonUyeAdiSoyadi = item.KomisyonUyeAdiSoyadi,
@@ -154,6 +111,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 try
                 {
                     var komisyon = _mapper.Map<KomisyonlarVM, Komisyonlar>(model);
+                    komisyon.KomisyonGorevDurum = true;
                     komisyon.KaydedenId = user.LoginId;
 
                     _unitOfWork.komisyonlarRepository.Add(komisyon);

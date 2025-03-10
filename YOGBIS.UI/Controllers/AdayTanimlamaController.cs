@@ -91,11 +91,11 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
-        [Route("Adaylar/AD10001", Name = "AdayBilgiIndexRoute")]
+        [Route("AD10001", Name = "AdayTanimlamaIndexRoute")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirSelectedBox().Data;
 
             return View();
         }
@@ -299,7 +299,7 @@ namespace YOGBIS.UI.Controllers
         [RequestSizeLimit(209715200)]
         public async Task<IActionResult> AdayBasvuruBilgileriYukle(IFormFile file)
         {
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirSelectedBox().Data;
 
             var sessionId = HttpContext.Session.Id;
             try
@@ -501,7 +501,7 @@ namespace YOGBIS.UI.Controllers
         [RequestSizeLimit(209715200)]
         public async Task<IActionResult> AdayIletisimBilgileriYukle(IFormFile file)
         {
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirSelectedBox().Data;
 
             var sessionId = HttpContext.Session.Id;
             try
@@ -665,7 +665,7 @@ namespace YOGBIS.UI.Controllers
         public async Task<IActionResult> AdayMYSSBilgileriYukle(IFormFile file)
         {
             
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirSelectedBox().Data;
 
             var sessionId = HttpContext.Session.Id;
             try
@@ -827,7 +827,7 @@ namespace YOGBIS.UI.Controllers
         public async Task<IActionResult> AdayTYSBilgileriYukle(IFormFile file)
         {
 
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirSelectedBox().Data;
 
             var sessionId = HttpContext.Session.Id;
             try

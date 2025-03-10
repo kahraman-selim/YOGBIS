@@ -10,6 +10,8 @@ namespace YOGBIS.BusinessEngine.Contracts
     {              
         Result<List<MulakatlarVM>> MulakatlariGetir();
         Result<List<MulakatlarVM>> MulakatlariGetirViewComponent();
+        Result<List<MulakatlarVM>> MulakatlariGetirKontejanSelectedBox();
+        Result<List<MulakatlarVM>> MulakatlariGetirSelectedBox();
         Result<MulakatlarVM> MulakatGetir(Guid id);
         Result<MulakatlarVM> MulakatEkle(MulakatlarVM model, SessionContext user);              
         Result<MulakatlarVM> MulakatGuncelle(MulakatlarVM model, SessionContext user);        

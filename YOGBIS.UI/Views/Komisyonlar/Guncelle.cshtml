@@ -22,6 +22,7 @@
             <div class="card-body">
                 <form class="form-group m-0" asp-action="KomisyonEkle">
                     @Html.HiddenFor(x => x.KomisyonId)
+                    @Html.HiddenFor(x => x.KomisyonGorevDurum)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-row">
                         <div class="col-md-3">
@@ -156,7 +157,6 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">
-                            <a asp-controller="Komisyonlar" asp-action="Index" class="btn btn-primary btn-sm text-white" id="btnYeni" style="width:100px">Yeni Kayıt</a>
                             <input type="submit" value="Değiştir" class="btn btn-success btn-sm text-white" style="width:100px" />
                             <a asp-controller="Komisyonlar" asp-action="Index" id="cancel" name="cancel" class="btn btn-danger btn-sm" style="width:100px">Vazgeç</a>
                         </div>

@@ -309,5 +309,95 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion                
+
+        #region MulakatlariGetirSelectedBox
+        public Result<List<MulakatlarVM>> MulakatlariGetirSelectedBox()
+        {
+            var data = _unitOfWork.mulakatlarRepository.GetAll(u => u.Durumu == true, includeProperties: "Kullanici")
+                .OrderBy(s => s.BaslamaTarihi.Year)
+                .ThenBy(s => s.MulakatKategoriId)
+                .ToList();
+            if (data != null)
+            {
+                List<MulakatlarVM> returnData = new List<MulakatlarVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new MulakatlarVM()
+                    {
+                        MulakatId = item.MulakatId,
+                        OnaySayisi = item.OnaySayisi,
+                        OnayTarihi = item.OnayTarihi,
+                        KararSayisi = item.KararSayisi,
+                        KararTarihi = item.KararTarihi,
+                        YazılıSinavTarihi = item.YazılıSinavTarihi,
+                        MulakatKategoriId = item.MulakatKategoriId,
+                        MulakatAdi = item.MulakatAdi + "-" + item.YazılıSinavTarihi.Year,
+                        MulakatDonemi = item.MulakatAdi + "-" + item.YazılıSinavTarihi.Year.ToString(),
+                        MulakatYil = Convert.ToInt32(item.YazılıSinavTarihi.Year.ToString()),
+                        BaslamaTarihi = item.BaslamaTarihi,
+                        BitisTarihi = item.BitisTarihi,
+                        AdaySayisi = item.AdaySayisi,
+                        SorulanSoruSayisi = (int)item.SorulanSoruSayisi,
+                        Durumu = item.Durumu,
+                        MulakatAciklama = item.MulakatAciklama,
+                        KaydedenId = item.KaydedenId != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+                        KayitTarihi = item.KayitTarihi
+                    });
+                }
+                return new Result<List<MulakatlarVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<MulakatlarVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion                
+
+        #region MulakatlariGetirKontejanSelectedBox
+        public Result<List<MulakatlarVM>> MulakatlariGetirKontejanSelectedBox()
+        {
+            var data = _unitOfWork.mulakatlarRepository.GetAll(u => u.Durumu == true && u.MulakatKategoriId == 1, includeProperties: "Kullanici")
+                .OrderBy(s => s.BaslamaTarihi.Year)
+                .ThenBy(s => s.MulakatKategoriId)
+                .ToList();
+            if (data != null)
+            {
+                List<MulakatlarVM> returnData = new List<MulakatlarVM>();
+
+                foreach (var item in data)
+                {
+                    returnData.Add(new MulakatlarVM()
+                    {
+                        MulakatId = item.MulakatId,
+                        OnaySayisi = item.OnaySayisi,
+                        OnayTarihi = item.OnayTarihi,
+                        KararSayisi = item.KararSayisi,
+                        KararTarihi = item.KararTarihi,
+                        YazılıSinavTarihi = item.YazılıSinavTarihi,
+                        MulakatKategoriId = item.MulakatKategoriId,
+                        MulakatAdi = item.MulakatAdi + "-" + item.YazılıSinavTarihi.Year,
+                        MulakatDonemi = item.MulakatAdi + "-" + item.YazılıSinavTarihi.Year.ToString(),
+                        MulakatYil = Convert.ToInt32(item.YazılıSinavTarihi.Year.ToString()),
+                        BaslamaTarihi = item.BaslamaTarihi,
+                        BitisTarihi = item.BitisTarihi,
+                        AdaySayisi = item.AdaySayisi,
+                        SorulanSoruSayisi = (int)item.SorulanSoruSayisi,
+                        Durumu = item.Durumu,
+                        MulakatAciklama = item.MulakatAciklama,
+                        KaydedenId = item.KaydedenId != null ? item.KaydedenId : string.Empty,
+                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+                        KayitTarihi = item.KayitTarihi
+                    });
+                }
+                return new Result<List<MulakatlarVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<MulakatlarVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion                
     }
 }

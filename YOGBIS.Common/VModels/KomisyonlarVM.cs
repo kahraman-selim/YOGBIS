@@ -25,6 +25,9 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Komisyon Üye Durumu")]
         public bool KomisyonUyeDurum { get; set; }
 
+        [Display(Name = "Komisyon Gorev Durumu")]
+        public bool KomisyonGorevDurum { get; set; }
+
         [Display(Name = "Komisyon Üye Sıra No")]
         public int KomisyonUyeSiraNo { get; set; }
 
@@ -68,7 +71,7 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public Guid? MulakatId { get; set; }
-        [Display(Name = "Mülakat Yıl")]
+        public int MulakatYil { get; set; }
         public virtual MulakatlarVM Mulakatlar { get; set; }
 
 
