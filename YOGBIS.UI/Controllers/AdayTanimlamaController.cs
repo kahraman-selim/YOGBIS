@@ -28,56 +28,19 @@ namespace YOGBIS.UI.Controllers
         private readonly IBranslarBE _branslarBE;
         private readonly IDerecelerBE _derecelerBE;
         private readonly IKomisyonlarBE _komisyonlarBE;
-
-        private static readonly object _lockObject = new object();
-        private static Dictionary<string, ProgressData> _progressData = new Dictionary<string, ProgressData>();
-        #endregion
-
-        #region Sınıflar
-        public class ProgressData
-        {
-            public string IslemAsamasi { get; set; }
-            public int ToplamKayit { get; set; }
-            public int IslemYapilan { get; set; }
-            public int Yuzde { get; set; }
-            public int BasariliEklenen { get; set; }
-            public string Success { get; set; }
-            public string Error { get; set; }
-        }
-        #endregion
-
-        #region Yardımcı Metodlar
-        private void UpdateProgress(string sessionId, Action<ProgressData> updateAction)
-        {
-            lock (_lockObject)
-            {
-                if (!_progressData.ContainsKey(sessionId))
-                {
-                    _progressData[sessionId] = new ProgressData();
-                }
-
-                updateAction(_progressData[sessionId]);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult GetProgress()
-        {
-            var sessionId = HttpContext.Session.Id;
-            lock (_lockObject)
-            {
-                if (_progressData.TryGetValue(sessionId, out var progress))
-                {
-                    return Json(progress);
-                }
-                return Json(new { });
-            }
-        }
+        private readonly IProgressService _progressService;
         #endregion
 
         #region Dönüştürücüler
-        public AdayTanimlamaController(IUnitOfWork unitOfWork, IAdaylarBE adaylarBE, IMulakatOlusturBE mulakatOlusturBE, 
-            ILogger<AdayTanimlamaController> logger, IBranslarBE branslarBE, IDerecelerBE derecelerBE, IKomisyonlarBE komisyonlarBE)
+        public AdayTanimlamaController(
+            IUnitOfWork unitOfWork,
+            IAdaylarBE adaylarBE,
+            IMulakatOlusturBE mulakatOlusturBE,
+            ILogger<AdayTanimlamaController> logger,
+            IBranslarBE branslarBE,
+            IDerecelerBE derecelerBE,
+            IKomisyonlarBE komisyonlarBE,
+            IProgressService progressService)
         {
             _unitOfWork = unitOfWork;
             _adaylarBE = adaylarBE;
@@ -86,7 +49,7 @@ namespace YOGBIS.UI.Controllers
             _branslarBE = branslarBE;
             _derecelerBE = derecelerBE;
             _komisyonlarBE = komisyonlarBE;
-
+            _progressService = progressService;
         }
         #endregion
 
@@ -96,8 +59,70 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirSelectedBox().Data;
-
             return View();
+        }
+        #endregion
+
+        #region GetProgress
+        [HttpGet]
+        public IActionResult GetProgress()
+        {
+            try
+            {
+                if (HttpContext?.Session == null)
+                {
+                    return Json(new
+                    {
+                        islemAsamasi = "Hata",
+                        error = "Oturum bilgisi bulunamadı!",
+                        mesaj = "Oturum bilgisi bulunamadı!"
+                    });
+                }
+
+                var sessionId = HttpContext.Session.Id;
+                if (string.IsNullOrEmpty(sessionId))
+                {
+                    return Json(new
+                    {
+                        islemAsamasi = "Hata",
+                        error = "Geçersiz oturum ID!",
+                        mesaj = "Geçersiz oturum ID!"
+                    });
+                }
+
+                var progress = _progressService.GetProgress(sessionId);
+                if (progress == null)
+                {
+                    return Json(new
+                    {
+                        islemAsamasi = "Hata",
+                        error = "İşlem bilgisi bulunamadı!",
+                        mesaj = "İşlem bilgisi bulunamadı!"
+                    });
+                }
+
+                return Json(new
+                {
+                    islemAsamasi = progress.IslemAsamasi,
+                    toplamKayit = progress.ToplamKayit,
+                    islemYapilan = progress.IslemYapilan,
+                    yuzde = progress.Yuzde,
+                    basariliEklenen = progress.BasariliEklenen,
+                    success = progress.Success,
+                    error = progress.Error,
+                    mesaj = progress.Mesaj
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Progress bilgisi alınırken hata oluştu: {Message}", ex.Message);
+                return Json(new
+                {
+                    islemAsamasi = "Hata",
+                    error = "İşlem sırasında bir hata oluştu!",
+                    mesaj = "İşlem sırasında bir hata oluştu!"
+                });
+            }
         }
         #endregion
 
@@ -112,13 +137,24 @@ namespace YOGBIS.UI.Controllers
             {
                 if (file == null || file.Length <= 0)
                 {
-                    TempData["Error"] = "Lütfen bir dosya seçin!";
+                    _progressService.UpdateProgress(sessionId, p =>
+                    {
+                        p.IslemAsamasi = "Hata";
+                        p.Error = "Lütfen bir dosya seçin!";
+                        p.Mesaj = "Lütfen bir dosya seçin!";
+                    });
                     return Json(new { success = false });
                 }
 
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
                 if (user == null)
                 {
+                    _progressService.UpdateProgress(sessionId, p =>
+                    {
+                        p.IslemAsamasi = "Hata";
+                        p.Error = "Oturum bilgisi bulunamadı!";
+                        p.Mesaj = "Oturum bilgisi bulunamadı!";
+                    });
                     return Json(new { success = false });
                 }
 
@@ -132,28 +168,34 @@ namespace YOGBIS.UI.Controllers
 
                         if (rowCount <= 1)
                         {
+                            _progressService.UpdateProgress(sessionId, p =>
+                            {
+                                p.IslemAsamasi = "Hata";
+                                p.Error = "Excel dosyası boş veya geçersiz!";
+                                p.Mesaj = "Excel dosyası boş veya geçersiz!";
+                            });
                             return Json(new { success = false });
                         }
 
                         var toplamKayit = rowCount - 1;
                         var islemYapilan = 0;
 
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Baslatiliyor";
                             p.ToplamKayit = toplamKayit;
                             p.IslemYapilan = 0;
-                            p.Yuzde = 0;
                             p.BasariliEklenen = 0;
+                            p.Mesaj = "Dosya yükleme işlemi başlatılıyor...";
                         });
 
-                        await Task.Delay(500);
+                        await Task.Delay(100); // UI güncellemesi için kısa bekleme
 
                         // AŞAMA 1: TC Kontrol
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "TCKontrol";
-                            p.IslemYapilan = 0;
+                            p.Mesaj = "TC kontrolleri yapılıyor...";
                         });
 
                         var tcListesi = new List<string>();
@@ -169,10 +211,10 @@ namespace YOGBIS.UI.Controllers
                                     gecerliTcler.Add(tc);
                                 }
                                 islemYapilan++;
-                                UpdateProgress(sessionId, p =>
+                                _progressService.UpdateProgress(sessionId, p =>
                                 {
                                     p.IslemYapilan = islemYapilan;
-                                    p.Yuzde = (int)((double)islemYapilan / toplamKayit * 100);
+                                    p.Mesaj = $"TC kontrolleri yapılıyor... ({islemYapilan}/{toplamKayit})";
                                 });
                                 await Task.Delay(10);
                             }
@@ -181,12 +223,12 @@ namespace YOGBIS.UI.Controllers
                         var tekrarEdenTCSayisi = toplamKayit - gecerliTcler.Count;
 
                         // Kayıt aşamasına geçiş
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "KayitBasliyor";
                             p.IslemYapilan = 0;
                             p.ToplamKayit = gecerliTcler.Count;
-                            p.Yuzde = 0;
+                            p.Mesaj = "Kayıt işlemi başlatılıyor...";
                         });
 
                         await Task.Delay(500);
@@ -195,10 +237,11 @@ namespace YOGBIS.UI.Controllers
                         islemYapilan = 0;
                         var basariliEklenen = 0;
 
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Kayit";
                             p.IslemYapilan = 0;
+                            p.Mesaj = "Kayıtlar işleniyor...";
                         });
 
                         for (int row = 2; row <= rowCount; row++)
@@ -229,21 +272,20 @@ namespace YOGBIS.UI.Controllers
                             }
 
                             islemYapilan++;
-                            UpdateProgress(sessionId, p =>
+                            _progressService.UpdateProgress(sessionId, p =>
                             {
                                 p.IslemYapilan = islemYapilan;
                                 p.BasariliEklenen = basariliEklenen;
-                                p.Yuzde = gecerliTcler.Count > 0 ? (int)((double)islemYapilan / gecerliTcler.Count * 100) : 100;
+                                p.Mesaj = $"Kayıtlar işleniyor... ({islemYapilan}/{gecerliTcler.Count})";
                             });
                             await Task.Delay(10);
                         }
 
                         // İşlem Tamamlandı
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Tamamlandi";
                             p.IslemYapilan = gecerliTcler.Count;
-                            p.Yuzde = 100;
                             if (tekrarEdenTCSayisi > 0)
                             {
                                 p.Error = $"{tekrarEdenTCSayisi} adet TC numarası sistemde mevcuttur!";
@@ -252,6 +294,7 @@ namespace YOGBIS.UI.Controllers
                             {
                                 p.Success = $"{basariliEklenen} adet kayıt başarıyla eklenmiştir.";
                             }
+                            p.Mesaj = "İşlem tamamlandı";
                         });
 
                         await Task.Delay(500);
@@ -263,14 +306,17 @@ namespace YOGBIS.UI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Excel'den aday yüklenirken hata oluştu: {Message}", ex.Message);
+                _progressService.UpdateProgress(sessionId, p =>
+                {
+                    p.IslemAsamasi = "Hata";
+                    p.Error = "İşlem sırasında hata oluştu: " + ex.Message;
+                    p.Mesaj = "Hata oluştu!";
+                });
                 return Json(new { success = false, error = ex.Message });
             }
             finally
             {
-                lock (_lockObject)
-                {
-                    _progressData.Remove(sessionId);
-                }
+                _progressService.ResetProgress(sessionId);
             }
         }
         #endregion
@@ -282,19 +328,30 @@ namespace YOGBIS.UI.Controllers
         public async Task<IActionResult> AdayBasvuruBilgileriYukle(IFormFile file)
         {
             ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirSelectedBox().Data;
-
             var sessionId = HttpContext.Session.Id;
+
             try
             {
                 if (file == null || file.Length == 0)
                 {
-                    TempData["Error"] = "Lütfen bir dosya seçin!";
+                    _progressService.UpdateProgress(sessionId, p =>
+                    {
+                        p.IslemAsamasi = "Hata";
+                        p.Error = "Lütfen bir dosya seçin!";
+                        p.Mesaj = "Lütfen bir dosya seçin!";
+                    });
                     return Json(new { success = false });
                 }
 
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
                 if (user == null)
                 {
+                    _progressService.UpdateProgress(sessionId, p =>
+                    {
+                        p.IslemAsamasi = "Hata";
+                        p.Error = "Oturum bilgisi bulunamadı!";
+                        p.Mesaj = "Oturum bilgisi bulunamadı!";
+                    });
                     return Json(new { success = false });
                 }
 
@@ -308,36 +365,41 @@ namespace YOGBIS.UI.Controllers
 
                         if (rowCount <= 1)
                         {
+                            _progressService.UpdateProgress(sessionId, p =>
+                            {
+                                p.IslemAsamasi = "Hata";
+                                p.Error = "Excel dosyası boş veya geçersiz!";
+                                p.Mesaj = "Excel dosyası boş veya geçersiz!";
+                            });
                             return Json(new { success = false });
                         }
 
                         var toplamKayit = rowCount - 1;
                         var islemYapilan = 0;
 
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Baslatiliyor";
                             p.ToplamKayit = toplamKayit;
                             p.IslemYapilan = 0;
-                            p.Yuzde = 0;
                             p.BasariliEklenen = 0;
+                            p.Mesaj = "Dosya yükleme işlemi başlatılıyor...";
                         });
 
-                        await Task.Delay(500);
+                        await Task.Delay(100); // UI güncellemesi için kısa bekleme
 
                         // AŞAMA 1: Kayıt İşlemi
                         islemYapilan = 0;
                         var kayitEdilecekToplam = toplamKayit;
+                        var basariliEklenen = 0;
 
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Kayit";
                             p.IslemYapilan = 0;
                             p.ToplamKayit = kayitEdilecekToplam;
-                            p.Yuzde = 0;
+                            p.Mesaj = "Kayıtlar işleniyor...";
                         });
-
-                        var basariliEklenen = 0;
 
                         for (int row = 2; row <= rowCount; row++)
                         {
@@ -366,7 +428,9 @@ namespace YOGBIS.UI.Controllers
                                 YabanciDilAdi = worksheet.Cells[row, 17].Value?.ToString(),
                                 YabanciDilTuru = worksheet.Cells[row, 18].Value?.ToString(),
                                 YabanciDilTarihi = worksheet.Cells[row, 19].Value?.ToString(),
-                                YabanciDilPuan = worksheet.Cells[row, 20].Value?.ToString(),
+                                YabanciDilPuan = worksheet.Cells[row, 20].Value != null ? 
+                                    Math.Round(Convert.ToDecimal(worksheet.Cells[row, 20].Value), 2, MidpointRounding.AwayFromZero)
+                                    .ToString("F2", new System.Globalization.CultureInfo("tr-TR")) : null,
                                 YabanciDilSeviye = worksheet.Cells[row, 21].Value?.ToString(),
                                 IlTercihi1 = worksheet.Cells[row, 22].Value?.ToString(),
                                 IlTercihi2 = worksheet.Cells[row, 23].Value?.ToString(),
@@ -407,19 +471,13 @@ namespace YOGBIS.UI.Controllers
                                 MYYSSoruItiraz = worksheet.Cells[row, 56].Value?.ToString(),
                                 MYYSSonucItiraz = worksheet.Cells[row, 57].Value?.ToString(),
                                 BasvuruBrans = worksheet.Cells[row, 58].Value?.ToString(),
-
                                 BransId = brans?.BransId,
                                 DereceId = _derecelerBE.DereceleriGetir().Data
                                     .FirstOrDefault(d => d.DereceAdi == worksheet.Cells[row, 60].Value?.ToString())?.DereceId,
                                 DereceAdi = worksheet.Cells[row, 60].Value?.ToString(),
-
                                 Unvan = worksheet.Cells[row, 61].Value?.ToString(),
                                 UlkeTercihId = Guid.Parse(worksheet.Cells[row, 62].Value?.ToString()),
-
-                                //MulakatId yi ViewBag.Mulakatlar dan alma
                                 MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
-
-                                //AdayId yi TC ile eşleştirme
                                 AdayId = _adaylarBE.AdaylariGetir().Data
                                     .FirstOrDefault(a => a.TC == worksheet.Cells[row, 1].Value?.ToString())?.AdayId
                             };
@@ -431,26 +489,25 @@ namespace YOGBIS.UI.Controllers
                             }
 
                             islemYapilan++;
-                            UpdateProgress(sessionId, p =>
+                            _progressService.UpdateProgress(sessionId, p =>
                             {
                                 p.IslemYapilan = islemYapilan;
                                 p.BasariliEklenen = basariliEklenen;
-                                p.Yuzde = kayitEdilecekToplam > 0 ? (int)((double)islemYapilan / kayitEdilecekToplam * 100) : 100;
+                                p.Mesaj = $"Kayıtlar işleniyor... ({islemYapilan}/{kayitEdilecekToplam})";
                             });
                             await Task.Delay(10);
                         }
 
                         // İşlem Tamamlandı
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Tamamlandi";
                             p.IslemYapilan = kayitEdilecekToplam;
-                            p.Yuzde = 100;
-
                             if (basariliEklenen > 0)
                             {
                                 p.Success = $"{basariliEklenen} adet kayıt başarıyla eklenmiştir.";
                             }
+                            p.Mesaj = "İşlem tamamlandı";
                         });
 
                         await Task.Delay(500);
@@ -458,43 +515,54 @@ namespace YOGBIS.UI.Controllers
                         return Json(new { success = true });
                     }
                 }
-
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Excel'den aday yüklenirken hata oluştu: {Message}", ex.Message);
-                return Json(new { success = false, error = ex.Message });
+                _logger.LogError(ex, "Excel'den aday başvuru bilgileri yüklenirken hata oluştu: {Message}", ex.Message);
+                _progressService.UpdateProgress(sessionId, p =>
+                {
+                    p.IslemAsamasi = "Hata";
+                    p.Error = "İşlem sırasında hata oluştu: " + ex.Message;
+                    p.Mesaj = "Hata oluştu!";
+                });
+                return Json(new { success = false });
             }
             finally
             {
-                lock (_lockObject)
-                {
-                    _progressData.Remove(sessionId);
-                }
+                _progressService.ResetProgress(sessionId);
             }
         }
         #endregion
 
         #region AdayIletisimBilgileriYukle
         [HttpPost]
-        [RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
         [RequestSizeLimit(209715200)]
         public async Task<IActionResult> AdayIletisimBilgileriYukle(IFormFile file)
         {
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirSelectedBox().Data;
-
             var sessionId = HttpContext.Session.Id;
+
             try
             {
                 if (file == null || file.Length == 0)
                 {
-                    TempData["Error"] = "Lütfen bir dosya seçin!";
+                    _progressService.UpdateProgress(sessionId, p =>
+                    {
+                        p.IslemAsamasi = "Hata";
+                        p.Error = "Lütfen bir dosya seçin!";
+                        p.Mesaj = "Lütfen bir dosya seçin!";
+                    });
                     return Json(new { success = false });
                 }
 
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
                 if (user == null)
                 {
+                    _progressService.UpdateProgress(sessionId, p =>
+                    {
+                        p.IslemAsamasi = "Hata";
+                        p.Error = "Oturum bilgisi bulunamadı!";
+                        p.Mesaj = "Oturum bilgisi bulunamadı!";
+                    });
                     return Json(new { success = false });
                 }
 
@@ -508,105 +576,116 @@ namespace YOGBIS.UI.Controllers
 
                         if (rowCount <= 1)
                         {
+                            _progressService.UpdateProgress(sessionId, p =>
+                            {
+                                p.IslemAsamasi = "Hata";
+                                p.Error = "Excel dosyası boş veya geçersiz!";
+                                p.Mesaj = "Excel dosyası boş veya geçersiz!";
+                            });
                             return Json(new { success = false });
                         }
 
                         var toplamKayit = rowCount - 1;
                         var islemYapilan = 0;
+                        var basariliEklenen = 0;
 
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Baslatiliyor";
                             p.ToplamKayit = toplamKayit;
                             p.IslemYapilan = 0;
-                            p.Yuzde = 0;
                             p.BasariliEklenen = 0;
+                            p.Mesaj = "İletişim bilgileri yükleme işlemi başlatılıyor...";
                         });
 
                         await Task.Delay(500);
 
-                        // AŞAMA 1: Kayıt İşlemi
-                        islemYapilan = 0;
-                        var kayitEdilecekToplam = toplamKayit;
-
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Kayit";
-                            p.IslemYapilan = 0;
-                            p.ToplamKayit = kayitEdilecekToplam;
-                            p.Yuzde = 0;
+                            p.Mesaj = "Aday iletişim bilgileri sisteme yükleniyor...";
                         });
-
-                        var basariliEklenen = 0;
 
                         for (int row = 2; row <= rowCount; row++)
                         {
-                            var aday = new AdayIletisimBilgileriVM
+                            try
                             {
-                                TC = worksheet.Cells[row, 1].Value?.ToString(),
-                                CepTelNo= worksheet.Cells[row, 2].Value?.ToString(),
-                                EPosta= worksheet.Cells[row, 3].Value?.ToString(),
-                                NufusIl= worksheet.Cells[row, 4].Value?.ToString(),
-                                NufusIlce= worksheet.Cells[row, 5].Value?.ToString(),
-                                IkametAdres= worksheet.Cells[row, 6].Value?.ToString(),
-                                IkametIl= worksheet.Cells[row, 7].Value?.ToString(),
-                                IkametIlce= worksheet.Cells[row, 8].Value?.ToString(),
+                                var adayIletisim = new AdayIletisimBilgileriVM
+                                {
+                                    TC = worksheet.Cells[row, 1].Value?.ToString().Trim(),
+                                    CepTelNo = worksheet.Cells[row, 2].Value?.ToString().Trim(),
+                                    EPosta = worksheet.Cells[row, 3].Value?.ToString().Trim(),
+                                    NufusIl = worksheet.Cells[row, 4].Value?.ToString().Trim(),
+                                    NufusIlce = worksheet.Cells[row, 5].Value?.ToString().Trim(),
+                                    IkametAdres = worksheet.Cells[row, 6].Value?.ToString().Trim(),
+                                    IkametIl = worksheet.Cells[row, 7].Value?.ToString().Trim(),
+                                    IkametIlce = worksheet.Cells[row, 8].Value?.ToString().Trim()
+                                };
 
-                                //MulakatId yi ViewBag.Mulakatlar dan alma
-                                MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
+                                if (string.IsNullOrEmpty(adayIletisim.TC))
+                                {
+                                    continue;
+                                }
 
-                                //AdayId yi TC ile eşleştirme
-                                AdayId = _adaylarBE.AdaylariGetir().Data
-                                    .FirstOrDefault(a => a.TC == worksheet.Cells[row, 1].Value?.ToString())?.AdayId
-                            };
+                                var adayBilgisi = _adaylarBE.AdaylariGetir().Data
+                                    .FirstOrDefault(a => a.TC == adayIletisim.TC);
 
-                            var result = _adaylarBE.AdayIletisimBilgileriEkle(aday, user);
-                            if (result.IsSuccess)
-                            {
-                                basariliEklenen++;
+                                if (adayBilgisi != null)
+                                {
+                                    adayIletisim.AdayId = adayBilgisi.AdayId;
+                                    var result = _adaylarBE.AdayIletisimBilgileriEkle(adayIletisim, user);
+                                    if (result.IsSuccess)
+                                    {
+                                        basariliEklenen++;
+                                    }
+                                }
+
+                                islemYapilan++;
+                                _progressService.UpdateProgress(sessionId, p =>
+                                {
+                                    p.IslemYapilan = islemYapilan;
+                                    p.BasariliEklenen = basariliEklenen;
+                                    p.Mesaj = $"İletişim bilgileri güncelleniyor... ({islemYapilan}/{toplamKayit})";
+                                });
+
+                                if (islemYapilan % 5 == 0)
+                                {
+                                    await Task.Delay(100);
+                                }
                             }
-
-                            islemYapilan++;
-                            UpdateProgress(sessionId, p =>
+                            catch (Exception ex)
                             {
-                                p.IslemYapilan = islemYapilan;
-                                p.BasariliEklenen = basariliEklenen;
-                                p.Yuzde = kayitEdilecekToplam > 0 ? (int)((double)islemYapilan / kayitEdilecekToplam * 100) : 100;
-                            });
-                            await Task.Delay(10);
+                                _logger.LogError(ex, $"Kayıt işlenirken hata oluştu. Satır: {row}");
+                            }
                         }
 
-                        // İşlem Tamamlandı
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Tamamlandi";
-                            p.IslemYapilan = kayitEdilecekToplam;
-                            p.Yuzde = 100;
-
-                            if (basariliEklenen > 0)
-                            {
-                                p.Success = $"{basariliEklenen} adet kayıt başarıyla eklenmiştir.";
-                            }
+                            p.IslemYapilan = toplamKayit;
+                            p.BasariliEklenen = basariliEklenen;
+                            p.Success = $"İşlem tamamlandı! {basariliEklenen} adet iletişim bilgisi başarıyla güncellenmiştir.";
+                            p.Mesaj = "İşlem başarıyla tamamlandı!";
                         });
-
-                        await Task.Delay(500);
 
                         return Json(new { success = true });
                     }
                 }
-
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Excel'den aday yüklenirken hata oluştu: {Message}", ex.Message);
-                return Json(new { success = false, error = ex.Message });
+                _logger.LogError(ex, "İletişim bilgileri yükleme işlemi sırasında hata: {Message}", ex.Message);
+                _progressService.UpdateProgress(sessionId, p =>
+                {
+                    p.IslemAsamasi = "Hata";
+                    p.Error = "İşlem sırasında hata oluştu: " + ex.Message;
+                    p.Mesaj = "Hata oluştu!";
+                });
+                return Json(new { success = false });
             }
             finally
             {
-                lock (_lockObject)
-                {
-                    _progressData.Remove(sessionId);
-                }
+                _progressService.ResetProgress(sessionId);
             }
         }
         #endregion
@@ -614,12 +693,8 @@ namespace YOGBIS.UI.Controllers
         #region AdayIletisimBilgileriniGetir
         public IActionResult AdayIletisimBilgileriniGetir(string TC)
         {
-            System.Diagnostics.Debug.WriteLine($"Controller - TC ile iletişim bilgileri sorgusu başladı: {TC}");
             var result = _adaylarBE.AdayIletisimBilgileriniGetir(TC);
-
-            // Her durumda ViewComponent'i boş bir liste ile döndür
             var data = (result.IsSuccess && result.Data != null && result.Data.Any()) ? result.Data : new List<AdayIletisimBilgileriVM>();
-            System.Diagnostics.Debug.WriteLine($"Controller - {data.Count} adet iletişim verisi bulundu");
             return ViewComponent("AdayIletisimBilgileri", data);
         }
         #endregion
@@ -628,35 +703,43 @@ namespace YOGBIS.UI.Controllers
         [HttpGet]
         public IActionResult AdayBasvuruBilgileriniGetir(string TC)
         {
-            System.Diagnostics.Debug.WriteLine($"Controller - TC ile sorgu başladı: {TC}");
             var result = _adaylarBE.AdayBasvuruBilgileriniGetir(TC);
-
-            // Her durumda ViewComponent'i boş bir liste ile döndür
             var data = (result.IsSuccess && result.Data != null && result.Data.Any()) ? result.Data : new List<AdayBasvuruBilgileriVM>();
-            System.Diagnostics.Debug.WriteLine($"Controller - {data.Count} adet veri bulundu");
             return ViewComponent("AdayBasvuruBilgileri", data);
         }
         #endregion
 
         #region AdayMYSSBilgileriYukle
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
+        [RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
+        [RequestSizeLimit(209715200)]
         public async Task<IActionResult> AdayMYSSBilgileriYukle(IFormFile file)
         {
-            
             ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirSelectedBox().Data;
-
             var sessionId = HttpContext.Session.Id;
+
             try
             {
                 if (file == null || file.Length == 0)
                 {
-                    TempData["Error"] = "Lütfen bir dosya seçin!";
+                    _progressService.UpdateProgress(sessionId, p =>
+                    {
+                        p.IslemAsamasi = "Hata";
+                        p.Error = "Lütfen bir dosya seçin!";
+                        p.Mesaj = "Lütfen bir dosya seçin!";
+                    });
                     return Json(new { success = false });
                 }
 
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
                 if (user == null)
                 {
+                    _progressService.UpdateProgress(sessionId, p =>
+                    {
+                        p.IslemAsamasi = "Hata";
+                        p.Error = "Oturum bilgisi bulunamadı!";
+                        p.Mesaj = "Oturum bilgisi bulunamadı!";
+                    });
                     return Json(new { success = false });
                 }
 
@@ -670,36 +753,36 @@ namespace YOGBIS.UI.Controllers
 
                         if (rowCount <= 1)
                         {
+                            _progressService.UpdateProgress(sessionId, p =>
+                            {
+                                p.IslemAsamasi = "Hata";
+                                p.Error = "Excel dosyası boş veya geçersiz!";
+                                p.Mesaj = "Excel dosyası boş veya geçersiz!";
+                            });
                             return Json(new { success = false });
                         }
 
                         var toplamKayit = rowCount - 1;
                         var islemYapilan = 0;
+                        var basariliEklenen = 0;
 
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Baslatiliyor";
                             p.ToplamKayit = toplamKayit;
                             p.IslemYapilan = 0;
-                            p.Yuzde = 0;
                             p.BasariliEklenen = 0;
+                            p.Mesaj = "MYSS bilgileri yükleme işlemi başlatılıyor...";
                         });
 
-                        await Task.Delay(500);
+                        await Task.Delay(100);
 
-                        // AŞAMA 1: Kayıt İşlemi
-                        islemYapilan = 0;
-                        var kayitEdilecekToplam = toplamKayit;
-
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Kayit";
                             p.IslemYapilan = 0;
-                            p.ToplamKayit = kayitEdilecekToplam;
-                            p.Yuzde = 0;
+                            p.Mesaj = "MYSS bilgileri işleniyor...";
                         });
-
-                        var basariliEklenen = 0;
 
                         for (int row = 2; row <= rowCount; row++)
                         {
@@ -708,28 +791,33 @@ namespace YOGBIS.UI.Controllers
 
                             var aday = new AdayMYSSVM
                             {
-                                TC = worksheet.Cells[row, 1].Value?.ToString().Trim(),
-                                MYSSTarih = worksheet.Cells[row, 2].Value?.ToString(),
+                                TC = worksheet.Cells[row, 1].Value?.ToString(),
+                                MYSSTarih = worksheet.Cells[row, 2].Value != null ?
+                                    DateTime.Parse(worksheet.Cells[row, 2].Value.ToString())
+                                    .ToString("dd.MM.yyyy", new System.Globalization.CultureInfo("tr-TR")) : null,
                                 MYSSSaat = worksheet.Cells[row, 3].Value?.ToString(),
                                 MYSSMulakatYer = worksheet.Cells[row, 4].Value?.ToString(),
                                 MYSSDurum = worksheet.Cells[row, 5].Value?.ToString(),
                                 MYSSDurumAck = worksheet.Cells[row, 6].Value?.ToString(),
-                                MYSSKomisyonSiraNo = worksheet.Cells[row, 7].Value?.ToString(),
-                                KomisyonSN = Convert.ToInt32(worksheet.Cells[row, 8].Value),
-                                KomisyonGunSN = Convert.ToInt32(worksheet.Cells[row, 9].Value),
+                                MYSSKomisyonSiraNo = worksheet.Cells[row, 7].Value != null ? 
+                                    Convert.ToInt32(worksheet.Cells[row, 7].Value) : 0,
+                                KomisyonSN = worksheet.Cells[row, 8].Value != null ? 
+                                    Convert.ToInt32(worksheet.Cells[row, 8].Value) : 0,
+                                KomisyonGunSN = worksheet.Cells[row, 9].Value != null ? 
+                                    Convert.ToInt32(worksheet.Cells[row, 9].Value) : 0,
                                 MYSPuan = worksheet.Cells[row, 10].Value != null ? 
                                     Math.Round(Convert.ToDecimal(worksheet.Cells[row, 10].Value), 2, MidpointRounding.AwayFromZero)
                                     .ToString("F2", new System.Globalization.CultureInfo("tr-TR")) : null,
                                 MYSSonuc = worksheet.Cells[row, 11].Value?.ToString(),
                                 MYSSonucAck = worksheet.Cells[row, 12].Value?.ToString(),
-
-                                KomisyonId = komisyon?.KomisyonId,
+                                MYSSSorulanSoruNo = worksheet.Cells[row, 13].Value != null ? 
+                                    Convert.ToInt32(worksheet.Cells[row, 13].Value.ToString()) : 0,
+                                
+                                KomisyonId = komisyon?.KomisyonId,                                
                                 MYSSKomisyonAdi = komisyon?.KomisyonAdi,
 
-                                //MulakatId yi ViewBag.Mulakatlar dan alma
-                                MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
 
-                                //AdayId yi TC ile eşleştirme
+                                MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
                                 AdayId = _adaylarBE.AdaylariGetir().Data
                                     .FirstOrDefault(a => a.TC == worksheet.Cells[row, 1].Value?.ToString())?.AdayId
                             };
@@ -741,26 +829,25 @@ namespace YOGBIS.UI.Controllers
                             }
 
                             islemYapilan++;
-                            UpdateProgress(sessionId, p =>
+                            _progressService.UpdateProgress(sessionId, p =>
                             {
                                 p.IslemYapilan = islemYapilan;
                                 p.BasariliEklenen = basariliEklenen;
-                                p.Yuzde = kayitEdilecekToplam > 0 ? (int)((double)islemYapilan / kayitEdilecekToplam * 100) : 100;
+                                p.Mesaj = $"MYSS bilgileri işleniyor... ({islemYapilan}/{toplamKayit})";
                             });
                             await Task.Delay(10);
                         }
 
                         // İşlem Tamamlandı
-                        UpdateProgress(sessionId, p =>
+                        _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Tamamlandi";
-                            p.IslemYapilan = kayitEdilecekToplam;
-                            p.Yuzde = 100;
-
+                            p.IslemYapilan = toplamKayit;
                             if (basariliEklenen > 0)
                             {
-                                p.Success = $"{basariliEklenen} adet kayıt başarıyla eklenmiştir.";
+                                p.Success = $"{basariliEklenen} adet MYSS bilgisi başarıyla eklenmiştir.";
                             }
+                            p.Mesaj = "İşlem tamamlandı";
                         });
 
                         await Task.Delay(500);
@@ -768,250 +855,23 @@ namespace YOGBIS.UI.Controllers
                         return Json(new { success = true });
                     }
                 }
-
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Excel'den aday yüklenirken hata oluştu: {Message}", ex.Message);
-                return Json(new { success = false, error = ex.Message });
+                _logger.LogError(ex, "MYSS bilgileri yükleme işlemi sırasında hata: {Message}", ex.Message);
+                _progressService.UpdateProgress(sessionId, p =>
+                {
+                    p.IslemAsamasi = "Hata";
+                    p.Error = "İşlem sırasında hata oluştu: " + ex.Message;
+                    p.Mesaj = "Hata oluştu!";
+                });
+                return Json(new { success = false });
             }
             finally
             {
-                lock (_lockObject)
-                {
-                    _progressData.Remove(sessionId);
-                }
+                _progressService.ResetProgress(sessionId);
             }
         }
         #endregion
-
-        #region AdayMYSSBilgileriniGetir
-        public IActionResult AdayMYSSBilgileriniGetir(string TC)
-        {
-            System.Diagnostics.Debug.WriteLine($"Controller - TC ile iletişim bilgileri sorgusu başladı: {TC}");
-            var result = _adaylarBE.AdayMYSSBilgileriniGetir(TC);
-
-            // Her durumda ViewComponent'i boş bir liste ile döndür
-            var data = (result.IsSuccess && result.Data != null && result.Data.Any()) ? result.Data : new List<AdayMYSSVM>();
-            System.Diagnostics.Debug.WriteLine($"Controller - {data.Count} adet iletişim verisi bulundu");
-            return ViewComponent("AdayMYSSBilgileri", data);
-        }
-        #endregion
-
-        #region AdayTYSBilgileriYukle
-        [System.Web.Mvc.HttpPost]
-        public async Task<IActionResult> AdayTYSBilgileriYukle(IFormFile file)
-        {
-
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirSelectedBox().Data;
-
-            var sessionId = HttpContext.Session.Id;
-            try
-            {
-                if (file == null || file.Length == 0)
-                {
-                    TempData["Error"] = "Lütfen bir dosya seçin!";
-                    return Json(new { success = false });
-                }
-
-                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-                if (user == null)
-                {
-                    return Json(new { success = false });
-                }
-
-                using (var stream = new MemoryStream())
-                {
-                    await file.CopyToAsync(stream);
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        var worksheet = package.Workbook.Worksheets[0];
-                        var rowCount = worksheet.Dimension?.Rows ?? 0;
-
-                        if (rowCount <= 1)
-                        {
-                            return Json(new { success = false });
-                        }
-
-                        var toplamKayit = rowCount - 1;
-                        var islemYapilan = 0;
-
-                        UpdateProgress(sessionId, p =>
-                        {
-                            p.IslemAsamasi = "Baslatiliyor";
-                            p.ToplamKayit = toplamKayit;
-                            p.IslemYapilan = 0;
-                            p.Yuzde = 0;
-                            p.BasariliEklenen = 0;
-                        });
-
-                        await Task.Delay(500);
-
-                        // AŞAMA 1: Kayıt İşlemi
-                        islemYapilan = 0;
-                        var kayitEdilecekToplam = toplamKayit;
-
-                        UpdateProgress(sessionId, p =>
-                        {
-                            p.IslemAsamasi = "Kayit";
-                            p.IslemYapilan = 0;
-                            p.ToplamKayit = kayitEdilecekToplam;
-                            p.Yuzde = 0;
-                        });
-
-                        var basariliEklenen = 0;
-
-                        for (int row = 2; row <= rowCount; row++)
-                        {
-                            var komisyon = _komisyonlarBE.KomisyonlariGetir().Data
-                                .FirstOrDefault(d => d.KomisyonSiraNo == Convert.ToInt32(worksheet.Cells[row, 7].Value?.ToString()));
-
-                            var aday = new AdayTYSVM
-                            {
-                                TC = worksheet.Cells[row, 1].Value?.ToString().Trim(),
-                                TYSTarih = worksheet.Cells[row, 2].Value?.ToString().Trim(),
-                                TYSSaat = worksheet.Cells[row, 3].Value?.ToString().Trim(),
-                                TYSMulakatYer = worksheet.Cells[row, 4].Value?.ToString().Trim(),
-                                TYSDurumu = worksheet.Cells[row, 5].Value?.ToString().Trim(),
-                                TYSDurumAck = worksheet.Cells[row, 6].Value?.ToString().Trim(),
-                                TYSKomisyonSiraNo = worksheet.Cells[row, 7].Value?.ToString().Trim(),
-                                KomisyonSN = Convert.ToInt32(worksheet.Cells[row, 8].Value?.ToString().Trim()),
-                                KomisyonGunSN = Convert.ToInt32(worksheet.Cells[row, 9].Value?.ToString().Trim()),
-                                TYSPuan = worksheet.Cells[row, 10].Value != null ? 
-                                    Math.Round(Convert.ToDecimal(worksheet.Cells[row, 10].Value), 2, MidpointRounding.AwayFromZero)
-                                    .ToString("F2", new System.Globalization.CultureInfo("tr-TR")) : null,
-                                TYSSonuc = worksheet.Cells[row, 11].Value?.ToString().Trim(),
-                                TYSSonucAck = worksheet.Cells[row, 12].Value?.ToString().Trim(),
-
-                                KomisyonId = komisyon?.KomisyonId,
-                                TYSKomisyonAdi = komisyon?.KomisyonAdi,
-
-                                //MulakatId yi ViewBag.Mulakatlar dan alma
-                                MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
-
-                                //AdayId yi TC ile eşleştirme
-                                AdayId = _adaylarBE.AdaylariGetir().Data
-                                    .FirstOrDefault(a => a.TC == worksheet.Cells[row, 1].Value?.ToString())?.AdayId
-                            };
-
-                            var result = _adaylarBE.AdayTYSBilgileriEkle(aday, user);
-                            if (result.IsSuccess)
-                            {
-                                basariliEklenen++;
-                            }
-
-                            islemYapilan++;
-                            UpdateProgress(sessionId, p =>
-                            {
-                                p.IslemYapilan = islemYapilan;
-                                p.BasariliEklenen = basariliEklenen;
-                                p.Yuzde = kayitEdilecekToplam > 0 ? (int)((double)islemYapilan / kayitEdilecekToplam * 100) : 100;
-                            });
-                            await Task.Delay(10);
-                        }
-
-                        // İşlem Tamamlandı
-                        UpdateProgress(sessionId, p =>
-                        {
-                            p.IslemAsamasi = "Tamamlandi";
-                            p.IslemYapilan = kayitEdilecekToplam;
-                            p.Yuzde = 100;
-
-                            if (basariliEklenen > 0)
-                            {
-                                p.Success = $"{basariliEklenen} adet kayıt başarıyla eklenmiştir.";
-                            }
-                        });
-
-                        await Task.Delay(500);
-
-                        return Json(new { success = true });
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Excel'den aday yüklenirken hata oluştu: {Message}", ex.Message);
-                return Json(new { success = false, error = ex.Message });
-            }
-            finally
-            {
-                lock (_lockObject)
-                {
-                    _progressData.Remove(sessionId);
-                }
-            }
-        }
-        #endregion
-
-        #region AdayTYSBilgileriniGetir
-        public IActionResult AdayTYSBilgileriniGetir(string TC)
-        {
-            System.Diagnostics.Debug.WriteLine($"Controller - TC ile iletişim bilgileri sorgusu başladı: {TC}");
-            var result = _adaylarBE.AdayTYSBilgileriniGetir(TC);
-
-            // Her durumda ViewComponent'i boş bir liste ile döndür
-            var data = (result.IsSuccess && result.Data != null && result.Data.Any()) ? result.Data : new List<AdayTYSVM>();
-            System.Diagnostics.Debug.WriteLine($"Controller - {data.Count} adet iletişim verisi bulundu");
-            return ViewComponent("AdayTYSBilgileri", data);
-        }
-        #endregion
-
-        #region GetAdliSicilBelge
-        [HttpGet]
-        public IActionResult GetAdliSicilBelge(Guid id)
-        {
-            try
-            {
-                var result = _adaylarBE.AdayBasvuruBilgileriniGetirById(id);
-                if (result.IsSuccess && result.Data?.AdliSicilBelge != null)
-                {
-                    var base64String = Convert.ToBase64String(result.Data.AdliSicilBelge);
-                    return Json(new { isSuccess = true, data = base64String });
-                }
-
-                return Json(new { isSuccess = false, message = "Belge bulunamadı" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { isSuccess = false, message = "Belge gösterilirken hata oluştu: " + ex.Message });
-            }
-        }
-        #endregion
-
-        #region TCKimlikNoDogrula
-        private bool TCKimlikNoDogrula(string tcKimlikNo)
-        {
-            if (string.IsNullOrEmpty(tcKimlikNo) || tcKimlikNo.Length != 11)
-                return false;
-
-            int[] digits = tcKimlikNo.Select(c => c - '0').ToArray();
-
-            // İlk hane 0 olamaz
-            if (digits[0] == 0)
-                return false;
-
-            // 1, 3, 5, 7, 9. hanelerin toplamının 7 katından, 2, 4, 6, 8. hanelerin toplamı çıkartıldığında,
-            // elde edilen sonucun 10'a bölümünden kalan, yani Mod10'u 10. haneyi vermelidir.
-            int tekler = digits[0] + digits[2] + digits[4] + digits[6] + digits[8];
-            int ciftler = digits[1] + digits[3] + digits[5] + digits[7];
-
-            int hane10 = (tekler * 7 - ciftler) % 10;
-            if (hane10 != digits[9])
-                return false;
-
-            // 1'den 10'uncu haneye kadar olan rakamların toplamından elde edilen sonucun
-            // 10'a bölümünden kalan, yani Mod10'u 11. haneyi vermelidir.
-            int toplam = digits.Take(10).Sum();
-            int hane11 = toplam % 10;
-            if (hane11 != digits[10])
-                return false;
-
-            return true;
-        }
-        #endregion
-
-
     }
 }

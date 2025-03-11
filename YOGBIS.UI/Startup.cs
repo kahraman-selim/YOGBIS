@@ -22,7 +22,8 @@ using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DataContext;
 using YOGBIS.Data.DbModels;
 using YOGBIS.Data.Implementaion;
-using MySql.Data.EntityFrameworkCore.Infrastructure.Internal; 
+using MySql.Data.EntityFrameworkCore.Infrastructure.Internal;
+using YOGBIS.BusinessEngine.Implementation;
 #endregion
 
 namespace YOGBIS.UI
@@ -87,8 +88,11 @@ namespace YOGBIS.UI
             services.AddScoped<IUlkeTercihleriBE, UlkeTercihleriBE>();
             services.AddScoped<IUlkeTercihBranslarBE, UlkeTercihBranslarBE>();
 
+            services.AddScoped<IProgressService, ProgressService>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(Maps));
+            
             #endregion
 
 

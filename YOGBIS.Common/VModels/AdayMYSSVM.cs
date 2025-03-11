@@ -28,7 +28,7 @@ namespace YOGBIS.Common.VModels
         public string MYSSDurumAck { get; set; }
 
         [Display(Name = "MYSS Komisyon Sıra No")]
-        public string MYSSKomisyonSiraNo { get; set; }
+        public int MYSSKomisyonSiraNo { get; set; }
 
         [Display(Name = "MYSS Komisyon Adı")]
         public string MYSSKomisyonAdi { get; set; }
@@ -67,7 +67,7 @@ namespace YOGBIS.Common.VModels
         public string MYSSonucAck { get; set; }
 
         [Display(Name = "MYSS Sorulan Soru No")]
-        public string MYSSSorulanSoruNo { get; set; }
+        public int MYSSSorulanSoruNo { get; set; }
 
         [Display(Name = "Sınav İptal")]
         public bool SinavIptal { get; set; }
