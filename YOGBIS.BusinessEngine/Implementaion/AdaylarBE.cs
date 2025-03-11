@@ -879,8 +879,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     data.AdayId = model.AdayId.Value;
                     data.MulakatId = model.MulakatId.Value;
                     data.KaydedenId = user.LoginId;
-                    data.GuncelleyenId = user.LoginId;
-                    data.GuncellemeTarihi = DateTime.Now;
 
                     _unitOfWork.adayMYSSRepository.Update(data);
                     _unitOfWork.Save();
@@ -1225,8 +1223,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                                   AdayId = a.AdayId,
                                   MulakatId = a.MulakatId,
                                   KaydedenId = a.KaydedenId,
-                                  GuncelleyenAdi = a.GuncelleyenKullanici != null ? a.GuncelleyenKullanici.Ad : null,
-                                  GuncellemeTarihi = a.GuncellemeTarihi
+
                               }).ToList();
 
                 if (adaylar != null && adaylar.Any())
