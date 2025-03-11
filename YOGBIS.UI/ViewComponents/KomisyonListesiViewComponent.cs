@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 using YOGBIS.BusinessEngine.Contracts;
 
 namespace YOGBIS.UI.ViewComponents
@@ -12,15 +13,20 @@ namespace YOGBIS.UI.ViewComponents
         {
             _komisyonlarBE = komisyonlarBE;
         }
-        public async Task<IViewComponentResult> InvokeAsync()
-        {
 
-            var requestmodel = _komisyonlarBE.KomisyonlariGetir();
+        public IViewComponentResult Invoke(Guid? mulakatId = null)
+        {
+            if (!mulakatId.HasValue)
+            {
+                return View(null);
+            }
+
+            var requestmodel = _komisyonlarBE.KomisyonlariGetir(mulakatId.Value.ToString());
             if (requestmodel.IsSuccess)
             {
                 return View(requestmodel.Data);
             }
-            return View();
+            return View(null);
         }
     }
 }

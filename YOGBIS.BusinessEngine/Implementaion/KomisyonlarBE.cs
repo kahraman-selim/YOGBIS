@@ -34,45 +34,68 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region KomisyonlariGetir
-        public Result<List<KomisyonlarVM>> KomisyonlariGetir()
+        public Result<List<KomisyonlarVM>> KomisyonlariGetir(string mulakatId = null)
         {
-            var data = _unitOfWork.komisyonlarRepository.GetAll().
-                OrderBy(x => x.KomisyonSiraNo)
-                .ThenBy(y => y.KomisyonUyeSiraNo)
-                .ThenByDescending(z=>z.KomisyonGorevDurum);
-            if (data != null)
+            try
             {
-                List<KomisyonlarVM> returnData = new List<KomisyonlarVM>();
+                _logger.LogInformation($"Komisyonlar getiriliyor. MulakatId: {mulakatId ?? "Tümü"}");
 
-                foreach (var item in data)
+                var query = _unitOfWork.komisyonlarRepository.GetAll();
+
+                if (!string.IsNullOrEmpty(mulakatId))
                 {
-                    returnData.Add(new KomisyonlarVM()
-                    {
-                        KomisyonId = item.KomisyonId,
-                        KomisyonAdi = item.KomisyonAdi,
-                        KomisyonSiraNo = item.KomisyonSiraNo,
-                        KomisyonUyeAdiSoyadi = item.KomisyonUyeAdiSoyadi,
-                        KomisyonUyeDurum = item.KomisyonUyeDurum,
-                        KomisyonGorevDurum = item.KomisyonGorevDurum,
-                        KomisyonUyeGorevi = item.KomisyonUyeGorevi,
-                        KomisyonUyeGorevYeri = item.KomisyonUyeGorevYeri,
-                        KomisyonUyeSiraNo = item.KomisyonUyeSiraNo,
-                        KomisyoUyeStatu = item.KomisyoUyeStatu,
-                        KomisyonUlkeGrubu = item.KomisyonUlkeGrubu,
-                        KomisyoUyeTel = item.KomisyoUyeTel,
-                        KomisyonUyeEPosta = item.KomisyonUyeEPosta,
-                        KomisyonGorevBaslamaTarihi = item.KomisyonGorevBaslamaTarihi,
-                        KomisyonGorevBitisTarihi = item.KomisyonGorevBitisTarihi,
-                        KayitTarihi = item.KayitTarihi,
-                        KaydedenId = item.KaydedenId,
-                        MulakatId = item.MulakatId
-                    });
+                    var mulakatGuid = Guid.Parse(mulakatId);
+                    query = query.Where(k => k.MulakatId == mulakatGuid);
                 }
-                return new Result<List<KomisyonlarVM>>(true, ResultConstant.RecordFound, returnData);
+
+                var data = query
+                    .OrderBy(x => x.KomisyonSiraNo)
+                    .ThenBy(y => y.KomisyonUyeSiraNo)
+                    .ThenByDescending(z => z.KomisyonGorevDurum)
+                    .ToList();
+
+                if (data != null && data.Any())
+                {
+                    List<KomisyonlarVM> returnData = new List<KomisyonlarVM>();
+
+                    foreach (var item in data)
+                    {
+                        returnData.Add(new KomisyonlarVM()
+                        {
+                            KomisyonId = item.KomisyonId,
+                            KomisyonAdi = item.KomisyonAdi,
+                            KomisyonSiraNo = item.KomisyonSiraNo,
+                            KomisyonUyeAdiSoyadi = item.KomisyonUyeAdiSoyadi,
+                            KomisyonUyeDurum = item.KomisyonUyeDurum,
+                            KomisyonGorevDurum = item.KomisyonGorevDurum,
+                            KomisyonUyeGorevi = item.KomisyonUyeGorevi,
+                            KomisyonUyeGorevYeri = item.KomisyonUyeGorevYeri,
+                            KomisyonUyeSiraNo = item.KomisyonUyeSiraNo,
+                            KomisyoUyeStatu = item.KomisyoUyeStatu,
+                            KomisyonUlkeGrubu = item.KomisyonUlkeGrubu,
+                            KomisyoUyeTel = item.KomisyoUyeTel,
+                            KomisyonUyeEPosta = item.KomisyonUyeEPosta,
+                            KomisyonGorevBaslamaTarihi = item.KomisyonGorevBaslamaTarihi,
+                            KomisyonGorevBitisTarihi = item.KomisyonGorevBitisTarihi,
+                            KayitTarihi = item.KayitTarihi,
+                            KaydedenId = item.KaydedenId,
+                            MulakatId = item.MulakatId
+                        });
+                    }
+
+                    _logger.LogInformation($"Komisyonlar başarıyla getirildi. Toplam kayıt: {returnData.Count}");
+                    return new Result<List<KomisyonlarVM>>(true, ResultConstant.RecordFound, returnData);
+                }
+                else
+                {
+                    _logger.LogWarning("Komisyon kaydı bulunamadı");
+                    return new Result<List<KomisyonlarVM>>(false, ResultConstant.RecordNotFound);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return new Result<List<KomisyonlarVM>>(false, ResultConstant.RecordNotFound);
+                _logger.LogError($"Komisyonlar getirilirken hata oluştu: {ex.Message}");
+                return new Result<List<KomisyonlarVM>>(false, "Komisyonlar getirilirken bir hata oluştu");
             }
         }
         #endregion

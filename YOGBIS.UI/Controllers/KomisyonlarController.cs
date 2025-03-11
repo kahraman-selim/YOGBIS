@@ -144,23 +144,44 @@ namespace YOGBIS.UI.Controllers
 
         #region Guncelle
         [Route("KO10002", Name = "KomisyonlarGuncelleRoute")]
-        public async Task<ActionResult> Guncelle(Guid? id)
+        public async Task<ActionResult> Guncelle(Guid? id, Guid? mulakatId)
         {
-
-            var komisyon = await _kullaniciBE.KomisyonGetir();
-            ViewBag.Komisyonlar = komisyon.Data;
-            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
-
-            if (id != null)
+            try
             {
-                var data = _komisyonlarBE.KomisyonGetir((Guid)id);
-                return View(data.Data);
-            }
-            else
-            {
-                return View();
-            }
+                _logger.LogInformation($"Komisyon güncelleme sayfası açılıyor. KomisyonId: {id}, MulakatId: {mulakatId}");
 
+                var komisyon = await _kullaniciBE.KomisyonGetir();
+                ViewBag.Komisyonlar = komisyon.Data;
+                ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetir().Data;
+                ViewBag.MulakatId = mulakatId;
+
+                if (id != null)
+                {
+                    var data = _komisyonlarBE.KomisyonGetir((Guid)id);
+                    if (data.IsSuccess)
+                    {
+                        return View(data.Data);
+                    }
+                    else
+                    {
+                        _logger.LogWarning($"Komisyon bulunamadı. KomisyonId: {id}");
+                        TempData["error"] = "Komisyon bulunamadı";
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    _logger.LogWarning("Güncellenecek komisyon seçilmedi");
+                    TempData["error"] = "Güncellenecek komisyon seçilmedi";
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Komisyon güncelleme sayfası açılırken hata oluştu: {ex.Message}");
+                TempData["error"] = "İşlem sırasında bir hata oluştu";
+                return RedirectToAction("Index");
+            }
         }
         #endregion
 
@@ -484,6 +505,22 @@ namespace YOGBIS.UI.Controllers
                 _logger.LogError($"Durum değiştirme hatası: {ex.Message}, StackTrace: {ex.StackTrace}");
                 TempData["error"] = "İşlem sırasında bir hata oluştu";
                 return RedirectToAction("Index");
+            }
+        }
+        #endregion
+
+        #region KomisyonListesiPartial
+        public IActionResult KomisyonListesiPartial(Guid? mulakatId)
+        {
+            try
+            {
+                _logger.LogInformation($"Komisyon listesi getiriliyor. MulakatId: {mulakatId}");
+                return ViewComponent("KomisyonListesi", new { mulakatId });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Komisyon listesi getirilirken hata oluştu: {ex.Message}");
+                return Json(new { success = false, message = "Komisyon listesi getirilirken bir hata oluştu" });
             }
         }
         #endregion
