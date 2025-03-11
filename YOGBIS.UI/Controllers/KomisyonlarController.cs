@@ -107,12 +107,12 @@ namespace YOGBIS.UI.Controllers
                 if (KomisyonId != null)
                 {
                     var data = _komisyonlarBE.KomisyonGuncelle(model, user);
-                    if (!data.IsSuccess)
-                    {
-                        _logger.LogWarning($"Komisyon güncellenemedi: {data.Message}");
-                        TempData["error"] = $"Komisyon güncellenemedi: {data.Message}";
-                        return RedirectToAction("Index");
-                    }
+                    //if (!data.IsSuccess)
+                    //{
+                    //    _logger.LogWarning($"Komisyon güncellenemedi: {data.Message}");
+                    //    TempData["error"] = $"Komisyon güncellenemedi: {data.Message}";
+                    //    return RedirectToAction("Index");
+                    //}
 
                     _logger.LogInformation($"Komisyon başarıyla güncellendi: {model.KomisyonAdi}");
                     TempData["success"] = "Komisyon başarıyla güncellendi";
@@ -121,12 +121,12 @@ namespace YOGBIS.UI.Controllers
                 else
                 {
                     var data = _komisyonlarBE.KomisyonEkle(model, user);
-                    if (!data.IsSuccess)
-                    {
-                        _logger.LogWarning($"Komisyon eklenemedi: {data.Message}");
-                        TempData["error"] = $"Komisyon eklenemedi: {data.Message}";
-                        return RedirectToAction("Index");
-                    }
+                    //if (!data.IsSuccess)
+                    //{
+                    //    _logger.LogWarning($"Komisyon eklenemedi: {data.Message}");
+                    //    TempData["error"] = $"Komisyon eklenemedi: {data.Message}";
+                    //    return RedirectToAction("Index");
+                    //}
 
                     _logger.LogInformation($"Komisyon başarıyla eklendi: {model.KomisyonAdi}");
                     TempData["success"] = "Komisyon başarıyla eklendi";
@@ -450,6 +450,39 @@ namespace YOGBIS.UI.Controllers
                 _logger.LogError($"Örnek Excel oluşturma hatası: {ex.Message}");
                 _logger.LogError($"Stack trace: {ex.StackTrace}");
                 TempData["Error"] = "Örnek Excel dosyası oluşturulurken bir hata oluştu!";
+                return RedirectToAction("Index");
+            }
+        }
+        #endregion
+
+        #region DurumDegistir
+        [HttpPost]
+        public async Task<IActionResult> DurumDegistir(Guid KomisyonId)
+        {
+            try
+            {
+                _logger.LogInformation($"Durum değiştirme isteği alındı: KomisyonId={KomisyonId}");
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                
+                var result = _komisyonlarBE.DurumDegistir(KomisyonId, user);
+
+                if (result.IsSuccess)
+                {
+                    _logger.LogInformation($"Komisyon durumu başarıyla değiştirildi: KomisyonId={KomisyonId}");
+                    TempData["success"] = result.Message;
+                }
+                else
+                {
+                    _logger.LogWarning($"Komisyon durumu değiştirilemedi: {result.Message}");
+                    TempData["error"] = result.Message;
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Durum değiştirme hatası: {ex.Message}, StackTrace: {ex.StackTrace}");
+                TempData["error"] = "İşlem sırasında bir hata oluştu";
                 return RedirectToAction("Index");
             }
         }

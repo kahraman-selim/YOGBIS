@@ -1,4 +1,4 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.KomisyonlarVM>
+@model IEnumerable<YOGBIS.Common.VModels.KomisyonlarVM>
 
 
 <div class="card mb-3">
@@ -51,23 +51,24 @@
                                 {
                                     <td style="color:red" class="font-weight-bold">Yedek</td>
                                 }
+                                <td>
+                                    <form asp-action="DurumDegistir" asp-controller="Komisyonlar" method="post">
+                                        <input type="hidden" name="KomisyonId" value="@item.KomisyonId" />
+                                        @if (item.KomisyonGorevDurum==true)
+                                        {
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="fas fa-check-circle"></i> Aktif
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-times-circle"></i> Pasif
+                                            </button>
+                                        }
+                                    </form>
+                                </td>
 
-                                @if (@item.KomisyonGorevDurum == true)
-                                {
-                                    <td>
-                                        <a asp-controller="Komisyonlar" asp-action="DurumDegistir" asp-route-id="@item.KomisyonId">
-                                            <b class="text-primary">Aktif</b>
-                                        </a>
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td>
-                                        <a asp-controller="Komisyonlar" asp-action="DurumDegistir" asp-route-id="@item.KomisyonId">
-                                            <b class="text-danger">Pasif</b>
-                                        </a>
-                                    </td>                                   
-                                }
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-danger btnSil" data-id="@item.KomisyonId">
                                         <i class="fas fa-trash text-white"></i>
@@ -81,10 +82,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
