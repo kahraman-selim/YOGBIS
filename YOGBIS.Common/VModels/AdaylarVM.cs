@@ -54,6 +54,8 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Cinsiyet")]
         public string Cinsiyet { get; set; }
 
+        public int MulakatYil { get; set; }
+
         public Guid? MulakatId { get; set; }
         public virtual MulakatlarVM Mulakatlar { get; set; }
 

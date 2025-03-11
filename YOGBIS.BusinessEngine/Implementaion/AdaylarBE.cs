@@ -58,14 +58,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         TC=item.TC,
                         Ad=item.Ad,
                         Soyad=item.Soyad,
-                        //DereceAdi=item.DereceAdi,
-                        //UlkeTercihi=item.UlkeTercihi,
-                        //Brans=item.Brans,
-                        //MYYSTarihi=item.MYYSTarihi, 
-                        //MYSSSaat=item.MYSSSaat,
-                        //MYSSKomisyonAdi=item.MYSSKomisyonAdi,
-                        //KomisyonSN=item.KomisyonSN,
-                        //KomisyonGunSN = item.KomisyonGunSN,                       
+                        MulakatYil = item.MulakatYil,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
@@ -100,6 +93,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     TC=item.TC,
                     Ad=item.Ad,
                     Soyad=item.Soyad,
+                    MulakatYil = item.MulakatYil,
                     KayitTarihi = item.KayitTarihi,
                     KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                     KaydedenAdi = item.Kullanici != null ?
@@ -136,14 +130,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     Adaylar.TC=data.TC;
                     Adaylar.Ad=data.Ad;
                     Adaylar.Soyad = data.Soyad;
-                    //Adaylar.DereceAdi = data.DereceAdi;
-                    //Adaylar.UlkeTercihi = data.UlkeTercihi;
-                    //Adaylar.Brans = data.Brans;
-                    //Adaylar.MYYSTarihi = data.MYYSTarihi;
-                    //Adaylar.MYSSSaat = data.MYSSSaat;
-                    //Adaylar.MYSSKomisyonAdi = data.MYSSKomisyonAdi;
-                    //Adaylar.KomisyonSN = data.KomisyonSN;
-                    //Adaylar.KomisyonGunSN = data.KomisyonGunSN;
+                    Adaylar.MulakatYil = data.MulakatYil;
                     Adaylar.KayitTarihi=data.KayitTarihi;
                     Adaylar.KaydedenId = data.KaydedenId;
                     Adaylar.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
@@ -272,14 +259,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         TC = item.TC,
                         Ad = item.Ad,
                         Soyad = item.Soyad,
-                        //DereceAdi = item.DereceAdi,
-                        //UlkeTercihi = item.UlkeTercihi,
-                        //Brans = item.Brans,
-                        //MYYSTarihi = item.MYYSTarihi,
-                        //MYSSSaat = item.MYSSSaat,
-                        //MYSSKomisyonAdi = item.MYSSKomisyonAdi,
-                        //KomisyonSN = item.KomisyonSN,
-                        //KomisyonGunSN = item.KomisyonGunSN,
+                        MulakatYil = item.MulakatYil,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,

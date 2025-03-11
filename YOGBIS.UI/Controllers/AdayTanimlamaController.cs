@@ -265,6 +265,7 @@ namespace YOGBIS.UI.Controllers
                                 DogumTarihi2 = worksheet.Cells[row, 6].Value?.ToString()?.Replace("/", "."),
                                 DogumYeri = worksheet.Cells[row, 7].Value?.ToString(),
                                 Cinsiyet = worksheet.Cells[row, 8].Value?.ToString(),
+                                MulakatYil=Convert.ToInt32(worksheet.Cells[row, 9].Value),
                             };
 
                             var result = _adaylarBE.AdayEkle(aday, user);
