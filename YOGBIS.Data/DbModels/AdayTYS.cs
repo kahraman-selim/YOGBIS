@@ -11,9 +11,7 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public Guid Id { get; set; }
         public string TC { get; set; }
-        
-        [Column(TypeName = "datetime2")]
-        public DateTime? TYSTarih { get; set; }
+        public string TYSTarih { get; set; }
         
         public string TYSSaat { get; set; }
         public string TYSMulakatYer { get; set; }
@@ -52,10 +50,8 @@ namespace YOGBIS.Data.DbModels
         [ForeignKey("MulakatId")]
         public Mulakatlar Mulakatlar { get; set; }
         
-        public string KaydedenId { get; set; }
-        
-        [ForeignKey("KaydedenId")]
-        [InverseProperty("KaydettigiTYSler")]
+        public string KaydedenId { get; set; }        
+        [ForeignKey("KaydedenId")]       
         public Kullanici Kullanici { get; set; }   
         
     }

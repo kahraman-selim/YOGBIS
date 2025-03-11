@@ -25,14 +25,8 @@ namespace YOGBIS.Data.DbModels
         public virtual ICollection<AdayGorevKaydi> AdayGorevKaydi { get; set; }
         public virtual ICollection<AdayIletisimBilgileri> AdayIletisimBilgileri { get; set; }
         public virtual ICollection<Adaylar> Adaylar { get; set; }
-        [InverseProperty("Kullanici")]
-        public virtual ICollection<AdayMYSS> KaydettigiMYSSler { get; set; }
-        [InverseProperty("GuncelleyenKullanici")]
-        public virtual ICollection<AdayMYSS> GuncelledigiMYSSler { get; set; }
-        [InverseProperty("Kullanici")]
-        public virtual ICollection<AdayTYS> KaydettigiTYSler { get; set; }
-        [InverseProperty("GuncelleyenKullanici")]
-        public virtual ICollection<AdayTYS> GuncelledigiTYSler { get; set; }
+        public virtual ICollection<AdayMYSS> AdayMYSS { get; set; }      
+        public virtual ICollection<AdayTYS> AdayTYS { get; set; }
         public virtual ICollection<AdaySinavNotlar> AdayNot { get; set; }
         public virtual ICollection<Branslar> Branslar { get; set; }
         public virtual ICollection<DosyaGaleri> DosyaGaleri { get; set; }

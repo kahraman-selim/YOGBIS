@@ -728,8 +728,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         Id = data.Id,
                         TC = data.TC,
-                        MYSSTarih = data.MYSSTarih.HasValue ? 
-                            data.MYSSTarih.Value.ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                        MYSSTarih = data.MYSSTarih,
                         MYSSSaat = data.MYSSSaat,
                         MYSSMulakatYer = data.MYSSMulakatYer,
                         MYSSDurum = data.MYSSDurum,
@@ -850,7 +849,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 if (data != null)
                 {
                     data.TC = model.TC;
-                    data.MYSSTarih = DateTime.ParseExact(model.MYSSTarih, "dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR"));
+                    data.MYSSTarih = model.MYSSTarih;
                     data.MYSSSaat = model.MYSSSaat;
                     data.MYSSMulakatYer = model.MYSSMulakatYer;
                     data.MYSSDurum = model.MYSSDurum;
@@ -913,8 +912,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                               select new AdayMYSSVM
                               {
                                   TC = a.TC,
-                                  MYSSTarih = a.MYSSTarih.HasValue ? 
-                                      a.MYSSTarih.Value.ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                                  MYSSTarih = a.MYSSTarih,
                                   MYSSSaat = a.MYSSSaat,
                                   MYSSMulakatYer = a.MYSSMulakatYer,
                                   MYSSDurum = a.MYSSDurum,
@@ -1010,8 +1008,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         Id = data.Id,
                         TC = data.TC,
-                        TYSTarih = data.TYSTarih.HasValue ? 
-                            data.TYSTarih.Value.ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                        TYSTarih = data.TYSTarih,
                         TYSSaat = data.TYSSaat,
                         TYSMulakatYer = data.TYSMulakatYer,
                         TYSDurumu = data.TYSDurumu,
@@ -1137,8 +1134,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         Id = data.Id,
                         TC = data.TC,
-                        TYSTarih = data.TYSTarih.HasValue ? 
-                            data.TYSTarih.Value.ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                        TYSTarih = data.TYSTarih,
                         TYSSaat = data.TYSSaat,
                         TYSMulakatYer = data.TYSMulakatYer,
                         TYSDurumu = data.TYSDurumu,
@@ -1196,8 +1192,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                               select new AdayTYSVM
                               {
                                   TC = a.TC,
-                                  TYSTarih = a.TYSTarih.HasValue ? 
-                                      a.TYSTarih.Value.ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                                  TYSTarih = a.TYSTarih,
                                   TYSSaat = a.TYSSaat,
                                   TYSMulakatYer = a.TYSMulakatYer,
                                   TYSDurumu = a.TYSDurumu,

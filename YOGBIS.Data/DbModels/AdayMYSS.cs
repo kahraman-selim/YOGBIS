@@ -10,10 +10,9 @@ namespace YOGBIS.Data.DbModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
-        public string TC { get; set; }
-        
-        [Column(TypeName = "datetime2")]
-        public DateTime? MYSSTarih { get; set; }
+        public string TC { get; set; }       
+
+        public string MYSSTarih { get; set; }
         
         public string MYSSSaat { get; set; }
         public string MYSSMulakatYer { get; set; }
@@ -52,10 +51,8 @@ namespace YOGBIS.Data.DbModels
         [ForeignKey("MulakatId")]
         public Mulakatlar Mulakatlar { get; set; }
         
-        public string KaydedenId { get; set; }
-        
-        [ForeignKey("KaydedenId")]
-        [InverseProperty("KaydettigiMYSSler")]
+        public string KaydedenId { get; set; }        
+        [ForeignKey("KaydedenId")]        
         public Kullanici Kullanici { get; set; }
     }
 }
