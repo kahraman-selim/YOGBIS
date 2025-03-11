@@ -1,13 +1,19 @@
-﻿namespace YOGBIS.Common.ResultModels
+namespace YOGBIS.Common.ResultModels
 {
     public class Result<T> : IResult
     {
         public bool IsSuccess { get ; set ; }
+        public bool Success { get; set; }
         public string Message { get ; set ; }
-
         public T Data { get; set; }
         public int TotalCount { get; set; }
 
+        public Result()
+        {
+            Success = false;
+            Message = string.Empty;
+            Data = default(T);
+        }
         public Result(bool isSuccess, string message, string komisyonId) : this(isSuccess,message, default(T))
         {
 

@@ -54,9 +54,9 @@ namespace YOGBIS.UI.Models
         public string MYSSonuc { get; set; }
         public string MYSSonucAck { get; set; }
         public int MYSSSorulanSoruNo { get; set; }
-        public Guid KomisyonId { get; set; }
+        public Guid? KomisyonId { get; set; }
         public string MYSSKomisyonAdi { get; set; }
-        public Guid MulakatId { get; set; }
-        public Guid AdayId { get; set; }
+        public Guid? MulakatId { get; set; }
+        public Guid? AdayId { get; set; }
     }
 }

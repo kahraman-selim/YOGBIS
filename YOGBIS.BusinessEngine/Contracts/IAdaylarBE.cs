@@ -27,6 +27,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<AdayMYSSVM> AdayMYSSBilgileriEkle(AdayMYSSVM model, SessionContext user);
         Result<List<AdayMYSSVM>> AdayMYSSBilgileriniGetir(string TC);
         Result<AdayMYSSVM> AdayMYSSBilgileriniGetirById(Guid id);
+        Result<List<AdayMYSSVM>> AdayMYSSBilgileriGetir();
         Result<AdayTYSVM> AdayTYSBilgileriEkle(AdayTYSVM model, SessionContext user);
         Result<List<AdayTYSVM>> AdayTYSBilgileriniGetir(string TC);
         Result<AdayTYSVM> AdayTYSBilgileriniGetirById(Guid id);

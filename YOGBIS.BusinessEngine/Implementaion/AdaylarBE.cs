@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.ResultModels;
@@ -144,7 +146,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     //Adaylar.KomisyonGunSN = data.KomisyonGunSN;
                     Adaylar.KayitTarihi=data.KayitTarihi;
                     Adaylar.KaydedenId = data.KaydedenId;
-                    Adaylar.KaydedenAdi = data.Kullanici.Ad + " " + data.Kullanici.Soyad;
+                    Adaylar.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
 
 
                     return new Result<AdaylarVM>(true, ResultConstant.RecordFound, Adaylar);
@@ -726,25 +728,26 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         Id = data.Id,
                         TC = data.TC,
-                        MYSSTarih = data.MYSSTarih,
+                        MYSSTarih = data.MYSSTarih.HasValue ? 
+                            data.MYSSTarih.Value.ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR")) : null,
                         MYSSSaat = data.MYSSSaat,
                         MYSSMulakatYer = data.MYSSMulakatYer,
                         MYSSDurum = data.MYSSDurum,
                         MYSSDurumAck = data.MYSSDurumAck,
-                        MYSSKomisyonSiraNo = Convert.ToInt32(data.MYSSKomisyonSiraNo.ToString()),
-                        MYSSKomisyonAdi = data.MYSSKomisyonAdi,
-                        KomisyonId = data.KomisyonId,
+                        MYSSKomisyonSiraNo = data.MYSSKomisyonSiraNo,
                         KomisyonSN = data.KomisyonSN,
                         KomisyonGunSN = data.KomisyonGunSN,
                         CagriDurum = data.CagriDurum ?? false,
                         KabulDurum = data.KabulDurum ?? false,
                         SinavDurum = data.SinavDurum ?? false,
                         SinavaGelmedi = data.SinavaGelmedi ?? false,
-                        SinavaGelmediAck = data.SinavGelmediAck,
-                        MYSPuan = data.MYSPuan,
+                        SinavaGelmediAck = data.SinavaGelmediAck,
+                        MYSPuan = data.MYSPuan.HasValue ? 
+                            Math.Round(data.MYSPuan.Value, 2, MidpointRounding.AwayFromZero)
+                            .ToString("F2", CultureInfo.GetCultureInfo("tr-TR")) : null,
                         MYSSonuc = data.MYSSonuc,
                         MYSSonucAck = data.MYSSonucAck,
-                        MYSSSorulanSoruNo = Convert.ToInt32(data.MYSSSorulanSoruNo.ToString()),
+                        MYSSSorulanSoruNo = data.MYSSSorulanSoruNo,
                         SinavIptal = data.SinavIptal ?? false,
                         SinavIptalAck = data.SinavIptalAck,
                         AdayId = data.AdayId,
@@ -837,6 +840,127 @@ namespace YOGBIS.BusinessEngine.Implementaion
         } 
         #endregion
 
+        #region AdayMYSSBilgileriGuncelle
+        public Result<AdayMYSSVM> AdayMYSSBilgileriGuncelle(AdayMYSSVM model, SessionContext user)
+        {
+            var result = new Result<AdayMYSSVM>();
+            try
+            {
+                var data = _unitOfWork.adayMYSSRepository.GetFirstOrDefault(x => x.Id == model.Id);
+                if (data != null)
+                {
+                    data.TC = model.TC;
+                    data.MYSSTarih = DateTime.ParseExact(model.MYSSTarih, "dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR"));
+                    data.MYSSSaat = model.MYSSSaat;
+                    data.MYSSMulakatYer = model.MYSSMulakatYer;
+                    data.MYSSDurum = model.MYSSDurum;
+                    data.MYSSDurumAck = model.MYSSDurumAck;
+                    data.MYSSKomisyonSiraNo = model.MYSSKomisyonSiraNo;
+                    data.MYSSKomisyonAdi = model.MYSSKomisyonAdi;
+                    data.KomisyonId = model.KomisyonId;
+                    data.KomisyonSN = model.KomisyonSN;
+                    data.KomisyonGunSN = model.KomisyonGunSN;
+                    data.CagriDurum = model.CagriDurum;
+                    data.KabulDurum = model.KabulDurum;
+                    data.SinavDurum = model.SinavDurum;
+                    data.SinavaGelmedi = model.SinavaGelmedi;
+                    data.SinavaGelmediAck = model.SinavaGelmediAck;
+                    
+                    if (!string.IsNullOrEmpty(model.MYSPuan))
+                    {
+                        data.MYSPuan = decimal.Parse(model.MYSPuan.Replace(",", "."), CultureInfo.InvariantCulture);
+                    }
+                    
+                    data.MYSSonuc = model.MYSSonuc;
+                    data.MYSSonucAck = model.MYSSonucAck;
+                    data.MYSSSorulanSoruNo = model.MYSSSorulanSoruNo;
+                    data.SinavIptal = model.SinavIptal;
+                    data.SinavIptalAck = model.SinavIptalAck;
+                    data.AdayId = model.AdayId.Value;
+                    data.MulakatId = model.MulakatId.Value;
+                    data.KaydedenId = user.LoginId;
+                    data.GuncelleyenId = user.LoginId;
+                    data.GuncellemeTarihi = DateTime.Now;
+
+                    _unitOfWork.adayMYSSRepository.Update(data);
+                    _unitOfWork.Save();
+
+                    result.Data = model;
+                    result.IsSuccess = true;
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.Message = "Kayıt bulunamadı!";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = $"Bir hata oluştu: {ex.Message}";
+            }
+            return result;
+        }
+        #endregion
+
+        #region AdayMYSSBilgileriGetir
+        public Result<List<AdayMYSSVM>> AdayMYSSBilgileriGetir()
+        {
+            var result = new Result<List<AdayMYSSVM>>();
+            try
+            {
+                var adaylar = (from a in _unitOfWork.adayMYSSRepository.GetAll()
+                              join k in _unitOfWork.komisyonlarRepository.GetAll() on a.KomisyonId equals k.KomisyonId into komisyonlar
+                              from k in komisyonlar.DefaultIfEmpty()
+                              select new AdayMYSSVM
+                              {
+                                  TC = a.TC,
+                                  MYSSTarih = a.MYSSTarih.HasValue ? 
+                                      a.MYSSTarih.Value.ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                                  MYSSSaat = a.MYSSSaat,
+                                  MYSSMulakatYer = a.MYSSMulakatYer,
+                                  MYSSDurum = a.MYSSDurum,
+                                  MYSSDurumAck = a.MYSSDurumAck,
+                                  MYSSKomisyonSiraNo = a.MYSSKomisyonSiraNo,
+                                  KomisyonSN = a.KomisyonSN,
+                                  KomisyonGunSN = a.KomisyonGunSN,
+                                  CagriDurum = a.CagriDurum ?? false,
+                                  KabulDurum = a.KabulDurum ?? false,
+                                  SinavDurum = a.SinavDurum ?? false,
+                                  SinavaGelmedi = a.SinavaGelmedi ?? false,
+                                  SinavaGelmediAck = a.SinavaGelmediAck,
+                                  MYSPuan = a.MYSPuan.HasValue ? 
+                                      Math.Round(a.MYSPuan.Value, 2, MidpointRounding.AwayFromZero)
+                                      .ToString("F2", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                                  MYSSonuc = a.MYSSonuc,
+                                  MYSSonucAck = a.MYSSonucAck,
+                                  MYSSSorulanSoruNo = a.MYSSSorulanSoruNo,
+                                  KomisyonId = k == null ? (Guid?)null : k.KomisyonId,
+                                  MYSSKomisyonAdi = k == null ? null : k.KomisyonAdi,
+                                  MulakatId = a.MulakatId,
+                                  AdayId = a.AdayId
+                              }).ToList();
+
+                if (adaylar != null && adaylar.Any())
+                {
+                    result.Data = adaylar;
+                    result.IsSuccess = true;
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.Message = "Kayıt bulunamadı!";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = $"Bir hata oluştu: {ex.Message}";
+            }
+            return result;
+        }
+        #endregion
+
         #region AdayTYSBilgileriEkle
         public Result<AdayTYSVM> AdayTYSBilgileriEkle(AdayTYSVM model, SessionContext user)
         {
@@ -888,12 +1012,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         Id = data.Id,
                         TC = data.TC,
-                        TYSTarih = data.TYSTarih,
+                        TYSTarih = data.TYSTarih.HasValue ? 
+                            data.TYSTarih.Value.ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR")) : null,
                         TYSSaat = data.TYSSaat,
                         TYSMulakatYer = data.TYSMulakatYer,
                         TYSDurumu = data.TYSDurumu,
                         TYSDurumAck = data.TYSDurumAck,
-                        TYSKomisyonSiraNo = data.TYSKomisyonSiraNo.ToString(),
+                        TYSKomisyonSiraNo = data.TYSKomisyonSiraNo,
                         TYSKomisyonAdi = data.TYSKomisyonAdi,
                         KomisyonId = data.KomisyonId,
                         KomisyonSN = data.KomisyonSN,
@@ -903,10 +1028,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SinavDurum = data.SinavDurum ?? false,
                         SinavaGelmedi = data.SinavaGelmedi ?? false,
                         SinavaGelmediAck = data.SinavaGelmediAck,
-                        TYSPuan = data.TYSPuan,
+                        TYSPuan = data.TYSPuan.HasValue ? 
+                            Math.Round(data.TYSPuan.Value, 2, MidpointRounding.AwayFromZero)
+                            .ToString("F2", CultureInfo.GetCultureInfo("tr-TR")) : null,
                         TYSSonuc = data.TYSSonuc,
                         TYSSonucAck = data.TYSSonucAck,
-                        TYSSorulanSoruNo = data.TYSSorulanSoruNo.ToString(),
+                        TYSSorulanSoruNo = data.TYSSorulanSoruNo,
                         SinavIptal = data.SinavIptal ?? false,
                         SinavIptalAck = data.SinavIptalAck,
                         AdayId = data.AdayId,
@@ -997,6 +1124,129 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<AdayTYSVM>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
             }
         } 
+        #endregion
+
+        #region AdayTYSBilgileriGetir
+        public Result<AdayTYSVM> AdayTYSBilgileriGetir(string TC)
+        {
+            var result = new Result<AdayTYSVM>();
+            try
+            {
+                var data = _unitOfWork.adayTYSRepository.GetFirstOrDefault(x => x.TC == TC);
+                if (data != null)
+                {
+                    var model = new AdayTYSVM
+                    {
+                        Id = data.Id,
+                        TC = data.TC,
+                        TYSTarih = data.TYSTarih.HasValue ? 
+                            data.TYSTarih.Value.ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                        TYSSaat = data.TYSSaat,
+                        TYSMulakatYer = data.TYSMulakatYer,
+                        TYSDurumu = data.TYSDurumu,
+                        TYSDurumAck = data.TYSDurumAck,
+                        TYSKomisyonSiraNo = data.TYSKomisyonSiraNo,
+                        TYSKomisyonAdi = data.TYSKomisyonAdi,
+                        KomisyonId = data.KomisyonId,
+                        KomisyonSN = data.KomisyonSN,
+                        KomisyonGunSN = data.KomisyonGunSN,
+                        CagriDurum = data.CagriDurum ?? false,
+                        KabulDurum = data.KabulDurum ?? false,
+                        SinavDurum = data.SinavDurum ?? false,
+                        SinavaGelmedi = data.SinavaGelmedi ?? false,
+                        SinavaGelmediAck = data.SinavaGelmediAck,
+                        TYSPuan = data.TYSPuan.HasValue ? 
+                            Math.Round(data.TYSPuan.Value, 2, MidpointRounding.AwayFromZero)
+                            .ToString("F2", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                        TYSSonuc = data.TYSSonuc,
+                        TYSSonucAck = data.TYSSonucAck,
+                        TYSSorulanSoruNo = data.TYSSorulanSoruNo,
+                        SinavIptal = data.SinavIptal ?? false,
+                        SinavIptalAck = data.SinavIptalAck,
+                        AdayId = data.AdayId,
+                        MulakatId = data.MulakatId,
+                        KaydedenId = data.KaydedenId
+                    };
+
+                    result.Data = model;
+                    result.IsSuccess = true;
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.Message = "Kayıt bulunamadı!";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = $"Bir hata oluştu: {ex.Message}";
+            }
+            return result;
+        }
+        #endregion
+
+        #region AdayTYSBilgileriGetir
+        public Result<List<AdayTYSVM>> AdayTYSBilgileriGetir()
+        {
+            var result = new Result<List<AdayTYSVM>>();
+            try
+            {
+                var adaylar = (from a in _unitOfWork.adayTYSRepository.GetAll()
+                              join k in _unitOfWork.komisyonlarRepository.GetAll() on a.KomisyonId equals k.KomisyonId into komisyonlar
+                              from k in komisyonlar.DefaultIfEmpty()
+                              select new AdayTYSVM
+                              {
+                                  TC = a.TC,
+                                  TYSTarih = a.TYSTarih.HasValue ? 
+                                      a.TYSTarih.Value.ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                                  TYSSaat = a.TYSSaat,
+                                  TYSMulakatYer = a.TYSMulakatYer,
+                                  TYSDurumu = a.TYSDurumu,
+                                  TYSDurumAck = a.TYSDurumAck,
+                                  TYSKomisyonSiraNo = a.TYSKomisyonSiraNo,
+                                  TYSKomisyonAdi = k != null ? k.KomisyonAdi : null,
+                                  KomisyonId = k != null ? (Guid?)k.KomisyonId : (Guid?)null,
+                                  KomisyonSN = a.KomisyonSN,
+                                  KomisyonGunSN = a.KomisyonGunSN,
+                                  CagriDurum = a.CagriDurum ?? false,
+                                  KabulDurum = a.KabulDurum ?? false,
+                                  SinavDurum = a.SinavDurum ?? false,
+                                  SinavaGelmedi = a.SinavaGelmedi ?? false,
+                                  SinavaGelmediAck = a.SinavaGelmediAck,
+                                  TYSPuan = a.TYSPuan.HasValue ? 
+                                      Math.Round(a.TYSPuan.Value, 2, MidpointRounding.AwayFromZero)
+                                      .ToString("F2", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                                  TYSSonuc = a.TYSSonuc,
+                                  TYSSonucAck = a.TYSSonucAck,
+                                  TYSSorulanSoruNo = a.TYSSorulanSoruNo,
+                                  SinavIptal = a.SinavIptal ?? false,
+                                  SinavIptalAck = a.SinavIptalAck,
+                                  AdayId = a.AdayId,
+                                  MulakatId = a.MulakatId,
+                                  KaydedenId = a.KaydedenId,
+                                  GuncelleyenAdi = a.GuncelleyenKullanici != null ? a.GuncelleyenKullanici.Ad : null,
+                                  GuncellemeTarihi = a.GuncellemeTarihi
+                              }).ToList();
+
+                if (adaylar != null && adaylar.Any())
+                {
+                    result.Data = adaylar;
+                    result.IsSuccess = true;
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.Message = "Kayıt bulunamadı!";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = $"Bir hata oluştu: {ex.Message}";
+            }
+            return result;
+        }
         #endregion
 
     }

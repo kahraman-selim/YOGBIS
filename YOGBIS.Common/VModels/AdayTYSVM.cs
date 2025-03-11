@@ -9,6 +9,7 @@ namespace YOGBIS.Common.VModels
 
         [Required(ErrorMessage = "TC Kimlik No zorunludur")]
         [StringLength(11, MinimumLength = 11, ErrorMessage = "TC Kimlik No 11 haneli olmalıdır")]
+        [Display(Name = "TC Kimlik No")]
         public string TC { get; set; }
 
         [Display(Name = "TYS Tarihi")]
@@ -27,7 +28,7 @@ namespace YOGBIS.Common.VModels
         public string TYSDurumAck { get; set; }
 
         [Display(Name = "TYS Komisyon Sıra No")]
-        public string TYSKomisyonSiraNo { get; set; }
+        public int? TYSKomisyonSiraNo { get; set; }
 
         [Display(Name = "TYS Komisyon Adı")]
         public string TYSKomisyonAdi { get; set; }
@@ -66,7 +67,7 @@ namespace YOGBIS.Common.VModels
         public string TYSSonucAck { get; set; }
 
         [Display(Name = "TYS Sorulan Soru No")]
-        public string TYSSorulanSoruNo { get; set; }
+        public int? TYSSorulanSoruNo { get; set; }
 
         [Display(Name = "Sınav İptal")]
         public bool SinavIptal { get; set; }
@@ -78,6 +79,7 @@ namespace YOGBIS.Common.VModels
 
         public Guid? MulakatId { get; set; }
 
+        [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public string KaydedenId { get; set; }
 
         public int? MulakatYil { get; set; }
@@ -90,5 +92,16 @@ namespace YOGBIS.Common.VModels
 
         [Display(Name = "Mülakatlar")]
         public MulakatlarVM Mulakatlar { get; set; }
+
+        [Display(Name = "Kaydeden")]
+        public string KaydedenAdi { get; set; }
+        public KullaniciVM Kullanici { get; set; }
+
+        [Display(Name = "Güncelleyen")]
+        public string GuncelleyenAdi { get; set; }
+        public KullaniciVM GuncelleyenKullanici { get; set; }
+
+        [Display(Name = "Güncelleme Tarihi")]
+        public DateTime? GuncellemeTarihi { get; set; }
     }
 }

@@ -6,8 +6,10 @@ using Newtonsoft.Json;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.Common.ConstantsModels;
@@ -870,6 +872,82 @@ namespace YOGBIS.UI.Controllers
             finally
             {
                 _progressService.ResetProgress(sessionId);
+            }
+        }
+        #endregion
+
+        #region GetList
+        [HttpPost]
+        public IActionResult GetList()
+        {
+            try
+            {
+                var draw = Request.Form["draw"].FirstOrDefault();
+                var start = Request.Form["start"].FirstOrDefault();
+                var length = Request.Form["length"].FirstOrDefault();
+                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+
+                var result = _adaylarBE.AdayMYSSBilgileriGetir();
+                if (!result.IsSuccess)
+                {
+                    return Json(new { error = result.Message });
+                }
+
+                var adaylar = result.Data;
+
+                // Arama
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    adaylar = adaylar.Where(a =>
+                        (a.TC != null && a.TC.Contains(searchValue)) ||
+                        (a.MYSSTarih != null && a.MYSSTarih.Contains(searchValue)) ||
+                        (a.MYSSSaat != null && a.MYSSSaat.Contains(searchValue)) ||
+                        (a.MYSSMulakatYer != null && a.MYSSMulakatYer.Contains(searchValue)) ||
+                        (a.MYSSDurum != null && a.MYSSDurum.Contains(searchValue)) ||
+                        (a.MYSSDurumAck != null && a.MYSSDurumAck.Contains(searchValue)) ||
+                        (a.MYSPuan != null && a.MYSPuan.Contains(searchValue)) ||
+                        (a.MYSSonuc != null && a.MYSSonuc.Contains(searchValue)) ||
+                        (a.MYSSonucAck != null && a.MYSSonucAck.Contains(searchValue)) ||
+                        (a.MYSSKomisyonAdi != null && a.MYSSKomisyonAdi.Contains(searchValue))
+                    ).ToList();
+                }
+
+                // Sıralama
+                if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
+                {
+                    var prop = typeof(AdayMYSSVM).GetProperty(sortColumn, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                    if (prop != null)
+                    {
+                        if (sortColumnDirection == "asc")
+                        {
+                            adaylar = adaylar.OrderBy(x => prop.GetValue(x, null)).ToList();
+                        }
+                        else
+                        {
+                            adaylar = adaylar.OrderByDescending(x => prop.GetValue(x, null)).ToList();
+                        }
+                    }
+                }
+
+                // Sayfalama
+                var recordsTotal = adaylar.Count;
+                var data = adaylar.Skip(skip).Take(pageSize).ToList();
+
+                return Json(new
+                {
+                    draw = draw,
+                    recordsFiltered = recordsTotal,
+                    recordsTotal = recordsTotal,
+                    data = data
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = "Veriler alınırken bir hata oluştu: " + ex.Message });
             }
         }
         #endregion
