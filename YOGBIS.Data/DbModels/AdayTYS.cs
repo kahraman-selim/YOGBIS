@@ -11,45 +11,36 @@ namespace YOGBIS.Data.DbModels
         [Key]
         public Guid Id { get; set; }
         public string TC { get; set; }
-        public string TYSTarih { get; set; }
-        
+        public string TYSTarih { get; set; }        
         public string TYSSaat { get; set; }
         public string TYSMulakatYer { get; set; }
         public string TYSDurumu { get; set; }
         public string TYSDurumAck { get; set; }
         public int? TYSKomisyonSiraNo { get; set; }
         public string TYSKomisyonAdi { get; set; }
-        public Guid? KomisyonId { get; set; }
-        
+        public Guid? KomisyonId { get; set; }        
         [ForeignKey("KomisyonId")]
-        public Komisyonlar Komisyonlar { get; set; }
-        
+        public Komisyonlar Komisyonlar { get; set; }        
         public int? KomisyonSN { get; set; }
         public int? KomisyonGunSN { get; set; }
         public bool? CagriDurum { get; set; }
         public bool? KabulDurum { get; set; }
         public bool? SinavDurum { get; set; }
         public bool? SinavaGelmedi { get; set; }
-        public string SinavaGelmediAck { get; set; }
-        
+        public string SinavaGelmediAck { get; set; }        
         [Column(TypeName = "decimal(18,2)")]
-        public decimal? TYSPuan { get; set; }
-        
+        public decimal? TYSPuan { get; set; }        
         public string TYSSonuc { get; set; }
         public string TYSSonucAck { get; set; }
         public int? TYSSorulanSoruNo { get; set; }
         public bool? SinavIptal { get; set; }
         public string SinavIptalAck { get; set; }
-        public Guid AdayId { get; set; }
-        
+        public Guid AdayId { get; set; }        
         [ForeignKey("AdayId")]
-        public virtual Adaylar Adaylar { get; set; }
-        
-        public Guid MulakatId { get; set; }
-        
+        public virtual Adaylar Adaylar { get; set; }        
+        public Guid MulakatId { get; set; }        
         [ForeignKey("MulakatId")]
-        public Mulakatlar Mulakatlar { get; set; }
-        
+        public Mulakatlar Mulakatlar { get; set; }        
         public string KaydedenId { get; set; }        
         [ForeignKey("KaydedenId")]       
         public Kullanici Kullanici { get; set; }   

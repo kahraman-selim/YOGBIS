@@ -9,7 +9,7 @@ using YOGBIS.Data.DataContext;
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    [Migration("20250311204936_projebaslangic")]
+    [Migration("20250312193256_projebaslangic")]
     partial class projebaslangic
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -280,6 +280,9 @@ namespace YOGBIS.Data.Migrations
                     b.Property<byte[]>("BilgiFormu")
                         .HasColumnType("varbinary(4000)");
 
+                    b.Property<string>("BransAdi")
+                        .HasColumnType("text");
+
                     b.Property<byte[]>("BransId")
                         .HasColumnType("varbinary(16)");
 
@@ -400,6 +403,9 @@ namespace YOGBIS.Data.Migrations
                     b.Property<byte[]>("MulakatId")
                         .HasColumnType("varbinary(16)");
 
+                    b.Property<int>("MulakatYil")
+                        .HasColumnType("int");
+
                     b.Property<string>("Ogrenim")
                         .HasColumnType("text");
 
@@ -428,6 +434,9 @@ namespace YOGBIS.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("TC")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UlkeTercihAdi")
                         .HasColumnType("text");
 
                     b.Property<byte[]>("UlkeTercihId")

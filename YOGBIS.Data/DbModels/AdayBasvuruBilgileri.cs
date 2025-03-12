@@ -74,21 +74,24 @@ namespace YOGBIS.Data.DbModels
         public byte[] BilgiFormu { get; set; }
 
         public Guid? BransId { get; set; }
+        public string BransAdi { get; set; }
         [ForeignKey("BransId")]
         public virtual Branslar Branslar { get; set; }
 
         public Guid? DereceId { get; set; }
+        public string DereceAdi { get; set; }
         [ForeignKey("DereceId")]
         public virtual SoruDereceler SoruDereceler { get; set; }
-
-        public string DereceAdi { get; set; }
+        
         public string Unvan { get; set; }
 
         public Guid? UlkeTercihId { get; set; }
+        public string UlkeTercihAdi { get; set; }
         [ForeignKey("UlkeTercihId")]
         public virtual UlkeTercih UlkeTercih { get; set; }
 
         public Guid? MulakatId { get; set; }
+        public int MulakatYil { get; set; }
         [ForeignKey("MulakatId")]
         public virtual Mulakatlar Mulakatlar { get; set; }
 
