@@ -96,12 +96,5 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Kaydeden")]
         public string KaydedenAdi { get; set; }
         public KullaniciVM Kullanici { get; set; }
-
-        [Display(Name = "Güncelleyen")]
-        public string GuncelleyenAdi { get; set; }
-        public KullaniciVM GuncelleyenKullanici { get; set; }
-
-        [Display(Name = "Güncelleme Tarihi")]
-        public DateTime? GuncellemeTarihi { get; set; }
     }
 }

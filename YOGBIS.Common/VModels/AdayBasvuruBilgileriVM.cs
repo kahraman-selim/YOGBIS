@@ -195,7 +195,7 @@ namespace YOGBIS.Common.VModels
         public byte[] BilgiFormu { get; set; }
 
         public Guid? BransId { get; set; }
-
+        public string BransAdi { get; set; }
         [Display(Name = "Branş")]
         public BranslarVM Brans { get; set; }
 
@@ -208,7 +208,6 @@ namespace YOGBIS.Common.VModels
         public string Unvan { get; set; }
 
         public Guid? UlkeTercihId { get; set; }
-
         [Display(Name = "Ülke Tercihi")]
         public string UlkeTercihAdi { get; set; }
         public UlkeTercihVM UlkeTercih { get; set; }
