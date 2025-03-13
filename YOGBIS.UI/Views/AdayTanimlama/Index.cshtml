@@ -209,6 +209,7 @@
         var progressTimer;
         var isUploading = false;
 
+        
         function submitForm(event) {
             event.preventDefault();
 
@@ -369,7 +370,7 @@
             });
         });
 
-         function getAdayIletisimBilgileri(tc) {
+        function getAdayIletisimBilgileri(tc) {
             console.log('TC gönderiliyor:', tc);
 
             $.ajax({
@@ -419,7 +420,7 @@
     </script>
     <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
     <script src="~/lib/datatables/dataTables.bootstrap4.min.js"></script>
-    @* <script>
+    <script>
         $(document).ready(function () {
             $('#dataTable').DataTable({
                 "language": {
@@ -487,5 +488,5 @@
                 ]
             });
         });
-    </script> *@
+    </script>
 }

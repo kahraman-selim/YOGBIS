@@ -626,7 +626,8 @@ namespace YOGBIS.UI.Controllers
                                     NufusIlce = worksheet.Cells[row, 5].Value?.ToString().Trim(),
                                     IkametAdres = worksheet.Cells[row, 6].Value?.ToString().Trim(),
                                     IkametIl = worksheet.Cells[row, 7].Value?.ToString().Trim(),
-                                    IkametIlce = worksheet.Cells[row, 8].Value?.ToString().Trim()
+                                    IkametIlce = worksheet.Cells[row, 8].Value?.ToString().Trim(),
+                                    //MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId
                                 };
 
                                 if (string.IsNullOrEmpty(adayIletisim.TC))
@@ -636,10 +637,11 @@ namespace YOGBIS.UI.Controllers
 
                                 var adayBilgisi = _adaylarBE.AdaylariGetir().Data
                                     .FirstOrDefault(a => a.TC == adayIletisim.TC);
-
+                      
                                 if (adayBilgisi != null)
                                 {
-                                    adayIletisim.AdayId = adayBilgisi.AdayId;
+                                    adayIletisim.AdayId = adayBilgisi.AdayId;                                 
+
                                     var result = _adaylarBE.AdayIletisimBilgileriEkle(adayIletisim, user);
                                     if (result.IsSuccess)
                                     {
