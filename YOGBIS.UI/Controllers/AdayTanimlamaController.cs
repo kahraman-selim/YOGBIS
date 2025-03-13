@@ -16,6 +16,7 @@ using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.Contracts;
+using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -409,7 +410,9 @@ namespace YOGBIS.UI.Controllers
                             //BransAdi ile BransId yi eşleştirme
                             var brans = _branslarBE.BranslariGetir().Data
                                 .FirstOrDefault(b => b.BransAdi == worksheet.Cells[row, 59].Value?.ToString());
-
+                            //var ulketercih = _branslarBE.UlkeTercihleriGetir().Data
+                            //    .FirstOrDefault(u => u.UlkeAdi == worksheet.Cells[row, 62].Value?.ToString());
+                            
                             var aday = new AdayBasvuruBilgileriVM
                             {
                                 TC = worksheet.Cells[row, 1].Value?.ToString(),
@@ -479,7 +482,8 @@ namespace YOGBIS.UI.Controllers
                                     .FirstOrDefault(d => d.DereceAdi == worksheet.Cells[row, 60].Value?.ToString())?.DereceId,
                                 DereceAdi = worksheet.Cells[row, 60].Value?.ToString(),
                                 Unvan = worksheet.Cells[row, 61].Value?.ToString(),
-                                UlkeTercihId = Guid.Parse(worksheet.Cells[row, 62].Value?.ToString()),
+                                //UlkeTercihId = ulketercih?.UlkeTercihId,
+                                //UlkeTercihId = Guid.Parse(worksheet.Cells[row, 62].Value?.ToString()),
                                 MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
                                 AdayId = _adaylarBE.AdaylariGetir().Data
                                     .FirstOrDefault(a => a.TC == worksheet.Cells[row, 1].Value?.ToString())?.AdayId
