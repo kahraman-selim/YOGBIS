@@ -51,23 +51,20 @@
                                     <td style="color:red" class="font-weight-bold">Yedek</td>
                                 }
                                 <td>
-                                    <form asp-action="DurumDegistir" asp-controller="Komisyonlar" method="post">
-                                        <input type="hidden" name="KomisyonId" value="@item.KomisyonId" />
-                                        @if (item.KomisyonGorevDurum==true)
-                                        {
-                                            <button type="submit" class="btn btn-success btn-sm">
-                                                <i class="fas fa-check-circle"></i> Aktif
-                                            </button>
-                                        }
-                                        else
-                                        {
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-times-circle"></i> Pasif
-                                            </button>
-                                        }
-                                    </form>
+                                    <input type="hidden" name="KomisyonId" value="@item.KomisyonId" />
+                                    @if (item.KomisyonGorevDurum==true)
+                                    {
+                                        <button type="button" class="btn btn-success btn-sm btnDurumDegistir" data-id="@item.KomisyonId" data-durum="true">
+                                            <i class="fas fa-check-circle"></i> Aktif
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-danger btn-sm btnDurumDegistir" data-id="@item.KomisyonId" data-durum="false">
+                                            <i class="fas fa-times-circle"></i> Pasif
+                                        </button>
+                                    }
                                 </td>
-
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-danger btnSil" data-id="@item.KomisyonId">
                                         <i class="fas fa-trash text-white"></i>
@@ -81,3 +78,107 @@
         </div>
     </div>
 </div>
+
+<link href="//cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="//cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+<link href="//cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+
+<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap4.min.js"></script>
+<script src="//cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="//cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap4.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json"
+            },
+            "order": [[0, "asc"]],
+            "responsive": true,
+            "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                  "<'row'<'col-sm-12'tr>>" +
+                  "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>B",
+            "buttons": [
+                {
+                    extend: 'copy',
+                    text: '<i class="fas fa-copy"></i> Kopyala',
+                    className: 'btn btn-info btn-sm',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-success btn-sm',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> PDF',
+                    className: 'btn btn-danger btn-sm',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> Yazdır',
+                    className: 'btn btn-primary btn-sm',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'colvis',
+                    text: '<i class="fas fa-columns"></i> Sütunlar',
+                    className: 'btn btn-secondary btn-sm'
+                }
+            ],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tümü"]],
+            "pageLength": 10,
+            "autoWidth": false,
+            "processing": true
+        });
+
+        // Durum değiştirme butonu için event binding
+        $(document).on('click', '.btnDurumDegistir', function() {
+            var btn = $(this);
+            var id = btn.data('id');
+            var mevcutDurum = btn.data('durum');
+            
+            $.ajax({
+                url: '/Komisyonlar/DurumDegistir',
+                type: 'POST',
+                data: { KomisyonId: id },
+                success: function(response) {
+                    // Butonun durumunu güncelle
+                    if (mevcutDurum) {
+                        btn.removeClass('btn-success').addClass('btn-danger')
+                           .html('<i class="fas fa-times-circle"></i> Pasif')
+                           .data('durum', false);
+                    } else {
+                        btn.removeClass('btn-danger').addClass('btn-success')
+                           .html('<i class="fas fa-check-circle"></i> Aktif')
+                           .data('durum', true);
+                    }
+                    alertify.success('Durum başarıyla güncellendi');
+                },
+                error: function() {
+                    alertify.error('İşlem sırasında bir hata oluştu');
+                }
+            });
+        });
+    });
+</script>

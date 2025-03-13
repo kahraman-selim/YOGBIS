@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
 }
 
 <div class="row">    
@@ -257,29 +258,85 @@
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
 
     <script type="text/javascript">
-        // Alertify ayarları
-        alertify.set('notifier', 'position', 'top-right');
-        alertify.set('notifier', 'delay', 5);
+
+        // Silme işlemi için event binding
+        $(document).on("click", ".btnSil", function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var id = btn.data("id");
+            
+            if (!id) {
+                alertify.error("Komisyon ID bulunamadı!");
+                return;
+            }
+
+            bootbox.confirm({
+                message: "Silmek istediğinize emin misiniz?",
+                buttons: {
+                    confirm: {
+                        label: 'Evet',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Hayır',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/Komisyonlar/KomisyonSil/" + id,
+                            success: function () {
+                                btn.closest('tr').fadeOut(400, function() {
+                                    $(this).remove();
+                                });
+                                alertify.success('Kayıt başarıyla silindi');
+                            },
+                            error: function () {
+                                alertify.error('Silme işlemi sırasında bir hata oluştu');
+                            }
+                        });
+                    }
+                }
+            });
+        });
 
         $(document).ready(function () {
-            // Dosya seçildiğinde label'ı güncelle
-            $('.custom-file-input').on('change', function () {
-                var fileName = $(this).val().split('\\').pop();
-                if (fileName) {
-                    $(this).next('.custom-file-label').html(fileName);
+            // Mülakat değişikliğinde komisyon listesini güncelle
+            $('#MulakatId').change(function () {
+                var secilenMulakatId = $(this).val();
+                if (secilenMulakatId) {
+                    $.ajax({
+                        url: '@Url.Action("KomisyonListesiPartial", "Komisyonlar")',
+                        type: 'GET',
+                        data: { mulakatId: secilenMulakatId },
+                        success: function (result) {
+                            $('#komisyonListesiContainer').html(result);
+                            alertify.success('Komisyon listesi güncellendi');
+                        },
+                        error: function () {
+                            alertify.error('Komisyon listesi güncellenirken bir hata oluştu');
+                            $('#komisyonListesiContainer').html('');
+                        }
+                    });
                 } else {
-                    $(this).next('.custom-file-label').html('Excel dosyası seçiniz...');
+                    $('#komisyonListesiContainer').html('');
                 }
             });
 
+            // Dosya seçildiğinde label güncelleme
+            $('.custom-file-input').on('change', function () {
+                var fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').html(fileName || 'Excel dosyası seçiniz...');
+            });
+
+            // Mülakat değişikliği kontrolü
             mulakatChanged();
             $('#MulakatId').change(mulakatChanged);
-        });
-
-        $('#datetimepicker1, #datetimepicker2').datetimepicker({
-            format: 'DD/MM/YYYY'
         });
 
         function mulakatChanged() {
@@ -292,6 +349,10 @@
                 $('.custom-file-label').html('Excel dosyası seçiniz...');
             }
         }
+
+        $('#datetimepicker1, #datetimepicker2').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
 
         function submitForm(event) {
             event.preventDefault();
@@ -392,61 +453,5 @@
 
             return false;
         }
-
-        $(document).ready(function () {
-            $("#myTable").on("click", ".btnSil", function () {
-                var btn = $(this);
-                bootbox.confirm({
-                    message: "Silmek istediğinize emin misiniz?",
-                    buttons: {
-                        confirm: {
-                            label: 'Evet',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'Hayır',
-                            className: 'btn-danger'
-                        }
-                    },
-                    callback: function (result) {
-                        if (result) {
-                            var id = btn.data("id");
-                            $.ajax({
-                                type: "DELETE",
-                                url: "/Komisyonlar/KomisyonSil/" + id,
-                                success: function () {
-                                    btn.parent().parent().remove();
-                                    alertify.success('Kayıt silindi');
-                                    location.reload();
-                                }
-                            });
-                        }
-                    }
-                });
-            });
-        });
-
-        $(document).ready(function () {
-            $('#MulakatId').change(function () {
-                var secilenMulakatId = $(this).val();
-                if (secilenMulakatId) {
-                    $.ajax({
-                        url: '@Url.Action("KomisyonListesiPartial", "Komisyonlar")',
-                        type: 'GET',
-                        data: { mulakatId: secilenMulakatId },
-                        success: function (result) {
-                            $('#komisyonListesiContainer').html(result);
-                            alertify.success('Komisyon listesi güncellendi');
-                        },
-                        error: function () {
-                            alertify.error('Komisyon listesi güncellenirken bir hata oluştu');
-                            $('#komisyonListesiContainer').html('');
-                        }
-                    });
-                } else {
-                    $('#komisyonListesiContainer').html('');
-                }
-            });
-        });
     </script>
 }
