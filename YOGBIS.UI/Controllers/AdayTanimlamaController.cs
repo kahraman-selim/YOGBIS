@@ -29,18 +29,20 @@ namespace YOGBIS.UI.Controllers
         private readonly IMulakatOlusturBE _mulakatOlusturBE;
         private readonly ILogger<AdayTanimlamaController> _logger;
         private readonly IBranslarBE _branslarBE;
+        private readonly IUlkeTercihleriBE _ulkeTercihleriBE;
         private readonly IDerecelerBE _derecelerBE;
         private readonly IKomisyonlarBE _komisyonlarBE;
         private readonly IProgressService _progressService;
         #endregion
 
-        #region Dönüştürücüler
+        #region Constructor
         public AdayTanimlamaController(
             IUnitOfWork unitOfWork,
             IAdaylarBE adaylarBE,
             IMulakatOlusturBE mulakatOlusturBE,
             ILogger<AdayTanimlamaController> logger,
             IBranslarBE branslarBE,
+            IUlkeTercihleriBE ulkeTercihleriBE,
             IDerecelerBE derecelerBE,
             IKomisyonlarBE komisyonlarBE,
             IProgressService progressService)
@@ -53,6 +55,7 @@ namespace YOGBIS.UI.Controllers
             _derecelerBE = derecelerBE;
             _komisyonlarBE = komisyonlarBE;
             _progressService = progressService;
+            _ulkeTercihleriBE = ulkeTercihleriBE;
         }
         #endregion
 
@@ -410,9 +413,9 @@ namespace YOGBIS.UI.Controllers
                             //BransAdi ile BransId yi eşleştirme
                             var brans = _branslarBE.BranslariGetir().Data
                                 .FirstOrDefault(b => b.BransAdi == worksheet.Cells[row, 59].Value?.ToString());
-                            //var ulketercih = _branslarBE.UlkeTercihleriGetir().Data
-                            //    .FirstOrDefault(u => u.UlkeAdi == worksheet.Cells[row, 62].Value?.ToString());
-                            
+                            var ulketercih = _ulkeTercihleriBE.UlkeTercihAdlariGetir().Data
+                                .FirstOrDefault(u => u.UlkeTercihAdi == worksheet.Cells[row, 62].Value?.ToString());
+
                             var aday = new AdayBasvuruBilgileriVM
                             {
                                 TC = worksheet.Cells[row, 1].Value?.ToString(),
@@ -482,7 +485,7 @@ namespace YOGBIS.UI.Controllers
                                     .FirstOrDefault(d => d.DereceAdi == worksheet.Cells[row, 60].Value?.ToString())?.DereceId,
                                 DereceAdi = worksheet.Cells[row, 60].Value?.ToString(),
                                 Unvan = worksheet.Cells[row, 61].Value?.ToString(),
-                                //UlkeTercihId = ulketercih?.UlkeTercihId,
+                                UlkeTercihId = ulketercih?.UlkeTercihId,
                                 //UlkeTercihId = Guid.Parse(worksheet.Cells[row, 62].Value?.ToString()),
                                 MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
                                 AdayId = _adaylarBE.AdaylariGetir().Data
@@ -550,6 +553,12 @@ namespace YOGBIS.UI.Controllers
 
             try
             {
+                var mulakatResult = _mulakatOlusturBE.MulakatlariGetirSelectedBox();
+                if (mulakatResult.IsSuccess)
+                {
+                    ViewBag.Mulakatlar = mulakatResult.Data;
+                }
+
                 if (file == null || file.Length == 0)
                 {
                     _progressService.UpdateProgress(sessionId, p =>
@@ -627,7 +636,7 @@ namespace YOGBIS.UI.Controllers
                                     IkametAdres = worksheet.Cells[row, 6].Value?.ToString().Trim(),
                                     IkametIl = worksheet.Cells[row, 7].Value?.ToString().Trim(),
                                     IkametIlce = worksheet.Cells[row, 8].Value?.ToString().Trim(),
-                                    //MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId
+                                    MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar)?.FirstOrDefault()?.MulakatId
                                 };
 
                                 if (string.IsNullOrEmpty(adayIletisim.TC))

@@ -268,5 +268,66 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        #region UlkeTercihAdlariGetir
+        public Result<List<UlkeTercihVM>> UlkeTercihAdlariGetir()
+        {
+            try
+            {
+                var data = _unitOfWork.ulkeTercihRepository
+                    .GetAll(includeProperties: "Kullanici,SoruDereceler,Mulakatlar,UlkeTercihBranslar")
+                    .OrderBy(t => t.SoruDereceler.DereceKodu)
+                    .ThenBy(t => t.UlkeTercihSiraNo)
+                    .ThenBy(t => t.YabancıDil)
+                    .ToList();
+
+                if (data == null || !data.Any())
+                {
+                    return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound, default(List<UlkeTercihVM>));
+                }
+
+                var returnData = data.Select(item => new UlkeTercihVM
+                {
+                    UlkeTercihId = item.UlkeTercihId,
+                    UlkeTercihAdi = item.UlkeTercihAdi,
+                    UlkeTercihSiraNo = item.UlkeTercihSiraNo,
+                    YabancıDil = item.YabancıDil,
+                    DereceId = item.DereceId != null ? item.DereceId : Guid.Empty,
+                    DereceAdi = item.SoruDereceler != null ? item.SoruDereceler.DereceAdi : string.Empty,
+                    DereceKodu = item.SoruDereceler?.DereceKodu ?? 0,
+                    MulakatId = item.MulakatId != null ? item.MulakatId : Guid.Empty,
+                    MulakatYil = item.Mulakatlar != null ? item.Mulakatlar.BaslamaTarihi.Year : 0,
+                    KayitTarihi = item.KayitTarihi,
+                    KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                    KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+                    UlkeTercihBranslar = item.UlkeTercihBranslar?
+                        .Select(b => new UlkeTercihBranslarVM
+                        {
+                            TercihBransId = b.TercihBransId,
+                            BransAdi = b.BransAdi,
+                            BransId = b.BransId,
+                            BransCinsiyet = b.BransCinsiyet,
+                            BransKontSayi = b.BransKontSayi,
+                            EsitBrans = b.EsitBrans,
+                            YabanciDil = b.YabanciDil,
+                            UlkeTercihId = b.UlkeTercihId,
+                            KayitTarihi = b.KayitTarihi,
+                            KaydedenId = b.KaydedenId,
+                            KaydedenAdi = b.Kullanici != null ? b.Kullanici.Ad + " " + b.Kullanici.Soyad : string.Empty
+                        })
+                        .OrderBy(b => !b.EsitBrans)
+                        .ThenBy(b => b.BransCinsiyet)
+                        .ThenBy(b => b.BransAdi)
+                        .ToList() ?? new List<UlkeTercihBranslarVM>()
+                }).ToList();
+
+                return new Result<List<UlkeTercihVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound, default(List<UlkeTercihVM>));
+            }
+        }
+        #endregion
     }
 }

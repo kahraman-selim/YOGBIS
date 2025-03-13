@@ -14,5 +14,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<bool> UlkeTercihGuncelle(UlkeTercihVM model, SessionContext user);
         Result<bool> UlkeTercihSil(Guid id);
         Result<bool> BransEkle(Guid ulkeTercihId, Guid tercihBransId, string yabancıDil, int bransKontSayi, string bransCinsiyet, bool esitBrans, SessionContext user);
+        Result<List<UlkeTercihVM>> UlkeTercihAdlariGetir();
     }
 }
