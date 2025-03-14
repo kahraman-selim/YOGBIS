@@ -206,9 +206,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
 
     <script type="text/javascript">
+        
         var progressTimer;
         var isUploading = false;
-
         
         function submitForm(event) {
             event.preventDefault();
@@ -417,10 +417,61 @@
             });
          }
 
+        function getAdayBasvuruBilgileri(tc) {
+            console.log('TC gönderiliyor:', tc);
+
+            $.ajax({
+                url: '/AdayTanimlama/AdayBasvuruBilgileriniGetir',
+                type: 'GET',
+                data: { TC: tc },
+                success: function (result) {
+                    if (result.error) {
+                        console.error('Sunucu hatası:', result.error);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: result.error,
+                            size: 'small'
+                        });
+                        return;
+                    }
+                    if (result === '') {
+                        $('#adayBasvuruBilgileriContainer').html('<div class="card mb-3"><div class="card-header"><i class="fas fa-table mr-1"></i><b>Aday Başvuru Bilgileri</b></div><div class="card-body"><div class="table-responsive"><table class="table table-bordered"><tbody><tr><td class="text-center">Herhangi bir kayıt bulunamadı!</td></tr></tbody></table></div></div></div>');
+                        return;
+                    }
+                    console.log('Başarılı sonuç:', result);
+                    $('#adayBasvuruBilgileriContainer').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.group('AJAX Hata Detayları');
+                    console.error('Hata:', error);
+                    console.error('Status:', status);
+                    console.error('Status Code:', xhr.status);
+                    console.error('Response Text:', xhr.responseText);
+                    try {
+                        var jsonResponse = JSON.parse(xhr.responseText);
+                        console.error('JSON Response:', jsonResponse);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: jsonResponse.error || 'Veri getirme hatası',
+                            size: 'small'
+                        });
+                    } catch (e) {
+                        console.error('Raw Response:', xhr.responseText);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: 'Veri getirme hatası',
+                            size: 'small'
+                        });
+                    }
+                    console.groupEnd();
+                }
+            });
+        }
+
     </script>
     <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
     <script src="~/lib/datatables/dataTables.bootstrap4.min.js"></script>
-    <script>
+    @* <script>
         $(document).ready(function () {
             $('#dataTable').DataTable({
                 "language": {
@@ -488,5 +539,5 @@
                 ]
             });
         });
-    </script>
+    </script> *@
 }

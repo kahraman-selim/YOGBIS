@@ -335,6 +335,8 @@ namespace YOGBIS.UI.Controllers
         public async Task<IActionResult> AdayBasvuruBilgileriYukle(IFormFile file)
         {
             ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirSelectedBox().Data;
+            //var yil = _mulakatOlusturBE.MulakatYilGetir(ViewBag.Mulakatlar).Data;
+
             var sessionId = HttpContext.Session.Id;
 
             try
@@ -414,7 +416,7 @@ namespace YOGBIS.UI.Controllers
                             var brans = _branslarBE.BranslariGetir().Data
                                 .FirstOrDefault(b => b.BransAdi == worksheet.Cells[row, 59].Value?.ToString());
                             var ulketercih = _ulkeTercihleriBE.UlkeTercihAdlariGetir().Data
-                                .FirstOrDefault(u => u.UlkeTercihAdi == worksheet.Cells[row, 62].Value?.ToString());
+                                .FirstOrDefault(u => u.UlkeTercihAdi == worksheet.Cells[row, 62].Value?.ToString() && u.YabancıDil== worksheet.Cells[row, 16].Value?.ToString());                                                        
 
                             var aday = new AdayBasvuruBilgileriVM
                             {
@@ -437,9 +439,7 @@ namespace YOGBIS.UI.Controllers
                                 YabanciDilAdi = worksheet.Cells[row, 17].Value?.ToString(),
                                 YabanciDilTuru = worksheet.Cells[row, 18].Value?.ToString(),
                                 YabanciDilTarihi = worksheet.Cells[row, 19].Value?.ToString(),
-                                YabanciDilPuan = worksheet.Cells[row, 20].Value != null ? 
-                                    Math.Round(Convert.ToDecimal(worksheet.Cells[row, 20].Value), 2, MidpointRounding.AwayFromZero)
-                                    .ToString("F2", new System.Globalization.CultureInfo("tr-TR")) : null,
+                                YabanciDilPuan = worksheet.Cells[row, 20].Value?.ToString(),
                                 YabanciDilSeviye = worksheet.Cells[row, 21].Value?.ToString(),
                                 IlTercihi1 = worksheet.Cells[row, 22].Value?.ToString(),
                                 IlTercihi2 = worksheet.Cells[row, 23].Value?.ToString(),
@@ -453,9 +453,10 @@ namespace YOGBIS.UI.Controllers
                                 MYYSTarihi = worksheet.Cells[row, 31].Value?.ToString(),
                                 MYYSSinavTedbiri = worksheet.Cells[row, 32].Value?.ToString(),
                                 MYYSTedbirAck = worksheet.Cells[row, 33].Value?.ToString(),
-                                MYYSPuan = worksheet.Cells[row, 34].Value != null ? 
-                                    Math.Round(Convert.ToDecimal(worksheet.Cells[row, 34].Value), 2, MidpointRounding.AwayFromZero)
-                                    .ToString("F2", new System.Globalization.CultureInfo("tr-TR")) : null,
+                                MYYSPuan = worksheet.Cells[row, 34].Value?.ToString(),
+                                //MYYSPuan = worksheet.Cells[row, 34].Value != null ? 
+                                //    Math.Round(Convert.ToDecimal(worksheet.Cells[row, 34].Value), 2, MidpointRounding.AwayFromZero)
+                                //    .ToString("F2", new System.Globalization.CultureInfo("tr-TR")) : null,
                                 MYYSSonuc = worksheet.Cells[row, 35].Value?.ToString(),
                                 MYSSDurum = worksheet.Cells[row, 36].Value?.ToString(),
                                 MYSSDurumAck = worksheet.Cells[row, 37].Value?.ToString(),
@@ -481,13 +482,16 @@ namespace YOGBIS.UI.Controllers
                                 MYYSSonucItiraz = worksheet.Cells[row, 57].Value?.ToString(),
                                 BasvuruBrans = worksheet.Cells[row, 58].Value?.ToString(),
                                 BransId = brans?.BransId,
+                                BransAdi=brans?.BransAdi,
                                 DereceId = _derecelerBE.DereceleriGetir().Data
                                     .FirstOrDefault(d => d.DereceAdi == worksheet.Cells[row, 60].Value?.ToString())?.DereceId,
                                 DereceAdi = worksheet.Cells[row, 60].Value?.ToString(),
                                 Unvan = worksheet.Cells[row, 61].Value?.ToString(),
                                 UlkeTercihId = ulketercih?.UlkeTercihId,
+                                UlkeTercihAdi = ulketercih?.UlkeTercihAdi,
                                 //UlkeTercihId = Guid.Parse(worksheet.Cells[row, 62].Value?.ToString()),
                                 MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
+                                //MulakatYil = yil,
                                 AdayId = _adaylarBE.AdaylariGetir().Data
                                     .FirstOrDefault(a => a.TC == worksheet.Cells[row, 1].Value?.ToString())?.AdayId
                             };

@@ -8,7 +8,6 @@
                 <th class="text-center">TC</th>
                 <th class="text-center">Ad</th>
                 <th class="text-center">Soyad</th>
-             @*    <th class="text-center">Yýl</th> *@
             </tr>
         </thead>
         <tbody>
@@ -23,12 +22,11 @@
                     <tr>
                         <td style="width:20px">@sirano</td>
                         <td class="text-center" style="width:20px">
-                            <a href="#" onclick="getAdayIletisimBilgileri('@item.TC'); return false;" style="cursor:pointer">@item.TC</a>
+                            <a href="#" onclick="getAdayBasvuruBilgileri('@item.TC'); getAdayIletisimBilgileri('@item.TC'); return false;" style="cursor:pointer">@item.TC</a>
                             @* <a href="#" onclick="getAdayBasvuruBilgileri('@item.TC'); getAdayIletisimBilgileri('@item.TC'); getAdayMYSSBilgileri('@item.TC'); getAdayTYSBilgileri('@item.TC'); return false;" style="cursor:pointer">@item.TC</a> *@
                         </td>
                         <td style="width:20px">@item.Ad</td>
                         <td style="width:20px">@item.Soyad</td>
-                        @* <td style="width:20px">@item.MulakatYil</td> *@
                     </tr>
                 }
             }
