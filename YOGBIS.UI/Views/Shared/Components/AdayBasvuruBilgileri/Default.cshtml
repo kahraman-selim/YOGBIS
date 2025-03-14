@@ -37,6 +37,17 @@
                         <th class="text-center align-text-top">Başvuru Branş</th>
                         <th class="text-center align-text-top">Derece</th>
                         <th class="text-center align-text-top">Ünvan</th>
+                        <th class="text-center align-text-top">MYYS Puan</th>
+                        <th class="text-center align-text-top">MYYS Sonuç</th>
+                        <th class="text-center align-text-top">MYSS Durum</th>
+                        <th class="text-center align-text-top">MYSS Durum Açk.</th>
+                        <th class="text-center align-text-top">Referans</th>
+                        <th class="text-center align-text-top">Sendika</th>
+                        <th class="text-center align-text-top">EDurum</th>
+                        <th class="text-center align-text-top">MDurum</th>
+                        <th class="text-center align-text-top">PDurum</th>
+                        <th class="text-center align-text-top">İL MEM Görüş</th>
+                        <th class="text-center align-text-top">Adli Sicil</th>
                         <th class="text-center align-text-top">Askerlik</th>
                         <th class="text-center align-text-top">Kurum Adı</th>
                         <th class="text-center align-text-top">Öğrenim</th>                       
@@ -52,23 +63,13 @@
                         <th class="text-center align-text-top">Son Değişiklik Tar.</th>
                         <th class="text-center align-text-top">Başvuru Onay</th>
                         <th class="text-center align-text-top">Onay Açk.</th>
-                        <th class="text-center align-text-top">MYYS Sınav Ted.</th>
-                        <th class="text-center align-text-top">MYYS Puan</th>
-                        <th class="text-center align-text-top">MYYS Sonuç</th>
-                        <th class="text-center align-text-top">MYSS Durum</th>
-                        <th class="text-center align-text-top">MYSS Durum Açk.</th>
-                        <th class="text-center align-text-top">İL MEM Görüş</th>
-                        <th class="text-center align-text-top">Referans</th>
-                        <th class="text-center align-text-top">Sendika</th>                        
+                        <th class="text-center align-text-top">MYYS Sınav Ted.</th>                                            
                         <th class="text-center align-text-top">Görev İptal</th>                        
                         <th class="text-center align-text-top">İlk Görev Kaydı</th>                        
-                        <th class="text-center align-text-top">Görevden Uzaklaştırma</th>                        
-                        <th class="text-center align-text-top">EDurum</th>                        
-                        <th class="text-center align-text-top">MDurum</th>                        
-                        <th class="text-center align-text-top">PDurum</th>                        
+                        <th class="text-center align-text-top">Görevden Uzaklaştırma</th>
                         <th class="text-center align-text-top">Soru İtiraz</th>                        
                         <th class="text-center align-text-top">Sonuç İtiraz</th>                        
-                        <th class="text-center align-text-top">Adli Sicil</th>                        
+                                              
                     </tr>
                 </thead>
                 <tbody>
@@ -82,6 +83,36 @@
                                 <td class="kurum-column">@item.BasvuruBrans</td>
                                 <td class="ogrenim-column">@item.DereceAdi</td>
                                 <td class="mezuniyet-column">@item.Unvan</td>
+                                <td class="durum-column">@item.MYYSPuan</td>
+                                <td class="durum-column">@item.MYYSSonuc</td>
+                                <td class="durum-column">@item.MYSSDurum</td>
+                                <td class="durum-column">@item.MYSSDurumAck</td>                                
+                                @{
+                                    var referanslar = new List<string>();
+                                    if (!string.IsNullOrEmpty(item.Referans)) referanslar.Add(item.Referans);
+                                    if (!string.IsNullOrEmpty(item.ReferansAck)) referanslar.Add(item.ReferansAck);
+                                }
+                                <td class="referans-column">@string.Join("/", referanslar)</td>                                
+                                @{
+                                    var sendikalar = new List<string>();
+                                    if (!string.IsNullOrEmpty(item.Sendika)) sendikalar.Add(item.Sendika);
+                                    if (!string.IsNullOrEmpty(item.SendikaAck)) sendikalar.Add(item.SendikaAck);
+                                }
+                                <td class="sendika-column">@string.Join("/", sendikalar)</td>                               
+                                <td class="durum-column">@item.EDurum</td>
+                                <td class="durum-column">@item.MDurum</td>
+                                <td class="durum-column">@item.PDurum</td>
+                                <td class="durum-column">@item.IlMemGorus</td>
+                                @if (item.AdliSicilBelge != null && item.AdliSicilBelge.Length > 0)
+                                {
+                                    <td class="bg-danger">
+                                        <button class="btn btn-sm btn-light" onclick="showAdliSicil('@item.Id')">Göster</button>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
                                 <td class="hizmet-column">@item.Askerlik</td>
                                 <td class="derece-column">@item.KurumAdi</td>
                                 <td class="yillik-column">@item.Ogrenim</td>
@@ -107,7 +138,6 @@
                                 else{
                                     <td class="myys-column">@($"{item.YabanciDilBasvuru}")</td>
                                 }
-
                                 @{
                                     var diller = new List<string>();
                                     if (!string.IsNullOrEmpty(item.YabanciDilALM)) diller.Add(item.YabanciDilALM);
@@ -134,26 +164,6 @@
                                 else{
                                     <td class="durum-column"></td>
                                 }
-
-                                <td class="durum-column">@item.MYYSPuan</td>
-                                <td class="durum-column">@item.MYYSSonuc</td>
-                                <td class="durum-column">@item.MYSSDurum</td>
-                                <td class="durum-column">@item.MYSSDurumAck</td>
-                                <td class="durum-column">@item.IlMemGorus</td>
-                                @{
-                                    var referanslar = new List<string>();
-                                    if (!string.IsNullOrEmpty(item.Referans)) referanslar.Add(item.Referans);
-                                    if (!string.IsNullOrEmpty(item.ReferansAck)) referanslar.Add(item.ReferansAck);
-                                }
-                                <td class="referans-column">@string.Join("/", referanslar)</td>
-
-                                @{
-                                    var sendikalar = new List<string>();
-                                    if (!string.IsNullOrEmpty(item.Sendika)) sendikalar.Add(item.Sendika);
-                                    if (!string.IsNullOrEmpty(item.SendikaAck)) sendikalar.Add(item.SendikaAck);
-                                }
-                                <td class="sendika-column">@string.Join("/", sendikalar)</td>
-
                                 @{
                                     var gorevIptaller = new List<string>();
                                     if (!string.IsNullOrEmpty(item.GorevIptalAck)) gorevIptaller.Add(item.GorevIptalAck);
@@ -164,21 +174,8 @@
                                 <td class="gorev-iptal-column">@string.Join("/", gorevIptaller)</td>
                                 <td class="durum-column">@item.IlkGorevKaydi</td>
                                 <td class="durum-column">@item.GorevdenUzaklastirma</td>
-                                <td class="durum-column">@item.EDurum</td>
-                                <td class="durum-column">@item.MDurum</td>
-                                <td class="durum-column">@item.PDurum</td>
                                 <td class="durum-column">@item.MYYSSoruItiraz</td>
                                 <td class="durum-column">@item.MYYSSonucItiraz</td>
-                                @if (item.AdliSicilBelge != null && item.AdliSicilBelge.Length > 0)
-                                {
-                                    <td class="bg-danger">
-                                        <button class="btn btn-sm btn-light" onclick="showAdliSicil('@item.Id')">Göster</button>
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
                             </tr>
                         }
                     }
