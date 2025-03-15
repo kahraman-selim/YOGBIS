@@ -27,9 +27,8 @@ namespace YOGBIS.Data.DbModels
         public bool? KabulDurum { get; set; }
         public bool? SinavDurum { get; set; }
         public bool? SinavaGelmedi { get; set; }
-        public string SinavaGelmediAck { get; set; }        
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal? MYSPuan { get; set; }        
+        public string SinavaGelmediAck { get; set; }
+        public string MYSPuan { get; set; }
         public string MYSSonuc { get; set; }
         public string MYSSonucAck { get; set; }
         public int? MYSSSorulanSoruNo { get; set; }

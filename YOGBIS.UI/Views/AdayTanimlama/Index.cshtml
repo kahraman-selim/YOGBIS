@@ -468,76 +468,108 @@
             });
         }
 
+        function getAdayMYSSBilgileri(tc) {
+            console.log('TC gönderiliyor:', tc);
+            $.ajax({
+                url: '/AdayTanimlama/AdayMYSSBilgileriniGetir',
+                type: 'GET',
+                data: { TC: tc },
+                success: function (result) {
+                    if (result.error) {
+                        console.error('Sunucu hatası:', result.error);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: result.error,
+                            size: 'small'
+                        });
+                        return;
+                    }
+                    if (result === '') {
+                        $('#adayMYSSBilgileriContainer').html('<div class="card mb-3"><div class="card-header"><i class="fas fa-table mr-1"></i><b>Aday MYSS Bilgileri</b></div><div class="card-body"><div class="table-responsive"><table class="table table-bordered"><tbody><tr><td class="text-center">Herhangi bir kayıt bulunamadı!</td></tr></tbody></table></div></div></div>');
+                        return;
+                    }
+                    console.log('Başarılı sonuç:', result);
+                    $('#adayMYSSBilgileriContainer').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.group('AJAX Hata Detayları');
+                    console.error('Hata:', error);
+                    console.error('Status:', status);
+                    console.error('Status Code:', xhr.status);
+                    console.error('Response Text:', xhr.responseText);
+                    try {
+                        var jsonResponse = JSON.parse(xhr.responseText);
+                        console.error('JSON Response:', jsonResponse);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: jsonResponse.error || 'Veri getirme hatası',
+                            size: 'small'
+                        });
+                    } catch (e) {
+                        console.error('Raw Response:', xhr.responseText);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: 'Veri getirme hatası',
+                            size: 'small'
+                        });
+                    }
+                    console.groupEnd();
+                }
+            });
+        }
+
+        function getAdayTYSBilgileri(tc) {
+            console.log('TC gönderiliyor:', tc);
+            $.ajax({
+                url: '/AdayTanimlama/AdayTYSBilgileriniGetir',
+                type: 'GET',
+                data: { TC: tc },
+                success: function (result) {
+                    if (result.error) {
+                        console.error('Sunucu hatası:', result.error);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: result.error,
+                            size: 'small'
+                        });
+                        return;
+                    }
+                    if (result === '') {
+                        $('#adayTYSBilgileriContainer').html('<div class="card mb-3"><div class="card-header"><i class="fas fa-table mr-1"></i><b>Aday TYS Bilgileri</b></div><div class="card-body"><div class="table-responsive"><table class="table table-bordered"><tbody><tr><td class="text-center">Herhangi bir kayıt bulunamadı!</td></tr></tbody></table></div></div></div>');
+                        return;
+                    }
+                    console.log('Başarılı sonuç:', result);
+                    $('#adayTYSBilgileriContainer').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.group('AJAX Hata Detayları');
+                    console.error('Hata:', error);
+                    console.error('Status:', status);
+                    console.error('Status Code:', xhr.status);
+                    console.error('Response Text:', xhr.responseText);
+                    try {
+                        var jsonResponse = JSON.parse(xhr.responseText);
+                        console.error('JSON Response:', jsonResponse);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: jsonResponse.error || 'Veri getirme hatası',
+                            size: 'small'
+                        });
+                    } catch (e) {
+                        console.error('Raw Response:', xhr.responseText);
+                        bootbox.alert({
+                            title: 'Hata',
+                            message: 'Veri getirme hatası',
+                            size: 'small'
+                        });
+                    }
+                    console.groupEnd();
+                }
+            });
+        }
+
     </script>
+
     <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
     <script src="~/lib/datatables/dataTables.bootstrap4.min.js"></script>
-    @* <script>
-        $(document).ready(function () {
-            $('#dataTable').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Turkish.json"
-                },
-                "processing": true,
-                "serverSide": true,
-                "filter": true,
-                "ajax": {
-                    "url": "/AdayTanimlama/GetList",
-                    "type": "POST",
-                    "datatype": "json"
-                },
-                "columnDefs": [{
-                    "targets": [0],
-                    "visible": false,
-                    "searchable": false
-                }],
-                "columns": [
-                    { "data": "tc", "name": "TC", "title": "TC", "autoWidth": true },
-                    {
-                        "data": "mysstarih",
-                        "name": "MYSSTarih",
-                        "title": "MYS Tarih",
-                        "autoWidth": true,
-                        "render": function (data) {
-                            if (data) {
-                                var date = new Date(data);
-                                return date.toLocaleDateString('tr-TR', { 
-                                    day: '2-digit', 
-                                    month: '2-digit', 
-                                    year: 'numeric' 
-                                });
-                            }
-                            return "";
-                        }
-                    },
-                    { "data": "mysssaat", "name": "MYSSSaat", "title": "MYS Saat", "autoWidth": true },
-                    { "data": "myssMulakatYer", "name": "MYSSMulakatYer", "title": "MYS Mülakat Yeri", "autoWidth": true },
-                    { "data": "myssDurum", "name": "MYSSDurum", "title": "MYS Durum", "autoWidth": true },
-                    { "data": "myssDurumAck", "name": "MYSSDurumAck", "title": "MYS Durum Açıklama", "autoWidth": true },
-                    { "data": "myssKomisyonSiraNo", "name": "MYSSKomisyonSiraNo", "title": "MYS Komisyon Sıra No", "autoWidth": true },
-                    { "data": "komisyonSN", "name": "KomisyonSN", "title": "Komisyon SN", "autoWidth": true },
-                    { "data": "komisyonGunSN", "name": "KomisyonGunSN", "title": "Komisyon Gün SN", "autoWidth": true },
-                    {
-                        "data": "myspuan",
-                        "name": "MYSPuan",
-                        "title": "MYS Puan",
-                        "autoWidth": true,
-                        "render": function (data) {
-                            if (data) {
-                                var puan = parseFloat(data);
-                                return puan.toLocaleString('tr-TR', { 
-                                    minimumFractionDigits: 2, 
-                                    maximumFractionDigits: 2 
-                                });
-                            }
-                            return "";
-                        }
-                    },
-                    { "data": "myssonuc", "name": "MYSSonuc", "title": "MYS Sonuç", "autoWidth": true },
-                    { "data": "myssonucAck", "name": "MYSSonucAck", "title": "MYS Sonuç Açıklama", "autoWidth": true },
-                    { "data": "mysssorulanSoruNo", "name": "MYSSSorulanSoruNo", "title": "MYS Sorulan Soru No", "autoWidth": true },
-                    { "data": "myssKomisyonAdi", "name": "MYSSKomisyonAdi", "title": "MYS Komisyon Adı", "autoWidth": true }
-                ]
-            });
-        });
-    </script> *@
 }

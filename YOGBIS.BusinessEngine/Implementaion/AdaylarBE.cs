@@ -19,7 +19,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 {
     public class AdaylarBE : IAdaylarBE
     {
-        #region Fields
+        #region Değişkenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IDerecelerBE _derecelerBE;
@@ -28,7 +28,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         private readonly ILogger<AdaylarBE> _logger;
         #endregion
 
-        #region Constructors
+        #region Dönüştürücüler
         public AdaylarBE(IUnitOfWork unitOfWork, IMapper mapper, IDerecelerBE derecelerBE, IMulakatOlusturBE mulakatOlusturBE, IKomisyonlarBE komisyonlarBE, ILogger<AdaylarBE> logger)
         {
             _unitOfWork = unitOfWork;
@@ -390,8 +390,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         MYYSSonucItiraz = data.MYYSSonucItiraz,
                         BasvuruBrans = data.BasvuruBrans,
                         BransId = data.BransId,
-                        AdliSicilBelge = data.AdliSicilBelge,
-                        
+                        AdliSicilBelge = data.AdliSicilBelge,                        
                         DereceId = data.DereceId,
                         DereceAdi = data.DereceAdi,
                         Unvan = data.Unvan,
@@ -714,6 +713,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         MYSSDurum = data.MYSSDurum,
                         MYSSDurumAck = data.MYSSDurumAck,
                         MYSSKomisyonSiraNo = data.MYSSKomisyonSiraNo,
+                        MYSSKomisyonAdi = data.MYSSKomisyonAdi,
                         KomisyonSN = data.KomisyonSN,
                         KomisyonGunSN = data.KomisyonGunSN,
                         CagriDurum = data.CagriDurum ?? false,
@@ -721,9 +721,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SinavDurum = data.SinavDurum ?? false,
                         SinavaGelmedi = data.SinavaGelmedi ?? false,
                         SinavaGelmediAck = data.SinavaGelmediAck,
-                        MYSPuan = data.MYSPuan.HasValue ? 
-                            Math.Round(data.MYSPuan.Value, 2, MidpointRounding.AwayFromZero)
-                            .ToString("F2", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                        MYSPuan= data.MYSPuan,
                         MYSSonuc = data.MYSSonuc,
                         MYSSonucAck = data.MYSSonucAck,
                         MYSSSorulanSoruNo = data.MYSSSorulanSoruNo,
@@ -844,12 +842,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     data.SinavDurum = model.SinavDurum;
                     data.SinavaGelmedi = model.SinavaGelmedi;
                     data.SinavaGelmediAck = model.SinavaGelmediAck;
-                    
-                    if (!string.IsNullOrEmpty(model.MYSPuan))
-                    {
-                        data.MYSPuan = decimal.Parse(model.MYSPuan.Replace(",", "."), CultureInfo.InvariantCulture);
-                    }
-                    
+                    data.MYSPuan = model.MYSPuan;
                     data.MYSSonuc = model.MYSSonuc;
                     data.MYSSonucAck = model.MYSSonucAck;
                     data.MYSSSorulanSoruNo = model.MYSSSorulanSoruNo;
@@ -878,64 +871,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
             return result;
         }
-        #endregion
-
-        #region AdayMYSSBilgileriGetir
-        public Result<List<AdayMYSSVM>> AdayMYSSBilgileriGetir()
-        {
-            var result = new Result<List<AdayMYSSVM>>();
-            try
-            {
-                var adaylar = (from a in _unitOfWork.adayMYSSRepository.GetAll()
-                              join k in _unitOfWork.komisyonlarRepository.GetAll() on a.KomisyonId equals k.KomisyonId into komisyonlar
-                              from k in komisyonlar.DefaultIfEmpty()
-                              select new AdayMYSSVM
-                              {
-                                  TC = a.TC,
-                                  MYSSTarih = a.MYSSTarih,
-                                  MYSSSaat = a.MYSSSaat,
-                                  MYSSMulakatYer = a.MYSSMulakatYer,
-                                  MYSSDurum = a.MYSSDurum,
-                                  MYSSDurumAck = a.MYSSDurumAck,
-                                  MYSSKomisyonSiraNo = a.MYSSKomisyonSiraNo,
-                                  KomisyonSN = a.KomisyonSN,
-                                  KomisyonGunSN = a.KomisyonGunSN,
-                                  CagriDurum = a.CagriDurum ?? false,
-                                  KabulDurum = a.KabulDurum ?? false,
-                                  SinavDurum = a.SinavDurum ?? false,
-                                  SinavaGelmedi = a.SinavaGelmedi ?? false,
-                                  SinavaGelmediAck = a.SinavaGelmediAck,
-                                  MYSPuan = a.MYSPuan.HasValue ? 
-                                      Math.Round(a.MYSPuan.Value, 2, MidpointRounding.AwayFromZero)
-                                      .ToString("F2", CultureInfo.GetCultureInfo("tr-TR")) : null,
-                                  MYSSonuc = a.MYSSonuc,
-                                  MYSSonucAck = a.MYSSonucAck,
-                                  MYSSSorulanSoruNo = a.MYSSSorulanSoruNo,
-                                  KomisyonId = k == null ? (Guid?)null : k.KomisyonId,
-                                  MYSSKomisyonAdi = k == null ? null : k.KomisyonAdi,
-                                  MulakatId = a.MulakatId,
-                                  AdayId = a.AdayId
-                              }).ToList();
-
-                if (adaylar != null && adaylar.Any())
-                {
-                    result.Data = adaylar;
-                    result.IsSuccess = true;
-                }
-                else
-                {
-                    result.IsSuccess = false;
-                    result.Message = "Kayıt bulunamadı!";
-                }
-            }
-            catch (Exception ex)
-            {
-                result.IsSuccess = false;
-                result.Message = $"Bir hata oluştu: {ex.Message}";
-            }
-            return result;
-        }
-        #endregion
+        #endregion      
 
         #region AdayTYSBilgileriEkle
         public Result<AdayTYSVM> AdayTYSBilgileriEkle(AdayTYSVM model, SessionContext user)
@@ -1003,9 +939,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SinavDurum = data.SinavDurum ?? false,
                         SinavaGelmedi = data.SinavaGelmedi ?? false,
                         SinavaGelmediAck = data.SinavaGelmediAck,
-                        TYSPuan = data.TYSPuan.HasValue ? 
-                            Math.Round(data.TYSPuan.Value, 2, MidpointRounding.AwayFromZero)
-                            .ToString("F2", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                        TYSPuan = data.TYSPuan,
+                        //TYSPuan = data.TYSPuan.HasValue ? 
+                        //    Math.Round(data.TYSPuan.Value, 2, MidpointRounding.AwayFromZero)
+                        //    .ToString("F2", CultureInfo.GetCultureInfo("tr-TR")) : null,
                         TYSSonuc = data.TYSSonuc,
                         TYSSonucAck = data.TYSSonucAck,
                         TYSSorulanSoruNo = data.TYSSorulanSoruNo,
@@ -1129,9 +1066,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SinavDurum = data.SinavDurum ?? false,
                         SinavaGelmedi = data.SinavaGelmedi ?? false,
                         SinavaGelmediAck = data.SinavaGelmediAck,
-                        TYSPuan = data.TYSPuan.HasValue ? 
-                            Math.Round(data.TYSPuan.Value, 2, MidpointRounding.AwayFromZero)
-                            .ToString("F2", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                        TYSPuan = data.TYSPuan.ToString(),
                         TYSSonuc = data.TYSSonuc,
                         TYSSonucAck = data.TYSSonucAck,
                         TYSSorulanSoruNo = data.TYSSorulanSoruNo,
@@ -1187,9 +1122,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                                   SinavDurum = a.SinavDurum ?? false,
                                   SinavaGelmedi = a.SinavaGelmedi ?? false,
                                   SinavaGelmediAck = a.SinavaGelmediAck,
-                                  TYSPuan = a.TYSPuan.HasValue ? 
-                                      Math.Round(a.TYSPuan.Value, 2, MidpointRounding.AwayFromZero)
-                                      .ToString("F2", CultureInfo.GetCultureInfo("tr-TR")) : null,
+                                  TYSPuan = a.TYSPuan.ToString(),
                                   TYSSonuc = a.TYSSonuc,
                                   TYSSonucAck = a.TYSSonucAck,
                                   TYSSorulanSoruNo = a.TYSSorulanSoruNo,
