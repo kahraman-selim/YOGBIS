@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20250315211138_AdayMYSSalanekleme")]
+    partial class AdayMYSSalanekleme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -884,20 +886,8 @@ namespace YOGBIS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(16)");
 
-                    b.Property<string>("BransAdi")
-                        .HasColumnType("text");
-
-                    b.Property<byte[]>("BransId")
-                        .HasColumnType("varbinary(16)");
-
                     b.Property<bool?>("CagriDurum")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("DereceAdi")
-                        .HasColumnType("text");
-
-                    b.Property<byte[]>("DereceId")
-                        .HasColumnType("varbinary(16)");
 
                     b.Property<bool?>("KabulDurum")
                         .HasColumnType("tinyint(1)");
@@ -971,12 +961,6 @@ namespace YOGBIS.Data.Migrations
 
                     b.Property<string>("TYSTarih")
                         .HasColumnType("text");
-
-                    b.Property<string>("UlkeTercihAdi")
-                        .HasColumnType("text");
-
-                    b.Property<byte[]>("UlkeTercihId")
-                        .HasColumnType("varbinary(16)");
 
                     b.HasKey("Id");
 

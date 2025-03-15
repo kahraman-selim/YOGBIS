@@ -34,6 +34,12 @@ namespace YOGBIS.Data.DbModels
         public int? TYSSorulanSoruNo { get; set; }
         public bool? SinavIptal { get; set; }
         public string SinavIptalAck { get; set; }
+        public Guid? BransId { get; set; }
+        public string BransAdi { get; set; }
+        public Guid? DereceId { get; set; }
+        public string DereceAdi { get; set; }
+        public Guid? UlkeTercihId { get; set; }
+        public string UlkeTercihAdi { get; set; }
         public Guid AdayId { get; set; }        
         [ForeignKey("AdayId")]
         public virtual Adaylar Adaylar { get; set; }        

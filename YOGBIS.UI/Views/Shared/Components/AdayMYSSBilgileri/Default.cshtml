@@ -32,6 +32,7 @@
                                 <td>@item.MYSSSaat</td>
                                 <td>@item.KomisyonGunSN</td>
                                 <td>@item.MYSSSorulanSoruNo</td>
+                                @* <td>@(!string.IsNullOrEmpty(item.MYSPuan) && decimal.TryParse(item.MYSPuan, out decimal puan) ? puan.ToString("0,00") : "")</td> *@
                                 <td>@item.MYSPuan</td>
                                 <td>@item.MYSSonuc</td>
                             </tr>
