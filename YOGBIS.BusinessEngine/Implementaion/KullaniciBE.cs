@@ -194,5 +194,35 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        #region KomisyonSorumluGetir
+        public async Task<Result<List<KullaniciVM>>> KomisyonSorumluGetir()
+        {
+            var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
+            var newdata = await _userManager.GetUsersInRoleAsync("Commissioner");
+            var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
+
+            if (newdata != null)
+            {
+                List<KullaniciVM> returnData = new List<KullaniciVM>();
+
+                foreach (var item in newdata)
+                {
+                    returnData.Add(new KullaniciVM()
+                    {
+                        Id = item.Id,
+                        Ad = item.Ad,
+                        Soyad = item.Soyad,
+                        AdSoyad = item.Ad + " " + item.Soyad
+                    });
+                }
+                return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<KullaniciVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
     }
 }
