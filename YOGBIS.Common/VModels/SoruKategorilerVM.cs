@@ -27,14 +27,15 @@ namespace YOGBIS.Common.VModels
         public int SoruKategorilerPuan { get; set; }
 
         [Required(ErrorMessage = "Derece seçiniz")]
-        public Guid DereceId { get; set; }
+        public Guid? DereceId { get; set; }
+        public string DereceAdi { get; set; }
+        public SoruDerecelerVM SoruDereceler { get; set; }
 
         public string SoruKategorilerTakmaAdi { get; set; }
         public string SoruKategorilerTamAdi { get; set; }
         public int SinavKateogoriTurId { get; set; }
         public string SinavKategoriTurAdi { get; set; }
-        public string DereceAdi { get; set; }
-        public SoruDerecelerVM SoruDereceler { get; set; }
+       
         public string KaydedenId { get; set; }
         [Display(Name = "Kaydeden")]
         public string KaydedenAdi { get; set; }
