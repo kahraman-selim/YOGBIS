@@ -1,4 +1,4 @@
-﻿@model List<YOGBIS.Common.VModels.AdayMYSSVM>
+@model List<YOGBIS.Common.VModels.AdayMYSSVM>
 
 <div class="card mb-3">
     <div class="card-header">
@@ -16,7 +16,7 @@
                         <th>Sınav Saati</th>
                         <th>Gün SN</th>
                         <th>Soru No</th>
-                        <th>MYSS Puan</th>
+                        <th>MYS Puan</th>
                         <th>MYSS Sonuç</th>
                         <th>MYSS Durumu</th>
                         <th>MYSS Durumu Açıklama</th>
@@ -34,8 +34,7 @@
                                 <td>@item.MYSSSaat</td>
                                 <td>@item.KomisyonGunSN</td>
                                 <td>@item.MYSSSorulanSoruNo</td>
-                                @* <td>@(!string.IsNullOrEmpty(item.MYSPuan) && decimal.TryParse(item.MYSPuan, out decimal puan) ? puan.ToString("0,00") : "")</td> *@
-                                <td>@item.MYSPuan</td>
+                                <td>@(!string.IsNullOrEmpty(item.MYSPuan) && double.TryParse(item.MYSPuan.Replace(".", ","), out double puan) ? Math.Round(puan, 2, MidpointRounding.AwayFromZero).ToString("0.00") : "")</td>
                                 <td>@item.MYSSonuc</td>
                                 <td>@item.MYSSDurum</td>
                                 <td>@item.MYSSDurumAck</td>
@@ -45,7 +44,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="8" class="text-center" style="padding: 20px;">
+                            <td colspan="10" class="text-center" style="padding: 20px;">
                                 <i class="fas fa-info-circle text-info mr-2"></i>
                                 Herhangi bir kayıt bulunamadı!
                             </td>
