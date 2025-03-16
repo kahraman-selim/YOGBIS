@@ -1,3 +1,4 @@
+using Org.BouncyCastle.Utilities.IO.Pem;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -68,6 +69,8 @@ namespace YOGBIS.Common.VModels
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime KomisyonGorevBitisTarihi { get; set; }
+
+        public Guid? IlgiliPersonelId { get; set; }
 
         [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public Guid? MulakatId { get; set; }
