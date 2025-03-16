@@ -106,6 +106,11 @@ namespace YOGBIS.UI.Controllers
 
                 if (KomisyonId != null)
                 {
+                    if (model.KomisyonUyeDurum == "Asıl")
+                        model.KomisyonGorevDurum = true;
+                    else
+                        model.KomisyonGorevDurum = false;
+
                     var data = _komisyonlarBE.KomisyonGuncelle(model, user);
                     //if (!data.IsSuccess)
                     //{
@@ -120,6 +125,11 @@ namespace YOGBIS.UI.Controllers
                 }
                 else
                 {
+                    if (model.KomisyonUyeDurum == "Asıl")
+                        model.KomisyonGorevDurum = true;
+                    else
+                        model.KomisyonGorevDurum = false;
+
                     var data = _komisyonlarBE.KomisyonEkle(model, user);
                     //if (!data.IsSuccess)
                     //{
