@@ -199,79 +199,70 @@ namespace YOGBIS.UI.Controllers
                         }
 
                         var hatalar = new List<string>();
-                        var basariliEklenen = 0;
+                        var basariliKayitlar = 0;
 
                         for (int row = 2; row <= rowCount; row++)
                         {
                             try
                             {
-                                var kategoriModel = new SoruKategorilerVM
+                                var kategori = new SoruKategorilerVM
                                 {
-                                    SoruKategorilerSiraNo = Convert.ToInt32(worksheet.Cells[row, 1].Value?.ToString().Trim()),
-                                    SoruKategorilerAdi = worksheet.Cells[row, 2].Value?.ToString().Trim(),
-                                    SoruKategorilerKullanimi = worksheet.Cells[row, 3].Value?.ToString().Trim(),
-                                    SoruKategorilerPuan = Convert.ToInt32(worksheet.Cells[row, 4].Value?.ToString().Trim()),
-                                    SoruKategorilerTakmaAdi = worksheet.Cells[row, 5].Value?.ToString().Trim(),
-                                    SoruKategorilerTamAdi = worksheet.Cells[row, 6].Value?.ToString().Trim(),
-                                    SinavKateogoriTurId = Convert.ToInt32(worksheet.Cells[row, 7].Value?.ToString().Trim()),
-                                    SinavKategoriTurAdi = worksheet.Cells[row, 8].Value?.ToString().Trim(),
-                                    DereceId = dereceId
-                                    //DereceId = _derecelerBE.DereceleriGetir().Data
-                                    //.FirstOrDefault(d => d.DereceAdi == worksheet.Cells[row, 9].Value?.ToString())?.DereceId                                    
+                                    DereceId = dereceId,
+                                    SoruKategorilerSiraNo = Convert.ToInt32(worksheet.Cells[row, 1].Value?.ToString()),
+                                    SoruKategorilerAdi = worksheet.Cells[row, 2].Value?.ToString(),
+                                    SoruKategorilerKullanimi = worksheet.Cells[row, 3].Value?.ToString(),
+                                    SoruKategorilerPuan = Convert.ToInt32(worksheet.Cells[row, 4].Value?.ToString()),
+                                    SoruKategorilerTakmaAdi = worksheet.Cells[row, 5].Value?.ToString(),
+                                    SoruKategorilerTamAdi = worksheet.Cells[row, 6].Value?.ToString(),
+                                    SinavKateogoriTurId = Convert.ToInt32(worksheet.Cells[row, 7].Value?.ToString()),
+                                    SinavKategoriTurAdi = worksheet.Cells[row, 8].Value?.ToString()
                                 };
-                                                                
-                                var result = _soruKategorileriBE.SoruKategoriEkle(kategoriModel, user);
+
+                                if (string.IsNullOrWhiteSpace(kategori.SoruKategorilerAdi))
+                                {
+                                    hatalar.Add($"Satır {row}: Kategori adı boş olamaz.");
+                                    continue;
+                                }
+
+                                if (kategori.SoruKategorilerSiraNo <= 0)
+                                {
+                                    hatalar.Add($"Satır {row}: Geçersiz sıra numarası.");
+                                    continue;
+                                }
+
+                                var result = _soruKategorileriBE.SoruKategoriEkle(kategori, user);
                                 if (result.IsSuccess)
                                 {
-                                    basariliEklenen++;
-                                    _logger.LogInformation($"Satır {row} başarıyla eklendi");
+                                    basariliKayitlar++;
                                 }
                                 else
                                 {
-                                    var errorMessage = result.Message ?? "Bilinmeyen bir hata oluştu";
-                                    hatalar.Add($"Satır {row}: {errorMessage}");
-                                    _logger.LogWarning($"Satır {row}: {errorMessage}");
+                                    hatalar.Add($"Satır {row}: {result.Message}");
                                 }
                             }
                             catch (Exception ex)
                             {
-                                var errorMessage = $"Satır {row}: İşlem sırasında hata oluştu - {ex.Message}";
-                                hatalar.Add(errorMessage);
-                                _logger.LogError(errorMessage);
-                                _logger.LogError($"Stack trace: {ex.StackTrace}");
+                                _logger.LogError(ex, $"Excel yükleme hatası - Satır {row}");
+                                hatalar.Add($"Satır {row}: İşlem sırasında bir hata oluştu.");
                             }
                         }
 
-                        if (basariliEklenen > 0)
+                        if (hatalar.Any())
                         {
-                            var message = $"{basariliEklenen} adet kategori kaydı başarıyla eklendi.";
-                            if (hatalar.Any())
-                            {
-                                message += $" Ancak {hatalar.Count} adet hata oluştu: {string.Join(", ", hatalar)}";
-                            }
-                            return Json(new { success = true, message = message });
+                            var hataMessage = string.Join("\n", hatalar);
+                            _logger.LogWarning($"Excel yükleme tamamlandı - {basariliKayitlar} başarılı, {hatalar.Count} hatalı kayıt. Hatalar: {hataMessage}");
+                            return Json(new { success = false, error = hataMessage });
                         }
-                        else
-                        {
-                            var errorMessage = "Kategori kaydı eklenemedi. ";
-                            if (hatalar.Any())
-                            {
-                                errorMessage += $"Hatalar: {string.Join(", ", hatalar)}";
-                            }
-                            else
-                            {
-                                errorMessage += "Lütfen Excel dosyasını kontrol ediniz.";
-                            }
-                            return Json(new { success = false, error = errorMessage });
-                        }
+
+                        _logger.LogInformation($"Excel yükleme başarıyla tamamlandı - {basariliKayitlar} kayıt eklendi.");
+                        return Json(new { success = true });
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excel yükleme hatası: {ex.Message}");
-                _logger.LogError($"Stack trace: {ex.StackTrace}");
-                return Json(new { success = false, error = $"Excel yükleme sırasında bir hata oluştu: {ex.Message}" });
+                _logger.LogError(ex, "Excel yükleme işlemi sırasında beklenmeyen bir hata oluştu");
+                return Json(new { success = false, error = "Excel yükleme işlemi sırasında bir hata oluştu." });
             }
         }
         #endregion
