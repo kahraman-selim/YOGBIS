@@ -66,6 +66,8 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "TYS Sonuç Açıklaması")]
         public string TYSSonucAck { get; set; }
 
+        public int GorevlendirmeSiraNo { get; set; }
+
         [Display(Name = "TYS Sorulan Soru No")]
         public int? TYSSorulanSoruNo { get; set; }
 
@@ -74,6 +76,15 @@ namespace YOGBIS.Common.VModels
 
         [Display(Name = "Sınav İptal Açıklaması")]
         public string SinavIptalAck { get; set; }
+
+        public Guid? BransId { get; set; }
+        public string BransAdi { get; set; }
+
+        public Guid? DereceId { get; set; }
+        public string DereceAdi { get; set; }
+
+        public Guid? UlkeTercihId { get; set; }
+        public string UlkeTercihAdi { get; set; }
 
         public Guid? AdayId { get; set; }
 

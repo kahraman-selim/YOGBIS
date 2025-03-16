@@ -18,6 +18,8 @@
                         <th>Soru No</th>
                         <th>MYSS Puan</th>
                         <th>MYSS Sonuç</th>
+                        <th>MYSS Durumu</th>
+                        <th>MYSS Durumu Açıklama</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,6 +37,8 @@
                                 @* <td>@(!string.IsNullOrEmpty(item.MYSPuan) && decimal.TryParse(item.MYSPuan, out decimal puan) ? puan.ToString("0,00") : "")</td> *@
                                 <td>@item.MYSPuan</td>
                                 <td>@item.MYSSonuc</td>
+                                <td>@item.MYSSDurum</td>
+                                <td>@item.MYSSDurumAck</td>
                             </tr>
                         }
                     }

@@ -31,6 +31,7 @@ namespace YOGBIS.Data.DbModels
         public string TYSPuan { get; set; }
         public string TYSSonuc { get; set; }
         public string TYSSonucAck { get; set; }
+        public int GorevlendirmeSiraNo { get; set; }
         public int? TYSSorulanSoruNo { get; set; }
         public bool? SinavIptal { get; set; }
         public string SinavIptalAck { get; set; }

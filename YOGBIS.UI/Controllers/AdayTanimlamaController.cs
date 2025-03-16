@@ -617,7 +617,7 @@ namespace YOGBIS.UI.Controllers
                         _progressService.UpdateProgress(sessionId, p =>
                         {
                             p.IslemAsamasi = "Kayit";
-                            p.Mesaj = "Aday iletişim bilgileri sisteme yükleniyor...";
+                            p.Mesaj = "İletişim bilgileri sisteme yükleniyor...";
                         });
 
                         for (int row = 2; row <= rowCount; row++)
@@ -680,7 +680,7 @@ namespace YOGBIS.UI.Controllers
                             p.IslemAsamasi = "Tamamlandi";
                             p.IslemYapilan = toplamKayit;
                             p.BasariliEklenen = basariliEklenen;
-                            p.Success = $"İşlem tamamlandı! {basariliEklenen} adet iletişim bilgisi başarıyla güncellenmiştir.";
+                            p.Success = $"İşlem tamamlandı! {basariliEklenen} adet iletişim bilgisi başarıyla yüklenmiştir.";
                             p.Mesaj = "İşlem başarıyla tamamlandı!";
                         });
 
@@ -802,8 +802,14 @@ namespace YOGBIS.UI.Controllers
 
                         for (int row = 2; row <= rowCount; row++)
                         {
+                            //KomisyonSiraNo ile KomisyonId yi eşleştirme
                             var komisyon = _komisyonlarBE.KomisyonlariGetir().Data
-                                .FirstOrDefault(d => d.KomisyonSiraNo == Convert.ToInt32(worksheet.Cells[row, 7].Value?.ToString()));
+                                .FirstOrDefault(d => d.KomisyonSiraNo == Convert.ToInt32(worksheet.Cells[row, 7].Value?.ToString()));                            
+                            //BransAdi ile BransId yi eşleştirme
+                            var brans = _branslarBE.BranslariGetir().Data
+                                .FirstOrDefault(b => b.BransAdi == worksheet.Cells[row, 13].Value?.ToString());
+                            var ulketercih = _ulkeTercihleriBE.UlkeTercihAdlariGetir().Data
+                                .FirstOrDefault(u => u.UlkeTercihAdi == worksheet.Cells[row, 15].Value?.ToString() && u.YabancıDil == worksheet.Cells[row, 14].Value?.ToString());
 
                             var aday = new AdayMYSSVM
                             {
@@ -821,10 +827,20 @@ namespace YOGBIS.UI.Controllers
                                     Convert.ToInt32(worksheet.Cells[row, 9].Value) : 0,
                                 MYSPuan = worksheet.Cells[row, 10].Value?.ToString(),
                                 MYSSonuc = worksheet.Cells[row, 11].Value?.ToString(),
-                                                                
+                                MYSSonucAck = worksheet.Cells[row, 12].Value?.ToString(),
+
                                 KomisyonId = komisyon?.KomisyonId,                                
                                 MYSSKomisyonAdi = komisyon?.KomisyonAdi,
 
+                                BransId = brans?.BransId,
+                                BransAdi = brans?.BransAdi,
+
+                                DereceId = _derecelerBE.DereceleriGetir().Data
+                                    .FirstOrDefault(d => d.DereceAdi == worksheet.Cells[row, 16].Value?.ToString())?.DereceId,
+                                DereceAdi = worksheet.Cells[row, 16].Value?.ToString(),
+                               
+                                UlkeTercihId = ulketercih?.UlkeTercihId,
+                                UlkeTercihAdi = ulketercih?.UlkeTercihAdi,
 
                                 MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
                                 AdayId = _adaylarBE.AdaylariGetir().Data
@@ -923,7 +939,7 @@ namespace YOGBIS.UI.Controllers
                         p.IslemAsamasi = "Hata";
                         p.Error = "Oturum bilgisi bulunamadı!";
                         p.Mesaj = "Oturum bilgisi bulunamadı!";
-                    });
+                    });                        
                     return Json(new { success = false });
                 }
 
@@ -956,7 +972,7 @@ namespace YOGBIS.UI.Controllers
                             p.ToplamKayit = toplamKayit;
                             p.IslemYapilan = 0;
                             p.BasariliEklenen = 0;
-                            p.Mesaj = "MYSS bilgileri yükleme işlemi başlatılıyor...";
+                            p.Mesaj = "TYS bilgileri yükleme işlemi başlatılıyor...";
                         });
 
                         await Task.Delay(100);
@@ -965,13 +981,19 @@ namespace YOGBIS.UI.Controllers
                         {
                             p.IslemAsamasi = "Kayit";
                             p.IslemYapilan = 0;
-                            p.Mesaj = "MYSS bilgileri işleniyor...";
+                            p.Mesaj = "TYS bilgileri işleniyor...";
                         });
 
                         for (int row = 2; row <= rowCount; row++)
                         {
+                            //KomisyonSiraNo ile KomisyonId yi eşleştirme
                             var komisyon = _komisyonlarBE.KomisyonlariGetir().Data
                                 .FirstOrDefault(d => d.KomisyonSiraNo == Convert.ToInt32(worksheet.Cells[row, 7].Value?.ToString()));
+                            //BransAdi ile BransId yi eşleştirme
+                            var brans = _branslarBE.BranslariGetir().Data
+                                .FirstOrDefault(b => b.BransAdi == worksheet.Cells[row, 10].Value?.ToString());
+                            var ulketercih = _ulkeTercihleriBE.UlkeTercihAdlariGetir().Data
+                                .FirstOrDefault(u => u.UlkeTercihAdi == worksheet.Cells[row, 12].Value?.ToString() && u.YabancıDil == worksheet.Cells[row, 11].Value?.ToString()); 
 
                             var aday = new AdayTYSVM
                             {
@@ -991,6 +1013,16 @@ namespace YOGBIS.UI.Controllers
                                 KomisyonId = komisyon?.KomisyonId,
                                 TYSKomisyonAdi = komisyon?.KomisyonAdi,
 
+                                BransId = brans?.BransId,
+                                BransAdi = brans?.BransAdi,
+
+                                DereceId = _derecelerBE.DereceleriGetir().Data
+                                    .FirstOrDefault(d => d.DereceAdi == worksheet.Cells[row, 13].Value?.ToString())?.DereceId,
+                                DereceAdi = worksheet.Cells[row, 13].Value?.ToString(),
+
+                                UlkeTercihId = ulketercih?.UlkeTercihId,
+                                UlkeTercihAdi = ulketercih?.UlkeTercihAdi,
+
 
                                 MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
                                 AdayId = _adaylarBE.AdaylariGetir().Data
@@ -1008,7 +1040,7 @@ namespace YOGBIS.UI.Controllers
                             {
                                 p.IslemYapilan = islemYapilan;
                                 p.BasariliEklenen = basariliEklenen;
-                                p.Mesaj = $"MYSS bilgileri işleniyor... ({islemYapilan}/{toplamKayit})";
+                                p.Mesaj = $"TYS bilgileri işleniyor... ({islemYapilan}/{toplamKayit})";
                             });
                             await Task.Delay(10);
                         }
@@ -1020,7 +1052,7 @@ namespace YOGBIS.UI.Controllers
                             p.IslemYapilan = toplamKayit;
                             if (basariliEklenen > 0)
                             {
-                                p.Success = $"{basariliEklenen} adet MYSS bilgisi başarıyla eklenmiştir.";
+                                p.Success = $"{basariliEklenen} adet TYS bilgisi başarıyla eklenmiştir.";
                             }
                             p.Mesaj = "İşlem tamamlandı";
                         });
@@ -1033,7 +1065,7 @@ namespace YOGBIS.UI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "MYSS bilgileri yükleme işlemi sırasında hata: {Message}", ex.Message);
+                _logger.LogError(ex, "TYS bilgileri yükleme işlemi sırasında hata: {Message}", ex.Message);
                 _progressService.UpdateProgress(sessionId, p =>
                 {
                     p.IslemAsamasi = "Hata";

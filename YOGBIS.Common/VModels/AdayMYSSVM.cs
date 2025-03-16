@@ -75,6 +75,15 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Sınav İptal Açıklaması")]
         public string SinavIptalAck { get; set; }
 
+        public Guid? BransId { get; set; }
+        public string BransAdi { get; set; }
+
+        public Guid? DereceId { get; set; }
+        public string DereceAdi { get; set; }
+
+        public Guid? UlkeTercihId { get; set; }
+        public string UlkeTercihAdi { get; set; }
+
         public Guid? AdayId { get; set; }
 
         public Guid? MulakatId { get; set; }
