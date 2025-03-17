@@ -36,7 +36,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region KullaniciGetir
         public Result<List<KullaniciVM>> KullaniciGetir()
         {
-            var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(k=>k.TcKimlikNo).ToList();
+            var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(t=>t.TcKimlikNo).ToList();
             var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
             return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, kullanicilar);
         }
