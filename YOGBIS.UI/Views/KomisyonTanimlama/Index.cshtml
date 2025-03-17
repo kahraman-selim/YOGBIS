@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
 @model YOGBIS.Common.VModels.KomisyonlarVM
@@ -8,16 +8,17 @@
 }
 
 @section Styles {
-
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">    
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 }
+
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger row">
         @TempData["ErrorMessage"]
     </div>
 }
+
 <div class="row">
     <div class="col-md-4">
         <div class="card mb-4">
@@ -26,7 +27,7 @@
                 <b>Komisyon Sorumlu Personel Ekleme/Güncelleme</b>
             </div>
             <div class="card-body">
-                <form class="form-group m-0" asp-action="Index">
+                <form class="form-group m-0" asp-action="KomisyonKaydet" method="post">
                     @Html.HiddenFor(x => x.KomisyonId)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-row">
@@ -39,17 +40,28 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                                    Komisyon-1
-                                </li>
+                            <label class="small mb-1 font-weight-bold">Komisyonlar</label>
+                            <ul class="list-group" id="komisyonlarListesi">
+                                @foreach (var komisyon in ViewBag.Komisyonlar)
+                                {
+                                    <li class="list-group-item">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input komisyon-checkbox" 
+                                                   id="komisyon_@komisyon.Id" 
+                                                   value="@komisyon.Id" 
+                                                   name="SeciliKomisyonlar">
+                                            <label class="custom-control-label" for="komisyon_@komisyon.Id">
+                                                @komisyon.Ad
+                                            </label>
+                                        </div>
+                                    </li>
+                                }
                             </ul>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">
-                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm text-white mb-1" style="width:100px" />
+                            <button type="submit" class="btn btn-success btn-sm text-white mb-1" style="width:100px">Kaydet</button>
                         </div>
                     </div>
                 </form>
@@ -66,4 +78,54 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+    
+    <script>
+        $(document).ready(function () {
+            // Form submit işlemi
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                
+                var personelId = $('#IlgiliPersonelId').val();
+                var seciliKomisyonlar = [];
+                
+                $('.komisyon-checkbox:checked').each(function() {
+                    seciliKomisyonlar.push($(this).val());
+                });
+                
+                if (!personelId) {
+                    alertify.error('Lütfen bir personel seçiniz');
+                    return;
+                }
+                
+                if (seciliKomisyonlar.length === 0) {
+                    alertify.error('Lütfen en az bir komisyon seçiniz');
+                    return;
+                }
+                
+                var data = {
+                    IlgiliPersonelId: personelId,
+                    KomisyonIdleri: seciliKomisyonlar
+                };
+                
+                $.ajax({
+                    url: '@Url.Action("KomisyonKaydet", "KomisyonTanimlama")',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        if (response.success) {
+                            alertify.success('Komisyon ataması başarıyla kaydedildi');
+                            // Komisyon listesini güncelle
+                            location.reload();
+                        } else {
+                            alertify.error(response.message || 'Bir hata oluştu');
+                        }
+                    },
+                    error: function () {
+                        alertify.error('İşlem sırasında bir hata oluştu');
+                    }
+                });
+            });
+        });
+    </script>
 }

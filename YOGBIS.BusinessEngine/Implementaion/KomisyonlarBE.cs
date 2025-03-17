@@ -21,15 +21,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region Değişkenler
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly ILogger<KomisyonlarBE> _logger; 
+        private readonly ILogger<KomisyonlarBE> _logger;
+        private readonly IKullaniciBE _kullaniciBE; 
         #endregion
 
         #region Dönüştürücüler
-        public KomisyonlarBE(IUnitOfWork unitOfWork, IMapper mapper, ILogger<KomisyonlarBE> logger)
+        public KomisyonlarBE(IUnitOfWork unitOfWork, IMapper mapper, ILogger<KomisyonlarBE> logger,IKullaniciBE kullaniciBE)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
+            _kullaniciBE = kullaniciBE;
         } 
         #endregion
 
@@ -79,6 +81,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                             KomisyonGorevBitisTarihi = item.KomisyonGorevBitisTarihi,
                             KayitTarihi = item.KayitTarihi,
                             KaydedenId = item.KaydedenId,
+                            IlgiliPersonelId = item.IlgiliPersonelId,
+                            IlgiliPersonelAdiSoyadi = item.IlgiliPersonelId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.IlgiliPersonelId.ToString()).Data : string.Empty,
                             MulakatId = item.MulakatId
                         });
                     }

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.KomisyonlarVM>
+@model IEnumerable<YOGBIS.Common.VModels.KomisyonlarVM>
+
 
 <div class="card mb-3">
     <div class="card-header">
@@ -10,25 +11,32 @@
             <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th class="text-center">SN</th>
-                        <th class="text-center">Personel Adı Soyadı</th>
-                        <th class="text-center">Sorumlu Olduğu Komisyonlar</th>
+                        <th class="text-center" style="width: 5%">SN</th>
+                        <th class="text-center" style="width: 35%">Personel Adı Soyadı</th>
+                        <th class="text-center" style="width: 60%">Sorumlu Olduğu Komisyonlar</th>
                     </tr>
                 </thead>
                 <tbody>
                     @{
                         var sirano = 0;
                     }
-                    @if (Model != null)
+                    @foreach (var personel in Model)
                     {
-                        @foreach (var item in Model)
-                        {
-                            sirano++;
-                            <tr>
-                                <td>@sirano</td>
-
-                            </tr>
-                        }
+                        sirano++;
+                        <tr>
+                            <td class="text-center">@sirano</td>
+                            <td>@personel.IlgiliPersonelAdiSoyadi</td>
+                            <td>
+                                @if (personel.KomisyonId != null)
+                                {
+                                    @string.Join(", ", personel.KomisyonAdi)
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Komisyon atanmamış</span>
+                                }
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -36,4 +44,19 @@
     </div>
 </div>
 
-
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
+                },
+                "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                "pagingType": "full_numbers",
+                "responsive": true
+            });
+        });
+    </script>
+}

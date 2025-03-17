@@ -36,7 +36,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region KullaniciGetir
         public Result<List<KullaniciVM>> KullaniciGetir()
         {
-            var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(k=>k.UserName).ToList();
+            var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(k=>k.TcKimlikNo).ToList();
             var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
             return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, kullanicilar);
         }
@@ -132,7 +132,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region KomisyonGetir
         public async Task<Result<List<KullaniciVM>>> KomisyonGetir()
         {
-            var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
+            var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(t=>t.TcKimlikNo).ToList();
             var newdata = await _userManager.GetUsersInRoleAsync("CommissionerHead");
             var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
 
@@ -198,7 +198,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region KomisyonSorumluGetir
         public async Task<Result<List<KullaniciVM>>> KomisyonSorumluGetir()
         {
-            var data = _unitOfWork.kullaniciRepository.GetAll().ToList();
+            var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(a => a.Ad).ToList();
             var newdata = await _userManager.GetUsersInRoleAsync("Commissioner");
             var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
 
@@ -224,5 +224,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
     }
 }

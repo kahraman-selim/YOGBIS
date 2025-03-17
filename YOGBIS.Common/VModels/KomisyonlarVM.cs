@@ -71,6 +71,7 @@ namespace YOGBIS.Common.VModels
         public DateTime KomisyonGorevBitisTarihi { get; set; }
 
         public Guid? IlgiliPersonelId { get; set; }
+        public string IlgiliPersonelAdiSoyadi { get; set; }
 
         [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public Guid? MulakatId { get; set; }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -19,6 +19,7 @@ using YOGBIS.Common.SessionOperations;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
 using System.Runtime.InteropServices;
+using YOGBIS.Common.ResultModels;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -38,7 +39,6 @@ namespace YOGBIS.UI.Controllers
         public KomisyonTanimlamaController(
             UserManager<Kullanici> userManager,
             ILogger<KomisyonTanimlamaController> logger,
-
             IKomisyonlarBE komisyonlarBE,
             IKullaniciBE kullaniciBE,
             IMulakatOlusturBE mulakatOlusturBE,
@@ -54,15 +54,83 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
+        [Route("KT10001", Name = "KomisyonPersonelTanimlamaIndexRoute")]
         public async Task<IActionResult> Index(Guid? id)
         {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            try
+            {
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                
+                var personel = await _kullaniciBE.KomisyonSorumluGetir();
+                ViewBag.KomisyonPersoneller = personel.Data;
 
-            var personel = await _kullaniciBE.KomisyonSorumluGetir();
-            ViewBag.KomisyonPersoneller = personel.Data;
+                var komisyon = await _kullaniciBE.KomisyonGetir();
+                ViewBag.Komisyonlar = komisyon.Data;
 
-            return View();
-        } 
+                
+
+                Result<List<KullaniciVM>> personelResult = await _kullaniciBE.KomisyonSorumluGetir();
+                if (!personelResult.Success)
+                {
+                    TempData["ErrorMessage"] = personelResult.Message;
+                    return View();
+                }
+                ViewBag.KomisyonPersoneller = personelResult.Data;
+
+                Result<List<KomisyonlarVM>> komisyonlarResult = _komisyonlarBE.KomisyonlariGetir();
+                if (!komisyonlarResult.Success)
+                {
+                    TempData["ErrorMessage"] = komisyonlarResult.Message;
+                    return View();
+                }
+                ViewBag.Komisyonlar = komisyonlarResult.Data;
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Index sayfası görüntülenirken hata oluştu: {ex.Message}");
+                TempData["ErrorMessage"] = "Bir hata oluştu. Lütfen tekrar deneyiniz.";
+                return View();
+            }
+        }
         #endregion
+
+        //#region KomisyonKaydet
+        //[HttpPost]
+        //public IActionResult KomisyonKaydet(KomisyonlarVM model)
+        //{
+        //    try
+        //    {
+        //        if (model == null)
+        //        {
+        //            return Json(new { success = false, message = "Geçersiz veri" });
+        //        }
+
+        //        var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+        //        foreach (var komisyonId in model.KomisyonId)
+        //        {
+        //            var komisyon = new KomisyonlarVM
+        //            {
+        //                IlgiliPersonelId = model.IlgiliPersonelId,                        
+        //            };
+
+        //            Result<KomisyonlarVM> result = _komisyonlarBE.KomisyonGuncelle(komisyon, user);
+        //            if (!result.Success)
+        //            {
+        //                return Json(new { success = false, message = result.Message });
+        //            }
+        //        }
+
+        //        return Json(new { success = true, message = "Komisyon ataması başarıyla kaydedildi" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Komisyon kaydedilirken hata oluştu: {ex.Message}");
+        //        return Json(new { success = false, message = "Bir hata oluştu. Lütfen tekrar deneyiniz." });
+        //    }
+        //}
+        //#endregion
     }
 }

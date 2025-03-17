@@ -1,4 +1,4 @@
-﻿namespace YOGBIS.Common.SessionOperations
+namespace YOGBIS.Common.SessionOperations
 {
     public class SessionContext
     {
@@ -9,5 +9,7 @@
         public bool? IsAdmin { get; set; }
         public bool? Aktif { get; set; }
         public string Rol { get; set; }
+
+        public string FullName => $"{FirstName} {LastName}";
     }
 }
