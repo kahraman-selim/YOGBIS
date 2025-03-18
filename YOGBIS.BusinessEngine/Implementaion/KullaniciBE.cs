@@ -201,34 +201,31 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region KomisyonSorumluGetir
         public async Task<Result<List<KullaniciVM>>> KomisyonSorumluGetir()
         {
-            try
+            var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(t => t.Ad).ToList();
+            var newdata = await _userManager.GetUsersInRoleAsync("Commissioner");
+            
+            var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
+
+            if (newdata != null)
             {
-                var data = await Task.Run(() => _unitOfWork.kullaniciRepository.GetAll().OrderBy(a => a.Ad).ToList());
-                
-                if (data != null && data.Any())
+                List<KullaniciVM> returnData = new List<KullaniciVM>();
+
+                foreach (var item in newdata)
                 {
-                    var kullanicilar = new List<KullaniciVM>();
-                    foreach (var item in data)
+                    returnData.Add(new KullaniciVM()
                     {
-                        kullanicilar.Add(new KullaniciVM
-                        {
-                            Id = item.Id,
-                            Ad = item.Ad,
-                            Soyad = item.Soyad,
-                            AdSoyad = $"{item.Ad} {item.Soyad}",
-                            TcKimlikNo = item.TcKimlikNo
-                        });
-                    }
-                    return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, kullanicilar);
+                        Id = item.Id,
+                        TcKimlikNo = item.TcKimlikNo,
+                        Ad = item.Ad,
+                        Soyad = item.Soyad,
+                        AdSoyad = item.Ad + " " + item.Soyad
+                    });
                 }
-                
-                List<KullaniciVM> emptyList = new List<KullaniciVM>();
-                return new Result<List<KullaniciVM>>(false, "Personel listesi bulunamadı", emptyList);
+                return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, returnData);
             }
-            catch (Exception ex)
+            else
             {
-                List<KullaniciVM> emptyList = new List<KullaniciVM>();
-                return new Result<List<KullaniciVM>>(false, $"Personel listesi getirilirken hata oluştu: {ex.Message}", emptyList);
+                return new Result<List<KullaniciVM>>(false, ResultConstant.RecordNotFound);
             }
         }
         #endregion

@@ -20,7 +20,7 @@
                     @{
                         var sirano = 0;
                     }
-                    @foreach (var personel in Model)
+@*                     @foreach (var personel in Model)
                     {
                         sirano++;
                         <tr>
@@ -37,7 +37,7 @@
                                 }
                             </td>
                         </tr>
-                    }
+                    } *@
                 </tbody>
             </table>
         </div>
@@ -47,16 +47,7 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $('#myTable').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
-                },
-                "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                "pagingType": "full_numbers",
-                "responsive": true
-            });
+
         });
     </script>
 }

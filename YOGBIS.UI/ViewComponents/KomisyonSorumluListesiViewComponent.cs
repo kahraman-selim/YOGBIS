@@ -26,29 +26,29 @@ namespace YOGBIS.UI.ViewComponents
         {
             try
             {
-                var komisyonlarResult = _komisyonlarBE.KomisyonlariGetir();
-                if (!komisyonlarResult.Success)
-                {
-                    return Content($"Hata: {komisyonlarResult.Message}");
-                }
+                //var komisyonlarResult = _komisyonlarBE.KomisyonlariGetir();
+                //if (!komisyonlarResult.Success)
+                //{
+                //    return Content($"Hata: {komisyonlarResult.Message}");
+                //}
 
-                var personellerResult = await _kullaniciBE.KomisyonSorumluGetir();
-                if (!personellerResult.Success)
-                {
-                    return Content($"Hata: {personellerResult.Message}");
-                }
+                //var personellerResult = await _kullaniciBE.KomisyonSorumluGetir();
+                //if (!personellerResult.Success)
+                //{
+                //    return Content($"Hata: {personellerResult.Message}");
+                //}
 
-                var viewModel = personellerResult.Data.Select(p => new KomisyonSorumluViewModel
-                {
-                    PersonelId = Guid.Parse(p.Id),
-                    PersonelAdSoyad = p.AdSoyad,
-                    KomisyonListesi = komisyonlarResult.Data
-                        .Where(k => k.IlgiliPersonelId == Guid.Parse(p.Id))
-                        .Select(k => k.KomisyonAdi)
-                        .ToList()
-                }).ToList();
+                //var viewModel = personellerResult.Data.Select(p => new KomisyonSorumluViewModel
+                //{
+                //    PersonelId = Guid.Parse(p.Id),
+                //    PersonelAdSoyad = p.AdSoyad,
+                //    KomisyonListesi = komisyonlarResult.Data
+                //        .Where(k => k.IlgiliPersonelId == Guid.Parse(p.Id))
+                //        .Select(k => k.KomisyonAdi)
+                //        .ToList()
+                //}).ToList();
 
-                return View(viewModel);
+                return View();
             }
             catch (Exception ex)
             {

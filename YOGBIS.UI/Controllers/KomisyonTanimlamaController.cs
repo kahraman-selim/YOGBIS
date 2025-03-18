@@ -65,25 +65,7 @@ namespace YOGBIS.UI.Controllers
                 ViewBag.KomisyonPersoneller = personel.Data;
 
                 var komisyon = await _kullaniciBE.KomisyonGetir();
-                ViewBag.Komisyonlar = komisyon.Data;
-
-                
-
-                Result<List<KullaniciVM>> personelResult = await _kullaniciBE.KomisyonSorumluGetir();
-                if (!personelResult.Success)
-                {
-                    TempData["ErrorMessage"] = personelResult.Message;
-                    return View();
-                }
-                ViewBag.KomisyonPersoneller = personelResult.Data;
-
-                Result<List<KomisyonlarVM>> komisyonlarResult = _komisyonlarBE.KomisyonlariGetir();
-                if (!komisyonlarResult.Success)
-                {
-                    TempData["ErrorMessage"] = komisyonlarResult.Message;
-                    return View();
-                }
-                ViewBag.Komisyonlar = komisyonlarResult.Data;
+                ViewBag.Komisyonlar = komisyon.Data;  
 
                 return View();
             }
@@ -95,42 +77,6 @@ namespace YOGBIS.UI.Controllers
             }
         }
         #endregion
-
-        //#region KomisyonKaydet
-        //[HttpPost]
-        //public IActionResult KomisyonKaydet(KomisyonlarVM model)
-        //{
-        //    try
-        //    {
-        //        if (model == null)
-        //        {
-        //            return Json(new { success = false, message = "Geçersiz veri" });
-        //        }
-
-        //        var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
-        //        foreach (var komisyonId in model.KomisyonId)
-        //        {
-        //            var komisyon = new KomisyonlarVM
-        //            {
-        //                IlgiliPersonelId = model.IlgiliPersonelId,                        
-        //            };
-
-        //            Result<KomisyonlarVM> result = _komisyonlarBE.KomisyonGuncelle(komisyon, user);
-        //            if (!result.Success)
-        //            {
-        //                return Json(new { success = false, message = result.Message });
-        //            }
-        //        }
-
-        //        return Json(new { success = true, message = "Komisyon ataması başarıyla kaydedildi" });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"Komisyon kaydedilirken hata oluştu: {ex.Message}");
-        //        return Json(new { success = false, message = "Bir hata oluştu. Lütfen tekrar deneyiniz." });
-        //    }
-        //}
-        //#endregion
+       
     }
 }
