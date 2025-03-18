@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.VModels;
@@ -15,5 +15,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Task<Result<List<KullaniciVM>>> KomisyonGetir();
         Result<string> KomisyonKullaniciIDGetir(string KomisyonUserName);
         Task<Result<List<KullaniciVM>>> KomisyonSorumluGetir();
+        Result<List<KullaniciVM>> KomisyonBaskanlariniGetir();
     }
 }

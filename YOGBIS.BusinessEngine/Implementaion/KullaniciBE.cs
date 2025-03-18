@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
+using Microsoft.Extensions.Logging;
 
 namespace YOGBIS.BusinessEngine.Implementaion
 {
@@ -21,22 +22,24 @@ namespace YOGBIS.BusinessEngine.Implementaion
         private readonly IMapper _mapper;
         private readonly UserManager<Kullanici> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ILogger _logger;
         #endregion
 
         #region Dönüştürücüler
-        public KullaniciBE(IUnitOfWork unitOfWork, IMapper mapper, UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager)
+        public KullaniciBE(IUnitOfWork unitOfWork, IMapper mapper, UserManager<Kullanici> userManager, RoleManager<IdentityRole> roleManager, ILogger<KullaniciBE> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _roleManager = roleManager;
+            _logger = logger;
         }
         #endregion
 
         #region KullaniciGetir
         public Result<List<KullaniciVM>> KullaniciGetir()
         {
-            var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(t=>t.TcKimlikNo).ToList();
+            var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(t=>t.TcKimlikNo.PadLeft(11,'0')).ToList();
             var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
             return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, kullanicilar);
         }
@@ -146,10 +149,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         Id = item.Id,
                         Ad = item.Ad,
-                        //Soyad = item.Soyad,
-                        //AdSoyad = item.Ad + " " + item.Soyad
+                        TcKimlikNo = item.TcKimlikNo,
                     });
                 }
+                returnData = returnData.OrderBy(x => x.TcKimlikNo.PadLeft(11, '0')).ToList();
                 return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, returnData);
             }
             else
@@ -198,29 +201,81 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region KomisyonSorumluGetir
         public async Task<Result<List<KullaniciVM>>> KomisyonSorumluGetir()
         {
-            var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(a => a.Ad).ToList();
-            var newdata = await _userManager.GetUsersInRoleAsync("Commissioner");
-            var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
-
-            if (newdata != null)
+            try
             {
-                List<KullaniciVM> returnData = new List<KullaniciVM>();
-
-                foreach (var item in newdata)
+                var data = await Task.Run(() => _unitOfWork.kullaniciRepository.GetAll().OrderBy(a => a.Ad).ToList());
+                
+                if (data != null && data.Any())
                 {
-                    returnData.Add(new KullaniciVM()
+                    var kullanicilar = new List<KullaniciVM>();
+                    foreach (var item in data)
                     {
-                        Id = item.Id,
-                        Ad = item.Ad,
-                        Soyad = item.Soyad,
-                        AdSoyad = item.Ad + " " + item.Soyad
-                    });
+                        kullanicilar.Add(new KullaniciVM
+                        {
+                            Id = item.Id,
+                            Ad = item.Ad,
+                            Soyad = item.Soyad,
+                            AdSoyad = $"{item.Ad} {item.Soyad}",
+                            TcKimlikNo = item.TcKimlikNo
+                        });
+                    }
+                    return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, kullanicilar);
                 }
-                return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, returnData);
+                
+                List<KullaniciVM> emptyList = new List<KullaniciVM>();
+                return new Result<List<KullaniciVM>>(false, "Personel listesi bulunamadı", emptyList);
             }
-            else
+            catch (Exception ex)
             {
-                return new Result<List<KullaniciVM>>(false, ResultConstant.RecordNotFound);
+                List<KullaniciVM> emptyList = new List<KullaniciVM>();
+                return new Result<List<KullaniciVM>>(false, $"Personel listesi getirilirken hata oluştu: {ex.Message}", emptyList);
+            }
+        }
+        #endregion
+
+        #region KomisyonBaskanlariniGetir
+        public Result<List<KullaniciVM>> KomisyonBaskanlariniGetir()
+        {
+            try
+            {
+                _logger.LogInformation("Komisyon başkanları getiriliyor...");
+
+                var komisyonBaskanRolId = _roleManager.Roles
+                    .Where(r => r.Name == "KomisyonHeader")
+                    .Select(r => r.Id)
+                    .FirstOrDefault();
+
+                if (string.IsNullOrEmpty(komisyonBaskanRolId))
+                {
+                    _logger.LogWarning("KomisyonHeader rolü bulunamadı");
+                    return new Result<List<KullaniciVM>>(false, "Komisyon başkanı rolü bulunamadı", new List<KullaniciVM>());
+                }
+
+                var userRoles = _userManager.GetUsersInRoleAsync("KomisyonHeader").Result;
+                var komisyonBaskanKullanicilari = userRoles.Select(user => new KullaniciVM
+                {
+                    Id = user.Id,
+                    AdSoyad = user.Ad + " " + user.Soyad,
+                    UserName = user.UserName,
+                    PhoneNumber = user.PhoneNumber,
+                    EMail = user.Email
+                })
+                .OrderBy(x => x.AdSoyad)
+                .ToList();
+
+                if (!komisyonBaskanKullanicilari.Any())
+                {
+                    _logger.LogWarning("Komisyon başkanı rolüne sahip kullanıcı bulunamadı");
+                    return new Result<List<KullaniciVM>>(false, "Komisyon başkanı bulunamadı", new List<KullaniciVM>());
+                }
+
+                _logger.LogInformation($"Komisyon başkanları başarıyla getirildi. Toplam: {komisyonBaskanKullanicilari.Count()}");
+                return new Result<List<KullaniciVM>>(true, "Komisyon başkanları başarıyla getirildi", komisyonBaskanKullanicilari);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Komisyon başkanları getirilirken hata oluştu: {ex.Message}", ex);
+                return new Result<List<KullaniciVM>>(false, $"Hata oluştu: {ex.Message}", new List<KullaniciVM>());
             }
         }
         #endregion
