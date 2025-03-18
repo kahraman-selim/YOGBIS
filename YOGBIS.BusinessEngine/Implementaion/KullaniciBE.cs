@@ -183,16 +183,29 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region KomisyonKullaniciIDGetir(string KomisyonUserName)
         public Result<string> KomisyonKullaniciIDGetir(string KomisyonUserName)
         {
-            var data = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.UserName == KomisyonUserName);
-
-            if (data != null)
+            try
             {
-                var id = data.Id;
+                _logger.LogInformation($"Aranan KomisyonUserName: {KomisyonUserName}");
+                
+                // Komisyon-1 formatındaki ismi Komisyon1 formatına çevir
+                var userName = KomisyonUserName.Replace("-", "");
+                _logger.LogInformation($"Dönüştürülen UserName: {userName}");
+                
+                var data = _unitOfWork.kullaniciRepository.GetFirstOrDefault(u => u.UserName == userName);
+                _logger.LogInformation($"Kullanıcı bulundu mu: {data != null}");
+                
+                if (data != null)
+                {
+                    _logger.LogInformation($"UserName: {data.UserName}, Ad: {data.Ad}");
+                    return new Result<string>(true, ResultConstant.RecordFound, data.UserName);
+                }
 
-                return new Result<string>(true, ResultConstant.RecordFound, id);
+                _logger.LogWarning("Kullanıcı bulunamadı");
+                return new Result<string>(false, ResultConstant.RecordNotFound);
             }
-            else
+            catch (Exception ex)
             {
+                _logger.LogError($"KomisyonKullaniciIDGetir hatası: {ex.Message}");
                 return new Result<string>(false, ResultConstant.RecordNotFound);
             }
         }

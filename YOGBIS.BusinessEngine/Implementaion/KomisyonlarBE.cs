@@ -120,6 +120,28 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region KomisyonGetirById
+        public Result<KomisyonlarVM> KomisyonGetirById(Guid id)
+        {
+            try
+            {
+                var data = _unitOfWork.komisyonlarRepository.GetFirstOrDefault(k => k.KomisyonId == id);
+                
+                if (data != null)
+                {
+                    var komisyon = _mapper.Map<Komisyonlar, KomisyonlarVM>(data);
+                    return new Result<KomisyonlarVM>(true, ResultConstant.RecordFound, komisyon);
+                }
+                
+                return new Result<KomisyonlarVM>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                return new Result<KomisyonlarVM>(false, ResultConstant.RecordNotFound + " " + ex.Message);
+            }
+        }
+        #endregion
+
         #region KomisyonEkle
         public Result<KomisyonlarVM> KomisyonEkle(KomisyonlarVM model, SessionContext user)
         {

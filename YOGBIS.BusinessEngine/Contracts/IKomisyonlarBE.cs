@@ -15,6 +15,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<KomisyonlarVM> KomisyonGuncelle(KomisyonlarVM model, SessionContext user);
         Result<KomisyonlarVM> DurumDegistir(Guid komisyonId, SessionContext user);
         Result<bool> KomisyonSil(Guid id);
-        Task<Guid?> GetKomisyonIdBySiraNo(int siraNo);       
+        Task<Guid?> GetKomisyonIdBySiraNo(int siraNo);
+        Result<KomisyonlarVM> KomisyonGetirById(Guid id);
     }
 }

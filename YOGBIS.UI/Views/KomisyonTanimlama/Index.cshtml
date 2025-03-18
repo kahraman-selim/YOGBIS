@@ -76,54 +76,94 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
     
     <script>
         $(document).ready(function () {
-            // Form submit işlemi
-            $('form').on('submit', function (e) {
-                e.preventDefault();
+            var secilenPersonelId = null;
+            var secilenKomisyonIds = [];
+            var komisyonBilgileri = {};
+            
+            $('#IlgiliPersonelId').change(function() {
+                secilenPersonelId = $(this).val();
                 
-                var personelId = $('#IlgiliPersonelId').val();
+                if(secilenPersonelId) {
+                    Swal.fire({
+                        title: 'Seçilen Personel Bilgisi',
+                        text: 'Personel ID: ' + secilenPersonelId,
+                        icon: 'info',
+                        confirmButtonText: 'Tamam'
+                    });
+                }
+            });
+
+            // Komisyon checkbox'larının change eventi
+            $('.komisyon-checkbox').change(function() {
+                secilenKomisyonIds = [];
+                komisyonBilgileri = {};
+                var promises = [];
                 
-                var seciliKomisyonlar = [];
-                
+                // Seçili olan tüm checkbox'ların value'larını topla
                 $('.komisyon-checkbox:checked').each(function() {
-                    seciliKomisyonlar.push($(this).val());
-                });
-                
-                if (!personelId) {
-                    alertify.error('Lütfen bir personel seçiniz');
-                    return;
-                }
-                
-                if (seciliKomisyonlar.length === 0) {
-                    alertify.error('Lütfen en az bir komisyon seçiniz');
-                    return;
-                }
-                
-                var data = {
-                    IlgiliPersonelId: personelId,
-                    KomisyonIdleri: seciliKomisyonlar
-                };
-                
-                $.ajax({
-                    url: '@Url.Action("KomisyonKaydet", "KomisyonTanimlama")',
-                    type: 'POST',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json',
-                    success: function (response) {
-                        if (response.success) {
-                            alertify.success('Komisyon ataması başarıyla kaydedildi');
-                            // Komisyon listesini güncelle
-                            location.reload();
-                        } else {
-                            alertify.error(response.message || 'Bir hata oluştu');
+                    var komisyonAdi = $(this).closest('.custom-control').find('label').text().trim();
+                    secilenKomisyonIds.push(komisyonAdi);
+                    
+                    var promise = $.ajax({
+                        url: '@Url.Action("KomisyonBilgileriGetir", "KomisyonTanimlama")',
+                        type: 'GET',
+                        data: { komisyonAdi: komisyonAdi },
+                        success: function(response) {
+                            if(response.success) {
+                                komisyonBilgileri[komisyonAdi] = {
+                                    kullaniciAdi: response.kullaniciAdi,
+                                    komisyonAdi: response.komisyonAdi
+                                };
+                            } else {
+                                komisyonBilgileri[komisyonAdi] = {
+                                    kullaniciAdi: 'Atanmamış',
+                                    komisyonAdi: komisyonAdi
+                                };
+                                
+                                Swal.fire({
+                                    title: 'Uyarı!',
+                                    text: response.message || 'Komisyon bilgileri alınamadı.',
+                                    icon: 'warning',
+                                    confirmButtonText: 'Tamam'
+                                });
+                            }
+                        },
+                        error: function() {
+                            komisyonBilgileri[komisyonAdi] = {
+                                kullaniciAdi: 'Atanmamış',
+                                komisyonAdi: komisyonAdi
+                            };
+                            
+                            Swal.fire({
+                                title: 'Hata!',
+                                text: 'Komisyon bilgileri alınırken bir hata oluştu.',
+                                icon: 'error',
+                                confirmButtonText: 'Tamam'
+                            });
                         }
-                    },
-                    error: function () {
-                        alertify.error('İşlem sırasında bir hata oluştu');
+                    });
+                    promises.push(promise);
+                });
+
+                // Tüm AJAX istekleri tamamlandığında
+                $.when.apply($, promises).then(function() {
+                    if(secilenKomisyonIds.length > 0) {
+                        var formatlananBilgiler = secilenKomisyonIds.map(function(komisyonAdi, index) {
+                            var bilgi = komisyonBilgileri[komisyonAdi];
+                            
+                            return (index + 1) + '. ' + bilgi.kullaniciAdi + ' - ' + bilgi.komisyonAdi;
+                        }).join('\n');
+                        
+                        Swal.fire({
+                            title: 'Komisyon - Kullanıcı Eşleşmeleri',
+                            html: '<div style="text-align: left; white-space: pre-line;">' + formatlananBilgiler + '</div>',
+                            icon: 'info',
+                            width: '600px',
+                            confirmButtonText: 'Tamam'
+                        });
                     }
                 });
             });

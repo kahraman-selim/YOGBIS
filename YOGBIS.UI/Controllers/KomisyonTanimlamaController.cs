@@ -77,6 +77,78 @@ namespace YOGBIS.UI.Controllers
             }
         }
         #endregion
-       
+
+        #region KomisyonKullaniciIdGetir
+        [HttpGet]
+        public JsonResult KomisyonKullaniciIdGetir(string komisyonId)
+        {
+            try
+            {
+                var komisyon = _kullaniciBE.KomisyonKullaniciIDGetir(komisyonId);
+                if (komisyon.IsSuccess)
+                {
+                    return Json(new { success = true, Id = komisyon.Data.ToString() });
+                }
+                return Json(new { success = false, message = "Komisyon bulunamadı" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Komisyon kullanıcı ID getirme hatası: {ex.Message}");
+                return Json(new { success = false, message = "Bir hata oluştu" });
+            }
+        }
+        #endregion
+
+        #region KomisyonBilgileriGetir
+        [HttpGet]
+        public JsonResult KomisyonBilgileriGetir(string komisyonAdi)
+        {
+            try
+            {
+                _logger.LogInformation($"Gelen komisyon adı: {komisyonAdi}");
+
+                // 1. Adım: Komisyonlar tablosundan komisyon bilgilerini al
+                var komisyonlar = _komisyonlarBE.KomisyonlariGetir().Data
+                    .Where(k => k.KomisyonAdi == komisyonAdi)
+                    .ToList();
+
+                _logger.LogInformation($"Bulunan komisyon sayısı: {komisyonlar.Count}");
+
+                if (!komisyonlar.Any())
+                {
+                    return Json(new { success = false, message = "Komisyon bulunamadı" });
+                }
+
+                var komisyon = komisyonlar.First();
+                _logger.LogInformation($"Seçilen komisyon adı: {komisyon.KomisyonAdi}");
+                
+                // 2. Adım: KomisyonAdi ile kullanıcı adını al
+                var kullaniciResult = _kullaniciBE.KomisyonKullaniciIDGetir(komisyon.KomisyonAdi);
+                _logger.LogInformation($"Kullanıcı bulundu mu: {kullaniciResult.IsSuccess}, Mesaj: {kullaniciResult.Message}");
+
+                if (!kullaniciResult.IsSuccess || kullaniciResult.Data == null)
+                {
+                    _logger.LogWarning("Kullanıcı bulunamadı veya Data null");
+                    return Json(new { 
+                        success = true,
+                        kullaniciAdi = komisyon.KomisyonAdi.Replace("-", ""),  // Komisyon-1 -> Komisyon1
+                        komisyonAdi = komisyon.KomisyonAdi  // Komisyon-1
+                    });
+                }
+
+                _logger.LogInformation($"Bulunan kullanıcı adı: {kullaniciResult.Data}");
+                return Json(new { 
+                    success = true, 
+                    kullaniciAdi = kullaniciResult.Data,  // Komisyon1
+                    komisyonAdi = komisyon.KomisyonAdi    // Komisyon-1
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Komisyon bilgileri getirme hatası: {ex.Message}");
+                return Json(new { success = false, message = "Bir hata oluştu" });
+            }
+        }
+        #endregion
     }
 }
