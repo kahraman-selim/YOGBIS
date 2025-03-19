@@ -26,6 +26,7 @@ namespace YOGBIS.Data.DbModels
         public DateTime KomisyonGorevBaslamaTarihi { get; set; }
         public DateTime KomisyonGorevBitisTarihi { get; set; }
         public Guid? IlgiliPersonelId { get; set; }
+        public Guid? YardimciPersonelId { get; set; }
 
         public Guid? MulakatId { get; set; }
         [ForeignKey("MulakatId")]
