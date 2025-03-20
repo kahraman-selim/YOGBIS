@@ -296,10 +296,16 @@ namespace YOGBIS.Data.Migrations
                     b.Property<byte[]>("DereceId")
                         .HasColumnType("varbinary(16)");
 
+                    b.Property<string>("Doktora")
+                        .HasColumnType("text");
+
                     b.Property<string>("EDurum")
                         .HasColumnType("text");
 
                     b.Property<string>("Enaz5Yil")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GenelDurum")
                         .HasColumnType("text");
 
                     b.Property<string>("GorevIptalAck")
@@ -444,6 +450,9 @@ namespace YOGBIS.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("YIciGorevBasTar")
+                        .HasColumnType("text");
+
+                    b.Property<string>("YLisans")
                         .HasColumnType("text");
 
                     b.Property<string>("YabanciDilALM")
@@ -814,13 +823,21 @@ namespace YOGBIS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(16)");
 
+                    b.Property<byte[]>("BransId")
+                        .IsRequired()
+                        .HasColumnType("varbinary(16)");
+
                     b.Property<string>("KaydedenId")
                         .HasColumnType("varchar(767)");
 
                     b.Property<DateTime>("KayitTarihi")
                         .HasColumnType("datetime");
 
+                    b.Property<int>("KomisyonGnSN")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("KomisyonId")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.Property<int>("KomisyonUyeSiraId")
@@ -846,22 +863,31 @@ namespace YOGBIS.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<byte[]>("NotKategoriId1")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.Property<byte[]>("NotKategoriId2")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.Property<byte[]>("NotKategoriId3")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.Property<byte[]>("NotKategoriId4")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.Property<byte[]>("NotKategoriId5")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.Property<string>("TC")
                         .HasColumnType("text");
+
+                    b.Property<byte[]>("UlkeTercihId")
+                        .IsRequired()
+                        .HasColumnType("varbinary(16)");
 
                     b.HasKey("Id");
 

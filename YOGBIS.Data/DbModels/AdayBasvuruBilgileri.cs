@@ -63,6 +63,9 @@ namespace YOGBIS.Data.DbModels
         public string EDurum { get; set; }
         public string MDurum { get; set; }
         public string PDurum { get; set; }
+        public string GenelDurum { get; set; }
+        public string YLisans { get; set; }
+        public string Doktora { get; set; }
         public string Sendika { get; set; }
         public string SendikaAck { get; set; }
         public string MYYSSoruItiraz { get; set; }

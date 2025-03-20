@@ -68,15 +68,31 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Kaydeden")]
         public string KaydedenAdi { get; set; }
 
+        //Bağlı Tablolar
         #region Navigation Properties
-        [Display(Name = "DDK Bilgileri")]
+        [Display(Name = "Aday Başvuru Bilgileri")]
+        public virtual ICollection<AdayBasvuruBilgileriVM> AdayBasvuru { get; set; }
+
+        [Display(Name = "Aday DDK Bilgileri")]
         public virtual ICollection<AdayDDKVM> AdayDDK { get; set; }
 
         [Display(Name = "Görev Kayıtları")]
         public virtual ICollection<AdayGorevKaydiVM> AdayGorevKaydi { get; set; }
 
+        [Display(Name = "Aday İletişim Bilgileri")]
+        public virtual ICollection<AdayIletisimBilgileriVM> AdayIletisimBilgileri { get; set; }
+
         [Display(Name = "Adaylar")]
         public virtual ICollection<AdaylarVM> Adaylars { get; set; }
+
+        [Display(Name = "Aday MYS Bilgileri")]
+        public virtual ICollection<AdayMYSSVM> AdayMYS { get; set; }
+
+        [Display(Name = "Aday TYS Bilgileri")]
+        public virtual ICollection<AdayTYSVM> AdayTYS { get; set; }
+
+        [Display(Name = "Aday Sinav Not Bilgileri")]
+        public virtual ICollection<AdaySinavNotlarVM> AdaySinavNotlar { get; set; }
 
         [Display(Name = "Branşlar")]
         public virtual ICollection<BranslarVM> Branslar { get; set; }
