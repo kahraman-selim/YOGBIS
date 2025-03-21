@@ -29,7 +29,7 @@ namespace YOGBIS.UI.ViewComponents
             _userManager = userManager;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(string selectedKomisyon = null)
         {
             var userName = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
             var mulakatTarihi = "15.04.2024";
@@ -48,12 +48,19 @@ namespace YOGBIS.UI.ViewComponents
                     UserName = u.Ad // Komisyon adını UserName olarak kullan
                 }).ToList();
                 
-                // Administrator ilk açılışta boş liste görecek
-                //viewModel.AdayListesi = new List<YOGBIS.Common.VModels.AdayMYSSVM>();
-                var result = _adaylarBE.GetirKomisyonMulakatListesi("Komisyon-10", mulakatTarihi);
-                if (result.IsSuccess)
+                // Eğer seçili komisyon varsa onun listesini getir
+                if (!string.IsNullOrEmpty(selectedKomisyon))
                 {
-                    viewModel.AdayListesi = result.Data;
+                    var result = _adaylarBE.GetirKomisyonMulakatListesi(selectedKomisyon, mulakatTarihi);
+                    if (result.IsSuccess)
+                    {
+                        viewModel.AdayListesi = result.Data;
+                    }
+                }
+                else
+                {
+                    // İlk açılışta boş liste göster
+                    viewModel.AdayListesi = new List<YOGBIS.Common.VModels.AdayMYSSVM>();
                 }
             }
             else

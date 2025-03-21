@@ -916,9 +916,88 @@
 
             $('#komisyonBaskani').change(function() {
                 var selectedKomisyonAd = $(this).val();
-                alert(selectedKomisyonAd);
-
+               
             });
         });
     </script>
+
+    <script>
+
+        window.komisyonDegisti = function(selectedKomisyonAd) {
+            if (selectedKomisyonAd) {
+                $.ajax({
+                    url: '@Url.Action("KomisyonAdaylariniGetir", "Mulakat")',
+                    type: 'GET',
+                    data: { komisyonUserName: selectedKomisyonAd },
+                    success: function(response) {
+                        if (response.success) {
+                            var table = $('#myTableNoButtons').DataTable();
+                            table.destroy();
+                            var tbody = $('#adayListesiBody');
+                            tbody.empty();
+
+                            var sirano = 0;
+                            response.data.forEach(function(item) {
+                                sirano++;
+                                var row = '<tr>' +
+                                    '<td class="text-center">' + sirano + '</td>' +
+                                    '<td class="text-center">' + item.tc + '</td>' +
+                                    '<td>' + item.adayAdiSoyadi + '</td>' +
+                                    '<td class="text-center">' + item.myssSaat + '</td>' +
+                                    '<td class="text-center">';
+
+                                if (item.cagriDurum) {
+                                    row += '<button class="btn btn-sm btn-primary" title="Çağrıldı" style="font-weight:bold;font-size:13px;width:120px" disabled>' +
+                                        '<i class="fas fa-bell"></i> Bekleme Odası</button>';
+                                } else {
+                                    row += '<button class="btn btn-sm btn-warning btnCagri" title="Adayı Çağır" data-id="' + item.id + '" style="font-weight:bold;font-size:13px;width:120px">' +
+                                        '<i class="fas fa-bell"></i> Bekleme Odası</button>';
+                                }
+
+                                row += '</td><td class="text-center">' +
+                                    '<button class="btn btn-sm btn-success btnSinavaAl" title="Adayı Sınava Al" data-id="' + item.adayId + '" style="font-weight:bold;font-size:13px;width:120px">' +
+                                    '<i class="fas fa-door-open"></i> Sınav Odası</button>' +
+                                    '</td></tr>';
+
+                                tbody.append(row);
+                            });
+
+                            table = $('#myTableNoButtons').DataTable({
+                                "language": {
+                                    "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Turkish.json"
+                                },
+                                "responsive": true,
+                                "dom": '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
+                                "buttons": [],
+                                "order": [],
+                                "pageLength": 10,
+                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tümü"]]
+                            });
+                        } else {
+                            alertify.error(response.message || 'Bir hata oluştu!');
+                        }
+                    },
+                    error: function() {
+                        alertify.error('İşlem sırasında bir hata oluştu!');
+                    }
+                });
+            } else {
+                var table = $('#myTableNoButtons').DataTable();
+                table.destroy();
+                $('#adayListesiBody').empty();
+                table = $('#myTableNoButtons').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Turkish.json"
+                    },
+                    "responsive": true,
+                    "dom": '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
+                    "buttons": [],
+                    "order": [],
+                    "pageLength": 10,
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tümü"]]
+                });
+            }
+        }
+    </script>
 }
+

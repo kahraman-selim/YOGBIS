@@ -83,6 +83,7 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region KomisyonAdaylariniGetir
         [HttpGet]
         public IActionResult KomisyonAdaylariniGetir(string komisyonUserName)
         {
@@ -110,6 +111,7 @@ namespace YOGBIS.UI.Controllers
                 _logger.LogError($"KomisyonAdaylariniGetir hatası: {ex}");
                 return Json(new { success = false, message = "İşlem sırasında bir hata oluştu!" });
             }
-        }
+        } 
+        #endregion
     }
 }

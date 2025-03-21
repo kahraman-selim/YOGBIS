@@ -5,7 +5,7 @@
 @{
     var currentUser = await UserManager.GetUserAsync(User);
     var userRoles = await UserManager.GetRolesAsync(currentUser);
-    var isAdmin = userRoles.Contains("Administrator");
+    var isAdmin = currentUser.UserName == "Administrator";
 }
 
 <div class="card">
@@ -14,7 +14,7 @@
         {
             <div class="form-group mb-3">
                 <label for="komisyonBaskani" class="form-label">Komisyonu Seçiniz</label>
-                <select id="komisyonBaskani" class="form-select">
+                <select id="komisyonBaskani" class="form-select" onchange="komisyonSecildi(this)">
                     <option value="">Komisyonu seçiniz...</option>
                     @foreach (var baskan in Model.KomisyonBaskanları.OrderBy(u=>u.AdSoyad))
                     {
@@ -65,9 +65,18 @@
                                     }
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-success btnSinavaAl" title="Adayı Sınava Al" data-id="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px">
-                                        <i class="fas fa-door-open"></i> Sınav Odası
-                                    </button>
+                                    @if (item.CagriDurum == true)
+                                    {
+                                        <button class="btn btn-sm btn-success btnSinavaAl" title="Adayı Sınava Al" data-id="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px">
+                                            <i class="fas fa-door-open"></i> Sınav Odası
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-sm btn-success btnSinavaAl" title="Adayı Sınava Al" data-id="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                            <i class="fas fa-door-open"></i> Sınav Odası
+                                        </button>
+                                    }
                                 </td>
                             </tr>
                         }
@@ -78,4 +87,9 @@
     </div>
 </div>
 
-
+<script>
+    function komisyonSecildi(selectElement) {
+        var selectedKomisyonAd = selectElement.value;
+        window.parent.komisyonDegisti(selectedKomisyonAd);
+    }
+</script>
