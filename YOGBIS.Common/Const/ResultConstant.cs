@@ -20,5 +20,8 @@ namespace YOGBIS.Common.Const
         public const string ValidationError = "Doğrulama hatası!";
         public const string DatabaseError = "Veritabanı hatası!";
         public const string SystemError = "Sistem hatası!";
+
+        public static string RecordFound { get; set; }
+        public static string RecordNotFound { get; set; }
     }
 }

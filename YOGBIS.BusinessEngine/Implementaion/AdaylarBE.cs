@@ -940,9 +940,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SinavaGelmedi = data.SinavaGelmedi ?? false,
                         SinavaGelmediAck = data.SinavaGelmediAck,
                         TYSPuan = data.TYSPuan,
-                        //TYSPuan = data.TYSPuan.HasValue ? 
-                        //    Math.Round(data.TYSPuan.Value, 2, MidpointRounding.AwayFromZero)
-                        //    .ToString("F2", CultureInfo.GetCultureInfo("tr-TR")) : null,
                         TYSSonuc = data.TYSSonuc,
                         TYSSonucAck = data.TYSSonucAck,
                         TYSSorulanSoruNo = data.TYSSorulanSoruNo,
@@ -1151,6 +1148,46 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 result.Message = $"Bir hata oluştu: {ex.Message}";
             }
             return result;
+        }
+        #endregion
+
+        #region GetirKomisyonMulakatListesi
+        public Result<List<AdayMYSSVM>> GetirKomisyonMulakatListesi(string komisyonAdi, string mulakatTarihi)
+        {
+            try
+            {
+                var data = _unitOfWork.adayMYSSRepository.GetAll(
+                    x => x.MYSSKomisyonAdi == komisyonAdi && 
+                         x.MYSSTarih == mulakatTarihi,                         
+                    includeProperties: "Adaylar")
+                    .OrderBy(x => x.KomisyonGunSN);
+
+                if (data != null && data.Any())
+                {
+                    var adaylar = data.Select(x => new AdayMYSSVM()
+                    {
+                        Id = x.Id,
+                        AdayId = x.AdayId,
+                        TC = x.Adaylar.TC,
+                        AdayAdiSoyadi = x.Adaylar.Ad.ToString() + " " + x.Adaylar.Soyad.ToString(),
+                        MYSSTarih = x.MYSSTarih,
+                        MYSSSaat = x.MYSSSaat,
+                        MYSSKomisyonAdi = x.MYSSKomisyonAdi,
+                        KomisyonGunSN = x.KomisyonGunSN,
+                        MYSSonuc = x.MYSSonuc,
+                        MYSPuan = x.MYSPuan
+                    }).ToList();
+
+                    return new Result<List<AdayMYSSVM>>(true, ResultConstant.RecordFound, adaylar);
+                }
+
+                return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"GetirKomisyonMulakatListesi - Hata: {ex.Message}", ex);
+                return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
+            }
         }
         #endregion
 

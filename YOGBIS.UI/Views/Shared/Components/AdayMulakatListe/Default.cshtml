@@ -1,6 +1,4 @@
-﻿@* @model IEnumerable<YOGBIS.Common.VModels.AdaylarVM> *@
-
-
+@model IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM>
 
 <div class="card">
     <div class="card-body">
@@ -10,9 +8,7 @@
                     <tr>
                         <th class="text-center">SN</th>
                         <th class="text-center">T.C. Kimlik No</th>
-                        <th class="text-center">ADI</th>
-                        <th class="text-center">SOYADI</th>
-                        <th class="text-center">ÜNVANI</th>               
+                        <th class="text-center">ADI SOYADI</th>
                         <th class="text-center">SINAV SAATİ</th>
                         <th class="text-center"></th>
                         <th class="text-center"></th>
@@ -24,32 +20,30 @@
                     }
                     @if (Model != null)
                     {
-@*                         @foreach (var item in Model)
+                        @foreach (var item in Model)
                         {
                             sirano++;
                             <tr>
-                                <td>@sirano</td>
-                                <td><a asp-controller="Adaylar" asp-action="Guncelle" asp-route-id="@item.AdayId" id="AdayTC">@item.TC</a></td>
-                                <td>@item.TC</td>
-                                <td>@item.Ad</td>
-                                <td>@item.Soyad</td>
-                                <td>@item.DereceAdi</td>
-                                <td>@item.MYSSSaat</td>
+                                <td class="text-center">@sirano</td>
+                                <td class="text-center">@item.TC</td>
+                                <td>@item.AdayAdiSoyadi</td>
+                                <td class="text-center">@item.MYSSSaat.ToString()</td>
                                 <td class="text-center">
-                                    <a class="btn btn-sm btn-secondary btnCagri text-white" title="Adayı Çağır" id="btnCagri" data-id="@item.AdayId" style="background-color: darkorange;font-weight:bold;font-size:13px;width:120px">Bekleme Odası</a>
+                                    <button class="btn btn-sm btn-warning btnCagri" title="Adayı Çağır" data-id="@item.Id" style="font-weight:bold;font-size:13px;width:120px">
+                                        <i class="fas fa-bell"></i> Bekleme Odası
+                                    </button>
                                 </td>
                                 <td class="text-center">
-                                    <a class="btn btn-sm btn-secondary btnSinavaAl text-white" title="Adayı Sınava Al" id="btnSinavAl" data-id="@item.AdayId" style="background-color: darkgreen;font-weight:bold;font-size:13px;width:120px">Sınav Odası</a>
-                                </td>                                
+                                    <button class="btn btn-sm btn-success btnSinavaAl" title="Adayı Sınava Al" data-id="@item.Id" style="font-weight:bold;font-size:13px;width:120px">
+                                        <i class="fas fa-door-open"></i> Sınav Odası
+                                    </button>
+                                </td>
                             </tr>
-                        } *@
+                        }
                     }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
-
-
 
