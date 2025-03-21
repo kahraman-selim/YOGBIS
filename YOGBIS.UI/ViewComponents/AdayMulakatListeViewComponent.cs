@@ -37,7 +37,7 @@ namespace YOGBIS.UI.ViewComponents
             var userRoles = await _userManager.GetRolesAsync(currentUser);
             var viewModel = new AdayMulakatListeViewModel();
 
-            if (userRoles.Contains("Administrator"))
+            if (currentUser.UserName == "Administrator")
             {
                 // Administrator için tüm CommissionerHead rolündeki kullanıcıları getir
                 var commissionHeads = await _userManager.GetUsersInRoleAsync("CommissionerHead");
@@ -45,11 +45,12 @@ namespace YOGBIS.UI.ViewComponents
                 { 
                     Id = u.Id, 
                     AdSoyad = $"{u.Ad}",
-                    UserName = u.UserName
+                    UserName = u.Ad // Komisyon adını UserName olarak kullan
                 }).ToList();
                 
-                // Administrator seçtiği komisyon için adayları görecek
-                var result = _adaylarBE.GetirKomisyonMulakatListesi("Komisyon10", mulakatTarihi);
+                // Administrator ilk açılışta boş liste görecek
+                //viewModel.AdayListesi = new List<YOGBIS.Common.VModels.AdayMYSSVM>();
+                var result = _adaylarBE.GetirKomisyonMulakatListesi("Komisyon-10", mulakatTarihi);
                 if (result.IsSuccess)
                 {
                     viewModel.AdayListesi = result.Data;

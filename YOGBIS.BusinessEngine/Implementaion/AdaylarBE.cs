@@ -1158,8 +1158,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 var data = _unitOfWork.adayMYSSRepository.GetAll(
                     x => x.MYSSKomisyonAdi == komisyonAdi && 
-                         x.MYSSTarih == mulakatTarihi,                         
-                    includeProperties: "Adaylar")
+                         x.MYSSTarih == mulakatTarihi,                       
+                    includeProperties: "Adaylar,Mulakatlar")
                     .OrderBy(x => x.KomisyonGunSN);
 
                 if (data != null && data.Any())

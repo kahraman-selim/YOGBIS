@@ -84,23 +84,17 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         [HttpGet]
-        public async Task<IActionResult> KomisyonAdaylariniGetir(string komisyonId)
+        public IActionResult KomisyonAdaylariniGetir(string komisyonUserName)
         {
             try
             {
-                if (string.IsNullOrEmpty(komisyonId))
+                if (string.IsNullOrEmpty(komisyonUserName))
                 {
-                    return Json(new { success = false, message = "Komisyon seçimi yapılmadı!" });
+                    return Json(new { success = false, message = "Lütfen komisyon seçiniz!" });
                 }
 
-                var komisyonUser = await _userManager.FindByIdAsync(komisyonId);
-                if (komisyonUser == null)
-                {
-                    return Json(new { success = false, message = "Seçilen komisyon bulunamadı!" });
-                }
-
-                var mulakatTarihi = "15.04.2024"; // Şu an için sabit, gerekirse dinamik olarak alınabilir
-                var result = _adaylarBE.GetirKomisyonMulakatListesi(komisyonUser.UserName, mulakatTarihi);
+                var mulakatTarihi = "15.04.2024"; // daha sonra dinamik datetime.now.day bilgisi getirilecek
+                var result = _adaylarBE.GetirKomisyonMulakatListesi(komisyonUserName, mulakatTarihi);
 
                 if (result.IsSuccess)
                 {
