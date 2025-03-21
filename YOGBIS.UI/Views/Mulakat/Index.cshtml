@@ -1,4 +1,4 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>
+@model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>
 @{
     ViewData["Title"] = "Mülakat";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -153,7 +153,11 @@
                 <div class="card shadow-lg h-100">
                     <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
                     <div class="card-body">
-                        <p class="card-text">Ziya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman Saba</p>
+                        <p class="card-text h-100">
+                            İmtiyaz sahibi ve başyazarı Ebuzziya Tevfik  olan, yayımlandığı dönemde yaşanan ilmî,
+                            edebî ve teknik gelişmelerle birlikte siyasi konulu makalelere yer verilen; Namık Kemal,
+                            Şinasi, Ziya Paşa, Ali Kemal vb. gibi isimlerin  de yazılarının bulunduğu derginin adı nedir?
+                        </p>
                     </div>
                 </div>
             </div>
@@ -161,7 +165,9 @@
                 <div class="card shadow-lg h-100">
                     <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
                     <div class="card-body">
-                        <p class="card-text">Ziya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman Saba</p>
+                        <p class="card-text h-100">
+                            "Sebil ve Güvercinler " adlı eser kime aittir?
+                        </p>
                     </div>
                 </div>
             </div>
@@ -169,7 +175,9 @@
                 <div class="card shadow-lg h-100">
                     <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
                     <div class="card-body">
-                        <p class="card-text">SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman Saba</p>
+                        <p class="card-text h-100">
+                            Bâki bu eserinde Mekke´nin tarihinden ve Osmanlı sultanlarının Mekke´de yaptırdığı eserlerden bahsetmektedir. Sözü edilen bu eserin adı nedir?
+                        </p>
                     </div>
                 </div>
             </div>
@@ -177,7 +185,9 @@
                 <div class="card shadow-lg h-100">
                     <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
                     <div class="card-body">
-                        <p class="card-text">SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman SabaZiya Osman Saba</p>
+                        <p class="card-text h-100">
+                            “Denize Açılan Kapı” adlı eseriyle 1984 yılında Türkiye Yazarlar Birliği Yılın Hikâyecisi ödülüne layık görülen 2022 yılında kaybettiğimiz yazarımız kimdir?
+                        </p>
                     </div>
                 </div>
             </div>
@@ -202,12 +212,12 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">UYARI</h5>
+                <h5 class="modal-title text-center" id="exampleModalLabel">UYARI</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close" onclick="kapat()">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body" id="modaltext"></div>
+            <div class="modal-body text-center" id="modaltext"></div>
             <div class="modal-footer">
                 <button class="btn btn-primary" type="submit" data-dismiss="modal" id="btnOk" onclick="kapat()">Tamam</button>
             </div>
@@ -252,637 +262,560 @@
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            // Başlangıç değerlerini sıfırla
+            $("#Ortalama, #MYSPuan").val(0);
+            $("#MYSSonuc").val("");
+            $("#soruNo").focus();
 
-        document.getElementById("Ortalama").val=0;
-        document.getElementById("MYSPuan").val=0;
-        document.getElementById("MYSSonuc").val="";
-        document.getElementById("soruNo").focus();
-
-
-        $('#btnBaslat').click(function () {
-
-            //var saniye = 0;
-            //var dakika = 0;
-            //var sayac = 0;
-            document.getElementById("soruNo").focus();
-            var soruno = $("#soruNo").val();
-            alert(soruno);
-            if (soruno > 0) {
-
-                $("#btnBitir").show();
-                $("#btnBaslat").hide();
-                $('#soruBlok').show();
-                document.getElementById("cardBtnGrup").style="height:50px"; //bu satır sonra silinecek
-            }
-            else {
-
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Soru Numarası Yazınız!",
-                        label: 'Tamam',
-                        backdrop: false,
-                        locale:'tr',
-                        callback: function() { document.getElementById("soruNo").focus(); }
+            // Başlat butonu click eventi
+            $('#btnBaslat').on('click', function (e) {
+                e.preventDefault();
+                var soruno = $("#soruNo").val();
+                
+                if (soruno > 0) {
+                    $("#btnBitir").show();
+                    $("#btnBaslat").hide();
+                    $('#soruBlok').show();
+                    document.getElementById("cardBtnGrup").style = "height:50px";
+                }
+                else {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Soru Numarası Yazınız!"
                     });
-            }
-
-        });
-
-        $('#btnIptal').click(function () {
-
-            $('#ModalSinavIptal').modal('show');
-        });
-
-        $('#btnBitir').click(function () {
-
-            $('#soruBlok').hide();
-            $('#AdayNotBlok').show();
-            $('#AdayBilgiBlok').hide();
-            document.getElementById("btnSoruGoster").style.display = "inline";
-            document.getElementById("Kategori1-1").focus();
-            document.getElementById("btnBitir").style.display = "none";
-            document.getElementById("btnBilgiKapat").style.display = "none";
-            document.getElementById("btnBilgiAc").style.display = "inline";
-            document.getElementById("btnIptal").style.display = "none";
-        });
-
-        $('#btnBilgiFormKapat').click(function () {
-
-            $('#AdayBilgiBlok').hide();
-            document.getElementById("btnBilgiKapat").style.display = "none";
-            document.getElementById("btnBilgiAc").style.display = "inline";
-
-        });
-
-        $('#btnSoruBlokKapat').click(function () {
-
-            $('#soruBlok').hide();
-            document.getElementById("btnSoruGoster").style.display = "inline";
-            document.getElementById("btnSoruGizle").style.display = "none";
-        });
-
-        //Aday Not Formu Kaydet Butonu
-        $('#btnNotFormKapat').click(function () {
-            var kategoriIds = [
-                "#Kategori1-1", "#Kategori1-2", "#Kategori1-3",
-                "#Kategori2-1", "#Kategori2-2", "#Kategori2-3",
-                "#Kategori3-1", "#Kategori3-2", "#Kategori3-3"
-            ];
-
-            var notlar = kategoriIds.map(function(id) {
-                return parseInt($(id).val(), 10) || 0;
+                }
             });
 
-            var isValid = notlar.every(not => not === notlar[0]);
+            // İptal butonu click eventi
+            $('#btnIptal').on('click', function () {
+                $('#ModalSinavIptal').modal('show');
+            });
 
-            $(kategoriIds.join(",")).removeClass('input-error'); 
+            // Bitir butonu click eventi
+            $('#btnBitir').on('click', function () {
+                $('#soruBlok').hide();
+                $('#AdayNotBlok').show();
+                $('#AdayBilgiBlok').hide();
+                document.getElementById("btnSoruGoster").style.display = "inline";
+                document.getElementById("Kategori1-1").focus();
+                document.getElementById("btnBitir").style.display = "none";
+                document.getElementById("btnBilgiKapat").style.display = "none";
+                document.getElementById("btnBilgiAc").style.display = "inline";
+                document.getElementById("btnIptal").style.display = "none";
+            });
 
-            if (!isValid) {
-                $(kategoriIds.join(",")).each(function() {
-                    if (parseInt($(this).val(), 10) !== notlar[0]) {
-                        $(this).addClass('input-error'); 
-                    }
+            // Bilgi Formu Kapat butonu click eventi
+            $('#btnBilgiFormKapat').on('click', function () {
+                $('#AdayBilgiBlok').hide();
+                document.getElementById("btnBilgiKapat").style.display = "none";
+                document.getElementById("btnBilgiAc").style.display = "inline";
+            });
+
+            // Soru Blok Kapat butonu click eventi
+            $('#btnSoruBlokKapat').on('click', function () {
+                $('#soruBlok').hide();
+                document.getElementById("btnSoruGoster").style.display = "inline";
+                document.getElementById("btnSoruGizle").style.display = "none";
+            });
+
+            // Aday Not Formu Kaydet butonu click eventi
+            $('#btnNotFormKapat').on('click', function () {
+                var kategoriIds = [
+                    "#Kategori1-1", "#Kategori1-2", "#Kategori1-3",
+                    "#Kategori2-1", "#Kategori2-2", "#Kategori2-3",
+                    "#Kategori3-1", "#Kategori3-2", "#Kategori3-3"
+                ];
+
+                var notlar = kategoriIds.map(function(id) {
+                    return parseInt($(id).val(), 10) || 0;
                 });
-                bootbox.alert("İlk 3 KATEGORİ için verilen puanlar birbirine eşit olmalıdır!");
-                return false;
-            }
-            return true;
-        });
 
-        //Aday Bilgi Formu Butonları
-        $('#btnBilgiAc').click(function () {
+                var isValid = notlar.every(not => not === notlar[0]);
 
-            $('#AdayBilgiBlok').show();
-            document.getElementById("soruNo").focus();
-            document.getElementById("btnBilgiKapat").style.display = "inline";
-            document.getElementById("btnBilgiAc").style.display = "none";
-        });
+                $(kategoriIds.join(",")).removeClass('input-error'); 
 
-        $('#btnBilgiKapat').click(function () {
+                if (!isValid) {
+                    $(kategoriIds.join(",")).each(function() {
+                        if (parseInt($(this).val(), 10) !== notlar[0]) {
+                            $(this).addClass('input-error'); 
+                        }
+                    });
+                    bootbox.alert("İlk 3 KATEGORİ için verilen puanlar birbirine eşit olmalıdır!");
+                    return false;
+                }
+                return true;
+            });
 
-            $('#AdayBilgiBlok').hide();
-            document.getElementById("soruNo").focus();
-            document.getElementById("btnBilgiAc").style.display = "inline";
-            document.getElementById("btnBilgiKapat").style.display = "none";
-        });
+            // Aday Bilgi Formu Butonları
+            $('#btnBilgiAc').on('click', function () {
+                $('#AdayBilgiBlok').show();
+                document.getElementById("soruNo").focus();
+                document.getElementById("btnBilgiKapat").style.display = "inline";
+                document.getElementById("btnBilgiAc").style.display = "none";
+            });
 
-        $('#btnSoruGoster').click(function () {
+            $('#btnBilgiKapat').on('click', function () {
+                $('#AdayBilgiBlok').hide();
+                document.getElementById("soruNo").focus();
+                document.getElementById("btnBilgiAc").style.display = "inline";
+                document.getElementById("btnBilgiKapat").style.display = "none";
+            });
 
-            document.getElementById("btnSoruGizle").style.display = "inline";
-            document.getElementById("btnSoruGoster").style.display = "none";
+            $('#btnSoruGoster').on('click', function () {
+                document.getElementById("btnSoruGizle").style.display = "inline";
+                document.getElementById("btnSoruGoster").style.display = "none";
 
-            $('#soruBlok').show();
-            document.getElementById("soruNo").focus();
-        });
+                $('#soruBlok').show();
+                document.getElementById("soruNo").focus();
+            });
 
-        $('#btnSoruGizle').click(function () {
+            $('#btnSoruGizle').on('click', function () {
+                document.getElementById("btnSoruGoster").style.display = "inline";
+                document.getElementById("btnSoruGizle").style.display = "none";
 
-            document.getElementById("btnSoruGoster").style.display = "inline";
-            document.getElementById("btnSoruGizle").style.display = "none";
+                $('#soruBlok').hide();
+                document.getElementById("soruNo").focus();
+            });
 
-            $('#soruBlok').hide();
-            document.getElementById("soruNo").focus();
-        });
-
-
-        //Aday Çağrı Butonu
-        $("#myTableNoButtons").on("click", ".btnCagri", function () {
-
-            var btn = $(this);
-            var id = btn.data("id");
-            bootbox.alert({
-                    title:'BİLGİ',
+            // Aday Çağrı Butonu
+            $("#myTableNoButtons").on("click", ".btnCagri", function () {
+                var btn = $(this);
+                var id = btn.data("id");
+                bootbox.alert({
+                    title: 'BİLGİ',
                     message: "Aday bekleme odasına çağrıldı!",
-                        label: 'Tamam',
-                        backdrop: false,
-                        locale:'tr',
-                        callback: function() { /* your callback code */ }
-                    });
+                    label: 'Tamam',
+                    backdrop: false,
+                    locale: 'tr',
+                    callback: function () { /* your callback code */ }
+                });
+            });
 
-        });
-
-        //Aday Sınava Al Butonu
-        $("#myTableNoButtons").on("click", ".btnSinavaAl", function () {
-
-            var btn = $(this);
-            var id = btn.data("id");
-            bootbox.alert({
-                    title:'BİLGİ',
+            // Aday Sınava Al Butonu
+            $("#myTableNoButtons").on("click", ".btnSinavaAl", function () {
+                var btn = $(this);
+                var id = btn.data("id");
+                bootbox.alert({
+                    title: 'BİLGİ',
                     message: "Aday sınava çağrıldı!",
+                    label: 'Tamam',
+                    backdrop: false,
+                    locale: 'tr',
+                    callback: function () { }
+                });
+            });
+
+            // Komisyon-1 not bloğu
+            jQuery(".komisyon1Not").on('change', function () {
+                var kom11 = 0, kom12 = 0, kom13 = 0, kom14 = 0, kom15 = 0, toplam1 = 0;
+
+                if (parseInt($("#Kategori1-1").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-                                }
-                    });
-
-        });
-
-        //Komisyon-1 not bloğu
-        $(document).ready(function(){
-        jQuery(".komisyon1Not").change(function(){
-
-
-            var kom11=0,kom12=0,kom13=0,kom14=0,kom15=0,toplam1=0;
-
-            if(parseInt($("#Kategori1-1").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
-                        label: 'Tamam',
-                        backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori1-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori1-1").focus();}
+                            document.getElementById("Kategori1-1").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori1-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori1-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
-
-            if(parseInt($("#Kategori1-2").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori1-2").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori1-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori1-2").focus();}
+                            document.getElementById("Kategori1-2").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori1-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori1-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
-
-            if(parseInt($("#Kategori1-3").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori1-3").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori1-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori1-3").focus();}
+                            document.getElementById("Kategori1-3").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori1-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori1-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
-
-            if(parseInt($("#Kategori1-4").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori1-4").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori1-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori1-4").focus();}
+                            document.getElementById("Kategori1-4").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori1-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori1-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
-
-            if(parseInt($("#Kategori1-5").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori1-5").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori1-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori1-5").focus();}
+                            document.getElementById("Kategori1-5").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori1-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori1-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
+                if (parseInt($("#Kategori1-1").val()) >= 0) {
+                    kom11 = $("#Kategori1-1").val();
+                }
+                else {
+                    kom11 = 0;
+                }
 
-            if(parseInt($("#Kategori1-1").val())>=0)
-            {
-                kom11=$("#Kategori1-1").val();
-            }
-            else{
-                kom11=0;
-            }
+                if (parseInt($("#Kategori1-2").val()) >= 0) {
+                    kom12 = $("#Kategori1-2").val();
+                }
+                else {
+                    kom12 = 0;
+                }
 
-            if(parseInt($("#Kategori1-2").val())>=0)
-            {
-                kom12=$("#Kategori1-2").val();
-            }
-            else{
-                kom12=0;
-            }
+                if (parseInt($("#Kategori1-3").val()) >= 0) {
+                    kom13 = $("#Kategori1-3").val();
+                }
+                else {
+                    kom13 = 0;
+                }
 
-            if(parseInt($("#Kategori1-3").val())>=0)
-            {
-                kom13=$("#Kategori1-3").val();
-            }
-            else{
-                kom13=0;
-            }
+                if (parseInt($("#Kategori1-4").val()) >= 0) {
+                    kom14 = $("#Kategori1-4").val();
+                }
+                else {
+                    kom14 = 0;
+                }
 
-            if(parseInt($("#Kategori1-4").val())>=0)
-            {
-                kom14=$("#Kategori1-4").val();
-            }
-            else{
-                kom14=0;
-            }
+                if (parseInt($("#Kategori1-5").val()) >= 0) {
+                    kom15 = $("#Kategori1-5").val();
+                }
+                else {
+                    kom15 = 0;
+                }
 
-            if(parseInt($("#Kategori1-5").val())>=0)
-            {
-                kom15=$("#Kategori1-5").val();
-            }
-            else{
-                kom15=0;
-            }
+                toplam1 = parseInt(kom11) + parseInt(kom12) + parseInt(kom13) + parseInt(kom14) + parseInt(kom15);
 
-            toplam1=parseInt(kom11)+parseInt(kom12)+parseInt(kom13)+parseInt(kom14)+parseInt(kom15);
-
-            document.getElementById("Toplam1").value=toplam1;
-
-
+                document.getElementById("Toplam1").value = toplam1;
             });
-        });
 
-        //Komisyon-2 not bloğu
-        $(document).ready(function(){
-        jQuery(".komisyon2Not").change(function(){
+            // Komisyon-2 not bloğu
+            jQuery(".komisyon2Not").on('change', function () {
+                var kom21 = 0, kom22 = 0, kom23 = 0, kom24 = 0, kom25 = 0, toplam2 = 0;
 
-
-            var kom21=0,kom22=0,kom23=0,kom24=0,kom25=0,toplam2=0;
-
-            if(parseInt($("#Kategori2-1").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori2-1").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori2-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori2-1").focus();}
+                            document.getElementById("Kategori2-1").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori2-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori2-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
-
-            if(parseInt($("#Kategori2-2").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori2-2").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori2-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori2-2").focus();}
+                            document.getElementById("Kategori2-2").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori2-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori2-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
-
-            if(parseInt($("#Kategori2-3").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori2-3").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori2-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori2-3").focus();}
+                            document.getElementById("Kategori2-3").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori2-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori2-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
-
-            if(parseInt($("#Kategori2-4").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori2-4").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori2-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori2-4").focus();}
+                            document.getElementById("Kategori2-4").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori2-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori2-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
-
-            if(parseInt($("#Kategori2-5").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori2-5").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori2-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori2-5").focus();}
+                            document.getElementById("Kategori2-5").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori2-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori2-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
+                if (parseInt($("#Kategori2-1").val()) >= 0) {
+                    kom21 = $("#Kategori2-1").val();
+                }
+                else {
+                    kom21 = 0;
+                }
 
-            if(parseInt($("#Kategori2-1").val())>=0)
-            {
-                kom21=$("#Kategori2-1").val();
-            }
-            else{
-                kom21=0;
-            }
+                if (parseInt($("#Kategori2-2").val()) >= 0) {
+                    kom22 = $("#Kategori2-2").val();
+                }
+                else {
+                    kom22 = 0;
+                }
 
-            if(parseInt($("#Kategori2-2").val())>=0)
-            {
-                kom22=$("#Kategori2-2").val();
-            }
-            else{
-                kom22=0;
-            }
+                if (parseInt($("#Kategori2-3").val()) >= 0) {
+                    kom23 = $("#Kategori2-3").val();
+                }
+                else {
+                    kom23 = 0;
+                }
 
-            if(parseInt($("#Kategori2-3").val())>=0)
-            {
-                kom23=$("#Kategori2-3").val();
-            }
-            else{
-                kom23=0;
-            }
+                if (parseInt($("#Kategori2-4").val()) >= 0) {
+                    kom24 = $("#Kategori2-4").val();
+                }
+                else {
+                    kom24 = 0;
+                }
 
-            if(parseInt($("#Kategori2-4").val())>=0)
-            {
-                kom24=$("#Kategori2-4").val();
-            }
-            else{
-                kom24=0;
-            }
+                if (parseInt($("#Kategori2-5").val()) >= 0) {
+                    kom25 = $("#Kategori2-5").val();
+                }
+                else {
+                    kom25 = 0;
+                }
 
-            if(parseInt($("#Kategori2-5").val())>=0)
-            {
-                kom25=$("#Kategori2-5").val();
-            }
-            else{
-                kom25=0;
-            }
+                toplam2 = parseInt(kom21) + parseInt(kom22) + parseInt(kom23) + parseInt(kom24) + parseInt(kom25);
 
-            toplam2=parseInt(kom21)+parseInt(kom22)+parseInt(kom23)+parseInt(kom24)+parseInt(kom25);
-
-            document.getElementById("Toplam2").value=toplam2;
-
-
+                document.getElementById("Toplam2").value = toplam2;
             });
-        });
 
-        //Komisyon-3 not bloğu
-        $(document).ready(function(){
-        jQuery(".komisyon3Not").change(function(){
+            // Komisyon-3 not bloğu
+            jQuery(".komisyon3Not").on('change', function () {
+                var kom31 = 0, kom32 = 0, kom33 = 0, kom34 = 0, kom35 = 0, toplam3 = 0;
 
-
-            var kom31=0,kom32=0,kom33=0,kom34=0,kom35=0,toplam3=0;
-
-            if(parseInt($("#Kategori3-1").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori3-1").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori3-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori3-1").focus();}
+                            document.getElementById("Kategori3-1").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori3-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori3-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
-
-            if(parseInt($("#Kategori3-2").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori3-2").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori3-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori3-2").focus();}
+                            document.getElementById("Kategori3-2").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori3-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori3-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
-
-            if(parseInt($("#Kategori3-3").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori3-3").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori3-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori3-3").focus();}
+                            document.getElementById("Kategori3-3").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori3-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori3-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
-
-            if(parseInt($("#Kategori3-4").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori3-4").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori3-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori3-4").focus();}
+                            document.getElementById("Kategori3-4").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori3-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori3-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
-
-            if(parseInt($("#Kategori3-5").val())>20){
-                bootbox.alert({
-                    title:'UYARI',
-                    message: "Verilen not 20 den büyük olamaz!",
+                if (parseInt($("#Kategori3-5").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
                         label: 'Tamam',
                         backdrop: false,
-                        locale:'tr',
-                        callback: function() {
-
+                        locale: 'tr',
+                        callback: function () {
                             document.getElementById("Kategori3-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
-                            document.getElementById("Kategori3-5").focus();}
+                            document.getElementById("Kategori3-5").focus();
+                        }
                     });
+                }
+                else {
+                    document.getElementById("Kategori3-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
 
-            }
-            else{
-                document.getElementById("Kategori3-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
-            }
+                if (parseInt($("#Kategori3-1").val()) >= 0) {
+                    kom31 = $("#Kategori3-1").val();
+                }
+                else {
+                    kom31 = 0;
+                }
 
-            if(parseInt($("#Kategori3-1").val())>=0)
-            {
-                kom31=$("#Kategori3-1").val();
-            }
-            else{
-                kom31=0;
-            }
+                if (parseInt($("#Kategori3-2").val()) >= 0) {
+                    kom32 = $("#Kategori3-2").val();
+                }
+                else {
+                    kom32 = 0;
+                }
 
-            if(parseInt($("#Kategori3-2").val())>=0)
-            {
-                kom32=$("#Kategori3-2").val();
-            }
-            else{
-                kom32=0;
-            }
+                if (parseInt($("#Kategori3-3").val()) >= 0) {
+                    kom33 = $("#Kategori3-3").val();
+                }
+                else {
+                    kom33 = 0;
+                }
 
-            if(parseInt($("#Kategori3-3").val())>=0)
-            {
-                kom33=$("#Kategori3-3").val();
-            }
-            else{
-                kom33=0;
-            }
+                if (parseInt($("#Kategori3-4").val()) >= 0) {
+                    kom34 = $("#Kategori3-4").val();
+                }
+                else {
+                    kom34 = 0;
+                }
 
-            if(parseInt($("#Kategori3-4").val())>=0)
-            {
-                kom34=$("#Kategori3-4").val();
-            }
-            else{
-                kom34=0;
-            }
+                if (parseInt($("#Kategori3-5").val()) >= 0) {
+                    kom35 = $("#Kategori3-5").val();
+                }
+                else {
+                    kom35 = 0;
+                }
 
-            if(parseInt($("#Kategori3-5").val())>=0)
-            {
-                kom35=$("#Kategori3-5").val();
-            }
-            else{
-                kom35=0;
-            }
+                toplam3 = parseInt(kom31) + parseInt(kom32) + parseInt(kom33) + parseInt(kom34) + parseInt(kom35);
 
-            toplam3=parseInt(kom31)+parseInt(kom32)+parseInt(kom33)+parseInt(kom34)+parseInt(kom35);
+                document.getElementById("Toplam3").value = toplam3;
+            });
 
-            document.getElementById("Toplam3").value=toplam3;
+            // Toplamlar bloğu
+            $(".komisyonnotlar").on('change keyup paste', function () {
+                var top1 = parseInt($(Toplam1).val()) || 0;
+                var top2 = parseInt($(Toplam2).val()) || 0;
+                var top3 = parseInt($(Toplam3).val()) || 0;
+                var myyspuan = parseFloat($(MYYSPuan).val()) || 0;
+                var ortalama = 0;
 
+                ortalama = (top1 + top2 + top3) / 3;
 
+                $('#Ortalama').val(Math.ceil((top1 + top2 + top3) / 3));
+
+                $('#MYSPuan').val(parseFloat((ortalama + myyspuan) / 2).toFixed(2));
+
+                if (parseInt($(Ortalama).val()) >= 60) {
+                    document.getElementById("MYSSonuc").value = "BAŞARILI";
+                    document.getElementById("MYSSonuc").className = "form-control py-1 text-left text-success font-weight-bold h-100";
+                }
+                else {
+                    document.getElementById("MYSSonuc").value = "BAŞARISIZ";
+                    document.getElementById("MYSSonuc").className = "form-control py-1 text-left text-danger font-weight-bold h-100";
+                }
             });
         });
-
-        //toplamlar bloğu
-        $(document).ready(function() {
-            $(".komisyonnotlar").on('change keyup paste', function() {
-
-                    var top1 = parseInt($(Toplam1).val()) || 0;
-                    var top2 = parseInt($(Toplam2).val()) || 0;
-                    var top3 = parseInt($(Toplam3).val()) || 0;
-                    var myyspuan=parseFloat($(MYYSPuan).val()) || 0;
-                    var ortalama=0;
-
-
-                    ortalama=(top1+top2+top3)/3;
-
-                    $('#Ortalama').val(Math.ceil((top1+top2+top3)/3));
-
-
-                    $('#MYSPuan').val(parseFloat((ortalama+myyspuan)/2).toFixed(2));
-
-                    if(parseInt($(Ortalama).val())>=60){
-                        document.getElementById("MYSSonuc").value="BAŞARILI";
-                        document.getElementById("MYSSonuc").className = "form-control py-1 text-left text-success font-weight-bold h-100";
-                    }
-                    else{
-                        document.getElementById("MYSSonuc").value="BAŞARISIZ";
-                        document.getElementById("MYSSonuc").className = "form-control py-1 text-left text-danger font-weight-bold h-100";
-                    }
-            });
-        });
-
     </script>
 }
-
-
