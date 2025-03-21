@@ -53,6 +53,7 @@ namespace YOGBIS.UI.Controllers
         [Route("MU10001", Name = "MulakatIndexRoute")]
         public IActionResult Index()
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
             return View();
         } 
         #endregion
@@ -61,8 +62,14 @@ namespace YOGBIS.UI.Controllers
         [HttpPost]
         public IActionResult AdayCagriDurumGuncelle(Guid id)
         {
-            var result = _adaylarBE.AdayCagriDurumGuncelle(id);
-            return Json(result);
+            if (id == Guid.Empty)
+                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+
+            var data = _adaylarBE.AdayCagriDurumGuncelle(id);
+            if (data.IsSuccess)
+                return Json(new { success = data.IsSuccess, message = data.Message });
+            else
+                return Json(new { success = data.IsSuccess, message = data.Message });
         }
         #endregion
 

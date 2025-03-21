@@ -1212,25 +1212,25 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             try
             {
-                var aday = _unitOfWork.adayMYSSRepository.GetFirstOrDefault(x => x.Id == id);
+                var aday = _unitOfWork.adayMYSSRepository.Get(id);
                 
                 if (aday != null)
                 {
                     aday.CagriDurum = true;
                     _unitOfWork.Save();
-                    
-                    return new Result<bool>(true, "Aday çağrı durumu güncellendi.");
+
+                    return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
                 }
-                
-                return new Result<bool>(false, "Aday kaydı bulunamadı.");
+
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"AdayCagriDurumGuncelle - Hata: {ex.Message}", ex);
-                return new Result<bool>(false, "Aday çağrı durumu güncellenirken hata oluştu: " + ex.Message);
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         }
         #endregion
-
+        
     }
 }

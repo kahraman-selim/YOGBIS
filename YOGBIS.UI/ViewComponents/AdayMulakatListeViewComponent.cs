@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
 using System.Security.Claims;
+using Newtonsoft.Json;
+using YOGBIS.Common.SessionOperations;
+using YOGBIS.Common.Const;
 
 namespace YOGBIS.UI.ViewComponents
 {
@@ -21,7 +24,8 @@ namespace YOGBIS.UI.ViewComponents
         {
             var userName = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
             var mulakatTarihi = "15.04.2024";
-            
+            //var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
             if (!string.IsNullOrEmpty(userName) && userName == "Komisyon1")
             {
                 var result = _adaylarBE.GetirKomisyonMulakatListesi("Komisyon-1", mulakatTarihi);

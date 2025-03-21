@@ -282,7 +282,10 @@
                 else {
                     bootbox.alert({
                         title: 'UYARI',
-                        message: "Soru Numarası Yazınız!"
+                        message: "Soru Numarası Yazınız!",
+                            callback: function (result) {
+                                $("#soruNo").focus();
+                            }
                     });
                 }
             });
@@ -320,7 +323,7 @@
             });
 
             // Aday Not Formu Kaydet butonu click eventi
-               $('#btnNotFormKapat').on('click', function () {
+            $('#btnNotFormKapat').on('click', function () {
                         
                    //1. Kategoriler için
                         var kategoriIds1 = [
@@ -407,13 +410,10 @@
             $("#myTableNoButtons").on("click", ".btnCagri", function () {
                 var btn = $(this);
                 var id = btn.data("id");
-                alert(id);
-                $.ajax({
-                    url: '@Url.Action("AdayCagriDurumGuncelle", "Mulakat")',
-                    type: 'POST',
-                    data: { id: id },
+            
+                $.ajax({                    
                     success: function (result) {
-                        if (result.isSuccess) {
+                        if (result) {
                             bootbox.alert({
                                 title: 'BİLGİ',
                                 message: "Aday bekleme odasına çağrıldı!",
@@ -421,8 +421,17 @@
                                 backdrop: false,
                                 locale: 'tr',
                                 callback: function () {
+                       if (result) {
+                        var id = btn.data("id");
+                        $.ajax({
+                            type: "POST",
+                            url: "/Mulakat/AdayCagriDurumGuncelle/" + id,
+                            success: function () {
                                     // Tabloyu yenile
                                     window.location.reload();
+                            }
+                        });
+                    }
                                 }
                             });
                         } else {
