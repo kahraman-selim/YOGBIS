@@ -5,105 +5,64 @@ namespace YOGBIS.Common.VModels
 {
     public class AdayMYSSVM : BaseVM
     {
-        public Guid? Id { get; set; }
+        public Guid Id { get; set; }
 
-        [Required(ErrorMessage = "TC Kimlik No zorunludur")]
-        [StringLength(11, MinimumLength = 11, ErrorMessage = "TC Kimlik No 11 haneli olmalıdır")]
-        [Display(Name = "TC Kimlik No")]
         public string TC { get; set; }
-
-        [Display(Name = "MYSS Tarihi")]
-        public string MYSSTarih { get; set; }
-
-        [Display(Name = "MYSS Saati")]
-        public string MYSSSaat { get; set; }
-
-        [Display(Name = "MYSS Mülakat Yeri")]
-        public string MYSSMulakatYer { get; set; }
-
-        [Display(Name = "MYSS Durumu")]
-        public string MYSSDurum { get; set; }
-
-        [Display(Name = "MYSS Durum Açıklaması")]
-        public string MYSSDurumAck { get; set; }
-
-        [Display(Name = "MYSS Komisyon Sıra No")]
-        public int? MYSSKomisyonSiraNo { get; set; }
-
-        [Display(Name = "MYSS Komisyon Adı")]
-        public string MYSSKomisyonAdi { get; set; }
-
-        [Display(Name = "Komisyon")]
-        public Guid? KomisyonId { get; set; }
-
-        [Display(Name = "Komisyon SN")]
-        public int? KomisyonSN { get; set; }
-
-        [Display(Name = "Komisyon Gün SN")]
-        public int? KomisyonGunSN { get; set; }
-
-        [Display(Name = "Çağrı Durumu")]
-        public bool CagriDurum { get; set; }
-
-        [Display(Name = "Kabul Durumu")]
-        public bool KabulDurum { get; set; }
-
-        [Display(Name = "Sınav Durumu")]
-        public bool SinavDurum { get; set; }
-
-        [Display(Name = "Sınava Gelmedi")]
-        public bool SinavaGelmedi { get; set; }
-
-        [Display(Name = "Sınava Gelmedi Açıklaması")]
-        public string SinavaGelmediAck { get; set; }
-
-        [Display(Name = "MYS Puanı")]
-        public string MYSPuan { get; set; }
-
-        [Display(Name = "MYS Sonucu")]
-        public string MYSSonuc { get; set; }
-
-        [Display(Name = "MYS Sonuç Açıklaması")]
-        public string MYSSonucAck { get; set; }
-
-        [Display(Name = "MYSS Sorulan Soru No")]
-        public int? MYSSSorulanSoruNo { get; set; }
-
-        [Display(Name = "Sınav İptal")]
-        public bool SinavIptal { get; set; }
-
-        [Display(Name = "Sınav İptal Açıklaması")]
-        public string SinavIptalAck { get; set; }
-
-        public Guid? BransId { get; set; }
-        public string BransAdi { get; set; }
-
-        public Guid? DereceId { get; set; }
-        public string DereceAdi { get; set; }
-
-        public Guid? UlkeTercihId { get; set; }
-        public string UlkeTercihAdi { get; set; }
-
-        public Guid? AdayId { get; set; }
-
-        public Guid? MulakatId { get; set; }
-
-        [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
-        public string KaydedenId { get; set; }
-
-        public int? MulakatYil { get; set; }
-
+        public string AdayAdiSoyadi { get; set; }
+        public Guid AdayId { get; set; }
         [Display(Name = "Adaylar")]
         public AdaylarVM Adaylar { get; set; }
 
+        public string MYSSTarih { get; set; }
+        public string MYSSSaat { get; set; }
+        public string MYSSMulakatYer { get; set; }        
+        public string MYSSDurum { get; set; }
+        public string MYSSDurumAck { get; set; }
+
+        public Guid KomisyonId { get; set; }
+        public int MYSSKomisyonSiraNo { get; set; }
+        public string MYSSKomisyonAdi { get; set; }       
+        public int KomisyonSN { get; set; }
+        public int KomisyonGunSN { get; set; }
         [Display(Name = "Komisyonlar")]
         public KomisyonlarVM Komisyonlar { get; set; }
 
+        public bool CagriDurum { get; set; }
+        public bool KabulDurum { get; set; }
+        public bool SinavDurum { get; set; }
+        public bool SinavaGelmedi { get; set; }
+        public string SinavaGelmediAck { get; set; }
+        public bool SinavIptal { get; set; }
+        public string SinavIptalAck { get; set; }
+
+        public string MYSPuan { get; set; }
+        public string MYSSonuc { get; set; }
+        public string MYSSonucAck { get; set; }
+        public int MYSSSorulanSoruNo { get; set; }
+
+        public Guid BransId { get; set; }
+        public string BransAdi { get; set; }
+        public BranslarVM Branslar { get; set; }
+
+        public Guid DereceId { get; set; }
+        public string DereceAdi { get; set; }
+        public SoruDerecelerVM SoruDereceler { get; set; }
+
+        public Guid UlkeTercihId { get; set; }
+        public string UlkeTercihAdi { get; set; }
+        public UlkeTercihVM UlkeTercihleri { get; set; }
+
+
+
+        public Guid MulakatId { get; set; }
+        public int MulakatYil { get; set; }
         [Display(Name = "Mülakatlar")]
         public MulakatlarVM Mulakatlar { get; set; }
 
-        [Display(Name = "Kaydeden")]
+
+        public string KaydedenId { get; set; }        
         public string KaydedenAdi { get; set; }
+        [Display(Name = "Kaydeden")]
         public KullaniciVM Kullanici { get; set; }
     }
 }
