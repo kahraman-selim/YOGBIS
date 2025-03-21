@@ -320,32 +320,88 @@
             });
 
             // Aday Not Formu Kaydet butonu click eventi
-            $('#btnNotFormKapat').on('click', function () {
-                var kategoriIds = [
-                    "#Kategori1-1", "#Kategori1-2", "#Kategori1-3",
-                    "#Kategori2-1", "#Kategori2-2", "#Kategori2-3",
-                    "#Kategori3-1", "#Kategori3-2", "#Kategori3-3"
-                ];
+               $('#btnNotFormKapat').on('click', function () {
+                        
+                   //1. Kategoriler için
+                        var kategoriIds1 = [
+                            "#Kategori1-1",
+                            "#Kategori2-1",
+                            "#Kategori3-1"
+                        ];
 
-                var notlar = kategoriIds.map(function(id) {
-                    return parseInt($(id).val(), 10) || 0;
-                });
+                        var notlar1 = kategoriIds1.map(function(id) {
+                            return parseInt($(id).val(), 10) || 0;
+                        });
 
-                var isValid = notlar.every(not => not === notlar[0]);
+                        var isValid1 = notlar1.every(not => not === notlar1[0]);
 
-                $(kategoriIds.join(",")).removeClass('input-error'); 
+                        $(kategoriIds1.join(",")).removeClass('input-error');
 
-                if (!isValid) {
-                    $(kategoriIds.join(",")).each(function() {
-                        if (parseInt($(this).val(), 10) !== notlar[0]) {
-                            $(this).addClass('input-error'); 
+                          if (!isValid1) {
+                            $(kategoriIds1.join(",")).each(function() {
+                                if (parseInt($(this).val(), 10) !== notlar1[0]) {
+                                    $(this).addClass('input-error');
+                                }
+                            });
+                            bootbox.alert("TÜRKÇE KATEGORİSİ için verilen puanlar birbirine eşit olmalıdır!");
+                            return false;
                         }
-                    });
-                    bootbox.alert("İlk 3 KATEGORİ için verilen puanlar birbirine eşit olmalıdır!");
-                    return false;
-                }
-                return true;
-            });
+
+                        //2. Kategoriler için
+                        var kategoriIds2 = [
+                            "#Kategori1-2",
+                            "#Kategori2-2",
+                            "#Kategori3-2"
+                        ];
+
+                        var notlar2 = kategoriIds2.map(function(id) {
+                            return parseInt($(id).val(), 10) || 0;
+                        });
+
+                        var isValid2 = notlar2.every(not => not === notlar2[0]);
+
+                        $(kategoriIds2.join(",")).removeClass('input-error');
+
+                        if (!isValid2) {
+
+                            $(kategoriIds2.join(",")).each(function() {
+                                if (parseInt($(this).val(), 10) !== notlar2[0]) {
+                                    $(this).addClass('input-error');
+                                }
+                            });
+                            bootbox.alert("TARİH KATEGORİSİ için verilen puanlar birbirine eşit olmalıdır!");
+                            return false;
+                        }
+                        
+                        //3. Kategoriler için
+                        var kategoriIds3 = [
+                            "#Kategori1-3",
+                            "#Kategori2-3",
+                            "#Kategori3-3"
+                        ];
+
+                        var notlar3 = kategoriIds3.map(function(id) {
+                            return parseInt($(id).val(), 10) || 0;
+                        });
+
+                        var isValid3 = notlar3.every(not => not === notlar3[0]);
+
+                        $(kategoriIds3.join(",")).removeClass('input-error');
+                        
+                        
+                        if (!isValid3) {
+
+                            $(kategoriIds3.join(",")).each(function() {
+                                if (parseInt($(this).val(), 10) !== notlar3[0]) {
+                                    $(this).addClass('input-error');
+                                }
+                            });
+                            bootbox.alert("GENEL KÜLTÜR KATEGORİSİ için verilen puanlar birbirine eşit olmalıdır!");
+                            return false;
+                        }
+
+                        return true;
+                 });
 
             // Aday Bilgi Formu Butonları
             $('#btnBilgiAc').on('click', function () {
@@ -402,7 +458,7 @@
                     label: 'Tamam',
                     backdrop: false,
                     locale: 'tr',
-                    callback: function () { }
+                    callback: function () {  /* your callback code */ }
                 });
             });
 
