@@ -1,4 +1,4 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.AdaylarVM>
+﻿@* @model IEnumerable<YOGBIS.Common.VModels.AdaylarVM> *@
 
 
 
@@ -24,17 +24,17 @@
                     }
                     @if (Model != null)
                     {
-                        @foreach (var item in Model)
+@*                         @foreach (var item in Model)
                         {
                             sirano++;
                             <tr>
                                 <td>@sirano</td>
-                                <!--<td><a asp-controller="Adaylar" asp-action="Guncelle" asp-route-id="@item.AdayId" id="AdayTC">@item.TC</a></td>-->
+                                <td><a asp-controller="Adaylar" asp-action="Guncelle" asp-route-id="@item.AdayId" id="AdayTC">@item.TC</a></td>
                                 <td>@item.TC</td>
                                 <td>@item.Ad</td>
                                 <td>@item.Soyad</td>
-@*                                 <td>@item.DereceAdi</td>
-                                <td>@item.MYSSSaat</td> *@
+                                <td>@item.DereceAdi</td>
+                                <td>@item.MYSSSaat</td>
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-secondary btnCagri text-white" title="Adayı Çağır" id="btnCagri" data-id="@item.AdayId" style="background-color: darkorange;font-weight:bold;font-size:13px;width:120px">Bekleme Odası</a>
                                 </td>
@@ -42,7 +42,7 @@
                                     <a class="btn btn-sm btn-secondary btnSinavaAl text-white" title="Adayı Sınava Al" id="btnSinavAl" data-id="@item.AdayId" style="background-color: darkgreen;font-weight:bold;font-size:13px;width:120px">Sınav Odası</a>
                                 </td>                                
                             </tr>
-                        }
+                        } *@
                     }
                 </tbody>
             </table>

@@ -15,11 +15,11 @@ namespace YOGBIS.UI.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var requestmodel = _adaylarBE.AdaylariGetir();
-            if (requestmodel.IsSuccess)
-            {
-                return View(requestmodel.Data);
-            }
+            //var requestmodel = _adaylarBE.AdaylariGetir();
+            //if (requestmodel.IsSuccess)
+            //{
+            //    return View(requestmodel.Data);
+            //}
             return View();
         }
     }
