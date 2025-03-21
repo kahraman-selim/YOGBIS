@@ -1,3 +1,6 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
+@inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
 @model IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM>
 @{
     ViewData["Title"] = "Mülakat";
@@ -31,7 +34,6 @@
     }
 
 </style>
-<!-- #endregion -->
 <!-- Aday Özet Blok -->
 <!-- #region name -->
 <div class="row m-0 p-0">

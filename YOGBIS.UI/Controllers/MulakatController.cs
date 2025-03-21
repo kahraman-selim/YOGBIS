@@ -18,6 +18,7 @@ using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -33,11 +34,14 @@ namespace YOGBIS.UI.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<MulakatController> _logger;
         private readonly IAdaylarBE _adaylarBE;
+        private readonly IKullaniciBE _kullaniciBE;
+        private readonly UserManager<Kullanici> _userManager;
         #endregion
 
         #region Dönüştürücüler
         public MulakatController(IMulakatSorulariBE mulakatSorulariBE, IDerecelerBE derecelerBE, ISoruKategorileriBE soruKategorileriBE,
-    IMulakatOlusturBE mulakatOlusturBE, IUnitOfWork unitOfWork, ILogger<MulakatController> logger, IAdaylarBE adaylarBE)
+    IMulakatOlusturBE mulakatOlusturBE, IUnitOfWork unitOfWork, ILogger<MulakatController> logger, IAdaylarBE adaylarBE, IKullaniciBE kullaniciBE,
+    UserManager<Kullanici> userManager)
         {
             _mulakatSorulariBE = mulakatSorulariBE;
             _derecelerBE = derecelerBE;
@@ -46,14 +50,20 @@ namespace YOGBIS.UI.Controllers
             _unitOfWork = unitOfWork;
             _logger = logger;
             _adaylarBE = adaylarBE;
+            _kullaniciBE = kullaniciBE;
+            _userManager = userManager;
         }
         #endregion
 
         #region Index
         [Route("MU10001", Name = "MulakatIndexRoute")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+            var komisyon = await _kullaniciBE.KomisyonGetir();
+            ViewBag.Komisyonlar = komisyon.Data;
+
             return View();
         } 
         #endregion
@@ -73,5 +83,39 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        [HttpGet]
+        public async Task<IActionResult> KomisyonAdaylariniGetir(string komisyonId)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(komisyonId))
+                {
+                    return Json(new { success = false, message = "Komisyon seçimi yapılmadı!" });
+                }
+
+                var komisyonUser = await _userManager.FindByIdAsync(komisyonId);
+                if (komisyonUser == null)
+                {
+                    return Json(new { success = false, message = "Seçilen komisyon bulunamadı!" });
+                }
+
+                var mulakatTarihi = "15.04.2024"; // Şu an için sabit, gerekirse dinamik olarak alınabilir
+                var result = _adaylarBE.GetirKomisyonMulakatListesi(komisyonUser.UserName, mulakatTarihi);
+
+                if (result.IsSuccess)
+                {
+                    return Json(new { success = true, data = result.Data });
+                }
+                else
+                {
+                    return Json(new { success = false, message = result.Message ?? "Aday listesi getirilemedi!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"KomisyonAdaylariniGetir hatası: {ex}");
+                return Json(new { success = false, message = "İşlem sırasında bir hata oluştu!" });
+            }
+        }
     }
 }

@@ -1,7 +1,29 @@
-@model IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM>
+@model YOGBIS.UI.ViewComponents.AdayMulakatListeViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
+
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+    var userRoles = await UserManager.GetRolesAsync(currentUser);
+    var isAdmin = userRoles.Contains("Administrator");
+}
 
 <div class="card">
     <div class="card-body">
+        @if (isAdmin && Model.KomisyonBaskanları != null && Model.KomisyonBaskanları.Any())
+        {
+            <div class="form-group mb-3">
+                <label for="komisyonBaskani" class="form-label">Komisyonu Seçiniz</label>
+                <select id="komisyonBaskani" class="form-select">
+                    <option value="">Komisyonu seçiniz...</option>
+                    @foreach (var baskan in Model.KomisyonBaskanları.OrderBy(u=>u.AdSoyad))
+                    {
+                        <option value="@baskan.Id" data-username="@baskan.UserName">@baskan.AdSoyad</option>
+                    }
+                </select>
+            </div>
+        }
+        
         <div class="table-responsive">
             <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTableNoButtons" width="100%" cellspacing="0">
                 <thead>
@@ -14,13 +36,13 @@
                         <th class="text-center"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="adayListesiBody">
                     @{
                         var sirano = 0;
                     }
-                    @if (Model != null)
+                    @if (Model.AdayListesi != null)
                     {
-                        @foreach (var item in Model)
+                        @foreach (var item in (IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM>)Model.AdayListesi)
                         {
                             sirano++;
                             <tr>
@@ -55,3 +77,84 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var table = $('#myTableNoButtons').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Turkish.json"
+                },
+                "responsive": true
+            });
+
+            $('#komisyonBaskani').change(function() {
+                var selectedId = $(this).val();
+                var selectedUsername = $(this).find('option:selected').data('username');
+                
+                if (selectedId) {
+                    $.ajax({
+
+                        url: "/Mulakat/KomisyonAdaylariniGetir/" + selectedUsername,
+                        type: 'GET',
+                        data: { komisyonUserName: selectedUsername },
+                        success: function(response) {
+                            if (response.success) {
+                                table.destroy();
+                                var tbody = $('#adayListesiBody');
+                                tbody.empty();
+                                
+                                var sirano = 0;
+                                response.data.forEach(function(item) {
+                                    sirano++;
+                                    var row = '<tr>' +
+                                        '<td class="text-center">' + sirano + '</td>' +
+                                        '<td class="text-center">' + item.tc + '</td>' +
+                                        '<td>' + item.adayAdiSoyadi + '</td>' +
+                                        '<td class="text-center">' + item.myssSaat + '</td>' +
+                                        '<td class="text-center">';
+                                    
+                                    if (item.cagriDurum) {
+                                        row += '<button class="btn btn-sm btn-primary" title="Çağrıldı" style="font-weight:bold;font-size:13px;width:120px" disabled>' +
+                                            '<i class="fas fa-bell"></i> Bekleme Odası</button>';
+                                    } else {
+                                        row += '<button class="btn btn-sm btn-warning btnCagri" title="Adayı Çağır" data-id="' + item.id + '" style="font-weight:bold;font-size:13px;width:120px">' +
+                                            '<i class="fas fa-bell"></i> Bekleme Odası</button>';
+                                    }
+                                    
+                                    row += '</td><td class="text-center">' +
+                                        '<button class="btn btn-sm btn-success btnSinavaAl" title="Adayı Sınava Al" data-id="' + item.adayId + '" style="font-weight:bold;font-size:13px;width:120px">' +
+                                        '<i class="fas fa-door-open"></i> Sınav Odası</button>' +
+                                        '</td></tr>';
+                                    
+                                    tbody.append(row);
+                                });
+
+                                table = $('#myTableNoButtons').DataTable({
+                                    "language": {
+                                        "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Turkish.json"
+                                    },
+                                    "responsive": true
+                                });
+                            } else {
+                                alertify.error(response.message || 'Bir hata oluştu!');
+                            }
+                        },
+                        error: function() {
+                            alertify.error('İşlem sırasında bir hata oluştu!');
+                        }
+                    });
+                } else {
+                    table.destroy();
+                    $('#adayListesiBody').empty();
+                    table = $('#myTableNoButtons').DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Turkish.json"
+                        },
+                        "responsive": true
+                    });
+                }
+            });
+        });
+    </script>
+}
