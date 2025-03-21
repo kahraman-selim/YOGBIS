@@ -1124,7 +1124,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                                   TYSSonucAck = a.TYSSonucAck,
                                   TYSSorulanSoruNo = a.TYSSorulanSoruNo,
                                   SinavIptal = a.SinavIptal ?? false,
-                                  SinavIptalAck = a.SinavIptalAck,
                                   AdayId = a.AdayId,
                                   MulakatId = a.MulakatId,
                                   KaydedenId = a.KaydedenId,
@@ -1158,7 +1157,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 var data = _unitOfWork.adayMYSSRepository.GetAll(
                     x => x.MYSSKomisyonAdi == komisyonAdi && 
-                         x.MYSSTarih == mulakatTarihi,                       
+                         x.MYSSTarih == mulakatTarihi &&
+                         x.Mulakatlar.Durumu == true,                       
                     includeProperties: "Adaylar,Mulakatlar")
                     .OrderBy(x => x.KomisyonGunSN);
 
@@ -1231,6 +1231,54 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
-        
+
+        #region AdayTakipMulakatListesi
+        public Result<List<AdayMYSSVM>> AdayTakipMulakatListesi()
+        {
+            try
+            {
+                var data = _unitOfWork.adayMYSSRepository.GetAll(
+                    includeProperties: "Adaylar")
+                    .Where(x => x.Adaylar != null && x.CagriDurum == true)  // Sadece çağrı durumu true olanları getir
+                    .OrderByDescending(x => x.MYSSTarih)  // En son tarihliler önce gelsin
+                    .Take(10);  // Sadece 10 kayıt al
+
+                if (data != null && data.Any())
+                {
+                    var adaylar = data.Select(x => new AdayMYSSVM()
+                    {
+                        Id = x.Id,
+                        AdayId = x.AdayId,
+                        TC = x.TC,
+                        AdayAdiSoyadi = x.Adaylar.Ad.ToString() + " " + x.Adaylar.Soyad.ToString(),
+                        MYSSTarih = x.MYSSTarih,
+                        MYSSSaat = x.MYSSSaat,
+                        MYSSKomisyonAdi = x.MYSSKomisyonAdi ?? "",
+                        KomisyonGunSN = x.KomisyonGunSN,
+                        MYSSonuc = x.MYSSonuc,
+                        MYSPuan = x.MYSPuan,
+                        CagriDurum = x.CagriDurum,
+                        SinavDurum = x.SinavDurum,
+                        SinavaGelmedi = x.SinavaGelmedi,
+                        SinavaGelmediAck = x.SinavaGelmediAck ?? "",
+                        SinavIptal = x.SinavIptal,
+                        KomisyonId = x.KomisyonId,
+                        KomisyonSN = x.KomisyonSN,
+                        SinavIptalAck = x.SinavIptalAck ?? "",
+                        MYSSSorulanSoruNo = x.MYSSSorulanSoruNo
+                    }).ToList();
+
+                    return new Result<List<AdayMYSSVM>>(true, ResultConstant.RecordFound, adaylar);
+                }
+
+                return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"AdayTakipMulakatListesi - Hata: {ex.Message}", ex);
+                return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
+            }
+        }
+        #endregion
     }
 }
