@@ -27,12 +27,12 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Komisyonlar")]
         public KomisyonlarVM Komisyonlar { get; set; }
 
-        public bool CagriDurum { get; set; }
-        public bool KabulDurum { get; set; }
-        public bool SinavDurum { get; set; }
-        public bool SinavaGelmedi { get; set; }
+        public bool? CagriDurum { get; set; }
+        public bool? KabulDurum { get; set; }
+        public bool? SinavDurum { get; set; }
+        public bool? SinavaGelmedi { get; set; }
         public string SinavaGelmediAck { get; set; }
-        public bool SinavIptal { get; set; }
+        public bool? SinavIptal { get; set; }
         public string SinavIptalAck { get; set; }
 
         public string MYSPuan { get; set; }

@@ -403,6 +403,64 @@
                         return true;
                  });
 
+            // Aday Çağrı Butonu
+            $("#myTableNoButtons").on("click", ".btnCagri", function () {
+                var btn = $(this);
+                var id = btn.data("id");
+                alert(id);
+                $.ajax({
+                    url: '@Url.Action("AdayCagriDurumGuncelle", "Mulakat")',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (result) {
+                        if (result.isSuccess) {
+                            bootbox.alert({
+                                title: 'BİLGİ',
+                                message: "Aday bekleme odasına çağrıldı!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr',
+                                callback: function () {
+                                    // Tabloyu yenile
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            bootbox.alert({
+                                title: 'HATA',
+                                message: result.message || "İşlem sırasında bir hata oluştu!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr'
+                            });
+                        }
+                    },
+                    error: function () {
+                        bootbox.alert({
+                            title: 'HATA',
+                            message: "İşlem sırasında bir hata oluştu!",
+                            label: 'Tamam',
+                            backdrop: false,
+                            locale: 'tr'
+                        });
+                    }
+                });
+            });
+
+            // Aday Sınava Al Butonu
+            $("#myTableNoButtons").on("click", ".btnSinavaAl", function () {
+                var btn = $(this);
+                var id = btn.data("id");
+                bootbox.alert({
+                    title: 'BİLGİ',
+                    message: "Aday sınava çağrıldı!",
+                    label: 'Tamam',
+                    backdrop: false,
+                    locale: 'tr',
+                    callback: function () {  /* your callback code */ }
+                });
+            });
+
             // Aday Bilgi Formu Butonları
             $('#btnBilgiAc').on('click', function () {
                 $('#AdayBilgiBlok').show();
@@ -432,34 +490,6 @@
 
                 $('#soruBlok').hide();
                 document.getElementById("soruNo").focus();
-            });
-
-            // Aday Çağrı Butonu
-            $("#myTableNoButtons").on("click", ".btnCagri", function () {
-                var btn = $(this);
-                var id = btn.data("id");
-                bootbox.alert({
-                    title: 'BİLGİ',
-                    message: "Aday bekleme odasına çağrıldı!",
-                    label: 'Tamam',
-                    backdrop: false,
-                    locale: 'tr',
-                    callback: function () { /* your callback code */ }
-                });
-            });
-
-            // Aday Sınava Al Butonu
-            $("#myTableNoButtons").on("click", ".btnSinavaAl", function () {
-                var btn = $(this);
-                var id = btn.data("id");
-                bootbox.alert({
-                    title: 'BİLGİ',
-                    message: "Aday sınava çağrıldı!",
-                    label: 'Tamam',
-                    backdrop: false,
-                    locale: 'tr',
-                    callback: function () {  /* your callback code */ }
-                });
             });
 
             // Komisyon-1 not bloğu

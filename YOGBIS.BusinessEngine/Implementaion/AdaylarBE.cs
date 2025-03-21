@@ -1175,7 +1175,23 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         MYSSKomisyonAdi = x.MYSSKomisyonAdi,
                         KomisyonGunSN = x.KomisyonGunSN,
                         MYSSonuc = x.MYSSonuc,
-                        MYSPuan = x.MYSPuan
+                        MYSPuan = x.MYSPuan,
+                        CagriDurum = x.CagriDurum,
+                        SinavDurum = x.SinavDurum,
+                        SinavaGelmedi = x.SinavaGelmedi,
+                        SinavaGelmediAck = x.SinavaGelmediAck,
+                        SinavIptal = x.SinavIptal,
+                        BransId = x.BransId,
+                        BransAdi = x.BransAdi.ToString(),
+                        UlkeTercihId = x.UlkeTercihId,
+                        UlkeTercihAdi = x.UlkeTercihAdi.ToString(),
+                        DereceId = x.DereceId,
+                        DereceAdi = x.DereceAdi.ToString(),
+                        KomisyonId = x.KomisyonId,
+                        KomisyonSN = x.KomisyonSN,
+                        SinavIptalAck = x.SinavIptalAck,
+                        MYSSSorulanSoruNo = x.MYSSSorulanSoruNo
+                        
                     }).ToList();
 
                     return new Result<List<AdayMYSSVM>>(true, ResultConstant.RecordFound, adaylar);
@@ -1187,6 +1203,31 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 _logger.LogError($"GetirKomisyonMulakatListesi - Hata: {ex.Message}", ex);
                 return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region AdayCagriDurumGuncelle
+        public Result<bool> AdayCagriDurumGuncelle(Guid id)
+        {
+            try
+            {
+                var aday = _unitOfWork.adayMYSSRepository.GetFirstOrDefault(x => x.Id == id);
+                
+                if (aday != null)
+                {
+                    aday.CagriDurum = true;
+                    _unitOfWork.Save();
+                    
+                    return new Result<bool>(true, "Aday çağrı durumu güncellendi.");
+                }
+                
+                return new Result<bool>(false, "Aday kaydı bulunamadı.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"AdayCagriDurumGuncelle - Hata: {ex.Message}", ex);
+                return new Result<bool>(false, "Aday çağrı durumu güncellenirken hata oluştu: " + ex.Message);
             }
         }
         #endregion

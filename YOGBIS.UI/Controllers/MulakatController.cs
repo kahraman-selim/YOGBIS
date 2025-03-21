@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -32,11 +32,12 @@ namespace YOGBIS.UI.Controllers
         private readonly IMulakatOlusturBE _mulakatOlusturBE;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<MulakatController> _logger;
+        private readonly IAdaylarBE _adaylarBE;
         #endregion
 
         #region Dönüştürücüler
         public MulakatController(IMulakatSorulariBE mulakatSorulariBE, IDerecelerBE derecelerBE, ISoruKategorileriBE soruKategorileriBE,
-    IMulakatOlusturBE mulakatOlusturBE, IUnitOfWork unitOfWork, ILogger<MulakatController> logger)
+    IMulakatOlusturBE mulakatOlusturBE, IUnitOfWork unitOfWork, ILogger<MulakatController> logger, IAdaylarBE adaylarBE)
         {
             _mulakatSorulariBE = mulakatSorulariBE;
             _derecelerBE = derecelerBE;
@@ -44,6 +45,7 @@ namespace YOGBIS.UI.Controllers
             _mulakatOlusturBE = mulakatOlusturBE;
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _adaylarBE = adaylarBE;
         }
         #endregion
 
@@ -53,6 +55,15 @@ namespace YOGBIS.UI.Controllers
         {
             return View();
         } 
+        #endregion
+
+        #region AdayCagriDurumGuncelle
+        [HttpPost]
+        public IActionResult AdayCagriDurumGuncelle(Guid id)
+        {
+            var result = _adaylarBE.AdayCagriDurumGuncelle(id);
+            return Json(result);
+        }
         #endregion
 
     }
