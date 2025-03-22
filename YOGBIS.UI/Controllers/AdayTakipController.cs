@@ -57,37 +57,27 @@ namespace YOGBIS.UI.Controllers
 
         #region AdayIletisimBilgileriGetir
         [HttpGet]
-        public IActionResult AdayIletisimBilgileriGetir(string adayId)
+        public IActionResult AdayIletisimBilgileriGetir(Guid adayId)
         {
             try
             {
-                _logger.LogInformation($"AdayIletisimBilgileriGetir - İstek alındı - AdayId: {adayId}");
+                _logger.LogInformation($"AdayIletisimBilgileriGetir başladı - AdayId: {adayId}");
 
-                if (string.IsNullOrEmpty(adayId))
+                if (adayId == Guid.Empty)
                 {
-                    _logger.LogWarning("AdayIletisimBilgileriGetir - AdayId boş geldi");
-                    return Json(new { success = false, message = "Aday bilgisi bulunamadı" });
+                    _logger.LogWarning("AdayIletisimBilgileriGetir - Geçersiz AdayId");
+                    return Json(new { success = false, message = "Geçersiz aday bilgisi", data = "" });
                 }
 
-                if (!Guid.TryParse(adayId, out Guid adayGuid))
-                {
-                    _logger.LogWarning($"AdayIletisimBilgileriGetir - Geçersiz AdayId formatı: {adayId}");
-                    return Json(new { success = false, message = "Geçersiz aday bilgisi" });
-                }
+                var result = _adaylarBE.AdayIletisimBilgileriGetir(adayId);
+                _logger.LogInformation($"AdayIletisimBilgileriGetir sonuç - Success: {result.Success}, Message: {result.Message}, Data: {result.Data}");
 
-                var result = _adaylarBE.AdayIletisimBilgileriGetir(adayGuid);
-                _logger.LogInformation($"AdayIletisimBilgileriGetir - İşlem sonucu - AdayId: {adayId}, Başarılı: {result.IsSuccess}, Mesaj: {result.Message}");
-
-                return Json(new { 
-                    success = result.IsSuccess, 
-                    message = result.Message, 
-                    telefon = result.Data ?? "Telefon bilgisi bulunamadı" 
-                });
+                return Json(new { success = result.IsSuccess, message = result.Message, data = result.Data });
             }
             catch (Exception ex)
             {
-                _logger.LogError($"AdayIletisimBilgileriGetir - Hata: {ex.Message}", ex);
-                return Json(new { success = false, message = "İşlem sırasında bir hata oluştu" });
+                _logger.LogError($"AdayIletisimBilgileriGetir hata - {ex.Message}", ex);
+                return Json(new { success = false, message = "İletişim bilgileri alınırken bir hata oluştu", data = (string)null });
             }
         }
         #endregion

@@ -1294,31 +1294,34 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 _logger.LogInformation($"AdayIletisimBilgileriGetir - Başlangıç - AdayId: {adayId}");
 
+                // Tüm kayıtları getir ve logla
+                var tumKayitlar = _unitOfWork.adayIletisimBilgileriRepository.GetAll().ToList();
+                _logger.LogInformation($"Toplam kayıt sayısı: {tumKayitlar.Count}");
+                
                 // İletişim bilgilerini getir
-                var iletisimBilgisi = _unitOfWork.adayIletisimBilgileriRepository.GetFirstOrDefault(
-                    x => x.AdayId == adayId,
-                    includeProperties: "Adaylar");
-
-                if (iletisimBilgisi == null || iletisimBilgisi.Adaylar == null)
+                var iletisimBilgisi = tumKayitlar.FirstOrDefault(x => x.AdayId == adayId);
+                
+                if (iletisimBilgisi == null)
                 {
                     _logger.LogWarning($"AdayIletisimBilgileriGetir - İletişim bilgisi bulunamadı - AdayId: {adayId}");
-                    return new Result<string>(false, "İletişim bilgisi bulunamadı");
+                    return new Result<string>(true, "Kayıt bulunamadı", "İletişim bilgisi sistemde mevcut değil");
                 }
+
+                _logger.LogInformation($"AdayIletisimBilgileriGetir - CepTelNo: {iletisimBilgisi.CepTelNo ?? "Null"}");
 
                 if (string.IsNullOrEmpty(iletisimBilgisi.CepTelNo))
                 {
-                    _logger.LogWarning($"AdayIletisimBilgileriGetir - Telefon bilgisi boş - Aday: {iletisimBilgisi.Adaylar.Ad} {iletisimBilgisi.Adaylar.Soyad}");
-                    return new Result<string>(false, "Telefon bilgisi bulunamadı");
+                    _logger.LogWarning($"AdayIletisimBilgileriGetir - Telefon numarası boş - AdayId: {adayId}");
+                    return new Result<string>(true, "Kayıt bulundu", "Telefon numarası girilmemiş");
                 }
 
-                var telefon = iletisimBilgisi.CepTelNo.Trim();
-                _logger.LogInformation($"AdayIletisimBilgileriGetir - Başarılı - Aday: {iletisimBilgisi.Adaylar.Ad} {iletisimBilgisi.Adaylar.Soyad}, Telefon: {telefon}");
-                return new Result<string>(true, ResultConstant.RecordFound, telefon);
+                _logger.LogInformation($"AdayIletisimBilgileriGetir - Başarılı - AdayId: {adayId}, Telefon: {iletisimBilgisi.CepTelNo}");
+                return new Result<string>(true, "Kayıt bulundu", iletisimBilgisi.CepTelNo);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"AdayIletisimBilgileriGetir - Hata: {ex.Message} - AdayId: {adayId}", ex);
-                return new Result<string>(false, $"Bir hata oluştu: {ex.Message}");
+                _logger.LogError($"AdayIletisimBilgileriGetir - Hata: {ex.Message}", ex);
+                return new Result<string>(false, "İletişim bilgileri alınırken bir hata oluştu", null);
             }
         }
         #endregion        
