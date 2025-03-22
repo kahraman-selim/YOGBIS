@@ -1206,32 +1206,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
             }
         }
-        #endregion
-
-        #region AdayCagriDurumGuncelle
-        public Result<bool> AdayCagriDurumGuncelle(Guid id)
-        {
-            try
-            {
-                var aday = _unitOfWork.adayMYSSRepository.Get(id);
-                
-                if (aday != null)
-                {
-                    aday.CagriDurum = true;
-                    _unitOfWork.Save();
-
-                    return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
-                }
-
-                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"AdayCagriDurumGuncelle - Hata: {ex.Message}", ex);
-                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
-            }
-        }
-        #endregion
+        #endregion        
 
         #region AdayTakipMulakatListesiGetir
         public Result<List<AdayMYSSVM>> AdayTakipMulakatListesi()
@@ -1239,7 +1214,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             try
             {
                 var data = _unitOfWork.adayMYSSRepository.GetAll(
-                    x => x.CagriDurum == true && x.Mulakatlar.Durumu==true,                    
+                    x => x.CagriDurum == true && x.SinavaGelmedi==false && x.Mulakatlar.Durumu==true,                    
                      includeProperties: "Adaylar,Mulakatlar")
                     .OrderBy(x => x.KomisyonGunSN);
 
@@ -1328,27 +1303,52 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion        
 
-        #region AdaySinavaGelmediGuncelle
-        public Result<bool> AdaySinavaGelmediGuncelle(Guid adayId)
+        #region AdayCagriDurumGuncelle
+        public Result<bool> AdayCagriDurumGuncelle(Guid id)
         {
             try
             {
-                var aday = _unitOfWork.adayMYSSRepository.GetFirstOrDefault(x => x.AdayId == adayId);
-                if (aday == null)
+                var aday = _unitOfWork.adayMYSSRepository.Get(id);
+
+                if (aday != null)
                 {
-                    return new Result<bool>(false, "Aday bulunamadı.");
+                    aday.CagriDurum = true;
+                    _unitOfWork.Save();
+
+                    return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
                 }
 
-                aday.SinavaGelmedi = true;               
-               
-                _unitOfWork.Save();
-
-
-                return new Result<bool>(true, "Aday sınava gelmedi durumu güncellendi.");
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
             catch (Exception ex)
             {
-                return new Result<bool>(false, $"Aday sınava gelmedi durumu güncellenirken hata oluştu: {ex.Message}");
+                _logger.LogError($"AdayCagriDurumGuncelle - Hata: {ex.Message}", ex);
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+        }
+        #endregion
+
+        #region AdaySinavaGelmediGuncelle
+        public Result<bool> AdaySinavaGelmediGuncelle(Guid id)
+        {
+            try
+            {
+                var aday = _unitOfWork.adayMYSSRepository.Get(id);
+
+                if (aday != null)
+                {
+                    aday.SinavaGelmedi = true;
+                    _unitOfWork.Save();
+
+                    return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
+                }
+
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"AdayCagriDurumGuncelle - Hata: {ex.Message}", ex);
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         }
         #endregion

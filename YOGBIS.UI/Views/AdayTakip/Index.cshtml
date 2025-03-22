@@ -84,13 +84,17 @@
                                     {
                                         <tr>
                                             <td class="w-50">
-                                                <a href="#" class="text-primary text-lg-right font-weight-bold aday-link" data-aday-id="@item.AdayId">
+                                                <a href="#" class="text-primary text-lg-right font-weight-bold aday-link" data-aday-id="@item.AdayId" data-id="@item.Id">
                                                     @item.AdayAdiSoyadi
                                                 </a>
                                             </td>
                                             <td class="p-1 text-center align-middle w-50">
                                                 <div class="d-flex justify-content-center align-items-center h-100">
-                                                    <span class="badge badge-primary px-3 py-2 w-100" style="font-size:medium">@item.MYSSKomisyonAdi</span>
+                                                    <span class="badge badge-primary px-3 py-2 w-100" style="font-size:medium">
+                                                        <a href="#" class="text-white font-weight-bold" data-aday-id="@item.Id">
+                                                            @item.MYSSKomisyonAdi
+                                                        </a>                                                        
+                                                    </span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -146,14 +150,19 @@
     <script>
         
         window.adayId = "";
+        window.adayAdi = "";
+        window.Id = "";
 
         $(document).ready(function () {
             // Aday Adı linkine tıklandığında
             $('.aday-link').click(function (e) {
                 e.preventDefault();
                 adayId = $(this).data('aday-id');
+                Id = $(this).data('id');
                 var adayAdi = $(this).text().trim();
                 console.log('Tıklanan Aday:', { id: adayId, ad: adayAdi });
+
+                // alert('aday Id :' + adayId + ' Aday Adı:' + adayAdi + ' Tablo Id:' + Id);
 
                 // Modal'ı başlangıçta aç
                 $('#iletisimBilgileriModal').modal('show');
@@ -224,25 +233,55 @@
             });
 
             // Sınava Gelmedi butonuna tıklandığında
-            $('#btnSinavaGelmedi').click(function() {                
-                alert(adayId);
-                $.ajax({
-                        
-                        type: 'POST',
-                        url: '/AdayTakip/AdaySinavaGelmedi/' + adayId,
-                        success: function(response) {
-                            if (response) {
-                                $('#iletisimBilgileriModal').modal('hide');
-                                alert("işlem başarılı");
-                                window.location.reload();
-                            } else {
-                                alert('İşlem sırasında bir hata oluştu: ' + response.message);
-                            }
-                        },
-                        error: function() {
-                            alert('İşlem sırasında bir hata oluştu.');
+            $('#btnSinavaGelmedi').click(function() {
+                
+                // alert('aday Id:' + adayId + ' Aday Adı:' + adayAdi + ' Tablo Id:' + Id);
+
+                    $.ajax({
+                    success: function (result) {
+                        if (result) {
+                            bootbox.alert({
+                                title: 'UYARI',
+                                message: "Adayın Sınava Gelmediğinden Eminmisiniz?",
+                                label: 'Evet',
+                                backdrop: false,
+                                locale: 'tr',
+                                callback: function () {
+                       if (result) {
+                            $.ajax({
+                                type: "POST",
+                                url: "/AdayTakip/AdaySinavaGelmedi/" + Id,
+                                success: function () {
+                                        // Modalı kapat
+                                        $('#iletisimBilgileriModal').modal('hide');
+                                        // Tabloyu yenile
+                                        window.location.reload();
+                                }
+                            });
+                    }
+                                }
+                            });
+                        } else {
+                            bootbox.alert({
+                                title: 'HATA',
+                                message: result.message || "İşlem sırasında bir hata oluştu!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr'
+                            });
                         }
-                    });
+                    },
+                    error: function () {
+                        bootbox.alert({
+                            title: 'HATA',
+                            message: "İşlem sırasında bir hata oluştu!",
+                            label: 'Tamam',
+                            backdrop: false,
+                            locale: 'tr'
+                        });
+                    }
+                });
+
             });
 
             // Modal kapatıldığında içeriği temizle

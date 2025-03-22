@@ -423,16 +423,15 @@
                                 backdrop: false,
                                 locale: 'tr',
                                 callback: function () {
-                       if (result) {
-                        var id = btn.data("id");
-                        $.ajax({
-                            type: "POST",
-                            url: "/Mulakat/AdayCagriDurumGuncelle/" + id,
-                            success: function () {
-                                    // Tabloyu yenile
-                                    window.location.reload();
-                            }
-                        });
+                       if (result) {                        
+                            $.ajax({
+                                type: "POST",
+                                url: "/Mulakat/AdayCagriDurumGuncelle/" + id,
+                                success: function () {
+                                        // Tabloyu yenile
+                                        window.location.reload();
+                                }
+                            });
                     }
                                 }
                             });

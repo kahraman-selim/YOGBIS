@@ -85,12 +85,12 @@ namespace YOGBIS.UI.Controllers
 
         #region AdaySinavaGelmedi
         [HttpPost]
-        public IActionResult AdaySinavaGelmedi(Guid adayId)
+        public IActionResult AdaySinavaGelmedi(Guid id)
         {
             
-            if (adayId == Guid.Empty)            
+            if (id == Guid.Empty)            
                 return Json(new { success = false, message = "Güncellemek için Kayıt Seçiniz" });
-            var data = _adaylarBE.AdaySinavaGelmediGuncelle(adayId);
+            var data = _adaylarBE.AdaySinavaGelmediGuncelle(id);
             if (data.IsSuccess)
                 return Json(new { success = true, message = data.Message});
             else
