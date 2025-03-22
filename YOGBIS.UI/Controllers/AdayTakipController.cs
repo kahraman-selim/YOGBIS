@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Bcpg;
 using System;
 using System.Collections.Generic;
 using YOGBIS.BusinessEngine.Contracts;
@@ -79,6 +80,22 @@ namespace YOGBIS.UI.Controllers
                 _logger.LogError($"AdayIletisimBilgileriGetir hata - {ex.Message}", ex);
                 return Json(new { success = false, message = "İletişim bilgileri alınırken bir hata oluştu", data = (string)null });
             }
+        }
+        #endregion
+
+        #region AdaySinavaGelmedi
+        [HttpPost]
+        public IActionResult AdaySinavaGelmedi(Guid adayId)
+        {
+            
+            if (adayId == Guid.Empty)            
+                return Json(new { success = false, message = "Güncellemek için Kayıt Seçiniz" });
+            var data = _adaylarBE.AdaySinavaGelmediGuncelle(adayId);
+            if (data.IsSuccess)
+                return Json(new { success = true, message = data.Message});
+            else
+                return Json(new { success = false, message = data.Message});
+
         }
         #endregion
     }

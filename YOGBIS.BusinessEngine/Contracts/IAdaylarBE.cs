@@ -33,6 +33,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<List<AdayMYSSVM>> GetirKomisyonMulakatListesi(string komisyonAdi, string mulakatTarihi);
         Result<bool> AdayCagriDurumGuncelle(Guid id);
         Result<List<AdayMYSSVM>> AdayTakipMulakatListesi();
+        Result<bool> AdaySinavaGelmediGuncelle(Guid adayId);
         Result<string> AdayIletisimBilgileriGetir(Guid adayId);
     }
 }

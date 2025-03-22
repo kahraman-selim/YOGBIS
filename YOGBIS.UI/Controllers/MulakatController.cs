@@ -73,7 +73,7 @@ namespace YOGBIS.UI.Controllers
         public IActionResult AdayCagriDurumGuncelle(Guid id)
         {
             if (id == Guid.Empty)
-                return Json(new { success = false, message = "Silmek için Kayıt Seçiniz" });
+                return Json(new { success = false, message = "Güncellemek için Kayıt Seçiniz" });
 
             var data = _adaylarBE.AdayCagriDurumGuncelle(id);
             if (data.IsSuccess)

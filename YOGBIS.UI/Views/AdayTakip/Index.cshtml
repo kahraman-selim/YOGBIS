@@ -83,12 +83,12 @@
                                     foreach (var item in Model)
                                     {
                                         <tr>
-                                            <td>
+                                            <td class="w-50">
                                                 <a href="#" class="text-primary text-lg-right font-weight-bold aday-link" data-aday-id="@item.AdayId">
                                                     @item.AdayAdiSoyadi
                                                 </a>
                                             </td>
-                                            <td class="p-1 text-center align-middle">
+                                            <td class="p-1 text-center align-middle w-50">
                                                 <div class="d-flex justify-content-center align-items-center h-100">
                                                     <span class="badge badge-primary px-3 py-2 w-100" style="font-size:medium">@item.MYSSKomisyonAdi</span>
                                                 </div>
@@ -131,6 +131,12 @@
             </div>
             <div class="modal-body p-0">
                 <div id="iletisimBilgileri"></div>
+                <div class="p-3 border-top">
+                    <button id="btnSinavaGelmedi" class="btn btn-danger btn-block">
+                        <i class="fas fa-user-times mr-2"></i>
+                        Aday Sınava Gelmedi
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -138,11 +144,14 @@
 
 @section Scripts {
     <script>
+        
+        window.adayId = "";
+
         $(document).ready(function () {
             // Aday Adı linkine tıklandığında
             $('.aday-link').click(function (e) {
                 e.preventDefault();
-                var adayId = $(this).data('aday-id');
+                adayId = $(this).data('aday-id');
                 var adayAdi = $(this).text().trim();
                 console.log('Tıklanan Aday:', { id: adayId, ad: adayAdi });
 
@@ -212,6 +221,28 @@
                         $('#iletisimBilgileri').html(html);
                     }
                 });
+            });
+
+            // Sınava Gelmedi butonuna tıklandığında
+            $('#btnSinavaGelmedi').click(function() {                
+                alert(adayId);
+                $.ajax({
+                        
+                        type: 'POST',
+                        url: '/AdayTakip/AdaySinavaGelmedi/' + adayId,
+                        success: function(response) {
+                            if (response) {
+                                $('#iletisimBilgileriModal').modal('hide');
+                                alert("işlem başarılı");
+                                window.location.reload();
+                            } else {
+                                alert('İşlem sırasında bir hata oluştu: ' + response.message);
+                            }
+                        },
+                        error: function() {
+                            alert('İşlem sırasında bir hata oluştu.');
+                        }
+                    });
             });
 
             // Modal kapatıldığında içeriği temizle

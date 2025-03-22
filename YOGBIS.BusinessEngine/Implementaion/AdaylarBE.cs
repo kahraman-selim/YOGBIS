@@ -1232,14 +1232,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region AdayTakipMulakatListesi
+        #region AdayTakipMulakatListesiGetir
         public Result<List<AdayMYSSVM>> AdayTakipMulakatListesi()
         {
             try
             {
                 var data = _unitOfWork.adayMYSSRepository.GetAll(
-                    x => x.CagriDurum == true,                     
-                     includeProperties: "Adaylar")
+                    x => x.CagriDurum == true && x.Mulakatlar.Durumu==true,                    
+                     includeProperties: "Adaylar,Mulakatlar")
                     .OrderBy(x => x.KomisyonGunSN);
 
                 if (data != null && data.Any())
@@ -1325,5 +1325,30 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion        
+
+        #region AdaySinavaGelmediGuncelle
+        public Result<bool> AdaySinavaGelmediGuncelle(Guid adayId)
+        {
+            try
+            {
+                var aday = _unitOfWork.adayMYSSRepository.GetFirstOrDefault(x => x.AdayId == adayId);
+                if (aday == null)
+                {
+                    return new Result<bool>(false, "Aday bulunamadı.");
+                }
+
+                aday.SinavaGelmedi = true;               
+               
+                _unitOfWork.Save();
+
+
+                return new Result<bool>(true, "Aday sınava gelmedi durumu güncellendi.");
+            }
+            catch (Exception ex)
+            {
+                return new Result<bool>(false, $"Aday sınava gelmedi durumu güncellenirken hata oluştu: {ex.Message}");
+            }
+        }
+        #endregion
     }
 }
