@@ -60,7 +60,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         Soyad=item.Soyad,
                         MulakatYil = item.MulakatYil,
                         KayitTarihi = item.KayitTarihi,
-                        KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
+                        KaydedenId = item.KaydedenId,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
                     });
                 }
@@ -1168,19 +1168,19 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     {
                         Id = x.Id,
                         AdayId = x.AdayId,
-                        TC = x.Adaylar.TC,
-                        AdayAdiSoyadi = x.Adaylar.Ad.ToString() + " " + x.Adaylar.Soyad.ToString(),
-                        MYSSTarih = x.MYSSTarih,
+                        TC = x.TC,
+                        AdayAdiSoyadi = x.Adaylar != null ? x.Adaylar.Ad.ToString() + " " + x.Adaylar.Soyad.ToString() : "",
+                        MYSSTarih = !string.IsNullOrEmpty(x.MYSSTarih) ? x.MYSSTarih : "",
                         MYSSSaat = x.MYSSSaat,
                         MYSSKomisyonAdi = x.MYSSKomisyonAdi,
                         KomisyonGunSN = x.KomisyonGunSN,
                         MYSSonuc = x.MYSSonuc,
                         MYSPuan = x.MYSPuan,
-                        CagriDurum = x.CagriDurum,
-                        SinavDurum = x.SinavDurum,
-                        SinavaGelmedi = x.SinavaGelmedi,
+                        CagriDurum = x.CagriDurum ?? false,
+                        SinavDurum = x.SinavDurum ?? false,
+                        SinavaGelmedi = x.SinavaGelmedi ?? false,
                         SinavaGelmediAck = x.SinavaGelmediAck,
-                        SinavIptal = x.SinavIptal,
+                        SinavIptal = x.SinavIptal ?? false,
                         BransId = x.BransId,
                         BransAdi = x.BransAdi.ToString(),
                         UlkeTercihId = x.UlkeTercihId,
@@ -1238,10 +1238,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
             try
             {
                 var data = _unitOfWork.adayMYSSRepository.GetAll(
-                    includeProperties: "Adaylar")
-                    .Where(x => x.Adaylar != null && x.CagriDurum == true)  // Sadece çağrı durumu true olanları getir
-                    .OrderByDescending(x => x.MYSSTarih)  // En son tarihliler önce gelsin
-                    .Take(10);  // Sadece 10 kayıt al
+                    x => x.CagriDurum == true,                     
+                     includeProperties: "Adaylar")
+                    .OrderBy(x => x.KomisyonGunSN);
 
                 if (data != null && data.Any())
                 {
@@ -1250,22 +1249,29 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         Id = x.Id,
                         AdayId = x.AdayId,
                         TC = x.TC,
-                        AdayAdiSoyadi = x.Adaylar.Ad.ToString() + " " + x.Adaylar.Soyad.ToString(),
-                        MYSSTarih = x.MYSSTarih,
+                        AdayAdiSoyadi = x.Adaylar != null ? x.Adaylar.Ad.ToString() + " " + x.Adaylar.Soyad.ToString() : "",
+                        MYSSTarih = !string.IsNullOrEmpty(x.MYSSTarih) ? x.MYSSTarih : "",
                         MYSSSaat = x.MYSSSaat,
-                        MYSSKomisyonAdi = x.MYSSKomisyonAdi ?? "",
+                        MYSSKomisyonAdi = x.MYSSKomisyonAdi,
                         KomisyonGunSN = x.KomisyonGunSN,
                         MYSSonuc = x.MYSSonuc,
                         MYSPuan = x.MYSPuan,
-                        CagriDurum = x.CagriDurum,
-                        SinavDurum = x.SinavDurum,
-                        SinavaGelmedi = x.SinavaGelmedi,
-                        SinavaGelmediAck = x.SinavaGelmediAck ?? "",
-                        SinavIptal = x.SinavIptal,
+                        CagriDurum = x.CagriDurum ?? false,
+                        SinavDurum = x.SinavDurum ?? false,
+                        SinavaGelmedi = x.SinavaGelmedi ?? false,
+                        SinavaGelmediAck = x.SinavaGelmediAck,
+                        SinavIptal = x.SinavIptal ?? false,
+                        BransId = x.BransId,
+                        BransAdi = x.BransAdi.ToString(),
+                        UlkeTercihId = x.UlkeTercihId,
+                        UlkeTercihAdi = x.UlkeTercihAdi.ToString(),
+                        DereceId = x.DereceId,
+                        DereceAdi = x.DereceAdi.ToString(),
                         KomisyonId = x.KomisyonId,
                         KomisyonSN = x.KomisyonSN,
-                        SinavIptalAck = x.SinavIptalAck ?? "",
+                        SinavIptalAck = x.SinavIptalAck,
                         MYSSSorulanSoruNo = x.MYSSSorulanSoruNo
+
                     }).ToList();
 
                     return new Result<List<AdayMYSSVM>>(true, ResultConstant.RecordFound, adaylar);
@@ -1275,10 +1281,46 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
             catch (Exception ex)
             {
-                _logger.LogError($"AdayTakipMulakatListesi - Hata: {ex.Message}", ex);
+                _logger.LogError($"GetirKomisyonMulakatListesi - Hata: {ex.Message}", ex);
                 return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
             }
         }
         #endregion
+
+        #region AdayIletisimBilgileriGetir
+        public Result<string> AdayIletisimBilgileriGetir(Guid adayId)
+        {
+            try
+            {
+                _logger.LogInformation($"AdayIletisimBilgileriGetir - Başlangıç - AdayId: {adayId}");
+
+                // İletişim bilgilerini getir
+                var iletisimBilgisi = _unitOfWork.adayIletisimBilgileriRepository.GetFirstOrDefault(
+                    x => x.AdayId == adayId,
+                    includeProperties: "Adaylar");
+
+                if (iletisimBilgisi == null || iletisimBilgisi.Adaylar == null)
+                {
+                    _logger.LogWarning($"AdayIletisimBilgileriGetir - İletişim bilgisi bulunamadı - AdayId: {adayId}");
+                    return new Result<string>(false, "İletişim bilgisi bulunamadı");
+                }
+
+                if (string.IsNullOrEmpty(iletisimBilgisi.CepTelNo))
+                {
+                    _logger.LogWarning($"AdayIletisimBilgileriGetir - Telefon bilgisi boş - Aday: {iletisimBilgisi.Adaylar.Ad} {iletisimBilgisi.Adaylar.Soyad}");
+                    return new Result<string>(false, "Telefon bilgisi bulunamadı");
+                }
+
+                var telefon = iletisimBilgisi.CepTelNo.Trim();
+                _logger.LogInformation($"AdayIletisimBilgileriGetir - Başarılı - Aday: {iletisimBilgisi.Adaylar.Ad} {iletisimBilgisi.Adaylar.Soyad}, Telefon: {telefon}");
+                return new Result<string>(true, ResultConstant.RecordFound, telefon);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"AdayIletisimBilgileriGetir - Hata: {ex.Message} - AdayId: {adayId}", ex);
+                return new Result<string>(false, $"Bir hata oluştu: {ex.Message}");
+            }
+        }
+        #endregion        
     }
 }
