@@ -56,6 +56,7 @@ namespace YOGBIS.Common.VModels
 
         [Display(Name = "Sınava Gelmedi Açıklaması")]
         public string SinavaGelmediAck { get; set; }
+        public bool SinavaGeldi { get; set; }
 
         [Display(Name = "TYS Puanı")]
         public string TYSPuan { get; set; }

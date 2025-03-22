@@ -26,6 +26,7 @@ namespace YOGBIS.Data.DbModels
         public bool? CagriDurum { get; set; }
         public bool? KabulDurum { get; set; }
         public bool? SinavDurum { get; set; }
+        public bool? SinavaGeldi { get; set; }
         public bool? SinavaGelmedi { get; set; }
         public string SinavaGelmediAck { get; set; }
         public string TYSPuan { get; set; }

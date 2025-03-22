@@ -28,6 +28,7 @@ namespace YOGBIS.Data.DbModels
         public bool? SinavDurum { get; set; }
         public bool? SinavaGelmedi { get; set; }
         public string SinavaGelmediAck { get; set; }
+        public bool? SinavaGeldi { get; set; }
         public string MYSPuan { get; set; }
         public string MYSSonuc { get; set; }
         public string MYSSonucAck { get; set; }
