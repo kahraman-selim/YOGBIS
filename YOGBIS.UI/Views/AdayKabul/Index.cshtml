@@ -93,7 +93,7 @@
                                             <td class="p-1 text-center align-middle w-50">
                                                 <div class="d-flex justify-content-center align-items-center h-100">
                                                     <span class="badge px-3 py-2 w-100" style="font-size:medium;background-color:darkorange">
-                                                        <a href="#" class="text-white font-weight-bold" data-aday-id="@item.AdayId" data-id="@item.Id" id="btnAdayKabul">
+                                                        <a href="#" class="text-white font-weight-bold btnAdayKabul" data-aday-id="@item.AdayId" data-id="@item.Id" id="btnAdayKabul">
                                                             @item.MYSSKomisyonAdi
                                                         </a>
                                                     </span>
@@ -138,10 +138,10 @@
             <div class="modal-body p-0">
                 <div id="iletisimBilgileri"></div>
                 <div class="p-3 border-top">
-                    <button id="btnSinavaGelmedi" class="btn btn-danger btn-block">
+                    @* <button id="btnSinavaGelmedi" class="btn btn-danger btn-block">
                         <i class="fas fa-user-times mr-2"></i>
                         Aday Sınava Gelmedi
-                    </button>
+                    </button> *@
                 </div>
             </div>
         </div>
@@ -161,10 +161,10 @@
                 e.preventDefault();
                 adayId = $(this).data('aday-id');
                 Id = $(this).data('id');
-                var adayAdi = $(this).text().trim();
+                adayAdi = $(this).text().trim();
                 console.log('Tıklanan Aday:', { id: adayId, ad: adayAdi });
 
-                // alert('aday Id :' + adayId + ' Aday Adı:' + adayAdi + ' Tablo Id:' + Id);
+                //alert('aday Id :' + adayId + ' Aday Adı:' + adayAdi + ' Tablo Id:' + Id);
 
                 // Modal'ı başlangıçta aç
                 $('#iletisimBilgileriModal').modal('show');
@@ -235,10 +235,12 @@
             });
 
             // Komisyon Adına tıklandığında
-            $('#btnAdayKabul').click(function() {
-
-                // alert('aday Id:' + adayId + ' Aday Adı:' + adayAdi + ' Tablo Id:' + Id);
-                    Id = $(this).data('id');
+            $('.btnAdayKabul').click(function() {
+                adayId = $(this).data('aday-id');
+                Id = $(this).data('id');
+                adayAdi = $(this).text().trim();
+                
+                //alert('aday Id:' + adayId + ' Aday Adı:' + adayAdi + ' Tablo Id:' + Id);
 
                     $.ajax({
                     success: function (result) {

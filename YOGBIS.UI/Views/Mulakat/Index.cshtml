@@ -460,14 +460,54 @@
             // Aday Sınava Al Butonu
             $("#myTableNoButtons").on("click", ".btnSinavaAl", function () {
                 var btn = $(this);
-                var id = btn.data("id");
-                bootbox.alert({
-                    title: 'BİLGİ',
-                    message: "Aday sınava çağrıldı!",
-                    label: 'Tamam',
-                    backdrop: false,
-                    locale: 'tr',
-                    callback: function () {  /* your callback code */ }
+                var adayId = btn.data("id");
+
+                $.ajax({
+                    success: function (result) {
+                        if (result) {
+                            bootbox.alert({
+                                title: 'BİLGİ',
+                                message: "Aday sınav odasına çağrıldı!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr',
+                                callback: function () {
+                       if (result) {
+                            $.ajax({
+                                url: '/Mulakat/GetirAdayBilgileri',
+                                data: { id: adayId },
+                                success: function (data) {
+                                    if (data.isSuccess) {
+                                        $('#adayadsoyad').text(data.adayAdiSoyadi);
+                                        $('#adayderece').text(data.dereceAdi);
+                                        $('#adaybrans').text(data.bransAdi);
+                                        $('#adayulke').text(data.ulkeTercihAdi);
+                                        $('#cardBtnGrup').show();
+                                    }
+                                }
+                            });
+                          }
+                                }
+                            });
+                        } else {
+                            bootbox.alert({
+                                title: 'HATA',
+                                message: result.message || "İşlem sırasında bir hata oluştu!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr'
+                            });
+                        }
+                    },
+                    error: function () {
+                        bootbox.alert({
+                            title: 'HATA',
+                            message: "İşlem sırasında bir hata oluştu!",
+                            label: 'Tamam',
+                            backdrop: false,
+                            locale: 'tr'
+                        });
+                    }
                 });
             });
 

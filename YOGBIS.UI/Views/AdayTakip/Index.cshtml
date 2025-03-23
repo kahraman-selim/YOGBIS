@@ -91,7 +91,7 @@
                                             <td class="p-1 text-center align-middle w-50">
                                                 <div class="d-flex justify-content-center align-items-center h-100">
                                                     <span class="badge badge-primary px-3 py-2 w-100" style="font-size:medium">
-                                                        <a href="#" class="text-white font-weight-bold" data-aday-id="@item.Id" id="btnAdayKabul">
+                                                        <a href="#" class="text-white font-weight-bold btnAdayKabul" data-aday-id="@item.AdayId" data-id="@item.Id" id="btnAdayKabul">
                                                             @item.MYSSKomisyonAdi
                                                         </a>                                                        
                                                     </span>
@@ -285,9 +285,11 @@
             });
 
             // Komisyon Adına tıklandığında
-            $('#btnAdayKabul').click(function() {
-
-                // alert('aday Id:' + adayId + ' Aday Adı:' + adayAdi + ' Tablo Id:' + Id);
+            $('.btnAdayKabul').click(function() {
+                adayId = $(this).data('aday-id');
+                Id = $(this).data('id');
+                adayAdi = $(this).text().trim();
+               // alert('aday Id:' + adayId + ' Aday Adı:' + adayAdi + ' Tablo Id:' + Id);
 
                     $.ajax({
                     success: function (result) {
