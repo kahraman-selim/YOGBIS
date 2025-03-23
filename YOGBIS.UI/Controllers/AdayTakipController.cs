@@ -31,6 +31,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
+        [Route("AK10001", Name = "AdayTakipIndexRoute")]
         public IActionResult Index()
         {
             try
@@ -95,6 +96,22 @@ namespace YOGBIS.UI.Controllers
                 return Json(new { success = true, message = data.Message});
             else
                 return Json(new { success = false, message = data.Message});
+
+        }
+        #endregion
+
+        #region AdaySinavaGeldi
+        [HttpPost]
+        public IActionResult AdaySinavaGeldi(Guid id)
+        {
+
+            if (id == Guid.Empty)
+                return Json(new { success = false, message = "Güncellemek için Kayıt Seçiniz" });
+            var data = _adaylarBE.AdaySinavaGeldiGuncelle(id);
+            if (data.IsSuccess)
+                return Json(new { success = true, message = data.Message });
+            else
+                return Json(new { success = false, message = data.Message });
 
         }
         #endregion

@@ -149,7 +149,7 @@
                                 </div>
                             }
                             <!--Mülakat Modülü-->
-                            @if (User.IsInRole("Administrator") || User.IsInRole("CommissionerHead") || User.IsInRole("Manager") || User.IsInRole("Follower"))
+                            @if (User.IsInRole("Administrator") || User.IsInRole("CommissionerHead") || User.IsInRole("Commissioner") || User.IsInRole("Manager") || User.IsInRole("Follower"))
                             {
                                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMulakat" aria-expanded="false" aria-controls="collapseMulakat">
                                     <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
@@ -194,6 +194,10 @@
                                     @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("Follower"))
                                     {
                                         <a class="nav-link" asp-controller="AdayTakip" asp-action="Index">Aday Takip</a>
+                                    }
+                                    @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("Commissioner"))
+                                    {
+                                        <a class="nav-link" asp-controller="AdayKabul" asp-action="Index">Aday Kabul</a>
                                     }
                                     @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("CommissionerHead"))
                                     {

@@ -23,7 +23,7 @@
                 </select>
             </div>
         }
-        
+
         <div class="table-responsive">
             <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTableNoButtons" width="100%" cellspacing="0">
                 <thead>
@@ -50,34 +50,73 @@
                                 <td class="text-center">@item.TC</td>
                                 <td>@item.AdayAdiSoyadi</td>
                                 <td class="text-center">@item.MYSSSaat.ToString()</td>
-                                <td class="text-center">
-                                    @if (item.CagriDurum == true)
-                                    {
-                                        <button class="btn btn-sm btn-primary" title="Çağrıldı" style="font-weight:bold;font-size:13px;width:120px" disabled>
-                                            <i class="fas fa-bell"></i> Bekleme Odası
-                                        </button>
-                                    }
-                                    else
-                                    {
+                                <!--Aday Çağrı Bloğu-->
+                                @if (item.CagriDurum == false)
+                                {
+                                    <td class="text-center">
                                         <button class="btn btn-sm btn-warning btnCagri" title="Adayı Çağır" data-id="@item.Id" style="font-weight:bold;font-size:13px;width:120px">
                                             <i class="fas fa-bell"></i> Bekleme Odası
                                         </button>
-                                    }
-                                </td>
-                                <td class="text-center">
-                                    @if (item.CagriDurum == true)
-                                    {
-                                        <button class="btn btn-sm btn-success btnSinavaAl" title="Adayı Sınava Al" data-id="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px">
+                                    </td>                                     
+                                }
+                                @if (item.CagriDurum == true && item.KabulDurum == false)
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-primary" title="Aday Çağrıldı" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                            <i class="fas fa-bell"></i> Aday Çağrıldı
+                                        </button>
+                                    </td>
+                                }
+                                @if (item.CagriDurum == true && item.SinavaGelmedi == true)
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-danger" title="Aday Sınava Gelmedi" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                            <i class="fas fa-bell"></i> Aday Gelmedi
+                                        </button>
+                                    </td>
+                                }
+                                @if (item.CagriDurum == true && item.SinavaGeldi == true && item.KabulDurum == true)
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-success" title="Aday Bekliyor" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                            <i class="fas fa-bell"></i> Aday Bekliyor
+                                        </button>
+                                    </td>
+                                }
+                                <!--Aday Sınav Bloğu-->
+                                @if (item.CagriDurum == false)
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-success" title="Adayı Sınava Al" style="font-weight:bold;font-size:13px;width:120px" disabled>
                                             <i class="fas fa-door-open"></i> Sınav Odası
                                         </button>
-                                    }
-                                    else
-                                    {
-                                        <button class="btn btn-sm btn-success btnSinavaAl" title="Adayı Sınava Al" data-id="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                    </td>
+                                }
+                                @if (item.CagriDurum == true && item.SinavaGelmedi == true)
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-success" title="Adayı Sınava Al" style="font-weight:bold;font-size:13px;width:120px" disabled>
                                             <i class="fas fa-door-open"></i> Sınav Odası
                                         </button>
-                                    }
-                                </td>
+                                    </td>
+                                }
+                                @if (item.CagriDurum == true && item.KabulDurum == false)
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-success" title="Adayı Sınava Al" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                            <i class="fas fa-door-open"></i> Sınav Odası
+                                        </button>
+                                    </td>
+                                }
+                                @if (item.CagriDurum == true && item.KabulDurum == true)
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-success btnSinavaAl" title="Adayı Sınava Al" data-id="@item.Id" style="font-weight:bold;font-size:13px;width:120px">
+                                            <i class="fas fa-door-open"></i> Sınav Odası
+                                        </button>
+                                    </td>
+                                }
+
                             </tr>
                         }
                     }

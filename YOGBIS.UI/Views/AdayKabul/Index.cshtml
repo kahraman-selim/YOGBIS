@@ -1,6 +1,6 @@
-@model List<YOGBIS.Common.VModels.AdayMYSSVM>
+﻿@model List<YOGBIS.Common.VModels.AdayMYSSVM>
 @{
-    ViewData["Title"] = "Aday Takip";
+    ViewData["Title"] = "Aday Kabul";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,11 +14,13 @@
             font-size: 14px;
             font-weight: bold;
         }
+
         .aday-link {
             color: #007bff;
             font-weight: bold;
             cursor: pointer;
         }
+
         .komisyon-badge {
             background-color: darkorange;
             font-weight: bold;
@@ -35,7 +37,7 @@
         <div class="col-12">
             <ol class="breadcrumb m-o">
                 <li class="m-0">
-                    <a asp-controller="AdayTakip" asp-action="Index"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
+                    <a asp-controller="AdayKabul" asp-action="Index"><i class="fas fa-sync-alt text-success" title="Sayfayı yenile"></i></a>
                 </li>
                 <li class="ml-3 mt-1 mr-1 pull-right">
                     <h4 class="pull-right text-danger small">ADAY LİSTESİ - @DateTime.Now.ToShortDateString()</h4>
@@ -90,10 +92,10 @@
                                             </td>
                                             <td class="p-1 text-center align-middle w-50">
                                                 <div class="d-flex justify-content-center align-items-center h-100">
-                                                    <span class="badge badge-primary px-3 py-2 w-100" style="font-size:medium">
-                                                        <a href="#" class="text-white font-weight-bold" data-aday-id="@item.Id" id="btnAdayKabul">
+                                                    <span class="badge px-3 py-2 w-100" style="font-size:medium;background-color:darkorange">
+                                                        <a href="#" class="text-white font-weight-bold" data-aday-id="@item.AdayId" data-id="@item.Id" id="btnAdayKabul">
                                                             @item.MYSSKomisyonAdi
-                                                        </a>                                                        
+                                                        </a>
                                                     </span>
                                                 </div>
                                             </td>
@@ -148,7 +150,7 @@
 
 @section Scripts {
     <script>
-        
+
         window.adayId = "";
         window.adayAdi = "";
         window.Id = "";
@@ -174,7 +176,7 @@
                     dataType: 'json',
                     success: function (result) {
                         console.log('Sunucu yanıtı:', result);
-                        
+
                         var html = '<div class="p-4">' +
                                  '<div class="d-flex align-items-center mb-4">' +
                                  '<i class="fas fa-user-circle text-primary mr-3" style="font-size: 2.5rem;"></i>' +
@@ -183,7 +185,7 @@
 
                         // Telefon numarası kontrolü
                         var telefonVar = result.data && result.data !== 'null' && result.data !== 'Bilgi bulunamadı' && result.data !== 'Telefon bilgisi girilmemiş';
-                        
+
                         if (telefonVar) {
                             html += '<div class="d-flex align-items-center p-3 bg-light rounded">' +
                                    '<i class="fas fa-phone text-primary mr-3" style="font-size: 1.5rem;"></i>' +
@@ -211,7 +213,7 @@
                         console.error('AJAX Hatası:', error);
                         console.error('Status:', status);
                         console.error('Response:', xhr.responseText);
-                        
+
                         var html = '<div class="p-4">' +
                                  '<div class="d-flex align-items-center mb-4">' +
                                  '<i class="fas fa-user-circle text-primary mr-3" style="font-size: 2.5rem;"></i>' +
@@ -232,77 +234,26 @@
                 });
             });
 
-            // Sınava Gelmedi butonuna tıklandığında
-            $('#btnSinavaGelmedi').click(function() {
-                
-                // alert('aday Id:' + adayId + ' Aday Adı:' + adayAdi + ' Tablo Id:' + Id);
-
-                    $.ajax({
-                    success: function (result) {
-                        if (result) {
-                            bootbox.alert({
-                                title: 'UYARI',
-                                message: "Adayın Sınava Gelmediğinden Emin misiniz?",
-                                label: 'Evet',
-                                backdrop: false,
-                                locale: 'tr',
-                                callback: function () {
-                       if (result) {
-                            $.ajax({
-                                type: "POST",
-                                url: "/AdayTakip/AdaySinavaGelmedi/" + Id,
-                                success: function () {
-                                        // Modalı kapat
-                                        $('#iletisimBilgileriModal').modal('hide');
-                                        // Tabloyu yenile
-                                        window.location.reload();
-                                }
-                            });
-                    }
-                                }
-                            });
-                        } else {
-                            bootbox.alert({
-                                title: 'HATA',
-                                message: result.message || "İşlem sırasında bir hata oluştu!",
-                                label: 'Tamam',
-                                backdrop: false,
-                                locale: 'tr'
-                            });
-                        }
-                    },
-                    error: function () {
-                        bootbox.alert({
-                            title: 'HATA',
-                            message: "İşlem sırasında bir hata oluştu!",
-                            label: 'Tamam',
-                            backdrop: false,
-                            locale: 'tr'
-                        });
-                    }
-                });
-
-            });
-
             // Komisyon Adına tıklandığında
             $('#btnAdayKabul').click(function() {
 
                 // alert('aday Id:' + adayId + ' Aday Adı:' + adayAdi + ' Tablo Id:' + Id);
+                    Id = $(this).data('id');
 
                     $.ajax({
                     success: function (result) {
                         if (result) {
                             bootbox.alert({
                                 title: 'UYARI',
-                                message: "Adayın sınav salonuna yönlendirileceğinden emin misiniz?",
+                                message: "Adayın imzasının alındığından emin misiniz?",
                                 label: 'Evet',
                                 backdrop: false,
                                 locale: 'tr',
                                 callback: function () {
                        if (result) {
                             $.ajax({
-                                type: "POST",
-                                url: "/AdayTakip/AdaySinavaGeldi/" + Id,
+                                type: "POST",                                
+                                url: "/AdayKabul/AdayKabulOnay/" + Id,
                                 success: function () {
                                         // Tabloyu yenile
                                         window.location.reload();
@@ -333,7 +284,6 @@
                 });
 
             });
-
 
             // Modal kapatıldığında içeriği temizle
             $('#iletisimBilgileriModal').on('hidden.bs.modal', function () {

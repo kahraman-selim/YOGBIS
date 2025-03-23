@@ -30,10 +30,13 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<AdayTYSVM> AdayTYSBilgileriEkle(AdayTYSVM model, SessionContext user);
         Result<List<AdayTYSVM>> AdayTYSBilgileriniGetir(string TC);
         Result<AdayTYSVM> AdayTYSBilgileriniGetirById(Guid id);
-        Result<List<AdayMYSSVM>> GetirKomisyonMulakatListesi(string komisyonAdi, string mulakatTarihi);
-        Result<bool> AdayCagriDurumGuncelle(Guid id);
+        Result<List<AdayMYSSVM>> GetirKomisyonMulakatListesi(string komisyonAdi, string mulakatTarihi);        
         Result<List<AdayMYSSVM>> AdayTakipMulakatListesi();
-        Result<bool> AdaySinavaGelmediGuncelle(Guid adayId);
+        Result<bool> AdayCagriDurumGuncelle(Guid id);
+        Result<bool> AdaySinavaGelmediGuncelle(Guid id);
+        Result<bool> AdaySinavaGeldiGuncelle(Guid id);
+        Result<List<AdayMYSSVM>> AdayKabulMulakatListesi();
+        Result<bool> AdaySinavKabulGuncelle(Guid id);
         Result<string> AdayIletisimBilgileriGetir(Guid adayId);
     }
 }
