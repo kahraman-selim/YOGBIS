@@ -1273,6 +1273,62 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region AdayKabulMulakatListesi
+        public Result<List<AdayMYSSVM>> AdayKabulMulakatListesi()
+        {
+            try
+            {
+                var data = _unitOfWork.adayMYSSRepository.GetAll(
+                    x => x.CagriDurum == true && x.SinavaGeldi == true && x.SinavDurum==false && x.Mulakatlar.Durumu == true,
+                     includeProperties: "Adaylar,Mulakatlar")
+                    .OrderBy(x => x.KomisyonGunSN);
+
+                if (data != null && data.Any())
+                {
+                    var adaylar = data.Select(x => new AdayMYSSVM()
+                    {
+                        Id = x.Id,
+                        AdayId = x.AdayId,
+                        TC = x.TC,
+                        AdayAdiSoyadi = x.Adaylar != null ? x.Adaylar.Ad.ToString() + " " + x.Adaylar.Soyad.ToString() : "",
+                        MYSSTarih = !string.IsNullOrEmpty(x.MYSSTarih) ? x.MYSSTarih : "",
+                        MYSSSaat = x.MYSSSaat,
+                        MYSSKomisyonAdi = x.MYSSKomisyonAdi,
+                        KomisyonGunSN = x.KomisyonGunSN,
+                        MYSSonuc = x.MYSSonuc,
+                        MYSPuan = x.MYSPuan,
+                        CagriDurum = x.CagriDurum ?? false,
+                        SinavDurum = x.SinavDurum ?? false,
+                        SinavaGelmedi = x.SinavaGelmedi ?? false,
+                        SinavaGelmediAck = x.SinavaGelmediAck,
+                        SinavaGeldi = x.SinavaGeldi ?? false,
+                        SinavIptal = x.SinavIptal ?? false,
+                        BransId = x.BransId,
+                        BransAdi = x.BransAdi.ToString(),
+                        UlkeTercihId = x.UlkeTercihId,
+                        UlkeTercihAdi = x.UlkeTercihAdi.ToString(),
+                        DereceId = x.DereceId,
+                        DereceAdi = x.DereceAdi.ToString(),
+                        KomisyonId = x.KomisyonId,
+                        KomisyonSN = x.KomisyonSN,
+                        SinavIptalAck = x.SinavIptalAck,
+                        MYSSSorulanSoruNo = x.MYSSSorulanSoruNo
+
+                    }).ToList();
+
+                    return new Result<List<AdayMYSSVM>>(true, ResultConstant.RecordFound, adaylar);
+                }
+
+                return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"AdayKabulMulakatListesi - Hata: {ex.Message}", ex);
+                return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
+            }
+        }
+        #endregion
+
         #region AdayIletisimBilgileriGetir
         public Result<string> AdayIletisimBilgileriGetir(Guid adayId)
         {
@@ -1397,62 +1453,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region AdayKabulMulakatListesiGetir
-        public Result<List<AdayMYSSVM>> AdayKabulMulakatListesi()
-        {
-            try
-            {
-                var data = _unitOfWork.adayMYSSRepository.GetAll(
-                    x => x.CagriDurum == true && x.SinavaGeldi == true && x.SinavDurum==false && x.Mulakatlar.Durumu == true,
-                     includeProperties: "Adaylar,Mulakatlar")
-                    .OrderBy(x => x.KomisyonGunSN);
-
-                if (data != null && data.Any())
-                {
-                    var adaylar = data.Select(x => new AdayMYSSVM()
-                    {
-                        Id = x.Id,
-                        AdayId = x.AdayId,
-                        TC = x.TC,
-                        AdayAdiSoyadi = x.Adaylar != null ? x.Adaylar.Ad.ToString() + " " + x.Adaylar.Soyad.ToString() : "",
-                        MYSSTarih = !string.IsNullOrEmpty(x.MYSSTarih) ? x.MYSSTarih : "",
-                        MYSSSaat = x.MYSSSaat,
-                        MYSSKomisyonAdi = x.MYSSKomisyonAdi,
-                        KomisyonGunSN = x.KomisyonGunSN,
-                        MYSSonuc = x.MYSSonuc,
-                        MYSPuan = x.MYSPuan,
-                        CagriDurum = x.CagriDurum ?? false,
-                        SinavDurum = x.SinavDurum ?? false,
-                        SinavaGelmedi = x.SinavaGelmedi ?? false,
-                        SinavaGelmediAck = x.SinavaGelmediAck,
-                        SinavaGeldi = x.SinavaGeldi ?? false,
-                        SinavIptal = x.SinavIptal ?? false,
-                        BransId = x.BransId,
-                        BransAdi = x.BransAdi.ToString(),
-                        UlkeTercihId = x.UlkeTercihId,
-                        UlkeTercihAdi = x.UlkeTercihAdi.ToString(),
-                        DereceId = x.DereceId,
-                        DereceAdi = x.DereceAdi.ToString(),
-                        KomisyonId = x.KomisyonId,
-                        KomisyonSN = x.KomisyonSN,
-                        SinavIptalAck = x.SinavIptalAck,
-                        MYSSSorulanSoruNo = x.MYSSSorulanSoruNo
-
-                    }).ToList();
-
-                    return new Result<List<AdayMYSSVM>>(true, ResultConstant.RecordFound, adaylar);
-                }
-
-                return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"AdayKabulMulakatListesi - Hata: {ex.Message}", ex);
-                return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
-            }
-        }
-        #endregion
-
         #region AdaySinavKabulGuncelle
         public Result<bool> AdaySinavKabulGuncelle(Guid id)
         {
@@ -1474,6 +1474,42 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 _logger.LogError($"AdaySinavKabulGuncelle - Hata: {ex.Message}", ex);
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+        }
+        #endregion
+
+        #region GetirAdayMYSSBilgileri
+        public Result<AdayMYSSVM> GetirAdayMYSSBilgileri(Guid id)
+        {
+            try
+            {
+                var aday = _unitOfWork.adayMYSSRepository.GetAll(
+                    x => x.Id == id,
+                    includeProperties: "Adaylar,Mulakatlar"
+                ).FirstOrDefault();
+
+                if (aday != null)
+                {
+                    var adayBilgileri = new AdayMYSSVM
+                    {
+                        Id = aday.Id,
+                        AdayId = aday.AdayId,
+                        TC = aday.TC,
+                        AdayAdiSoyadi = aday.Adaylar != null ? $"{aday.Adaylar.Ad} {aday.Adaylar.Soyad}" : "",
+                        DereceAdi = aday.DereceAdi?.ToString() ?? "",
+                        BransAdi = aday.BransAdi?.ToString() ?? "",
+                        UlkeTercihAdi = aday.UlkeTercihAdi?.ToString() ?? ""
+                    };
+
+                    return new Result<AdayMYSSVM>(true, ResultConstant.RecordFound, adayBilgileri);
+                }
+
+                return new Result<AdayMYSSVM>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"GetirAdayMYSSBilgileri - Hata: {ex.Message}", ex);
+                return new Result<AdayMYSSVM>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
             }
         }
         #endregion

@@ -113,5 +113,33 @@ namespace YOGBIS.UI.Controllers
             }
         } 
         #endregion
+
+        #region GetirAdayBilgileri
+        [HttpGet]
+        public IActionResult GetirAdayBilgileri(Guid id)
+        {
+            try
+            {
+                var result = _adaylarBE.GetirAdayMYSSBilgileri(id);
+                if (result.IsSuccess)
+                {
+                    return Json(new
+                    {
+                        isSuccess = true,
+                        adayAdiSoyadi = result.Data.AdayAdiSoyadi,
+                        dereceAdi = result.Data.DereceAdi,
+                        bransAdi = result.Data.BransAdi,
+                        ulkeTercihAdi = result.Data.UlkeTercihAdi
+                    });
+                }
+
+                return Json(new { isSuccess = false, message = result.Message });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isSuccess = false, message = ex.Message });
+            }
+        }
+        #endregion
     }
 }
