@@ -921,7 +921,6 @@
     </script>
 
     <script>
-
         window.komisyonDegisti = function(selectedKomisyonAd) {
             if (selectedKomisyonAd) {
                 $.ajax({
@@ -930,8 +929,9 @@
                     data: { komisyonUserName: selectedKomisyonAd },
                     success: function(response) {
                         if (response.success) {
-                            var table = $('#myTableNoButtons').DataTable();
-                            table.destroy();
+                            if ($.fn.DataTable.isDataTable('#myTableNoButtons')) {
+                                $('#myTableNoButtons').DataTable().destroy();
+                            }
                             var tbody = $('#adayListesiBody');
                             tbody.empty();
 
@@ -961,14 +961,12 @@
                                 tbody.append(row);
                             });
 
-                            table = $('#myTableNoButtons').DataTable({
+                            $('#myTableNoButtons').DataTable({
                                 "language": {
                                     "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Turkish.json"
                                 },
                                 "responsive": true,
-                                "dom": '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
-                                "buttons": [],
-                                "order": [],
+                                "dom": '<"top"<"left-col"l><"right-col"f>>rtip',
                                 "pageLength": 10,
                                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tümü"]]
                             });
@@ -981,17 +979,16 @@
                     }
                 });
             } else {
-                var table = $('#myTableNoButtons').DataTable();
-                table.destroy();
+                if ($.fn.DataTable.isDataTable('#myTableNoButtons')) {
+                    $('#myTableNoButtons').DataTable().destroy();
+                }
                 $('#adayListesiBody').empty();
-                table = $('#myTableNoButtons').DataTable({
+                $('#myTableNoButtons').DataTable({
                     "language": {
                         "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Turkish.json"
                     },
                     "responsive": true,
-                    "dom": '<"top"<"left-col"B><"center-col"l><"right-col"f>>rtip',
-                    "buttons": [],
-                    "order": [],
+                    "dom": '<"top"<"left-col"l><"right-col"f>>rtip',
                     "pageLength": 10,
                     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tümü"]]
                 });
@@ -999,4 +996,3 @@
         }
     </script>
 }
-

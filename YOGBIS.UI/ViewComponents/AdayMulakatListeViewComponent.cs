@@ -56,11 +56,15 @@ namespace YOGBIS.UI.ViewComponents
                     {
                         viewModel.AdayListesi = result.Data;
                     }
+                    else
+                    {
+                        viewModel.AdayListesi = Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
+                    }
                 }
                 else
                 {
                     // İlk açılışta boş liste göster
-                    viewModel.AdayListesi = new List<YOGBIS.Common.VModels.AdayMYSSVM>();
+                    viewModel.AdayListesi = Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
                 }
             }
             else
@@ -71,6 +75,10 @@ namespace YOGBIS.UI.ViewComponents
                 {
                     viewModel.AdayListesi = result.Data;
                 }
+                else
+                {
+                    viewModel.AdayListesi = Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
+                }
             }
             
             return View(viewModel);
@@ -80,7 +88,7 @@ namespace YOGBIS.UI.ViewComponents
     public class AdayMulakatListeViewModel
     {
         public IEnumerable<KomisyonBaskanViewModel> KomisyonBaskanları { get; set; }
-        public object AdayListesi { get; set; }
+        public IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM> AdayListesi { get; set; }
     }
 
     public class KomisyonBaskanViewModel

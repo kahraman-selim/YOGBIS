@@ -1155,58 +1155,67 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             try
             {
-                var data = _unitOfWork.adayMYSSRepository.GetAll(
-                    x => x.MYSSKomisyonAdi == komisyonAdi && 
-                         x.MYSSTarih == mulakatTarihi &&
-                         x.Mulakatlar.Durumu == true,                       
-                    includeProperties: "Adaylar,Mulakatlar")
+                _logger.LogInformation($"GetirKomisyonMulakatListesi başladı - Komisyon: {komisyonAdi}, Tarih: {mulakatTarihi}");
+
+                var data = _unitOfWork.adayMYSSRepository.GetAll()
+                    .Include(x => x.Adaylar)
+                    .Include(x => x.Mulakatlar)
+                    .Where(x => x.MYSSKomisyonAdi.ToUpper() == komisyonAdi.ToUpper() &&
+                               x.MYSSTarih == mulakatTarihi &&
+                               x.Mulakatlar != null && x.Mulakatlar.Durumu == true)
                     .OrderBy(x => x.KomisyonGunSN);
 
-                if (data != null && data.Any())
+                if (!data.Any())
                 {
-                    var adaylar = data.Select(x => new AdayMYSSVM()
-                    {
-                        Id = x.Id,
-                        AdayId = x.AdayId,
-                        TC = x.TC,
-                        AdayAdiSoyadi = x.Adaylar != null ? x.Adaylar.Ad.ToString() + " " + x.Adaylar.Soyad.ToString() : "",
-                        MYSSTarih = !string.IsNullOrEmpty(x.MYSSTarih) ? x.MYSSTarih : "",
-                        MYSSSaat = x.MYSSSaat,
-                        MYSSKomisyonAdi = x.MYSSKomisyonAdi,
-                        KomisyonGunSN = x.KomisyonGunSN,
-                        MYSSonuc = x.MYSSonuc,
-                        MYSPuan = x.MYSPuan,
-                        CagriDurum = x.CagriDurum ?? false,
-                        SinavDurum = x.SinavDurum ?? false,
-                        SinavaGelmedi = x.SinavaGelmedi ?? false,
-                        SinavaGelmediAck = x.SinavaGelmediAck,
-                        SinavaGeldi= x.SinavaGeldi ?? false,
-                        SinavIptal = x.SinavIptal ?? false,
-                        BransId = x.BransId,
-                        BransAdi = x.BransAdi.ToString(),
-                        UlkeTercihId = x.UlkeTercihId,
-                        UlkeTercihAdi = x.UlkeTercihAdi.ToString(),
-                        DereceId = x.DereceId,
-                        DereceAdi = x.DereceAdi.ToString(),
-                        KomisyonId = x.KomisyonId,
-                        KomisyonSN = x.KomisyonSN,
-                        SinavIptalAck = x.SinavIptalAck,
-                        MYSSSorulanSoruNo = x.MYSSSorulanSoruNo
-                        
-                    }).ToList();
-
-                    return new Result<List<AdayMYSSVM>>(true, ResultConstant.RecordFound, adaylar);
+                    _logger.LogWarning($"Komisyon {komisyonAdi} için {mulakatTarihi} tarihinde kayıt bulunamadı.");
+                    return new Result<List<AdayMYSSVM>>(false, "Kayıt bulunamadı");
                 }
 
-                return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound);
+                var adaylar = data.Select(x => new AdayMYSSVM
+                {
+                    Id = x.Id,
+                    AdayId = x.AdayId,
+                    TC = x.TC,
+                    AdayAdiSoyadi = x.Adaylar != null ? x.Adaylar.Ad.ToString() + " " + x.Adaylar.Soyad.ToString() : "",
+                    MYSSTarih = !string.IsNullOrEmpty(x.MYSSTarih) ? x.MYSSTarih : "",
+                    MYSSSaat = x.MYSSSaat,
+                    MYSSKomisyonAdi = x.MYSSKomisyonAdi,
+                    KomisyonGunSN = x.KomisyonGunSN,
+                    MYSSonuc = x.MYSSonuc,
+                    MYSPuan = x.MYSPuan,
+                    CagriDurum = x.CagriDurum ?? false,
+                    KabulDurum = x.KabulDurum ?? false, 
+                    SinavDurum = x.SinavDurum ?? false,
+                    SinavaGelmedi = x.SinavaGelmedi ?? false,
+                    SinavaGelmediAck = x.SinavaGelmediAck,
+                    SinavaGeldi = x.SinavaGeldi ?? false,
+                    SinavIptal = x.SinavIptal ?? false,
+                    BransId = x.BransId,
+                    BransAdi = x.BransAdi.ToString(),
+                    UlkeTercihId = x.UlkeTercihId,
+                    UlkeTercihAdi = x.UlkeTercihAdi.ToString(),
+                    DereceId = x.DereceId,
+                    DereceAdi = x.DereceAdi.ToString(),
+                    KomisyonId = x.KomisyonId,
+                    KomisyonSN = x.KomisyonSN,
+                    SinavIptalAck = x.SinavIptalAck,
+                    MYSSSorulanSoruNo = x.MYSSSorulanSoruNo
+                }).ToList();
+
+                foreach (var aday in adaylar)
+                {
+                    _logger.LogInformation($"Aday Durumları - TC: {aday.TC}, CagriDurum: {aday.CagriDurum}, KabulDurum: {aday.KabulDurum}, SinavaGelmedi: {aday.SinavaGelmedi}");
+                }
+
+                return new Result<List<AdayMYSSVM>>(true, ResultConstant.RecordFound, adaylar);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"GetirKomisyonMulakatListesi - Hata: {ex.Message}", ex);
-                return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
+                return new Result<List<AdayMYSSVM>>(false, $"Hata oluştu: {ex.Message}");
             }
         }
-        #endregion        
+        #endregion
 
         #region AdayTakipMulakatListesiGetir
         public Result<List<AdayMYSSVM>> AdayTakipMulakatListesi()
@@ -1308,22 +1317,32 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             try
             {
-                var aday = _unitOfWork.adayMYSSRepository.Get(id);
+                var aday = _unitOfWork.adayMYSSRepository
+                    .GetFirstOrDefault(x => x.Id == id && x.Mulakatlar.Durumu == true);
 
-                if (aday != null)
+                if (aday == null)
                 {
-                    aday.CagriDurum = true;
-                    _unitOfWork.Save();
-
-                    return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
+                    return new Result<bool>(false, "Aday bulunamadı veya mülakat aktif değil");
                 }
 
-                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+                // Durum kontrolü
+                if (aday.CagriDurum == true)
+                {
+                    return new Result<bool>(false, "Aday zaten çağrılmış durumda");
+                }
+
+                aday.CagriDurum = true;
+
+                _unitOfWork.Save();
+                //transaction.CommitAsync();
+
+                return new Result<bool>(true, "Aday çağrı durumu güncellendi");
             }
             catch (Exception ex)
             {
+                //transaction.Rollback();
                 _logger.LogError($"AdayCagriDurumGuncelle - Hata: {ex.Message}", ex);
-                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+                return new Result<bool>(false, $"Güncelleme sırasında hata: {ex.Message}");
             }
         }
         #endregion
