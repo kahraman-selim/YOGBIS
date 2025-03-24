@@ -1294,6 +1294,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         MYSSTarih = !string.IsNullOrEmpty(x.MYSSTarih) ? x.MYSSTarih : "",
                         MYSSSaat = x.MYSSSaat,
                         MYSSKomisyonAdi = x.MYSSKomisyonAdi,
+                        KabulDurum = x.KabulDurum,
                         KomisyonGunSN = x.KomisyonGunSN,
                         MYSSonuc = x.MYSSonuc,
                         MYSPuan = x.MYSPuan,
