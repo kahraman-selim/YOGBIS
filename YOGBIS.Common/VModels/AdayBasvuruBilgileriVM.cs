@@ -13,6 +13,10 @@ namespace YOGBIS.Common.VModels
         public string TC { get; set; }
 
         public Guid? AdayId { get; set; }
+        
+        public string Dogumyeri { get; set; }
+        public int Yas { get; set; }
+        public string IkametBilgisi { get; set; }
 
         [Display(Name = "Askerlik Durumu")]
         public string Askerlik { get; set; }
@@ -158,6 +162,9 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Diğer Yabancı Dil")]
         public string YabanciDilDiger { get; set; }
 
+        public string YLisans { get; set; }
+        public string Doktora { get; set; }
+
         [Display(Name = "Görevden Uzaklaştırma")]
         public string GorevdenUzaklastirma { get; set; }
 
@@ -169,6 +176,7 @@ namespace YOGBIS.Common.VModels
 
         [Display(Name = "P-Durumu")]
         public string PDurum { get; set; }
+        public string GenelDurum { get; set; }
 
         [Display(Name = "Sendika")]
         public string Sendika { get; set; }

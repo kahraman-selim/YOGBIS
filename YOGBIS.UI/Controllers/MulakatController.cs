@@ -141,5 +141,61 @@ namespace YOGBIS.UI.Controllers
             }
         }
         #endregion
+
+        #region AdayBasvuruBilgileriGetir
+        [HttpGet]
+        public JsonResult AdayBasvuruBilgileriGetir(Guid adayId)
+        {
+            var result = _adaylarBE.GetirAdayBasvuruBilgileri(adayId);
+
+            if (result.IsSuccess)
+            {
+                return Json(new
+                {
+                    success = true,
+                    data = new
+                    {
+                        Id = result.Data.Id,
+                        AdayId = result.Data.AdayId,
+                        TC = result.Data.TC,
+                        MulakatId = result.Data.MulakatId,
+                        MulakatYil = result.Data.MulakatYil,
+                        Dogumyeri = result.Data.Dogumyeri,
+                        Yas = result.Data.Yas,
+                        IkametBilgisi = result.Data.IkametBilgisi,
+                        HizmetAy = result.Data.HizmetAy,
+                        HizmetYil = result.Data.HizmetYil,
+                        HizmetGun = result.Data.HizmetGun,
+                        Derece = result.Data.Derece,
+                        Kademe = result.Data.Kademe,
+                        IlkGorevKaydi = result.Data.IlkGorevKaydi,
+                        GorevdenUzaklastirma = result.Data.GorevdenUzaklastirma,
+                        GorevIptalAck = result.Data.GorevIptalAck,
+                        GorevIptalBAOK = result.Data.GorevIptalBAOK,
+                        GorevIptalBrans = result.Data.GorevIptalBrans,
+                        GorevIptalYil = result.Data.GorevIptalYil,
+                        AdliSicilBelge = result.Data.AdliSicilBelge,
+                        YabanciDilAdi = result.Data.YabanciDilAdi,
+                        YabanciDilALM = result.Data.YabanciDilALM,
+                        YabanciDilBasvuru = result.Data.YabanciDilBasvuru,
+                        YabanciDilDiger = result.Data.YabanciDilDiger,
+                        YabanciDilFRS = result.Data.YabanciDilFRS,
+                        YabanciDilING = result.Data.YabanciDilING,
+                        YabanciDilPuan = result.Data.YabanciDilPuan,
+                        YabanciDilSeviye = result.Data.YabanciDilSeviye,
+                        YabanciDilTarihi = result.Data.YabanciDilTarihi,
+                        YabanciDilTuru = result.Data.YabanciDilTuru,
+                        YLisans = result.Data.YLisans,
+                        Doktora = result.Data.Doktora,
+                        GenelDurum = result.Data.GenelDurum,
+                        BilgiFormu = result.Data.BilgiFormu,
+                        UlkeTercihAdi = result.Data.UlkeTercihAdi
+                    }
+                });
+            }
+
+            return Json(new { success = false, message = result.Message });
+        }
+        #endregion
     }
 }

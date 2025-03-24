@@ -1223,7 +1223,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             try
             {
                 var data = _unitOfWork.adayMYSSRepository.GetAll(
-                    x => x.CagriDurum == true && x.SinavaGelmedi == false && x.SinavaGeldi==false && x.Mulakatlar.Durumu==true,                    
+                    x => x.CagriDurum == true && x.SinavaGeldi == false && x.SinavDurum==false && x.Mulakatlar.Durumu==true,                    
                      includeProperties: "Adaylar,Mulakatlar")
                     .OrderBy(x => x.KomisyonGunSN);
 
@@ -1510,6 +1510,75 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 _logger.LogError($"GetirAdayMYSSBilgileri - Hata: {ex.Message}", ex);
                 return new Result<AdayMYSSVM>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region GetirAdayBasvuruBilgileri
+        public Result<AdayBasvuruBilgileriVM> GetirAdayBasvuruBilgileri(Guid adayId)
+        {
+            try
+            {
+                var aday = _unitOfWork.adayBasvuruBilgileriRepository.GetAll(
+                    x => x.Id == adayId,
+                    includeProperties: "Adaylar,Mulakatlar,AdayIletisimBilgileri"
+                ).FirstOrDefault();
+
+                if (aday != null)
+                {
+                    var iletisimBilgisi = aday.Adaylar.AdayIletisimBilgileri.Intersect(aday.Adaylar.AdayIletisimBilgileri.Where(x => x.AdayId == adayId)).FirstOrDefault();
+                    var adayBilgileri = new AdayBasvuruBilgileriVM
+                    {
+                        Id = aday.Id,
+                        AdayId = aday.AdayId,
+                        TC = aday.TC,
+                        MulakatId = aday.MulakatId,
+                        MulakatYil = aday.MulakatYil,
+                        Dogumyeri = !string.IsNullOrEmpty(aday.Adaylar.DogumYeri) ? aday.Adaylar.DogumYeri : "",
+                        Yas = !string.IsNullOrEmpty(aday.Adaylar.DogumTarihi2) && DateTime.TryParse(aday.Adaylar.DogumTarihi2, out DateTime dogumTarihi)? (int)((DateTime.Now - dogumTarihi).TotalDays / 365.25) : 0,
+                        IkametBilgisi = iletisimBilgisi != null ? 
+                            $"{iletisimBilgisi.IkametIl ?? ""}{(!string.IsNullOrEmpty(iletisimBilgisi.IkametIl) && !string.IsNullOrEmpty(iletisimBilgisi.IkametIlce) ? "/" : "")}{iletisimBilgisi.IkametIlce ?? ""}" 
+                            : "",
+                        HizmetAy = aday.HizmetAy,
+                        HizmetYil = aday.HizmetYil,
+                        HizmetGun = aday.HizmetGun,
+                        Derece=aday.Derece,
+                        Kademe = aday.Kademe,
+                        IlkGorevKaydi = aday.IlkGorevKaydi,
+                        GorevdenUzaklastirma = aday.GorevdenUzaklastirma,
+                        GorevIptalAck = aday.GorevIptalAck,
+                        GorevIptalBAOK = aday.GorevIptalBAOK,
+                        GorevIptalBrans = aday.GorevIptalBrans,
+                        GorevIptalYil = aday.GorevIptalYil,
+                        AdliSicilBelge = aday.AdliSicilBelge,
+                        YabanciDilAdi = aday.YabanciDilAdi,
+                        YabanciDilALM = aday.YabanciDilALM,
+                        YabanciDilBasvuru = aday.YabanciDilBasvuru,
+                        YabanciDilDiger = aday.YabanciDilDiger,
+                        YabanciDilFRS = aday.YabanciDilFRS,
+                        YabanciDilING = aday.YabanciDilING,
+                        YabanciDilPuan = aday.YabanciDilPuan,
+                        YabanciDilSeviye = aday.YabanciDilSeviye,
+                        YabanciDilTarihi = aday.YabanciDilTarihi,
+                        YabanciDilTuru = aday.YabanciDilTuru,
+                        YLisans= aday.YLisans,
+                        Doktora = aday.Doktora,
+                        GenelDurum = aday.GenelDurum,
+                        BilgiFormu = aday.BilgiFormu,
+                        DereceAdi = aday.DereceAdi?.ToString() ?? "",
+                        BransAdi = aday.BransAdi?.ToString() ?? "",
+                        UlkeTercihAdi = aday.UlkeTercihAdi?.ToString() ?? ""
+                    };
+
+                    return new Result<AdayBasvuruBilgileriVM>(true, ResultConstant.RecordFound, adayBilgileri);
+                }
+
+                return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"GetirAdayBasvuruBilgileri - Hata: {ex.Message}", ex);
+                return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordNotFound + " | " + ex.Message);
             }
         }
         #endregion
