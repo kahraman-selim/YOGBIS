@@ -1279,7 +1279,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             try
             {
                 var data = _unitOfWork.adayMYSSRepository.GetAll(
-                    x => x.CagriDurum == true && x.SinavaGeldi == true && x.SinavDurum==false && x.SinavaGelmedi==false && x.Mulakatlar.Durumu == true,
+                    x => x.CagriDurum == true && x.SinavaGeldi == true && x.SinavaGelmedi==false && x.Mulakatlar.Durumu == true,
                      includeProperties: "Adaylar,Mulakatlar")
                     .OrderBy(x => x.KomisyonGunSN);
 
@@ -1465,6 +1465,31 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 if (aday != null)
                 {
                     aday.KabulDurum = true;
+                    _unitOfWork.Save();
+
+                    return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
+                }
+
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"AdaySinavKabulGuncelle - Hata: {ex.Message}", ex);
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+        }
+        #endregion
+
+        #region AdaySinavOdaKabulGuncelle
+        public Result<bool> AdaySinavOdaKabulGuncelle(Guid id)
+        {
+            try
+            {
+                var aday = _unitOfWork.adayMYSSRepository.Get(id);
+
+                if (aday != null)
+                {
+                    aday.SinavDurum = true;
                     _unitOfWork.Save();
 
                     return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);

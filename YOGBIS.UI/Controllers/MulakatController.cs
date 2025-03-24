@@ -88,6 +88,21 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region AdaySinavOdaKabulGuncelle
+        [HttpPost]
+        public IActionResult AdaySinavOdaKabulGuncelle(Guid id)
+        {
+            if (id == Guid.Empty)
+                return Json(new { success = false, message = "Güncellemek için Kayıt Seçiniz" });
+
+            var data = _adaylarBE.AdaySinavOdaKabulGuncelle(id);
+            if (data != null)
+                return Json(new { success = true, message = "Aday çağrı durumu güncellendi" });
+            else
+                return Json(new { success = false, message = "Aday çağrı durumu güncellenirken hata oluştu" });
+        }
+        #endregion
+
         #region KomisyonAdaylariniGetir
         [HttpGet]
         public IActionResult KomisyonAdaylariniGetir(string komisyonUserName)
