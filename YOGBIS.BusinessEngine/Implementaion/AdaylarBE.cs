@@ -1223,7 +1223,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             try
             {
                 var data = _unitOfWork.adayMYSSRepository.GetAll(
-                    x => x.CagriDurum == true && x.SinavaGeldi == false && x.SinavDurum==false && x.Mulakatlar.Durumu==true,                    
+                    x => x.CagriDurum == true && x.SinavaGeldi == false && x.SinavaGelmedi==false && x.Mulakatlar.Durumu==true,                    
                      includeProperties: "Adaylar,Mulakatlar")
                     .OrderBy(x => x.KomisyonGunSN);
 
@@ -1413,6 +1413,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 if (aday != null)
                 {
                     aday.SinavaGelmedi = true;
+                    aday.MYSSDurumAck = "Sınava Gelmedi";
                     _unitOfWork.Save();
 
                     return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
@@ -1437,7 +1438,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                 if (aday != null)
                 {
-                    aday.SinavaGeldi = true;
+                    aday.SinavaGeldi = true;                    
                     _unitOfWork.Save();
 
                     return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);

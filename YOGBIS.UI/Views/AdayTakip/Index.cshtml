@@ -234,54 +234,55 @@
 
             // Sınava Gelmedi butonuna tıklandığında
             $('#btnSinavaGelmedi').click(function() {
-                
-                // alert('aday Id:' + adayId + ' Aday Adı:' + adayAdi + ' Tablo Id:' + Id);
-
-                    $.ajax({
-                    success: function (result) {
+                bootbox.confirm({
+                    title: 'UYARI',
+                    message: "Adayın sınava gelmediğinden emin misiniz?",
+                    buttons: {
+                        confirm: {
+                            label: 'Evet',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Hayır',
+                            className: 'btn-danger'
+                        }
+                    },
+                    backdrop: false,
+                    locale: 'tr',
+                    callback: function(result) {
                         if (result) {
-                            bootbox.alert({
-                                title: 'UYARI',
-                                message: "Adayın Sınava Gelmediğinden Emin misiniz?",
-                                label: 'Evet',
-                                backdrop: false,
-                                locale: 'tr',
-                                callback: function () {
-                       if (result) {
                             $.ajax({
                                 type: "POST",
                                 url: "/AdayTakip/AdaySinavaGelmedi/" + Id,
-                                success: function () {
+                                success: function(result) {
+                                    if (result) {
                                         // Modalı kapat
                                         $('#iletisimBilgileriModal').modal('hide');
                                         // Tabloyu yenile
                                         window.location.reload();
+                                    } else {
+                                        bootbox.alert({
+                                            title: 'HATA',
+                                            message: result.message || "İşlem sırasında bir hata oluştu!",
+                                            label: 'Tamam',
+                                            backdrop: false,
+                                            locale: 'tr'
+                                        });
+                                    }
+                                },
+                                error: function() {
+                                    bootbox.alert({
+                                        title: 'HATA',
+                                        message: "İşlem sırasında bir hata oluştu!",
+                                        label: 'Tamam',
+                                        backdrop: false,
+                                        locale: 'tr'
+                                    });
                                 }
-                            });
-                    }
-                                }
-                            });
-                        } else {
-                            bootbox.alert({
-                                title: 'HATA',
-                                message: result.message || "İşlem sırasında bir hata oluştu!",
-                                label: 'Tamam',
-                                backdrop: false,
-                                locale: 'tr'
                             });
                         }
-                    },
-                    error: function () {
-                        bootbox.alert({
-                            title: 'HATA',
-                            message: "İşlem sırasında bir hata oluştu!",
-                            label: 'Tamam',
-                            backdrop: false,
-                            locale: 'tr'
-                        });
                     }
                 });
-
             });
 
             // Komisyon Adına tıklandığında

@@ -265,12 +265,13 @@ namespace YOGBIS.UI.Controllers
                                 DereceId = Guid.Parse(worksheet.Cells[row, 3].Value?.ToString() ?? "0"),
                                 SoruKategorilerId = Guid.Parse(worksheet.Cells[row, 4].Value?.ToString() ?? "0"),
                                 SoruKategoriSiraNo = int.Parse(worksheet.Cells[row, 5].Value?.ToString() ?? "0"),
-                                Soru = worksheet.Cells[row, 6].Value?.ToString(),
-                                Cevap = worksheet.Cells[row, 7].Value?.ToString(),
-                                SinavKateogoriTurId = int.Parse(worksheet.Cells[row, 8].Value?.ToString() ?? "0"),
-                                SinavKategoriTurAdi = worksheet.Cells[row, 9].Value?.ToString(),
+                                SoruKategoriAdi= worksheet.Cells[row, 6].Value?.ToString(),
+                                Soru = worksheet.Cells[row, 7].Value?.ToString(),
+                                Cevap = worksheet.Cells[row, 8].Value?.ToString(),
+                                SinavKateogoriTurId = int.Parse(worksheet.Cells[row, 9].Value?.ToString() ?? "0"),
+                                SinavKategoriTurAdi = worksheet.Cells[row, 10].Value?.ToString(),
                                 Iptal=true,
-                                MulakatId = Guid.Parse(worksheet.Cells[row, 10].Value?.ToString() ?? "0"),
+                                MulakatId = Guid.Parse(worksheet.Cells[row, 11].Value?.ToString() ?? "0"),
                             };
 
                             // Soruyu işle
