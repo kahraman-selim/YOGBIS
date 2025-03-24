@@ -14,7 +14,7 @@ namespace YOGBIS.Common.VModels
 
         public Guid? AdayId { get; set; }
         
-        public string Dogumyeri { get; set; }
+        public string DogumYeri { get; set; }
         public int Yas { get; set; }
         public string IkametBilgisi { get; set; }
 

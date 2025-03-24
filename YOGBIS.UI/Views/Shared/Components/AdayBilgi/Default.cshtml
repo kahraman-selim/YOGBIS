@@ -1,4 +1,4 @@
-﻿@model List<YOGBIS.Common.VModels.AdayBasvuruBilgileriVM>
+@model List<YOGBIS.Common.VModels.AdayBasvuruBilgileriVM>
 
 
 
@@ -26,19 +26,24 @@
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        @*                         foreach (var item in Model.Where(x => x.MulakatId.HasValue))
+                        foreach (var item in Model)
                         {
                             <tr>
                                 <td>@item.MulakatYil</td>
-                                <td>@item.CepTelNo</td>
-                                <td>@item.EPosta</td>
-                                <td>@item.NufusIl</td>
-                                <td>@item.NufusIlce</td>
-                                <td>@item.IkametAdres</td>
-                                <td>@item.IkametIl</td>
-                                <td>@item.IkametIlce</td>
+                                <td>@item.DogumYeri</td>
+                                <td>@item.Yas</td>
+                                <td>@($"{item.IkametBilgisi}")</td>
+                                <td>@($"{item.HizmetYil}/{item.HizmetAy}/{item.HizmetGun}")</td>
+                                <td>@($"{item.Derece}/{item.Kademe}")</td>
+                                <td>@item.IlkGorevKaydi</td>
+                                <td>@item.GorevIptalAck/@item.GorevIptalBAOK/@item.GorevIptalBrans/@item.GorevIptalYil </td>
+                                <td>@(item.AdliSicilBelge != null && item.AdliSicilBelge.Length > 0 ? "Var" : "Yok")</td>
+                                <td>@Html.Raw(GetDilBilgisi(item))</td>
+                                <td>@Html.Raw(GetEgitimBilgisi(item))</td>
+                                <td>@item.GenelDurum</td>
+                                <td>@(item.BilgiFormu != null && item.BilgiFormu.Length > 0 ? "Var" : "Yok")</td>
                             </tr>
-                        } *@
+                        }
                     }
                     else
                     {
@@ -58,3 +63,28 @@
     </div>
 </div>
 
+@functions {
+    private string GetDilBilgisi(YOGBIS.Common.VModels.AdayBasvuruBilgileriVM item)
+    {
+        var diller = new List<string>();
+        if (!string.IsNullOrEmpty(item.YabanciDilING) && item.YabanciDilING.ToUpper() == "E") diller.Add("İNG");
+        if (!string.IsNullOrEmpty(item.YabanciDilALM) && item.YabanciDilALM.ToUpper() == "E") diller.Add("ALM");
+        if (!string.IsNullOrEmpty(item.YabanciDilFRS) && item.YabanciDilFRS.ToUpper() == "E") diller.Add("FRS");
+        if (!string.IsNullOrEmpty(item.YabanciDilDiger) && item.YabanciDilDiger.ToUpper() == "E" && !string.IsNullOrEmpty(item.YabanciDilAdi)) diller.Add(item.YabanciDilAdi);
+        
+        var dilBilgisi = string.Join(", ", diller);
+        if (!string.IsNullOrEmpty(item.YabanciDilPuan))
+        {
+            dilBilgisi += $"<br><small>({item.YabanciDilPuan})</small>";
+        }
+        return string.IsNullOrEmpty(dilBilgisi) ? "-" : dilBilgisi;
+    }
+
+    private string GetEgitimBilgisi(YOGBIS.Common.VModels.AdayBasvuruBilgileriVM item)
+    {
+        var egitim = new List<string>();
+        if (!string.IsNullOrEmpty(item.YLisans) && item.YLisans.ToUpper() == "E") egitim.Add("YL");
+        if (!string.IsNullOrEmpty(item.Doktora) && item.Doktora.ToUpper() == "E") egitim.Add("DR");
+        return egitim.Any() ? string.Join(", ", egitim) : "-";
+    }
+}

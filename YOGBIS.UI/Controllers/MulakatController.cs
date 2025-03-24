@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OfficeOpenXml;
@@ -14,11 +18,12 @@ using YOGBIS.BusinessEngine.Contracts;
 using YOGBIS.BusinessEngine.Implementaion;
 using YOGBIS.Common.ConstantsModels;
 using YOGBIS.Common.ResultModels;
-using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -76,10 +81,10 @@ namespace YOGBIS.UI.Controllers
                 return Json(new { success = false, message = "Güncellemek için Kayıt Seçiniz" });
 
             var data = _adaylarBE.AdayCagriDurumGuncelle(id);
-            if (data.IsSuccess)
-                return Json(new { success = data.IsSuccess, message = data.Message });
+            if (data != null)
+                return Json(new { success = true, message = "Aday çağrı durumu güncellendi" });
             else
-                return Json(new { success = data.IsSuccess, message = data.Message });
+                return Json(new { success = false, message = "Aday çağrı durumu güncellenirken hata oluştu" });
         }
         #endregion
 
@@ -97,13 +102,13 @@ namespace YOGBIS.UI.Controllers
                 var mulakatTarihi = "15.04.2024"; // daha sonra dinamik datetime.now.day bilgisi getirilecek
                 var result = _adaylarBE.GetirKomisyonMulakatListesi(komisyonUserName, mulakatTarihi);
 
-                if (result.IsSuccess)
+                if (result != null)
                 {
                     return Json(new { success = true, data = result.Data });
                 }
                 else
                 {
-                    return Json(new { success = false, message = result.Message ?? "Aday listesi getirilemedi!" });
+                    return Json(new { success = false, message = "Aday listesi getirilemedi!" });
                 }
             }
             catch (Exception ex)
@@ -121,7 +126,7 @@ namespace YOGBIS.UI.Controllers
             try
             {
                 var result = _adaylarBE.GetirAdayMYSSBilgileri(id);
-                if (result.IsSuccess)
+                if (result != null)
                 {
                     return Json(new
                     {
@@ -133,69 +138,65 @@ namespace YOGBIS.UI.Controllers
                     });
                 }
 
-                return Json(new { isSuccess = false, message = result.Message });
+                return Json(new { isSuccess = false, message = "Aday bilgileri bulunamadı" });
             }
             catch (Exception ex)
             {
-                return Json(new { isSuccess = false, message = ex.Message });
+                return Json(new { isSuccess = false, message = "Aday bilgileri getirilirken hata oluştu: " + ex.Message });
             }
         }
         #endregion
 
         #region AdayBasvuruBilgileriGetir
         [HttpGet]
-        public JsonResult AdayBasvuruBilgileriGetir(Guid adayId)
+        public async Task<IActionResult> AdayBasvuruBilgileriGetir(Guid adayId)
         {
-            var result = _adaylarBE.GetirAdayBasvuruBilgileri(adayId);
-
-            if (result.IsSuccess)
+            Result<AdayBasvuruBilgileriVM> result = _adaylarBE.GetirAdayBasvuruBilgileri(adayId);
+            Console.WriteLine($"GetirAdayBasvuruBilgileri sonucu: {result.IsSuccess}, Mesaj: {result.Message}, AdayId: {adayId}");
+            
+            if (result.IsSuccess && result.Data != null)
             {
+                var viewComponentResult = await this.RenderViewComponentToStringAsync("AdayBilgi", result.Data);
                 return Json(new
                 {
                     success = true,
-                    data = new
-                    {
-                        Id = result.Data.Id,
-                        AdayId = result.Data.AdayId,
-                        TC = result.Data.TC,
-                        MulakatId = result.Data.MulakatId,
-                        MulakatYil = result.Data.MulakatYil,
-                        Dogumyeri = result.Data.Dogumyeri,
-                        Yas = result.Data.Yas,
-                        IkametBilgisi = result.Data.IkametBilgisi,
-                        HizmetAy = result.Data.HizmetAy,
-                        HizmetYil = result.Data.HizmetYil,
-                        HizmetGun = result.Data.HizmetGun,
-                        Derece = result.Data.Derece,
-                        Kademe = result.Data.Kademe,
-                        IlkGorevKaydi = result.Data.IlkGorevKaydi,
-                        GorevdenUzaklastirma = result.Data.GorevdenUzaklastirma,
-                        GorevIptalAck = result.Data.GorevIptalAck,
-                        GorevIptalBAOK = result.Data.GorevIptalBAOK,
-                        GorevIptalBrans = result.Data.GorevIptalBrans,
-                        GorevIptalYil = result.Data.GorevIptalYil,
-                        AdliSicilBelge = result.Data.AdliSicilBelge,
-                        YabanciDilAdi = result.Data.YabanciDilAdi,
-                        YabanciDilALM = result.Data.YabanciDilALM,
-                        YabanciDilBasvuru = result.Data.YabanciDilBasvuru,
-                        YabanciDilDiger = result.Data.YabanciDilDiger,
-                        YabanciDilFRS = result.Data.YabanciDilFRS,
-                        YabanciDilING = result.Data.YabanciDilING,
-                        YabanciDilPuan = result.Data.YabanciDilPuan,
-                        YabanciDilSeviye = result.Data.YabanciDilSeviye,
-                        YabanciDilTarihi = result.Data.YabanciDilTarihi,
-                        YabanciDilTuru = result.Data.YabanciDilTuru,
-                        YLisans = result.Data.YLisans,
-                        Doktora = result.Data.Doktora,
-                        GenelDurum = result.Data.GenelDurum,
-                        BilgiFormu = result.Data.BilgiFormu,
-                        UlkeTercihAdi = result.Data.UlkeTercihAdi
-                    }
+                    data = viewComponentResult
                 });
             }
-
             return Json(new { success = false, message = result.Message });
         }
         #endregion
+    }
+
+    public static class ControllerExtensions
+    {
+        public static async Task<string> RenderViewComponentToStringAsync(this Controller controller, string componentName, object parameters = null)
+        {
+            var context = controller.ControllerContext;
+            var viewComponentHelper = context.HttpContext.RequestServices
+                .GetRequiredService<IViewComponentHelper>();
+
+            ((IViewContextAware)viewComponentHelper).Contextualize(new ViewContext(
+                context,
+                new NullView(),
+                controller.ViewData,
+                controller.TempData,
+                TextWriter.Null,
+                new HtmlHelperOptions()));
+
+            var viewComponentResult = await viewComponentHelper.InvokeAsync(componentName, parameters);
+            using var writer = new StringWriter();
+            viewComponentResult.WriteTo(writer, System.Text.Encodings.Web.HtmlEncoder.Default);
+            return writer.ToString();
+        }
+
+        private class NullView : IView
+        {
+            public string Path => "";
+            public async Task RenderAsync(ViewContext context)
+            {
+                await Task.CompletedTask;
+            }
+        }
     }
 }

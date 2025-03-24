@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using YOGBIS.BusinessEngine.Contracts;
+using YOGBIS.Common.ResultModels;
+using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.ViewComponents
 {
     public class AdayBilgiViewComponent : ViewComponent
     {
-
         private readonly IAdaylarBE _adaylarBE;
 
         public AdayBilgiViewComponent(IAdaylarBE adaylarBE)
@@ -14,14 +16,9 @@ namespace YOGBIS.UI.ViewComponents
             _adaylarBE = adaylarBE;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public IViewComponentResult Invoke(AdayBasvuruBilgileriVM model)
         {
-            //var requestmodel = _adaylarBE.AdaylariGetir();
-           // if (requestmodel.IsSuccess)
-           // {
-           //     return View(requestmodel.Data);
-          //  }
-            return View();
+            return View(model);
         }
     }
 }
