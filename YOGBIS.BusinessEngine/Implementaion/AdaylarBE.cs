@@ -1279,7 +1279,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             try
             {
                 var data = _unitOfWork.adayMYSSRepository.GetAll(
-                    x => x.CagriDurum == true && x.SinavaGeldi == true && x.SinavDurum==false && x.Mulakatlar.Durumu == true,
+                    x => x.CagriDurum == true && x.SinavaGeldi == true && x.SinavDurum==false && x.SinavaGelmedi==false && x.Mulakatlar.Durumu == true,
                      includeProperties: "Adaylar,Mulakatlar")
                     .OrderBy(x => x.KomisyonGunSN);
 
