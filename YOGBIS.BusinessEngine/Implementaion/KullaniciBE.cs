@@ -148,7 +148,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     returnData.Add(new KullaniciVM()
                     {
                         Id = item.Id,
-                        Ad = item.Ad,
+                        Ad=item.Ad,
+                        Soyad=item.Soyad,
+                        AdSoyad= item.Ad + " " + item.Soyad,
                         TcKimlikNo = item.TcKimlikNo,
                     });
                 }
@@ -215,15 +217,19 @@ namespace YOGBIS.BusinessEngine.Implementaion
         public async Task<Result<List<KullaniciVM>>> KomisyonSorumluGetir()
         {
             var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(t => t.Ad).ToList();
-            var newdata = await _userManager.GetUsersInRoleAsync("Commissioner");
             
-            var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
-
-            if (newdata != null)
+            // Her iki roldeki kullanıcıları al
+            var commissionerUsers = await _userManager.GetUsersInRoleAsync("Commissioner");
+            var followerUsers = await _userManager.GetUsersInRoleAsync("Follower");
+            
+            // İki rolden gelen kullanıcıları birleştir ve tekrar eden kayıtları önle
+            var combinedUsers = commissionerUsers.Union(followerUsers).ToList();
+            
+            if (combinedUsers.Any())
             {
                 List<KullaniciVM> returnData = new List<KullaniciVM>();
 
-                foreach (var item in newdata)
+                foreach (var item in combinedUsers)
                 {
                     returnData.Add(new KullaniciVM()
                     {
