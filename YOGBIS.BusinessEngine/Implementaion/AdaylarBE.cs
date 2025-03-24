@@ -1279,7 +1279,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             try
             {
                 var data = _unitOfWork.adayMYSSRepository.GetAll(
-                    x => x.CagriDurum == true && x.SinavaGeldi == true && x.SinavaGelmedi==false && x.Mulakatlar.Durumu == true,
+                    x => x.CagriDurum == true && x.SinavaGeldi == true && x.SinavaAlindi == false && x.Mulakatlar.Durumu == true,
                      includeProperties: "Adaylar,Mulakatlar")
                     .OrderBy(x => x.KomisyonGunSN);
 
@@ -1304,6 +1304,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SinavaGelmediAck = x.SinavaGelmediAck,
                         SinavaGeldi = x.SinavaGeldi ?? false,
                         SinavIptal = x.SinavIptal ?? false,
+                        SinavaAlindi = x.SinavaAlindi ?? false,
                         BransId = x.BransId,
                         BransAdi = x.BransAdi.ToString(),
                         UlkeTercihId = x.UlkeTercihId,
@@ -1499,7 +1500,32 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
             catch (Exception ex)
             {
-                _logger.LogError($"AdaySinavKabulGuncelle - Hata: {ex.Message}", ex);
+                _logger.LogError($"AdaySinavOdaKabulGuncelle - Hata: {ex.Message}", ex);
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+        }
+        #endregion
+
+        #region AdaySinavOdaAlindiGuncelle
+        public Result<bool> AdaySinavOdaAlindiGuncelle(Guid id)
+        {
+            try
+            {
+                var aday = _unitOfWork.adayMYSSRepository.Get(id);
+
+                if (aday != null)
+                {
+                    aday.SinavaAlindi = true;
+                    _unitOfWork.Save();
+
+                    return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
+                }
+
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"AdaySinavOdaAlindiGuncelle - Hata: {ex.Message}", ex);
                 return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
             }
         }

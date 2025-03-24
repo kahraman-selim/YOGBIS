@@ -58,7 +58,7 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region AdayKabulOnay
+        #region AdaySinavKabulGuncelle
         [HttpPost]
         public IActionResult AdayKabulOnay(Guid id)
         {
@@ -66,6 +66,22 @@ namespace YOGBIS.UI.Controllers
             if (id == Guid.Empty)
                 return Json(new { success = false, message = "Güncellemek için Kayıt Seçiniz" });
             var data = _adaylarBE.AdaySinavKabulGuncelle(id);
+            if (data.IsSuccess)
+                return Json(new { success = true, message = data.Message });
+            else
+                return Json(new { success = false, message = data.Message });
+
+        }
+        #endregion
+
+        #region AdaySinavOdaAlindiGuncelle
+        [HttpPost]
+        public IActionResult AdaySinavOdaAlindiGuncelle(Guid id)
+        {
+
+            if (id == Guid.Empty)
+                return Json(new { success = false, message = "Güncellemek için Kayıt Seçiniz" });
+            var data = _adaylarBE.AdaySinavOdaAlindiGuncelle(id);
             if (data.IsSuccess)
                 return Json(new { success = true, message = data.Message });
             else

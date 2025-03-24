@@ -35,6 +35,7 @@ namespace YOGBIS.Common.VModels
         public bool? SinavaGeldi { get; set; }
         public bool? SinavIptal { get; set; }
         public string SinavIptalAck { get; set; }
+        public bool? SinavaAlindi { get; set; }
 
         public string MYSPuan { get; set; }
         public string MYSSonuc { get; set; }
