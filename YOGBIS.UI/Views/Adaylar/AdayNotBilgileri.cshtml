@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
 @model IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM>
@@ -10,39 +10,109 @@
     <div class="col-md-12 mb-1">
         <div class="card shadow-lg rounded-lg">
             <div class="card-header">
-
                 @{
                     var gun = "";
+                    DateTime tarih;
                 }
                 @if (Model != null && Model.Any())
                 {
-                    gun = Model.First().MYSSTarih.ToString();
+                    if(DateTime.TryParseExact(Model.First().MYSSTarih, "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out tarih))
+                    {
+                        gun = tarih.ToString("dd.MM.yyyy");
+                    }
+                    else
+                    {
+                        gun = DateTime.Now.ToString("dd.MM.yyyy");
+                    }
                 }
                 else
                 {
-                    gun = DateTime.Now.Day.ToString();
+                    gun = DateTime.Now.ToString("dd.MM.yyyy");
                 }
 
                 <div class="d-flex justify-content-center align-items-center">
-                    <a href="javascript:void(0)" onclick="loaAdayNoBilgileri())" class="btn btn-outline-primary btn-sm mr-3">
+                    <a href="javascript:void(0)" onclick="loadAdayNotBilgileri('prev')" class="btn btn-outline-primary btn-sm mr-3">
                         <i class="fas fa-chevron-left"></i> Önceki Gün
                     </a>
 
                     <h6 class="card-title mb-0 mx-3 text-danger">
-                        SINAV NOTLARI
+                        SINAV NOTLARI - @gun
                     </h6>
 
-                    <a href="javascript:void(0)" onclick="loaAdayNoBilgileri()" class="btn btn-outline-primary btn-sm ml-3">
+                    <a href="javascript:void(0)" onclick="loadAdayNotBilgileri('next')" class="btn btn-outline-primary btn-sm ml-3">
                         Sonraki Gün <i class="fas fa-chevron-right"></i>
                     </a>
                 </div>
             </div>
             <div class="card-body">
-                <table class="table-responsive-md" id="myTable">
-                    <tr>
-                        <td></td>
-                    </tr>
-                </table>
+                <div class="table-responsive">
+                    <style>
+                        .min-w-score {
+                            width: 40px !important;
+                            max-width: 40px !important;
+                        }
+                        .min-w-total {
+                            width: 50px !important;
+                            max-width: 50px !important;
+                        }
+                        .table {
+                            border: 1px solid thin !important;
+                        }
+                        .table th, .table td {
+                            border: 1px solid !important;
+                            text-align: center !important;
+                            vertical-align: middle !important;
+                        }
+                        .table td.score {
+                            font-weight: bold !important;
+                        }
+                        .table td.total {
+                            font-weight: bold !important;
+                            color: #dc3545 !important;
+                        }
+                    </style>
+                    <table id="NotTablosu" class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">Sn</th>
+                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">TCKN</th>
+                                <th rowspan="2" class="text-left align-middle" style="width:fit-content">Adı Soyadı</th>
+                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">Ülke Tercihi</th>
+                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">Branşı</th>
+                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">Sınav Tarihi</th>
+                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">Sınav Saati</th>
+                                <th colspan="6" class="text-center align-middle" style="width:fit-content">Başkan</th>
+                                <th colspan="6" class="text-center align-middle" style="width:fit-content">Üye</th>
+                                <th colspan="6" class="text-center align-middle" style="width:fit-content">Üye</th>
+                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">Ort.</th>
+                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">MYYS</th>
+                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">MYS</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center align-middle" style="width:fit-content">K-1</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-2</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-3</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-4</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-5</th>
+                                <th class="text-center align-middle" style="width:fit-content">T</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-1</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-2</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-3</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-4</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-5</th>
+                                <th class="text-center align-middle" style="width:fit-content">T</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-1</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-2</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-3</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-4</th>
+                                <th class="text-center align-middle" style="width:fit-content">K-5</th>
+                                <th class="text-center align-middle" style="width:fit-content">T</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -52,8 +122,75 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            $('#NotTablosu').DataTable({
+                data: [
+                    {
+                        siraNo: "1",
+                        tckn: "13455789011",
+                        adiSoyadi: "Selim KAHRAMAN",
+                        ulkeTercihi: "Gürcistan ve Türk Cumhuriyetleri",
+                        brans: "Türk Dili ve Edebiyatı",
+                        sinavTarihi: "10.10.2025",
+                        sinavSaati: "10:30",
+                        baskanK1: 15,
+                        baskanK2: 15,
+                        baskanK3: 15,
+                        baskanK4: 15,
+                        baskanK5: 15,
+                        baskanToplam: 75,
+                        uye1K1: 15,
+                        uye1K2: 15,
+                        uye1K3: 15,
+                        uye1K4: 15,
+                        uye1K5: 15,
+                        uye1Toplam: 75,
+                        uye2K1: 15,
+                        uye2K2: 15,
+                        uye2K3: 15,
+                        uye2K4: 15,
+                        uye2K5: 15,
+                        uye2Toplam: 75,
+                        ortalama: 75,
+                        myysPuani: 78.8666,
+                        mysPuani: 76.67
+                    }
+                ],
+                columns: [
+                    { data: 'siraNo', className: 'text-center' },
+                    { data: 'tckn', className: 'text-center' },
+                    { data: 'adiSoyadi', className: 'text-left' },
+                    { data: 'ulkeTercihi', className: 'text-center' },
+                    { data: 'brans', className: 'text-center' },
+                    { data: 'sinavTarihi', className: 'text-center' },
+                    { data: 'sinavSaati', className: 'text-center' },
+                    { data: 'baskanK1', className: 'text-center score' },
+                    { data: 'baskanK2', className: 'text-center score' },
+                    { data: 'baskanK3', className: 'text-center score' },
+                    { data: 'baskanK4', className: 'text-center score' },
+                    { data: 'baskanK5', className: 'text-center score' },
+                    { data: 'baskanToplam', className: 'text-center total' },
+                    { data: 'uye1K1', className: 'text-center score' },
+                    { data: 'uye1K2', className: 'text-center score' },
+                    { data: 'uye1K3', className: 'text-center score' },
+                    { data: 'uye1K4', className: 'text-center score' },
+                    { data: 'uye1K5', className: 'text-center score' },
+                    { data: 'uye1Toplam', className: 'text-center total' },
+                    { data: 'uye2K1', className: 'text-center score' },
+                    { data: 'uye2K2', className: 'text-center score' },
+                    { data: 'uye2K3', className: 'text-center score' },
+                    { data: 'uye2K4', className: 'text-center score' },
+                    { data: 'uye2K5', className: 'text-center score' },
+                    { data: 'uye2Toplam', className: 'text-center total' },
+                    { data: 'ortalama', className: 'text-center total' },
+                    { data: 'myysPuani', className: 'text-center total' },
+                    { data: 'mysPuani', className: 'text-center total' }
+                ]
+            });
+        });
 
-
-
+        function loadAdayNotBilgileri(direction) {
+            location.reload();
+        }
     </script>
 }
