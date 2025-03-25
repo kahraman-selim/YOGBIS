@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="row">
-    <div class="col-md-12 mb-1">
+    <div class="col-md-12">
         <div class="card shadow-lg rounded-lg">
             <div class="card-header">
                 @{
@@ -50,39 +50,79 @@
                         .table {
                             border: 1px solid #dee2e6 !important;
                             margin-bottom: 0 !important;
+                            width: 100% !important;
                         }
                         .table th, .table td {
                             border: 1px solid #dee2e6 !important;
-                            text-align: center !important;
                             vertical-align: middle !important;
                             padding: 4px !important;
                             font-size: 0.875rem !important;
                         }
+                        .text-start {
+                            text-align: left !important;
+                            padding-left: 8px !important;
+                        }
+                        .text-center {
+                            text-align: center !important;
+                        }
                         .table td.score {
                             font-weight: bold !important;
-                            background-color: #f8f9fa !important;
                         }
                         .table td.total {
                             font-weight: bold !important;
+                        }
+                        .table td.myys-puan {
+                            font-weight: bold !important;
+                            color: #0d6efd !important;
+                            font-size: 0.8rem !important;
+                        }
+                        .puan-yeterli {
+                            color: #198754 !important;
+                        }
+                        .puan-yetersiz {
                             color: #dc3545 !important;
-                            background-color: #f8f9fa !important;
                         }
                         .komisyon-adi {
                             font-size: 0.85em !important;
-                            color: #666 !important;
-                            font-style: italic !important;
-                            background-color: #fff !important;
+                            color: #333 !important;
+                            font-weight: 600 !important;
+                            margin-bottom: 4px !important;
+                            border-bottom: 1px dashed #dee2e6 !important;
+                            padding: 2px 4px !important;
+                            border-radius: 3px !important;
+                        }
+                        .puan-container {
+                            display: flex !important;
+                            justify-content: space-around !important;
+                            align-items: center !important;
+                            gap: 4px !important;
+                        }
+                        .puan-item {
+                            flex: 1 !important;
+                            padding: 2px !important;
+                            min-width: 24px !important;
+                        }
+                        .puan-item.score {
+                            font-weight: bold !important;
+                        }
+                        .puan-item.total {
+                            font-weight: bold !important;
+                            border-left: 1px solid #dee2e6 !important;
+                            margin-left: 2px !important;
+                            padding-left: 4px !important;
                         }
                         .table-hover tbody tr:hover {
                             background-color: rgba(0,0,0,.075) !important;
                         }
                         .table thead th {
-                            background-color: #f8f9fa !important;
                             border-bottom: 2px solid #dee2e6 !important;
                             white-space: nowrap !important;
                         }
                         .dataTables_wrapper .row {
                             margin: 0 !important;
+                        }
+                        .card-body {
+                            padding: 0.75rem !important;
                         }
                     </style>
                     <table id="NotTablosu" class="table table-bordered table-hover">
@@ -90,42 +130,27 @@
                             <tr>
                                 <th rowspan="3" class="text-center align-middle" style="width:fit-content">Sn</th>
                                 <th rowspan="3" class="text-center align-middle" style="width:fit-content">TCKN</th>
-                                <th rowspan="3" class="text-left align-middle" style="width:fit-content">Adı Soyadı</th>
-                                <th rowspan="3" class="text-center align-middle" style="width:fit-content">Ülke Tercihi</th>
-                                <th rowspan="3" class="text-center align-middle" style="width:fit-content">Branşı</th>
+                                <th rowspan="3" class="text-left align-middle" style="width:fit-content; min-width: 150px;">Adı Soyadı</th>
+                                <th rowspan="3" class="text-left align-middle" style="width:fit-content; min-width: 120px;">Ülke Tercihi</th>
+                                <th rowspan="3" class="text-left align-middle" style="width:fit-content; min-width: 120px;">Branşı</th>
                                 <th rowspan="3" class="text-center align-middle" style="width:fit-content">Sınav Tarihi</th>
                                 <th rowspan="3" class="text-center align-middle" style="width:fit-content">Sınav Saati</th>
-                                <th colspan="6" class="text-center align-middle bg-light" style="width:fit-content">Başkan</th>
-                                <th colspan="6" class="text-center align-middle bg-light" style="width:fit-content">Üye</th>
-                                <th colspan="6" class="text-center align-middle bg-light" style="width:fit-content">Üye</th>
+                                <th colspan="1" class="text-center align-middle bg-light" style="width:fit-content">Komisyon Başkanı</th>
+                                <th colspan="1" class="text-center align-middle bg-light" style="width:fit-content">Komisyon Üye 1</th>
+                                <th colspan="1" class="text-center align-middle bg-light" style="width:fit-content">Komisyon Üye 2</th>
                                 <th rowspan="3" class="text-center align-middle" style="width:fit-content">Ort.</th>
                                 <th rowspan="3" class="text-center align-middle" style="width:fit-content">MYYS</th>
                                 <th rowspan="3" class="text-center align-middle" style="width:fit-content">MYS</th>
                             </tr>
                             <tr>
-                                <td colspan="6" class="text-center komisyon-adi">@ViewBag.KomisyonBaskan</td>
-                                <td colspan="6" class="text-center komisyon-adi">@ViewBag.KomisyonUye1</td>
-                                <td colspan="6" class="text-center komisyon-adi">@ViewBag.KomisyonUye2</td>
+                                <td colspan="1" class="text-center komisyon-adi">@ViewBag.KomisyonBaskan</td>
+                                <td colspan="1" class="text-center komisyon-adi">@ViewBag.KomisyonUye1</td>
+                                <td colspan="1" class="text-center komisyon-adi">@ViewBag.KomisyonUye2</td>
                             </tr>
                             <tr>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-1</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-2</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-3</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-4</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-5</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">T</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-1</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-2</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-3</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-4</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-5</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">T</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-1</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-2</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-3</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-4</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">K-5</th>
-                                <th class="text-center align-middle bg-light" style="width:fit-content">T</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">Puanlar</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">Puanlar</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">Puanlar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -152,28 +177,37 @@
                 pageLength: 10,
                 ordering: false,
                 autoWidth: false,
+                scrollX: true,
+                fixedColumns: true,
                 responsive: true,
+                columnDefs: [
+                    { targets: [2,3,4], className: 'text-start' },
+                    { targets: '_all', className: 'text-center' }
+                ],
                 data: [
                     {
                         siraNo: "1",
                         tckn: "13455789011",
                         adiSoyadi: "Selim KAHRAMAN",
-                        ulkeTercihi: "Gürcistan",
+                        ulkeTercihi: "Gürcistan ve Türk Cumhuriyetleri",
                         brans: "Türk Dili ve Edebiyatı",
                         sinavTarihi: "10.10.2025",
                         sinavSaati: "10:30",
+                        baskanAdi: "Prof. Dr. Ahmet KAYA",
                         baskanK1: 15,
                         baskanK2: 15,
                         baskanK3: 15,
                         baskanK4: 15,
                         baskanK5: 15,
                         baskanToplam: 75,
+                        uye1Adi: "Doç. Dr. Mehmet YILMAZ",
                         uye1K1: 15,
                         uye1K2: 15,
                         uye1K3: 15,
                         uye1K4: 15,
                         uye1K5: 15,
                         uye1Toplam: 75,
+                        uye2Adi: "Dr. Öğr. Üyesi Ali DEMİR",
                         uye2K1: 15,
                         uye2K2: 15,
                         uye2K3: 15,
@@ -181,7 +215,7 @@
                         uye2K5: 15,
                         uye2Toplam: 75,
                         ortalama: 75.00,
-                        myysPuani: 78.87,
+                        myysPuani: 78.8768,
                         mysPuani: 76.67
                     },
                     {
@@ -192,18 +226,21 @@
                         brans: "Matematik",
                         sinavTarihi: "10.10.2025",
                         sinavSaati: "11:00",
+                        baskanAdi: "Prof. Dr. Ahmet KAYA",
                         baskanK1: 14,
                         baskanK2: 14,
                         baskanK3: 14,
                         baskanK4: 14,
                         baskanK5: 14,
                         baskanToplam: 70,
+                        uye1Adi: "Doç. Dr. Mehmet YILMAZ",
                         uye1K1: 14,
                         uye1K2: 14,
                         uye1K3: 14,
                         uye1K4: 14,
                         uye1K5: 14,
                         uye1Toplam: 70,
+                        uye2Adi: "Dr. Öğr. Üyesi Ali DEMİR",
                         uye2K1: 14,
                         uye2K2: 14,
                         uye2K3: 14,
@@ -211,55 +248,125 @@
                         uye2K5: 14,
                         uye2Toplam: 70,
                         ortalama: 70.00,
-                        myysPuani: 75.50,
+                        myysPuani: 75.5056,
                         mysPuani: 72.33
+                    },
+                    {
+                        siraNo: "3",
+                        tckn: "35677901233",
+                        adiSoyadi: "Ayşe KAYA",
+                        ulkeTercihi: "Fransa",
+                        brans: "İngilizce",
+                        sinavTarihi: "10.10.2025",
+                        sinavSaati: "11:30",
+                        baskanAdi: "Prof. Dr. Ahmet KAYA",
+                        baskanK1: 11,
+                        baskanK2: 12,
+                        baskanK3: 10,
+                        baskanK4: 11,
+                        baskanK5: 11,
+                        baskanToplam: 55,
+                        uye1Adi: "Doç. Dr. Mehmet YILMAZ",
+                        uye1K1: 12,
+                        uye1K2: 11,
+                        uye1K3: 11,
+                        uye1K4: 10,
+                        uye1K5: 11,
+                        uye1Toplam: 55,
+                        uye2Adi: "Dr. Öğr. Üyesi Ali DEMİR",
+                        uye2K1: 11,
+                        uye2K2: 12,
+                        uye2K3: 11,
+                        uye2K4: 11,
+                        uye2K5: 10,
+                        uye2Toplam: 55,
+                        ortalama: 55.00,
+                        myysPuani: 65.4321,
+                        mysPuani: 58.45
                     }
                 ],
                 columns: [
                     { data: 'siraNo', className: 'text-center' },
                     { data: 'tckn', className: 'text-center' },
-                    { data: 'adiSoyadi', className: 'text-left' },
-                    { data: 'ulkeTercihi', className: 'text-center' },
-                    { data: 'brans', className: 'text-center' },
+                    { data: 'adiSoyadi', className: 'text-start', width: '150px' },
+                    { data: 'ulkeTercihi', className: 'text-start', width: '120px' },
+                    { data: 'brans', className: 'text-start', width: '120px' },
                     { data: 'sinavTarihi', className: 'text-center' },
                     { data: 'sinavSaati', className: 'text-center' },
-                    { data: 'baskanK1', className: 'text-center score' },
-                    { data: 'baskanK2', className: 'text-center score' },
-                    { data: 'baskanK3', className: 'text-center score' },
-                    { data: 'baskanK4', className: 'text-center score' },
-                    { data: 'baskanK5', className: 'text-center score' },
-                    { data: 'baskanToplam', className: 'text-center total' },
-                    { data: 'uye1K1', className: 'text-center score' },
-                    { data: 'uye1K2', className: 'text-center score' },
-                    { data: 'uye1K3', className: 'text-center score' },
-                    { data: 'uye1K4', className: 'text-center score' },
-                    { data: 'uye1K5', className: 'text-center score' },
-                    { data: 'uye1Toplam', className: 'text-center total' },
-                    { data: 'uye2K1', className: 'text-center score' },
-                    { data: 'uye2K2', className: 'text-center score' },
-                    { data: 'uye2K3', className: 'text-center score' },
-                    { data: 'uye2K4', className: 'text-center score' },
-                    { data: 'uye2K5', className: 'text-center score' },
-                    { data: 'uye2Toplam', className: 'text-center total' },
+                    { 
+                        data: null,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            var html = '<div class="komisyon-adi bg-info bg-opacity-10">' + row.baskanAdi + '</div>';
+                            html += '<div class="puan-container">';
+                            html += '<div class="puan-item score">' + row.baskanK1 + '</div>';
+                            html += '<div class="puan-item score">' + row.baskanK2 + '</div>';
+                            html += '<div class="puan-item score">' + row.baskanK3 + '</div>';
+                            html += '<div class="puan-item score">' + row.baskanK4 + '</div>';
+                            html += '<div class="puan-item score">' + row.baskanK5 + '</div>';
+                            var renk = row.baskanToplam >= 60 ? 'puan-yeterli' : 'puan-yetersiz';
+                            html += '<div class="puan-item total"><span class="' + renk + '">' + row.baskanToplam + '</span></div>';
+                            html += '</div>';
+                            return html;
+                        }
+                    },
+                    { 
+                        data: null,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            var html = '<div class="komisyon-adi bg-info bg-opacity-10">' + row.uye1Adi + '</div>';
+                            html += '<div class="puan-container">';
+                            html += '<div class="puan-item score">' + row.uye1K1 + '</div>';
+                            html += '<div class="puan-item score">' + row.uye1K2 + '</div>';
+                            html += '<div class="puan-item score">' + row.uye1K3 + '</div>';
+                            html += '<div class="puan-item score">' + row.uye1K4 + '</div>';
+                            html += '<div class="puan-item score">' + row.uye1K5 + '</div>';
+                            var renk = row.uye1Toplam >= 60 ? 'puan-yeterli' : 'puan-yetersiz';
+                            html += '<div class="puan-item total"><span class="' + renk + '">' + row.uye1Toplam + '</span></div>';
+                            html += '</div>';
+                            return html;
+                        }
+                    },
+                    { 
+                        data: null,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            var html = '<div class="komisyon-adi bg-info bg-opacity-10">' + row.uye2Adi + '</div>';
+                            html += '<div class="puan-container">';
+                            html += '<div class="puan-item score">' + row.uye2K1 + '</div>';
+                            html += '<div class="puan-item score">' + row.uye2K2 + '</div>';
+                            html += '<div class="puan-item score">' + row.uye2K3 + '</div>';
+                            html += '<div class="puan-item score">' + row.uye2K4 + '</div>';
+                            html += '<div class="puan-item score">' + row.uye2K5 + '</div>';
+                            var renk = row.uye2Toplam >= 60 ? 'puan-yeterli' : 'puan-yetersiz';
+                            html += '<div class="puan-item total"><span class="' + renk + '">' + row.uye2Toplam + '</span></div>';
+                            html += '</div>';
+                            return html;
+                        }
+                    },
                     { 
                         data: 'ortalama', 
                         className: 'text-center total',
                         render: function(data) {
-                            return parseFloat(data).toFixed(2);
+                            var puan = parseFloat(data).toFixed(2);
+                            var renk = puan >= 60 ? 'puan-yeterli' : 'puan-yetersiz';
+                            return '<span class="' + renk + '">' + puan + '</span>';
                         }
                     },
                     { 
                         data: 'myysPuani', 
-                        className: 'text-center total',
+                        className: 'text-center myys-puan',
                         render: function(data) {
-                            return parseFloat(data).toFixed(2);
+                            return parseFloat(data).toFixed(4);
                         }
                     },
                     { 
                         data: 'mysPuani', 
                         className: 'text-center total',
                         render: function(data) {
-                            return parseFloat(data).toFixed(2);
+                            var puan = parseFloat(data).toFixed(2);
+                            var renk = puan >= 60 ? 'puan-yeterli' : 'puan-yetersiz';
+                            return '<span class="' + renk + '">' + puan + '</span>';
                         }
                     }
                 ]
