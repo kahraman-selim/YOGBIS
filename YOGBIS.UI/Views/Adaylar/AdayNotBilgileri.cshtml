@@ -44,69 +44,88 @@
                     </a>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="padding: 0.75rem !important;">
                 <div class="table-responsive">
                     <style>
-                        .min-w-score {
-                            width: 40px !important;
-                            max-width: 40px !important;
-                        }
-                        .min-w-total {
-                            width: 50px !important;
-                            max-width: 50px !important;
-                        }
                         .table {
-                            border: 1px solid thin !important;
+                            border: 1px solid #dee2e6 !important;
+                            margin-bottom: 0 !important;
                         }
                         .table th, .table td {
-                            border: 1px solid !important;
+                            border: 1px solid #dee2e6 !important;
                             text-align: center !important;
                             vertical-align: middle !important;
+                            padding: 4px !important;
+                            font-size: 0.875rem !important;
                         }
                         .table td.score {
                             font-weight: bold !important;
+                            background-color: #f8f9fa !important;
                         }
                         .table td.total {
                             font-weight: bold !important;
                             color: #dc3545 !important;
+                            background-color: #f8f9fa !important;
+                        }
+                        .komisyon-adi {
+                            font-size: 0.85em !important;
+                            color: #666 !important;
+                            font-style: italic !important;
+                            background-color: #fff !important;
+                        }
+                        .table-hover tbody tr:hover {
+                            background-color: rgba(0,0,0,.075) !important;
+                        }
+                        .table thead th {
+                            background-color: #f8f9fa !important;
+                            border-bottom: 2px solid #dee2e6 !important;
+                            white-space: nowrap !important;
+                        }
+                        .dataTables_wrapper .row {
+                            margin: 0 !important;
                         }
                     </style>
-                    <table id="NotTablosu" class="table table-bordered table-striped table-hover">
+                    <table id="NotTablosu" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">Sn</th>
-                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">TCKN</th>
-                                <th rowspan="2" class="text-left align-middle" style="width:fit-content">Adı Soyadı</th>
-                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">Ülke Tercihi</th>
-                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">Branşı</th>
-                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">Sınav Tarihi</th>
-                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">Sınav Saati</th>
-                                <th colspan="6" class="text-center align-middle" style="width:fit-content">Başkan</th>
-                                <th colspan="6" class="text-center align-middle" style="width:fit-content">Üye</th>
-                                <th colspan="6" class="text-center align-middle" style="width:fit-content">Üye</th>
-                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">Ort.</th>
-                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">MYYS</th>
-                                <th rowspan="2" class="text-center align-middle" style="width:fit-content">MYS</th>
+                                <th rowspan="3" class="text-center align-middle" style="width:fit-content">Sn</th>
+                                <th rowspan="3" class="text-center align-middle" style="width:fit-content">TCKN</th>
+                                <th rowspan="3" class="text-left align-middle" style="width:fit-content">Adı Soyadı</th>
+                                <th rowspan="3" class="text-center align-middle" style="width:fit-content">Ülke Tercihi</th>
+                                <th rowspan="3" class="text-center align-middle" style="width:fit-content">Branşı</th>
+                                <th rowspan="3" class="text-center align-middle" style="width:fit-content">Sınav Tarihi</th>
+                                <th rowspan="3" class="text-center align-middle" style="width:fit-content">Sınav Saati</th>
+                                <th colspan="6" class="text-center align-middle bg-light" style="width:fit-content">Başkan</th>
+                                <th colspan="6" class="text-center align-middle bg-light" style="width:fit-content">Üye</th>
+                                <th colspan="6" class="text-center align-middle bg-light" style="width:fit-content">Üye</th>
+                                <th rowspan="3" class="text-center align-middle" style="width:fit-content">Ort.</th>
+                                <th rowspan="3" class="text-center align-middle" style="width:fit-content">MYYS</th>
+                                <th rowspan="3" class="text-center align-middle" style="width:fit-content">MYS</th>
                             </tr>
                             <tr>
-                                <th class="text-center align-middle" style="width:fit-content">K-1</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-2</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-3</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-4</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-5</th>
-                                <th class="text-center align-middle" style="width:fit-content">T</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-1</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-2</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-3</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-4</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-5</th>
-                                <th class="text-center align-middle" style="width:fit-content">T</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-1</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-2</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-3</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-4</th>
-                                <th class="text-center align-middle" style="width:fit-content">K-5</th>
-                                <th class="text-center align-middle" style="width:fit-content">T</th>
+                                <td colspan="6" class="text-center komisyon-adi">@ViewBag.KomisyonBaskan</td>
+                                <td colspan="6" class="text-center komisyon-adi">@ViewBag.KomisyonUye1</td>
+                                <td colspan="6" class="text-center komisyon-adi">@ViewBag.KomisyonUye2</td>
+                            </tr>
+                            <tr>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-1</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-2</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-3</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-4</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-5</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">T</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-1</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-2</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-3</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-4</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-5</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">T</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-1</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-2</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-3</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-4</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">K-5</th>
+                                <th class="text-center align-middle bg-light" style="width:fit-content">T</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -124,12 +143,22 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#NotTablosu').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
+                },
+                dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                     "<'row'<'col-sm-12'tr>>" +
+                     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                pageLength: 10,
+                ordering: false,
+                autoWidth: false,
+                responsive: true,
                 data: [
                     {
                         siraNo: "1",
                         tckn: "13455789011",
                         adiSoyadi: "Selim KAHRAMAN",
-                        ulkeTercihi: "Gürcistan ve Türk Cumhuriyetleri",
+                        ulkeTercihi: "Gürcistan",
                         brans: "Türk Dili ve Edebiyatı",
                         sinavTarihi: "10.10.2025",
                         sinavSaati: "10:30",
@@ -151,9 +180,39 @@
                         uye2K4: 15,
                         uye2K5: 15,
                         uye2Toplam: 75,
-                        ortalama: 75,
-                        myysPuani: 78.8666,
+                        ortalama: 75.00,
+                        myysPuani: 78.87,
                         mysPuani: 76.67
+                    },
+                    {
+                        siraNo: "2",
+                        tckn: "24566890122",
+                        adiSoyadi: "Ahmet YILMAZ",
+                        ulkeTercihi: "Almanya",
+                        brans: "Matematik",
+                        sinavTarihi: "10.10.2025",
+                        sinavSaati: "11:00",
+                        baskanK1: 14,
+                        baskanK2: 14,
+                        baskanK3: 14,
+                        baskanK4: 14,
+                        baskanK5: 14,
+                        baskanToplam: 70,
+                        uye1K1: 14,
+                        uye1K2: 14,
+                        uye1K3: 14,
+                        uye1K4: 14,
+                        uye1K5: 14,
+                        uye1Toplam: 70,
+                        uye2K1: 14,
+                        uye2K2: 14,
+                        uye2K3: 14,
+                        uye2K4: 14,
+                        uye2K5: 14,
+                        uye2Toplam: 70,
+                        ortalama: 70.00,
+                        myysPuani: 75.50,
+                        mysPuani: 72.33
                     }
                 ],
                 columns: [
@@ -182,9 +241,27 @@
                     { data: 'uye2K4', className: 'text-center score' },
                     { data: 'uye2K5', className: 'text-center score' },
                     { data: 'uye2Toplam', className: 'text-center total' },
-                    { data: 'ortalama', className: 'text-center total' },
-                    { data: 'myysPuani', className: 'text-center total' },
-                    { data: 'mysPuani', className: 'text-center total' }
+                    { 
+                        data: 'ortalama', 
+                        className: 'text-center total',
+                        render: function(data) {
+                            return parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { 
+                        data: 'myysPuani', 
+                        className: 'text-center total',
+                        render: function(data) {
+                            return parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { 
+                        data: 'mysPuani', 
+                        className: 'text-center total',
+                        render: function(data) {
+                            return parseFloat(data).toFixed(2);
+                        }
+                    }
                 ]
             });
         });
