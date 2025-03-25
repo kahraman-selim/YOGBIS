@@ -14,6 +14,7 @@ namespace YOGBIS.Common.VModels
         public AdaylarVM Adaylar { get; set; }
 
         public string MYSSTarih { get; set; }
+        public int MYSSTarihGun { get; set; }
         public string MYSSSaat { get; set; }
         public string MYSSMulakatYer { get; set; }        
         public string MYSSDurum { get; set; }

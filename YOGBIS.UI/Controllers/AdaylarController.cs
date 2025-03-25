@@ -12,7 +12,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles ="Administrator")]
+    
     public class AdaylarController : Controller
     {
         #region Değişkenler
@@ -29,6 +29,8 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
+        [Authorize(Roles = "Administrator")]
+        [Route("AD10002", Name = "AdaylarIndexRoute")]
         public async Task<IActionResult> Index(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -49,6 +51,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region AdayEkle(Get)
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         public IActionResult AdayEkle()
         {
@@ -58,6 +61,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region AdayEkle(Post)
+        [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult AdayEkle(AdaylarVM model, Guid? AdayId)
@@ -83,6 +87,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Guncelle
+        [Authorize(Roles = "Administrator")]
         public ActionResult Guncelle(Guid? id)
         {
 
@@ -100,6 +105,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region AdaySil
+        [Authorize(Roles = "Administrator")]
         [HttpDelete]
         public IActionResult AdaySil(Guid id)
         {
@@ -112,6 +118,15 @@ namespace YOGBIS.UI.Controllers
             else
                 return Json(new { success = data.IsSuccess, message = data.Message });
 
+        }
+        #endregion
+
+        #region AdayNotBilgileri
+        [Authorize(Roles = "Administrator, CommissionerHead")]
+        [Route("AD10003", Name = "AdayNotBilgileriRoute")]
+        public IActionResult AdayNotBilgileri()
+        {
+            return View();
         } 
         #endregion
     }
