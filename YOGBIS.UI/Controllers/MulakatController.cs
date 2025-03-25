@@ -181,6 +181,32 @@ namespace YOGBIS.UI.Controllers
             return Json(new { success = false, message = result.Message });
         }
         #endregion
+
+        #region SinavIptal
+        [HttpPost]
+        public async Task<IActionResult> SinavIptal(Guid id, string aciklama)
+        {
+            try
+            {
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+                var adayMYS = await _adaylarBE.GetirAdayMYSSBilgileri(id);
+                if (adayMYS != null)
+                {
+                    adayMYS.SinavIptal = true;
+                    adayMYS.SinavIptalAck = aciklama;
+                    var data = _adaylarBE.AdaySinavIptalGuncelle(adayMYS,user);
+                    TempData["Success"] = "Sınav iptal işlemi başarıyla gerçekleştirildi.";
+                    return Json(new { success = true });
+                }
+                return Json(new { success = false, message = "Kayıt bulunamadı." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Sınav iptal işlemi sırasında bir hata oluştu." });
+            }
+        }
+        #endregion
     }
 
     public static class ControllerExtensions

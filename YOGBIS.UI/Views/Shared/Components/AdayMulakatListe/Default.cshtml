@@ -52,7 +52,7 @@
                                 <td class="text-center">@item.MYSSSaat.ToString()</td>
                                 <!--Aday Çağrı Bloğu-->
                                 <td class="text-center">
-                                    @if (!item.CagriDurum.GetValueOrDefault()) // 1. Durum: Çağrılmamış
+                                    @if (!item.CagriDurum.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault()) // 1. Durum: Çağrılmamış
                                     {
                                         <button class="btn btn-sm btn-warning btnCagri" title="Adayı Çağır" data-id="@item.Id" style="font-weight:bold;font-size:13px;width:120px">
                                             <i class="fas fa-bell"></i> Bekleme Odası
@@ -64,13 +64,19 @@
                                             <i class="fas fa-bell"></i> Aday Gelmedi
                                         </button>
                                     }
-                                    else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault()) // 4. Durum: Çağrılmış ve kabul edilmiş (Success)
+                                    else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault()) // 3. Durum: Çağrılmış ve kabul edilmiş (Success)
                                     {
                                         <button class="btn btn-sm btn-success" title="Aday Bekliyor" style="font-weight:bold;font-size:13px;width:120px" disabled>
                                             <i class="fas fa-bell"></i> Aday Bekliyor
                                         </button>
                                     }
-                                    else if (item.CagriDurum.GetValueOrDefault()) // 3. Durum: Çağrılmış ama kabul edilmemiş (Primary)
+                                    else if (item.CagriDurum.GetValueOrDefault() && item.SinavIptal.GetValueOrDefault()) // 4. Durum: Çağrılmış ve sınav iptal edilmiş
+                            {
+                                        <button class="btn btn-sm btn-danger" title="İptal Edildi" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                            <i class="fas fa-bell"></i> İptal Edildi
+                                        </button>
+                                    }
+                                    else if (item.CagriDurum.GetValueOrDefault()) // 5. Durum: Çağrılmış ama kabul edilmemiş (Primary)
                                     {
                                         <button class="btn btn-sm btn-primary" title="Aday Çağrıldı" style="font-weight:bold;font-size:13px;width:120px" disabled>
                                             <i class="fas fa-bell"></i> Aday Çağrıldı
@@ -79,10 +85,16 @@
                                 </td>
                                 <!--Aday Sınav Bloğu-->
                                 <td class="text-center">
-                                    @if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavaGelmedi.GetValueOrDefault())
+                                    @if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavaGelmedi.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault())
                                     {
                                         <button class="btn btn-sm btn-success btnSinavaAl" title="Adayı Sınava Al" data-id="@item.Id" data-adayid="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px">
                                             <i class="fas fa-door-open"></i> Sınav Odası
+                                        </button>
+                                    }
+                                    else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavaGelmedi.GetValueOrDefault() && item.SinavIptal.GetValueOrDefault())
+                                    {
+                                        <button class="btn btn-sm btn-danger" title="Sınav İptal Edildi" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                            <i class="fas fa-door-open"></i> İptal Edildi
                                         </button>
                                     }
                                     else

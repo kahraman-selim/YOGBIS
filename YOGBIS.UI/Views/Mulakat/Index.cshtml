@@ -32,7 +32,6 @@
     .input-error {
         border: 2px solid red;
     }
-
 </style>
 <!-- Aday Özet Blok -->
 <!-- #region name -->
@@ -65,9 +64,9 @@
                 <p class="text-center font-weight-bold p-1">
                     <input value="Bilgi Formunu Aç" class="btn btn-primary btn-sm ml-1" id="btnBilgiAc" />
                     <input value="Bilgi Formunu Kapat" class="btn btn-primary btn-sm ml-1" style="display:none" id="btnBilgiKapat" />
-                    <input value="Soruları Göster" class="btn btn-info btn-sm ml-1" id="btnSoruGoster" style="display:none"/>
-                    <input value="Soruları Gizle" class="btn btn-primary btn-sm ml-1" id="btnSoruGizle" style="display:none"/>
-                    <input value="Sınavı İptal Et" class="btn btn-danger btn-sm ml-1" id="btnIptal" />
+                    <input value="Soruları Göster" class="btn btn-info btn-sm ml-1" id="btnSoruGoster" style="display:none" />
+                    <input value="Soruları Gizle" class="btn btn-primary btn-sm ml-1" id="btnSoruGizle" style="display:none" />
+                    <input value="Sınavı İptal Et" class="btn btn-danger btn-sm ml-1" id="btnIptal" onclick="sinavIptalModalAc(adayMYSSId)" />
                 </p>
             </div>
         </div>
@@ -248,7 +247,12 @@
                                 </div>
                             </div>
                             <div class="form-row mb-1 justify-content-center">
-                                <button class="btn btn-primary col-md-12" type="submit" data-dismiss="modal" id="btnOk" onclick="kapat()">Kaydet</button>
+                                <div class="col-md-6">
+                                    <button class="btn btn-success col-md-12" data-dismiss="modal" id="btnCancel" onclick="IptalModalKapat">Vazgeç</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-danger col-md-12" type="submit" data-dismiss="modal" id="btnOk" onclick="kapat()">Kaydet</button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -269,12 +273,16 @@
             $("#Ortalama, #MYSPuan").val(0);
             $("#MYSSonuc").val("");
             $("#soruNo").focus();
+             
+             window.adayId = "";
+             window.adayAdi = "";
+             window.Id = "";
 
             // Başlat butonu click eventi
             $('#btnBaslat').on('click', function (e) {
                 e.preventDefault();
                 var soruno = $("#soruNo").val();
-                
+
                 if (soruno > 0) {
                     $("#btnBitir").show();
                     $("#btnBaslat").hide();
@@ -326,7 +334,7 @@
 
             // Aday Not Formu Kaydet butonu click eventi
             $('#btnNotFormKapat').on('click', function () {
-                        
+
                    //1. Kategoriler için
                         var kategoriIds1 = [
                             "#Kategori1-1",
@@ -377,7 +385,7 @@
                             bootbox.alert("KATEGORİ-2 için verilen puanlar birbirine eşit olmalıdır!");
                             return false;
                         }
-                        
+
                         //3. Kategoriler için
                         var kategoriIds3 = [
                             "#Kategori1-3",
@@ -392,8 +400,8 @@
                         var isValid3 = notlar3.every(not => not === notlar3[0]);
 
                         $(kategoriIds3.join(",")).removeClass('input-error');
-                        
-                        
+
+
                         if (!isValid3) {
 
                             $(kategoriIds3.join(",")).each(function() {
@@ -411,9 +419,9 @@
             // Aday Çağrı Butonu
             $("#myTableNoButtons").on("click", ".btnCagri", function () {
                 var btn = $(this);
-                var id = btn.data("id");
-            
-                $.ajax({                    
+                Id = btn.data("id");
+
+                $.ajax({
                     success: function (result) {
                         if (result) {
                             bootbox.alert({
@@ -423,10 +431,10 @@
                                 backdrop: false,
                                 locale: 'tr',
                                 callback: function () {
-                       if (result) {                        
+                       if (result) {
                             $.ajax({
                                 type: "POST",
-                                url: "/Mulakat/AdayCagriDurumGuncelle/" + id,
+                                url: "/Mulakat/AdayCagriDurumGuncelle/" + Id,
                                 success: function () {
                                         // Tabloyu yenile
                                         window.location.reload();
@@ -460,7 +468,7 @@
             // Aday Sınava Al Butonu
             $("#myTableNoButtons").on("click", ".btnSinavaAl", function () {
                 var btn = $(this);
-                var adayId = btn.data("id");
+                Id = btn.data("id");
 
                 $.ajax({
                     success: function (result) {
@@ -475,7 +483,7 @@
                        if (result) {
                             $.ajax({
                                 url: '/Mulakat/GetirAdayBilgileri',
-                                data: { id: adayId },
+                                data: { id: Id },
                                 success: function (data) {
                                     if (data.isSuccess) {
                                         $('#adayadsoyad').text(data.adayAdiSoyadi);
@@ -488,7 +496,7 @@
                             });
                             $.ajax({
                                 type: "POST",
-                                url: "/Mulakat/AdaySinavOdaKabulGuncelle/" + adayId,
+                                url: "/Mulakat/AdaySinavOdaKabulGuncelle/" + Id,
                             });
                           }
                                 }
@@ -959,9 +967,74 @@
 
             $('#komisyonBaskani').change(function() {
                 var selectedKomisyonAd = $(this).val();
-               
+
             });
         });
+    </script>
+
+    <script>
+
+        function IptalModalKapat() {
+            $('#ModalSinavIptal').modal('hide');
+        }
+        
+        function sinavIptalModalAc(id) {
+            Id = id;
+            $('#AciklamaTextArea').val('');
+            $('#ModalSinavIptal').modal('show');
+        }
+
+        function kapat() {
+            var aciklama = $('#AciklamaTextArea').val();
+           
+            if (aciklama != "") {
+                   
+                bootbox.alert({
+                title: 'SON UYARI',
+                message: "Adayın sınavının iptal edileceğinden emin misiniz?",
+                label: 'Evet',
+                backdrop: false,
+                locale: 'tr',
+                callback: function () {
+
+                    $.ajax({
+                    url: '/Mulakat/SinavIptal',
+                    type: 'POST',
+                    data: {
+                        id: Id,
+                        aciklama: aciklama
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            alertify.success('İşlem başarıyla gerçekleştirildi');
+
+                            $('#ModalSinavIptal').modal('hide');
+                            window.location.reload();
+
+                        } else {
+                            alertify.error(response.message || 'Bir hata oluştu');
+                        }
+                    },
+                    error: function () {
+                        alertify.error('İşlem sırasında bir hata oluştu');
+                    }
+                });
+                        }
+                    });                
+            } else {
+                        bootbox.alert({
+                        title: 'UYARI',
+                        message: "İptal nedenini belirten bir açıklama yazınız!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            $('#ModalSinavIptal').modal('show');
+                        }
+                    });                
+            }
+            
+        }
     </script>
 
     <script>
@@ -1039,4 +1112,5 @@
             }
         }
     </script>
+
 }

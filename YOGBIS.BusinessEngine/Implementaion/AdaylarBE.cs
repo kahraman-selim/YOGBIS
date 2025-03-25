@@ -1189,7 +1189,6 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     SinavaGelmedi = x.SinavaGelmedi ?? false,
                     SinavaGelmediAck = x.SinavaGelmediAck,
                     SinavaGeldi = x.SinavaGeldi ?? false,
-                    SinavIptal = x.SinavIptal ?? false,
                     BransId = x.BransId,
                     BransAdi = x.BransAdi.ToString(),
                     UlkeTercihId = x.UlkeTercihId,
@@ -1198,6 +1197,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     DereceAdi = x.DereceAdi.ToString(),
                     KomisyonId = x.KomisyonId,
                     KomisyonSN = x.KomisyonSN,
+                    SinavIptal = x.SinavIptal ?? false,
                     SinavIptalAck = x.SinavIptalAck,
                     MYSSSorulanSoruNo = x.MYSSSorulanSoruNo
                 }).ToList();
@@ -1642,5 +1642,39 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        #region AdayMYSSBilgileriGuncelle
+        public Result<AdayMYSSVM> AdaySinavIptalGuncelle(AdayMYSSVM model, SessionContext user)
+        {
+            var result = new Result<AdayMYSSVM>();
+            try
+            {
+                var data = _unitOfWork.adayMYSSRepository.GetFirstOrDefault(x => x.Id == model.Id);
+                if (data != null)
+                {
+                    data.SinavIptal = model.SinavIptal;
+                    data.SinavIptalAck = model.SinavIptalAck;           
+                    data.KaydedenId = user.LoginId;
+
+                    _unitOfWork.adayMYSSRepository.Update(data);
+                    _unitOfWork.Save();
+
+                    result.Data = model;
+                    result.IsSuccess = true;
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.Message = "Kayıt bulunamadı!";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = $"Bir hata oluştu: {ex.Message}";
+            }
+            return result;
+        }
+        #endregion      
     }
 }
