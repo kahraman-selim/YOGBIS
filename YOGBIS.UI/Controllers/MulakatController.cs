@@ -212,18 +212,22 @@ namespace YOGBIS.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> AdayMulakatSoruGetir(int soruSiraNo, Guid mulakatId, Guid dereceId)
         {
-            var result = _mulakatSorulariBE.MulakatAdaySoruGetir(soruSiraNo, mulakatId, dereceId);
-            
-            if (result.IsSuccess && result.Data != null)
+            try
             {
-                var viewComponentResult = await this.RenderViewComponentToStringAsync("MulakatSoru", result.Data);
+                var viewComponentResult = await this.RenderViewComponentToStringAsync("MulakatSoru", 
+                    new { sorusirano = soruSiraNo, mulakatId = mulakatId, dereceId = dereceId });
+                
                 return Json(new
                 {
                     isSuccess = true,
-                    data = viewComponentResult
+                    data = viewComponentResult,
+                    message = "Soru başarıyla getirildi."
                 });
             }
-            return Json(new { isSuccess = false, message = result.Message });
+            catch (Exception ex)
+            {
+                return Json(new { isSuccess = false, message = "Soru getirme işlemi sırasında bir hata oluştu: " + ex.Message });
+            }
         }
         #endregion
     }

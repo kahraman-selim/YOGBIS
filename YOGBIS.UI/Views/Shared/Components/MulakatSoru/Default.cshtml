@@ -1,42 +1,63 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>
+@model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>
 
-<div class="card shadow-xl rounded-xl col-xl-12">
-    @if (Model != null)
-    {
-        @foreach (var item in Model)
-        {
-            <!--sorular-->
-            <div class="row equal-height-row d-flex flex-wrap">
-                <div class="col-md-3 p-1 d-flex flex-column justify-content-between">
-                    <h6 class="card-header text-center text-info font-weight-bold">@item.SoruKategoriAdi</h6>
-                    <div class="card shadow-lg h-100">
-                        <h6 class="card-header text-center text-danger font-weight-bold">SORU</h6>
-                        <div class="card-body h-100">
-                            <p class="card-text h-100">
-                                @item.Soru
-                            </p>
+@if (Model != null)
+{
+    <!-- Sorular -->
+    <div class="card-body p-2">
+        <div class="row equal-height-row d-flex flex-wrap">
+            @for (int i = 0; i < 4; i++)
+            {
+                var soru = Model.ElementAtOrDefault(i);
+                if (soru != null)
+                {
+                    <div class="col-md-3 p-1 d-flex flex-column justify-content-between">
+                        <h6 class="card-header text-center text-info font-weight-bold p-2">@soru.SoruKategoriTakmaAdi</h6>
+                        <div class="card shadow-sm h-100">
+                            <h6 class="card-header text-center text-danger font-weight-bold p-2">SORU</h6>
+                            <div class="card-body h-100">
+                                <p class="card-text h-100">
+                                    @soru.Soru
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <!-- cevaplar -->
-            <div class="row equal-height-row d-flex flex-wrap">
-                <div class="col-md-3 p-1 d-flex flex-column justify-content-between">
-                    <div class="card shadow-lg h-100">
-                        <h6 class="card-header text-center text-primary font-weight-bold">CEVAP</h6>
-                        <div class="card-body">
-                            <p class="card-text h-100">
-                                @item.Cevap
-                            </p>
+                }
+            }
+        </div>
+
+        <!-- Cevaplar -->
+        <div class="row equal-height-row d-flex flex-wrap mt-2">
+            @for (int i = 0; i < 4; i++)
+            {
+                var soru = Model.ElementAtOrDefault(i);
+                if (soru != null)
+                {
+                    <div class="col-md-3 p-1 d-flex flex-column justify-content-between">
+                        <div class="card shadow-sm h-100">
+                            <h6 class="card-header text-center text-primary font-weight-bold p-2">CEVAP</h6>
+                            <div class="card-body h-100">
+                                <p class="card-text">
+                                    @soru.Cevap
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        }
-    }
-
-    <!-- soru goster buton -->
-    <div class="row m-2">
-        <a class="btn btn-sm text-white w-100 text-capitalize" id="btnSoruBlokKapat" style="font-size:large;background-color:darkorange">SORULARI GİZLE</a>
+                }
+            }
+        </div>
     </div>
+}
+else
+{
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <h6 class="text-center text-danger font-weight-bold">Sorular Bulunamadı</h6>
+            </div>
+        </div>
+    </div>
+}
+<!-- Soru gizle butonu -->
+<div class="card-footer p-2">
+    <a class="btn btn-sm text-white w-100 text-capitalize" id="btnSoruBlokKapat" style="font-size:large;background-color:darkorange">SORULARI GİZLE</a>
 </div>

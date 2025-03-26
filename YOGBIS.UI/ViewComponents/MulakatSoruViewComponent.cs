@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using YOGBIS.BusinessEngine.Contracts;
@@ -14,7 +14,7 @@ namespace YOGBIS.UI.ViewComponents
         }
         public IViewComponentResult Invoke(int sorusirano, Guid? mulakatId = null, Guid? dereceId = null)
         {
-            if (!mulakatId.HasValue && !dereceId.HasValue && sorusirano !> 0)
+            if (!mulakatId.HasValue || !dereceId.HasValue || sorusirano <= 0)
             {
                 return View(null);
             }
