@@ -1549,9 +1549,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         AdayId = aday.AdayId,
                         TC = aday.TC,
                         AdayAdiSoyadi = aday.Adaylar != null ? $"{aday.Adaylar.Ad} {aday.Adaylar.Soyad}" : "",
+                        DereceId = aday.DereceId,
+                        MulakatId = aday.MulakatId,
                         DereceAdi = aday.DereceAdi?.ToString() ?? "",
                         BransAdi = aday.BransAdi?.ToString() ?? "",
                         UlkeTercihAdi = aday.UlkeTercihAdi?.ToString() ?? ""
+                        
                     };
 
                     return new Result<AdayMYSSVM>(true, ResultConstant.RecordFound, adayBilgileri);

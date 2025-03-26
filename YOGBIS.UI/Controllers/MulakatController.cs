@@ -35,7 +35,6 @@ namespace YOGBIS.UI.Controllers
         private readonly IMulakatSorulariBE _mulakatSorulariBE;
         private readonly IDerecelerBE _derecelerBE;
         private readonly ISoruKategorileriBE _soruKategorileriBE;
-        private readonly IMulakatOlusturBE _mulakatOlusturBE;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<MulakatController> _logger;
         private readonly IAdaylarBE _adaylarBE;
@@ -44,14 +43,13 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Dönüştürücüler
-        public MulakatController(IMulakatSorulariBE mulakatSorulariBE, IDerecelerBE derecelerBE, ISoruKategorileriBE soruKategorileriBE,
-    IMulakatOlusturBE mulakatOlusturBE, IUnitOfWork unitOfWork, ILogger<MulakatController> logger, IAdaylarBE adaylarBE, IKullaniciBE kullaniciBE,
+        public MulakatController(IMulakatSorulariBE mulakatSorulariBE, IDerecelerBE derecelerBE, ISoruKategorileriBE soruKategorileriBE, 
+            IUnitOfWork unitOfWork, ILogger<MulakatController> logger, IAdaylarBE adaylarBE, IKullaniciBE kullaniciBE,
     UserManager<Kullanici> userManager)
         {
             _mulakatSorulariBE = mulakatSorulariBE;
             _derecelerBE = derecelerBE;
             _soruKategorileriBE = soruKategorileriBE;
-            _mulakatOlusturBE = mulakatOlusturBE;
             _unitOfWork = unitOfWork;
             _logger = logger;
             _adaylarBE = adaylarBE;
@@ -148,6 +146,8 @@ namespace YOGBIS.UI.Controllers
                         isSuccess = true,
                         adayAdiSoyadi = result.Data.AdayAdiSoyadi,
                         dereceAdi = result.Data.DereceAdi,
+                        dereceId = result.Data.DereceId,
+                        mulakatId = result.Data.MulakatId,
                         bransAdi = result.Data.BransAdi,
                         ulkeTercihAdi = result.Data.UlkeTercihAdi
                     });
@@ -205,6 +205,25 @@ namespace YOGBIS.UI.Controllers
             {
                 return Json(new { success = false, message = "Sınav iptal işlemi sırasında bir hata oluştu." });
             }
+        }
+        #endregion
+
+        #region AdayMulakatSoruGetir
+        [HttpGet]
+        public async Task<IActionResult> AdayMulakatSoruGetir(int soruSiraNo, Guid mulakatId, Guid dereceId)
+        {
+            var result = _mulakatSorulariBE.MulakatAdaySoruGetir(soruSiraNo, mulakatId, dereceId);
+            
+            if (result.IsSuccess && result.Data != null)
+            {
+                var viewComponentResult = await this.RenderViewComponentToStringAsync("MulakatSoru", result.Data);
+                return Json(new
+                {
+                    isSuccess = true,
+                    data = viewComponentResult
+                });
+            }
+            return Json(new { isSuccess = false, message = result.Message });
         }
         #endregion
     }
