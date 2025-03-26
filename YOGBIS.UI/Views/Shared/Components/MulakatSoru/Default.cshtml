@@ -1,9 +1,9 @@
 @model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>
+<div class="card-body p-2">
+    @if (Model != null)
+    {
 
-@if (Model != null)
-{
-    <!-- Sorular -->
-    <div class="card-body p-2">
+        <!-- Sorular -->
         <div class="row equal-height-row d-flex flex-wrap">
             @for (int i = 0; i < 4; i++)
             {
@@ -45,20 +45,19 @@
                 }
             }
         </div>
-    </div>
-    <!-- Soru gizle butonu -->
-    <div class="card-footer p-2">
-        <a class="btn btn-sm text-white w-100 text-capitalize" id="btnSoruBlokKapat" style="font-size:large;background-color:darkorange">SORULARI GİZLE</a>
-    </div>
-}
-else
-{
-    <div class="card-body">
+
+
+        <!-- Soru gizle butonu -->
+        <div class="card-footer p-2">
+            <a class="btn btn-sm text-white w-100 text-capitalize" id="btnSoruBlokKapat" style="font-size:large;background-color:darkorange">SORULARI GİZLE</a>
+        </div>
+    }
+    else
+    {
         <div class="row">
             <div class="col-md-12">
                 <h6 class="text-center text-danger font-weight-bold">Sorular Bulunamadı</h6>
             </div>
         </div>
-    </div>
-}
-
+    }
+</div>
