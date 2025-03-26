@@ -214,7 +214,7 @@ namespace YOGBIS.UI.Controllers
         {
             try
             {
-                if (soruSiraNo <= 0 || mulakatId == Guid.Empty || dereceId == Guid.Empty)
+                if (soruSiraNo > 0 && mulakatId == Guid.Empty && dereceId == Guid.Empty)
                 {
                     return Json(new { isSuccess = false, message = "Geçersiz parametreler!" });
                 }
