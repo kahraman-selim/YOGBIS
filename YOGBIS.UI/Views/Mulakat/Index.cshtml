@@ -186,14 +186,14 @@
 
                 // Başlat butonu click eventi
                 $('#btnBaslat').on('click', function (e) {
-                    e.preventDefault();
-                    var soruno = $("#soruNo").val();
 
-                    if (soruno > 0) {
-                        $("#btnBitir").show();
-                        $("#btnBaslat").hide();
-                        $('#soruBlok').show();
-                        document.getElementById("cardBtnGrup").style = "height:50px";
+                        var soruno = $("#soruNo").val();
+
+                        if (soruno > 0) {
+                            $("#btnBitir").show();
+                            $("#btnBaslat").hide();
+                            $('#soruBlok').show();
+                            document.getElementById("cardBtnGrup").style = "height:50px";
                             $.ajax({
                                 type: "GET",
                                 url: "/Mulakat/AdayMulakatSoruGetir",
@@ -221,19 +221,20 @@
                             });
 
                             $("#soruNo").focus();
-                    }
-                    else {
-                        bootbox.alert({
-                            title: 'UYARI',
-                            message: "Soru Numarası Yazınız!",
-                            label: 'Tamam',
-                            backdrop: false,
-                            locale: 'tr',
-                            callback: function () {
-                                $("#soruNo").focus();
-                            }
-                        });
-                    }
+                        }
+                        else {
+                            bootbox.alert({
+                                title: 'UYARI',
+                                message: "Soru Numarası Yazınız!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr',
+                                callback: function () {
+                                    $("#soruNo").focus();
+                                }
+                            });
+                        }
+
                 });
 
                 // Bitir butonu click eventi
@@ -260,7 +261,6 @@
                 $('#btnSoruBlokKapat').on('click', function () {
                     $('#soruBlok').hide();
                     document.getElementById("btnSoruGoster").style.display = "inline";
-                    document.getElementById("btnSoruGizle").style.display = "none";
                 });
 
                 // Aday Not Formu Kaydet butonu click eventi

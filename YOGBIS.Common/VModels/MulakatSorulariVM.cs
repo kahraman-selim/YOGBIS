@@ -71,6 +71,8 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Mülakat Dönemi")]
         public string MulakatDonemi { get; set; }
 
+        public bool MulakatDurumu { get; set; }
+
         [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public string KaydedenId { get; set; }
 

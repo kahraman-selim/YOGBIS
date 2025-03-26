@@ -214,19 +214,19 @@ namespace YOGBIS.UI.Controllers
         {
             try
             {
-                var viewComponentResult = await this.RenderViewComponentToStringAsync("MulakatSoru", 
-                    new { sorusirano = soruSiraNo, mulakatId = mulakatId, dereceId = dereceId });
-                
-                return Json(new
+                if (soruSiraNo <= 0 || mulakatId == Guid.Empty || dereceId == Guid.Empty)
                 {
-                    isSuccess = true,
-                    data = viewComponentResult,
-                    message = "Soru başarıyla getirildi."
-                });
+                    return Json(new { isSuccess = false, message = "Geçersiz parametreler!" });
+                }
+
+                var viewComponentResult = await this.RenderViewComponentToStringAsync("MulakatSoru", 
+                    new { sorusirano = soruSiraNo, mulakatId, dereceId });
+
+                return Json(new { isSuccess = true, data = viewComponentResult });
             }
             catch (Exception ex)
             {
-                return Json(new { isSuccess = false, message = "Soru getirme işlemi sırasında bir hata oluştu: " + ex.Message });
+                return Json(new { isSuccess = false, message = "Bir hata oluştu: " + ex.Message });
             }
         }
         #endregion

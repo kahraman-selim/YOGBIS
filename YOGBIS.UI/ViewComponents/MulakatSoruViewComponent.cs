@@ -12,7 +12,7 @@ namespace YOGBIS.UI.ViewComponents
         {
             _mulakatSorulariBE = mulakatSorulariBE;
         }
-        public IViewComponentResult Invoke(int sorusirano, Guid? mulakatId = null, Guid? dereceId = null)
+        public IViewComponentResult Invoke(int sorusirano, Guid? mulakatId, Guid? dereceId)
         {
             if (!mulakatId.HasValue || !dereceId.HasValue || sorusirano <= 0)
             {

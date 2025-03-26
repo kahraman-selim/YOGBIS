@@ -511,6 +511,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             var data = _unitOfWork.mulakatSorulariRepository.GetAll(x=>x.SoruSiraNo==sorusirano, 
                 includeProperties: "Kullanici,SoruDereceler,SoruKategoriler,Mulakatlar")
+                .Where(x => x.MulakatId == mulakatId && x.DereceId == dereceId && x.Mulakatlar.Durumu==true)
                 .OrderBy(x => x.DereceId)
                 .ThenBy(y => y.SoruSiraNo)
                 .ThenBy(z => z.SoruKategoriSiraNo).ToList();
@@ -539,6 +540,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         SinavKategoriTurAdi = item.SinavKategoriTurAdi,
                         MulakatId = item.MulakatId,
                         MulakatDonemi = item.Mulakatlar.MulakatAdi,
+                        MulakatDurumu= item.Mulakatlar.Durumu,
                         KayitTarihi = item.KayitTarihi,
                         KaydedenId = item.Kullanici != null ? item.KaydedenId : string.Empty,
                         KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
