@@ -16,9 +16,18 @@ namespace YOGBIS.UI.ViewComponents
             _adaylarBE = adaylarBE;
         }
 
-        public IViewComponentResult Invoke(AdayBasvuruBilgileriVM model)
+        public IViewComponentResult Invoke(string TC)
         {
-            return View(model);
+            if (TC==null)
+            {
+                return View(null);
+            }
+            var requestmodel = _adaylarBE.AdayBasvuruBilgileriniGetir(TC);
+            if (requestmodel.IsSuccess)
+            {
+                return View(requestmodel.Data);
+            }
+            return View(null);
         }
     }
 }

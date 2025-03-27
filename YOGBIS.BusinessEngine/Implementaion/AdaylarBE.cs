@@ -1571,7 +1571,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region GetirAdayBasvuruBilgileri
-        public Result<AdayBasvuruBilgileriVM> GetirAdayBasvuruBilgileri(Guid adayId)
+        public Result<AdayBasvuruBilgileriVM> GetirAdayBasvuruBilgileri(Guid? adayId)
         {
             try
             {

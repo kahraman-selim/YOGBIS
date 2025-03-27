@@ -41,7 +41,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<bool> AdaySinavOdaAlindiGuncelle(Guid id);
         Result<string> AdayIletisimBilgileriGetir(Guid adayId);
         Result<AdayMYSSVM> GetirAdayMYSSBilgileri(Guid id);
-        Result<AdayBasvuruBilgileriVM> GetirAdayBasvuruBilgileri(Guid adayId);
+        Result<AdayBasvuruBilgileriVM> GetirAdayBasvuruBilgileri(Guid? adayId);
         Result<AdayMYSSVM> AdaySinavIptalGuncelle(AdayMYSSVM model, SessionContext user);
     }
 }

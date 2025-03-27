@@ -149,7 +149,8 @@ namespace YOGBIS.UI.Controllers
                         dereceId = result.Data.DereceId,
                         mulakatId = result.Data.MulakatId,
                         bransAdi = result.Data.BransAdi,
-                        ulkeTercihAdi = result.Data.UlkeTercihAdi
+                        ulkeTercihAdi = result.Data.UlkeTercihAdi,
+                        tC = result.Data.TC
                     });
                 }
 
@@ -164,21 +165,37 @@ namespace YOGBIS.UI.Controllers
 
         #region AdayBasvuruBilgileriGetir
         [HttpGet]
-        public async Task<IActionResult> AdayBasvuruBilgileriGetir(Guid adayId)
+        public async Task<IActionResult> AdayBasvuruBilgileriGetir(string TC)
         {
-            Result<AdayBasvuruBilgileriVM> result = _adaylarBE.GetirAdayBasvuruBilgileri(adayId);
-            Console.WriteLine($"GetirAdayBasvuruBilgileri sonucu: {result.IsSuccess}, Mesaj: {result.Message}, AdayId: {adayId}");
-            
-            if (result.IsSuccess && result.Data != null)
+            try
             {
-                var viewComponentResult = await this.RenderViewComponentToStringAsync("AdayBilgi", result.Data);
-                return Json(new
+                if ( TC == null)
                 {
-                    success = true,
-                    data = viewComponentResult
-                });
+                    return Json(new { isSuccess = false, message = "Geçersiz parametreler!" });
+                }
+
+                var viewComponentResult = await this.RenderViewComponentToStringAsync("AdayBilgi", new { TC });
+                return Json(new { isSuccess = true, data = viewComponentResult });
             }
-            return Json(new { success = false, message = result.Message });
+            catch (Exception ex)
+            {
+
+                return Json(new { isSuccess = false, message = "Bir hata oluştu: " + ex.Message });
+            }
+            
+            //Result<AdayBasvuruBilgileriVM> result = _adaylarBE.GetirAdayBasvuruBilgileri(adayId);
+            //Console.WriteLine($"GetirAdayBasvuruBilgileri sonucu: {result.IsSuccess}, Mesaj: {result.Message}, AdayId: {adayId}");
+            
+            //if (result.IsSuccess && result.Data != null)
+            //{
+            //    var viewComponentResult = await this.RenderViewComponentToStringAsync("AdayBilgi", result.Data);
+            //    return Json(new
+            //    {
+            //        success = true,
+            //        data = viewComponentResult
+            //    });
+            //}
+            //return Json(new { success = false, message = result.Message });
         }
         #endregion
 

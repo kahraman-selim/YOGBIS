@@ -65,7 +65,7 @@
                     <input value="Bilgi Formunu Aç" class="btn btn-primary btn-sm ml-1" id="btnBilgiAc" />
                     <input value="Bilgi Formunu Kapat" class="btn btn-primary btn-sm ml-1" style="display:none" id="btnBilgiKapat" />
                     <input value="Soruları Göster" class="btn btn-info btn-sm ml-1" id="btnSoruGoster" style="display:none" />
-                    <input value="Soruları Gizle" class="btn btn-primary btn-sm ml-1" id="btnSoruGizle" style="display:none" />
+                    <input value="Soruları Gizle" class="btn btn-info btn-sm ml-1" id="btnSoruGizle" style="display:none" />
                     <input value="Sınavı İptal Et" class="btn btn-danger btn-sm ml-1" id="btnIptal" onclick="sinavIptalModalAc(adayMYSSId)" />
                 </p>
             </div>
@@ -79,29 +79,36 @@
     <div class="col-lg-12">
         <input type="number" id="soruNo" class="form-control font-weight-bold text-center text-danger" style="font-size:22px;border-color:darkred;border-style:double" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" min="1" placeholder="Soru Numarasını Giriniz" disabled>
         <input type="submit" value="Mülakatı Başlat" class="btn btn-primary w-100 mt-1" id="btnBaslat" />
-        <input type="submit" value="Mülakatı Bitir" class="btn btn-danger w-100 mt-1" id="btnBitir" />
+        <input type="submit" value="Mülakatı Bitir" class="btn btn-danger w-100 mt-1 mb-2" id="btnBitir" />
     </div>
 </div>
 <!-- #endregion -->
 <!--Aday Bilgi Blok-->
 <!-- #region name -->
 <div class="row col-xl-12 m-0 mt-2" id="AdayBilgiBlok" disable>
-    @await Component.InvokeAsync("AdayBilgi")
+    <div id="adayBilgiContainer" class="card shadow-sm">
+        @await Component.InvokeAsync("AdayBilgi")
+    </div>    
 </div>
 <!-- #endregion -->
 <!-- Not Blok-->
 <!-- #region name -->
-<div class="row col-xl-12 m-0 mt-2 disable" id="AdayNotBlok">
+<div class="row col-xl-12 m-0 m-0 mt-2 disable" id="AdayNotBlok">
     @await Component.InvokeAsync("AdayNot")
 </div>
 <!-- #endregion -->
 <!-- Soru Blok -->
 <!-- #region name -->
-<div class="row col-xl-12 m-0 mt-2" id="soruBlok" style="display:none;">
-    <div class="col-md-12 px-0">
+<div class="row col-xl-12 m-0 " id="soruBlok" style="display:none;">
+    <div class="col-md-12 p-1">
         <div id="mulakatSoruContainer" class="card shadow-sm">
             @await Component.InvokeAsync("MulakatSoru")
         </div>
+    <!-- Soru gizle butonu -->
+    </div class="col-md-12 px-0">
+        <a class="btn btn-sm text-white w-100 text-capitalize btnSoruBlokKapat" id="btnSoruBlokKapat" style="font-size:large;background-color:darkorange">SORULARI GİZLE</a>
+    <div>
+
     </div>
 </div>
 <!-- #endregion -->
@@ -182,7 +189,8 @@
                  window.adayAdi = "";
                  window.Id = "";
                  window.derceId="";
-                 window.mulakatId="";             
+                 window.mulakatId="";
+                 window.tC="";
 
                 // Başlat butonu click eventi
                 $('#btnBaslat').on('click', function (e) {
@@ -192,8 +200,11 @@
                         if (soruno > 0) {
                             $("#btnBitir").show();
                             $("#btnBaslat").hide();
+                            $("#btnSoruGoster").hide();
+                            $("#btnSoruGizle").show();
                             $('#soruBlok').show();
                             document.getElementById("cardBtnGrup").style = "height:50px";
+                            
                             $.ajax({
                                 type: "GET",
                                 url: "/Mulakat/AdayMulakatSoruGetir",
@@ -234,7 +245,6 @@
                                 }
                             });
                         }
-
                 });
 
                 // Bitir butonu click eventi
@@ -248,19 +258,22 @@
                     document.getElementById("btnBilgiKapat").style.display = "none";
                     document.getElementById("btnBilgiAc").style.display = "inline";
                     document.getElementById("btnIptal").style.display = "none";
+                    document.getElementById("btnSoruBlokKapat").style.display = "none";
+                    document.getElementById("btnSoruGizle").style.display = "none";
                 });
 
                 // Bilgi Formu Kapat butonu click eventi
-                $('#btnBilgiFormKapat').on('click', function () {
+                $('btnBilgiFormKapat').on('click', function () {
                     $('#AdayBilgiBlok').hide();
                     document.getElementById("btnBilgiKapat").style.display = "none";
                     document.getElementById("btnBilgiAc").style.display = "inline";
                 });
 
                 // Soru Blok Kapat butonu click eventi
-                $('#btnSoruBlokKapat').on('click', function () {
+                $('.btnSoruBlokKapat').on('click', function () {
                     $('#soruBlok').hide();
                     document.getElementById("btnSoruGoster").style.display = "inline";
+                    document.getElementById("btnSoruGizle").style.display = "none";
                 });
 
                 // Aday Not Formu Kaydet butonu click eventi
@@ -423,6 +436,7 @@
                                             $('#adayulke').text(data.ulkeTercihAdi);
                                             dereceId=data.dereceId;                                        
                                             mulakatId=data.mulakatId;
+                                            tC=data.tC;
 
                                             $('#cardBtnGrup').show();
                                             $('#soruNo').prop('disabled', false).focus();
@@ -464,6 +478,32 @@
                     document.getElementById("soruNo").focus();
                     document.getElementById("btnBilgiKapat").style.display = "inline";
                     document.getElementById("btnBilgiAc").style.display = "none";
+                    document.getElementById("cardBtnGrup").style = "height:50px";
+                    alert(tC);
+
+                    $.ajax({
+                        type:"GET",
+                        url: "/Mulakat/AdayBasvuruBilgileriGetir",
+                        data: { TC: tC },
+                        
+                        success: function (response) {
+                        if (response.isSuccess) {
+                            $("#adayBilgiContainer").html(response.data);
+                        } else {
+                            bootbox.alert({
+                                title: 'HATA',
+                                message: response.message || "Aday Bilgileri getirme işlemi başarısız oldu!"
+                            });
+                        }
+                       },
+                        error: function () {
+                            bootbox.alert({
+                                title: 'HATA',
+                                message: "İşlem sırasında bir hata oluştu!"
+                            });
+                        }
+                    });
+
                 });
 
                 $('#btnBilgiKapat').on('click', function () {
@@ -476,17 +516,15 @@
                 $('#btnSoruGoster').on('click', function () {
                     document.getElementById("btnSoruGizle").style.display = "inline";
                     document.getElementById("btnSoruGoster").style.display = "none";
-
                     $('#soruBlok').show();
                     document.getElementById("soruNo").focus();
                 });
 
+
                 $('#btnSoruGizle').on('click', function () {
                     document.getElementById("btnSoruGoster").style.display = "inline";
                     document.getElementById("btnSoruGizle").style.display = "none";
-
-                    $('#soruBlok').hide();
-                    document.getElementById("soruNo").focus();
+                    $('#soruBlok').hide();                    
                 });
 
                 // Komisyon-1 not bloğu
