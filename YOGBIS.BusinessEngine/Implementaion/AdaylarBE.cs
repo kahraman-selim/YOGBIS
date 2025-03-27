@@ -322,8 +322,13 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 }
                 
                 System.Diagnostics.Debug.WriteLine("Business Engine - Repository'den veri çekiliyor");
-                var data = _unitOfWork.adayBasvuruBilgileriRepository.GetAll(x => x.TC == TC).ToList();
-                
+                var data = _unitOfWork.adayBasvuruBilgileriRepository.GetAll()
+                    .Include(x => x.Kullanici)
+                    .Include(x => x.Adaylar)                    
+                    .Where(x=>x.TC==TC)
+                    .ToList();
+
+
                 if (data != null && data.Any())
                 {
                     System.Diagnostics.Debug.WriteLine($"Business Engine - {data.Count} adet veri bulundu. TC: {TC}");
@@ -331,8 +336,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     var adaylar = data.Select(data => new AdayBasvuruBilgileriVM()
                     {
                         Id = data.Id,
-                        TC = data.TC,
-                        Askerlik=data.Askerlik,
+                        TC = data.TC,                       
+                        Askerlik =data.Askerlik,
                         KurumKod = data.KurumKod,
                         KurumAdi = data.KurumAdi,
                         Ogrenim = data.Ogrenim,
@@ -384,6 +389,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         EDurum = data.EDurum,
                         MDurum = data.MDurum,
                         PDurum = data.PDurum,
+                        GenelDurum = data.GenelDurum,
+                        DogumYeri = !string.IsNullOrEmpty(data.Adaylar?.DogumYeri) ? data.Adaylar.DogumYeri : "",
+
+                        Yas = !string.IsNullOrEmpty(data.Adaylar?.DogumTarihi2) && DateTime.TryParse(data.Adaylar.DogumTarihi2, out DateTime dogumTarihi) ? (int)((DateTime.Now - dogumTarihi).TotalDays / 365.25) : 0,
+                        
+                        IkametBilgisi = data.Adaylar.AdayIletisimBilgileri != null ? 
+                        data.Adaylar.AdayIletisimBilgileri.Select(x => x.IkametIl).FirstOrDefault() + "/" + 
+                        data.Adaylar.AdayIletisimBilgileri.Select(x => x.IkametIlce).FirstOrDefault()  : "",                       
+
+                        YLisans = data.YLisans,
+                        Doktora = data.Doktora,
                         Sendika = data.Sendika,
                         SendikaAck = data.SendikaAck,
                         MYYSSoruItiraz = data.MYYSSoruItiraz,

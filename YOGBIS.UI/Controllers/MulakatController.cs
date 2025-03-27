@@ -183,19 +183,6 @@ namespace YOGBIS.UI.Controllers
                 return Json(new { isSuccess = false, message = "Bir hata oluştu: " + ex.Message });
             }
             
-            //Result<AdayBasvuruBilgileriVM> result = _adaylarBE.GetirAdayBasvuruBilgileri(adayId);
-            //Console.WriteLine($"GetirAdayBasvuruBilgileri sonucu: {result.IsSuccess}, Mesaj: {result.Message}, AdayId: {adayId}");
-            
-            //if (result.IsSuccess && result.Data != null)
-            //{
-            //    var viewComponentResult = await this.RenderViewComponentToStringAsync("AdayBilgi", result.Data);
-            //    return Json(new
-            //    {
-            //        success = true,
-            //        data = viewComponentResult
-            //    });
-            //}
-            //return Json(new { success = false, message = result.Message });
         }
         #endregion
 
