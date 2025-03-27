@@ -36,7 +36,7 @@
                                 <td>@($"{item.HizmetYil}/{item.HizmetAy}/{item.HizmetGun}")</td>
                                 <td>@($"{item.Derece}/{item.Kademe}")</td>
                                 <td>@item.IlkGorevKaydi</td>
-                                <td>@item.GorevIptalAck/@item.GorevIptalBAOK/@item.GorevIptalBrans/@item.GorevIptalYil </td>
+                                <td>@Html.Raw(GorevIptalBilgisi(item))</td>
                                 <td>@(item.AdliSicilBelge != null && item.AdliSicilBelge.Length > 0 ? "Var" : "Yok")</td>
                                 <td>@Html.Raw(GetDilBilgisi(item))</td>
                                 <td>@Html.Raw(GetEgitimBilgisi(item))</td>
@@ -77,11 +77,21 @@
         return string.IsNullOrEmpty(dilBilgisi) ? "-" : dilBilgisi;
     }
 
+    private string GorevIptalBilgisi(YOGBIS.Common.VModels.AdayBasvuruBilgileriVM item)
+    {
+        var giptal = new List<string>();
+        if (!string.IsNullOrEmpty(item.GorevIptalAck)) giptal.Add(item.GorevIptalAck);
+        if (!string.IsNullOrEmpty(item.GorevIptalBAOK)) giptal.Add(item.GorevIptalBAOK);
+        if (!string.IsNullOrEmpty(item.GorevIptalBrans)) giptal.Add(item.GorevIptalBrans);
+        if (!string.IsNullOrEmpty(item.GorevIptalYil)) giptal.Add(item.GorevIptalYil);
+        return giptal.Any() ? string.Join(" / ", giptal) : "-";
+    }
+
     private string GetEgitimBilgisi(YOGBIS.Common.VModels.AdayBasvuruBilgileriVM item)
     {
         var egitim = new List<string>();
-        if (!string.IsNullOrEmpty(item.YLisans) && item.YLisans.ToUpper() == "E") egitim.Add("YL");
-        if (!string.IsNullOrEmpty(item.Doktora) && item.Doktora.ToUpper() == "E") egitim.Add("DR");
+        if (!string.IsNullOrEmpty(item.YLisans)) egitim.Add(item.YLisans);
+        if (!string.IsNullOrEmpty(item.Doktora)) egitim.Add(item.Doktora);
         return egitim.Any() ? string.Join(", ", egitim) : "-";
     }
 }
