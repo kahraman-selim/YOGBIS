@@ -106,9 +106,9 @@ namespace YOGBIS.UI.Controllers
             var user = _userManager.FindByIdAsync(id);
 
             if (user.Result.OturumDurumu == true) // Oturum Açılmışsa 
-                user.Result.Aktif = false; // Oturumu kapalı olarak değiştir
+                user.Result.OturumDurumu = false; // Oturumu kapalı olarak değiştir
             else
-                user.Result.Aktif = true;
+                user.Result.OturumDurumu = true;
 
             _userManager.UpdateAsync(user.Result);
 
