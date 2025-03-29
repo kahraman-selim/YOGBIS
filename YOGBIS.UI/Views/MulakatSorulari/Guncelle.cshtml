@@ -190,11 +190,16 @@
                 callback: function (result) {
                     if (result) {
 
+                        var mulakaId = $("#MulakatListesi").val();              
+                        var dereceId = $("#DereceListesi").val();
                         var soruSiraNo = $("#SoruSiraNo").val();
                         var iptal=$("#soruIptal").val();
+                        alert("Mülakat Id: " + mulakaId  + " Decece Id: " + dereceId  + " SN : " + soruSiraNo + " İptal : " + iptal);
 
                         var model = {
 
+                            MulakatId: mulakaId,
+                            DereceId: dereceId,
                             SoruSiraNo: soruSiraNo,
                             Iptal: iptal // Seçilen değere göre true/false
                         };

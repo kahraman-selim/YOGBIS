@@ -92,6 +92,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     .Include(x => x.SoruKategoriler)
                     .Include(x => x.Mulakatlar)
                     .Include(x => x.Kullanici)
+                    .Where(x => x.Mulakatlar.Durumu == true)
                     .OrderBy(x => x.DereceId)
                     .ThenBy(y => y.SoruSiraNo)
                     .ThenBy(z => z.SoruKategoriSiraNo);
@@ -197,7 +198,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             if (id != null) 
             {
-                var data = _unitOfWork.mulakatSorulariRepository.GetFirstOrDefault(x=>x.MulakatSorulariId==id, includeProperties: "Kullanici,SoruDereceler,SoruKategoriler,Mulakatlar");
+                var data = _unitOfWork.mulakatSorulariRepository.GetFirstOrDefault(x=>x.MulakatSorulariId==id && x.Mulakatlar.Durumu==true, 
+                    includeProperties: "Kullanici,SoruDereceler,SoruKategoriler,Mulakatlar");
 
                 if (data != null) 
                 {
@@ -363,7 +365,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 var kayitlar = _unitOfWork.mulakatSorulariRepository
                     .GetAll()
-                    .Where(x => x.SoruSiraNo == model.SoruSiraNo)
+                    .Where(x => x.SoruSiraNo == model.SoruSiraNo && x.DereceId==model.DereceId && x.MulakatId==model.MulakatId)
                     .ToList();
 
                 if (!kayitlar.Any())
@@ -511,7 +513,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             var data = _unitOfWork.mulakatSorulariRepository.GetAll(x=>x.SoruSiraNo==sorusirano, 
                 includeProperties: "Kullanici,SoruDereceler,SoruKategoriler,Mulakatlar")
-                .Where(x => x.MulakatId == mulakatId && x.DereceId == dereceId && x.Mulakatlar.Durumu==true)
+                .Where(x => x.MulakatId == mulakatId && x.DereceId == dereceId && x.Mulakatlar.Durumu==true && x.Iptal==true)
                 .OrderBy(x => x.DereceId)
                 .ThenBy(y => y.SoruSiraNo)
                 .ThenBy(z => z.SoruKategoriSiraNo).ToList();
