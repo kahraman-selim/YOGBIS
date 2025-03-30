@@ -79,30 +79,33 @@ namespace YOGBIS.Common.VModels
         public virtual ICollection<DosyaGaleriVM> DosyaGaleri { get; set; }
 
         [Display(Name = "DDK Bilgileri")]
-        public virtual ICollection<AdayDDKVM> AdayDDKs { get; set; }
+        public virtual ICollection<AdayDDKVM> AdayDDK { get; set; }
 
         [Display(Name = "Görev Kayıtları")]
-        public virtual ICollection<AdayGorevKaydiVM> AdayGorevKaydis { get; set; }
+        public virtual ICollection<AdayGorevKaydiVM> AdayGorevKaydi { get; set; }
+
+        [Display(Name = "Sınav Notlar")]
+        public virtual ICollection<AdaySinavNotlarVM> AdaySinavNotlar { get; set; }
 
         [Display(Name = "E-posta Adresleri")]
-        public virtual ICollection<EPostaAdresleriVM> EpostaAdresleris { get; set; }
+        public virtual ICollection<EPostaAdresleriVM> EpostaAdresleri { get; set; }
 
         [Display(Name = "Telefon Numaraları")]
-        public virtual ICollection<TelefonlarVM> Telefonlars { get; set; }
+        public virtual ICollection<TelefonlarVM> Telefonlar { get; set; }
 
         [Display(Name = "İkamet Adresleri")]
-        public virtual ICollection<IkametAdresleriVM> IkametAdresleris { get; set; }
+        public virtual ICollection<IkametAdresleriVM> IkametAdresleri { get; set; }
 
         [Display(Name = "Başvuru Bilgileri")]
-        public virtual ICollection<AdayBasvuruBilgileriVM> AdayBasvuruBilgileris { get; set; }
+        public virtual ICollection<AdayBasvuruBilgileriVM> AdayBasvuruBilgileri { get; set; }
 
         [Display(Name = "İletişim Bilgileri")]
-        public virtual ICollection<AdayIletisimBilgileriVM> AdayIletisimBilgileris { get; set; }
+        public virtual ICollection<AdayIletisimBilgileriVM> AdayIletisimBilgileri { get; set; }
 
         [Display(Name = "MYSS Bilgileri")]
-        public virtual ICollection<AdayMYSSVM> AdayMYSSs { get; set; }
+        public virtual ICollection<AdayMYSSVM> AdayMYSS { get; set; }
 
         [Display(Name = "TYS Bilgileri")]
-        public virtual ICollection<AdayTYSVM> AdayTYSs { get; set; }
+        public virtual ICollection<AdayTYSVM> AdayTYS { get; set; }
     }
 }

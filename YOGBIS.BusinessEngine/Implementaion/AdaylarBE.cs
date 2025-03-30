@@ -43,33 +43,182 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region AdaylariGetir
         public Result<List<AdaylarVM>> AdaylariGetir()
         {
-            var data = _unitOfWork.adaylarRepository.GetAll(includeProperties: "Kullanici").ToList(); //,Mulakatlar,Komisyonlar
-            var Adaylar = _mapper.Map<List<Adaylar>, List<AdaylarVM>>(data);
-
-            if (data != null)
+            try
             {
-                List<AdaylarVM> returnData = new List<AdaylarVM>();
+                // 1. Sorguyu IQueryable olarak oluştur (henüz execute etme)
+                var query = _unitOfWork.adaylarRepository.GetAll(includeProperties: "Mulakatlar")
+                    .AsNoTracking() // Change tracking'i devre dışı bırak
+                    .Include(x => x.Kullanici)
+                    //.Include(x => x.FotoGaleri)
+                    //.Include(x => x.DosyaGaleri)
+                    //.Include(x => x.AdaySinavNotlar)
+                    //.Include(x => x.AdayGorevKaydi)
+                    .Include(x => x.AdayBasvuruBilgileri.Where(x=>x.OnayDurumu=="Onaylandı"))
+                    .Include(x => x.AdayIletisimBilgileri)
+                    .Include(x => x.AdayMYSS.Where(z => z.Mulakatlar.Durumu == true && z.MYSSDurum == "GİRECEK"))
+                    //.Include(x => x.AdayTYS)
+                    .ToList();
 
-                foreach (var item in data)
+                if (query == null || !query.Any())
                 {
-                    returnData.Add(new AdaylarVM()
-                    {
-                        AdayId=item.AdayId,
-                        TC=item.TC,
-                        Ad=item.Ad,
-                        Soyad=item.Soyad,
-                        MulakatYil = item.MulakatYil,
-                        KayitTarihi = item.KayitTarihi,
-                        KaydedenId = item.KaydedenId,
-                        KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
-                    });
+                    return new Result<List<AdaylarVM>>(false, ResultConstant.RecordNotFound, default(List<AdaylarVM>));
                 }
 
-                return new Result<List<AdaylarVM>>(true, ResultConstant.RecordFound, returnData);
-            }
-            else 
-            {
+                var returndata = query.Select(item => new AdaylarVM
+                {
+                    AdayId = item.AdayId,
+                    TC = item.TC,
+                    Ad = item.Ad,
+                    Soyad = item.Soyad,
+                    BabaAd = item.BabaAd,
+                    AnaAd = item.AnaAd,
+                    DogumTarihi = item.DogumTarihi,
+                    DogumTarihi2 = item.DogumTarihi2,
+                    DogumYeri = item.DogumYeri,
+                    Cinsiyet = item.Cinsiyet,
+                    MulakatYil = item.MulakatYil,
+                    KaydedenId = item.KaydedenId,
+                    KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty,
+                    //FotoGaleri = item.FotoGaleri?
+                    //.Select(x => new FotoGaleriVM
+                    //{
+                    //    FotoGaleriId = x.FotoGaleriId,
+                    //    FotoAdi = x.FotoAdi,
+                    //    FotoURL = x.FotoURL,
+                    //    KayitTarihi = x.KayitTarihi,
+                    //    KaydedenId = x.KaydedenId,
+                    //    KaydedenAdi = x.Kullanici != null ? x.Kullanici.Ad + " " + x.Kullanici.Soyad : string.Empty
+
+                    //}).ToList() ?? new List<FotoGaleriVM>(),
+
+                    //AdayBasvuruBilgileri = item.AdayBasvuruBilgileri?
+                    //.Select(y => new AdayBasvuruBilgileriVM
+                    //{
+                    //    Id = y.Id,
+                    //    AdayId = y.AdayId,
+                    //    TC = y.TC,
+                    //    Askerlik = y.Askerlik,
+                    //    KurumKod = y.KurumKod,
+                    //    KurumAdi = y.KurumAdi,
+                    //    Ogrenim = y.Ogrenim,
+                    //    MezunOkulKodu = y.MezunOkulKodu,
+                    //    Mezuniyet = y.Mezuniyet,
+                    //    HizmetYil = y.HizmetYil,
+                    //    HizmetAy = y.HizmetAy,
+                    //    HizmetGun = y.HizmetGun,
+                    //    Derece = y.Derece,
+                    //    Kademe = y.Kademe,
+                    //    Enaz5Yil = y.Enaz5Yil,
+                    //    DahaOnceYDGorev = y.DahaOnceYDGorev,
+                    //    YIciGorevBasTar = y.YIciGorevBasTar,
+                    //    YabanciDilBasvuru = y.YabanciDilBasvuru,
+                    //    YabanciDilAdi = y.YabanciDilAdi,
+                    //    YabanciDilTuru = y.YabanciDilTuru,
+                    //    YabanciDilTarihi = y.YabanciDilTarihi,
+                    //    YabanciDilPuan = y.YabanciDilPuan,
+                    //    YabanciDilSeviye = y.YabanciDilSeviye,
+                    //    IlTercihi1 = y.IlTercihi1,
+                    //    IlTercihi2 = y.IlTercihi2,
+                    //    IlTercihi3 = y.IlTercihi3,
+                    //    IlTercihi4 = y.IlTercihi4,
+                    //    IlTercihi5 = y.IlTercihi5,
+                    //    BasvuruTarihi = y.BasvuruTarihi,
+                    //    SonDegisiklikTarihi = y.SonDegisiklikTarihi,
+                    //    OnayDurumu = y.OnayDurumu,
+                    //    OnayDurumuAck = y.OnayDurumuAck,
+                    //    MYYSTarihi = y.MYYSTarihi,
+                    //    MYYSSinavTedbiri = y.MYYSSinavTedbiri,
+                    //    MYYSTedbirAck = y.MYYSTedbirAck,
+                    //    MYYSPuan = y.MYYSPuan,
+                    //    MYYSSonuc = y.MYYSSonuc,
+                    //    MYSSDurum = y.MYSSDurum,
+                    //    MYSSDurumAck = y.MYSSDurumAck,
+                    //    IlMemGorus = y.IlMemGorus,
+                    //    Referans = y.Referans,
+                    //    ReferansAck = y.ReferansAck,
+                    //    GorevIptalAck = y.GorevIptalAck,
+                    //    GorevIptalBrans = y.GorevIptalBrans,
+                    //    GorevIptalYil = y.GorevIptalYil,
+                    //    GorevIptalBAOK = y.GorevIptalBAOK,
+                    //    IlkGorevKaydi = y.IlkGorevKaydi,
+                    //    YabanciDilALM = y.YabanciDilALM,
+                    //    YabanciDilING = y.YabanciDilING,
+                    //    YabanciDilFRS = y.YabanciDilFRS,
+                    //    YabanciDilDiger = y.YabanciDilDiger,
+                    //    GorevdenUzaklastirma = y.GorevdenUzaklastirma,
+                    //    EDurum = y.EDurum,
+                    //    MDurum = y.MDurum,
+                    //    PDurum = y.PDurum,
+                    //    GenelDurum = y.GenelDurum,
+                    //    YLisans = y.YLisans,
+                    //    Doktora = y.Doktora,
+                    //    Sendika = y.Sendika,
+                    //    SendikaAck = y.SendikaAck,
+                    //    MYYSSoruItiraz = y.MYYSSoruItiraz,
+                    //    MYYSSonucItiraz = y.MYYSSonucItiraz,
+                    //    BasvuruBrans = y.BasvuruBrans,
+                    //    AdliSicilBelge = y.AdliSicilBelge,
+                    //    BilgiFormu = y.BilgiFormu
+
+                    //}).ToList() ?? new List<AdayBasvuruBilgileriVM>(),
+
+                    //AdayMYSS = item.AdayMYSS?
+                    //.Select(z => new AdayMYSSVM
+                    //{
+                    //    Id = z.Id,
+                    //    AdayId = z.AdayId,
+                    //    TC = z.TC,
+                    //    AdayAdiSoyadi = z.Adaylar != null ? z.Adaylar.Ad.ToString() + " " + z.Adaylar.Soyad.ToString() : string.Empty,
+                    //    MYSSTarih = z.MYSSTarih,
+                    //    MYSSSaat = z.MYSSSaat,
+                    //    MYSSMulakatYer = z.MYSSMulakatYer,
+                    //    MYSSDurum = z.MYSSDurum,
+                    //    MYSSDurumAck = z.MYSSDurumAck,
+                    //    MYSSKomisyonSiraNo = z.MYSSKomisyonSiraNo,
+                    //    MYSSKomisyonAdi = z.MYSSKomisyonAdi,
+                    //    KomisyonSN = z.KomisyonSN,
+                    //    KomisyonGunSN = z.KomisyonGunSN,
+                    //    CagriDurum = z.CagriDurum,
+                    //    KabulDurum = z.KabulDurum,
+                    //    SinavDurum = z.SinavDurum,
+                    //    SinavaGelmedi = z.SinavaGelmedi,
+                    //    SinavaGelmediAck = z.SinavaGelmediAck,
+                    //    SinavaGeldi = z.SinavaGeldi,
+                    //    SinavaAlindi = z.SinavaAlindi,
+                    //    MYSPuan = z.MYSPuan,
+                    //    MYSSonuc = z.MYSSonuc,
+                    //    MYSSonucAck = z.MYSSonucAck,
+                    //    MYSSSorulanSoruNo = z.MYSSSorulanSoruNo,
+                    //    SinavIptal = z.SinavIptal,
+                    //    SinavIptalAck = z.SinavIptalAck,
+                    //    BransId = z.BransId,
+                    //    BransAdi = z.BransAdi,
+                    //    DereceId = z.DereceId,
+                    //    DereceAdi = z.DereceAdi,
+                    //    UlkeTercihId = z.UlkeTercihId,
+                    //    UlkeTercihAdi = z.UlkeTercihAdi,
+                    //    MulakatId = z.MulakatId,
+                    //    KayitTarihi = z.KayitTarihi,
+                    //    KaydedenId = z.KaydedenId,
+                    //    KaydedenAdi = z.Kullanici != null ? z.Kullanici.Ad + " " + z.Kullanici.Soyad : string.Empty
+                    //})                    
+                    //.OrderBy(z=>z.MYSSKomisyonSiraNo)
+                    //.ThenBy(z => z.KomisyonSN)
+                    //.ThenBy(z => z.KomisyonGunSN)
+                    //.ToList() ?? new List<AdayMYSSVM>()
+
+                }).ToList();
+
+                if (returndata != null)
+                {
+                    return new Result<List<AdaylarVM>>(true, ResultConstant.RecordFound, returndata);
+                }
+
                 return new Result<List<AdaylarVM>>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<AdaylarVM>>(false, ex.Message);
             }
         }
         #endregion
@@ -1547,7 +1696,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region GetirAdayMYSSBilgileri
+        #region GetirAdayMYSSBilgileri(Guid id)
         public Result<AdayMYSSVM> GetirAdayMYSSBilgileri(Guid id)
         {
             try
@@ -1586,7 +1735,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region GetirAdayBasvuruBilgileri
+        #region GetirAdayBasvuruBilgileri(Guid? adayId)
         public Result<AdayBasvuruBilgileriVM> GetirAdayBasvuruBilgileri(Guid? adayId)
         {
             try
@@ -1662,7 +1811,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region AdayMYSSBilgileriGuncelle
+        #region AdaySinavIptalGuncelle(AdayMYSSVM model, SessionContext user)
         public Result<AdayMYSSVM> AdaySinavIptalGuncelle(AdayMYSSVM model, SessionContext user)
         {
             var result = new Result<AdayMYSSVM>();

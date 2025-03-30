@@ -91,7 +91,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
             catch (Exception ex)
             {
-                return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound, default(List<UlkeTercihVM>));
+                //return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound, default(List<UlkeTercihVM>));
+                return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound, ex.Message);
             }
         }
         #endregion

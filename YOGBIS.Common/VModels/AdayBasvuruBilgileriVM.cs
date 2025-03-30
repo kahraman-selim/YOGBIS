@@ -13,7 +13,9 @@ namespace YOGBIS.Common.VModels
         public string TC { get; set; }
 
         public Guid? AdayId { get; set; }
-        
+        [Display(Name = "Adaylar")]
+        public AdaylarVM Adaylar { get; set; }
+
         public string DogumYeri { get; set; }
         public int Yas { get; set; }
         public string IkametBilgisi { get; set; }

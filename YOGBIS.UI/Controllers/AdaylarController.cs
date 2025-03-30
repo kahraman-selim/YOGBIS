@@ -31,22 +31,15 @@ namespace YOGBIS.UI.Controllers
         #region Index
         [Authorize(Roles = "Administrator")]
         [Route("AD10002", Name = "AdaylarIndexRoute")]
-        public async Task<IActionResult> Index(Guid? id)
+        public async Task<IActionResult> Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
             var komisyon = await _kullaniciBE.KomisyonGetir();
             ViewBag.Komisyonlar = komisyon.Data;
 
-            if (id != null)
-            {
-                var data = _adaylarBE.AdayGetir((Guid)id);
-                return View(data.Data);
-            }
-            else
-            {
-                return View();
-            }
+            return View();
+            
         }
         #endregion
 

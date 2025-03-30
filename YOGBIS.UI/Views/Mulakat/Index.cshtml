@@ -197,14 +197,7 @@
 
                         var soruno = $("#soruNo").val();
 
-                        if (soruno > 0) {
-                            $("#btnBitir").show();
-                            $("#btnBaslat").hide();
-                            $("#btnSoruGoster").hide();
-                            $("#btnSoruGizle").show();
-                            $('#soruBlok').show();
-                            document.getElementById("cardBtnGrup").style = "height:50px";
-                            
+                        if (soruno > 0) {                            
                             $.ajax({
                                 type: "GET",
                                 url: "/Mulakat/AdayMulakatSoruGetir",
@@ -215,7 +208,19 @@
                                 },
                                 success: function (response) {
                                     if (response.isSuccess) {
-                                        $("#mulakatSoruContainer").html(response.data);
+                                        if(response.data == null){
+                                           alert("Soru Bulunamadı!"); 
+                                        }
+                                        else{
+                                             $("#btnBitir").show();
+                                             $("#btnBaslat").hide();
+                                             $("#btnSoruGoster").hide();
+                                             $("#btnSoruGizle").show();
+                                             $('#soruBlok').show();
+                                             document.getElementById("cardBtnGrup").style = "height:50px";
+
+                                            $("#mulakatSoruContainer").html(response.data);
+                                        }                                        
                                     } else {
                                         bootbox.alert({
                                             title: 'HATA',
