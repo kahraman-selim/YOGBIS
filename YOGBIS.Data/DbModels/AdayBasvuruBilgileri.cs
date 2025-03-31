@@ -71,6 +71,7 @@ namespace YOGBIS.Data.DbModels
         public string MYYSSoruItiraz { get; set; }
         public string MYYSSonucItiraz { get; set; }
         public string BasvuruBrans { get; set; }
+        public string DahaOnceSinav { get; set; }
         [MaxLength]
         public byte[] AdliSicilBelge { get; set; }
         [MaxLength]
