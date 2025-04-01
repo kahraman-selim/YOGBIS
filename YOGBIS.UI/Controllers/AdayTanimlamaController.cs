@@ -1184,34 +1184,67 @@ namespace YOGBIS.UI.Controllers
 
                         for (int row = 2; row <= rowCount; row++)
                         {
-                            var tc = worksheet.Cells[row, 1].Value?.ToString();
-                            var tarih = worksheet.Cells[row, 2].Value?.ToString();
-                            var data = _unitOfWork.adayBasvuruBilgileriRepository.GetFirstOrDefault(a => a.MYYSTarihi == tarih && a.TC==tc);
-                            var id = data.Id;
-
-                            var aday = new AdayBasvuruBilgileriVM
+                            try 
                             {
-                                //TC = worksheet.Cells[row, 1].Value?.ToString(),
-                                Id = id,
-                                MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
-                                //AdayId = _adaylarBE.AdayTemelBilgileriGetir().Data
-                                //    .FirstOrDefault(a => a.TC == worksheet.Cells[row, 1].Value?.ToString())?.AdayId
-                            };
+                                var tc = worksheet.Cells[row, 1].Value?.ToString();
+                                var tarih = worksheet.Cells[row, 2].Value?.ToString();
+                                
+                                if (string.IsNullOrEmpty(tc) || string.IsNullOrEmpty(tarih))
+                                {
+                                    _logger.LogWarning($"Satır {row}: TC veya tarih bilgisi boş");
+                                    continue;
+                                }
 
-                            var result = _adaylarBE.AdayTopluGuncelle(aday, user);
-                            if (result.IsSuccess)
-                            {
-                                basariliEklenen++;
+                                var data = _unitOfWork.adayBasvuruBilgileriRepository.GetFirstOrDefault(a => a.TC == tc && a.MYYSTarihi == tarih);
+                                
+                                if (data == null)
+                                {
+                                    _logger.LogWarning($"Satır {row}: TC:{tc} ve Tarih:{tarih} ile eşleşen kayıt bulunamadı");
+                                    continue;
+                                }
+
+                                var mulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId;
+                                if (mulakatId == null)
+                                {
+                                    _logger.LogWarning($"Satır {row}: MulakatId bulunamadı");
+                                    continue;
+                                }
+
+                                var aday = new AdayBasvuruBilgileriVM
+                                {
+                                    Id = data.Id,
+                                    TC = tc,
+                                    MulakatId = mulakatId,
+                                    AdayId = data.AdayId,
+                                    // Diğer mevcut bilgileri de kopyalayalım ki güncelleme sırasında kaybolmasın
+                                    MYYSTarihi = data.MYYSTarihi,
+                                    // Diğer alanları da ekleyin...
+                                };
+
+                                var result = _adaylarBE.AdayTopluGuncelle(aday, user);
+                                if (result.IsSuccess)
+                                {
+                                    basariliEklenen++;
+                                    _logger.LogInformation($"Satır {row}: TC:{tc} başarıyla güncellendi");
+                                }
+                                else
+                                {
+                                    _logger.LogWarning($"Satır {row}: TC:{tc} güncellenemedi. Hata: {result.Message}");
+                                }
+
+                                islemYapilan++;
+                                _progressService.UpdateProgress(sessionId, p =>
+                                {
+                                    p.IslemYapilan = islemYapilan;
+                                    p.BasariliEklenen = basariliEklenen;
+                                    p.Mesaj = $"Güncelleme bilgileri işleniyor... ({islemYapilan}/{toplamKayit})";
+                                });
+                                await Task.Delay(10);
                             }
-
-                            islemYapilan++;
-                            _progressService.UpdateProgress(sessionId, p =>
+                            catch (Exception ex)
                             {
-                                p.IslemYapilan = islemYapilan;
-                                p.BasariliEklenen = basariliEklenen;
-                                p.Mesaj = $"Güncelleme bilgileri işleniyor... ({islemYapilan}/{toplamKayit})";
-                            });
-                            await Task.Delay(10);
+                                _logger.LogError(ex, $"Satır {row} işlenirken hata oluştu");
+                            }
                         }
 
                         // İşlem Tamamlandı

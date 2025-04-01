@@ -510,7 +510,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     .Include(x => x.Kullanici)
                     .Include(x => x.Adaylar)                    
                     .Where(x=>x.TC==TC)
-                    .OrderBy(x=>x.BasvuruTarihi)
+                    .OrderBy(x=>x.MYYSTarihi)
                     .ToList();
 
 
