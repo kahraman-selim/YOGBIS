@@ -44,16 +44,20 @@
                     <div class="form-row" style="display:none" id="yardimciperrow">
                         <div class="form-group col-md-12">
                             <label asp-for="YardimciPersonelId" class="small mb-1 font-weight-bold">Personeli Seç</label>
-                            @Html.DropDownListFor(u => u.YardimciPersonelId, new SelectList(ViewBag.KomisyonYardimciPersoneller, "Id", "AdSoyad"),
-                                     "Yardımcı personeli seçiniz", new { @class = "form-control-range form-control py-2" })
+                            @Html.DropDownListFor(u => u.YardimciPersonelId, 
+                                new SelectList(ViewBag.KomisyonYardimciPersoneller, "Id", "AdSoyad"),
+                                "Yardımcı personeli seçiniz",
+                                new { @class = "form-control-range form-control py-2" })
                             <span class="text-danger" asp-validation-for="YardimciPersonelId"></span>
                         </div>
                     </div>
                     <div class="form-row" style="display:none" id="ilgiliperrow">
                         <div class="form-group col-md-12">
                             <label asp-for="IlgiliPersonelId" class="small mb-1 font-weight-bold">Personeli Seç</label>
-                            @Html.DropDownListFor(u => u.IlgiliPersonelId, new SelectList(ViewBag.KomisyonIlgiliPersoneller, "Id", "AdSoyad"),
-                                     "İlgili personeli seçiniz", new { @class = "form-control-range form-control py-2" })
+                            @Html.DropDownListFor(u => u.IlgiliPersonelId, 
+                                new SelectList(ViewBag.KomisyonIlgiliPersoneller, "Id", "AdSoyad"),
+                                "İlgili personeli seçiniz", 
+                                new { @class = "form-control-range form-control py-2" })
                             <span class="text-danger" asp-validation-for="IlgiliPersonelId"></span>
                         </div>
                     </div>
@@ -101,6 +105,7 @@
             var secilenPersonelId = null;
             var secilenKomisyonIds = [];
             var komisyonBilgileri = {};
+            var RolId  = null;
 
             $('#personeltanim').change(function() {
               var secilen= $(this).val();
@@ -117,11 +122,19 @@
             //komisyon ilgili personeli için
             $('#IlgiliPersonelId').change(function() {
                 secilenPersonelId = $(this).val();
+                var secilenText = $("#IlgiliPersonelId option:selected").text();
                 
                 if(secilenPersonelId) {
+                    // AdSoyad ve RolId bilgilerini ayır
+                    var bilgiler = secilenText.split(' - ');
+                    var adSoyad = bilgiler[0];
+                    var rolId = bilgiler[1] ? bilgiler[1].replace('(Rol ID: ', '').replace(')', '') : '';
+                    
                     Swal.fire({
                         title: 'Seçilen Personel Bilgisi',
-                        text: 'Personel ID: ' + secilenPersonelId,
+                        html: '<b>ID:</b> ' + secilenPersonelId + '<br>' +
+                              '<b>Ad Soyad:</b> ' + adSoyad + '<br>' +
+                              '<b>Rol ID:</b> ' + rolId,
                         icon: 'info',
                         confirmButtonText: 'Tamam'
                     });
@@ -131,11 +144,19 @@
             //komisyon yardımcı personeli için
             $('#YardimciPersonelId').change(function() {
                 secilenPersonelId = $(this).val();
+                var secilenText = $("#YardimciPersonelId option:selected").text();
 
                 if(secilenPersonelId) {
+                    // AdSoyad ve RolId bilgilerini ayır
+                    var bilgiler = secilenText.split(' - ');
+                    var adSoyad = bilgiler[0];
+                    var rolId = bilgiler[1] ? bilgiler[1].replace('(Rol ID: ', '').replace(')', '') : '';
+
                     Swal.fire({
                         title: 'Seçilen Personel Bilgisi',
-                        text: 'Personel ID: ' + secilenPersonelId,
+                        html: '<b>ID:</b> ' + secilenPersonelId + '<br>' +
+                              '<b>Ad Soyad:</b> ' + adSoyad + '<br>' +
+                              '<b>Rol ID:</b> ' + rolId,
                         icon: 'info',
                         confirmButtonText: 'Tamam'
                     });

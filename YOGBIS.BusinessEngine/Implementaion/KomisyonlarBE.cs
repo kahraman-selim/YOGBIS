@@ -272,5 +272,62 @@ namespace YOGBIS.BusinessEngine.Implementaion
             return komisyon?.KomisyonId;
         }
         #endregion
+
+        #region KomisyonPersonelKaydet
+        public Result<KomisyonPersonellerVM> KomisyonPersonelKaydet(KomisyonPersonellerVM model, SessionContext user)
+        {
+            if (model != null)
+            {
+                try
+                {
+                    var komisyonpersoneller = _mapper.Map<KomisyonPersonellerVM, KomisyonPersoneller>(model);
+                    komisyonpersoneller.KaydedenId = user.LoginId;
+
+                    _unitOfWork.komisyonPersonellerRepository.Add(komisyonpersoneller);
+                    _unitOfWork.Save();
+                    return new Result<KomisyonPersonellerVM>(true, ResultConstant.RecordCreateSuccess);
+                }
+                catch (Exception ex)
+                {
+                    return new Result<KomisyonPersonellerVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                }
+            }
+            else
+            {
+                return new Result<KomisyonPersonellerVM>(false, "Boş veri olamaz");
+            }
+
+            //try
+            //{
+            //    _logger.LogInformation($"Komisyon personeli kaydediliyor... KomisyonId: {model.KomisyonId}, PersonelId: {model.PersonelId}");
+
+            //    var komisyonPersonel = new KomisyonPersoneller
+            //    {
+            //        KomisyonId = model.KomisyonId,
+            //        PersonelId = model.PersonelId,
+            //        RolId = model.RolId
+            //    };
+
+            //    _unitOfWork.komisyonPersonellerRepository.Add(komisyonPersonel);
+            //    komisyonPersonel.KaydedenId = user.LoginId;
+            //    _unitOfWork.Save();
+
+            //    if (result > 0)
+            //    {
+            //        _logger.LogInformation($"Komisyon personeli başarıyla kaydedildi. ID: {komisyonPersonel.Id}");
+            //        var returnData = _mapper.Map<KomisyonPersonellerVM>(komisyonPersonel);
+            //        return new Result<KomisyonPersonellerVM>(true, ResultConstant.RecordCreateSuccess, returnData);
+            //    }
+
+            //    _logger.LogWarning("Komisyon personeli kaydedilemedi");
+            //    return new Result<KomisyonPersonellerVM>(false, ResultConstant.RecordCreateNotSuccess);
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError($"Komisyon personeli kaydedilirken hata oluştu: {ex.Message}");
+            //    return new Result<KomisyonPersonellerVM>(false, ResultConstant.RecordCreateNotSuccess);
+            //}
+        }
+        #endregion
     }
 }

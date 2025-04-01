@@ -8,7 +8,7 @@ namespace YOGBIS.Common.VModels
     public class KullaniciVM
     {
         public string Id { get; set; }
-
+        public string RolId { get; set; }
         [Required(ErrorMessage = "Kullanıcı adı zorunludur")]
         [StringLength(50, ErrorMessage = "Kullanıcı adı en fazla 50 karakter olabilir")]
         [Display(Name = "Kullanıcı Adı")]
@@ -40,6 +40,7 @@ namespace YOGBIS.Common.VModels
 
         [Display(Name = "Ad Soyad")]
         public string AdSoyad { get; set; }
+        public string DisplayText => $"{AdSoyad} - (Rol ID: {RolId})";
 
         [Required(ErrorMessage = "Kayıt tarihi zorunludur")]
         [Display(Name = "Kayıt Tarihi")]
