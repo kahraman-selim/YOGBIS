@@ -413,9 +413,9 @@ namespace YOGBIS.UI.Controllers
                         {
                             //BransAdi ile BransId yi eşleştirme
                             var brans = _branslarBE.BranslariGetir().Data
-                                .FirstOrDefault(b => b.BransAdi == worksheet.Cells[row, 59].Value?.ToString());
+                                .FirstOrDefault(b => b.BransAdi == worksheet.Cells[row, 62].Value?.ToString());
                             var ulketercih = _ulkeTercihleriBE.UlkeTercihAdlariGetir().Data
-                                .FirstOrDefault(u => u.UlkeTercihAdi == worksheet.Cells[row, 62].Value?.ToString() && u.YabancıDil== worksheet.Cells[row, 16].Value?.ToString());                                                        
+                                .FirstOrDefault(u => u.UlkeTercihAdi == worksheet.Cells[row, 65].Value?.ToString() && u.YabancıDil== worksheet.Cells[row, 16].Value?.ToString());                                                        
 
                             var aday = new AdayBasvuruBilgileriVM
                             {
@@ -472,21 +472,27 @@ namespace YOGBIS.UI.Controllers
                                 EDurum = worksheet.Cells[row, 51].Value?.ToString(),
                                 MDurum = worksheet.Cells[row, 52].Value?.ToString(),
                                 PDurum = worksheet.Cells[row, 53].Value?.ToString(),
-                                Sendika = worksheet.Cells[row, 54].Value?.ToString(),
-                                SendikaAck = worksheet.Cells[row, 55].Value?.ToString(),
-                                MYYSSoruItiraz = worksheet.Cells[row, 56].Value?.ToString(),
-                                MYYSSonucItiraz = worksheet.Cells[row, 57].Value?.ToString(),
-                                BasvuruBrans = worksheet.Cells[row, 58].Value?.ToString(),
+                                // genel durumu için ayrıca işlem yapılacak
+                                GenelDurum = worksheet.Cells[row, 54].Value?.ToString(),
+                                //
+                                YLisans = worksheet.Cells[row, 55].Value?.ToString(),
+                                Doktora = worksheet.Cells[row, 56].Value?.ToString(),
+                                Sendika = worksheet.Cells[row, 57].Value?.ToString(),
+                                SendikaAck = worksheet.Cells[row, 58].Value?.ToString(),
+                                MYYSSoruItiraz = worksheet.Cells[row, 59].Value?.ToString(),
+                                MYYSSonucItiraz = worksheet.Cells[row, 60].Value?.ToString(),
+                                BasvuruBrans = worksheet.Cells[row, 61].Value?.ToString(),                                
                                 BransId = brans?.BransId,
                                 BransAdi=brans?.BransAdi,
                                 DereceId = _derecelerBE.DereceleriGetir().Data
-                                    .FirstOrDefault(d => d.DereceAdi == worksheet.Cells[row, 60].Value?.ToString())?.DereceId,
-                                DereceAdi = worksheet.Cells[row, 60].Value?.ToString(),
-                                Unvan = worksheet.Cells[row, 61].Value?.ToString(),
+                                    .FirstOrDefault(d => d.DereceAdi == worksheet.Cells[row, 63].Value?.ToString())?.DereceId,
+                                DereceAdi = worksheet.Cells[row, 63].Value?.ToString(),
+                                Unvan = worksheet.Cells[row, 64].Value?.ToString(),
+                                DahaOnceSinav = worksheet.Cells[row, 66].Value?.ToString(),
                                 UlkeTercihId = ulketercih?.UlkeTercihId,
                                 UlkeTercihAdi = ulketercih?.UlkeTercihAdi,                                
                                 MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,                               
-                                AdayId = _adaylarBE.AdaylariGetir().Data
+                                AdayId = _adaylarBE.AdayTemelBilgileriGetir().Data
                                     .FirstOrDefault(a => a.TC == worksheet.Cells[row, 1].Value?.ToString())?.AdayId
                             };
 
@@ -642,7 +648,7 @@ namespace YOGBIS.UI.Controllers
                                     continue;
                                 }
 
-                                var adayBilgisi = _adaylarBE.AdaylariGetir().Data
+                                var adayBilgisi = _adaylarBE.AdayTemelBilgileriGetir().Data
                                     .FirstOrDefault(a => a.TC == adayIletisim.TC);
                       
                                 if (adayBilgisi != null)
@@ -843,7 +849,7 @@ namespace YOGBIS.UI.Controllers
                                 UlkeTercihAdi = ulketercih?.UlkeTercihAdi,
 
                                 MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
-                                AdayId = _adaylarBE.AdaylariGetir().Data
+                                AdayId = _adaylarBE.AdayTemelBilgileriGetir().Data
                                     .FirstOrDefault(a => a.TC == worksheet.Cells[row, 1].Value?.ToString())?.AdayId
                             };
 

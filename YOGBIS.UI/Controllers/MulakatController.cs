@@ -236,6 +236,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
     }
 
+    #region ControllerExtensions
     public static class ControllerExtensions
     {
         public static async Task<string> RenderViewComponentToStringAsync(this Controller controller, string componentName, object parameters = null)
@@ -266,5 +267,6 @@ namespace YOGBIS.UI.Controllers
                 await Task.CompletedTask;
             }
         }
-    }
+    } 
+    #endregion
 }

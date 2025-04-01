@@ -24,6 +24,7 @@ namespace YOGBIS.UI.Controllers
     [Authorize(Roles = "Administrator")]
     public class MulakatSonucController : Controller
     {
+        [Route("MLS10001", Name = "MulakatSonuclariIndexRoute")]
         public IActionResult Index()
         {
             return View();

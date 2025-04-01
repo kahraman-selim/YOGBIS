@@ -35,6 +35,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
+        [Route("KU10001", Name = "KullanıcılarIndexRoute")]
         public IActionResult Index()
         {
             var data = _kullaniciBE.KullaniciGetir();

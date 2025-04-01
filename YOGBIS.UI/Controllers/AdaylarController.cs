@@ -80,6 +80,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Guncelle
+        [Route("AD10005", Name = "AdayGuncelleRoute")]
         [Authorize(Roles = "Administrator")]
         public ActionResult Guncelle(Guid? id)
         {

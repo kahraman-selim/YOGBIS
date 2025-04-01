@@ -44,10 +44,11 @@ namespace YOGBIS.UI.Controllers
             _mulakatOlusturBE = mulakatOlusturBE;
             _unitOfWork = unitOfWork;
             _logger = logger;
-        } 
+        }
         #endregion
 
         #region Index
+        [Route("MS10001", Name = "MulakatSorularıIndexRoute")]
         public IActionResult Index(Guid? id, Guid? DereceId, Guid? SoruKategorilerId, Guid? MulakatId)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -115,6 +116,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Guncelle
+        [Route("MS10002", Name = "MulakatSorularıGuncelleRoute")]
         public ActionResult Guncelle(Guid? id, Guid? DereceId, Guid? SoruKategorilerId, Guid? MulakatId)
         {
 

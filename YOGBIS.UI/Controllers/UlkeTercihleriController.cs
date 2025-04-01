@@ -49,6 +49,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
+        [Route("UT10001", Name = "UlkeTercihleriIndexRoute")]
         public IActionResult Index(int? year)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -120,6 +121,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Guncelle
+        [Route("UT10002", Name = "UlkeTercihleriGuncelleRoute")]
         public IActionResult Guncelle(Guid? id, int? year)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));

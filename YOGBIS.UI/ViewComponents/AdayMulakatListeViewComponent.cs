@@ -32,7 +32,7 @@ namespace YOGBIS.UI.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(string selectedKomisyon = null)
         {
             var userName = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
-            var mulakatTarihi = "15.04.2024";
+            var mulakatTarihi = "15.04.2024"; // bu alan datetime olarak değiştirilecek
             var currentUser = await _userManager.FindByNameAsync(userName);
             var userRoles = await _userManager.GetRolesAsync(currentUser);
             var viewModel = new AdayMulakatListeViewModel();

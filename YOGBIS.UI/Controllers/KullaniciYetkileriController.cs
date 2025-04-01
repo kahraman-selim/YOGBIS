@@ -28,6 +28,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Index
+        [Route("KY10001", Name = "KulanaciYetkileriIndexRoute")]
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users.ToListAsync();

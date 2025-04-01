@@ -223,7 +223,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             var followerUsers = await _userManager.GetUsersInRoleAsync("Follower");
             
             // İki rolden gelen kullanıcıları birleştir ve tekrar eden kayıtları önle
-            var combinedUsers = commissionerUsers.Union(followerUsers).ToList();
+            var combinedUsers = commissionerUsers.Union(followerUsers).ToList().OrderBy(x=>x.Ad).ThenBy(y=>y.Soyad);
             
             if (combinedUsers.Any())
             {

@@ -46,16 +46,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
             try
             {
                 // 1. Sorguyu IQueryable olarak oluştur (henüz execute etme)
-                var query = _unitOfWork.adaylarRepository.GetAll(includeProperties: "Mulakatlar")
+                var query = _unitOfWork.adaylarRepository.GetAll()
                     .AsNoTracking() // Change tracking'i devre dışı bırak
                     .Include(x => x.Kullanici)
                     //.Include(x => x.FotoGaleri)
                     //.Include(x => x.DosyaGaleri)
                     //.Include(x => x.AdaySinavNotlar)
                     //.Include(x => x.AdayGorevKaydi)
-                    .Include(x => x.AdayBasvuruBilgileri.Where(x=>x.OnayDurumu=="Onaylandı"))
-                    .Include(x => x.AdayIletisimBilgileri)
-                    .Include(x => x.AdayMYSS.Where(z => z.Mulakatlar.Durumu == true && z.MYSSDurum == "GİRECEK"))
+                    //.Include(x => x.AdayBasvuruBilgileri.Where(x=>x.OnayDurumu=="Onaylandı"))
+                    //.Include(x => x.AdayIletisimBilgileri)
+                    //.Include(x => x.AdayMYSS.Where(z => z.Mulakatlar.Durumu == true && z.MYSSDurum == "GİRECEK"))
                     //.Include(x => x.AdayTYS)
                     .ToList();
 
@@ -539,6 +539,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         MDurum = data.MDurum,
                         PDurum = data.PDurum,
                         GenelDurum = data.GenelDurum,
+                        DahaOnceSinav = data.DahaOnceSinav,
                         DogumYeri = !string.IsNullOrEmpty(data.Adaylar?.DogumYeri) ? data.Adaylar.DogumYeri : "",
 
                         Yas = !string.IsNullOrEmpty(data.Adaylar?.DogumTarihi2) && DateTime.TryParse(data.Adaylar.DogumTarihi2, out DateTime dogumTarihi) ? (int)((DateTime.Now - dogumTarihi).TotalDays / 365.25) : 0,

@@ -195,6 +195,8 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Başvuru Branşı")]
         public string BasvuruBrans { get; set; }
 
+        public string DahaOnceSinav { get; set; }
+
         [Display(Name = "Adli Sicil Belgesi")]
         public byte[] AdliSicilBelge { get; set; }
 
