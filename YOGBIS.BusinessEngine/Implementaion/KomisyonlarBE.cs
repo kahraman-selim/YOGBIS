@@ -80,9 +80,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                             KomisyonGorevBaslamaTarihi = item.KomisyonGorevBaslamaTarihi,
                             KomisyonGorevBitisTarihi = item.KomisyonGorevBitisTarihi,
                             KayitTarihi = item.KayitTarihi,
-                            KaydedenId = item.KaydedenId,
-                            IlgiliPersonelId = item.IlgiliPersonelId,
-                            IlgiliPersonelAdiSoyadi = item.IlgiliPersonelId != null ? _kullaniciBE.KullaniciAdSoyadGetir(item.IlgiliPersonelId.ToString()).Data : string.Empty,
+                            KaydedenId = item.KaydedenId,                                                        
                             MulakatId = item.MulakatId
                         });
                     }

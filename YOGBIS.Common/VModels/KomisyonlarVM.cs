@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using YOGBIS.Data.DbModels;
+using System.Collections.Generic;
 
 namespace YOGBIS.Common.VModels
 {
@@ -48,7 +49,7 @@ namespace YOGBIS.Common.VModels
         public string KomisyoUyeStatu { get; set; }
 
         [Display(Name = "Komisyon Ülke Grubu")]
-        public string KomisyonUlkeGrubu { get; set; }
+        public string KomisyonUlkeGrubu { get; set; }       
 
         [Phone(ErrorMessage = "Geçerli bir telefon numarası giriniz")]
         [Display(Name = "Komisyon Üye Telefon")]
@@ -71,10 +72,8 @@ namespace YOGBIS.Common.VModels
         public DateTime KomisyonGorevBitisTarihi { get; set; }
 
         public Guid? IlgiliPersonelId { get; set; }
-        public string IlgiliPersonelAdiSoyadi { get; set; }
-
         public Guid? YardimciPersonelId { get; set; }
-        public string YardimciPersonelAdiSoyadi { get; set; }
+
 
         [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public Guid? MulakatId { get; set; }
@@ -82,13 +81,15 @@ namespace YOGBIS.Common.VModels
         public string MulakatDonemi { get; set; }
         public virtual MulakatlarVM Mulakatlar { get; set; }
 
+ 
+        public ICollection<KomisyonPersonellerVM> KomisyonPersoneller { get; set; }
+        public ICollection<KomisyonLogVM> KomisyonLog { get; set; }
 
         [Required(ErrorMessage = "Kaydeden kişi zorunludur")]
         public string KaydedenId { get; set; }
-
         [Display(Name = "Kaydeden")]
         public string KaydedenAdi { get; set; }
-
         public KullaniciVM Kullanici { get; set; }
+
     }
 }
