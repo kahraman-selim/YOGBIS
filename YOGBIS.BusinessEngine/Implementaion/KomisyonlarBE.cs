@@ -278,32 +278,96 @@ namespace YOGBIS.BusinessEngine.Implementaion
         {
             try
             {
-                var kayitlar = _unitOfWork.komisyonlarRepository.GetAll().Where(x => x.KomisyonKullaniciId == model.KomisyonKullaniciId).ToList();
-
-                if (!kayitlar.Any())
+                // Yeni komisyon personeli oluştur
+                var komisyonPersonel = new KomisyonPersoneller
                 {
-                    return new Result<KomisyonPersonellerVM>(false, "Seçilen komisyon kaydı bulunamadı!");
-                }
+                    KomisyonKullaniciId = model.KomisyonKullaniciId,
+                    PersonelId = model.PersonelId,
+                    RolId = model.RolId,
+                    KaydedenId = user.LoginId,
+                    KayitTarihi = DateTime.Now
+                };
 
-                foreach (var item in kayitlar)
-                {
-                    var komisyonPersonel = new KomisyonPersoneller
-                    {
-                        KomisyonKullaniciId = model.KomisyonKullaniciId,
-                        PersonelId = model.PersonelId,
-                        RolId = model.RolId,
-                        KaydedenId = user.LoginId
-                    };
-
-                    _unitOfWork.komisyonPersonellerRepository.Add(komisyonPersonel);
-                }
-
+                _unitOfWork.komisyonPersonellerRepository.Add(komisyonPersonel);
                 _unitOfWork.Save();
+                
                 return new Result<KomisyonPersonellerVM>(true, ResultConstant.RecordCreateSuccess);
             }
             catch (Exception ex)
             {
-                return new Result<KomisyonPersonellerVM>(false, $"Toplu güncelleme sırasında hata oluştu: {ex.Message}");
+                return new Result<KomisyonPersonellerVM>(false, $"Kayıt sırasında hata oluştu: {ex.Message}");
+            }
+        }
+        #endregion
+
+        #region KomisyonPersonelleriGetir
+        public Result<List<KomisyonPersonellerVM>> KomisyonPersonelleriGetir()
+        {
+            try
+            {
+                // Her repository'den veriyi ayrı ayrı alalım ve kontrol edelim
+                var komisyonPersonellerList = _unitOfWork.komisyonPersonellerRepository.GetAll().ToList();
+                if (!komisyonPersonellerList.Any())
+                {
+                    return new Result<List<KomisyonPersonellerVM>>(false, "Komisyon personeli bulunamadı");
+                }
+
+                var komisyonlarList = _unitOfWork.komisyonlarRepository.GetAll().ToList();
+                if (!komisyonlarList.Any())
+                {
+                    return new Result<List<KomisyonPersonellerVM>>(false, "Komisyon bulunamadı");
+                }
+
+                var kullanicilarList = _unitOfWork.kullaniciRepository.GetAll().ToList();
+                if (!kullanicilarList.Any())
+                {
+                    return new Result<List<KomisyonPersonellerVM>>(false, "Kullanıcı bulunamadı");
+                }
+
+                // Önce her personel için tek bir kayıt oluşturalım
+                var personelGruplari = komisyonPersonellerList
+                    .GroupBy(kp => kp.PersonelId)
+                    .Select(g => new
+                    {
+                        PersonelId = g.Key,
+                        KomisyonKullaniciIds = g.Select(x => x.KomisyonKullaniciId).ToList(),
+                        g.First().RolId,
+                        g.First().Id
+                    });
+
+                var komisyonPersoneller = new List<KomisyonPersonellerVM>();
+
+                foreach (var personel in personelGruplari)
+                {
+                    var kullanici = kullanicilarList.FirstOrDefault(u => u.Id == personel.PersonelId.ToString());
+                    if (kullanici != null)
+                    {
+                        var komisyonlar = komisyonlarList
+                            .Where(k => personel.KomisyonKullaniciIds.Contains(k.KomisyonKullaniciId))
+                            .Select(k => k.KomisyonAdi)
+                            .ToList();
+
+                        komisyonPersoneller.Add(new KomisyonPersonellerVM
+                        {
+                            Id = personel.Id,
+                            PersonelId = personel.PersonelId,
+                            RolId = personel.RolId,
+                            PersonelAdSoyad = kullanici.Ad + " " + kullanici.Soyad,
+                            KomisyonAdi = string.Join(", ", komisyonlar)
+                        });
+                    }
+                }
+
+                if (!komisyonPersoneller.Any())
+                {
+                    return new Result<List<KomisyonPersonellerVM>>(false, "Eşleşen kayıt bulunamadı");
+                }
+
+                return new Result<List<KomisyonPersonellerVM>>(true, ResultConstant.RecordFound, komisyonPersoneller);
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<KomisyonPersonellerVM>>(false, "Hata: " + ex.Message);
             }
         }
         #endregion

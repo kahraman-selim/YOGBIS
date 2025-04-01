@@ -115,10 +115,29 @@
         $(document).ready(function () {
             var secilenRolId = null;
             
+            // Debug için personel listelerini kontrol edelim
+            console.log("Yardımcı Personeller Data:");
+            $('.yardimci-data').each(function() {
+                console.log({
+                    id: $(this).data('id'),
+                    adSoyad: $(this).data('adsoyad'),
+                    rolId: $(this).data('rolid')
+                });
+            });
+            
+            console.log("İlgili Personeller Data:");
+            $('.ilgili-data').each(function() {
+                console.log({
+                    id: $(this).data('id'),
+                    adSoyad: $(this).data('adsoyad'),
+                    rolId: $(this).data('rolid')
+                });
+            });
+            
             var yardimciPersoneller = [];
             $('.yardimci-data').each(function() {
                 yardimciPersoneller.push({
-                    Id: $(this).data('id'),
+                    Id: $(this).data('id').toString(), // GUID'i string'e çevir
                     AdSoyad: $(this).data('adsoyad'),
                     RolId: $(this).data('rolid')
                 });
@@ -127,44 +146,52 @@
             var ilgiliPersoneller = [];
             $('.ilgili-data').each(function() {
                 ilgiliPersoneller.push({
-                    Id: $(this).data('id'),
+                    Id: $(this).data('id').toString(), // GUID'i string'e çevir
                     AdSoyad: $(this).data('adsoyad'),
                     RolId: $(this).data('rolid')
                 });
             });
 
             $('#personeltanim').change(function() {
-              var secilen= $(this).val();
-                if(secilen==1) {
-                    document.getElementById("yardimciperrow").style.display = "inline";
-                    document.getElementById("ilgiliperrow").style.display = "none";
+                var secilen = $(this).val();
+                if(secilen === "1") {
+                    $('#yardimciperrow').show();
+                    $('#ilgiliperrow').hide();
+                } else if(secilen === "2") {
+                    $('#yardimciperrow').hide();
+                    $('#ilgiliperrow').show();
+                } else {
+                    $('#yardimciperrow').hide();
+                    $('#ilgiliperrow').hide();
                 }
-                else{
-                    document.getElementById("ilgiliperrow").style.display = "inline";
-                     document.getElementById("yardimciperrow").style.display = "none";
-                }                
+                // Personel seçimini sıfırla
+                $('#PersonelId').val('');
+                secilenRolId = null;
             });
 
-            //komisyon ilgili personeli için
-            $('#IlgiliPersonelId').change(function() {
-                var secilenId = $(this).val();
+            //personel seçimi değiştiğinde
+            $('#PersonelId').change(function() {
+                var secilenId = $(this).val().toString(); // GUID'i string'e çevir
+                console.log("Seçilen PersonelId:", secilenId);
+                
                 if(secilenId) {
-                    var personel = ilgiliPersoneller.find(p => p.Id === secilenId);
-                    if(personel) {
-                        secilenRolId = personel.RolId;
-                        alert("İlgili Personel RolId: " + secilenRolId);
+                    var personelTipi = $('#personeltanim').val();
+                    console.log("Personel Tipi:", personelTipi);
+                    
+                    var personel;
+                    if(personelTipi === "1") {
+                        personel = yardimciPersoneller.find(p => p.Id === secilenId);
+                        console.log("Bulunan Yardımcı Personel:", personel);
+                    } else {
+                        personel = ilgiliPersoneller.find(p => p.Id === secilenId);
+                        console.log("Bulunan İlgili Personel:", personel);
                     }
-                }
-            });
-
-            //komisyon yardımcı personeli için
-            $('#YardimciPersonelId').change(function() {
-                var secilenId = $(this).val();
-                if(secilenId) {
-                    var personel = yardimciPersoneller.find(p => p.Id === secilenId);
+                    
                     if(personel) {
                         secilenRolId = personel.RolId;
-                        alert("Yardımcı Personel RolId: " + secilenRolId);
+                        alert("Personel RolId: " + secilenRolId);
+                    } else {
+                        console.log("Personel bulunamadı!");
                     }
                 }
             });
@@ -181,7 +208,7 @@
                     return;
                 }
 
-                var personelId = personelTipi == "1" ? $('#YardimciPersonelId').val() : $('#IlgiliPersonelId').val();
+                var personelId = $('#PersonelId').val();
                 if (!personelId) {
                     Swal.fire({
                         title: 'Uyarı!',
@@ -223,7 +250,7 @@
                 secilenKomisyonlar.forEach(function(komisyonId) {
                     var model = {
                         PersonelId: personelId,
-                        KomisyonId: komisyonId,
+                        KomisyonKullaniciId: komisyonId,
                         RolId: secilenRolId
                     };
 

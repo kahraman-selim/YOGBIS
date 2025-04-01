@@ -1,5 +1,4 @@
-@model IEnumerable<YOGBIS.Common.VModels.KomisyonlarVM>
-
+@model IEnumerable<YOGBIS.Common.VModels.KomisyonPersonellerVM>
 
 <div class="card mb-3">
     <div class="card-header">
@@ -7,47 +6,67 @@
         <b>Komisyon Sorumluları</b>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th class="text-center" style="width: 5%">SN</th>
-                        <th class="text-center" style="width: 35%">Personel Adı Soyadı</th>
-                        <th class="text-center" style="width: 60%">Sorumlu Olduğu Komisyonlar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        var sirano = 0;
-                    }
-@*                     @foreach (var personel in Model)
-                    {
-                        sirano++;
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+        else if (Model == null || !Model.Any())
+        {
+            <div class="alert alert-warning">
+                Henüz komisyon personeli tanımlanmamış.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" width="100%" cellspacing="0">
+                    <thead>
                         <tr>
-                            <td class="text-center">@sirano</td>
-                            <td>@personel.IlgiliPersonelAdiSoyadi</td>
-                            <td>
-                                @if (personel.KomisyonId != null)
-                                {
-                                    @string.Join(", ", personel.KomisyonAdi)
-                                }
-                                else
-                                {
-                                    <span class="text-muted">Komisyon atanmamış</span>
-                                }
-                            </td>
+                            <th class="text-center" style="width: 5%">SN</th>
+                            <th class="text-center" style="width: 35%">Personel Adı Soyadı</th>
+                            <th class="text-center" style="width: 60%">Sorumlu Olduğu Komisyonlar</th>
                         </tr>
-                    } *@
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @{
+                            var sirano = 0;
+                        }
+                        @foreach (var personel in Model)
+                        {
+                            sirano++;
+                            <tr>
+                                <td class="text-center">@sirano</td>
+                                <td>@personel.PersonelAdSoyad</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(personel.KomisyonAdi))
+                                    {
+                                        @personel.KomisyonAdi
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Komisyon atanmamış</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
     </div>
 </div>
 
 @section Scripts {
     <script>
         $(document).ready(function () {
-
+            $('#myTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
+                },
+                "responsive": true
+            });
         });
     </script>
 }

@@ -18,5 +18,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Task<Guid?> GetKomisyonIdBySiraNo(int siraNo);
         Result<KomisyonlarVM> KomisyonGetirById(Guid id);
         Result<KomisyonPersonellerVM> KomisyonPersonelKaydet(KomisyonPersonellerVM model, SessionContext user);
+        Result<List<KomisyonPersonellerVM>> KomisyonPersonelleriGetir();
     }
 }

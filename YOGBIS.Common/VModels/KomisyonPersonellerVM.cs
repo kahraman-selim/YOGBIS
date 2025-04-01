@@ -12,7 +12,9 @@ namespace YOGBIS.Common.VModels
         [Key]
         public Guid Id { get; set; }
         public string KomisyonKullaniciId { get; set; }
+        public string KomisyonAdi { get; set; }
         public Guid PersonelId { get; set; }
+        public string PersonelAdSoyad { get; set; }
         public Guid RolId { get; set; }
         
         //public Guid? YardimciPersonelId { get; set; }
