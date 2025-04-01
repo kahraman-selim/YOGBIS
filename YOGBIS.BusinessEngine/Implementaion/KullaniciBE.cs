@@ -213,23 +213,89 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region KomisyonSorumluGetirBirleştirmeYöntemi
+        //public async Task<Result<List<KullaniciVM>>> KomisyonSorumluGetir()
+        //{
+        //    var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(t => t.Ad).ToList();
+            
+        //    // Her iki roldeki kullanıcıları al
+        //    var commissionerUsers = await _userManager.GetUsersInRoleAsync("Commissioner");
+        //    var followerUsers = await _userManager.GetUsersInRoleAsync("Follower");
+            
+        //    // İki rolden gelen kullanıcıları birleştir ve tekrar eden kayıtları önle
+        //    var combinedUsers = commissionerUsers.Union(followerUsers).ToList().OrderBy(x=>x.Ad).ThenBy(y=>y.Soyad);
+            
+        //    if (combinedUsers.Any())
+        //    {
+        //        List<KullaniciVM> returnData = new List<KullaniciVM>();
+
+        //        foreach (var item in combinedUsers)
+        //        {
+        //            returnData.Add(new KullaniciVM()
+        //            {
+        //                Id = item.Id,
+        //                TcKimlikNo = item.TcKimlikNo,
+        //                Ad = item.Ad,
+        //                Soyad = item.Soyad,
+        //                AdSoyad = item.Ad + " " + item.Soyad
+        //            });
+        //        }
+        //        return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, returnData);
+        //    }
+        //    else
+        //    {
+        //        return new Result<List<KullaniciVM>>(false, ResultConstant.RecordNotFound);
+        //    }
+        //}
+        #endregion
+
         #region KomisyonSorumluGetir
         public async Task<Result<List<KullaniciVM>>> KomisyonSorumluGetir()
         {
             var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(t => t.Ad).ToList();
-            
-            // Her iki roldeki kullanıcıları al
+                       
             var commissionerUsers = await _userManager.GetUsersInRoleAsync("Commissioner");
-            var followerUsers = await _userManager.GetUsersInRoleAsync("Follower");
-            
-            // İki rolden gelen kullanıcıları birleştir ve tekrar eden kayıtları önle
-            var combinedUsers = commissionerUsers.Union(followerUsers).ToList().OrderBy(x=>x.Ad).ThenBy(y=>y.Soyad);
-            
-            if (combinedUsers.Any())
+                        
+            var KomUsers = commissionerUsers.ToList().OrderBy(x => x.Ad).ThenBy(y => y.Soyad);
+
+            if (KomUsers.Any())
             {
                 List<KullaniciVM> returnData = new List<KullaniciVM>();
 
-                foreach (var item in combinedUsers)
+                foreach (var item in KomUsers)
+                {
+                    returnData.Add(new KullaniciVM()
+                    {
+                        Id = item.Id,
+                        TcKimlikNo = item.TcKimlikNo,
+                        Ad = item.Ad,
+                        Soyad = item.Soyad,
+                        AdSoyad = item.Ad + " " + item.Soyad
+                    });
+                }
+                return new Result<List<KullaniciVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            else
+            {
+                return new Result<List<KullaniciVM>>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+        #region KomisyonYardimciGetir
+        public async Task<Result<List<KullaniciVM>>> KomisyonYardimciGetir()
+        {
+            var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(t => t.Ad).ToList();
+
+            var commissionerUsers = await _userManager.GetUsersInRoleAsync("Follower");
+
+            var KomUsers = commissionerUsers.ToList().OrderBy(x => x.Ad).ThenBy(y => y.Soyad);
+
+            if (KomUsers.Any())
+            {
+                List<KullaniciVM> returnData = new List<KullaniciVM>();
+
+                foreach (var item in KomUsers)
                 {
                     returnData.Add(new KullaniciVM()
                     {

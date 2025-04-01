@@ -61,8 +61,11 @@ namespace YOGBIS.UI.Controllers
             {
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
                 
-                var personel = await _kullaniciBE.KomisyonSorumluGetir();
-                ViewBag.KomisyonPersoneller = personel.Data;
+                var personelilgili = await _kullaniciBE.KomisyonSorumluGetir();
+                ViewBag.KomisyonIlgiliPersoneller = personelilgili.Data;
+
+                var personelyardimci= await _kullaniciBE.KomisyonYardimciGetir();
+                ViewBag.KomisyonYardimciPersoneller = personelyardimci.Data;
 
                 var komisyon = await _kullaniciBE.KomisyonGetir();
                 ViewBag.Komisyonlar = komisyon.Data;  
