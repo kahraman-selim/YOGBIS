@@ -19,7 +19,8 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<List<AdaylarVM>> AdayGetirKullaniciId(string userId);
         bool TCKontrol(string TC);
         Result<AdayBasvuruBilgileriVM> AdayBasvuruBilgileriEkle(AdayBasvuruBilgileriVM model, SessionContext user);
-        Result<List<AdayBasvuruBilgileriVM>> AdayBasvuruBilgileriniGetir(string TC);       
+        Result<List<AdayBasvuruBilgileriVM>> AdayBasvuruBilgileriniGetir(string TC);
+        Result<List<AdayBasvuruBilgileriVM>> AdayBasvuruBilgileriniGetirMulakat(string TC);
         Result<AdayBasvuruBilgileriVM> AdayBasvuruBilgileriniGetirById(Guid id);
         Result<AdayIletisimBilgileriVM> AdayIletisimBilgileriEkle(AdayIletisimBilgileriVM model, SessionContext user);
         Result<List<AdayIletisimBilgileriVM>> AdayIletisimBilgileriniGetir(string TC);

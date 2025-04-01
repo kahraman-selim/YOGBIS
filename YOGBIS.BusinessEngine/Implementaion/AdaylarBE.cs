@@ -457,7 +457,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
         
-        #region AdayBasvuruBilgileriniGetir
+        #region AdayBasvuruBilgileriniGetirAdayTanımlama
         public Result<List<AdayBasvuruBilgileriVM>> AdayBasvuruBilgileriniGetir(string TC)
         {
             try
@@ -561,6 +561,190 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         DereceAdi = data.DereceAdi,
                         Unvan = data.Unvan,
                         UlkeTercihId = data.UlkeTercihId,                
+                        MulakatId = data.MulakatId,
+                        KayitTarihi = data.KayitTarihi,
+                        KaydedenId = data.KaydedenId
+                    }).ToList();
+
+                    foreach (var aday in adaylar)
+                    {
+                        if (aday.MulakatId.HasValue)
+                        {
+                            try
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Business Engine - {aday.TC} için mülakat bilgileri alınıyor. MulakatId: {aday.MulakatId}");
+
+                                // Önce mülakat verisini direkt veritabanından alalım
+                                var mulakat = _unitOfWork.mulakatlarRepository.Get((Guid)aday.MulakatId);
+                                if (mulakat != null && mulakat.YazılıSinavTarihi != default(DateTime))
+                                {
+                                    aday.MulakatYil = mulakat.YazılıSinavTarihi.Year;
+                                    System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı veritabanından alındı: {aday.MulakatYil}");
+                                }
+                                else
+                                {
+                                    // Eğer veritabanından alamazsak servisten deneyelim
+                                    var mulakatYil = _mulakatOlusturBE.MulakatYilGetir((Guid)aday.MulakatId);
+                                    if (mulakatYil.IsSuccess && !string.IsNullOrEmpty(mulakatYil.Data))
+                                    {
+                                        aday.MulakatYil = int.Parse(mulakatYil.Data);
+                                        System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı servisten alındı: {aday.MulakatYil}");
+                                    }
+                                    else
+                                    {
+                                        System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat yılı alınamadı");
+                                    }
+                                }
+
+                                // Ülke tercih bilgisini alalım
+                                if (aday.UlkeTercihId != null)
+                                {
+                                    var ulkeTercih = _unitOfWork.ulkeTercihRepository.Get((Guid)aday.UlkeTercihId);
+                                    if (ulkeTercih != null && ulkeTercih.UlkeTercihId != null)
+                                    {
+                                        var ulke = _unitOfWork.ulkeTercihRepository.Get((Guid)ulkeTercih.UlkeTercihId);
+                                        if (ulke != null)
+                                        {
+                                            aday.UlkeTercihAdi = ulke.UlkeTercihAdi;
+                                            System.Diagnostics.Debug.WriteLine($"Business Engine - Ülke adı veritabanından alındı: {aday.UlkeTercihAdi}");
+                                        }
+                                    }
+                                }
+
+                                var mulakatOnay = _mulakatOlusturBE.MulakatOnayGetir((Guid)aday.MulakatId);
+                                if (mulakatOnay.IsSuccess && !string.IsNullOrEmpty(mulakatOnay.Data))
+                                {
+                                    aday.MulakatOnayNo = mulakatOnay.Data;
+                                    System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat onay no alındı: {mulakatOnay.Data}");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Business Engine - Mülakat bilgileri alınırken hata: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                            }
+                        }
+                    }
+
+                    return new Result<List<AdayBasvuruBilgileriVM>>(true, ResultConstant.RecordFound, adaylar);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - TC ile veri bulunamadı: {TC}");
+                    return new Result<List<AdayBasvuruBilgileriVM>>(false, "TC numarası ile kayıt bulunamadı");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - Hata: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                return new Result<List<AdayBasvuruBilgileriVM>>(false, "Veri getirme hatası: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region AdayBasvuruBilgileriniGetirMulakat
+        public Result<List<AdayBasvuruBilgileriVM>> AdayBasvuruBilgileriniGetirMulakat(string TC)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"Business Engine - TC ile sorgu başladı: {TC}");
+
+                if (string.IsNullOrEmpty(TC))
+                {
+                    System.Diagnostics.Debug.WriteLine("Business Engine - TC boş");
+                    return new Result<List<AdayBasvuruBilgileriVM>>(false, "TC kimlik numarası boş olamaz");
+                }
+
+                System.Diagnostics.Debug.WriteLine("Business Engine - Repository'den veri çekiliyor");
+                var data = _unitOfWork.adayBasvuruBilgileriRepository.GetAll()
+                    .Include(x => x.Kullanici)
+                    .Include(x => x.Adaylar)
+                    .Where(x => x.TC == TC && x.OnayDurumu=="Onaylandı")
+                    .ToList();
+
+
+                if (data != null && data.Any())
+                {
+                    System.Diagnostics.Debug.WriteLine($"Business Engine - {data.Count} adet veri bulundu. TC: {TC}");
+
+                    var adaylar = data.Select(data => new AdayBasvuruBilgileriVM()
+                    {
+                        Id = data.Id,
+                        TC = data.TC,
+                        Askerlik = data.Askerlik,
+                        KurumKod = data.KurumKod,
+                        KurumAdi = data.KurumAdi,
+                        Ogrenim = data.Ogrenim,
+                        MezunOkulKodu = data.MezunOkulKodu,
+                        Mezuniyet = data.Mezuniyet,
+                        HizmetYil = data.HizmetYil,
+                        HizmetAy = data.HizmetAy,
+                        HizmetGun = data.HizmetGun,
+                        Derece = data.Derece,
+                        Kademe = data.Kademe,
+                        Enaz5Yil = data.Enaz5Yil,
+                        DahaOnceYDGorev = data.DahaOnceYDGorev,
+                        YIciGorevBasTar = data.YIciGorevBasTar,
+                        YabanciDilBasvuru = data.YabanciDilBasvuru,
+                        YabanciDilAdi = data.YabanciDilAdi,
+                        YabanciDilTuru = data.YabanciDilTuru,
+                        YabanciDilTarihi = data.YabanciDilTarihi,
+                        YabanciDilPuan = data.YabanciDilPuan,
+                        YabanciDilSeviye = data.YabanciDilSeviye,
+                        IlTercihi1 = data.IlTercihi1,
+                        IlTercihi2 = data.IlTercihi2,
+                        IlTercihi3 = data.IlTercihi3,
+                        IlTercihi4 = data.IlTercihi4,
+                        IlTercihi5 = data.IlTercihi5,
+                        BasvuruTarihi = data.BasvuruTarihi,
+                        SonDegisiklikTarihi = data.SonDegisiklikTarihi,
+                        OnayDurumu = data.OnayDurumu,
+                        OnayDurumuAck = data.OnayDurumuAck,
+                        MYYSTarihi = data.MYYSTarihi,
+                        MYYSSinavTedbiri = data.MYYSSinavTedbiri,
+                        MYYSTedbirAck = data.MYYSTedbirAck,
+                        MYYSPuan = data.MYYSPuan,
+                        MYYSSonuc = data.MYYSSonuc,
+                        MYSSDurum = data.MYSSDurum,
+                        MYSSDurumAck = data.MYSSDurumAck,
+                        IlMemGorus = data.IlMemGorus,
+                        Referans = data.Referans,
+                        ReferansAck = data.ReferansAck,
+                        GorevIptalAck = data.GorevIptalAck,
+                        GorevIptalBrans = data.GorevIptalBrans,
+                        GorevIptalYil = data.GorevIptalYil,
+                        GorevIptalBAOK = data.GorevIptalBAOK,
+                        IlkGorevKaydi = data.IlkGorevKaydi,
+                        YabanciDilALM = data.YabanciDilALM,
+                        YabanciDilING = data.YabanciDilING,
+                        YabanciDilFRS = data.YabanciDilFRS,
+                        YabanciDilDiger = data.YabanciDilDiger,
+                        GorevdenUzaklastirma = data.GorevdenUzaklastirma,
+                        EDurum = data.EDurum,
+                        MDurum = data.MDurum,
+                        PDurum = data.PDurum,
+                        GenelDurum = data.GenelDurum,
+                        DahaOnceSinav = data.DahaOnceSinav,
+                        DogumYeri = !string.IsNullOrEmpty(data.Adaylar?.DogumYeri) ? data.Adaylar.DogumYeri : "",
+
+                        Yas = !string.IsNullOrEmpty(data.Adaylar?.DogumTarihi2) && DateTime.TryParse(data.Adaylar.DogumTarihi2, out DateTime dogumTarihi) ? (int)((DateTime.Now - dogumTarihi).TotalDays / 365.25) : 0,
+
+                        IkametBilgisi = data.Adaylar.AdayIletisimBilgileri != null ?
+                        data.Adaylar.AdayIletisimBilgileri.Select(x => x.IkametIl).FirstOrDefault() + "/" +
+                        data.Adaylar.AdayIletisimBilgileri.Select(x => x.IkametIlce).FirstOrDefault() : "",
+
+                        YLisans = data.YLisans,
+                        Doktora = data.Doktora,
+                        Sendika = data.Sendika,
+                        SendikaAck = data.SendikaAck,
+                        MYYSSoruItiraz = data.MYYSSoruItiraz,
+                        MYYSSonucItiraz = data.MYYSSonucItiraz,
+                        BasvuruBrans = data.BasvuruBrans,
+                        BransId = data.BransId,
+                        AdliSicilBelge = data.AdliSicilBelge,
+                        DereceId = data.DereceId,
+                        DereceAdi = data.DereceAdi,
+                        Unvan = data.Unvan,
+                        UlkeTercihId = data.UlkeTercihId,
                         MulakatId = data.MulakatId,
                         KayitTarihi = data.KayitTarihi,
                         KaydedenId = data.KaydedenId

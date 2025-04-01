@@ -22,7 +22,7 @@ namespace YOGBIS.UI.ViewComponents
             {
                 return View(null);
             }
-            var requestmodel = _adaylarBE.AdayBasvuruBilgileriniGetir(TC);
+            var requestmodel = _adaylarBE.AdayBasvuruBilgileriniGetirMulakat(TC);
             if (requestmodel.IsSuccess)
             {
                 return View(requestmodel.Data);
