@@ -324,7 +324,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
                 return new Result<List<UlkeTercihVM>>(true, ResultConstant.RecordFound, returnData);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new Result<List<UlkeTercihVM>>(false, ResultConstant.RecordNotFound, default(List<UlkeTercihVM>));
             }

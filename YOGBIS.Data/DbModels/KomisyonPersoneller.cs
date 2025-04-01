@@ -10,7 +10,7 @@ namespace YOGBIS.Data.DbModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
-        public Guid KomisyonId { get; set; }
+        public string KomisyonKullaniciId { get; set; }
         public Guid PersonelId { get; set; }
         public Guid RolId { get; set; }
         [ForeignKey("KomisyonId")]

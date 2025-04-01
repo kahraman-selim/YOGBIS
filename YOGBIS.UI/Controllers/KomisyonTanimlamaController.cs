@@ -153,5 +153,37 @@ namespace YOGBIS.UI.Controllers
             }
         }
         #endregion
+
+        #region KomisyonPersonelKaydet
+        [HttpPost]
+        public JsonResult KomisyonPersonelKaydet(KomisyonPersonellerVM model)
+        {
+            try
+            {
+                //if (model == null)
+                //{
+                //    return Json(new { success = false, message = "Model boş olamaz" });
+                //}
+
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                var data = _komisyonlarBE.KomisyonPersonelKaydet(model, user);
+                
+                return Json("200");
+
+                //if (data.IsSuccess)
+                //{
+                //    return Json(new { success = true, message = data.Message});
+                //}
+                //else
+                //{
+                //    return Json(new { success = false, message = data.Message });
+                //}
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Hata oluştu: {ex.Message}" });
+            }
+        }
+        #endregion
     }
 }

@@ -1,10 +1,13 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
-@model YOGBIS.Common.VModels.KomisyonlarVM
+@model YOGBIS.Common.VModels.KomisyonPersonellerVM
 @{
-    ViewData["Title"] = "Komisyon Tanımlama";
+    ViewData["Title"] = "Komisyon Personel Tanımlama";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var yardimciPersoneller = ViewBag.KomisyonYardimciPersoneller;
+    var ilgiliPersoneller = ViewBag.KomisyonIlgiliPersoneller;
 }
 
 @section Styles {
@@ -28,7 +31,7 @@
             </div>
             <div class="card-body">
                 <form class="form-group m-0" asp-action="KomisyonKaydet" method="post">
-                    @Html.HiddenFor(x => x.KomisyonId)
+                    @Html.HiddenFor(x => x.Id)
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
@@ -43,22 +46,30 @@
                     </div>
                     <div class="form-row" style="display:none" id="yardimciperrow">
                         <div class="form-group col-md-12">
-                            <label asp-for="YardimciPersonelId" class="small mb-1 font-weight-bold">Personeli Seç</label>
-                            @Html.DropDownListFor(u => u.YardimciPersonelId, 
-                                new SelectList(ViewBag.KomisyonYardimciPersoneller, "Id", "AdSoyad"),
+                            <label asp-for="PersonelId" class="small mb-1 font-weight-bold">Personeli Seç</label>
+                            @foreach(var p in yardimciPersoneller)
+                            {
+                                <input type="hidden" class="yardimci-data" data-id="@p.Id" data-adsoyad="@p.AdSoyad" data-rolid="@p.RolId" />
+                            }
+                            @Html.DropDownListFor(u => u.PersonelId, 
+                                new SelectList(yardimciPersoneller, "Id", "AdSoyad"),
                                 "Yardımcı personeli seçiniz",
                                 new { @class = "form-control-range form-control py-2" })
-                            <span class="text-danger" asp-validation-for="YardimciPersonelId"></span>
+                            <span class="text-danger" asp-validation-for="PersonelId"></span>
                         </div>
                     </div>
                     <div class="form-row" style="display:none" id="ilgiliperrow">
                         <div class="form-group col-md-12">
-                            <label asp-for="IlgiliPersonelId" class="small mb-1 font-weight-bold">Personeli Seç</label>
-                            @Html.DropDownListFor(u => u.IlgiliPersonelId, 
-                                new SelectList(ViewBag.KomisyonIlgiliPersoneller, "Id", "AdSoyad"),
+                            <label asp-for="PersonelId" class="small mb-1 font-weight-bold">Personeli Seç</label>
+                            @foreach(var p in ilgiliPersoneller)
+                            {
+                                <input type="hidden" class="ilgili-data" data-id="@p.Id" data-adsoyad="@p.AdSoyad" data-rolid="@p.RolId" />
+                            }
+                            @Html.DropDownListFor(u => u.PersonelId, 
+                                new SelectList(ilgiliPersoneller, "Id", "AdSoyad"),
                                 "İlgili personeli seçiniz", 
                                 new { @class = "form-control-range form-control py-2" })
-                            <span class="text-danger" asp-validation-for="IlgiliPersonelId"></span>
+                            <span class="text-danger" asp-validation-for="PersonelId"></span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -84,7 +95,7 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-success btn-sm text-white mb-1" style="width:100px">Kaydet</button>
+                            <button type="button" id="kaydetButton" class="btn btn-success btn-sm text-white mb-1" style="width:100px">Kaydet</button>
                         </div>
                     </div>
                 </form>
@@ -102,10 +113,25 @@
     
     <script>
         $(document).ready(function () {
-            var secilenPersonelId = null;
-            var secilenKomisyonIds = [];
-            var komisyonBilgileri = {};
-            var RolId  = null;
+            var secilenRolId = null;
+            
+            var yardimciPersoneller = [];
+            $('.yardimci-data').each(function() {
+                yardimciPersoneller.push({
+                    Id: $(this).data('id'),
+                    AdSoyad: $(this).data('adsoyad'),
+                    RolId: $(this).data('rolid')
+                });
+            });
+            
+            var ilgiliPersoneller = [];
+            $('.ilgili-data').each(function() {
+                ilgiliPersoneller.push({
+                    Id: $(this).data('id'),
+                    AdSoyad: $(this).data('adsoyad'),
+                    RolId: $(this).data('rolid')
+                });
+            });
 
             $('#personeltanim').change(function() {
               var secilen= $(this).val();
@@ -121,119 +147,126 @@
 
             //komisyon ilgili personeli için
             $('#IlgiliPersonelId').change(function() {
-                secilenPersonelId = $(this).val();
-                var secilenText = $("#IlgiliPersonelId option:selected").text();
-                
-                if(secilenPersonelId) {
-                    // AdSoyad ve RolId bilgilerini ayır
-                    var bilgiler = secilenText.split(' - ');
-                    var adSoyad = bilgiler[0];
-                    var rolId = bilgiler[1] ? bilgiler[1].replace('(Rol ID: ', '').replace(')', '') : '';
-                    
-                    Swal.fire({
-                        title: 'Seçilen Personel Bilgisi',
-                        html: '<b>ID:</b> ' + secilenPersonelId + '<br>' +
-                              '<b>Ad Soyad:</b> ' + adSoyad + '<br>' +
-                              '<b>Rol ID:</b> ' + rolId,
-                        icon: 'info',
-                        confirmButtonText: 'Tamam'
-                    });
+                var secilenId = $(this).val();
+                if(secilenId) {
+                    var personel = ilgiliPersoneller.find(p => p.Id === secilenId);
+                    if(personel) {
+                        secilenRolId = personel.RolId;
+                        alert("İlgili Personel RolId: " + secilenRolId);
+                    }
                 }
             });
 
             //komisyon yardımcı personeli için
             $('#YardimciPersonelId').change(function() {
-                secilenPersonelId = $(this).val();
-                var secilenText = $("#YardimciPersonelId option:selected").text();
-
-                if(secilenPersonelId) {
-                    // AdSoyad ve RolId bilgilerini ayır
-                    var bilgiler = secilenText.split(' - ');
-                    var adSoyad = bilgiler[0];
-                    var rolId = bilgiler[1] ? bilgiler[1].replace('(Rol ID: ', '').replace(')', '') : '';
-
-                    Swal.fire({
-                        title: 'Seçilen Personel Bilgisi',
-                        html: '<b>ID:</b> ' + secilenPersonelId + '<br>' +
-                              '<b>Ad Soyad:</b> ' + adSoyad + '<br>' +
-                              '<b>Rol ID:</b> ' + rolId,
-                        icon: 'info',
-                        confirmButtonText: 'Tamam'
-                    });
+                var secilenId = $(this).val();
+                if(secilenId) {
+                    var personel = yardimciPersoneller.find(p => p.Id === secilenId);
+                    if(personel) {
+                        secilenRolId = personel.RolId;
+                        alert("Yardımcı Personel RolId: " + secilenRolId);
+                    }
                 }
             });
 
+            $('#kaydetButton').click(function() {
+                var personelTipi = $('#personeltanim').val();
+                if(personelTipi === "Seçim yapınız") {
+                    Swal.fire({
+                        title: 'Uyarı!',
+                        text: 'Lütfen personel görev tanımını seçiniz',
+                        icon: 'warning',
+                        confirmButtonText: 'Tamam'
+                    });
+                    return;
+                }
 
-            // Komisyon checkbox'larının change eventi
-            $('.komisyon-checkbox').change(function() {
-                secilenKomisyonIds = [];
-                komisyonBilgileri = {};
-                var promises = [];
-                
-                // Seçili olan tüm checkbox'ların value'larını topla
+                var personelId = personelTipi == "1" ? $('#YardimciPersonelId').val() : $('#IlgiliPersonelId').val();
+                if (!personelId) {
+                    Swal.fire({
+                        title: 'Uyarı!',
+                        text: 'Lütfen bir personel seçiniz',
+                        icon: 'warning',
+                        confirmButtonText: 'Tamam'
+                    });
+                    return;
+                }
+
+                if (!secilenRolId) {
+                    Swal.fire({
+                        title: 'Uyarı!',
+                        text: 'Personelin rol bilgisi bulunamadı',
+                        icon: 'warning',
+                        confirmButtonText: 'Tamam'
+                    });
+                    return;
+                }
+
+                var secilenKomisyonlar = [];
                 $('.komisyon-checkbox:checked').each(function() {
-                    var komisyonAdi = $(this).closest('.custom-control').find('label').text().trim();
-                    secilenKomisyonIds.push(komisyonAdi);
-                    
-                    var promise = $.ajax({
-                        url: '@Url.Action("KomisyonBilgileriGetir", "KomisyonTanimlama")',
-                        type: 'GET',
-                        data: { komisyonAdi: komisyonAdi },
+                    secilenKomisyonlar.push($(this).val());
+                });
+
+                if (secilenKomisyonlar.length === 0) {
+                    Swal.fire({
+                        title: 'Uyarı!',
+                        text: 'Lütfen en az bir komisyon seçiniz',
+                        icon: 'warning',
+                        confirmButtonText: 'Tamam'
+                    });
+                    return;
+                }
+
+                var basariliKayitlar = 0;
+                var hatalar = [];
+
+                secilenKomisyonlar.forEach(function(komisyonId) {
+                    var model = {
+                        PersonelId: personelId,
+                        KomisyonId: komisyonId,
+                        RolId: secilenRolId
+                    };
+
+                    $.ajax({
+                        url: '@Url.Action("KomisyonPersonelKaydet", "KomisyonTanimlama")',
+                        type: 'POST',
+                        data: model,
+                        async: false,
                         success: function(response) {
-                            if(response.success) {
-                                komisyonBilgileri[komisyonAdi] = {
-                                    kullaniciAdi: response.kullaniciAdi,
-                                    komisyonAdi: response.komisyonAdi
-                                };
+                            if (response.success) {
+                                basariliKayitlar++;
                             } else {
-                                komisyonBilgileri[komisyonAdi] = {
-                                    kullaniciAdi: 'Atanmamış',
-                                    komisyonAdi: komisyonAdi
-                                };
-                                
-                                Swal.fire({
-                                    title: 'Uyarı!',
-                                    text: response.message || 'Komisyon bilgileri alınamadı.',
-                                    icon: 'warning',
-                                    confirmButtonText: 'Tamam'
-                                });
+                                hatalar.push(response.message);
                             }
                         },
                         error: function() {
-                            komisyonBilgileri[komisyonAdi] = {
-                                kullaniciAdi: 'Atanmamış',
-                                komisyonAdi: komisyonAdi
-                            };
-                            
-                            Swal.fire({
-                                title: 'Hata!',
-                                text: 'Komisyon bilgileri alınırken bir hata oluştu.',
-                                icon: 'error',
-                                confirmButtonText: 'Tamam'
-                            });
+                            hatalar.push('İşlem sırasında bir hata oluştu');
                         }
                     });
-                    promises.push(promise);
                 });
 
-                // Tüm AJAX istekleri tamamlandığında
-                $.when.apply($, promises).then(function() {
-                    if(secilenKomisyonIds.length > 0) {
-                        var formatlananBilgiler = secilenKomisyonIds.map(function(komisyonAdi, index) {
-                            var bilgi = komisyonBilgileri[komisyonAdi];
-                            
-                            return (index + 1) + '. ' + bilgi.kullaniciAdi + ' - ' + bilgi.komisyonAdi;
-                        }).join('\n');
-                        
-                        Swal.fire({
-                            title: 'Komisyon - Kullanıcı Eşleşmeleri',
-                            html: '<div style="text-align: left; white-space: pre-line;">' + formatlananBilgiler + '</div>',
-                            icon: 'info',
-                            width: '600px',
-                            confirmButtonText: 'Tamam'
-                        });
-                    }
-                });
+                if (basariliKayitlar === secilenKomisyonlar.length) {
+                    Swal.fire({
+                        title: 'Başarılı!',
+                        text: 'Tüm kayıtlar başarıyla tamamlandı',
+                        icon: 'success',
+                        confirmButtonText: 'Tamam'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    var mesaj = basariliKayitlar + " kayıt başarılı, " + hatalar.length + " kayıt başarısız\n\n";
+                    mesaj += "Hatalar:\n" + hatalar.join('\n');
+                    
+                    Swal.fire({
+                        title: 'Uyarı!',
+                        text: mesaj,
+                        icon: 'warning',
+                        confirmButtonText: 'Tamam'
+                    });
+                }
             });
         });
     </script>
