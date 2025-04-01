@@ -70,9 +70,9 @@
         if (!string.IsNullOrEmpty(item.YabanciDilDiger) && item.YabanciDilDiger.ToUpper() == "E" && !string.IsNullOrEmpty(item.YabanciDilAdi)) diller.Add(item.YabanciDilAdi);
         
         var dilBilgisi = string.Join(", ", diller);
-        if (!string.IsNullOrEmpty(item.YabanciDilPuan))
+        if (!string.IsNullOrEmpty(item.YabanciDilAdi) || !string.IsNullOrEmpty(item.YabanciDilTuru) || !string.IsNullOrEmpty(item.YabanciDilPuan))
         {
-            dilBilgisi += $"<br><small>({item.YabanciDilPuan})</small>";
+            dilBilgisi += $"({item.YabanciDilAdi})<br>({item.YabanciDilTuru})<br>({item.YabanciDilTarihi})<br>({item.YabanciDilPuan})<br>({item.YabanciDilSeviye})";
         }
         return string.IsNullOrEmpty(dilBilgisi) ? "-" : dilBilgisi;
     }

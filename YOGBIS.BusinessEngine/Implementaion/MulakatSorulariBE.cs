@@ -297,6 +297,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         data.Soru = model.Soru;
                         data.Cevap = model.Cevap;
                         data.SoruNo=model.SoruNo;
+                        data.KaydedenId = user.LoginId;
 
                         _unitOfWork.mulakatSorulariRepository.Update(data);
                         _unitOfWork.Save();

@@ -375,6 +375,41 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region AdayTopluGuncelle
+        public Result<AdayBasvuruBilgileriVM> AdayTopluGuncelle(AdayBasvuruBilgileriVM model, SessionContext user)
+        {
+            if (model.Id != null)
+            {
+                try
+                {
+                    var data = _unitOfWork.adayBasvuruBilgileriRepository.Get(model.Id);
+                    if (data != null) 
+                    {
+                        data.MulakatId = model.MulakatId;
+                        data.KaydedenId = user.LoginId;
+
+                        _unitOfWork.adayBasvuruBilgileriRepository.Update(data);
+                        _unitOfWork.Save();
+                        return new Result<AdayBasvuruBilgileriVM>(true, ResultConstant.RecordCreateSuccess);
+                    }
+                    else
+                    {
+                        return new Result<AdayBasvuruBilgileriVM>(false, "Lütfen kayıt seçiniz");
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                }
+            }
+            else
+            {
+                return new Result<AdayBasvuruBilgileriVM>(false, "Boş veri olamaz");
+            }
+        }
+        #endregion
+
         #region AdaySil
         public Result<bool> AdaySil(Guid id)
         {
@@ -475,6 +510,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     .Include(x => x.Kullanici)
                     .Include(x => x.Adaylar)                    
                     .Where(x=>x.TC==TC)
+                    .OrderBy(x=>x.BasvuruTarihi)
                     .ToList();
 
 

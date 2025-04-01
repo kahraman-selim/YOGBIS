@@ -47,11 +47,14 @@
                         <th class="text-center align-text-top">MDurum</th>
                         <th class="text-center align-text-top">PDurum</th>
                         <th class="text-center align-text-top">İL MEM Görüş</th>
+                        <th class="text-center align-text-top">Genel Görüş</th>
                         <th class="text-center align-text-top">Adli Sicil</th>
                         <th class="text-center align-text-top">Askerlik</th>
                         <th class="text-center align-text-top">Kurum Adı</th>
                         <th class="text-center align-text-top">Öğrenim</th>                       
                         <th class="text-center align-text-top">Mezuniyet</th>
+                        <th class="text-center align-text-top">Y.Lisans</th>
+                        <th class="text-center align-text-top">Doktora</th>
                         <th class="text-center align-text-top">Hizmet</th>
                         <th class="text-center align-text-top">Derece/Kademe</th>
                         <th class="text-center align-text-top">Yurt Dışı Görev</th>
@@ -104,6 +107,7 @@
                                 <td class="durum-column">@item.MDurum</td>
                                 <td class="durum-column">@item.PDurum</td>
                                 <td class="durum-column">@item.IlMemGorus</td>
+                                <td class="durum-column">@item.GenelDurum</td>
                                 @if (item.AdliSicilBelge != null && item.AdliSicilBelge.Length > 0)
                                 {
                                     <td class="bg-danger">
@@ -118,6 +122,8 @@
                                 <td class="derece-column">@item.KurumAdi</td>
                                 <td class="yillik-column">@item.Ogrenim</td>
                                 <td class="ydgorev-column">@item.Mezuniyet</td>
+                                <td class="ydgorev-column">@item.YLisans</td>
+                                <td class="ydgorev-column">@item.Doktora</td>
                                 @{
                                     var hizmet = new List<string>();
                                     if (!string.IsNullOrEmpty(item.HizmetYil)) hizmet.Add(item.HizmetYil);
@@ -184,7 +190,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="37" class="text-center" style="padding: 20px;">
+                            <td colspan="41" class="text-center" style="padding: 20px;">
                                 <i class="fas fa-info-circle text-info mr-2"></i>
                                 Herhangi bir kayıt bulunamadı!
                             </td>

@@ -472,8 +472,18 @@ namespace YOGBIS.UI.Controllers
                                 EDurum = worksheet.Cells[row, 51].Value?.ToString(),
                                 MDurum = worksheet.Cells[row, 52].Value?.ToString(),
                                 PDurum = worksheet.Cells[row, 53].Value?.ToString(),
-                                // genel durumu için ayrıca işlem yapılacak
-                                GenelDurum = worksheet.Cells[row, 54].Value?.ToString(),
+                                // GenelDurum için IlMemGorus ve PDurum kontrolü
+                                GenelDurum = (worksheet.Cells[row, 38].Value?.ToString()?.ToLower().Contains("olumlu") == true ||
+                                            worksheet.Cells[row, 38].Value?.ToString()?.ToLower().Contains("uygun") == true ||
+                                            worksheet.Cells[row, 38].Value?.ToString()?.ToLower().Contains("uygundur") == true ||
+                                            worksheet.Cells[row, 53].Value?.ToString()?.ToLower().Contains("olumlu") == true ||
+                                            worksheet.Cells[row, 53].Value?.ToString()?.ToLower().Contains("uygun") == true ||
+                                            worksheet.Cells[row, 53].Value?.ToString()?.ToLower().Contains("uygundur") == true) ? "OLUMLU" :
+                                           (worksheet.Cells[row, 38].Value?.ToString()?.ToLower().Contains("olumsuz") == true ||
+                                            worksheet.Cells[row, 38].Value?.ToString()?.ToLower().Contains("uygun değildir") == true ||
+                                            worksheet.Cells[row, 53].Value?.ToString()?.ToLower().Contains("olumsuz") == true ||
+                                            worksheet.Cells[row, 53].Value?.ToString()?.ToLower().Contains("uygun değildir") == true) ? "OLUMSUZ" :
+                                            worksheet.Cells[row, 54].Value?.ToString(),
                                 //
                                 YLisans = worksheet.Cells[row, 55].Value?.ToString(),
                                 Doktora = worksheet.Cells[row, 56].Value?.ToString(),
@@ -1096,6 +1106,149 @@ namespace YOGBIS.UI.Controllers
             return ViewComponent("AdayTYSBilgileri", data);
         }
         #endregion
-        
+
+        #region AdayBilgileriTopluGuncelle
+        [HttpPost]
+        [RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
+        [RequestSizeLimit(209715200)]
+        public async Task<IActionResult> AdayBilgileriTopluGuncelle(IFormFile file)
+        {
+            ViewBag.Mulakatlar = _mulakatOlusturBE.MulakatlariGetirSelectedBox().Data;
+            var sessionId = HttpContext.Session.Id;
+
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    _progressService.UpdateProgress(sessionId, p =>
+                    {
+                        p.IslemAsamasi = "Hata";
+                        p.Error = "Lütfen bir dosya seçin!";
+                        p.Mesaj = "Lütfen bir dosya seçin!";
+                    });
+                    return Json(new { success = false });
+                }
+
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+                if (user == null)
+                {
+                    _progressService.UpdateProgress(sessionId, p =>
+                    {
+                        p.IslemAsamasi = "Hata";
+                        p.Error = "Oturum bilgisi bulunamadı!";
+                        p.Mesaj = "Oturum bilgisi bulunamadı!";
+                    });
+                    return Json(new { success = false });
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        var rowCount = worksheet.Dimension?.Rows ?? 0;
+
+                        if (rowCount <= 1)
+                        {
+                            _progressService.UpdateProgress(sessionId, p =>
+                            {
+                                p.IslemAsamasi = "Hata";
+                                p.Error = "Excel dosyası boş veya geçersiz!";
+                                p.Mesaj = "Excel dosyası boş veya geçersiz!";
+                            });
+                            return Json(new { success = false });
+                        }
+
+                        var toplamKayit = rowCount - 1;
+                        var islemYapilan = 0;
+                        var basariliEklenen = 0;
+
+                        _progressService.UpdateProgress(sessionId, p =>
+                        {
+                            p.IslemAsamasi = "Baslatiliyor";
+                            p.ToplamKayit = toplamKayit;
+                            p.IslemYapilan = 0;
+                            p.BasariliEklenen = 0;
+                            p.Mesaj = "Güncelleme bilgileri yükleme işlemi başlatılıyor...";
+                        });
+
+                        await Task.Delay(100);
+
+                        _progressService.UpdateProgress(sessionId, p =>
+                        {
+                            p.IslemAsamasi = "Kayit";
+                            p.IslemYapilan = 0;
+                            p.Mesaj = "Güncelleme bilgileri işleniyor...";
+                        });
+
+                        for (int row = 2; row <= rowCount; row++)
+                        {
+                            var tc = worksheet.Cells[row, 1].Value?.ToString();
+                            var tarih = worksheet.Cells[row, 2].Value?.ToString();
+                            var data = _unitOfWork.adayBasvuruBilgileriRepository.GetFirstOrDefault(a => a.MYYSTarihi == tarih && a.TC==tc);
+                            var id = data.Id;
+
+                            var aday = new AdayBasvuruBilgileriVM
+                            {
+                                //TC = worksheet.Cells[row, 1].Value?.ToString(),
+                                Id = id,
+                                MulakatId = ((List<MulakatlarVM>)ViewBag.Mulakatlar).FirstOrDefault()?.MulakatId,
+                                //AdayId = _adaylarBE.AdayTemelBilgileriGetir().Data
+                                //    .FirstOrDefault(a => a.TC == worksheet.Cells[row, 1].Value?.ToString())?.AdayId
+                            };
+
+                            var result = _adaylarBE.AdayTopluGuncelle(aday, user);
+                            if (result.IsSuccess)
+                            {
+                                basariliEklenen++;
+                            }
+
+                            islemYapilan++;
+                            _progressService.UpdateProgress(sessionId, p =>
+                            {
+                                p.IslemYapilan = islemYapilan;
+                                p.BasariliEklenen = basariliEklenen;
+                                p.Mesaj = $"Güncelleme bilgileri işleniyor... ({islemYapilan}/{toplamKayit})";
+                            });
+                            await Task.Delay(10);
+                        }
+
+                        // İşlem Tamamlandı
+                        _progressService.UpdateProgress(sessionId, p =>
+                        {
+                            p.IslemAsamasi = "Tamamlandi";
+                            p.IslemYapilan = toplamKayit;
+                            if (basariliEklenen > 0)
+                            {
+                                p.Success = $"{basariliEklenen} adet güncelleme bilgisi başarıyla eklenmiştir.";
+                            }
+                            p.Mesaj = "İşlem tamamlandı";
+                        });
+
+                        await Task.Delay(500);
+
+                        return Json(new { success = true });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Güncelleme bilgileri yükleme işlemi sırasında hata: {Message}", ex.Message);
+                _progressService.UpdateProgress(sessionId, p =>
+                {
+                    p.IslemAsamasi = "Hata";
+                    p.Error = "İşlem sırasında hata oluştu: " + ex.Message;
+                    p.Mesaj = "Hata oluştu!";
+                });
+                return Json(new { success = false });
+            }
+            finally
+            {
+                _progressService.ResetProgress(sessionId);
+            }
+        }
+        #endregion
+
     }
 }

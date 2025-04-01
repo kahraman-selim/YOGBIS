@@ -44,5 +44,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<AdayMYSSVM> GetirAdayMYSSBilgileri(Guid id);
         Result<AdayBasvuruBilgileriVM> GetirAdayBasvuruBilgileri(Guid? adayId);
         Result<AdayMYSSVM> AdaySinavIptalGuncelle(AdayMYSSVM model, SessionContext user);
+        Result<AdayBasvuruBilgileriVM> AdayTopluGuncelle(AdayBasvuruBilgileriVM model, SessionContext user);
     }
 }

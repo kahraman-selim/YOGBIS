@@ -243,6 +243,9 @@
                 case "5":
                     url = '@Url.Action("AdayTYSBilgileriYukle")';
                     break;
+                case "8":
+                    url = '@Url.Action("AdayBilgileriTopluGuncelle")';
+                    break;
                 default:
                     bootbox.alert("Geçersiz yükleme tipi!");
                     return false;
@@ -362,7 +365,7 @@
         $(document).ready(function () {
             $('#islemTipi').change(function () {
                 var selectedValue = $(this).val();
-                if (selectedValue === "2" || selectedValue === "3" || selectedValue === "4" || selectedValue === "5" || selectedValue === "6" || selectedValue === "7") {
+                if (selectedValue === "2" || selectedValue === "3" || selectedValue === "4" || selectedValue === "5" || selectedValue === "6" || selectedValue === "7" selectedValue === "8") {
                     $('#MulakatYil').show();
                 } else {
                     $('#MulakatYil').hide();
