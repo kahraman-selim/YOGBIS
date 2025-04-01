@@ -35,5 +35,8 @@ namespace YOGBIS.Data.DbModels
         public string KaydedenId { get; set; }
         [ForeignKey("KaydedenId")]
         public virtual Kullanici Kullanici { get; set; }
+
+        public virtual ICollection<KomisyonPersoneller> KomisyonPersoneller { get; set; }
+        public virtual ICollection<KomisyonLog> KomisyonLog { get; set; }
     }
 }

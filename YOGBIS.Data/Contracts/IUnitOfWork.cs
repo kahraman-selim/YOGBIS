@@ -27,6 +27,8 @@ namespace YOGBIS.Data.Contracts
         IIllerMdEPostaRepository illerMdEPostaRepository { get; }
         IKitalarRepository kitalarRepository { get; }
         IKomisyonlarRepository komisyonlarRepository { get; }
+        IKomisyonPersonellerRepository komisyonPersonellerRepository { get; }
+        IKomisyonLogRepository komisyonLogRepository { get; }
         IKullaniciRepository kullaniciRepository { get; }
         IMulakatlarRepository mulakatlarRepository { get; }
         IMulakatSorulariRepository mulakatSorulariRepository { get; }

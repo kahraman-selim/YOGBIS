@@ -34,6 +34,8 @@ namespace YOGBIS.Data.Implementaion
             illerRepository = new IllerRepository(_ctx);            
             kitalarRepository = new KitalarRepository(_ctx);
             komisyonlarRepository = new KomisyonlarRepository(_ctx);
+            komisyonLogRepository = new KomisyonLogRepository(_ctx);
+            komisyonPersonellerRepository = new KomisyonPersonellerRepository(_ctx);
             kullaniciRepository = new KullaniciRepository(_ctx);
             mulakatlarRepository = new MulakatlarRepository(_ctx);
             mulakatSorulariRepository = new MulakatSorulariRepository(_ctx);
@@ -87,6 +89,8 @@ namespace YOGBIS.Data.Implementaion
         public IIllerMdEPostaRepository illerMdEPostaRepository { get; private set; }
         public IKitalarRepository kitalarRepository { get; private set; }
         public IKomisyonlarRepository komisyonlarRepository { get; private set; }
+        public IKomisyonLogRepository komisyonLogRepository { get; private set; }
+        public IKomisyonPersonellerRepository komisyonPersonellerRepository { get; private set; }
         public IKullaniciRepository kullaniciRepository { get; private set; }
         public IMulakatlarRepository mulakatlarRepository { get; private set; }
         public IMulakatSorulariRepository mulakatSorulariRepository { get; private set; }

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YOGBIS.Data.DataContext;
 
 namespace YOGBIS.Data.Migrations
 {
     [DbContext(typeof(YOGBISContext))]
-    partial class YOGBISContextModelSnapshot : ModelSnapshot
+    [Migration("20250401150510_komisyonperekleme")]
+    partial class komisyonperekleme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1577,43 +1579,6 @@ namespace YOGBIS.Data.Migrations
                     b.HasIndex("UlkeGrupId");
 
                     b.ToTable("Kitalar");
-                });
-
-            modelBuilder.Entity("YOGBIS.Data.DbModels.KomisyonLog", b =>
-                {
-                    b.Property<byte[]>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
-
-                    b.Property<DateTime>("GorevBaslamaTarihi")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("GorevBitisTarihi")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("KaydedenId")
-                        .HasColumnType("varchar(767)");
-
-                    b.Property<DateTime>("KayitTarihi")
-                        .HasColumnType("datetime");
-
-                    b.Property<byte[]>("KomisyonId")
-                        .IsRequired()
-                        .HasColumnType("varbinary(16)");
-
-                    b.Property<string>("KomisyonUyeAdSoyad")
-                        .HasColumnType("text");
-
-                    b.Property<int>("KomisyonUyeSiraNo")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("KaydedenId");
-
-                    b.HasIndex("KomisyonId");
-
-                    b.ToTable("KomisyonLog");
                 });
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.KomisyonPersoneller", b =>
@@ -3360,19 +3325,6 @@ namespace YOGBIS.Data.Migrations
                     b.HasOne("YOGBIS.Data.DbModels.UlkeGruplari", "UlkeGrup")
                         .WithMany("Kitalar")
                         .HasForeignKey("UlkeGrupId");
-                });
-
-            modelBuilder.Entity("YOGBIS.Data.DbModels.KomisyonLog", b =>
-                {
-                    b.HasOne("YOGBIS.Data.DbModels.Kullanici", "Kullanici")
-                        .WithMany()
-                        .HasForeignKey("KaydedenId");
-
-                    b.HasOne("YOGBIS.Data.DbModels.Komisyonlar", "Komisyonlar")
-                        .WithMany("KomisyonLog")
-                        .HasForeignKey("KomisyonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("YOGBIS.Data.DbModels.KomisyonPersoneller", b =>
