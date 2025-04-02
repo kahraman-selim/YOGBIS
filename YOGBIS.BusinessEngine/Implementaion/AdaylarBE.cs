@@ -2065,5 +2065,83 @@ namespace YOGBIS.BusinessEngine.Implementaion
             return result;
         }
         #endregion      
+
+        #region MYSSAdaylariGetir
+        public Result<List<AdayMYSSVM>> MYSSAdaylariGetir()
+        {
+            try
+            {
+                // 1. Sorguyu IQueryable olarak oluştur (henüz execute etme)
+                var query = _unitOfWork.adayMYSSRepository.GetAll()
+                    .AsNoTracking() // Change tracking'i devre dışı bırak
+                    .Include(x => x.Kullanici)
+                    .Include(x => x.Adaylar)
+                    .Where(z => z.Mulakatlar.Durumu == true && z.MYSSDurum == "GİRECEK")  
+                    .OrderBy(x => x.MYSSKomisyonSiraNo)
+                    .ThenBy(x=>x.KomisyonSN)
+                    .ThenBy(x => x.KomisyonGunSN)
+                    .ToList();
+
+                if (query == null || !query.Any())
+                {
+                    return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound, default(List<AdayMYSSVM>));
+                }
+
+                var returndata = query.Select(item => new AdayMYSSVM
+                {
+
+                    Id = item.Id,
+                    AdayId = item.AdayId,
+                    TC = item.TC,
+                    AdayAdiSoyadi = item.Adaylar != null ? item.Adaylar.Ad.ToString() + " " + item.Adaylar.Soyad.ToString() : string.Empty,
+                    MYSSTarih = item.MYSSTarih,
+                    MYSSSaat = item.MYSSSaat,
+                    MYSSMulakatYer = item.MYSSMulakatYer,
+                    MYSSDurum = item.MYSSDurum,
+                    MYSSDurumAck = item.MYSSDurumAck,
+                    MYSSKomisyonSiraNo = item.MYSSKomisyonSiraNo,
+                    MYSSKomisyonAdi = item.MYSSKomisyonAdi,
+                    KomisyonSN = item.KomisyonSN,
+                    KomisyonGunSN = item.KomisyonGunSN,
+                    CagriDurum = item.CagriDurum,
+                    KabulDurum = item.KabulDurum,
+                    SinavDurum = item.SinavDurum,
+                    SinavaGelmedi = item.SinavaGelmedi,
+                    SinavaGelmediAck = item.SinavaGelmediAck,
+                    SinavaGeldi = item.SinavaGeldi,
+                    SinavaAlindi = item.SinavaAlindi,
+                    MYSPuan = item.MYSPuan,
+                    MYSSonuc = item.MYSSonuc,
+                    MYSSonucAck = item.MYSSonucAck,
+                    MYSSSorulanSoruNo = item.MYSSSorulanSoruNo,
+                    SinavIptal = item.SinavIptal,
+                    SinavIptalAck = item.SinavIptalAck,
+                    BransId = item.BransId,
+                    BransAdi = item.BransAdi,
+                    DereceId = item.DereceId,
+                    DereceAdi = item.DereceAdi,
+                    UlkeTercihId = item.UlkeTercihId,
+                    UlkeTercihAdi = item.UlkeTercihAdi,
+                    MulakatId = item.MulakatId,
+                    KayitTarihi = item.KayitTarihi,
+                    KomisyonId = item.KomisyonId,
+                    KaydedenId = item.KaydedenId,                    
+                    KaydedenAdi = item.Kullanici != null ? item.Kullanici.Ad + " " + item.Kullanici.Soyad : string.Empty
+
+                }).ToList();
+
+                if (returndata != null)
+                {
+                    return new Result<List<AdayMYSSVM>>(true, ResultConstant.RecordFound, returndata);
+                }
+
+                return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<AdayMYSSVM>>(false, ex.Message);
+            }
+        }
+        #endregion
     }
 }

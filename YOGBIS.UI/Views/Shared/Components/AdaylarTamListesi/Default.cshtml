@@ -1,11 +1,11 @@
-﻿@model IEnumerable<YOGBIS.Common.VModels.AdaylarVM>
+﻿@model IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM>
 
 
 
 <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
-        <b>Adaylar</b>
+        <b>MYSS Adaylar</b>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -34,14 +34,14 @@
                             sirano++;
                             <tr>
                                 <td>@sirano</td>
-                                <td><a asp-controller="Adaylar" asp-action="Guncelle" asp-route-id="@item.TC" id="AdayTC">@item.TC</a></td>
-                                <td>@item.Ad + " " + @item.Soyad</td>
-                                @* <td>@item.AdayBasvuruBilgileri.Where(x => x.AdayId == x.Adaylar.AdayId).ToList()</td> *@
-@*                                 <td>@item.BransAdi</td>
+                                <td><a asp-controller="Adaylar" asp-action="Guncelle" asp-route-id="@item.Id" id="AdayTC">@item.TC</a></td>
+                                <td>@item.AdayAdiSoyadi</td>
+                                <td>@item.UlkeTercihAdi</td>
+                                <td>@item.BransAdi</td>
                                 <td>@item.MYSSKomisyonAdi</td>
                                 <td>@item.MYSSTarih</td>
                                 <td>@item.MYSSSaat</td>
-                                <td>@item.KomisyonGunSN</td> *@
+                                <td>@item.KomisyonGunSN</td>
                             </tr>
                         }
                     }

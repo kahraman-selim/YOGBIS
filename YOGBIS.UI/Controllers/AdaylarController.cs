@@ -18,13 +18,15 @@ namespace YOGBIS.UI.Controllers
         #region Değişkenler
         private readonly IAdaylarBE _adaylarBE;
         private readonly IKullaniciBE _kullaniciBE;
+        private readonly IUlkeTercihleriBE _ulkeTercihleriBE;
         #endregion
 
         #region Dönüştürücüler
-        public AdaylarController(IAdaylarBE adaylarBE, IKullaniciBE kullaniciBE)
+        public AdaylarController(IAdaylarBE adaylarBE, IKullaniciBE kullaniciBE, IUlkeTercihleriBE ulkeTercihleriBE)
         {
             _adaylarBE = adaylarBE;
             _kullaniciBE = kullaniciBE;
+            _ulkeTercihleriBE = ulkeTercihleriBE;
         }
         #endregion
 
@@ -37,6 +39,8 @@ namespace YOGBIS.UI.Controllers
 
             var komisyon = await _kullaniciBE.KomisyonGetir();
             ViewBag.Komisyonlar = komisyon.Data;
+
+            
 
             return View();
             

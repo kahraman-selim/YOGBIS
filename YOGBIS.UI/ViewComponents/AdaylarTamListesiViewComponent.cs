@@ -16,7 +16,7 @@ namespace YOGBIS.UI.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync() 
         {
-            var requestmodel = _adaylarBE.AdaylariGetir();
+            var requestmodel = _adaylarBE.MYSSAdaylariGetir();
             if (requestmodel.IsSuccess)
             {
                 return View(requestmodel.Data);
