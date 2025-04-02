@@ -19,32 +19,29 @@ namespace YOGBIS.UI.Controllers
         private readonly IAdaylarBE _adaylarBE;
         private readonly IKullaniciBE _kullaniciBE;
         private readonly IUlkeTercihleriBE _ulkeTercihleriBE;
+        private readonly IKomisyonlarBE _komisyonlarBE;
         #endregion
 
         #region Dönüştürücüler
-        public AdaylarController(IAdaylarBE adaylarBE, IKullaniciBE kullaniciBE, IUlkeTercihleriBE ulkeTercihleriBE)
+        public AdaylarController(IAdaylarBE adaylarBE, IKullaniciBE kullaniciBE, IUlkeTercihleriBE ulkeTercihleriBE, IKomisyonlarBE komisyonlarBE)
         {
             _adaylarBE = adaylarBE;
             _kullaniciBE = kullaniciBE;
             _ulkeTercihleriBE = ulkeTercihleriBE;
+            _komisyonlarBE = komisyonlarBE;
         }
         #endregion
 
         #region Index
         [Authorize(Roles = "Administrator")]
         [Route("AD10002", Name = "AdaylarIndexRoute")]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-
-            var komisyon = await _kullaniciBE.KomisyonGetir();
+            
+            //var komisyon = await _kullaniciBE.KomisyonGetir();
+            var komisyon = _komisyonlarBE.KomisyonAdlariGetir();
             ViewBag.Komisyonlar = komisyon.Data;
-
-            var ulketercih= _ulkeTercihleriBE.UlkeTercihAdlariGetir();
-            ViewBag.UlkeTercihleri = ulketercih.Data;
-
-            var branslar = _ulkeTercihleriBE.UlkeTercihAdlariGetir();
-            ViewBag.Branslar = branslar.Data;
 
             return View();
             
@@ -57,6 +54,11 @@ namespace YOGBIS.UI.Controllers
         public IActionResult AdayEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            
+            //var komisyon = await _kullaniciBE.KomisyonGetir();
+            var komisyon = _komisyonlarBE.KomisyonAdlariGetir();
+            ViewBag.Komisyonlar = komisyon.Data;
+            
             return View();
         }
         #endregion
@@ -65,23 +67,27 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult AdayEkle(AdaylarVM model, Guid? AdayId)
+        public IActionResult AdayEkle(AdayMYSSVM model, Guid? Id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            
+            //var komisyon = await _kullaniciBE.KomisyonGetir();
+            var komisyon = _komisyonlarBE.KomisyonAdlariGetir();
+            ViewBag.Komisyonlar = komisyon.Data;
 
-            if (AdayId != null)
+            if (Id != null)
             {
-                var data = _adaylarBE.AdayGuncelle(model, user);
+                var data = _adaylarBE.AdayMYSSGuncelle(model, user);
 
                 return RedirectToAction("Index");
             }
             else
             {
-                var data = _adaylarBE.AdayEkle(model, user);
-                if (data.IsSuccess)
-                {
-                    return RedirectToAction("Index");
-                }
+                //var data = _adaylarBE.AdayMYSSGuncelle(model, user);
+                //if (data.IsSuccess)
+                //{
+                //    return RedirectToAction("Index");
+                //}
                 return View(model);
             }
         }
@@ -92,10 +98,15 @@ namespace YOGBIS.UI.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Guncelle(Guid? id)
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            
+            //var komisyon = await _kullaniciBE.KomisyonGetir();
+            var komisyon = _komisyonlarBE.KomisyonAdlariGetir();
+            ViewBag.Komisyonlar = komisyon.Data;
 
             if (id != null)
             {
-                var data = _adaylarBE.AdayGetir((Guid)id);
+                var data = _adaylarBE.MYSSAdayGetir((Guid)id);
                 return View(data.Data);
             }
             else

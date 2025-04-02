@@ -53,8 +53,22 @@
                             <div class="form-group">
                                 <label asp-for="KomisyonId" class="small mb-1 font-weight-bold">Komisyonu Seç</label>
                                 @Html.DropDownListFor(u => u.KomisyonId, new SelectList(ViewBag.Komisyonlar,
-                                         "Id", "Ad"), "Komisyonu seçiniz", new { @id = "KomisyonListesi", @class = "form-control-range form-control p-0" })
+                                         "KomisyonId", "KomisyonAdi"), "Komisyonu seçiniz", new { @id = "KomisyonListesi", @class = "form-control-range form-control p-0" })
                                 <span class="text-danger" asp-validation-for="KomisyonId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label asp-for="MYSSKomisyonSiraNo" class="small mb-1 font-weight-bold">Komisyon No</label>
+                                <input asp-for="MYSSKomisyonSiraNo" type="text" class="form-control py-2">
+                                <span class="text-danger" asp-validation-for="MYSSKomisyonSiraNo"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label asp-for="MYSSKomisyonAdi" class="small mb-1 font-weight-bold">Komisyon Adı</label>
+                                <input asp-for="MYSSKomisyonAdi" type="text" class="form-control py-2">
+                                <span class="text-danger" asp-validation-for="MYSSKomisyonAdi"></span>
                             </div>
                         </div>
                         <div class="col-md-1">
@@ -71,7 +85,7 @@
                                 <span class="text-danger" asp-validation-for="KomisyonGunSN"></span>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label asp-for="MYSSDurum" class="small mb-1 font-weight-bold">Durum</label>
                                 <select asp-for="MYSSDurum" class="form-control-range form-control py-2" aria-label="Default select example">
@@ -82,7 +96,7 @@
                                 <span class="text-danger" asp-validation-for="MYSSDurum"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label asp-for="MYSSDurumAck" class="small mb-1 font-weight-bold">Açıklama</label>
                                 <input asp-for="MYSSDurumAck" type="text" class="form-control py-2">
@@ -96,8 +110,8 @@
                                 <label asp-for="CagriDurum" class="small mb-1 font-weight-bold">Çağrıldı</label>
                                 <select asp-for="CagriDurum" class="form-control-range form-control py-2" aria-label="Default select example">
                                     <option asp-for="CagriDurum" selected class="text-left">Seçim yapınız</option>
-                                    <option asp-for="CagriDurum" value="1">Evet</option>
-                                    <option asp-for="CagriDurum" value="0">Hayır</option>
+                                    <option asp-for="CagriDurum" value="true">Evet</option>
+                                    <option asp-for="CagriDurum" value="false">Hayır</option>
                                 </select>
                                 <span class="text-danger" asp-validation-for="MYSSDurum"></span>
                             </div>
@@ -107,8 +121,8 @@
                                 <label asp-for="KabulDurum" class="small mb-1 font-weight-bold">Kabul Edildi</label>
                                 <select asp-for="KabulDurum" class="form-control-range form-control py-2" aria-label="Default select example">
                                     <option asp-for="KabulDurum" selected class="text-left">Seçim yapınız</option>
-                                    <option asp-for="KabulDurum" value="1">Evet</option>
-                                    <option asp-for="KabulDurum" value="0">Hayır</option>
+                                    <option asp-for="KabulDurum" value="true">Evet</option>
+                                    <option asp-for="KabulDurum" value="false">Hayır</option>
                                 </select>
                                 <span class="text-danger" asp-validation-for="KabulDurum"></span>
                             </div>
@@ -118,8 +132,8 @@
                                 <label asp-for="SinavDurum" class="small mb-1 font-weight-bold">Sınava Alındı</label>
                                 <select asp-for="SinavDurum" class="form-control-range form-control py-2" aria-label="Default select example">
                                     <option asp-for="SinavDurum" selected class="text-left">Seçim yapınız</option>
-                                    <option asp-for="SinavDurum" value="1">Evet</option>
-                                    <option asp-for="SinavDurum" value="0">Hayır</option>
+                                    <option asp-for="SinavDurum" value="true">Evet</option>
+                                    <option asp-for="SinavDurum" value="false">Hayır</option>
                                 </select>
                                 <span class="text-danger" asp-validation-for="SinavDurum"></span>
                             </div>
@@ -129,21 +143,17 @@
                                 <label asp-for="SinavaGelmedi" class="small mb-1 font-weight-bold">Sınava Gelmedi</label>
                                 <select asp-for="SinavaGelmedi" class="form-control-range form-control py-2" aria-label="Default select example">
                                     <option asp-for="SinavaGelmedi" selected class="text-left">Seçim yapınız</option>
-                                    <option asp-for="SinavaGelmedi value="1">Evet</option>
-                                    <option asp-for="SinavaGelmedi" value="0">Hayır</option>
+                                    <option asp-for="SinavaGelmedi" value="true">Evet</option>
+                                    <option asp-for="SinavaGelmedi" value="false">Hayır</option>
                                 </select>
                                 <span class="text-danger" asp-validation-for="SinavaGelmedi"></span>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="SinavaGelmedi" class="small mb-1 font-weight-bold">Sınava Gelmedi</label>
-                                <select asp-for="SinavaGelmedi" class="form-control-range form-control py-2" aria-label="Default select example">
-                                    <option asp-for="SinavaGelmedi" selected class="text-left">Seçim yapınız</option>
-                                    <option asp-for="SinavaGelmedi value="1">Evet</option>
-                                    <option asp-for="SinavaGelmedi" value="0">Hayır</option>
-                                </select>
-                                <span class="text-danger" asp-validation-for="SinavaGelmedi"></span>
+                                <label asp-for="SinavaGelmediAck" class="small mb-1 font-weight-bold">Açıklama</label>
+                                <input asp-for="SinavaGelmediAck" type="text" class="form-control py-2">
+                                <span class="text-danger" asp-validation-for="SinavaGelmediAck"></span>
                             </div>
                         </div>
                         <div class="col-md-1">
@@ -151,17 +161,40 @@
                                 <label asp-for="SinavIptal" class="small mb-1 font-weight-bold">Sınava İptal</label>
                                 <select asp-for="SinavIptal" class="form-control-range form-control py-2" aria-label="Default select example">
                                     <option asp-for="SinavIptal" selected class="text-left">Seçim yapınız</option>
-                                    <option asp-for="SinavIptal value="1">Evet</option>
-                                    <option asp-for="SinavIptal" value="0">Hayır</option>
+                                    <option asp-for="SinavIptal" value="true">Evet</option>
+                                    <option asp-for="SinavIptal" value="false">Hayır</option>
                                 </select>
                                 <span class="text-danger" asp-validation-for="SinavIptal"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label asp-for="SinavIptalAck" class="small mb-1 font-weight-bold">İptal Açıklama</label>
                                 <input asp-for="SinavIptalAck" type="text" class="form-control py-2">
                                 <span class="text-danger" asp-validation-for="SinavIptalAck"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="MYSSTarih" class="small mb-1 font-weight-bold">Sınav Tarihi</label>
+                                <input asp-for="MYSSTarih" type="text" class="form-control py-2">
+                                <span class="text-danger" asp-validation-for="MYSSTarih"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="MYSSSaat" class="small mb-1 font-weight-bold">Sınav Saati</label>
+                                <input asp-for="MYSSSaat" type="text" class="form-control py-2">
+                                <span class="text-danger" asp-validation-for="MYSSSaat"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="MYSSSorulanSoruNo" class="small mb-1 font-weight-bold">Soru Numarası</label>
+                                <input asp-for="MYSSSorulanSoruNo" type="text" class="form-control py-2">
+                                <span class="text-danger" asp-validation-for="MYSSSorulanSoruNo"></span>
                             </div>
                         </div>
                     </div>

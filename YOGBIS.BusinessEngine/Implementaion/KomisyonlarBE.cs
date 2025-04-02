@@ -371,5 +371,57 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        #region KomisyonAdlarıGetir
+        public Result<List<KomisyonlarVM>> KomisyonAdlariGetir()
+        {
+
+            try
+            {
+                var data = _unitOfWork.komisyonlarRepository.GetAll()
+                    .Include(x=>x.Kullanici)
+                    .Include(x=>x.Mulakat)
+                    .Where(x=>x.Mulakat != null && x.Mulakat.Durumu == true)
+                    .OrderBy(t => t.KomisyonSiraNo)                                      
+                    .ToList();
+
+                // Veri yoksa hata fırlat
+                if (data == null || !data.Any())
+                {
+                    return new Result<List<KomisyonlarVM>>(false, ResultConstant.RecordNotFound);
+                }
+
+                // Mapping işlemi
+                var komisyonlar = _mapper.Map<List<Komisyonlar>, List<KomisyonlarVM>>(data);
+
+                // Mapping sonrası kontrol
+                if (komisyonlar == null || !komisyonlar.Any())
+                {
+                    return new Result<List<KomisyonlarVM>>(false, ResultConstant.RecordNotFound);
+                }
+
+                // Verileri işle ve döndür
+                var returnData = data.Select(item => new KomisyonlarVM
+                {
+                    KomisyonId = item.KomisyonId,
+                    KomisyonSiraNo = item.KomisyonSiraNo,
+                    KomisyonAdi = item.KomisyonAdi,
+                })
+                                .GroupBy(x => new {
+                                    x.KomisyonId,
+                                    x.KomisyonSiraNo,
+                                    x.KomisyonAdi
+                                })
+                                .Select(g => g.First())  // Her gruptan bir tane eleman al
+                                .ToList();
+
+                return new Result<List<KomisyonlarVM>>(true, ResultConstant.RecordFound, returnData);
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<KomisyonlarVM>>(false, $"Dereceler getirilirken bir hata oluştu: {ex.Message}");
+            }
+        }
+        #endregion
     }
 }

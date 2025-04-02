@@ -12,9 +12,12 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<List<AdaylarVM>> AdaylariGetir();
         Result<List<AdaylarVM>> AdayTemelBilgileriGetir();
         Result<AdaylarVM> AdayGetir(Guid id);
+        Result<AdayMYSSVM> MYSSAdayGetir(Guid id);
         Result<AdaylarVM> AdayGetirTC(string TC);
         Result<AdaylarVM> AdayEkle(AdaylarVM model, SessionContext user);
         Result<AdaylarVM> AdayGuncelle(AdaylarVM model, SessionContext user);
+        Result<AdayBasvuruBilgileriVM> AdayBasvuruGuncelle(AdayBasvuruBilgileriVM model, SessionContext user);
+        Result<AdayMYSSVM> AdayMYSSGuncelle(AdayMYSSVM model, SessionContext user);
         Result<bool> AdaySil(Guid id);
         Result<List<AdaylarVM>> AdayGetirKullaniciId(string userId);
         bool TCKontrol(string TC);

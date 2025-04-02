@@ -375,6 +375,151 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region MYSSAdayGetir(Guid id)
+        public Result<AdayMYSSVM> MYSSAdayGetir(Guid id)
+        {
+            if (id != null)
+            {
+                var data = _unitOfWork.adayMYSSRepository.GetFirstOrDefault(x => x.Id == id, includeProperties: "Kullanici,Mulakatlar,Komisyonlar,Adaylar");
+
+                if (data != null)
+                {
+                    AdayMYSSVM Adaylar = new AdayMYSSVM();
+
+                    Adaylar.Id = data.Id;
+                    Adaylar.AdayId = data.AdayId;
+                    Adaylar.TC = data.TC;
+                    Adaylar.AdayAdiSoyadi = data.Adaylar != null ? data.Adaylar.Ad.ToString() + " " + data.Adaylar.Soyad.ToString() : string.Empty;
+                    Adaylar.MYSSTarih = data.MYSSTarih;
+                    Adaylar.MYSSSaat = data.MYSSSaat;
+                    Adaylar.MYSSMulakatYer = data.MYSSMulakatYer;
+                    Adaylar.MYSSDurum = data.MYSSDurum;
+                    Adaylar.MYSSDurumAck = data.MYSSDurumAck;
+                    Adaylar.MYSSKomisyonSiraNo = data.MYSSKomisyonSiraNo;
+                    Adaylar.MYSSKomisyonAdi = data.MYSSKomisyonAdi;
+                    Adaylar.KomisyonSN = data.KomisyonSN;
+                    Adaylar.KomisyonGunSN = data.KomisyonGunSN;
+                    Adaylar.CagriDurum = data.CagriDurum;
+                    Adaylar.KabulDurum = data.KabulDurum;
+                    Adaylar.SinavDurum = data.SinavDurum;
+                    Adaylar.SinavaGelmedi = data.SinavaGelmedi;
+                    Adaylar.SinavaGelmediAck = data.SinavaGelmediAck;
+                    Adaylar.SinavaGeldi = data.SinavaGeldi;
+                    Adaylar.SinavaAlindi = data.SinavaAlindi;
+                    Adaylar.MYSPuan = data.MYSPuan;
+                    Adaylar.MYSSonuc = data.MYSSonuc;
+                    Adaylar.MYSSonucAck = data.MYSSonucAck;
+                    Adaylar.MYSSSorulanSoruNo = data.MYSSSorulanSoruNo;
+                    Adaylar.SinavIptal = data.SinavIptal;
+                    Adaylar.SinavIptalAck = data.SinavIptalAck;
+                    Adaylar.BransId = data.BransId;
+                    Adaylar.BransAdi = data.BransAdi;
+                    Adaylar.DereceId = data.DereceId;
+                    Adaylar.DereceAdi = data.DereceAdi;
+                    Adaylar.UlkeTercihId = data.UlkeTercihId;
+                    Adaylar.UlkeTercihAdi = data.UlkeTercihAdi;
+                    Adaylar.MulakatId = data.MulakatId;
+                    Adaylar.KomisyonGunSN = data.KomisyonGunSN;
+                    Adaylar.KomisyonSN = data.KomisyonSN;
+                    Adaylar.KomisyonId = data.KomisyonId;
+                    Adaylar.MYSSKomisyonAdi = data.Komisyonlar != null ? data.Komisyonlar.KomisyonAdi : string.Empty;
+                    Adaylar.KayitTarihi = data.KayitTarihi;
+                    Adaylar.KaydedenId = data.KaydedenId;
+                    Adaylar.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+
+
+                    return new Result<AdayMYSSVM>(true, ResultConstant.RecordFound, Adaylar);
+                }
+                else
+                {
+                    return new Result<AdayMYSSVM>(false, ResultConstant.RecordNotFound);
+                }
+            }
+            else
+            {
+                return new Result<AdayMYSSVM>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
+        #region AdayMYSSGuncelle
+        public Result<AdayMYSSVM> AdayMYSSGuncelle(AdayMYSSVM model, SessionContext user)
+        {
+            if (model.Id != null)
+            {
+                try
+                {
+                    var data = _unitOfWork.adayMYSSRepository.Get(model.Id);
+                    if (data != null)
+                    {
+                        data.Id = model.Id;
+                        data.KomisyonId = model.KomisyonId;
+                        data.MYSSKomisyonSiraNo = model.MYSSKomisyonSiraNo;
+                        data.MYSSKomisyonAdi = model.MYSSKomisyonAdi;
+                        data.KomisyonSN = model.KomisyonSN;
+                        data.KomisyonGunSN = model.KomisyonGunSN;
+                        data.MYSSTarih = model.MYSSTarih;
+                        data.MYSSSaat = model.MYSSSaat;
+                        data.MYSSDurum = model.MYSSDurum;
+                        data.MYSSDurumAck = model.MYSSDurumAck;     
+                        data.MYSSSorulanSoruNo = model.MYSSSorulanSoruNo;                       
+                        data.CagriDurum = model.CagriDurum;
+                        data.KabulDurum = model.KabulDurum;
+                        data.SinavDurum = model.SinavDurum;
+                        data.SinavaGelmedi = model.SinavaGelmedi;
+                        data.SinavaGelmediAck = model.SinavaGelmediAck;
+                        
+                        _unitOfWork.adayMYSSRepository.Update(data);
+                        _unitOfWork.Save();
+                        return new Result<AdayMYSSVM>(true, ResultConstant.RecordCreateSuccess);
+                    }
+                    else
+                    {
+                        return new Result<AdayMYSSVM>(false, "Lütfen kayıt seçiniz");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                    return new Result<AdayMYSSVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                }
+            }
+            else
+            {
+                return new Result<AdayMYSSVM>(false, "Boş veri olamaz");
+            }
+
+        }
+        #endregion
+
+        #region AdayBasvuruGuncelle
+        public Result<AdayBasvuruBilgileriVM> AdayBasvuruGuncelle(AdayBasvuruBilgileriVM model, SessionContext user)
+        {
+            if (model != null)
+            {
+                try
+                {
+                    var Adaylar = _mapper.Map<AdayBasvuruBilgileriVM, AdayBasvuruBilgileri>(model);
+                    Adaylar.KaydedenId = user.LoginId;
+
+                    _unitOfWork.adayBasvuruBilgileriRepository.Update(Adaylar);
+                    _unitOfWork.Save();
+                    return new Result<AdayBasvuruBilgileriVM>(true, ResultConstant.RecordCreateSuccess);
+                }
+                catch (Exception ex)
+                {
+
+                    return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                }
+            }
+            else
+            {
+                return new Result<AdayBasvuruBilgileriVM>(false, "Boş veri olamaz");
+            }
+        }
+        #endregion
+
         #region AdayTopluGuncelleBasvuruBilgileri
         public Result<AdayBasvuruBilgileriVM> AdayTopluGuncelle(AdayBasvuruBilgileriVM model, SessionContext user)
         {

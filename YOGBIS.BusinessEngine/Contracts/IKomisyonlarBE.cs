@@ -19,5 +19,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<KomisyonlarVM> KomisyonGetirById(Guid id);
         Result<KomisyonPersonellerVM> KomisyonPersonelKaydet(KomisyonPersonellerVM model, SessionContext user);
         Result<List<KomisyonPersonellerVM>> KomisyonPersonelleriGetir();
+        Result<List<KomisyonlarVM>> KomisyonAdlariGetir();
     }
 }
