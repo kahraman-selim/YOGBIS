@@ -375,7 +375,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region AdayTopluGuncelle
+        #region AdayTopluGuncelleBasvuruBilgileri
         public Result<AdayBasvuruBilgileriVM> AdayTopluGuncelle(AdayBasvuruBilgileriVM model, SessionContext user)
         {
             if (model.Id != null)
@@ -406,6 +406,45 @@ namespace YOGBIS.BusinessEngine.Implementaion
             else
             {
                 return new Result<AdayBasvuruBilgileriVM>(false, "Boş veri olamaz");
+            }
+        }
+        #endregion
+
+        #region AdayTopluGuncelleMYSSBilgileri
+        public Result<AdayMYSSVM> AdayMYSSTopluGuncelle(AdayMYSSVM model, SessionContext user)
+        {
+            if (model.Id != null)
+            {
+                try
+                {
+                    var data = _unitOfWork.adayMYSSRepository.Get(model.Id);
+                    if (data != null)
+                    {
+                        //data.MulakatId = (Guid)model.MulakatId;
+                        data.UlkeTercihId = model.UlkeTercihId;
+                        data.UlkeTercihAdi = model.UlkeTercihAdi;
+                        data.BransId = model.BransId;
+                        data.BransAdi = model.BransAdi;
+                        data.KaydedenId = user.LoginId;
+
+                        _unitOfWork.adayMYSSRepository.Update(data);
+                        _unitOfWork.Save();
+                        return new Result<AdayMYSSVM>(true, ResultConstant.RecordCreateSuccess);
+                    }
+                    else
+                    {
+                        return new Result<AdayMYSSVM>(false, "Lütfen kayıt seçiniz");
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    return new Result<AdayMYSSVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                }
+            }
+            else
+            {
+                return new Result<AdayMYSSVM>(false, "Boş veri olamaz");
             }
         }
         #endregion

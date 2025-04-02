@@ -40,7 +40,11 @@ namespace YOGBIS.UI.Controllers
             var komisyon = await _kullaniciBE.KomisyonGetir();
             ViewBag.Komisyonlar = komisyon.Data;
 
-            
+            var ulketercih= _ulkeTercihleriBE.UlkeTercihAdlariGetir();
+            ViewBag.UlkeTercihleri = ulketercih.Data;
+
+            var branslar = _ulkeTercihleriBE.UlkeTercihAdlariGetir();
+            ViewBag.Branslar = branslar.Data;
 
             return View();
             

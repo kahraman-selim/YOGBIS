@@ -29,7 +29,8 @@
                                 <option value="5">Aday TYS Bilgileri</option>
                                 <option value="6">Aday MYSS Notları</option>
                                 <option value="7">Aday TYS Notları</option>
-                                <option value="8">Aday Bilgileri Güncelle</option>
+                                <option value="8">Aday Başvuru Bilgileri Güncelle</option>
+                                <option value="9">Aday MYSS Bilgileri Güncelle</option>
                             </select>
                             <span id="yuklemeTipiHata" class="text-danger" style="display: none;">Lütfen yükleme tipini seçiniz!</span>
                         </div>
@@ -246,6 +247,9 @@
                 case "8":
                     url = '@Url.Action("AdayBilgileriTopluGuncelle")';
                     break;
+                case "9":
+                    url = '@Url.Action("AdayMYSSBilgileriTopluGuncelle")';
+                    break;
                 default:
                     bootbox.alert("Geçersiz yükleme tipi!");
                     return false;
@@ -365,7 +369,7 @@
         $(document).ready(function () {
             $('#islemTipi').change(function () {
                 var selectedValue = $(this).val();
-                if (selectedValue === "2" || selectedValue === "3" || selectedValue === "4" || selectedValue === "5" || selectedValue === "6" || selectedValue === "7" || selectedValue === "8") {
+                if (selectedValue === "2" || selectedValue === "3" || selectedValue === "4" || selectedValue === "5" || selectedValue === "6" || selectedValue === "7" || selectedValue === "8" || selectedValue === "9") {
                     $('#MulakatYil').show();
                 } else {
                     $('#MulakatYil').hide();
