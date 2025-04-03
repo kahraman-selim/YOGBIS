@@ -12,7 +12,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    
+    [Authorize(Roles = "Administrator,Manager")]
     public class AdaylarController : Controller
     {
         #region Değişkenler
@@ -32,8 +32,7 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region Index
-        [Authorize(Roles = "Administrator")]
+        #region Index        
         [Route("AD10002", Name = "AdaylarIndexRoute")]
         public IActionResult Index()
         {
@@ -48,8 +47,7 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region AdayEkle(Get)
-        [Authorize(Roles = "Administrator")]
+        #region AdayEkle(Get)        
         [HttpGet]
         public IActionResult AdayEkle()
         {
@@ -63,8 +61,7 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region AdayEkle(Post)
-        [Authorize(Roles = "Administrator")]
+        #region AdayEkle(Post)        
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult AdayEkle(AdayMYSSVM model, Guid? Id)
@@ -94,8 +91,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Guncelle
-        [Route("AD10005", Name = "AdayGuncelleRoute")]
-        [Authorize(Roles = "Administrator")]
+        [Route("AD10005", Name = "AdayGuncelleRoute")]        
         public ActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -117,8 +113,7 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
-        #region AdaySil
-        [Authorize(Roles = "Administrator")]
+        #region AdaySil       
         [HttpDelete]
         public IActionResult AdaySil(Guid id)
         {
@@ -135,7 +130,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region AdayNotBilgileri
-        [Authorize(Roles = "Administrator, CommissionerHead")]
+        [Authorize(Roles = "Administrator, CommissionerHead, Manager")]
         [Route("AD10003", Name = "AdayNotBilgileriRoute")]
         public IActionResult AdayNotBilgileri()
         {

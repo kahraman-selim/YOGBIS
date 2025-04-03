@@ -21,7 +21,7 @@ using YOGBIS.Data.DbModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,Manager")]
     public class MulakatSorulariController : Controller
     {
 

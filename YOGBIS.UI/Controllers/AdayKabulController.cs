@@ -14,7 +14,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = "Administrator,Commissioner")]
+    [Authorize(Roles = "Administrator,Manager,Commissioner")]
     public class AdayKabulController : Controller
     {
 

@@ -2260,16 +2260,16 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     .AsNoTracking() // Change tracking'i devre dışı bırak
                     .Include(x => x.Kullanici)
                     .Include(x => x.Adaylar)
-                    .Where(z => z.Mulakatlar.Durumu == true && z.MYSSDurum == "GİRECEK")  
+                    .Where(z => z.Mulakatlar.Durumu == true && z.MYSSDurum == "GİRECEK")
                     .OrderBy(x => x.MYSSKomisyonSiraNo)
-                    .ThenBy(x=>x.KomisyonSN)
-                    .ThenBy(x => x.KomisyonGunSN)
-                    .ToList();
+                    .ThenBy(x => x.KomisyonSN)
+                    .ThenBy(x => x.KomisyonGunSN);
+                    
 
-                if (query == null || !query.Any())
-                {
-                    return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound, default(List<AdayMYSSVM>));
-                }
+                //if (query == null || !query.Any())
+                //{
+                //    return new Result<List<AdayMYSSVM>>(false, ResultConstant.RecordNotFound, default(List<AdayMYSSVM>));
+                //}
 
                 var returndata = query.Select(item => new AdayMYSSVM
                 {

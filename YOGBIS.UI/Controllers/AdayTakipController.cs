@@ -14,7 +14,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles ="Administrator,Follower")]
+    [Authorize(Roles ="Administrator,Manager,Follower")]
     public class AdayTakipController : Controller
     {
         #region Değişkenler     
