@@ -36,6 +36,9 @@ namespace YOGBIS.Data.DbModels
         public int? MYSSSorulanSoruNo { get; set; }
         public bool? SinavIptal { get; set; }
         public string SinavIptalAck { get; set; }
+        public bool? SinavYapildi { get; set; }
+        public DateTime? SinavBaslamaTarihi { get; set; }
+        public DateTime? SinavBitisTarihi { get; set; }
         public Guid? BransId { get; set; }
         public string BransAdi { get; set; }
         public Guid? DereceId { get; set; }
