@@ -496,76 +496,71 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region AdayBasvuruGetir(string TC)
         public Result<AdayBasvuruBilgileriVM> AdayBasvuruGetir(string TC)
         {
-            if (TC != null)
-            {
-                var data = _unitOfWork.adayBasvuruBilgileriRepository                    
-                    .GetFirstOrDefault(x => x.TC == TC && x.OnayDurumu=="Onaylandı", includeProperties: "Kullanici,Mulakatlar,Adaylar");
-                    
-
-                if (data != null)
-                {
-                    AdayBasvuruBilgileriVM Adaylar = new AdayBasvuruBilgileriVM();
-
-                    Adaylar.Id = data.Id;
-                    Adaylar.AdayId = data.AdayId;
-                    Adaylar.TC = data.TC;
-                    Adaylar.AdayAdiSoyadi = data.Adaylar != null ? data.Adaylar.Ad.ToString() + " " + data.Adaylar.Soyad.ToString() : string.Empty;
-                    Adaylar.DahaOnceYDGorev=data.DahaOnceYDGorev;
-                    Adaylar.YIciGorevBasTar=data.YIciGorevBasTar;
-                    Adaylar.YabanciDilBasvuru = data.YabanciDilBasvuru;
-                    Adaylar.YabanciDilAdi = data.YabanciDilAdi;
-                    Adaylar.YabanciDilTuru = data.YabanciDilTuru;
-                    Adaylar.YabanciDilTarihi = data.YabanciDilTarihi;
-                    Adaylar.YabanciDilPuan = data.YabanciDilPuan;
-                    Adaylar.YabanciDilSeviye = data.YabanciDilSeviye;
-                    Adaylar.IlMemGorus = data.IlMemGorus;
-                    Adaylar.Referans = data.Referans;
-                    Adaylar.ReferansAck= data.ReferansAck;
-                    Adaylar.Sendika = data.Sendika;
-                    Adaylar.SendikaAck = data.SendikaAck;
-                    Adaylar.GorevIptalAck = data.GorevIptalAck;
-                    Adaylar.GorevIptalBrans = data.GorevIptalBrans;
-                    Adaylar.GorevIptalYil = data.GorevIptalYil;
-                    Adaylar.GorevIptalBAOK = data.GorevIptalBAOK;
-                    Adaylar.IlkGorevKaydi = data.IlkGorevKaydi;
-                    Adaylar.YabanciDilALM = data.YabanciDilALM;
-                    Adaylar.YabanciDilING = data.YabanciDilING;
-                    Adaylar.YabanciDilFRS = data.YabanciDilFRS;
-                    Adaylar.YabanciDilDiger = data.YabanciDilDiger;
-                    Adaylar.GorevdenUzaklastirma = data.GorevdenUzaklastirma;
-                    Adaylar.EDurum=data.EDurum;
-                    Adaylar.MDurum=data.MDurum;
-                    Adaylar.PDurum=data.PDurum;
-                    Adaylar.GenelDurum=data.GenelDurum;
-                    Adaylar.YLisans=data.YLisans;
-                    Adaylar.Doktora=data.Doktora;
-                    Adaylar.DahaOnceSinav = data.DahaOnceSinav;
-                    Adaylar.AdliSicilBelge = data.AdliSicilBelge;
-                    Adaylar.BilgiFormu=data.BilgiFormu;
-                    Adaylar.BransId = data.BransId;
-                    Adaylar.BransAdi = data.BransAdi;
-                    Adaylar.DereceId = data.DereceId;
-                    Adaylar.DereceAdi = data.DereceAdi;
-                    Adaylar.UlkeTercihId = data.UlkeTercihId;
-                    Adaylar.UlkeTercihAdi = data.UlkeTercihAdi;
-                    Adaylar.MulakatId = data.MulakatId;
-                    
-                    Adaylar.KayitTarihi = data.KayitTarihi;
-                    Adaylar.KaydedenId = data.KaydedenId;
-                    Adaylar.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
-
-
-                    return new Result<AdayBasvuruBilgileriVM>(true, ResultConstant.RecordFound, Adaylar);
-                }
-                else
-                {
-                    return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordNotFound);
-                }
-            }
-            else
+            if (string.IsNullOrEmpty(TC))
             {
                 return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordNotFound);
             }
+
+            var basvuruBilgisi = _unitOfWork.adayBasvuruBilgileriRepository
+                .GetFirstOrDefault(x => x.TC == TC && x.OnayDurumu == "Onaylandı" && x.Mulakatlar.Durumu==true,
+                includeProperties: "Kullanici,Mulakatlar,Adaylar");
+
+            if (basvuruBilgisi == null)
+            {
+                return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordNotFound);
+            }
+
+            AdayBasvuruBilgileriVM adaylar = new AdayBasvuruBilgileriVM
+            {
+                Id = basvuruBilgisi.Id,
+                AdayId = basvuruBilgisi.AdayId,
+                TC = basvuruBilgisi.TC,
+                AdayAdiSoyadi = basvuruBilgisi.Adaylar != null ? $"{basvuruBilgisi.Adaylar.Ad} {basvuruBilgisi.Adaylar.Soyad}" : string.Empty,
+                DahaOnceYDGorev = basvuruBilgisi.DahaOnceYDGorev,
+                YIciGorevBasTar = basvuruBilgisi.YIciGorevBasTar,
+                YabanciDilBasvuru = basvuruBilgisi.YabanciDilBasvuru,
+                YabanciDilAdi = basvuruBilgisi.YabanciDilAdi,
+                YabanciDilTuru = basvuruBilgisi.YabanciDilTuru,
+                YabanciDilTarihi = basvuruBilgisi.YabanciDilTarihi,
+                YabanciDilPuan = basvuruBilgisi.YabanciDilPuan,
+                YabanciDilSeviye = basvuruBilgisi.YabanciDilSeviye,
+                IlMemGorus = basvuruBilgisi.IlMemGorus,
+                Referans = basvuruBilgisi.Referans,
+                ReferansAck = basvuruBilgisi.ReferansAck,
+                Sendika = basvuruBilgisi.Sendika,
+                SendikaAck = basvuruBilgisi.SendikaAck,
+                GorevIptalAck = basvuruBilgisi.GorevIptalAck,
+                GorevIptalBrans = basvuruBilgisi.GorevIptalBrans,
+                GorevIptalYil = basvuruBilgisi.GorevIptalYil,
+                GorevIptalBAOK = basvuruBilgisi.GorevIptalBAOK,
+                IlkGorevKaydi = basvuruBilgisi.IlkGorevKaydi,
+                YabanciDilALM = basvuruBilgisi.YabanciDilALM,
+                YabanciDilING = basvuruBilgisi.YabanciDilING,
+                YabanciDilFRS = basvuruBilgisi.YabanciDilFRS,
+                YabanciDilDiger = basvuruBilgisi.YabanciDilDiger,
+                GorevdenUzaklastirma = basvuruBilgisi.GorevdenUzaklastirma,
+                EDurum = basvuruBilgisi.EDurum,
+                MDurum = basvuruBilgisi.MDurum,
+                PDurum = basvuruBilgisi.PDurum,
+                GenelDurum = basvuruBilgisi.GenelDurum,
+                YLisans = basvuruBilgisi.YLisans,
+                Doktora = basvuruBilgisi.Doktora,
+                DahaOnceSinav = basvuruBilgisi.DahaOnceSinav,
+                AdliSicilBelge = basvuruBilgisi.AdliSicilBelge,
+                BilgiFormu = basvuruBilgisi.BilgiFormu,
+                BransId = basvuruBilgisi.BransId,
+                BransAdi = basvuruBilgisi.BransAdi,
+                DereceId = basvuruBilgisi.DereceId,
+                DereceAdi = basvuruBilgisi.DereceAdi,
+                UlkeTercihId = basvuruBilgisi.UlkeTercihId,
+                UlkeTercihAdi = basvuruBilgisi.UlkeTercihAdi,
+                MulakatId = basvuruBilgisi.MulakatId, 
+                KayitTarihi = basvuruBilgisi.KayitTarihi,
+                KaydedenId = basvuruBilgisi.KaydedenId,
+                KaydedenAdi = basvuruBilgisi.Kullanici != null ? $"{basvuruBilgisi.Kullanici.Ad} {basvuruBilgisi.Kullanici.Soyad}" : string.Empty
+            };
+
+            return new Result<AdayBasvuruBilgileriVM>(true, ResultConstant.RecordFound, adaylar);
         }
         #endregion
 

@@ -18,14 +18,15 @@ namespace YOGBIS.UI.ViewComponents
         {
             try
             {
-                var komisyonPersonellerResult = _komisyonlarBE.KomisyonPersonelleriGetir();
-                if (!komisyonPersonellerResult.IsSuccess)
-                {
-                    ViewBag.ErrorMessage = komisyonPersonellerResult.Message;
-                    return View();
-                }
+                //var komisyonPersonellerResult = _komisyonlarBE.KomisyonPersonelleriGetir();
+                //if (!komisyonPersonellerResult.IsSuccess)
+                //{
+                //    ViewBag.ErrorMessage = komisyonPersonellerResult.Message;
+                //    return View();
+                //}
 
-                return View(komisyonPersonellerResult.Data);
+                //return View(komisyonPersonellerResult.Data);
+                return View();
             }
             catch (Exception ex)
             {

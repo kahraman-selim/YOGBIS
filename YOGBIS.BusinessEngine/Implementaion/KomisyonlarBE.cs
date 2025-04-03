@@ -274,21 +274,45 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region KomisyonPersonelKaydet
-        public Result<KomisyonPersonellerVM> KomisyonPersonelKaydet(KomisyonPersonellerVM model, SessionContext user)
+        public Result<KomisyonPersonellerVM> KomisyonPersonelKaydet(List<KomisyonPersonellerVM> model, SessionContext user)
         {
             try
             {
                 // Yeni komisyon personeli oluştur
-                var komisyonPersonel = new KomisyonPersoneller
+                //personel var mı yok mu kontrolü kayıtların çoklu olmaması için
+                var data = _unitOfWork.komisyonPersonellerRepository.GetAll(x=>x.PersonelId==model.FirstOrDefault().PersonelId);
+                if (data != null)
                 {
-                    KomisyonKullaniciId = model.KomisyonKullaniciId,
-                    PersonelId = model.PersonelId,
-                    RolId = model.RolId,
-                    KaydedenId = user.LoginId,
-                    KayitTarihi = DateTime.Now
-                };
+                    foreach (var item in data) 
+                    {
+                        item.KayitAktifMi = false;
+                    }
 
-                _unitOfWork.komisyonPersonellerRepository.Add(komisyonPersonel);
+                    _unitOfWork.komisyonPersonellerRepository.UpdateRange(data);
+                    _unitOfWork.Save();
+                }
+
+                if (model !=null)
+                {
+                    var komisyonpersonelliste = new List<KomisyonPersoneller>();
+
+                    foreach (var kayit in model) 
+                    {
+                        komisyonpersonelliste.Add(new KomisyonPersoneller
+                        {
+                            KomisyonKullaniciId = kayit.KomisyonKullaniciId,
+                            PersonelId = kayit.PersonelId,
+                            KayitAktifMi=true,
+                            RolId = kayit.RolId,
+                            KaydedenId = user.LoginId,
+                        });
+                    }
+
+                    _unitOfWork.komisyonPersonellerRepository.AddRange(komisyonpersonelliste);
+                }
+
+
+                //_unitOfWork.komisyonPersonellerRepository.Add(komisyonPersonel);
                 _unitOfWork.Save();
                 
                 return new Result<KomisyonPersonellerVM>(true, ResultConstant.RecordCreateSuccess);
@@ -301,12 +325,12 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #endregion
 
         #region KomisyonPersonelleriGetir
-        public Result<List<KomisyonPersonellerVM>> KomisyonPersonelleriGetir()
+        public Result<List<KomisyonPersonellerVM>> KomisyonPersonelleriGetir(string personelId)
         {
             try
             {
                 // Her repository'den veriyi ayrı ayrı alalım ve kontrol edelim
-                var komisyonPersonellerList = _unitOfWork.komisyonPersonellerRepository.GetAll().ToList();
+                var komisyonPersonellerList = _unitOfWork.komisyonPersonellerRepository.GetAll(x=>x.PersonelId == Guid.Parse(personelId) && x.KayitAktifMi==true).ToList();
                 if (!komisyonPersonellerList.Any())
                 {
                     return new Result<List<KomisyonPersonellerVM>>(false, "Komisyon personeli bulunamadı");
@@ -325,25 +349,25 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 }
 
                 // Önce her personel için tek bir kayıt oluşturalım
-                var personelGruplari = komisyonPersonellerList
-                    .GroupBy(kp => kp.PersonelId)
-                    .Select(g => new
-                    {
-                        PersonelId = g.Key,
-                        KomisyonKullaniciIds = g.Select(x => x.KomisyonKullaniciId).ToList(),
-                        g.First().RolId,
-                        g.First().Id
-                    });
+                //var personelGruplari = komisyonPersonellerList
+                //    .GroupBy(kp => kp.PersonelId)
+                //    .Select(g => new
+                //    {
+                //        PersonelId = g.Key,
+                //        KomisyonKullaniciIds = g.Select(x => x.KomisyonKullaniciId).ToList(),
+                //        g.First().RolId,
+                //        g.First().Id
+                //    });
 
                 var komisyonPersoneller = new List<KomisyonPersonellerVM>();
 
-                foreach (var personel in personelGruplari)
+                foreach (var personel in komisyonPersonellerList)
                 {
                     var kullanici = kullanicilarList.FirstOrDefault(u => u.Id == personel.PersonelId.ToString());
                     if (kullanici != null)
                     {
                         var komisyonlar = komisyonlarList
-                            .Where(k => personel.KomisyonKullaniciIds.Contains(k.KomisyonKullaniciId))
+                            .Where(k => personel.KomisyonKullaniciId.Contains(k.KomisyonKullaniciId))
                             .Select(k => k.KomisyonAdi)
                             .ToList();
 
@@ -353,7 +377,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                             PersonelId = personel.PersonelId,
                             RolId = personel.RolId,
                             PersonelAdSoyad = kullanici.Ad + " " + kullanici.Soyad,
-                            KomisyonAdi = string.Join(", ", komisyonlar)
+                            KomisyonAdi = string.Join(", ", komisyonlar),
+                            KomisyonKullaniciId=personel.KomisyonKullaniciId,
                         });
                     }
                 }

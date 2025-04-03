@@ -139,9 +139,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region KomisyonGetir
         public async Task<Result<List<KullaniciVM>>> KomisyonGetir()
         {
-            var data = _unitOfWork.kullaniciRepository.GetAll().OrderBy(t=>t.TcKimlikNo).ToList();
-            var newdata = await _userManager.GetUsersInRoleAsync("CommissionerHead");
-            var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
+            //var data = _unitOfWork.kullaniciRepository.GetAll(x=>x.Aktif==true).OrderBy(t=>t.TcKimlikNo).ToList();
+            var newdata = _userManager.GetUsersInRoleAsync("CommissionerHead").Result.Where(x=>x.Aktif==true).OrderBy(x=>x.TcKimlikNo).ToList();
+            //var kullanicilar = _mapper.Map<List<Kullanici>, List<KullaniciVM>>(data);
 
             if (newdata != null)
             {

@@ -17,8 +17,8 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<bool> KomisyonSil(Guid id);
         Task<Guid?> GetKomisyonIdBySiraNo(int siraNo);
         Result<KomisyonlarVM> KomisyonGetirById(Guid id);
-        Result<KomisyonPersonellerVM> KomisyonPersonelKaydet(KomisyonPersonellerVM model, SessionContext user);
-        Result<List<KomisyonPersonellerVM>> KomisyonPersonelleriGetir();
+        Result<KomisyonPersonellerVM> KomisyonPersonelKaydet(List<KomisyonPersonellerVM> model, SessionContext user);
+        Result<List<KomisyonPersonellerVM>> KomisyonPersonelleriGetir(string personelId);
         Result<List<KomisyonlarVM>> KomisyonAdlariGetir();
     }
 }

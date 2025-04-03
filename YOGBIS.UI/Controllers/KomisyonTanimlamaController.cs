@@ -60,17 +60,27 @@ namespace YOGBIS.UI.Controllers
             try
             {
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-                
+
                 var personelilgili = await _kullaniciBE.KomisyonSorumluGetir();
                 ViewBag.KomisyonIlgiliPersoneller = personelilgili.Data;
 
-                var personelyardimci= await _kullaniciBE.KomisyonYardimciGetir();
+                var personelyardimci = await _kullaniciBE.KomisyonYardimciGetir();
                 ViewBag.KomisyonYardimciPersoneller = personelyardimci.Data;
 
                 var komisyon = await _kullaniciBE.KomisyonGetir();
-                ViewBag.Komisyonlar = komisyon.Data;  
+                ViewBag.Komisyonlar = komisyon.Data.ToList();
 
-                return View();
+                var komisyonId = ViewBag.Komisyonlar;
+
+                var komisyonIDs = (List<KullaniciVM>)komisyonId;
+
+                var data = komisyonIDs.Select(x => x.Id).ToList();
+
+
+                var model = new KomisyonPersonellerVM();
+                model.KomisyonIdForView = data;
+
+                return View(model);
             }
             catch (Exception ex)
             {
@@ -124,7 +134,7 @@ namespace YOGBIS.UI.Controllers
 
                 var komisyon = komisyonlar.First();
                 _logger.LogInformation($"Seçilen komisyon adı: {komisyon.KomisyonAdi}");
-                
+
                 // 2. Adım: KomisyonAdi ile kullanıcı adını al
                 var kullaniciResult = _kullaniciBE.KomisyonKullaniciIDGetir(komisyon.KomisyonAdi);
                 _logger.LogInformation($"Kullanıcı bulundu mu: {kullaniciResult.IsSuccess}, Mesaj: {kullaniciResult.Message}");
@@ -132,7 +142,8 @@ namespace YOGBIS.UI.Controllers
                 if (!kullaniciResult.IsSuccess || kullaniciResult.Data == null)
                 {
                     _logger.LogWarning("Kullanıcı bulunamadı veya Data null");
-                    return Json(new { 
+                    return Json(new
+                    {
                         success = true,
                         kullaniciAdi = komisyon.KomisyonAdi.Replace("-", ""),  // Komisyon-1 -> Komisyon1
                         komisyonAdi = komisyon.KomisyonAdi  // Komisyon-1
@@ -140,8 +151,9 @@ namespace YOGBIS.UI.Controllers
                 }
 
                 _logger.LogInformation($"Bulunan kullanıcı adı: {kullaniciResult.Data}");
-                return Json(new { 
-                    success = true, 
+                return Json(new
+                {
+                    success = true,
                     kullaniciAdi = kullaniciResult.Data,  // Komisyon1
                     komisyonAdi = komisyon.KomisyonAdi    // Komisyon-1
                 });
@@ -156,7 +168,7 @@ namespace YOGBIS.UI.Controllers
 
         #region KomisyonPersonelKaydet
         [HttpPost]
-        public JsonResult KomisyonPersonelKaydet(KomisyonPersonellerVM model)
+        public JsonResult KomisyonPersonelKaydet([FromBody] List<KomisyonPersonellerVM> data)
         {
             try
             {
@@ -166,8 +178,8 @@ namespace YOGBIS.UI.Controllers
                 //}
 
                 var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-                var data = _komisyonlarBE.KomisyonPersonelKaydet(model, user);
-                
+                var datalar = _komisyonlarBE.KomisyonPersonelKaydet(data, user);
+
                 return Json("200");
 
                 //if (data.IsSuccess)
@@ -185,5 +197,12 @@ namespace YOGBIS.UI.Controllers
             }
         }
         #endregion
+
+        [HttpGet]
+        public IActionResult PersonelKomisyonGetir(string personelId)
+        {
+            var data = _komisyonlarBE.KomisyonPersonelleriGetir(personelId);
+            return Json(data.Data);
+        }
     }
 }

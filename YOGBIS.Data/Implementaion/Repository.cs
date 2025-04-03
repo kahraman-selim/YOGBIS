@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using YOGBIS.Data.Contracts;
@@ -27,6 +28,13 @@ namespace YOGBIS.Data.Implementaion
         {
             dbSet.Add(entity);
         }
+        #endregion
+
+        #region AddRange
+        public void AddRange(IEnumerable<T> entities)
+        {
+            dbSet.AddRange(entities);
+        } 
         #endregion
 
         #region Get
@@ -96,6 +104,13 @@ namespace YOGBIS.Data.Implementaion
         public void Update(T entity)
         {
             dbSet.Update(entity);
+        }
+        #endregion
+
+        #region UpdateRange
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+            dbSet.UpdateRange(entities);
         } 
         #endregion
     }

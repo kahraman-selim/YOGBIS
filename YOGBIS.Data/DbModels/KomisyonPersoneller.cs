@@ -13,6 +13,7 @@ namespace YOGBIS.Data.DbModels
         public string KomisyonKullaniciId { get; set; }
         public Guid PersonelId { get; set; }
         public Guid RolId { get; set; }
+        public bool? KayitAktifMi { get; set; }
         [ForeignKey("KomisyonId")]
         public virtual Komisyonlar Komisyonlar { get; set; }
         public string KaydedenId { get; set; }

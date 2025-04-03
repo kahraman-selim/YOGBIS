@@ -2,12 +2,17 @@
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
 @model YOGBIS.Common.VModels.KomisyonPersonellerVM
+@using YOGBIS.Common.VModels
+
 @{
+
     ViewData["Title"] = "Komisyon Personel Tanımlama";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var yardimciPersoneller = ViewBag.KomisyonYardimciPersoneller;
     var ilgiliPersoneller = ViewBag.KomisyonIlgiliPersoneller;
+
+
 }
 
 @section Styles {
@@ -21,6 +26,7 @@
         @TempData["ErrorMessage"]
     </div>
 }
+@Html.HiddenFor(x=>x.KomisyonIdForView)
 
 <div class="row">
     <div class="col-md-4">
@@ -103,7 +109,7 @@
         </div>
     </div>
     <div class="col-md-8">
-        @await Component.InvokeAsync("KomisyonSorumluListesi")
+      @*   @await Component.InvokeAsync("KomisyonSorumluListesi") *@
     </div>
 </div>
 
@@ -114,9 +120,21 @@
     <script>
         $(document).ready(function () {
             var secilenRolId = null;
-            
+        var komisyonlar = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.KomisyonIdForView));
+        
+        var komisyonList=[];
+
+        komisyonlar.forEach(function(k)
+        {
+            console.log("Komisyonlar =",k)
+            komisyonList.push("komisyon_" + k);
+
+        });        
+        
+        console.log("Komisyon Listesi=",komisyonList);
             // Debug için personel listelerini kontrol edelim
             console.log("Yardımcı Personeller Data:");
+
             $('.yardimci-data').each(function() {
                 console.log({
                     id: $(this).data('id'),
@@ -189,7 +207,46 @@
                     
                     if(personel) {
                         secilenRolId = personel.RolId;
-                        alert("Personel RolId: " + secilenRolId);
+
+                       $.ajax({
+                            url: "/KomisyonTanimlama/PersonelKomisyonGetir",
+                            type: "GET",
+                            data: { personelId: secilenId },          
+                            success: function (veri) {
+                               
+                              komisyonList.forEach(function(e){                                       
+                                   
+                                 $('#'+e).prop('checked',false);
+                                    
+                                });
+                                   
+                                if(veri != undefined){
+
+                                 var kKulIds = veri.map(function(u) {
+                                        return u.komisyonKullaniciId;
+                                    });
+
+                                 var komkullaniciId=[];
+
+                                    kKulIds.forEach(function(k)
+                                    {
+                                        komkullaniciId.push("komisyon_" + k);
+                                    });
+
+                                    komisyonList.forEach(function(e){
+
+                                        if(komkullaniciId.includes(e)){
+                                            $('#'+e).prop('checked',true);
+                                        }
+                                    });
+
+                                }
+                                   
+                            },
+                            error: function (hata) {
+                                console.log("Hata:", hata);
+                            }
+                        });
                     } else {
                         console.log("Personel bulunamadı!");
                     }
@@ -234,6 +291,8 @@
                     secilenKomisyonlar.push($(this).val());
                 });
 
+                var model = [];
+
                 if (secilenKomisyonlar.length === 0) {
                     Swal.fire({
                         title: 'Uyarı!',
@@ -248,16 +307,21 @@
                 var hatalar = [];
 
                 secilenKomisyonlar.forEach(function(komisyonId) {
-                    var model = {
-                        PersonelId: personelId,
-                        KomisyonKullaniciId: komisyonId,
-                        RolId: secilenRolId
-                    };
+                        var secilenkomisyonmodel = {
+                            PersonelId: personelId,
+                            KomisyonKullaniciId: komisyonId,
+                            RolId: secilenRolId
+                        };
+                        model.push(secilenkomisyonmodel);
+                     });
+                     
+                     debugger;
 
                     $.ajax({
                         url: '@Url.Action("KomisyonPersonelKaydet", "KomisyonTanimlama")',
                         type: 'POST',
-                        data: model,
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(model),
                         async: false,
                         success: function(response) {
                             if (response.success) {
@@ -270,7 +334,7 @@
                             hatalar.push('İşlem sırasında bir hata oluştu');
                         }
                     });
-                });
+               
 
                 if (basariliKayitlar === secilenKomisyonlar.length) {
                     Swal.fire({
