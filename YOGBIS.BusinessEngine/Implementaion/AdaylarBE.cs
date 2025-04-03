@@ -503,7 +503,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
 
             var basvuruBilgisi = _unitOfWork.adayBasvuruBilgileriRepository
                 .GetFirstOrDefault(x => x.TC == TC && x.OnayDurumu == "Onaylandı" && x.Mulakatlar.Durumu==true,
-                includeProperties: "Kullanici,Mulakatlar,Adaylar");
+                includeProperties: "Kullanici,Adaylar");
 
             if (basvuruBilgisi == null)
             {
@@ -567,16 +567,47 @@ namespace YOGBIS.BusinessEngine.Implementaion
         #region AdayBasvuruGuncelle
         public Result<AdayBasvuruBilgileriVM> AdayBasvuruGuncelle(AdayBasvuruBilgileriVM model, SessionContext user)
         {
-            if (model != null)
+            if (model.Id != null)
             {
                 try
                 {
-                    var Adaylar = _mapper.Map<AdayBasvuruBilgileriVM, AdayBasvuruBilgileri>(model);
-                    Adaylar.KaydedenId = user.LoginId;
+                    var Adaylar = _unitOfWork.adayBasvuruBilgileriRepository.Get(model.Id);
+                    if (Adaylar != null)
+                    {
+                        Adaylar.Id = model.Id;
+                        Adaylar.YabanciDilAdi = model.YabanciDilAdi;
+                        Adaylar.YabanciDilTuru = model.YabanciDilTuru;
+                        Adaylar.YabanciDilTarihi = model.YabanciDilTarihi;
+                        Adaylar.YabanciDilPuan = model.YabanciDilPuan;
+                        Adaylar.YabanciDilSeviye = model.YabanciDilSeviye;
+                        Adaylar.GorevIptalAck = model.GorevIptalAck;
+                        Adaylar.GorevIptalBrans = model.GorevIptalBrans;
+                        Adaylar.GorevIptalYil = model.GorevIptalYil;
+                        Adaylar.GorevIptalBAOK = model.GorevIptalBAOK;
+                        Adaylar.IlkGorevKaydi = model.IlkGorevKaydi;
+                        Adaylar.YabanciDilALM = model.YabanciDilALM;
+                        Adaylar.YabanciDilING = model.YabanciDilING;
+                        Adaylar.YabanciDilFRS = model.YabanciDilFRS;
+                        Adaylar.YabanciDilDiger = model.YabanciDilDiger;
+                        Adaylar.GorevdenUzaklastirma = model.GorevdenUzaklastirma;
+                        Adaylar.EDurum = model.EDurum;
+                        Adaylar.MDurum = model.MDurum;
+                        Adaylar.PDurum = model.PDurum;
+                        Adaylar.GenelDurum = model.GenelDurum;
+                        Adaylar.YLisans = model.YLisans;
+                        Adaylar.Doktora = model.Doktora;
+                        Adaylar.DahaOnceSinav = model.DahaOnceSinav;
 
-                    _unitOfWork.adayBasvuruBilgileriRepository.Update(Adaylar);
-                    _unitOfWork.Save();
-                    return new Result<AdayBasvuruBilgileriVM>(true, ResultConstant.RecordCreateSuccess);
+                        Adaylar.KaydedenId = user.LoginId;
+
+                        _unitOfWork.adayBasvuruBilgileriRepository.Update(Adaylar);
+                        _unitOfWork.Save();
+                        return new Result<AdayBasvuruBilgileriVM>(true, ResultConstant.RecordCreateSuccess);
+                    }
+                    else
+                    {
+                        return new Result<AdayBasvuruBilgileriVM>(false, "Lütfen kayıt seçiniz");
+                    }
                 }
                 catch (Exception ex)
                 {
