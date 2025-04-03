@@ -12,7 +12,7 @@ using YOGBIS.Common.VModels;
 
 namespace YOGBIS.UI.Controllers
 {
-    [Authorize(Roles = "Administrator,Manager")]
+    
     public class AdaylarController : Controller
     {
         #region Değişkenler
@@ -34,6 +34,7 @@ namespace YOGBIS.UI.Controllers
 
         #region Index        
         [Route("AD10002", Name = "AdaylarIndexRoute")]
+        [Authorize(Roles = "Administrator,Manager")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -49,6 +50,7 @@ namespace YOGBIS.UI.Controllers
 
         #region AdayEkle(Get)        
         [HttpGet]
+        [Authorize(Roles = "Administrator,Manager")]
         public IActionResult AdayEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -64,6 +66,7 @@ namespace YOGBIS.UI.Controllers
         #region AdayEkle(Post)        
         [ValidateAntiForgeryToken]
         [HttpPost]
+        [Authorize(Roles = "Administrator,Manager")]
         public IActionResult AdayEkle(AdayMYSSVM model, Guid? Id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -91,7 +94,8 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Guncelle
-        [Route("AD10005", Name = "AdayGuncelleRoute")]        
+        [Route("AD10005", Name = "AdayGuncelleRoute")]     
+        [Authorize(Roles = "Administrator,Manager")]
         public ActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -115,6 +119,7 @@ namespace YOGBIS.UI.Controllers
 
         #region AdaySil       
         [HttpDelete]
+        [Authorize(Roles = "Administrator,Manager")]
         public IActionResult AdaySil(Guid id)
         {
             if (id == null)

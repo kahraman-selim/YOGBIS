@@ -1,10 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.IO;
-using Newtonsoft.Json;
+using YOGBIS.BusinessEngine.Contracts;
+using YOGBIS.Common.ConstantsModels;
+using YOGBIS.Common.SessionOperations;
 using YOGBIS.Common.VModels;
 
+[Authorize(Roles = "Administrator")]
 public class AyarlarController : Controller
 {
     private readonly IConfiguration _configuration;
@@ -14,6 +20,7 @@ public class AyarlarController : Controller
         _configuration = configuration;
     }
 
+    [Route("AY10001", Name = "AyalarIndexRoute")]
     public IActionResult Index()
     {
         // TempData'dan tarih bilgisini al

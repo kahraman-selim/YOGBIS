@@ -39,6 +39,7 @@ namespace YOGBIS.UI.Controllers
 
         #region Index
         [Authorize]
+        [Route("DY10001", Name = "DuyuruIndexRoute")]
         public IActionResult Index()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -56,7 +57,7 @@ namespace YOGBIS.UI.Controllers
         #region DuyuruEkleGet
         [Authorize(Roles = "Administrator,Manager")]
         [HttpGet]
-        [Route("Duyurular/DC10002", Name = "DuyuruEkleRoute")]
+        [Route("DY10002", Name = "DuyuruEkleGet")]
         public IActionResult DuyuruEkle()
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -68,8 +69,7 @@ namespace YOGBIS.UI.Controllers
         #region DuyuruEklePost
         [Authorize(Roles = "Administrator,Manager")]
         [ValidateAntiForgeryToken]
-        [HttpPost]
-        [Route("Duyurular/DC10002", Name = "DuyuruEkleRoute")]
+        [HttpPost]        
         [Obsolete]
         public async Task<IActionResult> DuyuruEkle(DuyurularVM model, Guid? DuyurularId)
         {
@@ -160,7 +160,7 @@ namespace YOGBIS.UI.Controllers
 
         #region Guncelle
         [Authorize(Roles = "Administrator,Manager")]
-        [Route("Duyurular/DC10003", Name = "DuyuruGuncelleRoute")]
+        [Route("DY10003", Name = "DuyuruGuncelleRoute")]
         public ActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
@@ -244,7 +244,7 @@ namespace YOGBIS.UI.Controllers
         #region DuyuruDetay
         [Authorize]
         [HttpGet]
-        [Route("Duyurular/DC10004", Name = "DuyuruDetayRoute")]
+        [Route("DC10005", Name = "DuyuruDetayRoute")]
         public IActionResult DuyuruDetay(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
