@@ -493,6 +493,80 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region AdayBasvuruGetir(Guid id)
+        public Result<AdayBasvuruBilgileriVM> AdayBasvuruGetir(Guid id)
+        {
+            if (id != null)
+            {
+                var data = _unitOfWork.adayBasvuruBilgileriRepository.GetFirstOrDefault(x => x.Id == id, includeProperties: "Kullanici,Mulakatlar,Adaylar");
+
+                if (data != null)
+                {
+                    AdayBasvuruBilgileriVM Adaylar = new AdayBasvuruBilgileriVM();
+
+                    Adaylar.Id = data.Id;
+                    Adaylar.AdayId = data.AdayId;
+                    Adaylar.TC = data.TC;
+                    Adaylar.AdayAdiSoyadi = data.Adaylar != null ? data.Adaylar.Ad.ToString() + " " + data.Adaylar.Soyad.ToString() : string.Empty;
+                    Adaylar.DahaOnceYDGorev=data.DahaOnceYDGorev;
+                    Adaylar.YIciGorevBasTar=data.YIciGorevBasTar;
+                    Adaylar.YabanciDilBasvuru = data.YabanciDilBasvuru;
+                    Adaylar.YabanciDilAdi = data.YabanciDilAdi;
+                    Adaylar.YabanciDilTuru = data.YabanciDilTuru;
+                    Adaylar.YabanciDilTarihi = data.YabanciDilTarihi;
+                    Adaylar.YabanciDilPuan = data.YabanciDilPuan;
+                    Adaylar.YabanciDilSeviye = data.YabanciDilSeviye;
+                    Adaylar.IlMemGorus = data.IlMemGorus;
+                    Adaylar.Referans = data.Referans;
+                    Adaylar.ReferansAck= data.ReferansAck;
+                    Adaylar.Sendika = data.Sendika;
+                    Adaylar.SendikaAck = data.SendikaAck;
+                    Adaylar.GorevIptalAck = data.GorevIptalAck;
+                    Adaylar.GorevIptalBrans = data.GorevIptalBrans;
+                    Adaylar.GorevIptalYil = data.GorevIptalYil;
+                    Adaylar.GorevIptalBAOK = data.GorevIptalBAOK;
+                    Adaylar.IlkGorevKaydi = data.IlkGorevKaydi;
+                    Adaylar.YabanciDilALM = data.YabanciDilALM;
+                    Adaylar.YabanciDilING = data.YabanciDilING;
+                    Adaylar.YabanciDilFRS = data.YabanciDilFRS;
+                    Adaylar.YabanciDilDiger = data.YabanciDilDiger;
+                    Adaylar.GorevdenUzaklastirma = data.GorevdenUzaklastirma;
+                    Adaylar.EDurum=data.EDurum;
+                    Adaylar.MDurum=data.MDurum;
+                    Adaylar.PDurum=data.PDurum;
+                    Adaylar.GenelDurum=data.GenelDurum;
+                    Adaylar.YLisans=data.YLisans;
+                    Adaylar.Doktora=data.Doktora;
+                    Adaylar.DahaOnceSinav = data.DahaOnceSinav;
+                    Adaylar.AdliSicilBelge = data.AdliSicilBelge;
+                    Adaylar.BilgiFormu=data.BilgiFormu;
+                    Adaylar.BransId = data.BransId;
+                    Adaylar.BransAdi = data.BransAdi;
+                    Adaylar.DereceId = data.DereceId;
+                    Adaylar.DereceAdi = data.DereceAdi;
+                    Adaylar.UlkeTercihId = data.UlkeTercihId;
+                    Adaylar.UlkeTercihAdi = data.UlkeTercihAdi;
+                    Adaylar.MulakatId = data.MulakatId;
+                    
+                    Adaylar.KayitTarihi = data.KayitTarihi;
+                    Adaylar.KaydedenId = data.KaydedenId;
+                    Adaylar.KaydedenAdi = data.Kullanici != null ? data.Kullanici.Ad + " " + data.Kullanici.Soyad : string.Empty;
+
+
+                    return new Result<AdayBasvuruBilgileriVM>(true, ResultConstant.RecordFound, Adaylar);
+                }
+                else
+                {
+                    return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordNotFound);
+                }
+            }
+            else
+            {
+                return new Result<AdayBasvuruBilgileriVM>(false, ResultConstant.RecordNotFound);
+            }
+        }
+        #endregion
+
         #region AdayBasvuruGuncelle
         public Result<AdayBasvuruBilgileriVM> AdayBasvuruGuncelle(AdayBasvuruBilgileriVM model, SessionContext user)
         {

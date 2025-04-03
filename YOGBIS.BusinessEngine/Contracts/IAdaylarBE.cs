@@ -16,6 +16,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<AdaylarVM> AdayGetirTC(string TC);
         Result<AdaylarVM> AdayEkle(AdaylarVM model, SessionContext user);
         Result<AdaylarVM> AdayGuncelle(AdaylarVM model, SessionContext user);
+        Result<AdayBasvuruBilgileriVM> AdayBasvuruGetir(Guid id);
         Result<AdayBasvuruBilgileriVM> AdayBasvuruGuncelle(AdayBasvuruBilgileriVM model, SessionContext user);
         Result<AdayMYSSVM> AdayMYSSGuncelle(AdayMYSSVM model, SessionContext user);
         Result<bool> AdaySil(Guid id);

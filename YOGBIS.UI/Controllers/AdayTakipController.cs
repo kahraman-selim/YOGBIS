@@ -34,6 +34,8 @@ namespace YOGBIS.UI.Controllers
         [Route("AK10001", Name = "AdayTakipIndexRoute")]
         public IActionResult Index()
         {
+            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
             try
             {
                 _logger.LogInformation("AdayTakip/Index - Başlangıç");
