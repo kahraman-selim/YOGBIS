@@ -493,12 +493,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
-        #region AdayBasvuruGetir(Guid id)
-        public Result<AdayBasvuruBilgileriVM> AdayBasvuruGetir(Guid id)
+        #region AdayBasvuruGetir(string TC)
+        public Result<AdayBasvuruBilgileriVM> AdayBasvuruGetir(string TC)
         {
-            if (id != null)
+            if (TC != null)
             {
-                var data = _unitOfWork.adayBasvuruBilgileriRepository.GetFirstOrDefault(x => x.Id == id, includeProperties: "Kullanici,Mulakatlar,Adaylar");
+                var data = _unitOfWork.adayBasvuruBilgileriRepository                    
+                    .GetFirstOrDefault(x => x.TC == TC && x.OnayDurumu=="Onaylandı", includeProperties: "Kullanici,Mulakatlar,Adaylar");
+                    
 
                 if (data != null)
                 {

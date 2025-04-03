@@ -59,10 +59,6 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            //var komisyon = await _kullaniciBE.KomisyonGetir();
-            var komisyon = _komisyonlarBE.KomisyonAdlariGetir();
-            ViewBag.Komisyonlar = komisyon.Data;
-
             if (Id != null)
             {
                 var data = _adaylarBE.AdayBasvuruGuncelle(model, user);
@@ -71,29 +67,21 @@ namespace YOGBIS.UI.Controllers
             }
             else
             {
-                //var data = _adaylarBE.AdayMYSSGuncelle(model, user);
-                //if (data.IsSuccess)
-                //{
-                //    return RedirectToAction("Index");
-                //}
                 return View(model);
             }
         }
         #endregion
 
         #region Guncelle
-        [Route("AD10008", Name = "AdayBasvuruGuncelleRoute")]
-        public ActionResult Guncelle(Guid? id)
+        [Route("AD10008", Name = "AdayBilgiGuncelleRoute")]
+        public ActionResult Guncelle(string TC)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
-            //var komisyon = await _kullaniciBE.KomisyonGetir();
-            //var komisyon = _komisyonlarBE.KomisyonAdlariGetir();
-            //ViewBag.Komisyonlar = komisyon.Data;
 
-            if (id != null)
+            if (TC != null)
             {
-                var data = _adaylarBE.AdayBasvuruGetir((Guid)id);
+                var data = _adaylarBE.AdayBasvuruGetir(TC);
                 return View(data.Data);
             }
             else

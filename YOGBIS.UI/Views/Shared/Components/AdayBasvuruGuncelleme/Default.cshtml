@@ -1,0 +1,56 @@
+﻿@model IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM>
+
+
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        <b>MYSS Adaylar</b>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>TC</th>
+                        <th>AD SOYAD</th>
+                        <th>ÜLKE TERCİHİ</th>
+                        <th>BRANŞ</th>
+                        <th>KOMİSYON</th>
+                        <th>TARİH</th>
+                        <th>SAAT</th>
+                        <th>SINAV SIRA NO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var sirano = 0;
+                    }
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            sirano++;
+                            <tr>
+                                <td>@sirano</td>
+                                <td><a asp-controller="AdayBasvuru" asp-action="Guncelle" asp-route-id="@item.TC" id="AdayTC">@item.TC</a></td>
+                                <td>@item.AdayAdiSoyadi</td>
+                                <td>@item.UlkeTercihAdi</td>
+                                <td>@item.BransAdi</td>
+                                <td>@item.MYSSKomisyonAdi</td>
+                                <td>@item.MYSSTarih</td>
+                                <td>@item.MYSSSaat</td>
+                                <td>@item.KomisyonGunSN</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
