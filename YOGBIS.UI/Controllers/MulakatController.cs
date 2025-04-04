@@ -234,6 +234,26 @@ namespace YOGBIS.UI.Controllers
             }
         }
         #endregion
+
+        #region GosterBilgiFormu
+        public IActionResult GosterBilgiFormu(Guid id)
+        {
+            try
+            {
+                var adayBasvuru = _unitOfWork.adayBasvuruBilgileriRepository.GetFirstOrDefault(x => x.Id == id);
+                if (adayBasvuru?.BilgiFormu == null)
+                {
+                    return NotFound("Dosya bulunamadı.");
+                }
+
+                return File(adayBasvuru.BilgiFormu, "application/pdf");
+            }
+            catch (Exception ex)
+            {
+                return NotFound("Dosya gösterilirken bir hata oluştu: " + ex.Message);
+            }
+        }
+        #endregion
     }
 
     #region ControllerExtensions

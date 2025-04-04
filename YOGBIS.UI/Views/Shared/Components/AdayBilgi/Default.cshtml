@@ -1,3 +1,4 @@
+@using YOGBIS.Common.Extensions
 @model List<YOGBIS.Common.VModels.AdayBasvuruBilgileriVM>
 
 
@@ -41,7 +42,16 @@
                                 <td>@Html.Raw(GetDilBilgisi(item))</td>
                                 <td>@Html.Raw(GetEgitimBilgisi(item))</td>
                                 <td>@item.GenelDurum</td>
-                                <td>@(item.BilgiFormu != null && item.BilgiFormu.Length > 0 ? "Var" : "Yok")</td>
+                                <td>
+                                    @if (item.BilgiFormu.HasFile())
+                                    {
+                                        <a href="@Url.Action("GosterBilgiFormu", "Mulakat", new { id = item.Id })" target="_blank" class="btn btn-info btn-sm w-100">Göster</a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">Bilgi Formu Bulunamadı</span>
+                                    }
+                                </td>
                             </tr>
                         }
                     }

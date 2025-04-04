@@ -293,7 +293,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label asp-for="BilgiFormu" class="small mb-1 font-weight-bold">Ek-1</label>
-                                @if(Model?.BilgiFormu != null)
+                                @if(Model?.BilgiFormu.HasFile() == true)
                                 {
                                     <a href="@Url.Action("GosterBilgiFormu", "AdayBasvuru", new { id = Model.Id })" target="_blank" class="btn btn-info btn-sm w-100">Göster</a>
                                 }
@@ -312,17 +312,17 @@
                     </div>
                 </form>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 offset-md-6 text-right">
                         <form id="uploadForm" action="@Url.Action("BilgiFormuGuncelle", "AdayBasvuru")" enctype="multipart/form-data" method="post" class="form-group m-0">
                             @Html.HiddenFor(x => x.Id)
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <div class="form-row">
                                         <div class="col-md-6">
-                                            <label>Aday Ek-1 formunu yüklemek için PDF Dosyası Seçin</label>
+                                            <label class="text-left d-block">Aday Ek-1 formunu yüklemek için PDF Dosyası Seçin</label>
                                         </div>
                                         <div class="col-md-4">
-                                            <input type="file" name="file" class="form-control w-100 p-1" accept=".pdf" required style="width:500px" />
+                                            <input type="file" name="file" class="form-control w-100 p-1" accept=".pdf" required />
                                         </div>
                                         <div class="col-md-2">
                                             <button type="submit" class="btn btn-primary w-100">Yükle</button>

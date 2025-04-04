@@ -1064,6 +1064,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         BasvuruBrans = data.BasvuruBrans,
                         BransId = data.BransId,
                         AdliSicilBelge = data.AdliSicilBelge,
+                        BilgiFormu = data.BilgiFormu,
                         DereceId = data.DereceId,
                         DereceAdi = data.DereceAdi,
                         Unvan = data.Unvan,
