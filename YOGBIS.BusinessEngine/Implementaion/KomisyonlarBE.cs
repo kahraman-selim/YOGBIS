@@ -448,5 +448,31 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        #region KomisyonGetirByUserId
+        public Result<List<KomisyonlarVM>> KomisyonGetirByUserId(string userId)
+        {
+            try
+            {
+                var data = _unitOfWork.komisyonlarRepository.GetAll(k => k.KomisyonKullaniciId == userId)
+                    .Include(x=>x.Mulakat)
+                    .Include(x=>x.Kullanici)
+                    .Where(x=>x.Mulakat.Durumu==true)
+                    .OrderBy(x=>x.KomisyonSiraNo);
+
+                if (data != null)
+                {
+                    var komisyon = _mapper.Map<List<Komisyonlar>, List<KomisyonlarVM>>(data.ToList());
+                    return new Result<List<KomisyonlarVM>>(true, ResultConstant.RecordFound, komisyon);
+                }
+
+                return new Result<List<KomisyonlarVM>>(false, ResultConstant.RecordNotFound);
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<KomisyonlarVM>>(false, ResultConstant.RecordNotFound + " " + ex.Message);
+            }
+        }
+        #endregion
     }
 }

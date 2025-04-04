@@ -5,7 +5,14 @@
 @{
     ViewData["Title"] = "Mülakat";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var secilenadaytcno = "";
+    var mulakatId = "";
+    
+    var currentUser = await UserManager.GetUserAsync(User);
+    var userRoles = await UserManager.GetRolesAsync(currentUser);
+    var isAdmin = currentUser.UserName == "Administrator";
 }
+
 
 @section Styles {
 
@@ -93,8 +100,10 @@
 <!-- #endregion -->
 <!-- Not Blok-->
 <!-- #region name -->
+<input type="hidden" id="ModelTcNo" value="@secilenadaytcno"/>
+<input type="hidden" id="ModelmulakatId" value="@mulakatId"/>
 <div class="row col-xl-12 m-0 m-0 mt-2 disable" id="AdayNotBlok">
-    @await Component.InvokeAsync("AdayNot")
+    @await Component.InvokeAsync("AdayNot",new{komisyonKullaniciId=ViewBag.KullaniciId,secilenadaytcno=secilenadaytcno,mulakatId=mulakatId})
 </div>
 <!-- #endregion -->
 <!-- Soru Blok -->
@@ -442,6 +451,11 @@
                                         dereceId=data.dereceId;                                        
                                         mulakatId=data.mulakatId;
                                         tC=data.tC;
+                                        $('#ModelmulakatId').val(mulakatId);
+                                        $('#ModelTcNo').val(tC);
+                                        debugger;                           
+                                        secilenadaytcno=$("#ModelTcNo").val();
+                                        mulakatId=$("#ModelmulakatId").val();
 
                                         $('#cardBtnGrup').show();
                                         $('#soruNo').prop('disabled', false).focus();

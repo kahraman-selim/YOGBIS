@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Common.VModels
@@ -67,5 +68,19 @@ namespace YOGBIS.Common.VModels
         public string KaydedenAdi { get; set; }
         [Display(Name = "Kaydeden")]
         public KullaniciVM Kullanici { get; set; }
+        public AdayMulakatListeViewModel AdayMulakatlistViewModel { get; set; }
+    }
+
+    public class AdayMulakatListeViewModel
+    {
+        public IEnumerable<KomisyonBaskanViewModel> KomisyonBaskanlari { get; set; }
+        public IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM> AdayListesi { get; set; }
+    }
+
+    public class KomisyonBaskanViewModel
+    {
+        public string Id { get; set; }
+        public string AdSoyad { get; set; }
+        public string UserName { get; set; }
     }
 }

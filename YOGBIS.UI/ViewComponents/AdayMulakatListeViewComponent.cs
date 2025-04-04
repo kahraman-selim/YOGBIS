@@ -37,7 +37,7 @@ namespace YOGBIS.UI.ViewComponents
             var userRoles = await _userManager.GetRolesAsync(currentUser);
             var viewModel = new AdayMulakatListeViewModel();
 
-            if (currentUser.UserName == "Administrator")
+            if (currentUser.UserName == "Administrator") // rolü admin olan kullnaıcı görebilsin?
             {
                 // Administrator için tüm CommissionerHead rolündeki kullanıcıları getir
                 var commissionHeads = await _userManager.GetUsersInRoleAsync("CommissionerHead");

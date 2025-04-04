@@ -20,5 +20,6 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<KomisyonPersonellerVM> KomisyonPersonelKaydet(List<KomisyonPersonellerVM> model, SessionContext user);
         Result<List<KomisyonPersonellerVM>> KomisyonPersonelleriGetir(string personelId);
         Result<List<KomisyonlarVM>> KomisyonAdlariGetir();
+        Result<List<KomisyonlarVM>> KomisyonGetirByUserId(string userId);
     }
 }

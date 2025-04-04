@@ -43,7 +43,7 @@ namespace YOGBIS.UI.Controllers
         #endregion
 
         #region Dönüştürücüler
-        public MulakatController(IMulakatSorulariBE mulakatSorulariBE, IDerecelerBE derecelerBE, ISoruKategorileriBE soruKategorileriBE, 
+        public MulakatController(IMulakatSorulariBE mulakatSorulariBE, IDerecelerBE derecelerBE, ISoruKategorileriBE soruKategorileriBE,
             IUnitOfWork unitOfWork, ILogger<MulakatController> logger, IAdaylarBE adaylarBE, IKullaniciBE kullaniciBE,
     UserManager<Kullanici> userManager)
         {
@@ -64,11 +64,19 @@ namespace YOGBIS.UI.Controllers
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
 
+            ViewBag.KullaniciId = user.LoginId;
+
             var komisyon = await _kullaniciBE.KomisyonGetir();
             ViewBag.Komisyonlar = komisyon.Data;
 
+            //var list = new List<AdayMYSSVM>() { new AdayMYSSVM() {
+
+            //    KomisyonId = new Guid(komisyon.Data.FirstOrDefault(x=>x.Id==user.LoginId).Id)
+            //}
+            //};
+
             return View();
-        } 
+        }
         #endregion
 
         #region AdayCagriDurumGuncelle
@@ -129,7 +137,7 @@ namespace YOGBIS.UI.Controllers
                 _logger.LogError($"KomisyonAdaylariniGetir hatası: {ex}");
                 return Json(new { success = false, message = "İşlem sırasında bir hata oluştu!" });
             }
-        } 
+        }
         #endregion
 
         #region GetirAdayBilgileri
@@ -150,6 +158,7 @@ namespace YOGBIS.UI.Controllers
                         mulakatId = result.Data.MulakatId,
                         bransAdi = result.Data.BransAdi,
                         ulkeTercihAdi = result.Data.UlkeTercihAdi,
+
                         tC = result.Data.TC
                     });
                 }
@@ -169,7 +178,7 @@ namespace YOGBIS.UI.Controllers
         {
             try
             {
-                if ( TC == null)
+                if (TC == null)
                 {
                     return Json(new { isSuccess = false, message = "Geçersiz parametreler!" });
                 }
@@ -182,7 +191,7 @@ namespace YOGBIS.UI.Controllers
 
                 return Json(new { isSuccess = false, message = "Bir hata oluştu: " + ex.Message });
             }
-            
+
         }
         #endregion
 
@@ -199,7 +208,7 @@ namespace YOGBIS.UI.Controllers
                 {
                     adayMYS.SinavIptal = true;
                     adayMYS.SinavIptalAck = aciklama;
-                    var data = _adaylarBE.AdaySinavIptalGuncelle(adayMYS,user);
+                    var data = _adaylarBE.AdaySinavIptalGuncelle(adayMYS, user);
                     TempData["Success"] = "Sınav iptal işlemi başarıyla gerçekleştirildi.";
                     return Json(new { success = true });
                 }
@@ -223,7 +232,7 @@ namespace YOGBIS.UI.Controllers
                     return Json(new { isSuccess = false, message = "Geçersiz parametreler!" });
                 }
 
-                var viewComponentResult = await this.RenderViewComponentToStringAsync("MulakatSoru", 
+                var viewComponentResult = await this.RenderViewComponentToStringAsync("MulakatSoru",
                     new { sorusirano = soruSiraNo, mulakatId, dereceId });
 
                 return Json(new { isSuccess = true, data = viewComponentResult });
@@ -287,6 +296,6 @@ namespace YOGBIS.UI.Controllers
                 await Task.CompletedTask;
             }
         }
-    } 
+    }
     #endregion
 }

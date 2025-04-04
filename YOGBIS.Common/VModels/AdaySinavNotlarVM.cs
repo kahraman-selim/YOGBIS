@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace YOGBIS.Common.VModels
@@ -6,11 +7,12 @@ namespace YOGBIS.Common.VModels
     public class AdaySinavNotlarVM : BaseVM
     {
         public Guid Id { get; set; }        
+        public List<KomisyonUyelerVM> komisyonUyelerVm { get; set; }
 
         public Guid KomisyonId { get; set; }
-        public int KomisyonUyeSiraId { get; set; }
+        //public int KomisyonUyeSiraId { get; set; }
         public string KomisyonAdi { get; set; }
-        public string KomisyonUyeAdSoyad { get; set; }
+        //public string KomisyonUyeAdSoyad { get; set; }
         [Display(Name = "Komisyon")]
         public KomisyonlarVM Komisyon { get; set; }  
       
