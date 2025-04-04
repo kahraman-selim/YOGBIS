@@ -1,12 +1,43 @@
-﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
+@using YOGBIS.Data.Contracts
+@using YOGBIS.Common.Extensions
 @model YOGBIS.Common.VModels.AdayBasvuruBilgileriVM
 @{
     ViewData["Title"] = "Adaylar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@if (TempData["WarningMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle mr-2"></i>
+        @TempData["WarningMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle mr-2"></i>
+        @TempData["ErrorMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle mr-2"></i>
+        @TempData["SuccessMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
 <div class="row">
     <div class="col-md-12 mb-1">
         <div class="card shadow-lg rounded-lg">
@@ -262,9 +293,9 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label asp-for="BilgiFormu" class="small mb-1 font-weight-bold">Ek-1</label>
-                                @if(Model.BilgiFormu != null)
+                                @if(Model?.BilgiFormu != null)
                                 {
-                                    <input asp-for="BilgiFormu" type="button" value="Göster" class="form-control py-2">
+                                    <a href="@Url.Action("GosterBilgiFormu", "AdayBasvuru", new { id = Model.Id })" target="_blank" class="btn btn-info btn-sm w-100">Göster</a>
                                 }
                                 else
                                 {
@@ -282,7 +313,8 @@
                 </form>
                 <div class="row">
                     <div class="col-md-6">
-                        <form id="uploadForm" enctype="multipart/form-data" method="post" class="form-group m-0" onsubmit="return submitForm(event)">
+                        <form id="uploadForm" action="@Url.Action("BilgiFormuGuncelle", "AdayBasvuru")" enctype="multipart/form-data" method="post" class="form-group m-0">
+                            @Html.HiddenFor(x => x.Id)
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <div class="form-row">

@@ -14,6 +14,7 @@ using YOGBIS.Common.VModels;
 using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace YOGBIS.BusinessEngine.Implementaion
 {
@@ -2429,5 +2430,40 @@ namespace YOGBIS.BusinessEngine.Implementaion
             }
         }
         #endregion
+
+        //#region UpdateBilgiFormu
+        //public async Task<Result<bool>> UpdateBilgiFormu(string TC, byte[] fileData)
+        //{
+        //    try
+        //    {
+        //        var aday = await _unitOfWork.adaylarRepository.GetAll()
+        //            .FirstOrDefaultAsync(x => x.TC == TC);
+        //        if (aday == null)
+        //        {
+        //            return new Result<bool>(false, "Aday bulunamadı.");
+        //        }
+
+        //        var adayBasvuru = await _unitOfWork.adayBasvuruBilgileriRepository.GetAll()
+        //            .FirstOrDefaultAsync(x => x.AdayId == aday.AdayId);
+
+        //        if (adayBasvuru == null)
+        //        {
+        //            return new Result<bool>(false, "Aday başvuru bilgisi bulunamadı.");
+        //        }
+
+        //        adayBasvuru.BilgiFormu = fileData;
+
+        //        _unitOfWork.adayBasvuruBilgileriRepository.Update(adayBasvuru);
+        //        await _unitOfWork.SaveChangesAsync();
+
+        //        return new Result<bool>(true, "Bilgi formu başarıyla güncellendi.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"UpdateBilgiFormu metodu hatası: {ex.Message}");
+        //        return new Result<bool>(false, "Bilgi formu güncellenirken bir hata oluştu.");
+        //    }
+        //}
+        //#endregion
     }
 }

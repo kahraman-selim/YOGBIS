@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using YOGBIS.Common.ResultModels;
 using YOGBIS.Common.SessionOperations;
@@ -19,6 +20,7 @@ namespace YOGBIS.BusinessEngine.Contracts
         Result<AdayBasvuruBilgileriVM> AdayBasvuruGetir(string TC);
         Result<AdayBasvuruBilgileriVM> AdayBasvuruGuncelle(AdayBasvuruBilgileriVM model, SessionContext user);
         Result<AdayMYSSVM> AdayMYSSGuncelle(AdayMYSSVM model, SessionContext user);
+        //Task<Result<bool>> UpdateBilgiFormu(string userId, byte[] fileData);
         Result<bool> AdaySil(Guid id);
         Result<List<AdaylarVM>> AdayGetirKullaniciId(string userId);
         bool TCKontrol(string TC);

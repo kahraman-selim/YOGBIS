@@ -206,6 +206,7 @@ namespace YOGBIS.Common.VModels
         
         [Display(Name = "BilgiFormu")]
         public byte[] BilgiFormu { get; set; }
+        public bool HasBilgiFormu { get; set; }
 
         public Guid? BransId { get; set; }
         public string BransAdi { get; set; }
