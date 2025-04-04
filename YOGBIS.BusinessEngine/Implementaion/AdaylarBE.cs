@@ -591,6 +591,9 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         Adaylar.YabanciDilFRS = model.YabanciDilFRS;
                         Adaylar.YabanciDilDiger = model.YabanciDilDiger;
                         Adaylar.GorevdenUzaklastirma = model.GorevdenUzaklastirma;
+                        Adaylar.IlMemGorus = model.IlMemGorus;
+                        Adaylar.Referans = model.Referans;
+                        Adaylar.Sendika = model.Sendika;
                         Adaylar.EDurum = model.EDurum;
                         Adaylar.MDurum = model.MDurum;
                         Adaylar.PDurum = model.PDurum;
