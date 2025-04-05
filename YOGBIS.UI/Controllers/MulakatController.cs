@@ -411,9 +411,9 @@ namespace YOGBIS.UI.Controllers
         {
             try
             {
-                if (soruSiraNo > 0 && mulakatId == Guid.Empty && dereceId == Guid.Empty)
+                if (mulakatId == Guid.Empty || dereceId == Guid.Empty)
                 {
-                    return Json(new { isSuccess = false, message = "Geçersiz parametreler!" });
+                    return Json(new { isSuccess = false, message = "Soru bulunamadı!" });
                 }
 
                 var viewComponentResult = await this.RenderViewComponentToStringAsync("MulakatSoru",
@@ -450,7 +450,7 @@ namespace YOGBIS.UI.Controllers
 
         #region MulakatDetay
         [HttpGet]
-        public IActionResult MulakatDetay(string id, string adayId, string adayAdiSoyadi, string dereceAdi, string bransAdi, string ulkeTercihAdi, string tc)
+        public IActionResult MulakatDetay(string id, string adayId, string adayAdiSoyadi, string dereceAdi, string bransAdi, string ulkeTercihAdi, string tc, string mulakatId, string dereceId)
         {
             ViewBag.AdayAdiSoyadi = adayAdiSoyadi;
             ViewBag.DereceAdi = dereceAdi;
@@ -459,6 +459,8 @@ namespace YOGBIS.UI.Controllers
             ViewBag.AdayId = adayId;
             ViewBag.Id = id;
             ViewBag.TC = tc;
+            ViewBag.MulakatId = mulakatId;
+            ViewBag.DereceId = dereceId;
             return View();
         }
         #endregion

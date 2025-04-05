@@ -1,8 +1,11 @@
 @model IEnumerable<YOGBIS.Common.VModels.MulakatSorulariVM>
 <div class="card-body p-2">
-    @if (Model != null)
+    @if (Model == null)
     {
-
+        <input type="hidden" id="soruBulunamadi" value="true" />
+    }
+    else
+    {
         <!-- Sorular -->
         <div class="row equal-height-row d-flex flex-wrap">
             @for (int i = 0; i < 4; i++)
@@ -46,12 +49,4 @@
             }
         </div>
     }
-    else
-    {
-        <div class="row">
-            <div class="col-md-12">
-                <h6 class="text-center text-danger font-weight-bold">Sorular Bulunamadı</h6>
-            </div>
-        </div>
-    }
-</div>
+  </div>

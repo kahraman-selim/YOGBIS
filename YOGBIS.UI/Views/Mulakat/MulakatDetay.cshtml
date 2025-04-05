@@ -44,7 +44,9 @@
 <div class="row mb-1 p-0" id="AdayOzetBilgiBlok">
     <div class="col-lg-12">
         <div class="card shadow-lg" style="height:50px">
-            <input type="hidden" id="TcNo" value="@ViewBag.TC" />
+            <input type="hidden" id="TcNo" value="@ViewBag.TC"/>
+            <input type="hidden" id="MulakatId" value="@ViewBag.MulakatId"/>
+            <input type="hidden" id="DereceId" value="@ViewBag.DereceId" />
             <div class="card-body p-1">
                 <p class="card-text text-center text-danger font-weight-bold p-md-2">
                     <span id="adayadsoyad" class="text-info">@ViewBag.AdayAdiSoyadi</span>
@@ -63,14 +65,14 @@
     <div class="col-lg-12">
         <div class="card shadow-lg" style="height:50px" id="cardBtnGrup">
              <div class="card-body p-1">
-            <p class="text-center font-weight-bold p-1">
-                <input value="Bilgi Formunu Aç" class="btn btn-primary btn-sm ml-1" id="btnBilgiAc" />
-                <input value="Bilgi Formunu Kapat" class="btn btn-primary btn-sm ml-1" style="display:none" id="btnBilgiKapat" />
-                <input value="Soruları Göster" class="btn btn-info btn-sm ml-1" id="btnSoruGoster" style="display:none" />
-                <input value="Soruları Gizle" class="btn btn-info btn-sm ml-1" id="btnSoruGizle" style="display:none" />
-                <input value="Sınavı İptal Et" class="btn btn-danger btn-sm ml-1" id="btnIptal" onclick="sinavIptalModalAc(adayMYSSId)" />
-            </p>
-        </div>
+                <p class="text-center font-weight-bold p-1">
+                    <input value="Bilgi Formunu Aç" class="btn btn-primary btn-sm ml-1" id="btnBilgiAc" />
+                    <input value="Bilgi Formunu Kapat" class="btn btn-primary btn-sm ml-1" style="display:none" id="btnBilgiKapat" />
+                    <input value="Soruları Göster" class="btn btn-info btn-sm ml-1" id="btnSoruGoster" style="display:none" />
+                    <input value="Soruları Gizle" class="btn btn-info btn-sm ml-1" id="btnSoruGizle" style="display:none" />
+                    <input value="Sınavı İptal Et" class="btn btn-danger btn-sm ml-1" id="btnIptal" onclick="sinavIptalModalAc(adayMYSSId)" />
+                </p>
+            </div>
         </div>
     </div>   
 </div> 
@@ -113,9 +115,11 @@
             @await Component.InvokeAsync("MulakatSoru")
         </div>
     </div>
-    <!-- Soru gizle butonu -->
+</div>
+<!-- Soru gizle butonu -->
+<div class="row mb-1 mt-1 p-0" id="btnSoruBlokKapat" style="display:none;">
     <div class="col-lg-12">
-        <a class="btn btn-sm text-white w-100 text-capitalize btnSoruBlokKapat" id="btnSoruBlokKapat" style="font-size:large;background-color:darkorange">SORULARI GİZLE</a>
+        <a class="btn btn-sm text-white w-100 text-capitalize btnSoruBlokKapat" style="font-size:large;background-color:darkorange">SORULARI GİZLE</a>
     </div>
 </div>
 <!-- #endregion -->
@@ -189,7 +193,7 @@
             $("#soruNo").focus();
 
             // Aday bilgilerini göster
-            $("#AdayOzetBilgiBlok").show();
+            $("#AdayOzetBilgiBlok").slideDown();
 
             window.adayId = "";
             window.adayAdi = "";
@@ -198,71 +202,95 @@
             window.mulakatId="";
             window.tC="";
 
-            // Başlat butonu click eventi
-            $('#btnBaslat').on('click', function (e) {
+            // Soru getirme işlemi
+            $("#btnBaslat").click(function() {
+                var soruNo = $("#soruNo").val();
+                var mulakatId = $("#MulakatId").val();
+                var dereceId = $("#DereceId").val();
 
-                    var soruno = $("#soruNo").val();
-                    
-                    if (soruno > 0) {                            
-                        $.ajax({
-                            type: "GET",
-                            url: "/Mulakat/AdayMulakatSoruGetir",
-                            data: {
-                                soruSiraNo: soruno,
-                                mulakatId: mulakatId,
-                                dereceId: dereceId
-                            },
-                            success: function (response) {
-                                if (response.isSuccess) {
-                                    if(response.data == null){
-                                        alert("Soru Bulunamadı!"); 
-                                    }
-                                    else{
-                                            $("#btnBitir").show();
-                                            $("#btnBaslat").hide();
-                                            $("#btnSoruGoster").hide();
-                                            $("#btnSoruGizle").show();
-                                            $('#soruBlok').show();
-                                            document.getElementById("cardBtnGrup").style = "height:50px";
+                if (!soruNo) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Lütfen soru numarası giriniz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            $("#soruNo").focus();
+                        }
+                    });
+                    return;
+                }
 
-                                        $("#mulakatSoruContainer").html(response.data);
-                                    }                                        
-                                } else {
-                                    bootbox.alert({
-                                        title: 'HATA',
-                                        message: response.message || "Soru getirme işlemi başarısız oldu!"
-                                    });
-                                }
-                            },
-                            error: function () {
+                $.ajax({
+                    url: '/Mulakat/AdayMulakatSoruGetir',
+                    type: 'GET',
+                    data: {
+                        soruSiraNo: soruNo,
+                        mulakatId: mulakatId,
+                        dereceId: dereceId
+                    },
+                    success: function(response) {
+                        if (response.isSuccess) {
+                            $("#mulakatSoruContainer").html(response.data);
+                            document.getElementById("btnSoruGoster").style.display = "none";
+                            document.getElementById("btnSoruGizle").style.display = "inline";
+                            document.getElementById("btnSoruBlokKapat").style.display = "inline";
+                            $("#soruBlok").slideDown().show();
+                            $("#btnBaslat").hide();
+                            $("#btnBitir").show();
+
+                            // Gizli input kontrolü
+                            if ($("#soruBulunamadi").length > 0) {
                                 bootbox.alert({
-                                    title: 'HATA',
-                                    message: "İşlem sırasında bir hata oluştu!"
+                                    title: 'UYARI',
+                                    message: "Soru bulunamadı!",
+                                    label: 'Tamam',
+                                    backdrop: false,
+                                    locale: 'tr',
+                                    callback: function () {
+                                        $("#soruBlok").hide();
+                                        document.getElementById("btnSoruGizle").style.display = "none";
+                                        document.getElementById("btnSoruGoster").style.display = "none";
+                                        document.getElementById("btnSoruBlokKapat").style.display = "none";                                        
+                                        $("#btnBaslat").show();
+                                        $("#btnBitir").hide();
+                                        $("#soruNo").val("").focus();
+                                    }
                                 });
                             }
-                        });
-
-                        $("#soruNo").focus();
-                    }
-                    else {
+                        } else {
+                            bootbox.alert({
+                                title: 'UYARI',
+                                message: response.message || "Soru getirilemedi!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr',
+                                callback: function () {
+                                    $("#soruNo").val("").focus();
+                                }
+                            });
+                        }
+                    },
+                    error: function() {
                         bootbox.alert({
-                            title: 'UYARI',
-                            message: "Soru Numarası Yazınız!",
+                            title: 'HATA',
+                            message: "İşlem sırasında bir hata oluştu!",
                             label: 'Tamam',
                             backdrop: false,
                             locale: 'tr',
                             callback: function () {
-                                $("#soruNo").focus();
+                                $("#soruNo").val("").focus();
                             }
                         });
                     }
+                });
             });
-
-            // Bitir butonu click eventi
+                      
             $('#btnBitir').on('click', function () {
-                $('#soruBlok').hide();
-                $('#AdayNotBlok').show();
-                $('#AdayBilgiBlok').hide();
+                $('#soruBlok').slideUp();
+                $('#AdayNotBlok').slideDown();
+                $('#AdayBilgiBlok').slideUp();
                 document.getElementById("btnSoruGoster").style.display = "inline";
                 document.getElementById("Kategori1-1").focus();
                 document.getElementById("btnBitir").style.display = "none";
@@ -275,16 +303,18 @@
 
             // Bilgi Formu Kapat butonu click eventi
             $('btnBilgiFormKapat').on('click', function () {
-                $('#AdayBilgiBlok').hide();
+                $('#AdayBilgiBlok').slideUp();
                 document.getElementById("btnBilgiKapat").style.display = "none";
                 document.getElementById("btnBilgiAc").style.display = "inline";
             });
 
             // Soru Blok Kapat butonu click eventi
-            $('.btnSoruBlokKapat').on('click', function () {
-                $('#soruBlok').hide();
+            $('#btnSoruBlokKapat').on('click', function () {
+                
                 document.getElementById("btnSoruGoster").style.display = "inline";
                 document.getElementById("btnSoruGizle").style.display = "none";
+                document.getElementById("btnSoruBlokKapat").style.display = "none";
+                $('#soruBlok').slideUp();
             });
 
             // Aday Not Formu Kaydet butonu click eventi
@@ -414,14 +444,17 @@
             $('#btnSoruGoster').on('click', function () {
                 document.getElementById("btnSoruGizle").style.display = "inline";
                 document.getElementById("btnSoruGoster").style.display = "none";
-                $('#soruBlok').show();
+                document.getElementById("btnSoruBlokKapat").style.display = "inline";
+                $('#soruBlok').slideDown().show();
                 document.getElementById("soruNo").focus();
             });
 
             $('#btnSoruGizle').on('click', function () {
+                
                 document.getElementById("btnSoruGoster").style.display = "inline";
                 document.getElementById("btnSoruGizle").style.display = "none";
-                $('#soruBlok').hide();                    
+                document.getElementById("btnSoruBlokKapat").style.display = "none";
+                $('#soruBlok').slideUp();                    
             });
 
             // Komisyon-1 not bloğu

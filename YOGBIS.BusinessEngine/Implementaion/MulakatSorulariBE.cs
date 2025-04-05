@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -550,12 +550,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     });
                 }
 
-                return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
+                // returnData boş değilse başarılı sonuç dön
+                if (returnData.Any())
+                {
+                    return new Result<List<MulakatSorulariVM>>(true, ResultConstant.RecordFound, returnData);
+                }
             }
-            else
-            {
-                return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
-            }
+            // data null ise veya returnData boş ise başarısız sonuç dön
+            return new Result<List<MulakatSorulariVM>>(false, ResultConstant.RecordNotFound);
         }
         #endregion
     }

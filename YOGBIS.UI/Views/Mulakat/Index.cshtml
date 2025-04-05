@@ -474,7 +474,9 @@
                     success: function (result) {
                         if (result.isSuccess) {
                             window.location.href = '@Url.Action("MulakatDetay", "Mulakat")?id=' + id + 
-                                '&adayId=' + result.adayId + 
+                                '&adayId=' + result.adayId +
+                                '&mulakatId=' + result.mulakatId +
+                                '&dereceId=' + result.dereceId +
                                 '&adayAdiSoyadi=' + encodeURIComponent(result.adayAdiSoyadi) + 
                                 '&dereceAdi=' + encodeURIComponent(result.dereceAdi) + 
                                 '&bransAdi=' + encodeURIComponent(result.bransAdi) + 
