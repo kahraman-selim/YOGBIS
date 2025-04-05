@@ -244,35 +244,35 @@
                 $('#adayListesiTable').DataTable().destroy();
             }
 
-            if (useDataTable) {
-                if ($.fn.dataTable.isDataTable('#adayListesiTable')) {
-                    $('#adayListesiTable').DataTable().destroy();
+            // Her durumda DataTable'ı etkinleştir
+            $('#adayListesiTable').wrap('<div class="table-container"></div>');
+            var adayTable = new DataTable('#adayListesiTable', {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json"
+                },
+                "pageLength": 10,
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tümü"]],
+                "ordering": true,
+                "order": [[0, "asc"]],
+                "columnDefs": [
+                    { "orderable": false, "targets": [4, 5] }
+                ],
+                "dom": '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                "responsive": true,
+                "searching": true,
+                "drawCallback": function(settings) {
+                    // DataTable elementlerine Bootstrap stilleri ekle
+                    $('.dataTables_filter input').addClass('form-control form-control-sm');
+                    $('.dataTables_length select').addClass('form-control form-control-sm');
+                    $('.dataTables_wrapper').addClass('pb-3');
                 }
-                $('#adayListesiTable').wrap('<div class="table-container"></div>');
-                var adayTable = new DataTable('#adayListesiTable', {
-                    "language": {
-                        "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json"
-                    },
-                    "pageLength": 10,
-                    "ordering": true,
-                    "order": [[0, "asc"]],
-                    "columnDefs": [
-                        { "orderable": false, "targets": [4, 5] }
-                    ],
-                    "drawCallback": function(settings) {
-                        // DataTable elementlerine Bootstrap stilleri ekle
-                        $('.dataTables_filter input').addClass('form-control');
-                        $('.dataTables_length select').addClass('form-control form-control-sm');
-                    }
-                });
-            } else {
-                // Admin için sadece buton event'lerini bağla
-                $(".btnSinavaAl").off('click').on('click', function() {
-                    var id = $(this).data('id');
-                    var adayid = $(this).data('adayid');
-                    window.location.href = '@Url.Action("MulakatDetay", "Mulakat")?id=' + id + '&adayid=' + adayid;
-                });
-            }
+            });
+            // Buton event'lerini bağla
+            $(".btnSinavaAl").off('click').on('click', function() {
+                var id = $(this).data('id');
+                var adayid = $(this).data('adayid');
+                window.location.href = '@Url.Action("MulakatDetay", "Mulakat")?id=' + id + '&adayid=' + adayid;
+            });
 
             // Komisyon seçimi değiştiğinde
             $('#komisyonBaskani').change(function() {

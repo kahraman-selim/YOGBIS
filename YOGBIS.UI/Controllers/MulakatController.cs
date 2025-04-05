@@ -81,6 +81,11 @@ namespace YOGBIS.UI.Controllers
             
             // Tarihleri tekilleştir ve sırala
             mulakatTarihleri = mulakatTarihleri.Distinct().OrderBy(x => DateTime.ParseExact(x, "dd.MM.yyyy", null)).ToList();
+
+            // Bugünün tarihini kontrol et
+            var today = DateTime.Now.ToString("dd.MM.yyyy");
+            var defaultDate = mulakatTarihleri.Contains(today) ? today : mulakatTarihleri.FirstOrDefault();
+
             var currentUser = await _userManager.FindByNameAsync(userName);
             var userRoles = await _userManager.GetRolesAsync(currentUser);
             var viewModel = new AdayMulakatListeViewModel();
@@ -114,15 +119,19 @@ namespace YOGBIS.UI.Controllers
                 }
                 else
                 {
-                   // İlk açılışta boş liste göster
-                    viewModel.AdayListesi = Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
+                    // İlk açılışta varsayılan tarihi kullan
+                    var result = _adaylarBE.GetirKomisyonMulakatListesi(selectedKomisyon, defaultDate);
+                    viewModel.AdayListesi = result.IsSuccess ? result.Data : Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
+                    TempData["CurrentDate"] = defaultDate;
+                    TempData["Message"] = result.IsSuccess && result.Data.Any() ? null : "Bu tarihe ait aday listesi bulunamadı!";
                 }
             }
             else
             {
-                // Diğer kullanıcılar sadece ilk gün için kendi listelerini görecek
-                var result = _adaylarBE.GetirKomisyonMulakatListesi(currentUser.Ad, mulakatTarihleri[0]);
+                // Diğer kullanıcılar varsayılan gün için kendi listelerini görecek
+                var result = _adaylarBE.GetirKomisyonMulakatListesi(currentUser.Ad, defaultDate);
                 viewModel.AdayListesi = result.IsSuccess ? result.Data : Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
+                TempData["Message"] = result.IsSuccess && result.Data.Any() ? null : "Bu tarihe ait aday listesi bulunamadı!";
             }
 
             // DataTable özelliklerini kullanıcı rolüne göre ayarla
@@ -139,6 +148,7 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region GetirTarihliListe
         [HttpGet]
         public async Task<IActionResult> GetirTarihliListe(string currentDate, string direction, string selectedKomisyon = null)
         {
@@ -171,16 +181,26 @@ namespace YOGBIS.UI.Controllers
                     mulakatTarihleri.Add(tarih.ToString("dd.MM.yyyy"));
                 }
             }
-            
+
             // Tarihleri tekilleştir ve sırala
             mulakatTarihleri = mulakatTarihleri.Distinct().OrderBy(x => DateTime.ParseExact(x, "dd.MM.yyyy", null)).ToList();
 
+            // Bugünün tarihini kontrol et
+            var today = DateTime.Now.ToString("dd.MM.yyyy");
+            var defaultDate = mulakatTarihleri.Contains(today) ? today : mulakatTarihleri.FirstOrDefault();
+
+            // Eğer currentDate boş ise varsayılan tarihi kullan
+            if (string.IsNullOrEmpty(currentDate))
+            {
+                currentDate = defaultDate;
+            }
+
             // Mevcut tarihin indeksini bul
             var currentIndex = mulakatTarihleri.IndexOf(currentDate);
-            
+
             // Yöne göre yeni tarihi belirle
-            var newIndex = direction == "next" ? 
-                Math.Min(currentIndex + 1, mulakatTarihleri.Count - 1) : 
+            var newIndex = direction == "next" ?
+                Math.Min(currentIndex + 1, mulakatTarihleri.Count - 1) :
                 Math.Max(currentIndex - 1, 0);
 
             if (newIndex >= 0 && newIndex < mulakatTarihleri.Count)
@@ -233,7 +253,8 @@ namespace YOGBIS.UI.Controllers
             }
 
             return View("Index", viewModel);
-        }
+        } 
+        #endregion
 
         #region MulakatDetay
         public IActionResult MulakatDetay(MulakatDetayVM model)
