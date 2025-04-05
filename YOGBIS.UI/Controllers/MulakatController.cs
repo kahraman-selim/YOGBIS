@@ -336,13 +336,13 @@ namespace YOGBIS.UI.Controllers
                     return Json(new
                     {
                         isSuccess = true,
+                        adayId = result.Data.AdayId,
                         adayAdiSoyadi = result.Data.AdayAdiSoyadi,
                         dereceAdi = result.Data.DereceAdi,
                         dereceId = result.Data.DereceId,
                         mulakatId = result.Data.MulakatId,
                         bransAdi = result.Data.BransAdi,
                         ulkeTercihAdi = result.Data.UlkeTercihAdi,
-
                         tC = result.Data.TC
                     });
                 }
