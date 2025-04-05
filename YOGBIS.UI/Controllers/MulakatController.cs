@@ -65,12 +65,27 @@ namespace YOGBIS.UI.Controllers
         public async Task<IActionResult> Index(string selectedKomisyon = null)
         {
             var userName = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
-            var mulakatTarihi = "07.04.2025"; //"15.04.2024"; // bu alan datetime olarak değiştirilecek
+
+            // Aktif mülakatları getir
+            var aktifMulakatlar = _unitOfWork.mulakatlarRepository.GetAll(x => x.Durumu == true).ToList();
+            var mulakatTarihleri = new List<string>();
+
+            // Başlangıç ve bitiş tarihleri arasındaki günleri ekle
+            foreach (var mulakat in aktifMulakatlar)
+            {
+                for (var tarih = mulakat.BaslamaTarihi; tarih <= mulakat.BitisTarihi; tarih = tarih.AddDays(1))
+                {
+                    mulakatTarihleri.Add(tarih.ToString("dd.MM.yyyy"));
+                }
+            }
+            
+            // Tarihleri tekilleştir ve sırala
+            mulakatTarihleri = mulakatTarihleri.Distinct().OrderBy(x => DateTime.ParseExact(x, "dd.MM.yyyy", null)).ToList();
             var currentUser = await _userManager.FindByNameAsync(userName);
             var userRoles = await _userManager.GetRolesAsync(currentUser);
             var viewModel = new AdayMulakatListeViewModel();
 
-            if (currentUser.UserName == "Administrator") // rolü admin olan kullnaıcı görebilsin?
+            if (userRoles.Contains("Administrator")) // Administrator rolüne sahip kullanıcılar görebilsin
             {
                 // Administrator için tüm CommissionerHead rolündeki kullanıcıları getir
                 var commissionHeads = await _userManager.GetUsersInRoleAsync("CommissionerHead");
@@ -86,15 +101,16 @@ namespace YOGBIS.UI.Controllers
                 // Eğer seçili komisyon varsa onun listesini getir
                 if (!string.IsNullOrEmpty(selectedKomisyon))
                 {
-                    var result = _adaylarBE.GetirKomisyonMulakatListesi(selectedKomisyon, mulakatTarihi);
-                    if (result.IsSuccess)
+                    var tumAdaylar = new List<YOGBIS.Common.VModels.AdayMYSSVM>();
+                    foreach (var tarih in mulakatTarihleri)
                     {
-                        viewModel.AdayListesi = result.Data;
+                        var result = _adaylarBE.GetirKomisyonMulakatListesi(selectedKomisyon, tarih);
+                        if (result.IsSuccess)
+                        {
+                            tumAdaylar.AddRange(result.Data);
+                        }
                     }
-                    else
-                    {
-                        viewModel.AdayListesi = Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
-                    }
+                    viewModel.AdayListesi = tumAdaylar;
                 }
                 else
                 {
@@ -104,16 +120,9 @@ namespace YOGBIS.UI.Controllers
             }
             else
             {
-                // Diğer kullanıcılar kendi listelerini görecek
-                var result = _adaylarBE.GetirKomisyonMulakatListesi(currentUser.Ad, mulakatTarihi);
-                if (result.IsSuccess)
-                {
-                    viewModel.AdayListesi = result.Data;
-                }
-                else
-                {
-                    viewModel.AdayListesi = Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
-                }
+                // Diğer kullanıcılar sadece ilk gün için kendi listelerini görecek
+                var result = _adaylarBE.GetirKomisyonMulakatListesi(currentUser.Ad, mulakatTarihleri[0]);
+                viewModel.AdayListesi = result.IsSuccess ? result.Data : Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
             }
 
             return View(viewModel);

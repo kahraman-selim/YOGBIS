@@ -8,7 +8,7 @@
     var mulakatId = Model.AdayListesi.FirstOrDefault()?.MulakatId ?? Guid.Empty;
     var currentUser = await UserManager.GetUserAsync(User);
     var userRoles = await UserManager.GetRolesAsync(currentUser);
-    var isAdmin = currentUser.UserName == "Administrator";
+    var isAdmin = userRoles.Contains("Administrator");
 }
 @section Styles {
 
