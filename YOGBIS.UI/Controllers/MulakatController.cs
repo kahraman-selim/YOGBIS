@@ -450,7 +450,7 @@ namespace YOGBIS.UI.Controllers
 
         #region MulakatDetay
         [HttpGet]
-        public IActionResult MulakatDetay(string id, string adayId, string adayAdiSoyadi, string dereceAdi, string bransAdi, string ulkeTercihAdi)
+        public IActionResult MulakatDetay(string id, string adayId, string adayAdiSoyadi, string dereceAdi, string bransAdi, string ulkeTercihAdi, string tc)
         {
             ViewBag.AdayAdiSoyadi = adayAdiSoyadi;
             ViewBag.DereceAdi = dereceAdi;
@@ -458,6 +458,7 @@ namespace YOGBIS.UI.Controllers
             ViewBag.UlkeTercihAdi = ulkeTercihAdi;
             ViewBag.AdayId = adayId;
             ViewBag.Id = id;
+            ViewBag.TC = tc;
             return View();
         }
         #endregion

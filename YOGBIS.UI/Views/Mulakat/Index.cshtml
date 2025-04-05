@@ -424,26 +424,22 @@
             // Aday Sınava Al Butonu
             $("#adayListesiTable").on("click", ".btnSinavaAl", function () {
                 var btn = $(this);
+                var row = btn.closest('tr');
                 Id = btn.data("id");
+                tC = row.data("tc");
 
                 $.ajax({
-                    success: function (result) {
-                        if (result) {
-                            bootbox.alert({
-                                title: 'BİLGİ',
-                                message: "Aday sınav odasına çağrıldı!",
-                                label: 'Tamam',
-                                backdrop: false,
-                                locale: 'tr',
-                                callback: function () {
-                                    if (result) {
-                                        $.ajax({
-                                            type: "POST",
-                                            url: "/Mulakat/AdaySinavOdaKabulGuncelle/" + Id,
-                                        });
-                                    }
-                                }
-                            });
+                    type: "GET",
+                    url: "/Mulakat/GetirAdayBilgileri/" + Id,
+                    success: function(result) {
+                        if (result.isSuccess) {
+                            window.location.href = '@Url.Action("MulakatDetay", "Mulakat")?id=' + Id + 
+                                '&adayId=' + result.adayId + 
+                                '&adayAdiSoyadi=' + encodeURIComponent(result.adayAdiSoyadi) + 
+                                '&dereceAdi=' + encodeURIComponent(result.dereceAdi) + 
+                                '&bransAdi=' + encodeURIComponent(result.bransAdi) + 
+                                '&ulkeTercihAdi=' + encodeURIComponent(result.ulkeTercihAdi) + 
+                                '&tc=' + tC;
                         } else {
                             bootbox.alert({
                                 title: 'HATA',
@@ -454,6 +450,7 @@
                             });
                         }
                     },
+
                     error: function () {
                         bootbox.alert({
                             title: 'HATA',
@@ -481,7 +478,8 @@
                                 '&adayAdiSoyadi=' + encodeURIComponent(result.adayAdiSoyadi) + 
                                 '&dereceAdi=' + encodeURIComponent(result.dereceAdi) + 
                                 '&bransAdi=' + encodeURIComponent(result.bransAdi) + 
-                                '&ulkeTercihAdi=' + encodeURIComponent(result.ulkeTercihAdi);
+                                '&ulkeTercihAdi=' + encodeURIComponent(result.ulkeTercihAdi) +
+                                '&tC=' + encodeURIComponent(result.tC);
                         } else {
                             bootbox.alert({
                                 title: 'HATA',
