@@ -5,13 +5,11 @@
 @{
     ViewData["Title"] = "Mülakat";
     Layout = "~/Views/Shared/_Layout.cshtml";   
-    var mulakatId = Model.AdayListesi.FirstOrDefault().MulakatId;
+    var mulakatId = Model.AdayListesi.FirstOrDefault()?.MulakatId ?? Guid.Empty;
     var currentUser = await UserManager.GetUserAsync(User);
     var userRoles = await UserManager.GetRolesAsync(currentUser);
     var isAdmin = currentUser.UserName == "Administrator";
 }
-
-
 @section Styles {
 
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
@@ -38,7 +36,49 @@
         border: 2px solid red;
     }
 </style>
+<!-- Aday Özet Blok -->
+<!-- #region name -->
+<div class="row m-0 p-0">
+    <div class="col-lg-12">
+        <div class="card shadow-lg">
+            <div class="card-header p-1">
+                @{
+                    var gun = "";
+                    DateTime tarih;
+                }
+                @if (Model != null && Model.AdayListesi.Any())
+                {
+                    if (DateTime.TryParseExact(Model.AdayListesi.First().MYSSTarih, "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out tarih))
+                    {
+                        gun = tarih.ToString("dd.MM.yyyy");
+                    }
+                    else
+                    {
+                        gun = DateTime.Now.ToString("dd.MM.yyyy");
+                    }
+                }
+                else
+                {
+                    gun = DateTime.Now.ToString("dd.MM.yyyy");
+                }
+                <div class="d-flex justify-content-center align-items-center">
+                    <a href="javascript:void(0)" onclick="loadAdayNotBilgileri('prev')" class="btn btn-outline-primary btn-sm mr-3">
+                        <i class="fas fa-chevron-left"></i> Önceki Gün
+                    </a>
 
+                    <h6 class="card-title mb-0 mx-3 text-danger">
+                        ADAY LİSTESİ - @gun
+                    </h6>
+
+                    <a href="javascript:void(0)" onclick="loadAdayNotBilgileri('next')" class="btn btn-outline-primary btn-sm ml-3">
+                        Sonraki Gün <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion -->
 <!-- Aday Listesi -->
 <!-- #region name -->
 <div class="col-xl-12 m-0 mt-2" id="AdayListesi">
@@ -50,7 +90,7 @@
                     <label for="komisyonBaskani" class="form-label">Komisyonu Seçiniz</label>
                     <select id="komisyonBaskani" class="form-select" onchange="komisyonSecildi(this)">
                         <option value="">Komisyonu seçiniz...</option>
-                        @foreach (var baskan in Model.KomisyonBaskanları.OrderBy(u => u.AdSoyad))
+                        @foreach (var baskan in Model.KomisyonBaskanları.OrderBy(u => u.TcKN))
                         {
                             <option value="@baskan.UserName">@baskan.AdSoyad</option>
                         }
@@ -174,48 +214,13 @@
     </div>
 </div>
 <!-- #endregion -->
-<!-- Modal Sınav İptal-->
-<!-- #region name -->
-<div class="modal" id="ModalSinavIptal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-center" id="exampleModalLabel">AÇIKLAMA</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close" onclick="kapat()">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body" id="modalSinavIptalBody">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form action="/" method="post">
-                            <div class="form-row mb-1">
-                                <div class="form-group col-md-12">
-                                    <textarea placeholder="Sınava girmeyen, alınmayan yada sınavı iptal edilen aday için açıklamaları buraya yazınız..." class="form-control" id="AciklamaTextArea" rows="10"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-row mb-1 justify-content-center">
-                                <div class="col-md-6">
-                                    <button class="btn btn-success col-md-12" data-dismiss="modal" id="btnCancel" onclick="IptalModalKapat">Vazgeç</button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-danger col-md-12" type="submit" data-dismiss="modal" id="btnOk" onclick="kapat()">Kaydet</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- #endregion -->
 @section Scripts {
 
     <partial name="_ValidationScriptsPartial" />
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
     <script type="text/javascript">
+        
         $(document).ready(function () {
 
             // Aday Sınava Al Butonu
@@ -298,6 +303,81 @@
         });
     </script>
 
+    @* admin kullanıcısı için komisyon adaylarını getir *@
+    <script>
+        window.komisyonDegisti = function(selectedKomisyonAd) {
+            if (selectedKomisyonAd) {
+                $.ajax({
+                    url: '@Url.Action("KomisyonAdaylariniGetir", "Mulakat")',
+                    type: 'GET',
+                    data: { komisyonUserName: selectedKomisyonAd },
+                    success: function(response) {
+                        if (response.success) {
+                            if ($.fn.DataTable.isDataTable('#myTableNoButtons')) {
+                                $('#myTableNoButtons').DataTable().destroy();
+                            }
+                            var tbody = $('#adayListesiBody');
+                            tbody.empty();
 
+                            var sirano = 0;
+                            response.data.forEach(function(item) {
+                                sirano++;
+                                var row = '<tr>' +
+                                    '<td class="text-center">' + sirano + '</td>' +
+                                    '<td class="text-center">' + item.tc + '</td>' +
+                                    '<td>' + item.adayAdiSoyadi + '</td>' +
+                                    '<td class="text-center">' + item.myssSaat + '</td>' +
+                                    '<td class="text-center">';
+
+                                if (item.cagriDurum) {
+                                    row += '<button class="btn btn-sm btn-primary" title="Çağrıldı" style="font-weight:bold;font-size:13px;width:120px" disabled readonly>' +
+                                        '<i class="fas fa-bell"></i> Bekleme Odası</button>';
+                                } else {
+                                    row += '<button class="btn btn-sm btn-warning" title="Adayı Çağır" style="font-weight:bold;font-size:13px;width:120px" readonly>' +
+                                        '<i class="fas fa-bell"></i> Bekleme Odası</button>';
+                                }
+
+                                row += '</td><td class="text-center">' +
+                                    '<button class="btn btn-sm btn-success" title="Adayı Sınava Al" style="font-weight:bold;font-size:13px;width:120px" readonly>' +
+                                    '<i class="fas fa-door-open"></i> Sınav Odası</button>' +
+                                    '</td></tr>';
+
+                                tbody.append(row);
+                            });
+
+                            $('#myTableNoButtons').DataTable({
+                                "language": {
+                                    "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Turkish.json"
+                                },
+                                "responsive": true,
+                                "dom": '<"top"<"left-col"l><"right-col"f>>rtip',
+                                "pageLength": 10,
+                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tümü"]]
+                            });
+                        } else {
+                            alertify.error(response.message || 'Bir hata oluştu!');
+                        }
+                    },
+                    error: function() {
+                        alertify.error('İşlem sırasında bir hata oluştu!');
+                    }
+                });
+            } else {
+                if ($.fn.DataTable.isDataTable('#myTableNoButtons')) {
+                    $('#myTableNoButtons').DataTable().destroy();
+                }
+                $('#adayListesiBody').empty();
+                $('#myTableNoButtons').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Turkish.json"
+                    },
+                    "responsive": true,
+                    "dom": '<"top"<"left-col"l><"right-col"f>>rtip',
+                    "pageLength": 10,
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tümü"]]
+                });
+            }
+        }
+    </script>
 
 }

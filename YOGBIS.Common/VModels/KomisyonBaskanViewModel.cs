@@ -9,5 +9,7 @@ namespace YOGBIS.Common.VModels
         public string Id { get; set; }
         public string AdSoyad { get; set; }
         public string UserName { get; set; }
+        public int TcKN { get; set; }
+        public bool Aktif { get; set; }
     }
 }

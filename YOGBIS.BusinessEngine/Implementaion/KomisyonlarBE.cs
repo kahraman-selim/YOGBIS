@@ -407,7 +407,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     .Include(x=>x.Kullanici)
                     .Include(x=>x.Mulakat)
                     .Where(x=>x.Mulakat != null && x.Mulakat.Durumu == true)
-                    .OrderBy(t => t.KomisyonSiraNo)                                      
+                    .OrderBy(t => t.KomisyonSiraNo)
                     .ToList();
 
                 // Veri yoksa hata fırlat
@@ -429,16 +429,14 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 var returnData = data.Select(item => new KomisyonlarVM
                 {
                     KomisyonId = item.KomisyonId,
-                    KomisyonSiraNo = item.KomisyonSiraNo,
                     KomisyonAdi = item.KomisyonAdi,
                 })
-                                .GroupBy(x => new {
-                                    x.KomisyonId,
-                                    x.KomisyonSiraNo,
-                                    x.KomisyonAdi
-                                })
-                                .Select(g => g.First())  // Her gruptan bir tane eleman al
-                                .ToList();
+                    .GroupBy(x => new
+                    {
+                       x.KomisyonAdi
+                    })
+                    .Select(g => g.First())  // Her gruptan bir tane eleman al
+                    .ToList();
 
                 return new Result<List<KomisyonlarVM>>(true, ResultConstant.RecordFound, returnData);
             }

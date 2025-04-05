@@ -22,6 +22,7 @@ namespace YOGBIS.Common.VModels
         public string MYSSDurumAck { get; set; }
 
         public Guid? KomisyonId { get; set; }
+        public string KomisyonKullaniciId { get; set; }
         public int? MYSSKomisyonSiraNo { get; set; }
         public string MYSSKomisyonAdi { get; set; }       
         public int? KomisyonSN { get; set; }

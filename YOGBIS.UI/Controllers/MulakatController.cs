@@ -65,7 +65,7 @@ namespace YOGBIS.UI.Controllers
         public async Task<IActionResult> Index(string selectedKomisyon = null)
         {
             var userName = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
-            var mulakatTarihi = "15.04.2024"; // bu alan datetime olarak değiştirilecek
+            var mulakatTarihi = "07.04.2025"; //"15.04.2024"; // bu alan datetime olarak değiştirilecek
             var currentUser = await _userManager.FindByNameAsync(userName);
             var userRoles = await _userManager.GetRolesAsync(currentUser);
             var viewModel = new AdayMulakatListeViewModel();
@@ -78,8 +78,10 @@ namespace YOGBIS.UI.Controllers
                 {
                     Id = u.Id,
                     AdSoyad = $"{u.Ad}",
-                    UserName = u.Ad // Komisyon adını UserName olarak kullan
-                }).ToList();
+                    UserName = u.Ad,// Komisyon adını UserName olarak kullan
+                    TcKN = int.Parse(u.TcKimlikNo),
+                    Aktif = u.Aktif ?? false
+                }).Where(x=>x.Aktif==true).OrderBy(x=>x.TcKN).ToList();
 
                 // Eğer seçili komisyon varsa onun listesini getir
                 if (!string.IsNullOrEmpty(selectedKomisyon))
@@ -96,7 +98,7 @@ namespace YOGBIS.UI.Controllers
                 }
                 else
                 {
-                    // İlk açılışta boş liste göster
+                   // İlk açılışta boş liste göster
                     viewModel.AdayListesi = Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
                 }
             }
@@ -164,7 +166,7 @@ namespace YOGBIS.UI.Controllers
                     return Json(new { success = false, message = "Lütfen komisyon seçiniz!" });
                 }
 
-                var mulakatTarihi = "15.04.2024"; // daha sonra dinamik datetime.now.day bilgisi getirilecek
+                var mulakatTarihi = "07.04.2025";//"15.04.2024"; // daha sonra dinamik datetime.now.day bilgisi getirilecek
                 var result = _adaylarBE.GetirKomisyonMulakatListesi(komisyonUserName, mulakatTarihi);
 
                 if (result != null)

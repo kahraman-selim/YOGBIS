@@ -99,7 +99,7 @@ namespace YOGBIS.UI.Controllers
         public ActionResult Guncelle(Guid? id)
         {
             var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
-            
+
             //var komisyon = await _kullaniciBE.KomisyonGetir();
             var komisyon = _komisyonlarBE.KomisyonAdlariGetir();
             ViewBag.Komisyonlar = komisyon.Data;
