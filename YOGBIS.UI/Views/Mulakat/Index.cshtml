@@ -11,8 +11,9 @@
     var isAdmin = userRoles.Contains("Administrator");
 }
 @section Styles {
-
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" />
 }
 <!-- #region blok css -->
 <style type="text/css">
@@ -34,6 +35,11 @@
 
     .input-error {
         border: 2px solid red;
+    }
+
+    /* DataTable hover rengi */
+    #adayListesiTable tbody tr:hover {
+        background-color: #e8f5e9 !important;
     }
 </style>
 <!-- Aday Özet Blok -->
@@ -62,18 +68,26 @@
                     gun = DateTime.Now.ToString("dd.MM.yyyy");
                 }
                 <div class="d-flex justify-content-center align-items-center">
-                    <a href="javascript:void(0)" onclick="loadAdayNotBilgileri('prev')" class="btn btn-outline-primary btn-sm mr-3">
+                    <a href="@Url.Action("GetirTarihliListe", "Mulakat", new { currentDate = gun, direction = "prev", selectedKomisyon = TempData.Peek("SelectedKomisyon") })" 
+                       class="btn btn-outline-primary btn-sm mr-3 @(TempData["HasPrev"] != null && !(bool)TempData["HasPrev"] ? "disabled" : "")">
                         <i class="fas fa-chevron-left"></i> Önceki Gün
                     </a>
 
                     <h6 class="card-title mb-0 mx-3 text-danger">
-                        ADAY LİSTESİ - @gun
+                        ADAY LİSTESİ - @(TempData["CurrentDate"] ?? gun)
                     </h6>
 
-                    <a href="javascript:void(0)" onclick="loadAdayNotBilgileri('next')" class="btn btn-outline-primary btn-sm ml-3">
+                    <a href="@Url.Action("GetirTarihliListe", "Mulakat", new { currentDate = gun, direction = "next", selectedKomisyon = TempData.Peek("SelectedKomisyon") })" 
+                       class="btn btn-outline-primary btn-sm ml-3 @(TempData["HasNext"] != null && !(bool)TempData["HasNext"] ? "disabled" : "")">
                         Sonraki Gün <i class="fas fa-chevron-right"></i>
                     </a>
                 </div>
+                @if (!string.IsNullOrEmpty(TempData["Message"]?.ToString()))
+                {
+                    <div class="alert alert-warning mt-3 text-center" role="alert">
+                        @TempData["Message"]
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -92,14 +106,13 @@
                         <option value="">Komisyonu seçiniz...</option>
                         @foreach (var baskan in Model.KomisyonBaskanları.OrderBy(u => u.TcKN))
                         {
-                            <option value="@baskan.UserName">@baskan.AdSoyad</option>
+                            @Html.Raw($"<option value=\"{baskan.UserName}\">{baskan.AdSoyad}</option>")
                         }
                     </select>
                 </div>
             }
-
             <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped display responsive nowrap" id="myTableNoButtons" width="100%" cellspacing="0">
+                <table class="table table-bordered table-hover table-striped display responsive nowrap" id="adayListesiTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th class="text-center">SN</th>
@@ -120,17 +133,12 @@
                             {
                                 sirano++;
                                 
-                                <tr>
+                                <tr data-derece-id="@item.DereceId" data-tc="@item.TC">
                                     <td class="text-center">@sirano</td>
                                     <td class="text-center">@item.TC</td>                                    
                                     <td>@item.AdayAdiSoyadi</td>
                                     <td class="text-center">@item.MYSSSaat.ToString()</td>
-                                    <td style="display:none">
-                                        <input type="text" id="gizlidereceId" value=@item.DereceId>
-                                    </td>
-                                    <td style="display:none">
-                                        <input type="text" id="selectedadaytc" value=@item.TC>
-                                    </td>
+
                                     <!--Aday Çağrı Bloğu-->
                                     <td class="text-center">
                                         @if (!item.CagriDurum.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault()) // 1. Durum: Çağrılmamış
@@ -218,13 +226,71 @@
 
     <partial name="_ValidationScriptsPartial" />
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
     <script type="text/javascript">
-        
         $(document).ready(function () {
+            // Seçili komisyonu ayarla
+            var selectedKomisyon = '@TempData.Peek("SelectedKomisyon")';
+            if (selectedKomisyon) {
+                $('#komisyonBaskani').val(selectedKomisyon);
+            }
+
+            // DataTable ayarları
+            var useDataTable = @Json.Serialize(ViewBag.UseDataTable);
+            
+            if ($.fn.DataTable.isDataTable('#adayListesiTable')) {
+                $('#adayListesiTable').DataTable().destroy();
+            }
+
+            if (useDataTable) {
+                if ($.fn.dataTable.isDataTable('#adayListesiTable')) {
+                    $('#adayListesiTable').DataTable().destroy();
+                }
+                $('#adayListesiTable').wrap('<div class="table-container"></div>');
+                var adayTable = new DataTable('#adayListesiTable', {
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json"
+                    },
+                    "pageLength": 10,
+                    "ordering": true,
+                    "order": [[0, "asc"]],
+                    "columnDefs": [
+                        { "orderable": false, "targets": [4, 5] }
+                    ],
+                    "drawCallback": function(settings) {
+                        // DataTable elementlerine Bootstrap stilleri ekle
+                        $('.dataTables_filter input').addClass('form-control');
+                        $('.dataTables_length select').addClass('form-control form-control-sm');
+                    }
+                });
+            } else {
+                // Admin için sadece buton event'lerini bağla
+                $(".btnSinavaAl").off('click').on('click', function() {
+                    var id = $(this).data('id');
+                    var adayid = $(this).data('adayid');
+                    window.location.href = '@Url.Action("MulakatDetay", "Mulakat")?id=' + id + '&adayid=' + adayid;
+                });
+            }
+
+            // Komisyon seçimi değiştiğinde
+            $('#komisyonBaskani').change(function() {
+                var selectedKomisyon = $(this).val();
+                if (selectedKomisyon) {
+                    window.location.href = '@Url.Action("GetirTarihliListe", "Mulakat")?selectedKomisyon=' + selectedKomisyon;
+                }
+            });
+
+            // DataTable arama kutusuna stil ekle
+            if (useDataTable) {
+                $('.dataTables_filter input').addClass('form-control').attr('placeholder', 'Arama yap...');
+                $('.dataTables_length select').addClass('form-control form-control-sm');
+            }
+
 
             // Aday Sınava Al Butonu
-            $("#myTableNoButtons").on("click", ".btnSinavaAl", function () {
+            $(document).on("click", ".btnSinavaAl", function () {
                 var btn = $(this);
                 Id = btn.data("id");
                 var veri = {
