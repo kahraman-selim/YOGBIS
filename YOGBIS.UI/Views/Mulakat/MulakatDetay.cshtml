@@ -1,0 +1,1112 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
+@inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
+@model IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM>
+@{
+    ViewData["Title"] = "Mülakat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var secilenadaytcno = "";
+    var mulakatId = "";
+    
+    var currentUser = await UserManager.GetUserAsync(User);
+    var userRoles = await UserManager.GetRolesAsync(currentUser);
+    var isAdmin = currentUser.UserName == "Administrator";
+}
+@section Styles {
+
+   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+}
+<!-- #region blok css -->
+<style type="text/css">
+    #soruBlok {
+        display: none;
+    }
+
+    #AdayNotBlok {
+        display: none;
+    }
+
+    #btnBitir {
+        display: none;
+    }
+
+    #AdayBilgiBlok {
+        display: none;
+    }
+
+    .input-error {
+        border: 2px solid red;
+    }
+</style>
+<!-- Aday Özet Blok -->
+<!-- #region name -->
+<div class="row m-0 p-0">
+    <div class="col-lg-12">
+        <div class="card shadow-lg" style="height:75px">
+            <h6 class="card-header text-center text-danger p-md-1">
+                <span id="oncekigun" class="text-danger">
+                    <a href="" class="text-danger" title="Önceki Gün"><  </a>
+                </span>
+                ADAY BİLGİLERİ - @DateTime.Now.ToString("dd.MM.yyyy")
+                <span id="sonrakigun" class="text-danger">
+                    <a href="" class="text-danger" title="Sonraki Gün">  ></a>
+                </span>
+            </h6>
+            <div class="card-body p-1">
+                <p class="card-text text-center text-danger font-weight-bold p-md-2">
+                    <span id="adayadsoyad" class="text-info">Aday Adı Soyadı</span>
+                    <span>-</span>
+                    <span id="adayderece" class="text-primary">Öğretmen</span>
+                    <span>-</span>
+                    <span id="adaybrans" class="text-secondary">Branş</span>
+                    <span>-</span>
+                    <span id="adayulke" class="text-dark">Ülke Grubu</span>
+                </p>
+            </div>
+        </div>
+        <div class="card shadow-lg" style="height:50px;display:none" id="cardBtnGrup">
+            <div class="card-body p-1">
+                <p class="text-center font-weight-bold p-1">
+                    <input value="Bilgi Formunu Aç" class="btn btn-primary btn-sm ml-1" id="btnBilgiAc" />
+                    <input value="Bilgi Formunu Kapat" class="btn btn-primary btn-sm ml-1" style="display:none" id="btnBilgiKapat" />
+                    <input value="Soruları Göster" class="btn btn-info btn-sm ml-1" id="btnSoruGoster" style="display:none" />
+                    <input value="Soruları Gizle" class="btn btn-info btn-sm ml-1" id="btnSoruGizle" style="display:none" />
+                    <input value="Sınavı İptal Et" class="btn btn-danger btn-sm ml-1" id="btnIptal" onclick="sinavIptalModalAc(adayMYSSId)" />
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion -->
+<!-- Buton Blok -->
+<!-- #region name -->
+<div class="row m-0 mt-1">
+    <div class="col-lg-12">
+        <input type="number" id="soruNo" class="form-control font-weight-bold text-center text-danger" style="font-size:22px;border-color:darkred;border-style:double" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" min="1" placeholder="Soru Numarasını Giriniz" disabled>
+        <input type="submit" value="Mülakatı Başlat" class="btn btn-primary w-100 mt-1" id="btnBaslat" />
+        <input type="submit" value="Mülakatı Bitir" class="btn btn-danger w-100 mt-1 mb-2" id="btnBitir" />
+    </div>
+</div>
+<!-- #endregion -->
+<!--Aday Bilgi Blok-->
+<!-- #region name -->
+<div class="row col-xl-12 m-0 mt-2" id="AdayBilgiBlok" disable>
+    <div id="adayBilgiContainer" class="card shadow-sm">
+        @await Component.InvokeAsync("AdayBilgi")
+    </div>    
+</div>
+<!-- #endregion -->
+<!-- Not Blok-->
+<!-- #region name -->
+<input type="hidden" id="ModelTcNo" value="@secilenadaytcno"/>
+<input type="hidden" id="ModelmulakatId" value="@mulakatId"/>
+<div class="row col-xl-12 m-0 m-0 mt-2 disable" id="AdayNotBlok">
+    @await Component.InvokeAsync("AdayNot",new{komisyonKullaniciId=ViewBag.KullaniciId,secilenadaytcno=secilenadaytcno,mulakatId=mulakatId})
+</div>
+<!-- #endregion -->
+<!-- Soru Blok -->
+<!-- #region name -->
+<div class="row col-xl-12 m-0 " id="soruBlok" style="display:none;">
+    <div class="col-md-12 p-1">
+        <div id="mulakatSoruContainer" class="card shadow-sm">
+            @await Component.InvokeAsync("MulakatSoru")
+        </div>
+    <!-- Soru gizle butonu -->
+    </div class="col-md-12 px-0">
+        <a class="btn btn-sm text-white w-100 text-capitalize btnSoruBlokKapat" id="btnSoruBlokKapat" style="font-size:large;background-color:darkorange">SORULARI GİZLE</a>
+    <div>
+
+    </div>
+</div>
+<!-- #endregion -->
+<!-- Aday Listesi -->
+<!-- #region name -->
+
+<!-- #endregion -->
+<!-- Modal Uyarı -->
+<!-- #region name -->
+<div class="modal fade modal-xl" id="ModalUyari" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLabel">UYARI</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close" onclick="kapat()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body text-center" id="modaltext"></div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit" data-dismiss="modal" id="btnOk" onclick="kapat()">Tamam</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion -->
+<!-- Modal Sınav İptal-->
+<!-- #region name -->
+<div class="modal" id="ModalSinavIptal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLabel">AÇIKLAMA</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close" onclick="kapat()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalSinavIptalBody">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="/" method="post">
+                            <div class="form-row mb-1">
+                                <div class="form-group col-md-12">
+                                    <textarea placeholder="Sınava girmeyen, alınmayan yada sınavı iptal edilen aday için açıklamaları buraya yazınız..." class="form-control" id="AciklamaTextArea" rows="10"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row mb-1 justify-content-center">
+                                <div class="col-md-6">
+                                    <button class="btn btn-success col-md-12" data-dismiss="modal" id="btnCancel" onclick="IptalModalKapat">Vazgeç</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-danger col-md-12" type="submit" data-dismiss="modal" id="btnOk" onclick="kapat()">Kaydet</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion -->
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Başlangıç değerlerini sıfırla
+            $("#Ortalama, #MYSPuan").val(0);
+            $("#MYSSonuc").val("");
+            $("#soruNo").focus();
+
+                window.adayId = "";
+                window.adayAdi = "";
+                window.Id = "";
+                window.derceId="";
+                window.mulakatId="";
+                window.tC="";
+
+            // Başlat butonu click eventi
+            $('#btnBaslat').on('click', function (e) {
+
+                    var soruno = $("#soruNo").val();
+
+                    if (soruno > 0) {                            
+                        $.ajax({
+                            type: "GET",
+                            url: "/Mulakat/AdayMulakatSoruGetir",
+                            data: {
+                                soruSiraNo: soruno,
+                                mulakatId: mulakatId,
+                                dereceId: dereceId
+                            },
+                            success: function (response) {
+                                if (response.isSuccess) {
+                                    if(response.data == null){
+                                        alert("Soru Bulunamadı!"); 
+                                    }
+                                    else{
+                                            $("#btnBitir").show();
+                                            $("#btnBaslat").hide();
+                                            $("#btnSoruGoster").hide();
+                                            $("#btnSoruGizle").show();
+                                            $('#soruBlok').show();
+                                            document.getElementById("cardBtnGrup").style = "height:50px";
+
+                                        $("#mulakatSoruContainer").html(response.data);
+                                    }                                        
+                                } else {
+                                    bootbox.alert({
+                                        title: 'HATA',
+                                        message: response.message || "Soru getirme işlemi başarısız oldu!"
+                                    });
+                                }
+                            },
+                            error: function () {
+                                bootbox.alert({
+                                    title: 'HATA',
+                                    message: "İşlem sırasında bir hata oluştu!"
+                                });
+                            }
+                        });
+
+                        $("#soruNo").focus();
+                    }
+                    else {
+                        bootbox.alert({
+                            title: 'UYARI',
+                            message: "Soru Numarası Yazınız!",
+                            label: 'Tamam',
+                            backdrop: false,
+                            locale: 'tr',
+                            callback: function () {
+                                $("#soruNo").focus();
+                            }
+                        });
+                    }
+            });
+
+            // Bitir butonu click eventi
+            $('#btnBitir').on('click', function () {
+                $('#soruBlok').hide();
+                $('#AdayNotBlok').show();
+                $('#AdayBilgiBlok').hide();
+                document.getElementById("btnSoruGoster").style.display = "inline";
+                document.getElementById("Kategori1-1").focus();
+                document.getElementById("btnBitir").style.display = "none";
+                document.getElementById("btnBilgiKapat").style.display = "none";
+                document.getElementById("btnBilgiAc").style.display = "inline";
+                document.getElementById("btnIptal").style.display = "none";
+                document.getElementById("btnSoruBlokKapat").style.display = "none";
+                document.getElementById("btnSoruGizle").style.display = "none";
+            });
+
+            // Bilgi Formu Kapat butonu click eventi
+            $('btnBilgiFormKapat').on('click', function () {
+                $('#AdayBilgiBlok').hide();
+                document.getElementById("btnBilgiKapat").style.display = "none";
+                document.getElementById("btnBilgiAc").style.display = "inline";
+            });
+
+            // Soru Blok Kapat butonu click eventi
+            $('.btnSoruBlokKapat').on('click', function () {
+                $('#soruBlok').hide();
+                document.getElementById("btnSoruGoster").style.display = "inline";
+                document.getElementById("btnSoruGizle").style.display = "none";
+            });
+
+            // Aday Not Formu Kaydet butonu click eventi
+            $('#btnNotFormKapat').on('click', function () {
+
+                    //1. Kategoriler için
+                        var kategoriIds1 = [
+                            "#Kategori1-1",
+                            "#Kategori2-1",
+                            "#Kategori3-1"
+                        ];
+
+                        var notlar1 = kategoriIds1.map(function(id) {
+                            return parseInt($(id).val(), 10) || 0;
+                        });
+
+                        var isValid1 = notlar1.every(not => not === notlar1[0]);
+
+                        $(kategoriIds1.join(",")).removeClass('input-error');
+
+                            if (!isValid1) {
+                            $(kategoriIds1.join(",")).each(function() {
+                                if (parseInt($(this).val(), 10) !== notlar1[0]) {
+                                    $(this).addClass('input-error');
+                                }
+                            });
+                            bootbox.alert("KATEGORİ-1 için verilen puanlar birbirine eşit olmalıdır!");
+                            return false;
+                        }
+
+                        //2. Kategoriler için
+                        var kategoriIds2 = [
+                            "#Kategori1-2",
+                            "#Kategori2-2",
+                            "#Kategori3-2"
+                        ];
+
+                        var notlar2 = kategoriIds2.map(function(id) {
+                            return parseInt($(id).val(), 10) || 0;
+                        });
+
+                        var isValid2 = notlar2.every(not => not === notlar2[0]);
+
+                        $(kategoriIds2.join(",")).removeClass('input-error');
+
+                        if (!isValid2) {
+
+                            $(kategoriIds2.join(",")).each(function() {
+                                if (parseInt($(this).val(), 10) !== notlar2[0]) {
+                                    $(this).addClass('input-error');
+                                }
+                            });
+                            bootbox.alert("KATEGORİ-2 için verilen puanlar birbirine eşit olmalıdır!");
+                            return false;
+                        }
+
+                        //3. Kategoriler için
+                        var kategoriIds3 = [
+                            "#Kategori1-3",
+                            "#Kategori2-3",
+                            "#Kategori3-3"
+                        ];
+
+                        var notlar3 = kategoriIds3.map(function(id) {
+                            return parseInt($(id).val(), 10) || 0;
+                        });
+
+                        var isValid3 = notlar3.every(not => not === notlar3[0]);
+
+                        $(kategoriIds3.join(",")).removeClass('input-error');
+
+
+                        if (!isValid3) {
+
+                            $(kategoriIds3.join(",")).each(function() {
+                                if (parseInt($(this).val(), 10) !== notlar3[0]) {
+                                    $(this).addClass('input-error');
+                                }
+                            });
+                            bootbox.alert("KATEGORİ-3 için verilen puanlar birbirine eşit olmalıdır!");
+                            return false;
+                        }
+
+                        return true;
+                    });
+
+            // Aday Çağrı Butonu
+            $("#myTableNoButtons").on("click", ".btnCagri", function () {
+                var btn = $(this);
+                Id = btn.data("id");
+
+                $.ajax({
+                    success: function (result) {
+                        if (result) {
+                            bootbox.alert({
+                                title: 'BİLGİ',
+                                message: "Aday bekleme odasına çağrıldı!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr',
+                                callback: function () {
+                        if (result) {
+                            $.ajax({
+                                type: "POST",
+                                url: "/Mulakat/AdayCagriDurumGuncelle/" + Id,
+                                success: function () {
+                                        // Tabloyu yenile
+                                        window.location.reload();
+                                }
+                            });
+                    }
+                                }
+                            });
+                        } else {
+                            bootbox.alert({
+                                title: 'HATA',
+                                message: result.message || "İşlem sırasında bir hata oluştu!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr'
+                            });
+                        }
+                    },
+                    error: function () {
+                        bootbox.alert({
+                            title: 'HATA',
+                            message: "İşlem sırasında bir hata oluştu!",
+                            label: 'Tamam',
+                            backdrop: false,
+                            locale: 'tr'
+                        });
+                    }
+                });
+            });
+
+            // Aday Sınava Al Butonu
+            $("#myTableNoButtons").on("click", ".btnSinavaAl", function () {
+                var btn = $(this);
+                Id = btn.data("id");
+                
+                $.ajax({
+                    success: function (result) {
+                        if (result) {
+                            bootbox.alert({
+                                title: 'BİLGİ',
+                                message: "Aday sınav odasına çağrıldı!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr',
+                                callback: function () {
+                        if (result) {
+                            $.ajax({
+                                url: '/Mulakat/GetirAdayBilgileri',
+                                data: { id: Id },
+                                success: function (data) {
+                                    if (data.isSuccess) {
+                                        $('#adayadsoyad').text(data.adayAdiSoyadi);
+                                        $('#adayderece').text(data.dereceAdi);
+                                        $('#adaybrans').text(data.bransAdi);
+                                        $('#adayulke').text(data.ulkeTercihAdi);
+                                        dereceId=data.dereceId;                                        
+                                        mulakatId=data.mulakatId;
+                                        tC=data.tC;
+                                        $('#ModelmulakatId').val(mulakatId);
+                                        $('#ModelTcNo').val(tC);
+                                        debugger;                           
+                                        secilenadaytcno=$("#ModelTcNo").val();
+                                        mulakatId=$("#ModelmulakatId").val();
+
+                                        $('#cardBtnGrup').show();
+                                        $('#soruNo').prop('disabled', false).focus();
+                                    }
+                                }
+                            });
+                            $.ajax({
+                                type: "POST",
+                                url: "/Mulakat/AdaySinavOdaKabulGuncelle/" + Id,
+                            });
+                            }
+                                }
+                            });
+                        } else {
+                            bootbox.alert({
+                                title: 'HATA',
+                                message: result.message || "İşlem sırasında bir hata oluştu!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr'
+                            });
+                        }
+                    },
+                    error: function () {
+                        bootbox.alert({
+                            title: 'HATA',
+                            message: "İşlem sırasında bir hata oluştu!",
+                            label: 'Tamam',
+                            backdrop: false,
+                            locale: 'tr'
+                        });
+                    }
+                });
+                                
+            });
+
+            // Aday Bilgi Formu Butonları
+            $('#btnBilgiAc').on('click', function () {
+                $('#AdayBilgiBlok').show();
+                document.getElementById("soruNo").focus();
+                document.getElementById("btnBilgiKapat").style.display = "inline";
+                document.getElementById("btnBilgiAc").style.display = "none";
+                document.getElementById("cardBtnGrup").style = "height:50px";
+                // alert(tC);
+
+                $.ajax({
+                    type:"GET",
+                    url: "/Mulakat/AdayBasvuruBilgileriGetir",
+                    data: { TC: tC },
+                        
+                    success: function (response) {
+                    if (response.isSuccess) {
+                        $("#adayBilgiContainer").html(response.data);
+                    } else {
+                        bootbox.alert({
+                            title: 'HATA',
+                            message: response.message || "Aday Bilgileri getirme işlemi başarısız oldu!"
+                        });
+                    }
+                    },
+                    error: function () {
+                        bootbox.alert({
+                            title: 'HATA',
+                            message: "İşlem sırasında bir hata oluştu!"
+                        });
+                    }
+                });
+
+            });
+
+            $('#btnBilgiKapat').on('click', function () {
+                $('#AdayBilgiBlok').hide();
+                document.getElementById("soruNo").focus();
+                document.getElementById("btnBilgiAc").style.display = "inline";
+                document.getElementById("btnBilgiKapat").style.display = "none";
+            });
+
+            $('#btnSoruGoster').on('click', function () {
+                document.getElementById("btnSoruGizle").style.display = "inline";
+                document.getElementById("btnSoruGoster").style.display = "none";
+                $('#soruBlok').show();
+                document.getElementById("soruNo").focus();
+            });
+
+
+            $('#btnSoruGizle').on('click', function () {
+                document.getElementById("btnSoruGoster").style.display = "inline";
+                document.getElementById("btnSoruGizle").style.display = "none";
+                $('#soruBlok').hide();                    
+            });
+
+            // Komisyon-1 not bloğu
+            jQuery(".komisyon1Not").on('change', function () {
+                var kom11 = 0, kom12 = 0, kom13 = 0, kom14 = 0, kom15 = 0, toplam1 = 0;
+
+                if (parseInt($("#Kategori1-1").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori1-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori1-1").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori1-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori1-2").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori1-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori1-2").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori1-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori1-3").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori1-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori1-3").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori1-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori1-4").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori1-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori1-4").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori1-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori1-5").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori1-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori1-5").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori1-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori1-1").val()) >= 0) {
+                    kom11 = $("#Kategori1-1").val();
+                }
+                else {
+                    kom11 = 0;
+                }
+
+                if (parseInt($("#Kategori1-2").val()) >= 0) {
+                    kom12 = $("#Kategori1-2").val();
+                }
+                else {
+                    kom12 = 0;
+                }
+
+                if (parseInt($("#Kategori1-3").val()) >= 0) {
+                    kom13 = $("#Kategori1-3").val();
+                }
+                else {
+                    kom13 = 0;
+                }
+
+                if (parseInt($("#Kategori1-4").val()) >= 0) {
+                    kom14 = $("#Kategori1-4").val();
+                }
+                else {
+                    kom14 = 0;
+                }
+
+                if (parseInt($("#Kategori1-5").val()) >= 0) {
+                    kom15 = $("#Kategori1-5").val();
+                }
+                else {
+                    kom15 = 0;
+                }
+
+                toplam1 = parseInt(kom11) + parseInt(kom12) + parseInt(kom13) + parseInt(kom14) + parseInt(kom15);
+
+                document.getElementById("Toplam1").value = toplam1;
+            });
+
+            // Komisyon-2 not bloğu
+            jQuery(".komisyon2Not").on('change', function () {
+                var kom21 = 0, kom22 = 0, kom23 = 0, kom24 = 0, kom25 = 0, toplam2 = 0;
+
+                if (parseInt($("#Kategori2-1").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori2-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori2-1").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori2-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori2-2").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori2-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori2-2").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori2-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori2-3").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori2-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori2-3").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori2-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori2-4").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori2-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori2-4").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori2-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori2-5").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori2-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori2-5").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori2-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori2-1").val()) >= 0) {
+                    kom21 = $("#Kategori2-1").val();
+                }
+                else {
+                    kom21 = 0;
+                }
+
+                if (parseInt($("#Kategori2-2").val()) >= 0) {
+                    kom22 = $("#Kategori2-2").val();
+                }
+                else {
+                    kom22 = 0;
+                }
+
+                if (parseInt($("#Kategori2-3").val()) >= 0) {
+                    kom23 = $("#Kategori2-3").val();
+                }
+                else {
+                    kom23 = 0;
+                }
+
+                if (parseInt($("#Kategori2-4").val()) >= 0) {
+                    kom24 = $("#Kategori2-4").val();
+                }
+                else {
+                    kom24 = 0;
+                }
+
+                if (parseInt($("#Kategori2-5").val()) >= 0) {
+                    kom25 = $("#Kategori2-5").val();
+                }
+                else {
+                    kom25 = 0;
+                }
+
+                toplam2 = parseInt(kom21) + parseInt(kom22) + parseInt(kom23) + parseInt(kom24) + parseInt(kom25);
+
+                document.getElementById("Toplam2").value = toplam2;
+            });
+
+            // Komisyon-3 not bloğu
+            jQuery(".komisyon3Not").on('change', function () {
+                var kom31 = 0, kom32 = 0, kom33 = 0, kom34 = 0, kom35 = 0, toplam3 = 0;
+
+                if (parseInt($("#Kategori3-1").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori3-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori3-1").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori3-1").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori3-2").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori3-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori3-2").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori3-2").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori3-3").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori3-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori3-3").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori3-3").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori3-4").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori3-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori3-4").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori3-4").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori3-5").val()) > 20) {
+                    bootbox.alert({
+                        title: 'UYARI',
+                        message: "Verilen not 20 den büyük olamaz!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            document.getElementById("Kategori3-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not border-danger";
+                            document.getElementById("Kategori3-5").focus();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("Kategori3-5").className = "form-control py-1 text-center font-weight-bold komisyon1Not";
+                }
+
+                if (parseInt($("#Kategori3-1").val()) >= 0) {
+                    kom31 = $("#Kategori3-1").val();
+                }
+                else {
+                    kom31 = 0;
+                }
+
+                if (parseInt($("#Kategori3-2").val()) >= 0) {
+                    kom32 = $("#Kategori3-2").val();
+                }
+                else {
+                    kom32 = 0;
+                }
+
+                if (parseInt($("#Kategori3-3").val()) >= 0) {
+                    kom33 = $("#Kategori3-3").val();
+                }
+                else {
+                    kom33 = 0;
+                }
+
+                if (parseInt($("#Kategori3-4").val()) >= 0) {
+                    kom34 = $("#Kategori3-4").val();
+                }
+                else {
+                    kom34 = 0;
+                }
+
+                if (parseInt($("#Kategori3-5").val()) >= 0) {
+                    kom35 = $("#Kategori3-5").val();
+                }
+                else {
+                    kom35 = 0;
+                }
+
+                toplam3 = parseInt(kom31) + parseInt(kom32) + parseInt(kom33) + parseInt(kom34) + parseInt(kom35);
+
+                document.getElementById("Toplam3").value = toplam3;
+            });
+
+            // Toplamlar bloğu
+            $(".komisyonnotlar").on('change keyup paste', function () {
+                var top1 = parseInt($(Toplam1).val()) || 0;
+                var top2 = parseInt($(Toplam2).val()) || 0;
+                var top3 = parseInt($(Toplam3).val()) || 0;
+                var myyspuan = parseFloat($(MYYSPuan).val()) || 0;
+                var ortalama = 0;
+
+                ortalama = (top1 + top2 + top3) / 3;
+
+                $('#Ortalama').val(Math.ceil((top1 + top2 + top3) / 3));
+
+                $('#MYSPuan').val(parseFloat((ortalama + myyspuan) / 2).toFixed(2));
+
+                if (parseInt($(Ortalama).val()) >= 60) {
+                    document.getElementById("MYSSonuc").value = "BAŞARILI";
+                    document.getElementById("MYSSonuc").className = "form-control py-1 text-left text-success font-weight-bold h-100";
+                }
+                else {
+                    document.getElementById("MYSSonuc").value = "BAŞARISIZ";
+                    document.getElementById("MYSSonuc").className = "form-control py-1 text-left text-danger font-weight-bold h-100";
+                }
+            });
+
+            $('#komisyonBaskani').change(function() {
+                var selectedKomisyonAd = $(this).val();
+
+            });
+        });
+    </script>
+
+@* iptal için modal açma ve kapatma işlemleri *@
+    <script>
+
+        // İptal butonu click eventi
+        $('#btnIptal').on('click', function () {
+            $('#ModalSinavIptal').modal('show');
+        });
+
+        function IptalModalKapat() {
+            $('#ModalSinavIptal').modal('hide');
+        }
+
+        function sinavIptalModalAc(id) {
+            Id = id;
+            $('#AciklamaTextArea').val('');
+            $('#ModalSinavIptal').modal('show');
+        }
+
+        function kapat() {
+            var aciklama = $('#AciklamaTextArea').val();
+
+            if (aciklama != "") {
+
+                bootbox.alert({
+                title: 'SON UYARI',
+                message: "Adayın sınavının iptal edileceğinden emin misiniz?",
+                label: 'Evet',
+                backdrop: false,
+                locale: 'tr',
+                callback: function () {
+
+                    $.ajax({
+                    url: '/Mulakat/SinavIptal',
+                    type: 'POST',
+                    data: {
+                        id: Id,
+                        aciklama: aciklama
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            alertify.success('İşlem başarıyla gerçekleştirildi');
+
+                            $('#ModalSinavIptal').modal('hide');
+                            window.location.reload();
+
+                        } else {
+                            alertify.error(response.message || 'Bir hata oluştu');
+                        }
+                    },
+                    error: function () {
+                        alertify.error('İşlem sırasında bir hata oluştu');
+                    }
+                });
+                        }
+                    });                
+            } else {
+                        bootbox.alert({
+                        title: 'UYARI',
+                        message: "İptal nedenini belirten bir açıklama yazınız!",
+                        label: 'Tamam',
+                        backdrop: false,
+                        locale: 'tr',
+                        callback: function () {
+                            $('#ModalSinavIptal').modal('show');
+                        }
+                    });                
+            }
+
+        }
+    </script>
+
+@* admin kullanıcısı için komisyon adaylarını getir *@
+    <script>
+        window.komisyonDegisti = function(selectedKomisyonAd) {
+            if (selectedKomisyonAd) {
+                $.ajax({
+                    url: '@Url.Action("KomisyonAdaylariniGetir", "Mulakat")',
+                    type: 'GET',
+                    data: { komisyonUserName: selectedKomisyonAd },
+                    success: function(response) {
+                        if (response.success) {
+                            if ($.fn.DataTable.isDataTable('#myTableNoButtons')) {
+                                $('#myTableNoButtons').DataTable().destroy();
+                            }
+                            var tbody = $('#adayListesiBody');
+                            tbody.empty();
+
+                            var sirano = 0;
+                            response.data.forEach(function(item) {
+                                sirano++;
+                                var row = '<tr>' +
+                                    '<td class="text-center">' + sirano + '</td>' +
+                                    '<td class="text-center">' + item.tc + '</td>' +
+                                    '<td>' + item.adayAdiSoyadi + '</td>' +
+                                    '<td class="text-center">' + item.myssSaat + '</td>' +
+                                    '<td class="text-center">';
+
+                                if (item.cagriDurum) {
+                                    row += '<button class="btn btn-sm btn-primary" title="Çağrıldı" style="font-weight:bold;font-size:13px;width:120px" disabled readonly>' +
+                                        '<i class="fas fa-bell"></i> Bekleme Odası</button>';
+                                } else {
+                                    row += '<button class="btn btn-sm btn-warning" title="Adayı Çağır" style="font-weight:bold;font-size:13px;width:120px" readonly>' +
+                                        '<i class="fas fa-bell"></i> Bekleme Odası</button>';
+                                }
+
+                                row += '</td><td class="text-center">' +
+                                    '<button class="btn btn-sm btn-success" title="Adayı Sınava Al" style="font-weight:bold;font-size:13px;width:120px" readonly>' +
+                                    '<i class="fas fa-door-open"></i> Sınav Odası</button>' +
+                                    '</td></tr>';
+
+                                tbody.append(row);
+                            });
+
+                            $('#myTableNoButtons').DataTable({
+                                "language": {
+                                    "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Turkish.json"
+                                },
+                                "responsive": true,
+                                "dom": '<"top"<"left-col"l><"right-col"f>>rtip',
+                                "pageLength": 10,
+                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tümü"]]
+                            });
+                        } else {
+                            alertify.error(response.message || 'Bir hata oluştu!');
+                        }
+                    },
+                    error: function() {
+                        alertify.error('İşlem sırasında bir hata oluştu!');
+                    }
+                });
+            } else {
+                if ($.fn.DataTable.isDataTable('#myTableNoButtons')) {
+                    $('#myTableNoButtons').DataTable().destroy();
+                }
+                $('#adayListesiBody').empty();
+                $('#myTableNoButtons').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Turkish.json"
+                    },
+                    "responsive": true,
+                    "dom": '<"top"<"left-col"l><"right-col"f>>rtip',
+                    "pageLength": 10,
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tümü"]]
+                });
+            }
+        }
+    </script>
+
+}

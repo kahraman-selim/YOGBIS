@@ -1871,6 +1871,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     UlkeTercihId = x.UlkeTercihId,
                     UlkeTercihAdi = x.UlkeTercihAdi.ToString(),
                     DereceId = x.DereceId,
+                    MulakatId = x.MulakatId,
                     DereceAdi = x.DereceAdi.ToString(),
                     KomisyonId = x.KomisyonId,
                     KomisyonSN = x.KomisyonSN,

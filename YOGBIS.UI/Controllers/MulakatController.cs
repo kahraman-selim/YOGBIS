@@ -40,12 +40,13 @@ namespace YOGBIS.UI.Controllers
         private readonly IAdaylarBE _adaylarBE;
         private readonly IKullaniciBE _kullaniciBE;
         private readonly UserManager<Kullanici> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         #endregion
 
         #region Dönüştürücüler
         public MulakatController(IMulakatSorulariBE mulakatSorulariBE, IDerecelerBE derecelerBE, ISoruKategorileriBE soruKategorileriBE,
             IUnitOfWork unitOfWork, ILogger<MulakatController> logger, IAdaylarBE adaylarBE, IKullaniciBE kullaniciBE,
-    UserManager<Kullanici> userManager)
+    UserManager<Kullanici> userManager, IHttpContextAccessor httpContextAccessor)
         {
             _mulakatSorulariBE = mulakatSorulariBE;
             _derecelerBE = derecelerBE;
@@ -55,29 +56,72 @@ namespace YOGBIS.UI.Controllers
             _adaylarBE = adaylarBE;
             _kullaniciBE = kullaniciBE;
             _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
         }
         #endregion
 
         #region Index
         [Route("MU10001", Name = "MulakatIndexRoute")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string selectedKomisyon = null)
         {
-            var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            var userName = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+            var mulakatTarihi = "15.04.2024"; // bu alan datetime olarak değiştirilecek
+            var currentUser = await _userManager.FindByNameAsync(userName);
+            var userRoles = await _userManager.GetRolesAsync(currentUser);
+            var viewModel = new AdayMulakatListeViewModel();
 
-            ViewBag.KullaniciId = user.LoginId;
+            if (currentUser.UserName == "Administrator") // rolü admin olan kullnaıcı görebilsin?
+            {
+                // Administrator için tüm CommissionerHead rolündeki kullanıcıları getir
+                var commissionHeads = await _userManager.GetUsersInRoleAsync("CommissionerHead");
+                viewModel.KomisyonBaskanları = commissionHeads.Select(u => new KomisyonBaskanViewModel
+                {
+                    Id = u.Id,
+                    AdSoyad = $"{u.Ad}",
+                    UserName = u.Ad // Komisyon adını UserName olarak kullan
+                }).ToList();
 
-            var komisyon = await _kullaniciBE.KomisyonGetir();
-            ViewBag.Komisyonlar = komisyon.Data;
+                // Eğer seçili komisyon varsa onun listesini getir
+                if (!string.IsNullOrEmpty(selectedKomisyon))
+                {
+                    var result = _adaylarBE.GetirKomisyonMulakatListesi(selectedKomisyon, mulakatTarihi);
+                    if (result.IsSuccess)
+                    {
+                        viewModel.AdayListesi = result.Data;
+                    }
+                    else
+                    {
+                        viewModel.AdayListesi = Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
+                    }
+                }
+                else
+                {
+                    // İlk açılışta boş liste göster
+                    viewModel.AdayListesi = Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
+                }
+            }
+            else
+            {
+                // Diğer kullanıcılar kendi listelerini görecek
+                var result = _adaylarBE.GetirKomisyonMulakatListesi(currentUser.Ad, mulakatTarihi);
+                if (result.IsSuccess)
+                {
+                    viewModel.AdayListesi = result.Data;
+                }
+                else
+                {
+                    viewModel.AdayListesi = Enumerable.Empty<YOGBIS.Common.VModels.AdayMYSSVM>();
+                }
+            }
 
-            //var list = new List<AdayMYSSVM>() { new AdayMYSSVM() {
-
-            //    KomisyonId = new Guid(komisyon.Data.FirstOrDefault(x=>x.Id==user.LoginId).Id)
-            //}
-            //};
-
-            return View();
+            return View(viewModel);
         }
         #endregion
+
+        public IActionResult MulakatDetay(MulakatDetayVM model)
+        {
+            return View();
+        }
 
         #region AdayCagriDurumGuncelle
         [HttpPost]

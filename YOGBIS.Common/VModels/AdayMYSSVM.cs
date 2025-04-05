@@ -71,16 +71,5 @@ namespace YOGBIS.Common.VModels
         public AdayMulakatListeViewModel AdayMulakatlistViewModel { get; set; }
     }
 
-    public class AdayMulakatListeViewModel
-    {
-        public IEnumerable<KomisyonBaskanViewModel> KomisyonBaskanlari { get; set; }
-        public IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM> AdayListesi { get; set; }
-    }
 
-    public class KomisyonBaskanViewModel
-    {
-        public string Id { get; set; }
-        public string AdSoyad { get; set; }
-        public string UserName { get; set; }
-    }
 }
