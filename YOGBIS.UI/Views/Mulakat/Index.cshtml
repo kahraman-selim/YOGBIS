@@ -144,14 +144,14 @@
                                         {
                                             @if (!item.CagriDurum.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault()) // 1. Durum: Çağrılmamış
                                             {
-                                                <button class="btn btn-sm btn-warning btnCagri" title="Adayı Çağır" data-id="@item.Id" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                                <button class="btn btn-sm btn-warning" title="Adayı Çağır" data-id="@item.Id" style="font-weight:bold;font-size:13px;width:120px" disabled>
                                                     <i class="fas fa-bell"></i> Bekleme Odası
                                                 </button>
                                             }
                                             else if (item.SinavaGelmedi.GetValueOrDefault()) // 2. Durum: Çağrılmış ama gelmemiş
                                             {
                                                 <button class="btn btn-sm btn-danger" title="Aday Sınava Gelmedi" style="font-weight:bold;font-size:13px;width:120px" disabled>
-                                                    <i class="fas fa-bell"></i> Aday Gelmedi
+                                                    Aday Gelmedi
                                                 </button>
                                             }
                                             else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault()) // 3. Durum: Çağrılmış ve kabul edilmiş (Success)
@@ -163,7 +163,7 @@
                                             else if (item.CagriDurum.GetValueOrDefault() && item.SinavIptal.GetValueOrDefault()) // 4. Durum: Çağrılmış ve sınav iptal edilmiş
                                             {
                                                 <button class="btn btn-sm btn-danger" title="İptal Edildi" style="font-weight:bold;font-size:13px;width:120px" disabled>
-                                                    <i class="fas fa-bell"></i> İptal Edildi
+                                                    İptal Edildi
                                                 </button>
                                             }
                                             else if (item.CagriDurum.GetValueOrDefault()) // 5. Durum: Çağrılmış ama kabul edilmemiş (Primary)
@@ -184,22 +184,28 @@
                                             else if (item.SinavaGelmedi.GetValueOrDefault()) // 2. Durum: Çağrılmış ama gelmemiş
                                             {
                                                 <button class="btn btn-sm btn-danger" title="Aday Sınava Gelmedi" style="font-weight:bold;font-size:13px;width:120px" disabled>
-                                                    <i class="fas fa-bell"></i> Aday Gelmedi
+                                                    Aday Gelmedi
+                                                </button>
+                                            }
+                                            else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && item.SinavDurum.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault()) //4. Durum : Çağrılmış ve kabul edilmiş ve Sinav odasına çağrılmış (Success)
+                                            {
+                                                <button class="btn btn-sm btn-success " title="Aday Bekliyor" data-id="@item.Id" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                                    <i class="fas fa-bell"></i> Aday Bekliyor
                                                 </button>
                                             }
                                             else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault()) // 3. Durum: Çağrılmış ve kabul edilmiş (Success)
                                             {
-                                                <button class="btn btn-sm btn-success" title="Aday Bekliyor" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                                <button class="btn btn-sm btn-success btnSinavaAl" title="Aday Bekliyor" data-id="@item.Id" style="font-weight:bold;font-size:13px;width:120px">
                                                     <i class="fas fa-bell"></i> Aday Bekliyor
                                                 </button>
                                             }
-                                            else if (item.CagriDurum.GetValueOrDefault() && item.SinavIptal.GetValueOrDefault()) // 4. Durum: Çağrılmış ve sınav iptal edilmiş
+                                            else if (item.CagriDurum.GetValueOrDefault() && item.SinavDurum.GetValueOrDefault() && item.SinavIptal.GetValueOrDefault()) // 5. Durum: Çağrılmış ve sınav iptal edilmiş
                                             {
                                                 <button class="btn btn-sm btn-danger" title="İptal Edildi" style="font-weight:bold;font-size:13px;width:120px" disabled>
-                                                    <i class="fas fa-bell"></i> İptal Edildi
+                                                    İptal Edildi
                                                 </button>
                                             }
-                                            else if (item.CagriDurum.GetValueOrDefault()) // 5. Durum: Çağrılmış ama kabul edilmemiş (Primary)
+                                            else if (item.CagriDurum.GetValueOrDefault()) // 6. Durum: Çağrılmış ama kabul edilmemiş (Primary)
                                             {
                                                 <button class="btn btn-sm btn-primary" title="Aday Çağrıldı" style="font-weight:bold;font-size:13px;width:120px" disabled>
                                                     <i class="fas fa-bell"></i> Aday Çağrıldı
@@ -213,14 +219,14 @@
                                         {
                                             @if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavaGelmedi.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault())
                                             {
-                                                <button class="btn btn-sm btn-success btnSinavaAl" title="Adayı Sınava Al" data-id="@item.Id" data-adayid="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                                <button class="btn btn-sm btn-warning" title="Adayı Sınava Al" data-id="@item.Id" data-adayid="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px" disabled>
                                                     <i class="fas fa-door-open"></i> Sınav Odası
                                                 </button>
                                             }
                                             else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavaGelmedi.GetValueOrDefault() && item.SinavIptal.GetValueOrDefault())
                                             {
                                                 <button class="btn btn-sm btn-danger" title="Sınav İptal Edildi" style="font-weight:bold;font-size:13px;width:120px" disabled>
-                                                    <i class="fas fa-door-open"></i> İptal Edildi
+                                                    İptal Edildi
                                                 </button>
                                             }
                                             else
@@ -232,32 +238,44 @@
                                         }
                                         else
                                         {
-                                            @if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavaGelmedi.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault())
+                                            @if (item.CagriDurum.GetValueOrDefault() && !item.KabulDurum.GetValueOrDefault() && !item.SinavaGelmedi.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault())
                                             {
-                                                <button class="btn btn-sm btn-success btnSinavaAl" title="Adayı Sınava Al" data-id="@item.Id" data-adayid="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px">
+                                                <button class="btn btn-sm btn-warning btnSinavaAl" title="Adayı Sınava Al" data-id="@item.Id" data-adayid="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px">
                                                     <i class="fas fa-door-open"></i> Sınav Odası
+                                                </button>
+                                            }
+                                            else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && item.SinavDurum.GetValueOrDefault() && !item.SinavaGelmedi.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault())
+                                            {
+                                                <button class="btn btn-sm btn-success btnSinaviBaslat" title="Adayı Sınava Al" data-id="@item.Id" data-adayid="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px">
+                                                    <i class="fas fa-door-open"></i> Sınavı Başlat
                                                 </button>
                                             }
                                             else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavaGelmedi.GetValueOrDefault() && item.SinavIptal.GetValueOrDefault())
                                             {
                                                 <button class="btn btn-sm btn-danger" title="Sınav İptal Edildi" style="font-weight:bold;font-size:13px;width:120px" disabled>
-                                                    <i class="fas fa-door-open"></i> İptal Edildi
+                                                    İptal Edildi
                                                 </button>
+                                            }
+                                            else if(item.SinavaGelmedi.GetValueOrDefault())
+                                            {
+
                                             }
                                             else
                                             {
-                                                <button class="btn btn-sm btn-success" title="Adayı Sınava Al" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                                <button class="btn btn-sm btn-warning" title="Adayı Sınava Al" style="font-weight:bold;font-size:13px;width:120px" disabled>
                                                     <i class="fas fa-door-open"></i> Sınav Odası
                                                 </button>
                                             }
                                         }
+                                   
                                     </td>
                                 </tr>
                             }
                         }
                     </tbody>
                 </table>
-            </div>
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -414,16 +432,10 @@
             });
 
             // Aday Sınava Al Butonu
-            $(document).on("click", ".btnSinavaAl", function () {
+            $("#adayListesiTable").on("click", ".btnSinavaAl", function () {
                 var btn = $(this);
                 Id = btn.data("id");
-                var veri = {
-                    userId: "@currentUser.Id",
-                    tc: $("#selectedadaytc").val(),
-                    mulakatId: "@mulakatId",
-                    dereceId : $("#gizlidereceId").val()
-                };
-                debugger;
+
                 $.ajax({
                     success: function (result) {
                         if (result) {
@@ -435,27 +447,6 @@
                                 locale: 'tr',
                                 callback: function () {
                         if (result) {
-                            
-                            $.ajax({
-                                url: '/Mulakat/MulakatDetay',
-                                type: "POST",
-                                data: veri,
-                                success: function (data) {
-                                    if (data.isSuccess) {
-
-                                        Id = data.id;
-                                        adayId =data.adayId;
-                                        tC=data.tC;
-                                        adayAdiSoyadi =data.adayAdiSoyadi;
-                                        derceId=data.dereceId;
-                                        dereceAdi=data.dereceAdi;
-                                        mulakatId=data.mulakatId;
-                                        ulkeTercihAdi=data.ulkeTercihAdi;
-                                        bransAdi=data.bransAdi;
-
-                                    }
-                                }
-                            });
                             $.ajax({
                                 type: "POST",
                                 url: "/Mulakat/AdaySinavOdaKabulGuncelle/" + Id,

@@ -42,16 +42,7 @@
 <!-- #region name -->
 <div class="row m-0 p-0">
     <div class="col-lg-12">
-        <div class="card shadow-lg" style="height:75px">
-            <h6 class="card-header text-center text-danger p-md-1">
-                <span id="oncekigun" class="text-danger">
-                    <a href="" class="text-danger" title="Önceki Gün"><  </a>
-                </span>
-                ADAY BİLGİLERİ - @DateTime.Now.ToString("dd.MM.yyyy")
-                <span id="sonrakigun" class="text-danger">
-                    <a href="" class="text-danger" title="Sonraki Gün">  ></a>
-                </span>
-            </h6>
+        <div class="card shadow-lg" style="height:50px">
             <div class="card-body p-1">
                 <p class="card-text text-center text-danger font-weight-bold p-md-2">
                     <span id="adayadsoyad" class="text-info">Aday Adı Soyadı</span>
@@ -82,7 +73,7 @@
 <!-- #region name -->
 <div class="row m-0 mt-1">
     <div class="col-lg-12">
-        <input type="number" id="soruNo" class="form-control font-weight-bold text-center text-danger" style="font-size:22px;border-color:darkred;border-style:double" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" min="1" placeholder="Soru Numarasını Giriniz" disabled>
+        <input type="number" id="soruNo" class="form-control font-weight-bold text-center text-danger" style="font-size:22px;border-color:darkred;border-style:double" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" min="1" placeholder="Soru Numarasını Giriniz">
         <input type="submit" value="Mülakatı Başlat" class="btn btn-primary w-100 mt-1" id="btnBaslat" />
         <input type="submit" value="Mülakatı Bitir" class="btn btn-danger w-100 mt-1 mb-2" id="btnBitir" />
     </div>
@@ -370,123 +361,123 @@
                         return true;
                     });
 
-            // Aday Çağrı Butonu
-            $("#myTableNoButtons").on("click", ".btnCagri", function () {
-                var btn = $(this);
-                Id = btn.data("id");
+            // // Aday Çağrı Butonu
+            // $("#myTableNoButtons").on("click", ".btnCagri", function () {
+            //     var btn = $(this);
+            //     Id = btn.data("id");
 
-                $.ajax({
-                    success: function (result) {
-                        if (result) {
-                            bootbox.alert({
-                                title: 'BİLGİ',
-                                message: "Aday bekleme odasına çağrıldı!",
-                                label: 'Tamam',
-                                backdrop: false,
-                                locale: 'tr',
-                                callback: function () {
-                        if (result) {
-                            $.ajax({
-                                type: "POST",
-                                url: "/Mulakat/AdayCagriDurumGuncelle/" + Id,
-                                success: function () {
-                                        // Tabloyu yenile
-                                        window.location.reload();
-                                }
-                            });
-                    }
-                                }
-                            });
-                        } else {
-                            bootbox.alert({
-                                title: 'HATA',
-                                message: result.message || "İşlem sırasında bir hata oluştu!",
-                                label: 'Tamam',
-                                backdrop: false,
-                                locale: 'tr'
-                            });
-                        }
-                    },
-                    error: function () {
-                        bootbox.alert({
-                            title: 'HATA',
-                            message: "İşlem sırasında bir hata oluştu!",
-                            label: 'Tamam',
-                            backdrop: false,
-                            locale: 'tr'
-                        });
-                    }
-                });
-            });
+            //     $.ajax({
+            //         success: function (result) {
+            //             if (result) {
+            //                 bootbox.alert({
+            //                     title: 'BİLGİ',
+            //                     message: "Aday bekleme odasına çağrıldı!",
+            //                     label: 'Tamam',
+            //                     backdrop: false,
+            //                     locale: 'tr',
+            //                     callback: function () {
+            //             if (result) {
+            //                 $.ajax({
+            //                     type: "POST",
+            //                     url: "/Mulakat/AdayCagriDurumGuncelle/" + Id,
+            //                     success: function () {
+            //                             // Tabloyu yenile
+            //                             window.location.reload();
+            //                     }
+            //                 });
+            //         }
+            //                     }
+            //                 });
+            //             } else {
+            //                 bootbox.alert({
+            //                     title: 'HATA',
+            //                     message: result.message || "İşlem sırasında bir hata oluştu!",
+            //                     label: 'Tamam',
+            //                     backdrop: false,
+            //                     locale: 'tr'
+            //                 });
+            //             }
+            //         },
+            //         error: function () {
+            //             bootbox.alert({
+            //                 title: 'HATA',
+            //                 message: "İşlem sırasında bir hata oluştu!",
+            //                 label: 'Tamam',
+            //                 backdrop: false,
+            //                 locale: 'tr'
+            //             });
+            //         }
+            //     });
+            // });
 
-            // Aday Sınava Al Butonu
-            $("#myTableNoButtons").on("click", ".btnSinavaAl", function () {
-                var btn = $(this);
-                Id = btn.data("id");
+            // // Aday Sınava Al Butonu
+            // $("#myTableNoButtons").on("click", ".btnSinavaAl", function () {
+            //     var btn = $(this);
+            //     Id = btn.data("id");
                 
-                $.ajax({
-                    success: function (result) {
-                        if (result) {
-                            bootbox.alert({
-                                title: 'BİLGİ',
-                                message: "Aday sınav odasına çağrıldı!",
-                                label: 'Tamam',
-                                backdrop: false,
-                                locale: 'tr',
-                                callback: function () {
-                        if (result) {
-                            $.ajax({
-                                url: '/Mulakat/GetirAdayBilgileri',
-                                data: { id: Id },
-                                success: function (data) {
-                                    if (data.isSuccess) {
-                                        $('#adayadsoyad').text(data.adayAdiSoyadi);
-                                        $('#adayderece').text(data.dereceAdi);
-                                        $('#adaybrans').text(data.bransAdi);
-                                        $('#adayulke').text(data.ulkeTercihAdi);
-                                        dereceId=data.dereceId;                                        
-                                        mulakatId=data.mulakatId;
-                                        tC=data.tC;
-                                        $('#ModelmulakatId').val(mulakatId);
-                                        $('#ModelTcNo').val(tC);
+            //     $.ajax({
+            //         success: function (result) {
+            //             if (result) {
+            //                 bootbox.alert({
+            //                     title: 'BİLGİ',
+            //                     message: "Aday sınav odasına çağrıldı!",
+            //                     label: 'Tamam',
+            //                     backdrop: false,
+            //                     locale: 'tr',
+            //                     callback: function () {
+            //             if (result) {
+            //                 $.ajax({
+            //                     url: '/Mulakat/GetirAdayBilgileri',
+            //                     data: { id: Id },
+            //                     success: function (data) {
+            //                         if (data.isSuccess) {
+            //                             $('#adayadsoyad').text(data.adayAdiSoyadi);
+            //                             $('#adayderece').text(data.dereceAdi);
+            //                             $('#adaybrans').text(data.bransAdi);
+            //                             $('#adayulke').text(data.ulkeTercihAdi);
+            //                             dereceId=data.dereceId;                                        
+            //                             mulakatId=data.mulakatId;
+            //                             tC=data.tC;
+            //                             $('#ModelmulakatId').val(mulakatId);
+            //                             $('#ModelTcNo').val(tC);
                                                                   
-                                        secilenadaytcno=$("#ModelTcNo").val();
-                                        mulakatId=$("#ModelmulakatId").val();
+            //                             secilenadaytcno=$("#ModelTcNo").val();
+            //                             mulakatId=$("#ModelmulakatId").val();
 
-                                        $('#cardBtnGrup').show();
-                                        $('#soruNo').prop('disabled', false).focus();
-                                    }
-                                }
-                            });
-                            $.ajax({
-                                type: "POST",
-                                url: "/Mulakat/AdaySinavOdaKabulGuncelle/" + Id,
-                            });
-                            }
-                                }
-                            });
-                        } else {
-                            bootbox.alert({
-                                title: 'HATA',
-                                message: result.message || "İşlem sırasında bir hata oluştu!",
-                                label: 'Tamam',
-                                backdrop: false,
-                                locale: 'tr'
-                            });
-                        }
-                    },
-                    error: function () {
-                        bootbox.alert({
-                            title: 'HATA',
-                            message: "İşlem sırasında bir hata oluştu!",
-                            label: 'Tamam',
-                            backdrop: false,
-                            locale: 'tr'
-                        });
-                    }
-                });
+            //                             $('#cardBtnGrup').show();
+            //                             $('#soruNo').prop('disabled', false).focus();
+            //                         }
+            //                     }
+            //                 });
+            //                 $.ajax({
+            //                     type: "POST",
+            //                     url: "/Mulakat/AdaySinavOdaKabulGuncelle/" + Id,
+            //                 });
+            //                 }
+            //                     }
+            //                 });
+            //             } else {
+            //                 bootbox.alert({
+            //                     title: 'HATA',
+            //                     message: result.message || "İşlem sırasında bir hata oluştu!",
+            //                     label: 'Tamam',
+            //                     backdrop: false,
+            //                     locale: 'tr'
+            //                 });
+            //             }
+            //         },
+            //         error: function () {
+            //             bootbox.alert({
+            //                 title: 'HATA',
+            //                 message: "İşlem sırasında bir hata oluştu!",
+            //                 label: 'Tamam',
+            //                 backdrop: false,
+            //                 locale: 'tr'
+            //             });
+            //         }
+            //     });
                                 
-            });
+            // });
 
             // Aday Bilgi Formu Butonları
             $('#btnBilgiAc').on('click', function () {
