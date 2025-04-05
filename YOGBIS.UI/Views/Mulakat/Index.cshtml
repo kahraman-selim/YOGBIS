@@ -219,7 +219,7 @@
                                         {
                                             @if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavaGelmedi.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault())
                                             {
-                                                <button class="btn btn-sm btn-warning" title="Adayı Sınava Al" data-id="@item.Id" data-adayid="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px" disabled>
+                                                <button class="btn btn-sm btn-warning" title="Adayı Sınava Al" data-adayid="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px" disabled>
                                                     <i class="fas fa-door-open"></i> Sınav Odası
                                                 </button>
                                             }
@@ -246,7 +246,7 @@
                                             }
                                             else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && item.SinavDurum.GetValueOrDefault() && !item.SinavaGelmedi.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault())
                                             {
-                                                <button class="btn btn-sm btn-success btnSinaviBaslat" title="Adayı Sınava Al" data-id="@item.Id" data-adayid="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px">
+                                                <button class="btn btn-sm btn-success btnSinaviBaslat" title="Adayı Sınava Al" data-id="@item.Id" style="font-weight:bold;font-size:13px;width:120px">
                                                     <i class="fas fa-door-open"></i> Sınavı Başlat
                                                 </button>
                                             }
@@ -356,17 +356,7 @@
                     $('.dataTables_wrapper').addClass('pb-3');
                 }
             });
-            // Admin kontrolü
-            var isAdmin = @Json.Serialize(User.IsInRole("Administrator"));
-
-            // Buton event'lerini bağla (sadece admin olmayan kullanıcılar için)
-            if (!isAdmin) {
-                $(".btnSinaviBaslat").off('click').on('click', function() {
-                    var id = $(this).data('id');
-                    var adayid = $(this).data('adayid');
-                    window.location.href = '@Url.Action("MulakatDetay", "Mulakat")?id=' + id + '&adayid=' + adayid;
-                });
-            }
+          
 
             // Komisyon seçimi değiştiğinde
             $('#komisyonBaskani').change(function() {
@@ -446,12 +436,12 @@
                                 backdrop: false,
                                 locale: 'tr',
                                 callback: function () {
-                        if (result) {
-                            $.ajax({
-                                type: "POST",
-                                url: "/Mulakat/AdaySinavOdaKabulGuncelle/" + Id,
-                            });
-                            }
+                                    if (result) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Mulakat/AdaySinavOdaKabulGuncelle/" + Id,
+                                        });
+                                    }
                                 }
                             });
                         } else {
@@ -474,7 +464,44 @@
                         });
                     }
                 });
+            });
 
+            // Sınavı Başlat Butonu
+            $("#adayListesiTable").on("click", ".btnSinaviBaslat", function () {
+                var btn = $(this);
+                var id = btn.data("id");
+
+                $.ajax({
+                    type: "GET",
+                    url: "/Mulakat/GetirAdayBilgileri/" + id,
+                    success: function (result) {
+                        if (result.isSuccess) {
+                            window.location.href = '@Url.Action("MulakatDetay", "Mulakat")?id=' + id + 
+                                '&adayId=' + result.adayId + 
+                                '&adayAdiSoyadi=' + encodeURIComponent(result.adayAdiSoyadi) + 
+                                '&dereceAdi=' + encodeURIComponent(result.dereceAdi) + 
+                                '&bransAdi=' + encodeURIComponent(result.bransAdi) + 
+                                '&ulkeTercihAdi=' + encodeURIComponent(result.ulkeTercihAdi);
+                        } else {
+                            bootbox.alert({
+                                title: 'HATA',
+                                message: "Aday bilgileri alınamadı!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr'
+                            });
+                        }
+                    },
+                    error: function () {
+                        bootbox.alert({
+                            title: 'HATA',
+                            message: "İşlem sırasında bir hata oluştu!",
+                            label: 'Tamam',
+                            backdrop: false,
+                            locale: 'tr'
+                        });
+                    }
+                });
             });
           
         });

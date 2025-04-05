@@ -1,4 +1,5 @@
 @using Microsoft.AspNetCore.Identity
+@using System.Runtime.CompilerServices
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
 @model IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM>
@@ -40,38 +41,42 @@
 </style>
 <!-- Aday Özet Blok -->
 <!-- #region name -->
-<div class="row m-0 p-0">
+<div class="row mb-1 p-0" id="AdayOzetBilgiBlok">
     <div class="col-lg-12">
         <div class="card shadow-lg" style="height:50px">
             <div class="card-body p-1">
                 <p class="card-text text-center text-danger font-weight-bold p-md-2">
-                    <span id="adayadsoyad" class="text-info">Aday Adı Soyadı</span>
+                    <span id="adayadsoyad" class="text-info">@ViewBag.AdayAdiSoyadi</span>
                     <span>-</span>
-                    <span id="adayderece" class="text-primary">Öğretmen</span>
+                    <span id="adayderece" class="text-primary">@ViewBag.DereceAdi</span>
                     <span>-</span>
-                    <span id="adaybrans" class="text-secondary">Branş</span>
+                    <span id="adaybrans" class="text-success">@ViewBag.BransAdi</span>
                     <span>-</span>
-                    <span id="adayulke" class="text-dark">Ülke Grubu</span>
-                </p>
-            </div>
-        </div>
-        <div class="card shadow-lg" style="height:50px;display:none" id="cardBtnGrup">
-            <div class="card-body p-1">
-                <p class="text-center font-weight-bold p-1">
-                    <input value="Bilgi Formunu Aç" class="btn btn-primary btn-sm ml-1" id="btnBilgiAc" />
-                    <input value="Bilgi Formunu Kapat" class="btn btn-primary btn-sm ml-1" style="display:none" id="btnBilgiKapat" />
-                    <input value="Soruları Göster" class="btn btn-info btn-sm ml-1" id="btnSoruGoster" style="display:none" />
-                    <input value="Soruları Gizle" class="btn btn-info btn-sm ml-1" id="btnSoruGizle" style="display:none" />
-                    <input value="Sınavı İptal Et" class="btn btn-danger btn-sm ml-1" id="btnIptal" onclick="sinavIptalModalAc(adayMYSSId)" />
+                    <span id="adayulke" class="text-warning">@ViewBag.UlkeTercihAdi</span>
                 </p>
             </div>
         </div>
     </div>
 </div>
+<div class="row mb-1 p-0" >
+    <div class="col-lg-12">
+        <div class="card shadow-lg" style="height:50px" id="cardBtnGrup">
+             <div class="card-body p-1">
+            <p class="text-center font-weight-bold p-1">
+                <input value="Bilgi Formunu Aç" class="btn btn-primary btn-sm ml-1" id="btnBilgiAc" />
+                <input value="Bilgi Formunu Kapat" class="btn btn-primary btn-sm ml-1" style="display:none" id="btnBilgiKapat" />
+                <input value="Soruları Göster" class="btn btn-info btn-sm ml-1" id="btnSoruGoster" style="display:none" />
+                <input value="Soruları Gizle" class="btn btn-info btn-sm ml-1" id="btnSoruGizle" style="display:none" />
+                <input value="Sınavı İptal Et" class="btn btn-danger btn-sm ml-1" id="btnIptal" onclick="sinavIptalModalAc(adayMYSSId)" />
+            </p>
+        </div>
+        </div>
+    </div>   
+</div> 
 <!-- #endregion -->
 <!-- Buton Blok -->
 <!-- #region name -->
-<div class="row m-0 mt-1">
+<div class="row mb-1 p-0">
     <div class="col-lg-12">
         <input type="number" id="soruNo" class="form-control font-weight-bold text-center text-danger" style="font-size:22px;border-color:darkred;border-style:double" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" min="1" placeholder="Soru Numarasını Giriniz">
         <input type="submit" value="Mülakatı Başlat" class="btn btn-primary w-100 mt-1" id="btnBaslat" />
@@ -81,9 +86,11 @@
 <!-- #endregion -->
 <!--Aday Bilgi Blok-->
 <!-- #region name -->
-<div class="row col-xl-12 m-0 mt-2" id="AdayBilgiBlok" disable>
-    <div id="adayBilgiContainer" class="card shadow-sm">
+<div class="row mb-1 p-0" id="AdayBilgiBlok" disable>
+    <div class="col-lg-12">
+        <div id="adayBilgiContainer" class="card shadow-sm">
         @await Component.InvokeAsync("AdayBilgi")
+    </div>    
     </div>    
 </div>
 <!-- #endregion -->
@@ -91,22 +98,23 @@
 <!-- #region name -->
 <input type="hidden" id="ModelTcNo" value="@secilenadaytcno"/>
 <input type="hidden" id="ModelmulakatId" value="@mulakatId"/>
-<div class="row col-xl-12 m-0 m-0 mt-2 disable" id="AdayNotBlok">
-    @await Component.InvokeAsync("AdayNot",new{komisyonKullaniciId=ViewBag.KullaniciId,secilenadaytcno=secilenadaytcno,mulakatId=mulakatId})
+<div class="row mb-1 p-0 disable" id="AdayNotBlok">
+    <div class="col-lg-12">
+        @await Component.InvokeAsync("AdayNot", new { komisyonKullaniciId = ViewBag.KullaniciId, secilenadaytcno = secilenadaytcno, mulakatId = mulakatId })
+    </div>    
 </div>
 <!-- #endregion -->
 <!-- Soru Blok -->
 <!-- #region name -->
-<div class="row col-xl-12 m-0 " id="soruBlok" style="display:none;">
-    <div class="col-md-12 p-1">
+<div class="row mb-1 p-0" id="soruBlok" style="display:none;">
+    <div class="col-lg-12">
         <div id="mulakatSoruContainer" class="card shadow-sm">
             @await Component.InvokeAsync("MulakatSoru")
         </div>
+    </div>
     <!-- Soru gizle butonu -->
-    </div class="col-md-12 px-0">
+    <div class="col-lg-12">
         <a class="btn btn-sm text-white w-100 text-capitalize btnSoruBlokKapat" id="btnSoruBlokKapat" style="font-size:large;background-color:darkorange">SORULARI GİZLE</a>
-    <div>
-
     </div>
 </div>
 <!-- #endregion -->
@@ -181,6 +189,9 @@
             $("#MYSSonuc").val("");
             $("#soruNo").focus();
 
+            // Aday bilgilerini göster
+            $("#AdayOzetBilgiBlok").show();
+
                 window.adayId = "";
                 window.adayAdi = "";
                 window.Id = "";
@@ -192,7 +203,7 @@
             $('#btnBaslat').on('click', function (e) {
 
                     var soruno = $("#soruNo").val();
-
+                    
                     if (soruno > 0) {                            
                         $.ajax({
                             type: "GET",

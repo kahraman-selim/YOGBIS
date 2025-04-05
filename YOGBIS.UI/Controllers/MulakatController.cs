@@ -447,6 +447,20 @@ namespace YOGBIS.UI.Controllers
             }
         }
         #endregion
+
+        #region MulakatDetay
+        [HttpGet]
+        public IActionResult MulakatDetay(string id, string adayId, string adayAdiSoyadi, string dereceAdi, string bransAdi, string ulkeTercihAdi)
+        {
+            ViewBag.AdayAdiSoyadi = adayAdiSoyadi;
+            ViewBag.DereceAdi = dereceAdi;
+            ViewBag.BransAdi = bransAdi;
+            ViewBag.UlkeTercihAdi = ulkeTercihAdi;
+            ViewBag.AdayId = adayId;
+            ViewBag.Id = id;
+            return View();
+        }
+        #endregion
     }
 
     #region ControllerExtensions
