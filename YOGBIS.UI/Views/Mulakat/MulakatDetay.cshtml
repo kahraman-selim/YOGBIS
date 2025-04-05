@@ -44,6 +44,7 @@
 <div class="row mb-1 p-0" id="AdayOzetBilgiBlok">
     <div class="col-lg-12">
         <div class="card shadow-lg" style="height:50px">
+            <input type="hidden" id="Id" value="@ViewBag.Id" />
             <input type="hidden" id="TcNo" value="@ViewBag.TC"/>
             <input type="hidden" id="MulakatId" value="@ViewBag.MulakatId"/>
             <input type="hidden" id="DereceId" value="@ViewBag.DereceId" />
@@ -880,9 +881,11 @@
 @* iptal için modal açma ve kapatma işlemleri *@
     <script>
 
+        var adayMYSSId = $('#Id').val();
+
         // İptal butonu click eventi
         $('#btnIptal').on('click', function () {
-            $('#ModalSinavIptal').modal('show');
+            sinavIptalModalAc(adayMYSSId);
         });
 
         function IptalModalKapat() {
@@ -890,7 +893,6 @@
         }
 
         function sinavIptalModalAc(id) {
-            Id = id;
             $('#AciklamaTextArea').val('');
             $('#ModalSinavIptal').modal('show');
         }
@@ -899,52 +901,78 @@
             var aciklama = $('#AciklamaTextArea').val();
 
             if (aciklama != "") {
-
-                bootbox.alert({
-                title: 'SON UYARI',
-                message: "Adayın sınavının iptal edileceğinden emin misiniz?",
-                label: 'Evet',
-                backdrop: false,
-                locale: 'tr',
-                callback: function () {
-
-                    $.ajax({
-                    url: '/Mulakat/SinavIptal',
-                    type: 'POST',
-                    data: {
-                        id: Id,
-                        aciklama: aciklama
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            alertify.success('İşlem başarıyla gerçekleştirildi');
-
-                            $('#ModalSinavIptal').modal('hide');
-                            window.location.reload();
-
-                        } else {
-                            alertify.error(response.message || 'Bir hata oluştu');
+                bootbox.confirm({
+                    title: 'SON UYARI',
+                    message: "Adayın sınavının iptal edileceğinden emin misiniz?",
+                    buttons: {
+                        confirm: {
+                            label: 'Evet',
+                            className: 'btn-danger'
+                        },
+                        cancel: {
+                            label: 'Hayır',
+                            className: 'btn-success'
                         }
                     },
-                    error: function () {
-                        alertify.error('İşlem sırasında bir hata oluştu');
+                    backdrop: false,
+                    locale: 'tr',
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: '/Mulakat/SinavIptal',
+                                type: 'POST',
+                                data: {
+                                    id: adayMYSSId,
+                                    aciklama: aciklama
+                                },
+                                success: function (response) {
+                                    if (response.success) {
+                                        bootbox.alert({
+                                            title: 'BİLGİ',
+                                            message: "İşlem başarıyla gerçekleştirildi",
+                                            label: 'Tamam',
+                                            backdrop: false,
+                                            locale: 'tr',
+                                            callback: function () {
+                                                $('#ModalSinavIptal').modal('hide');
+                                                window.location.href = '/MU10001';
+                                            }
+                                        });
+                                    } else {
+                                        bootbox.alert({
+                                            title: 'HATA',
+                                            message: response.message || "İşlem sırasında bir hata oluştu!",
+                                            label: 'Tamam',
+                                            backdrop: false,
+                                            locale: 'tr'
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    bootbox.alert({
+                                        title: 'HATA',
+                                        message: "İşlem sırasında bir hata oluştu!",
+                                        label: 'Tamam',
+                                        backdrop: false,
+                                        locale: 'tr'
+                                    });
+                                }
+                            });
+                        }
                     }
                 });
-                        }
-                    });                
             } else {
-                        bootbox.alert({
-                        title: 'UYARI',
-                        message: "İptal nedenini belirten bir açıklama yazınız!",
-                        label: 'Tamam',
-                        backdrop: false,
-                        locale: 'tr',
-                        callback: function () {
-                            $('#ModalSinavIptal').modal('show');
-                        }
-                    });                
+                bootbox.alert({
+                    title: 'UYARI',
+                    message: "İptal nedenini belirten bir açıklama yazınız!",
+                    label: 'Tamam',
+                    backdrop: false,
+                    locale: 'tr',
+                    callback: function () {
+                        $('#ModalSinavIptal').modal('show');
+                    }
+                });
             }
-
         }
     </script>
 
