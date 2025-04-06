@@ -332,6 +332,32 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region AdaySoruNoGuncelle
+        [HttpPost]
+        public async Task<IActionResult> AdaySoruNoGuncelle(Guid id, int soruno)
+        {
+            try
+            {
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+                var adayMYS = await _adaylarBE.GetirAdayMYSSBilgileri(id);
+                if (adayMYS != null)
+                {
+                    adayMYS.MYSSSorulanSoruNo  = soruno;
+                    
+                    var data = _adaylarBE.AdaySorulanSoruGuncelle(adayMYS, user);
+                    TempData["Success"] = "Sınav iptal işlemi başarıyla gerçekleştirildi.";
+                    return Json(new { success = true });
+                }
+                return Json(new { success = false, message = "Kayıt bulunamadı." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Sınav iptal işlemi sırasında bir hata oluştu." });
+            }
+        }
+        #endregion
+
         #region KomisyonAdaylariniGetir
         [HttpGet]
         public IActionResult KomisyonAdaylariniGetir(string komisyonUserName)

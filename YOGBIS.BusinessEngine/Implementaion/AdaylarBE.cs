@@ -1898,6 +1898,10 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     SinavaGelmedi = x.SinavaGelmedi ?? false,
                     SinavaGelmediAck = x.SinavaGelmediAck,
                     SinavaGeldi = x.SinavaGeldi ?? false,
+                    SinavYapildi = x.SinavYapildi ?? false,
+                    KomisyonKullaniciId = x.Komisyonlar != null ? x.Komisyonlar.KomisyonKullaniciId.ToString() : "",
+                    MYSSKomisyonSiraNo = x.Komisyonlar != null ? x.Komisyonlar.KomisyonSiraNo : 0,
+                    SinavaAlindi = x.SinavaAlindi ?? false,                    
                     BransId = x.BransId,
                     BransAdi = x.BransAdi.ToString(),
                     UlkeTercihId = x.UlkeTercihId,
@@ -2292,6 +2296,39 @@ namespace YOGBIS.BusinessEngine.Implementaion
         }
         #endregion
 
+        #region AdaySorulanSoruGuncelle(AdayMYSSVM model, SessionContext user)
+        public Result<AdayMYSSVM> AdaySorulanSoruGuncelle(AdayMYSSVM model, SessionContext user)
+        {
+            var result = new Result<AdayMYSSVM>();
+            try
+            {
+                var data = _unitOfWork.adayMYSSRepository.GetFirstOrDefault(x => x.Id == model.Id);
+                if (data != null)
+                {
+                    data.MYSSSorulanSoruNo = model.MYSSSorulanSoruNo;
+                    data.KaydedenId = user.LoginId;
+
+                    _unitOfWork.adayMYSSRepository.Update(data);
+                    _unitOfWork.Save();
+
+                    result.Data = model;
+                    result.IsSuccess = true;
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.Message = "Kayıt bulunamadı!";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = $"Bir hata oluştu: {ex.Message}";
+            }
+            return result;
+        }
+        #endregion 
+
         #region GetirAdayMYSSBilgileri(Guid id)
         public Result<AdayMYSSVM> GetirAdayMYSSBilgileri(Guid id)
         {
@@ -2299,7 +2336,7 @@ namespace YOGBIS.BusinessEngine.Implementaion
             {
                 var aday = _unitOfWork.adayMYSSRepository.GetAll(
                     x => x.Id == id,
-                    includeProperties: "Adaylar,Mulakatlar"
+                    includeProperties: "Adaylar,Mulakatlar,Komisyonlar"
                 ).FirstOrDefault();
 
                 if (aday != null)
@@ -2314,8 +2351,17 @@ namespace YOGBIS.BusinessEngine.Implementaion
                         MulakatId = aday.MulakatId,
                         DereceAdi = aday.DereceAdi?.ToString() ?? "",
                         BransAdi = aday.BransAdi?.ToString() ?? "",
-                        UlkeTercihAdi = aday.UlkeTercihAdi?.ToString() ?? ""
-                        
+                        UlkeTercihAdi = aday.UlkeTercihAdi?.ToString() ?? "",
+                        MYSSSorulanSoruNo = aday.MYSSSorulanSoruNo,
+                        KomisyonId = aday.KomisyonId,
+                        KomisyonSN = aday.KomisyonSN,
+                        KomisyonGunSN = aday.KomisyonGunSN,
+                        MYSSKomisyonAdi = aday.MYSSKomisyonAdi,
+                        MYSSKomisyonSiraNo = aday.MYSSKomisyonSiraNo,                        
+                        MYSSonuc = aday.MYSSonuc,
+                        MYSPuan = aday.MYSPuan,                        
+                        Cinsiyet = aday.Adaylar != null ? aday.Adaylar.Cinsiyet.ToString() : "",
+
                     };
 
                     return new Result<AdayMYSSVM>(true, ResultConstant.RecordFound, adayBilgileri);

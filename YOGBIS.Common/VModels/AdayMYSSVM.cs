@@ -11,6 +11,7 @@ namespace YOGBIS.Common.VModels
         public string TC { get; set; }
         public string AdayAdiSoyadi { get; set; }
         public Guid? AdayId { get; set; }
+        public string Cinsiyet { get; set; }
         [Display(Name = "Adaylar")]
         public AdaylarVM Adaylar { get; set; }
 
@@ -39,7 +40,9 @@ namespace YOGBIS.Common.VModels
         public bool? SinavIptal { get; set; }
         public string SinavIptalAck { get; set; }
         public bool? SinavaAlindi { get; set; }
+        public bool? SinavYapildi { get; set; }
 
+        public string MYYSPuan { get; set; }
         public string MYSPuan { get; set; }
         public string MYSSonuc { get; set; }
         public string MYSSonucAck { get; set; }

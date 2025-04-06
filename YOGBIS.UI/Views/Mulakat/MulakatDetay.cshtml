@@ -263,10 +263,29 @@
                             else {
                                 // Soru bulunduğunda yapılacak işlemler
                                 //sınav başlama tarihine işlem tarihini at
-                               $.ajax({
+        
+                                $.ajax({
                                     type: "POST",
                                     url: "/Mulakat/SinavBaslamaTarihiGuncelle/" + Id,
-                                    success: function () {
+                                    success: function (response1) {
+                                        // İlk çağrı başarılı olduktan sonra ikinci AJAX çağrısını yap
+                                        $.ajax({
+                                            url: '/Mulakat/AdaySoruNoGuncelle',
+                                            type: 'POST',
+                                            data: {
+                                                id: Id,
+                                                soruno: soruNo
+                                            },
+                                            success: function (response2) {
+                                                console.log("Her iki işlem de başarıyla tamamlandı");
+                                            },
+                                            error: function (xhr2, status2, error2) {
+                                                console.error("Soru no güncellenirken hata:", error2);
+                                            }
+                                        });
+                                    },
+                                    error: function (xhr1, status1, error1) {
+                                        console.error("Tarih güncellenirken hata:", error1);
                                     }
                                 });
                             }
@@ -1127,4 +1146,5 @@
         
 
     </script>
+    
 }
