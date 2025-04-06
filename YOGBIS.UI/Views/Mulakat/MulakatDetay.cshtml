@@ -1,5 +1,4 @@
 @using Microsoft.AspNetCore.Identity
-@using System.Runtime.CompilerServices
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
 @model IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM>
@@ -288,20 +287,6 @@
                 });
             });
                       
-            $('#btnBitir').on('click', function () {
-                $('#soruBlok').slideUp();
-                $('#AdayNotBlok').slideDown();
-                $('#AdayBilgiBlok').slideUp();
-                document.getElementById("btnSoruGoster").style.display = "inline";                
-                document.getElementById("btnBitir").style.display = "none";
-                document.getElementById("btnBilgiKapat").style.display = "none";
-                document.getElementById("btnBilgiAc").style.display = "inline";
-                document.getElementById("btnIptal").style.display = "none";
-                document.getElementById("btnSoruBlokKapat").style.display = "none";
-                document.getElementById("btnSoruGizle").style.display = "none";
-                document.getElementById("Kategori1-1").focus();
-            });
-
             // Soru Blok Kapat butonu click eventi
             $('#btnSoruBlokKapat').on('click', function () {
                 
@@ -393,6 +378,59 @@
                         }
 
                         return true;
+                        //validayson tamamlandıysa puan kaydetme işlemine geç
+
+                        //4. Kategoriler için
+                        var kategoriIds4 = [
+                            "#Kategori1-4",
+                            "#Kategori2-4",
+                            "#Kategori3-4"
+                        ];
+                        var notlar4 = kategoriIds4.map(function(id) {
+                            return parseInt($(id).val(), 10) || 0;
+                        });
+                        //5. Kategoriler için
+                        var kategoriIds4 = [
+                            "#Kategori1-5",
+                            "#Kategori2-5",
+                            "#Kategori3-5"
+                        ];
+                        var notlar5 = kategoriIds4.map(function(id) {
+                            return parseInt($(id).val(), 10) || 0;
+                        });
+
+                        
+
+                        // Form verilerini topla
+                            var formData = {
+                                tc: $('#TcNo').val(),
+                                AdayId: $('#AdayId').val(),
+                                KomisyonId: $('#KomisyonId').val(),                                
+                                Not1: notlar1[0], // Her kategori için ilk değeri alıyoruz (çünkü hepsi eşit)
+                                Not2: notlar2[0],
+                                Not3: notlar3[0],
+                                Not4: notlar4[0],
+                                Not5: notlar5[0],
+                            };
+
+                            // AJAX ile kaydet
+                            $.ajax({
+                                url: '/Mulakat/AdaySinavNotuKaydet',
+                                type: 'POST',
+                                data: formData,
+                                success: function (response) {
+                                    if (response.success) {
+                                        bootbox.alert(response.message);
+                                        window.location.href = '/MU10001';
+                                    } else {
+                                        bootbox.alert(response.message);
+                                    }
+                                },
+                                error: function () {
+                                    bootbox.alert('Not kaydedilirken bir hata oluştu.');
+                                }
+                            });
+
                     });
                               
             $('#btnBilgiAc').on('click', function () {
@@ -434,6 +472,35 @@
                 $('#btnSoruGoster').hide();
                 document.getElementById("btnSoruGoster").style.display = "inline";
                 $('#soruNo').focus();
+            });
+
+            // Bitir butonu click eventi
+            $('#btnBitir').on('click', function () {
+                $('#soruBlok').slideUp();
+                $('#AdayBilgiBlok').slideUp();
+                $('#btnSoruGoster').show();
+                $('#btnSoruGizle').hide();
+                $('#btnBitir').hide();
+                $('#btnBilgiKapat').hide();
+                $('#btnBilgiAc').show();
+                $('#btnSoruBlokKapat').hide();
+                $('#btnIptal').hide();
+                document.getElementById("Kategori1-1").focus();
+
+                // AdayNot bloğunu göster
+                $('#AdayNotBlok').slideDown();
+
+                // MYYS puanını 4 ondalık basamağa yuvarla
+                setTimeout(function() {
+                    var puanInput = document.getElementById('MYYSPuan');
+           
+                    if (puanInput && puanInput.value) {
+                        var puan = parseFloat(puanInput.value.replace(',', '.'));
+                        if (!isNaN(puan)) {
+                            puanInput.value = puan.toFixed(4);
+                        }
+                    }
+                }, 500); // Input oluştuktan sonra çalışsın diye biraz bekle
             });
 
             $('#btnSoruGoster').on('click', function () {

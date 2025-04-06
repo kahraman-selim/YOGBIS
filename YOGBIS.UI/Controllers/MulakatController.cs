@@ -24,6 +24,7 @@ using YOGBIS.Data.Contracts;
 using YOGBIS.Data.DbModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using YOGBIS.UI.Extensions;
 
 namespace YOGBIS.UI.Controllers
 {
@@ -256,13 +257,6 @@ namespace YOGBIS.UI.Controllers
         } 
         #endregion
 
-        #region MulakatDetay
-        public IActionResult MulakatDetay(MulakatDetayVM model)
-        {
-            return View();
-        } 
-        #endregion
-
         #region AdayCagriDurumGuncelle
         [HttpPost]
         public IActionResult AdayCagriDurumGuncelle(Guid id)
@@ -421,9 +415,9 @@ namespace YOGBIS.UI.Controllers
 
                 return Json(new { isSuccess = true, data = viewComponentResult });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Json(new { isSuccess = false, message = "Bir hata oluştu: " + ex.Message });
+                return Json(new { isSuccess = false, message = "Soru getirilirken bir hata oluştu!" });
             }
         }
         #endregion
@@ -441,17 +435,21 @@ namespace YOGBIS.UI.Controllers
 
                 return File(adayBasvuru.BilgiFormu, "application/pdf");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return NotFound("Dosya gösterilirken bir hata oluştu: " + ex.Message);
+                return NotFound("Dosya gösterilirken bir hata oluştu!");
             }
         }
         #endregion
 
         #region MulakatDetay
         [HttpGet]
-        public IActionResult MulakatDetay(string id, string adayId, string adayAdiSoyadi, string dereceAdi, string bransAdi, string ulkeTercihAdi, string tc, string mulakatId, string dereceId)
+        public async Task<IActionResult> MulakatDetay(string id, string adayId, string adayAdiSoyadi, string dereceAdi, string bransAdi, string ulkeTercihAdi, string tc, string mulakatId, string dereceId)
         {
+            //var currentUser = await _userManager.GetUserAsync(User);
+            var currentUser = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+            ViewBag.KullaniciId = currentUser?.LoginId;
+
             ViewBag.AdayAdiSoyadi = adayAdiSoyadi;
             ViewBag.DereceAdi = dereceAdi;
             ViewBag.BransAdi = bransAdi;
@@ -464,39 +462,35 @@ namespace YOGBIS.UI.Controllers
             return View();
         }
         #endregion
-    }
 
-    #region ControllerExtensions
-    public static class ControllerExtensions
-    {
-        public static async Task<string> RenderViewComponentToStringAsync(this Controller controller, string componentName, object parameters = null)
+        #region AdaySinavNotuKaydet
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public IActionResult AdaySinavNotuKaydet(AdaySinavNotlarVM model, Guid? Id)
         {
-            var context = controller.ControllerContext;
-            var viewComponentHelper = context.HttpContext.RequestServices
-                .GetRequiredService<IViewComponentHelper>();
-
-            ((IViewContextAware)viewComponentHelper).Contextualize(new ViewContext(
-                context,
-                new NullView(),
-                controller.ViewData,
-                controller.TempData,
-                TextWriter.Null,
-                new HtmlHelperOptions()));
-
-            var viewComponentResult = await viewComponentHelper.InvokeAsync(componentName, parameters);
-            using var writer = new StringWriter();
-            viewComponentResult.WriteTo(writer, System.Text.Encodings.Web.HtmlEncoder.Default);
-            return writer.ToString();
-        }
-
-        private class NullView : IView
-        {
-            public string Path => "";
-            public async Task RenderAsync(ViewContext context)
+            try
             {
-                await Task.CompletedTask;
+                var user = JsonConvert.DeserializeObject<SessionContext>(HttpContext.Session.GetString(ResultConstant.LoginUserInfo));
+
+                if (Id != null)
+                {
+                    return Json(new { success = false, message = "Güncellemek için Kayıt Seçiniz" });
+                }
+                else 
+                {
+                    var data = _adaylarBE.AdaySinavNotuKaydet(model, user);
+                    return RedirectToAction("Index");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"AdaySinavNotu kaydedilirken hata oluştu: {ex.Message}");
+                _logger.LogError($"Hata detayı: {ex}");
+                return Json(new { success = false, message = "Aday sınav notu kaydedilirken bir hata oluştu." });
             }
         }
+        #endregion
+
     }
-    #endregion
 }

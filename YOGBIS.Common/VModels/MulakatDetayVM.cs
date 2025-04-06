@@ -1,7 +1,5 @@
-﻿using Org.BouncyCastle.Bcpg;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace YOGBIS.Common.VModels
 {
@@ -11,6 +9,6 @@ namespace YOGBIS.Common.VModels
         public string tc { get; set; }
         public Guid mulakatId { get; set; }
         public Guid dereceId { get; set; }
-
+        public List<KomisyonUyeViewModel> komisyonUyelerVm { get; set; }
     }
 }

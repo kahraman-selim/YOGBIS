@@ -455,8 +455,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 var data = _unitOfWork.komisyonlarRepository.GetAll(k => k.KomisyonKullaniciId == userId)
                     .Include(x=>x.Mulakat)
                     .Include(x=>x.Kullanici)
-                    .Where(x=>x.Mulakat.Durumu==true)
-                    .OrderBy(x=>x.KomisyonSiraNo);
+                    .Where(x=>x.Mulakat.Durumu==true && x.KomisyonGorevDurum==true)
+                    .OrderBy(x=>x.KomisyonUyeSiraNo);
 
                 if (data != null)
                 {

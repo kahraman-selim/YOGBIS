@@ -2285,6 +2285,8 @@ namespace YOGBIS.BusinessEngine.Implementaion
                     HizmetAy = aday.HizmetAy,
                     HizmetYil = aday.HizmetYil,
                     HizmetGun = aday.HizmetGun,
+                    MYYSPuan = aday.MYYSPuan,
+                    MYYSSonuc = aday.MYYSSonuc,
                     Derece = aday.Derece,
                     Kademe = aday.Kademe,
                     IlkGorevKaydi = aday.IlkGorevKaydi,
@@ -2357,6 +2359,109 @@ namespace YOGBIS.BusinessEngine.Implementaion
             return result;
         }
         #endregion      
+
+        #region GetirAdayBasvuruBilgileriByTcAndMulakatId
+        public Result<AdayBasvuruBilgileriVM> GetirAdayBasvuruBilgileriByTcAndMulakatId(string TC, Guid mulakatId)
+        {
+            try
+            {
+                _logger.LogInformation($"GetirAdayBasvuruBilgileriByTcAndMulakatId çağrıldı - TC: {TC}, MulakatId: {mulakatId}");
+
+                var aday = _unitOfWork.adayBasvuruBilgileriRepository.GetAll(
+                    x => x.TC == TC && x.MulakatId == mulakatId && x.OnayDurumu=="Onaylandı",
+                    includeProperties: "Adaylar,Mulakatlar,AdayIletisimBilgileri"
+                ).FirstOrDefault();
+
+                if (aday == null)
+                {
+                    _logger.LogWarning($"GetirAdayBasvuruBilgileriByTcAndMulakatId - Aday bulunamadı - TC: {TC}, MulakatId: {mulakatId}");
+                    return new Result<AdayBasvuruBilgileriVM>(false, $"Aday başvuru bilgileri bulunamadı. (TC: {TC}, MulakatId: {mulakatId})");
+                }
+
+                var iletisimBilgisi = aday.Adaylar?.AdayIletisimBilgileri?
+                    .Where(x => x.TC == TC)
+                    .FirstOrDefault();
+
+                var adayBilgileri = new AdayBasvuruBilgileriVM
+                {
+                    Id = aday.Id,
+                    AdayId = aday.AdayId,
+                    TC = aday.TC,
+                    MulakatId = aday.MulakatId,
+                    MulakatYil = aday.MulakatYil,
+                    DogumYeri = !string.IsNullOrEmpty(aday.Adaylar?.DogumYeri) ? aday.Adaylar.DogumYeri : "",
+                    Yas = !string.IsNullOrEmpty(aday.Adaylar?.DogumTarihi2) && DateTime.TryParse(aday.Adaylar.DogumTarihi2, out DateTime dogumTarihi)? (int)((DateTime.Now - dogumTarihi).TotalDays / 365.25) : 0,
+                    IkametBilgisi = iletisimBilgisi != null ? 
+                        $"{iletisimBilgisi.IkametIl ?? ""}{(!string.IsNullOrEmpty(iletisimBilgisi.IkametIl) && !string.IsNullOrEmpty(iletisimBilgisi.IkametIlce) ? "/" : "")}{iletisimBilgisi.IkametIlce ?? ""}" 
+                        : "",
+                    HizmetAy = aday.HizmetAy,
+                    HizmetYil = aday.HizmetYil,
+                    HizmetGun = aday.HizmetGun,
+                    MYYSPuan = aday.MYYSPuan,
+                    MYYSSonuc = aday.MYYSSonuc,
+                    Derece = aday.Derece,
+                    Kademe = aday.Kademe,
+                    IlkGorevKaydi = aday.IlkGorevKaydi,
+                    GorevdenUzaklastirma = aday.GorevdenUzaklastirma,
+                    GorevIptalAck = aday.GorevIptalAck,
+                    GorevIptalBAOK = aday.GorevIptalBAOK,
+                    GorevIptalBrans = aday.GorevIptalBrans,
+                    GorevIptalYil = aday.GorevIptalYil,
+                    AdliSicilBelge = aday.AdliSicilBelge,
+                    YabanciDilAdi = aday.YabanciDilAdi,
+                    YabanciDilALM = aday.YabanciDilALM,
+                    YabanciDilBasvuru = aday.YabanciDilBasvuru,
+                    YabanciDilDiger = aday.YabanciDilDiger,
+                    YabanciDilFRS = aday.YabanciDilFRS,
+                    YabanciDilING = aday.YabanciDilING,
+                    YabanciDilPuan = aday.YabanciDilPuan,
+                    YabanciDilSeviye = aday.YabanciDilSeviye,
+                    YabanciDilTarihi = aday.YabanciDilTarihi,
+                    YabanciDilTuru = aday.YabanciDilTuru,
+                    YLisans = aday.YLisans,
+                    Doktora = aday.Doktora,
+                    GenelDurum = aday.GenelDurum,
+                    BilgiFormu = aday.BilgiFormu,
+                    DereceAdi = aday.DereceAdi?.ToString() ?? "",
+                    BransAdi = aday.BransAdi?.ToString() ?? "",
+                    UlkeTercihAdi = aday.UlkeTercihAdi?.ToString() ?? ""
+                };
+
+                _logger.LogInformation($"GetirAdayBasvuruBilgileriByTcAndMulakatId başarılı - TC: {TC}, MulakatId: {mulakatId}");
+                return new Result<AdayBasvuruBilgileriVM>(true, "Aday başvuru bilgileri başarıyla getirildi.", adayBilgileri);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"GetirAdayBasvuruBilgileriByTcAndMulakatId - Hata: {ex.Message} - TC: {TC}, MulakatId: {mulakatId}", ex);
+                return new Result<AdayBasvuruBilgileriVM>(false, $"Aday başvuru bilgileri getirilirken hata oluştu: {ex.Message}");
+            }
+        }
+        #endregion
+
+        public Result<AdaySinavNotlarVM> AdaySinavNotuKaydet(AdaySinavNotlarVM model, SessionContext user)
+        {
+            if (model != null)
+            {
+                try
+                {
+                    var sinavnotlar = _mapper.Map<AdaySinavNotlarVM, AdaySinavNotlar>(model);
+                    sinavnotlar.KaydedenId = user.LoginId;
+
+                    _unitOfWork.adayNotRepository.Add(sinavnotlar);
+                    _unitOfWork.Save();
+                    return new Result<AdaySinavNotlarVM>(true, ResultConstant.RecordCreateSuccess);
+                }
+                catch (Exception ex)
+                {
+
+                    return new Result<AdaySinavNotlarVM>(false, ResultConstant.RecordCreateNotSuccess + " " + ex.Message.ToString());
+                }
+            }
+            else
+            {
+                return new Result<AdaySinavNotlarVM>(false, "Boş veri olamaz");
+            }
+        }
 
         #region MYSSAdaylariGetir
         public Result<List<AdayMYSSVM>> MYSSAdaylariGetir()
