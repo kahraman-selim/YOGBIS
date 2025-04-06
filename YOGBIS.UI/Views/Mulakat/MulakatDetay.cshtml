@@ -1099,10 +1099,21 @@
                 data: { tcKimlikNo: tcKimlikNo },
                 success: function (response) {
                     if (response.success) {
-                        var puan = response.myys;
+                        // String puanı floata çevir (nokta ile ayrılmış)
+                        var puan = parseFloat(response.myys.toString().replace(',', '.'));
                         
-                        $('#MYYSPuan').val(response.myys);
-                        console.log('MYYS Puanı getirildi:', response.myys);
+                        if (!isNaN(puan)) {
+                            // 4 ondalık haneye yuvarla
+                            var yuvarlanmisPuan = puan.toFixed(4);
+                            
+                            // Türkçe format için virgül kullan
+                            yuvarlanmisPuan = yuvarlanmisPuan.replace('.', ',');
+                            var sonuc = yuvarlanmisPuan.toString().replace(',','.');
+                            $('#MYYSPuan').val(sonuc);
+                            console.log('MYYS Puanı getirildi ve yuvarlandı:', yuvarlanmisPuan);
+                        } else {
+                            console.error('Puan sayıya çevrilemedi');
+                        }
                     } else {
                         console.error('MYYS Puanı getirilemedi:', response.message);
                     }
