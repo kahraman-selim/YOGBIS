@@ -541,5 +541,26 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region AdayMYYSPuanGetir
+        [HttpGet]
+        public IActionResult AdayMYYSPuanGetir(string tcKimlikNo)
+        {
+            try
+            {
+                var aday = _unitOfWork.adayBasvuruBilgileriRepository.GetFirstOrDefault(x => x.TC == tcKimlikNo);
+                if (aday != null)
+                {
+                    return Json(new { success = true, myys = aday.MYYSPuan });
+                }
+                return Json(new { success = false, message = "Aday bulunamadı" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"MYYS Puan getirme hatası: {ex.Message}");
+                return Json(new { success = false, message = "MYYS Puanı getirilirken bir hata oluştu" });
+            }
+        } 
+        #endregion
+
     }
 }

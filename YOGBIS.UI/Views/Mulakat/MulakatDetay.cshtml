@@ -1,5 +1,5 @@
 @using Microsoft.AspNetCore.Identity
-@using System.Runtime.CompilerServices
+
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
 @model IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM>
@@ -473,19 +473,6 @@
 
                 // AdayNot bloğunu göster
                 $('#AdayNotBlok').slideDown();
-
-                // MYYS puanını 4 ondalık basamağa yuvarla
-                setTimeout(function() {
-                    var puanInput = $('#AdayMYYSPuan').val();
-           
-                    if (puanInput && puanInput.value) {
-                        var puan = parseFloat(puanInput.value.replace(',', '.'));
-                        if (!isNaN(puan)) {
-                            puanInput.value = puan.toFixed(4);
-                            $('#MYYSPuan').val()=puanInput.value;
-                        }
-                    }
-                }, 500); // Input oluştuktan sonra çalışsın diye biraz bekle
             });
 
             $('#btnSoruGoster').on('click', function () {
@@ -1099,4 +1086,34 @@
         }
     </script>
 
+
+    <script>
+
+        $(document).ready(function () {
+            var tcKimlikNo = '@ViewBag.TC'; 
+
+            // MYYS Puanını getir
+            $.ajax({
+                url: '/Mulakat/AdayMYYSPuanGetir',
+                type: 'GET',
+                data: { tcKimlikNo: tcKimlikNo },
+                success: function (response) {
+                    if (response.success) {
+                        var puan = response.myys;
+                        
+                        $('#MYYSPuan').val(response.myys);
+                        console.log('MYYS Puanı getirildi:', response.myys);
+                    } else {
+                        console.error('MYYS Puanı getirilemedi:', response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX hatası:', error);
+                }
+            });
+        });
+
+        
+
+    </script>
 }
