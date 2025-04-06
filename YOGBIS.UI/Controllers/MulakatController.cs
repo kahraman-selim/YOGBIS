@@ -476,18 +476,22 @@ namespace YOGBIS.UI.Controllers
                 {
                     return Json(new { success = false, message = "Güncellemek için Kayıt Seçiniz" });
                 }
-                else 
+                
+                var data = _adaylarBE.AdaySinavNotuKaydet(model, user);
+                if (data.IsSuccess)
                 {
-                    var data = _adaylarBE.AdaySinavNotuKaydet(model, user);
-                    return RedirectToAction("Index");
+                    return Json(new { success = true, message = data.Message });
                 }
-
+                else
+                {
+                    return Json(new { success = false, message = data.Message });
+                }
             }
             catch (Exception ex)
             {
                 _logger.LogError($"AdaySinavNotu kaydedilirken hata oluştu: {ex.Message}");
                 _logger.LogError($"Hata detayı: {ex}");
-                return Json(new { success = false, message = "Aday sınav notu kaydedilirken bir hata oluştu." });
+                return Json(new { success = false, message = $"Aday sınav notu kaydedilirken bir hata oluştu: {ex.Message}" });
             }
         }
         #endregion

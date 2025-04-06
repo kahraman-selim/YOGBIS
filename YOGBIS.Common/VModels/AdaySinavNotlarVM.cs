@@ -16,27 +16,27 @@ namespace YOGBIS.Common.VModels
         [Display(Name = "Komisyon")]
         public KomisyonlarVM Komisyon { get; set; }  
       
-        public Guid NotKategoriId1 { get; set; }
+        public Guid? NotKategoriId1 { get; set; }
         public string KategoriAdi1 { get; set; }
         public SoruKategorilerVM NotKategori1 { get; set; }
         public int Not1 { get; set; }
 
-        public Guid NotKategoriId2 { get; set; }
+        public Guid? NotKategoriId2 { get; set; }
         public string KategoriAdi2 { get; set; }
         public SoruKategorilerVM NotKategori2 { get; set; }
         public int Not2 { get; set; }
 
-        public Guid NotKategoriId3 { get; set; }
+        public Guid? NotKategoriId3 { get; set; }
         public string KategoriAdi3 { get; set; }
         public SoruKategorilerVM NotKategori3 { get; set; }
         public int Not3 { get; set; }
 
-        public Guid NotKategoriId4 { get; set; }
+        public Guid? NotKategoriId4 { get; set; }
         public string KategoriAdi4 { get; set; }
         public SoruKategorilerVM NotKategorisi4 { get; set; }
         public int Not4 { get; set; }
 
-        public Guid NotKategoriId5 { get; set; }
+        public Guid? NotKategoriId5 { get; set; }
         public string KategoriAdi5 { get; set; }
         public SoruKategorilerVM NotKategorisi5 { get; set; }
         public int Not5 { get; set; }

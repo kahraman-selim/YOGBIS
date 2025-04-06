@@ -1,4 +1,5 @@
 @using Microsoft.AspNetCore.Identity
+@using System.Runtime.CompilerServices
 @inject SignInManager<YOGBIS.Data.DbModels.Kullanici> SignInManager
 @inject UserManager<YOGBIS.Data.DbModels.Kullanici> UserManager
 @model IEnumerable<YOGBIS.Common.VModels.AdayMYSSVM>
@@ -298,140 +299,106 @@
 
             // Aday Not Formu Kaydet butonu click eventi
             $('#btnNotFormKapat').on('click', function () {
-
-                    //1. Kategoriler için
-                        var kategoriIds1 = [
-                            "#Kategori1-1",
-                            "#Kategori2-1",
-                            "#Kategori3-1"
-                        ];
-
-                        var notlar1 = kategoriIds1.map(function(id) {
-                            return parseInt($(id).val(), 10) || 0;
-                        });
-
-                        var isValid1 = notlar1.every(not => not === notlar1[0]);
-
-                        $(kategoriIds1.join(",")).removeClass('input-error');
-
-                            if (!isValid1) {
-                            $(kategoriIds1.join(",")).each(function() {
-                                if (parseInt($(this).val(), 10) !== notlar1[0]) {
-                                    $(this).addClass('input-error');
-                                }
-                            });
-                            bootbox.alert("KATEGORİ-1 için verilen puanlar birbirine eşit olmalıdır!");
-                            return false;
+               
+                //1. Kategoriler için
+                var kategoriIds1 = ["#Kategori1-1", "#Kategori2-1", "#Kategori3-1"];
+                var notlar1 = kategoriIds1.map(function(id) {
+                    return parseInt($(id).val(), 10) || 0;
+                });
+                var isValid1 = notlar1.every(not => not === notlar1[0]);
+                $(kategoriIds1.join(",")).removeClass('input-error');
+                if (!isValid1) {
+                    $(kategoriIds1.join(",")).each(function() {
+                        if (parseInt($(this).val(), 10) !== notlar1[0]) {
+                            $(this).addClass('input-error');
                         }
-
-                        //2. Kategoriler için
-                        var kategoriIds2 = [
-                            "#Kategori1-2",
-                            "#Kategori2-2",
-                            "#Kategori3-2"
-                        ];
-
-                        var notlar2 = kategoriIds2.map(function(id) {
-                            return parseInt($(id).val(), 10) || 0;
-                        });
-
-                        var isValid2 = notlar2.every(not => not === notlar2[0]);
-
-                        $(kategoriIds2.join(",")).removeClass('input-error');
-
-                        if (!isValid2) {
-
-                            $(kategoriIds2.join(",")).each(function() {
-                                if (parseInt($(this).val(), 10) !== notlar2[0]) {
-                                    $(this).addClass('input-error');
-                                }
-                            });
-                            bootbox.alert("KATEGORİ-2 için verilen puanlar birbirine eşit olmalıdır!");
-                            return false;
-                        }
-
-                        //3. Kategoriler için
-                        var kategoriIds3 = [
-                            "#Kategori1-3",
-                            "#Kategori2-3",
-                            "#Kategori3-3"
-                        ];
-
-                        var notlar3 = kategoriIds3.map(function(id) {
-                            return parseInt($(id).val(), 10) || 0;
-                        });
-
-                        var isValid3 = notlar3.every(not => not === notlar3[0]);
-
-                        $(kategoriIds3.join(",")).removeClass('input-error');
-
-
-                        if (!isValid3) {
-
-                            $(kategoriIds3.join(",")).each(function() {
-                                if (parseInt($(this).val(), 10) !== notlar3[0]) {
-                                    $(this).addClass('input-error');
-                                }
-                            });
-                            bootbox.alert("KATEGORİ-3 için verilen puanlar birbirine eşit olmalıdır!");
-                            return false;
-                        }
-
-                        return true;
-                        //validayson tamamlandıysa puan kaydetme işlemine geç
-
-                        //4. Kategoriler için
-                        var kategoriIds4 = [
-                            "#Kategori1-4",
-                            "#Kategori2-4",
-                            "#Kategori3-4"
-                        ];
-                        var notlar4 = kategoriIds4.map(function(id) {
-                            return parseInt($(id).val(), 10) || 0;
-                        });
-                        //5. Kategoriler için
-                        var kategoriIds4 = [
-                            "#Kategori1-5",
-                            "#Kategori2-5",
-                            "#Kategori3-5"
-                        ];
-                        var notlar5 = kategoriIds4.map(function(id) {
-                            return parseInt($(id).val(), 10) || 0;
-                        });
-
-                        
-
-                        // Form verilerini topla
-                            var formData = {
-                                tc: $('#TcNo').val(),
-                                AdayId: $('#AdayId').val(),
-                                KomisyonId: $('#KomisyonId').val(),                                
-                                Not1: notlar1[0], // Her kategori için ilk değeri alıyoruz (çünkü hepsi eşit)
-                                Not2: notlar2[0],
-                                Not3: notlar3[0],
-                                Not4: notlar4[0],
-                                Not5: notlar5[0],
-                            };
-
-                            // AJAX ile kaydet
-                            $.ajax({
-                                url: '/Mulakat/AdaySinavNotuKaydet',
-                                type: 'POST',
-                                data: formData,
-                                success: function (response) {
-                                    if (response.success) {
-                                        bootbox.alert(response.message);
-                                        window.location.href = '/MU10001';
-                                    } else {
-                                        bootbox.alert(response.message);
-                                    }
-                                },
-                                error: function () {
-                                    bootbox.alert('Not kaydedilirken bir hata oluştu.');
-                                }
-                            });
-
                     });
+                    bootbox.alert("KATEGORİ-1 için verilen puanlar birbirine eşit olmalıdır!");
+                    return false;
+                }
+
+                //2. Kategoriler için
+                var kategoriIds2 = ["#Kategori1-2", "#Kategori2-2", "#Kategori3-2"];
+                var notlar2 = kategoriIds2.map(function(id) {
+                    return parseInt($(id).val(), 10) || 0;
+                });
+                var isValid2 = notlar2.every(not => not === notlar2[0]);
+                $(kategoriIds2.join(",")).removeClass('input-error');
+                if (!isValid2) {
+                    $(kategoriIds2.join(",")).each(function() {
+                        if (parseInt($(this).val(), 10) !== notlar2[0]) {
+                            $(this).addClass('input-error');
+                        }
+                    });
+                    bootbox.alert("KATEGORİ-2 için verilen puanlar birbirine eşit olmalıdır!");
+                    return false;
+                }
+
+                //3. Kategoriler için
+                var kategoriIds3 = ["#Kategori1-3", "#Kategori2-3", "#Kategori3-3"];
+                var notlar3 = kategoriIds3.map(function(id) {
+                    return parseInt($(id).val(), 10) || 0;
+                });
+                var isValid3 = notlar3.every(not => not === notlar3[0]);
+                $(kategoriIds3.join(",")).removeClass('input-error');
+                if (!isValid3) {
+                    $(kategoriIds3.join(",")).each(function() {
+                        if (parseInt($(this).val(), 10) !== notlar3[0]) {
+                            $(this).addClass('input-error');
+                        }
+                    });
+                    bootbox.alert("KATEGORİ-3 için verilen puanlar birbirine eşit olmalıdır!");
+                    return false;
+                }
+
+                //4. Kategoriler için
+                var kategoriIds4 = ["#Kategori1-4", "#Kategori2-4", "#Kategori3-4"];
+                var notlar4 = kategoriIds4.map(function(id) {
+                    return parseInt($(id).val(), 10) || 0;
+                });
+
+                //5. Kategoriler için
+                var kategoriIds5 = ["#Kategori1-5", "#Kategori2-5", "#Kategori3-5"];
+                var notlar5 = kategoriIds5.map(function(id) {
+                    return parseInt($(id).val(), 10) || 0;
+                });
+
+                // Form verilerini topla
+                var formData = {
+                    TC: $('#TcNo').val(),
+                    AdayId: $('#AdayId').val(),
+                    KomisyonId: $('#KomisyonId').val(),
+                    KomisyonUyeSiraId: $('#KomisyonUyeSiraId').val(),
+                    Not1: notlar1[0],
+                    Not2: notlar2[0],
+                    Not3: notlar3[0],
+                    Not4: notlar4[0],
+                    Not5: notlar5[0],
+                    BransId: $('#BransId').val(),
+                    UlkeTercihId: $('#UlkeTercihId').val(),
+                    KomisyonGnSN: $('#KomisyonGnSN').val(),
+                    MulakatId: $('#MulakatId').val()                    
+                };
+
+                // AJAX ile kaydet
+                $.ajax({
+                    url: '/Mulakat/AdaySinavNotuKaydet',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            bootbox.alert("Sınav başarıyla tamamlanmıştır!", function() {
+                                window.location.href = '/MU10001';
+                            });
+                        } else {
+                            bootbox.alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        bootbox.alert('Not kaydedilirken bir hata oluştu.');
+                    }
+                });
+            });
                               
             $('#btnBilgiAc').on('click', function () {
                 $('#AdayBilgiBlok').slideDown('slow');

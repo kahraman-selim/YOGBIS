@@ -75,6 +75,7 @@
                             @foreach(var item in Model.komisyonUyelerVm)
                             {
                                 <input type="hidden" value="@item.KomisyonId" id="KomisyonId" />
+                                <input type="hidden" value="@item.KomisyonUyeSiraId" id="KomisyonUyeSiraId" />
                                 <div class="form-group">
                                     <input asp-for="@item.KomisyonUyeAdSoyad" type="text" class="form-control py-1 font-weight-bold" id="KomisyonAd-1" disabled
                                            value="@item.KomisyonUyeAdSoyad">
