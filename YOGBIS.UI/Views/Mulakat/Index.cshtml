@@ -4,42 +4,42 @@
 @model YOGBIS.Common.VModels.AdayMulakatListeViewModel
 @{
     ViewData["Title"] = "Mülakat";
-    Layout = "~/Views/Shared/_Layout.cshtml";   
+    Layout = "~/Views/Shared/_Layout.cshtml";
     var mulakatId = Model.AdayListesi.FirstOrDefault()?.MulakatId ?? Guid.Empty;
     var currentUser = await UserManager.GetUserAsync(User);
     var userRoles = await UserManager.GetRolesAsync(currentUser);
     var isAdmin = userRoles.Contains("Administrator");
 }
 @section Styles {
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
-<link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
-<link rel="stylesheet" href="//cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" />
 }
 <!-- #region blok css -->
 <style type="text/css">
     #soruBlok {
-    display: none;
+        display: none;
     }
 
     #AdayNotBlok {
-    display: none;
+        display: none;
     }
 
     #btnBitir {
-    display: none;
+        display: none;
     }
 
     #AdayBilgiBlok {
-    display: none;
+        display: none;
     }
 
     .input-error {
-    border: 2px solid red;
+        border: 2px solid red;
     }
 
     /* DataTable hover rengi */
     #adayListesiTable tbody tr:hover {
-    background-color: #e8f5e9 !important;
+        background-color: #e8f5e9 !important;
     }
 </style>
 <!-- Aday Özet Blok -->
@@ -68,8 +68,8 @@
                     gun = DateTime.Now.ToString("dd.MM.yyyy");
                 }
                 <div class="d-flex justify-content-center align-items-center">
-                    <a href="@Url.Action("GetirTarihliListe", "Mulakat", new { currentDate = gun, direction = "prev", selectedKomisyon = TempData.Peek("SelectedKomisyon") })" 
-                    class="btn btn-outline-primary btn-sm mr-3 @(TempData["HasPrev"] != null && !(bool)TempData["HasPrev"] ? "disabled" : "")">
+                    <a href="@Url.Action("GetirTarihliListe", "Mulakat", new { currentDate = gun, direction = "prev", selectedKomisyon = TempData.Peek("SelectedKomisyon") })"
+                       class="btn btn-outline-primary btn-sm mr-3 @(TempData["HasPrev"] != null && !(bool)TempData["HasPrev"] ? "disabled" : "")">
                         <i class="fas fa-chevron-left"></i> Önceki Gün
                     </a>
 
@@ -77,8 +77,8 @@
                         ADAY LİSTESİ - @(TempData["CurrentDate"] ?? gun)
                     </h6>
 
-                    <a href="@Url.Action("GetirTarihliListe", "Mulakat", new { currentDate = gun, direction = "next", selectedKomisyon = TempData.Peek("SelectedKomisyon") })" 
-                    class="btn btn-outline-primary btn-sm ml-3 @(TempData["HasNext"] != null && !(bool)TempData["HasNext"] ? "disabled" : "")">
+                    <a href="@Url.Action("GetirTarihliListe", "Mulakat", new { currentDate = gun, direction = "next", selectedKomisyon = TempData.Peek("SelectedKomisyon") })"
+                       class="btn btn-outline-primary btn-sm ml-3 @(TempData["HasNext"] != null && !(bool)TempData["HasNext"] ? "disabled" : "")">
                         Sonraki Gün <i class="fas fa-chevron-right"></i>
                     </a>
                 </div>
@@ -109,7 +109,8 @@
                             @Html.Raw($"<option value=\"{baskan.UserName}\">{baskan.AdSoyad}</option>")
                         }
                     </select>
-                </div>            }
+                </div>
+            }
             <div class="table-responsive">
                 <table class="table table-bordered table-hover table-striped display responsive nowrap" id="adayListesiTable" width="100%" cellspacing="0">
                     <thead>
@@ -134,7 +135,7 @@
 
                                 <tr data-derece-id="@item.DereceId" data-tc="@item.TC">
                                     <td class="text-center">@sirano</td>
-                                    <td class="text-center">@item.TC</td>                                    
+                                    <td class="text-center">@item.TC</td>
                                     <td>@item.AdayAdiSoyadi</td>
                                     <td class="text-center">@item.MYSSSaat.ToString()</td>
 
@@ -186,20 +187,21 @@
                                                 <button class="btn btn-sm btn-danger" title="Aday Sınava Gelmedi" style="font-weight:bold;font-size:13px;width:120px" disabled>
                                                     Aday Gelmedi
                                                 </button>
-                                            }
-                                            else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && item.SinavDurum.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault()) //4. Durum : Çağrılmış ve kabul edilmiş ve Sinav odasına çağrılmış (Success)
+                                            } // 3. Durum: Çağrılmış ve kabul edilmiş (Success)
+                                            else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && item.SinavDurum.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault())
                                             {
                                                 <button class="btn btn-sm btn-success " title="Aday Bekliyor" data-id="@item.Id" style="font-weight:bold;font-size:13px;width:120px" disabled>
                                                     <i class="fas fa-bell"></i> Aday Bekliyor
                                                 </button>
-                                            }
-                                            else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault()) // 3. Durum: Çağrılmış ve kabul edilmiş (Success)
+                                            }               //4. Durum : Çağrılmış ve kabul edilmiş ve Sinav odasına çağrılmış (Success)
+                                            else if (item.CagriDurum.GetValueOrDefault() && item.KabulDurum.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault()) 
                                             {
                                                 <button class="btn btn-sm btn-success btnSinavaAl" title="Aday Bekliyor" data-id="@item.Id" style="font-weight:bold;font-size:13px;width:120px">
                                                     <i class="fas fa-bell"></i> Aday Bekliyor
                                                 </button>
-                                            }
-                                            else if (item.CagriDurum.GetValueOrDefault() && item.SinavDurum.GetValueOrDefault() && item.SinavIptal.GetValueOrDefault()) // 5. Durum: Çağrılmış ve sınav iptal edilmiş
+                                            }                               
+                                                                           // 5. Durum: Çağrılmış ve sınav iptal edilmiş
+                                            else if (item.CagriDurum.GetValueOrDefault() && item.SinavDurum.GetValueOrDefault() && item.SinavIptal.GetValueOrDefault()) 
                                             {
                                                 <button class="btn btn-sm btn-danger" title="İptal Edildi" style="font-weight:bold;font-size:13px;width:120px" disabled>
                                                     İptal Edildi
@@ -240,7 +242,7 @@
                                         {
                                             @if (item.CagriDurum.GetValueOrDefault() && !item.KabulDurum.GetValueOrDefault() && !item.SinavaGelmedi.GetValueOrDefault() && !item.SinavIptal.GetValueOrDefault())
                                             {
-                                                <button class="btn btn-sm btn-warning btnSinavaAl" title="Adayı Sınava Al" data-id="@item.Id" data-adayid="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px">
+                                                <button class="btn btn-sm btn-warning" title="Adayı Sınava Al" data-id="@item.Id" data-adayid="@item.AdayId" style="font-weight:bold;font-size:13px;width:120px">
                                                     <i class="fas fa-door-open"></i> Sınav Odası
                                                 </button>
                                             }
@@ -256,7 +258,7 @@
                                                     İptal Edildi
                                                 </button>
                                             }
-                                            else if(item.SinavaGelmedi.GetValueOrDefault())
+                                            else if (item.SinavaGelmedi.GetValueOrDefault())
                                             {
 
                                             }
@@ -267,15 +269,14 @@
                                                 </button>
                                             }
                                         }
-                                   
+
                                     </td>
                                 </tr>
                             }
                         }
                     </tbody>
                 </table>
-                </div>
-            }
+            </div>
         </div>
     </div>
 </div>
@@ -312,14 +313,14 @@
             window.Id = "";
             window.adayId = "";
             window.tC="";
-            window.adayAdiSoyadi = "";           
+            window.adayAdiSoyadi = "";
             window.derceId="";
             window.dereceAdi="";
             window.mulakatId="";
             window.ulkeTercihAdi="";
             window.bransAdi="";
-            
-            
+
+
             // Seçili komisyonu ayarla
             var selectedKomisyon = '@TempData.Peek("SelectedKomisyon")';
             if (selectedKomisyon) {
@@ -328,7 +329,7 @@
 
             // DataTable ayarları
             var useDataTable = @Json.Serialize(ViewBag.UseDataTable);
-            
+
             if ($.fn.DataTable.isDataTable('#adayListesiTable')) {
                 $('#adayListesiTable').DataTable().destroy();
             }
@@ -356,7 +357,7 @@
                     $('.dataTables_wrapper').addClass('pb-3');
                 }
             });
-          
+
 
             // Komisyon seçimi değiştiğinde
             $('#komisyonBaskani').change(function() {
@@ -424,22 +425,30 @@
             // Aday Sınava Al Butonu
             $("#adayListesiTable").on("click", ".btnSinavaAl", function () {
                 var btn = $(this);
-                var row = btn.closest('tr');
                 Id = btn.data("id");
-                tC = row.data("tc");
 
                 $.ajax({
-                    type: "GET",
-                    url: "/Mulakat/GetirAdayBilgileri/" + Id,
-                    success: function(result) {
-                        if (result.isSuccess) {
-                            window.location.href = '@Url.Action("MulakatDetay", "Mulakat")?id=' + Id + 
-                                '&adayId=' + result.adayId + 
-                                '&adayAdiSoyadi=' + encodeURIComponent(result.adayAdiSoyadi) + 
-                                '&dereceAdi=' + encodeURIComponent(result.dereceAdi) + 
-                                '&bransAdi=' + encodeURIComponent(result.bransAdi) + 
-                                '&ulkeTercihAdi=' + encodeURIComponent(result.ulkeTercihAdi) + 
-                                '&tc=' + tC;
+                    success: function (result) {
+                        if (result) {
+                            bootbox.alert({
+                                title: 'BİLGİ',
+                                message: "Aday sınav odasına çağrıldı!",
+                                label: 'Tamam',
+                                backdrop: false,
+                                locale: 'tr',
+                                callback: function () {
+                        if (result) {
+                            $.ajax({
+                                type: "POST",
+                                url: "/Mulakat/AdaySinavOdaKabulGuncelle/" + Id,
+                                success: function () {
+                                        // Tabloyu yenile
+                                        window.location.reload();
+                                }
+                            });
+                    }
+                                }
+                            });
                         } else {
                             bootbox.alert({
                                 title: 'HATA',
@@ -450,7 +459,6 @@
                             });
                         }
                     },
-
                     error: function () {
                         bootbox.alert({
                             title: 'HATA',
@@ -461,6 +469,8 @@
                         });
                     }
                 });
+
+
             });
 
             // Sınavı Başlat Butonu
@@ -469,17 +479,25 @@
                 var id = btn.data("id");
 
                 $.ajax({
+                    type: "POST",
+                    url: "/Mulakat/AdaySinavOdaAlindiGuncelle/" + Id,
+                    success: function () {
+                    }
+                });
+
+                // Aday bilgilerini almak için AJAX isteği gönder
+                $.ajax({
                     type: "GET",
                     url: "/Mulakat/GetirAdayBilgileri/" + id,
                     success: function (result) {
                         if (result.isSuccess) {
-                            window.location.href = '@Url.Action("MulakatDetay", "Mulakat")?id=' + id + 
+                            window.location.href = '@Url.Action("MulakatDetay", "Mulakat")?id=' + id +
                                 '&adayId=' + result.adayId +
                                 '&mulakatId=' + result.mulakatId +
                                 '&dereceId=' + result.dereceId +
-                                '&adayAdiSoyadi=' + encodeURIComponent(result.adayAdiSoyadi) + 
-                                '&dereceAdi=' + encodeURIComponent(result.dereceAdi) + 
-                                '&bransAdi=' + encodeURIComponent(result.bransAdi) + 
+                                '&adayAdiSoyadi=' + encodeURIComponent(result.adayAdiSoyadi) +
+                                '&dereceAdi=' + encodeURIComponent(result.dereceAdi) +
+                                '&bransAdi=' + encodeURIComponent(result.bransAdi) +
                                 '&ulkeTercihAdi=' + encodeURIComponent(result.ulkeTercihAdi) +
                                 '&tC=' + encodeURIComponent(result.tC);
                         } else {
@@ -503,7 +521,7 @@
                     }
                 });
             });
-          
+
         });
     </script>
 

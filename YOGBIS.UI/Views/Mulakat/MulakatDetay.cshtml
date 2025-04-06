@@ -198,7 +198,7 @@
 
             window.adayId = "";
             window.adayAdi = "";
-            window.Id = "";
+            window.Id = '@ViewBag.Id',
             window.derceId="";
             window.mulakatId="";
             window.tC="";
@@ -257,6 +257,16 @@
                                         $("#btnBaslat").show();
                                         $("#btnBitir").hide();
                                         $("#soruNo").val("").focus();
+                                    }
+                                });
+                            }
+                            else {
+                                // Soru bulunduğunda yapılacak işlemler
+                                //sınav başlama tarihine işlem tarihini at
+                               $.ajax({
+                                    type: "POST",
+                                    url: "/Mulakat/SinavBaslamaTarihiGuncelle/" + Id,
+                                    success: function () {
                                     }
                                 });
                             }
@@ -398,6 +408,14 @@
                         bootbox.alert('Not kaydedilirken bir hata oluştu.');
                     }
                 });
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Mulakat/SinavBitisTarihiGuncelle/" + Id,
+                    success: function () {
+                    }
+                });
             });
                               
             $('#btnBilgiAc').on('click', function () {
@@ -436,8 +454,7 @@
                 $('#AdayBilgiBlok').slideUp('slow');
                 $('#btnBilgiKapat').hide();
                 $('#btnBilgiAc').show();
-                $('#btnSoruGoster').hide();
-                document.getElementById("btnSoruGoster").style.display = "inline";
+          
                 $('#soruNo').focus();
             });
 
@@ -459,12 +476,13 @@
 
                 // MYYS puanını 4 ondalık basamağa yuvarla
                 setTimeout(function() {
-                    var puanInput = document.getElementById('MYYSPuan');
+                    var puanInput = $('#AdayMYYSPuan').val();
            
                     if (puanInput && puanInput.value) {
                         var puan = parseFloat(puanInput.value.replace(',', '.'));
                         if (!isNaN(puan)) {
                             puanInput.value = puan.toFixed(4);
+                            $('#MYYSPuan').val()=puanInput.value;
                         }
                     }
                 }, 500); // Input oluştuktan sonra çalışsın diye biraz bekle

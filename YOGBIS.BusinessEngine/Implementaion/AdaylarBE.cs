@@ -517,6 +517,38 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 AdayId = basvuruBilgisi.AdayId,
                 TC = basvuruBilgisi.TC,
                 AdayAdiSoyadi = basvuruBilgisi.Adaylar != null ? $"{basvuruBilgisi.Adaylar.Ad} {basvuruBilgisi.Adaylar.Soyad}" : string.Empty,
+                MYSSDurum = basvuruBilgisi.MYSSDurum,
+                MYYSPuan = basvuruBilgisi.MYYSPuan,
+                MYYSSonuc = basvuruBilgisi.MYYSSonuc,
+                MYSSDurumAck = basvuruBilgisi.MYSSDurumAck,
+                MYYSSinavTedbiri = basvuruBilgisi.MYYSSinavTedbiri,
+                MYYSSonucItiraz = basvuruBilgisi.MYYSSonucItiraz,
+                MYYSSoruItiraz = basvuruBilgisi.MYYSSoruItiraz,
+                MYYSTarihi = basvuruBilgisi.MYYSTarihi,
+                MYYSTedbirAck = basvuruBilgisi.MYYSTedbirAck,
+                BasvuruBrans = basvuruBilgisi.BasvuruBrans,
+                Askerlik = basvuruBilgisi.Askerlik,
+                KurumKod = basvuruBilgisi.KurumKod,
+                KurumAdi = basvuruBilgisi.KurumAdi,
+                Ogrenim = basvuruBilgisi.Ogrenim,
+                MezunOkulKodu = basvuruBilgisi.MezunOkulKodu,
+                Mezuniyet = basvuruBilgisi.Mezuniyet,
+                HizmetYil = basvuruBilgisi.HizmetYil,
+                HizmetAy = basvuruBilgisi.HizmetAy,
+                HizmetGun = basvuruBilgisi.HizmetGun,
+                Derece = basvuruBilgisi.Derece,
+                Kademe = basvuruBilgisi.Kademe,
+                Enaz5Yil = basvuruBilgisi.Enaz5Yil,
+                IlTercihi1 = basvuruBilgisi.IlTercihi1,
+                IlTercihi2 = basvuruBilgisi.IlTercihi2,
+                IlTercihi3 = basvuruBilgisi.IlTercihi3,
+                IlTercihi4 = basvuruBilgisi.IlTercihi4,
+                IlTercihi5 = basvuruBilgisi.IlTercihi5,
+                BasvuruTarihi = basvuruBilgisi.BasvuruTarihi,
+                SonDegisiklikTarihi = basvuruBilgisi.SonDegisiklikTarihi,
+                OnayDurumu = basvuruBilgisi.OnayDurumu,
+                OnayDurumuAck = basvuruBilgisi.OnayDurumuAck,
+                Unvan = basvuruBilgisi.Unvan,                
                 DahaOnceYDGorev = basvuruBilgisi.DahaOnceYDGorev,
                 YIciGorevBasTar = basvuruBilgisi.YIciGorevBasTar,
                 YabanciDilBasvuru = basvuruBilgisi.YabanciDilBasvuru,
@@ -2169,6 +2201,57 @@ namespace YOGBIS.BusinessEngine.Implementaion
                 if (aday != null)
                 {
                     aday.SinavDurum = true;
+                    _unitOfWork.Save();
+
+                    return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
+                }
+
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"AdaySinavOdaKabulGuncelle - Hata: {ex.Message}", ex);
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+        }
+        #endregion
+
+        #region SinavBaslamaTarihiGuncelle
+        public Result<bool> SinavBaslamaTarihiGuncelle(Guid id)
+        {
+            try
+            {
+                var aday = _unitOfWork.adayMYSSRepository.Get(id);
+
+                if (aday != null)
+                {
+                    aday.SinavBaslamaTarihi = DateTime.Now;
+                    _unitOfWork.Save();
+
+                    return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
+                }
+
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"AdaySinavOdaKabulGuncelle - Hata: {ex.Message}", ex);
+                return new Result<bool>(false, ResultConstant.RecordRemoveNotSuccessfully);
+            }
+        }
+        #endregion
+
+        #region SinavBitisTarihiGuncelle
+        public Result<bool> SinavBitisTarihiGuncelle(Guid id)
+        {
+            try
+            {
+                var aday = _unitOfWork.adayMYSSRepository.Get(id);
+
+                if (aday != null)
+                {
+                    aday.SinavBitisTarihi = DateTime.Now;
+                    aday.SinavYapildi = true;
                     _unitOfWork.Save();
 
                     return new Result<bool>(true, ResultConstant.RecordRemoveSuccessfully);
