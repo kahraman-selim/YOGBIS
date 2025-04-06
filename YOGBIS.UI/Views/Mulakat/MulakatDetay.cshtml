@@ -292,21 +292,14 @@
                 $('#soruBlok').slideUp();
                 $('#AdayNotBlok').slideDown();
                 $('#AdayBilgiBlok').slideUp();
-                document.getElementById("btnSoruGoster").style.display = "inline";
-                document.getElementById("Kategori1-1").focus();
+                document.getElementById("btnSoruGoster").style.display = "inline";                
                 document.getElementById("btnBitir").style.display = "none";
                 document.getElementById("btnBilgiKapat").style.display = "none";
                 document.getElementById("btnBilgiAc").style.display = "inline";
                 document.getElementById("btnIptal").style.display = "none";
                 document.getElementById("btnSoruBlokKapat").style.display = "none";
                 document.getElementById("btnSoruGizle").style.display = "none";
-            });
-
-            // Bilgi Formu Kapat butonu click eventi
-            $('btnBilgiFormKapat').on('click', function () {
-                $('#AdayBilgiBlok').slideUp();
-                document.getElementById("btnBilgiKapat").style.display = "none";
-                document.getElementById("btnBilgiAc").style.display = "inline";
+                document.getElementById("Kategori1-1").focus();
             });
 
             // Soru Blok Kapat butonu click eventi
@@ -439,6 +432,7 @@
                 $('#btnBilgiKapat').hide();
                 $('#btnBilgiAc').show();
                 $('#btnSoruGoster').hide();
+                document.getElementById("btnSoruGoster").style.display = "inline";
                 $('#soruNo').focus();
             });
 
