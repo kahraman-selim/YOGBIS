@@ -104,7 +104,7 @@
 <input type="hidden" id="ModelmulakatId" value="@mulakatId" />
 <div class="row mb-1 p-0 disable" id="AdayNotBlok">
     <div class="col-lg-12">
-        @await Component.InvokeAsync("AdayNot", new { komisyonKullaniciId = ViewBag.KullaniciId, secilenadaytcno = secilenadaytcno, mulakatId = mulakatId })
+        @await Component.InvokeAsync("AdayNot", new { komisyonKullaniciId = ViewBag.KullaniciId, secilenadaytcno = ViewBag.TC, mulakatId = ViewBag.MulakatId })
     </div>    
 </div>
 <!-- #endregion -->
@@ -185,9 +185,11 @@
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
     <script type="text/javascript">
-        
+
+
         $(document).ready(function () {
-            
+
+
             // Başlangıç değerlerini sıfırla
             $("#Ortalama, #MYSPuan").val(0);
             $("#MYSSonuc").val("");

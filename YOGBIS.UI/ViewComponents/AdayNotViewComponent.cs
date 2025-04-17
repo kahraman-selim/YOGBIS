@@ -45,16 +45,19 @@ namespace YOGBIS.UI.ViewComponents
                      {
                          KomisyonId = item.KomisyonId,
                          KomisyonUyeAdSoyad = item.KomisyonUyeAdiSoyadi,
-                         KomisyonUyeSiraId = item.KomisyonUyeSiraNo
+                         KomisyonUyeSiraId = item.KomisyonUyeSiraNo, 
+                         MulakatId= mulakatId,
+                         SecilenAdayTCNo= secilenadaytcno
                      });
             }
-            
+            returndata.KomisyonKullaniciId = komisyonKullaniciId;
             returndata.komisyonUyelerVm = komisyonbilgi;
 
             // MYYS puanını al
             if (!string.IsNullOrEmpty(secilenadaytcno) && !string.IsNullOrEmpty(mulakatId))
             {
                 _logger.LogInformation($"AdayNot - TC: {secilenadaytcno}, MulakatId: {mulakatId}");
+               
                 var result = _adaylarBE.GetirAdayBasvuruBilgileriByTcAndMulakatId(secilenadaytcno, Guid.Parse(mulakatId));
                 _logger.LogInformation($"AdayNot - Result: {result?.IsSuccess}, Data: {result?.Data != null}");
                 

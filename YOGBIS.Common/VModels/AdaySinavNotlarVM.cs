@@ -12,7 +12,7 @@ namespace YOGBIS.Common.VModels
         public Guid KomisyonId { get; set; }
         //public int KomisyonUyeSiraId { get; set; }
         public string KomisyonAdi { get; set; }
-        //public string KomisyonUyeAdSoyad { get; set; }
+        public string KomisyonKullaniciId { get; set; }
         [Display(Name = "Komisyon")]
         public KomisyonlarVM Komisyon { get; set; }  
       
@@ -40,6 +40,17 @@ namespace YOGBIS.Common.VModels
         public string KategoriAdi5 { get; set; }
         public SoruKategorilerVM NotKategorisi5 { get; set; }
         public int Not5 { get; set; }
+        public int Not6 { get; set; }
+        public int Not7 { get; set; }
+        public int Not8 { get; set; }
+        public int Not9 { get; set; }
+        public int Not10 { get; set; }
+        public int Not11 { get; set; }
+        public int Not12 { get; set; }
+        public int Not13 { get; set; }
+        public int Not14 { get; set; }
+        public int Not15 { get; set; }
+  
 
         public int Toplam1 { get; set; }
         public int Toplam2 { get; set; }

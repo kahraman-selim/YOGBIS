@@ -198,11 +198,13 @@ namespace YOGBIS.UI.Controllers
         }
         #endregion
 
+        #region PersonelKomisyonGetir
         [HttpGet]
         public IActionResult PersonelKomisyonGetir(string personelId)
         {
             var data = _komisyonlarBE.KomisyonPersonelleriGetir(personelId);
             return Json(data.Data);
-        }
+        } 
+        #endregion
     }
 }

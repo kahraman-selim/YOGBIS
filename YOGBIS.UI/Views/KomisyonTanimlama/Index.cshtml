@@ -175,9 +175,19 @@
                 if(secilen === "1") {
                     $('#yardimciperrow').show();
                     $('#ilgiliperrow').hide();
+                    komisyonList.forEach(function(e){
+
+                                 $('#'+e).prop('checked',false);
+
+                                });
                 } else if(secilen === "2") {
                     $('#yardimciperrow').hide();
                     $('#ilgiliperrow').show();
+                    komisyonList.forEach(function(e){
+
+                                 $('#'+e).prop('checked',false);
+
+                                });
                 } else {
                     $('#yardimciperrow').hide();
                     $('#ilgiliperrow').hide();
